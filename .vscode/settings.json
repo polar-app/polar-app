@@ -127,5 +127,6 @@
       "bold": false,
       "italic": false
     }
-  ]
+  ],
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }

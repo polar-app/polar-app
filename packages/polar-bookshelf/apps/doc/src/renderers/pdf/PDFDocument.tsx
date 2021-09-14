@@ -23,7 +23,6 @@ import {
     IDocDescriptor,
     IDocScale,
     useDocViewerCallbacks,
-    useDocViewerStore
 } from "../../DocViewerStore";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
@@ -55,7 +54,6 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
-import {useAnnotationBar} from '../../AnnotationBarHooks';
 
 interface DocViewer {
     readonly eventBus: EventBus;

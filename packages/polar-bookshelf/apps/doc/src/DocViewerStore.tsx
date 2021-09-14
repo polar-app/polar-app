@@ -1059,7 +1059,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setTextHighlightColor,
             setActiveHighlight,
             toggleAreaHighlightMode,
-            setAreaHighlightMode,
+            setAreaHighlightMode
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

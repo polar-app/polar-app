@@ -7,7 +7,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import isNil from "lodash/isNil";
 import omitBy from "lodash/omitBy";
 
-abstract class AnnotationContentBase<T extends IAnnotationContent> implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
+export abstract class AnnotationContentBase<T extends IAnnotationContent> implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
     @observable private readonly _type: T['type'];
     @observable private _mutator: DeviceIDStr;
     @observable private _docID: IDStr;

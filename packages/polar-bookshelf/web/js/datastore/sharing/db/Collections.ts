@@ -234,5 +234,3 @@ const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
     console.error(`Unable to handle snapshot for collection ${collection}: `, err);
 
 };
-
-export type UserIDStr = string;

@@ -12,6 +12,7 @@ import {InputValidationErrorSnackbar} from "../../mui/dialogs/InputValidationErr
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import { MUIDialog } from './MUIDialog';
 import {deepMemo} from "../../react/ReactUtils";
+import {useHistory, useLocation} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.secondary,
         },
         textField: {
-            width: 'fit-content',
             maxWidth: '100vh',
         },
         description: {
@@ -43,12 +43,16 @@ export interface PromptDialogProps {
     readonly autoComplete?: string;
 }
 
+export interface PromptDialogPropsWithID extends PromptDialogProps {
+    readonly id: string;
+}
+
 interface IState {
     readonly open: boolean;
     readonly validationError?: string;
 }
 
-export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogProps) {
+export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogPropsWithID) {
 
     const classes = useStyles();
 
@@ -56,14 +60,30 @@ export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogPr
 
     const autoFocus = props.autoFocus || true;
 
+    const location = useLocation();
+    const history = useHistory();
+
     const [state, setState] = React.useState<IState>({
-        open: true
+        open: false
     });
 
-    const closeDialog = () => {
-        setState({open: false});
-    };
+    React.useEffect(() => {
+        history.push({hash: `#prompt-${props.id}`});
+    }, [history, props.id])
 
+    React.useEffect(() => {
+
+        const open = location.hash === `#prompt-${props.id}`;
+        setState({open});
+
+    }, [history, location, props.id, state.open]);
+
+    const closeDialog = React.useCallback(() => {
+        // this happens on Escape and clickaway...
+        history.replace({hash: ''});
+    }, [history]);
+
+    // FIXME: make these all useCallback
     const handleClose = () => {
         props.onCancel();
         closeDialog();

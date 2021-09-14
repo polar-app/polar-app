@@ -9,38 +9,81 @@ import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {EditAnnotation} from "./Actions/EditAnnotation";
 import {CreateComment} from "./Actions/CreateComment";
 import {CreateFlashcard} from "./Actions/CreateFlashcard";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
 import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
+import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
+import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
+import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
+import {Block} from "../../../../../web/js/notes/store/Block";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
 
+export type IDocMetaAnnotationProps = {
+    annotation: IDocAnnotation,
+};
+
+export type IBlockAnnotationProps = {
+    annotation: Block<TextHighlightAnnotationContent>,
+};
 
 export type IAnnotationPopupActionProps = {
-    className?: string;
-    style?: React.CSSProperties;
-    annotation: IDocAnnotation;
+    className?: string,
+    style?: React.CSSProperties,
+    annotation: IDocMetaAnnotation | IBlockAnnotation,
 };
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
-    const {className = "", style = {}, annotation} = props;
-    const {clear} = useAnnotationPopup();
-    const annotationMutations = useAnnotationMutationsContext();
+    const { className = "", style = {}, annotation } = props;
+    const { clear } = useAnnotationPopup();
 
-    const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
-    const handleChange = (color: ColorStr) => {
-        handleColor({ color });
-        clear();
-    };
+    const DocMetaAnnotation: React.FC<IDocMetaAnnotationProps> = ({ annotation }) => {
+        const annotationMutations = useAnnotationMutationsContext();
+        const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
 
-    return (
-        <div className={className} style={{ ...style, width: "auto" }}>
+        const handleChange = (color: ColorStr) => {
+            handleColor({ color });
+            clear();
+        };
+
+        return (
             <ColorMenu
                 selected={annotation.color}
                 onChange={handleChange}
                 hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
                 withHints
             />
+        );
+    };
+
+    const BlockAnnotation: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
+
+        const {update} = useAnnotationBlockManager();
+        const handleChange = (color: ColorStr) => {
+            const annotationJSON = annotation.content.toJSON();
+            update(annotation.id, {
+                ...annotationJSON,
+                value: { ...annotationJSON.value, color }
+            });
+            clear();
+        };
+
+        return (
+            <ColorMenu
+                selected={annotation.content.value.color}
+                onChange={handleChange}
+                hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
+                withHints
+            />
+        );
+    };
+
+    return (
+        <div className={className} style={{ ...style, width: "auto" }}>
+            {annotation.type === 'docMeta'
+                ? <DocMetaAnnotation annotation={annotation.annotation} />
+                : <BlockAnnotation annotation={annotation.annotation} />
+            }
         </div>
     );
 };

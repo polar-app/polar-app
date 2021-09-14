@@ -11,7 +11,7 @@ export namespace DOMBlocks {
     export const getBlockElement = (id: BlockIDStr) =>
         document.querySelector<HTMLDivElement>(`#${getBlockHTMLID(id)}`);
 
-    export function isBlockElement(node: Node): node is HTMLElement {
+    export function isBlockElement(node: Node): node is HTMLDivElement {
         if (node.nodeType === Node.ELEMENT_NODE) {
             const element = node as HTMLElement;
             if (element.id && element.id.startsWith(BLOCK_ID_PREFIX)) {
@@ -21,7 +21,7 @@ export namespace DOMBlocks {
         return false;
     }
 
-    export function findBlockParent(node: Node | null): HTMLElement | null {
+    export function findBlockParent(node: Node | null): HTMLDivElement | null {
         if (! node) {
             return null;
         }
@@ -29,7 +29,7 @@ export namespace DOMBlocks {
         return isBlockElement(node) ? node : findBlockParent(node.parentElement);
     };
 
-    export function getFocusedBlock(): HTMLElement | null {
+    export function getFocusedBlock(): HTMLDivElement | null {
         const selection = document.getSelection();
         if (selection && selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
@@ -39,7 +39,7 @@ export namespace DOMBlocks {
         return null;
     }
 
-    export function getSibling(hook: BlockIDStr | HTMLElement, delta: 'next' | 'prev'): HTMLElement | null {
+    export function getSibling(hook: BlockIDStr | HTMLDivElement, delta: 'next' | 'prev'): HTMLDivElement | null {
         const currBlockElem = typeof hook === 'string' ? getBlockElement(hook) : hook;
 
         if (currBlockElem) {
@@ -52,7 +52,7 @@ export namespace DOMBlocks {
         return null;
     }
 
-    export function getSiblingID(hook: BlockIDStr | HTMLElement, delta: 'next' | 'prev'): string | null {
+    export function getSiblingID(hook: BlockIDStr | HTMLDivElement, delta: 'next' | 'prev'): string | null {
         const sibling = getSibling(hook, delta);
 
         if (sibling && sibling.dataset.id) {
@@ -62,7 +62,7 @@ export namespace DOMBlocks {
         return null;
     }
 
-    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLElement | null {
+    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLDivElement | null {
         const sibling = delta === 'next'
                 ? node.nextSibling
                 : node.previousSibling;
@@ -108,6 +108,10 @@ export namespace DOMBlocks {
         }
     }
 
+    export function getBlockID(elem: HTMLElement) {
+        return elem.dataset.id;
+    }
+
     export function nav(delta: 'next' | 'prev', pos?: NavPosition): BlockIDStr | null {
         const activeBlock = DOMBlocks.getFocusedBlock();
 
@@ -127,6 +131,6 @@ export namespace DOMBlocks {
         
         CursorPositions.jumpToPosition(sibling, newPos || 'start');
 
-        return sibling.dataset.id || null;
+        return getBlockID(sibling) || null;
     }
 }

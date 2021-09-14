@@ -15,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
+import {NotesToolbar} from "./NotesToolbar";
 
 const DATE_FORMAT = 'MMMM Do, YYYY';
 
@@ -177,15 +178,18 @@ export const NoteRepoScreen: React.FC = () => {
     }, [history, blocksStore]);
 
     return (
-        <NotesInnerContainer>
-            <XGrid
-                className={classes.root}
-                columns={BLOCK_TABLE_COLUMNS}
-                rows={rows}
-                onRowDoubleClick={handleDoubleClick}
-                pagination
-                checkboxSelection
-            />
-        </NotesInnerContainer>
+        <>
+            <NotesToolbar />
+            <NotesInnerContainer>
+                <XGrid
+                    className={classes.root}
+                    columns={BLOCK_TABLE_COLUMNS}
+                    rows={rows}
+                    onRowDoubleClick={handleDoubleClick}
+                    pagination
+                    checkboxSelection
+                />
+            </NotesInnerContainer>
+        </>
     );
 };

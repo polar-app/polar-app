@@ -2,9 +2,15 @@ import {DictionaryPrefs, Prefs} from "./Prefs";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from "../../test/Assertions";
 
-TestingTime.freeze();
-
 describe('Prefs', function() {
+
+    beforeEach(() => {
+        TestingTime.freeze();
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze();
+    });
 
     describe('update', function() {
 

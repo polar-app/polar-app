@@ -1,6 +1,5 @@
 import {Callback1, NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
-import isEqual from "react-fast-compare";
 import {
     AlertType,
     ConfirmDialog,
@@ -119,7 +118,7 @@ const DialogHost = (props: DialogHostProps) => {
         }
 
         const confirm = (confirmDialogProps: ConfirmDialogProps) => {
-            registerDialogElement(<ConfirmDialog key={createKey()}
+            registerDialogElement(<ConfirmDialog key={createKey()} id={`${iter}`}
                                                  {...confirmDialogProps}/>);
             doIncr();
         };
@@ -127,18 +126,20 @@ const DialogHost = (props: DialogHostProps) => {
         const dialog = (confirmDialogProps: IDialogProps) => {
             registerDialogElement(<ConfirmDialog key={createKey()}
                                                  subtitle={confirmDialogProps.body}
+                                                 id={`${iter}`}
                                                  {...confirmDialogProps}/>);
             doIncr();
         };
 
         const prompt = (promptDialogProps: PromptDialogProps) => {
             registerDialogElement(<PromptDialog key={createKey()}
-                                                {...promptDialogProps}/>);
+                                                {...promptDialogProps}
+                                                id={`${iter}`}/>);
             doIncr();
         };
 
         const autocomplete = function<T>(autocompleteProps: AutocompleteDialogProps<T>) {
-            registerDialogElement(<AutocompleteDialog key={createKey()}
+            registerDialogElement(<AutocompleteDialog key={createKey()} id={`${iter}`}
                                                       {...autocompleteProps}/>);
             doIncr();
         };
@@ -192,7 +193,7 @@ const DialogHost = (props: DialogHostProps) => {
             dialog,
             taskbar,
             select
-        };
+        }; 
 
         // WARN: not sure if this is the appropriate way to do this but we need
         // to have this run after the component renders and this way it can

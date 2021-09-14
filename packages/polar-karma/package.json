@@ -1,0 +1,24 @@
+{
+  "name": "polar-karma",
+  "version": "2.1.121",
+  "description": "Basic webpack dependencies and utilities.",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "karma": "=6.3.2",
+    "karma-chai": "=0.1.0",
+    "karma-chrome-launcher": "=3.1.0",
+    "karma-firefox-launcher": "=2.1.1",
+    "karma-junit-reporter": "=2.0.1",
+    "karma-mocha": "=2.0.1",
+    "karma-safari-launcher": "=1.0.0",
+    "karma-sourcemap-loader": "=0.3.8",
+    "karma-spec-reporter": "=0.0.32",
+    "karma-typescript": "=5.5.1",
+    "karma-typescript-es6-transform": "=5.5.1",
+    "karma-webpack": "=5.0.0",
+    "puppeteer": "=9.1.1"
+  }
+}

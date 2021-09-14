@@ -33,7 +33,6 @@ export const MUIDocDropdownButton = deepMemo(function MUIDocDropdownButton(props
             anchorEl: null
         });
     };
-
     const {anchorEl} = state;
 
     return (

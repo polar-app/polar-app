@@ -15,7 +15,7 @@ import {SelectedContents} from "../../../../../web/js/highlights/text/selection/
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
 import {ITextHighlightCreate, useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
-import {DEFAULT_STATE, reducer, ACTIONS} from "./AnnotationPopupReducer";
+import {DEFAULT_STATE, reducer, ACTIONS, IDocMetaAnnotation, IBlockAnnotation} from "./AnnotationPopupReducer";
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
@@ -25,6 +25,11 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/ISelectedContent";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {GlobalHotKeys} from "react-hotkeys";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
+import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
+import {autorun} from "mobx";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -45,7 +50,7 @@ type IAnnotationPopupProviderProps = {
 
 type IAnnotationPopupContext = {
     onCreateAnnotation: (color: ColorStr) => void;
-    annotation?: IDocAnnotation;
+    annotation?: IDocMetaAnnotation | IBlockAnnotation;
     selectionEvent?: ActiveSelectionEvent;
     setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
     aiFlashcardStatus: AutoFlashcardHandlerState,
@@ -55,14 +60,12 @@ type IAnnotationPopupContext = {
 };
 
 const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): IDocAnnotation | undefined => {
-    const { type, highlightID, pageNum } = activeHighlight;
-    if (type === AnnotationType.TEXT_HIGHLIGHT) {
-        const highlights = docMeta.pageMetas[pageNum].textHighlights;
-        const textHighlight: ITextHighlight | undefined = Object.values(highlights)
-            .find(highlight => highlight.guid === highlightID);
-        if (textHighlight) {
-            return DocAnnotations.createFromTextHighlight(docMeta, textHighlight, docMeta.pageMetas[pageNum]);
-        }
+    const { highlightID, pageNum } = activeHighlight;
+    const highlights = docMeta.pageMetas[pageNum].textHighlights;
+    const textHighlight: ITextHighlight | undefined = Object.values(highlights)
+        .find(highlight => highlight.guid === highlightID);
+    if (textHighlight) {
+        return DocAnnotations.createFromTextHighlight(docMeta, textHighlight, docMeta.pageMetas[pageNum]);
     }
     return undefined;
 };
@@ -113,14 +116,12 @@ interface ICreateTextHighlightCallbackOpts {
 
 }
 
-export type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => ITextHighlight | null;
-export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
+export function useCreateTextHighlightCallback() {
 
-    const annotationMutations = useAnnotationMutationsContext();
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
     const docViewerElementsContext = useDocViewerElementsContext();
 
-    return React.useCallback((opts: ICreateTextHighlightCallbackOpts): ITextHighlight | null => {
+    return React.useCallback((opts: ICreateTextHighlightCallbackOpts): TextHighlighter.ICreatedTextHighlight | null => {
 
         if (docMeta === undefined) {
             throw new Error("No docMeta");
@@ -135,20 +136,10 @@ export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
             return null;
         }
 
-        // TODO: what if this page isn't visible
         const pageElement = docViewerElementsContext.getPageElementForPage(opts.pageNum)!;
 
-        const {pageMeta, textHighlight}
-            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale, pageElement});
-
-        const mutation: ITextHighlightCreate = {
-            type: 'create',
-            docMeta, pageMeta, textHighlight
-        }
-
-        annotationMutations.onTextHighlight(mutation);
-        return textHighlight;
-    }, [docMeta, docScale, annotationMutations, docViewerElementsContext]);
+        return TextHighlighter.createTextHighlight({ ...opts, docMeta, docScale, pageElement });
+    }, [docMeta, docScale, docViewerElementsContext]);
 }
 
 export const activeSelectionEventToTextHighlight = (
@@ -189,13 +180,16 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {docMeta, ...restProps} = props;
     const [state, dispatch] = React.useReducer(reducer, DEFAULT_STATE);
     const {annotation, selectionEvent, activeAction} = state;
-    const {activeHighlight, textHighlightColor}
-        = useDocViewerStore(["activeHighlight", "textHighlightColor"]);
+    const annotationMutations = useAnnotationMutationsContext();
+    const {activeHighlight, textHighlightColor} = useDocViewerStore(["activeHighlight", "textHighlightColor"]);
+    const {setActiveHighlight} = useDocViewerCallbacks();
     const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
     const createTextHighlightRef = useRefWithUpdates(useCreateTextHighlightCallback());
     const textHighlightColorRef = useRefWithUpdates(textHighlightColor);
+    const setActiveHighlightRef = useRefWithUpdates(setActiveHighlight);
     const {fileType} = useDocViewerContext();
-    const {setActiveHighlight} = useDocViewerCallbacks();
+    const {create: createAnnotation} = useAnnotationBlockManager();
+    const {getBlock} = useAnnotationBlockManager();
 
     const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
         if (event) {
@@ -208,18 +202,45 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 return;
             }
             event.selection.empty();
-            const textHighlight = createTextHighlightRef.current({
+            const fingerprint = docMeta.docInfo.fingerprint;
+            const createdTextHighlight = createTextHighlightRef.current({
                 pageNum,
                 selectedContent,
                 highlightColor: color,
-                docID: docMeta.docInfo.fingerprint,
+                docID: fingerprint,
             });
-            if (textHighlight) {
-                setActiveHighlight({
-                    highlightID: textHighlight.guid,
-                    type: AnnotationType.TEXT_HIGHLIGHT,
-                    pageNum
-                });
+
+            if (createdTextHighlight) {
+                const {pageMeta, textHighlight} = createdTextHighlight;
+
+                if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                    const content = new TextHighlightAnnotationContent({
+                        type: AnnotationContentType.TEXT_HIGHLIGHT,
+                        pageNum,
+                        docID: fingerprint,
+                        value: textHighlight,
+                    });
+                    const id = createAnnotation(fingerprint, content);
+                    if (id) {
+                        setActiveHighlight({
+                            highlightID: id,
+                            type: 'block',
+                            pageNum
+                        });
+                    }
+                } else {
+                    const mutation: ITextHighlightCreate = {
+                        type: 'create',
+                        docMeta, pageMeta, textHighlight
+                    };
+
+                    annotationMutations.onTextHighlight(mutation);
+                    setActiveHighlight({
+                        highlightID: textHighlight.guid,
+                        type: 'docMeta',
+                        pageNum
+                    });
+                }
             }
         }
     }, [
@@ -229,24 +250,56 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         selectionEvent,
         createTextHighlightRef,
         docViewerElementsRef,
+        createAnnotation,
+        annotationMutations,
     ]);
 
     React.useEffect(() => {
+
         if (activeHighlight) {
-            const annotation = toAnnotation(docMeta, activeHighlight);
-            if (!annotation) {
-                setActiveHighlight(undefined);
+            if (activeHighlight.type === 'docMeta') {
+                const annotation = toAnnotation(docMeta, activeHighlight);
+                if (! annotation) {
+                    setActiveHighlightRef.current(undefined);
+                    return;
+                }
+
+                setTimeout(() => {
+                    dispatch({
+                        type: ACTIONS.ANNOTATION_SET,
+                        payload: { type: 'docMeta', annotation }
+                    });
+                }, 50);
+            } else {
+                return autorun(() => {
+                    const annotation = getBlock(activeHighlight.highlightID, AnnotationContentType.TEXT_HIGHLIGHT);
+                    if (! annotation) {
+                        setActiveHighlightRef.current(undefined);
+                        return;
+                    }
+
+                    setTimeout(() => {
+                        dispatch({
+                            type: ACTIONS.ANNOTATION_SET,
+                            payload: { type: 'block', annotation },
+                        });
+                    }, 50);
+                });
             }
-            setTimeout(() => {
-                dispatch({ type: ACTIONS.ANNOTATION_SET, payload: annotation });
-            }, 50);
+        } else {
+            dispatch({
+                type: ACTIONS.ANNOTATION_SET,
+                payload: undefined,
+            });
         }
-    }, [activeHighlight, setActiveHighlight, docMeta]);
+        return undefined;
+    }, [activeHighlight, setActiveHighlightRef, docMeta, getBlock]);
     
     React.useEffect(() => {
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
             dispatch({ type: ACTIONS.RESET, payload: undefined });
+
             if (textHighlightColorRef.current) {
                 if (event.type === "created") {
                     handleCreateAnnotation(textHighlightColorRef.current, event);
@@ -290,6 +343,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         setAiFlashcardStatus: (status) => dispatch({ type: ACTIONS.UPDATE_AI_FLASHCARD_STATUS, payload: status }),
         aiFlashcardStatus: state.aiFlashcardStatus,
     };
+
     const activeHandlers = React.useMemo(() => ({
         ESCAPE: () => {
             setActiveHighlight(undefined);
@@ -316,3 +370,17 @@ export const useAnnotationPopup = () => {
     return context;
 }
 
+
+export const getAnnotationData = (data: IDocMetaAnnotation | IBlockAnnotation) => {
+    if (data.type === 'docMeta') {
+        return {
+            annotation: data.annotation.original as ITextHighlight,
+            pageNum: data.annotation.pageNum,
+        };
+    } else {
+        return {
+            annotation: data.annotation.content.value,
+            pageNum: data.annotation.content.pageNum,
+        };
+    }
+};

@@ -76,8 +76,8 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         if (content.type === 'name') {
             handleRename(content, data);
         } else if (content.type !== AnnotationContentType.FLASHCARD) {
-            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data)
-            block.setContent(newContent);
+            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
+            blocksTreeStore.setBlockContent(block.id, newContent);
         }
     }, [id, handleRename, blocksTreeStore]);
 };
@@ -100,9 +100,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             const active = blocksTreeStore.active;
             if (ref.current) {
                 if (active && active.id === id) {
-                    if (active.pos !== undefined) {
-                        updateCursorPosition(ref.current, active)
-                    }
+                    updateCursorPosition(ref.current, active)
                 } else {
                     ContentEditables.insertEmptySpacer(ref.current);
                 }

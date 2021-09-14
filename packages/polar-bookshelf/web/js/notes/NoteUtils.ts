@@ -11,11 +11,10 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates, TextContent} from "./store/BlockPredicates";
 import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
-import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {AnnotationContentTypeMap, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
+import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
@@ -25,99 +24,41 @@ import {TextType} from "polar-shared/src/metadata/TextType";
 import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
+
+export const useNamedBlocks = () => {
+	const blocksStore = useBlocksStore();
+	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
+	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
+    
+	React.useEffect(() => {
+	    const disposer = autorun(() => {
+		const namedBlocksIDs = Object.values(blocksStore.indexByName);
+		if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
+		    const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+		    setNamedBlocks(namedBlocks);
+		    prevNamedBlocksIDsRef.current = namedBlocksIDs;
+		}
+	    });
+    
+	    return () => disposer();
+	}, [blocksStore]);
+    
+	return namedBlocks;
+};
+
+
 // TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
-    if (root && root.content.type !== "document") {
-        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
-        blocksStore.setActiveWithPosition(firstChildID, 'start');
-    }
-};
-
-export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: string) => {
-    const documentBlockID = blocksStore.indexByDocumentID[fingerprint];
-    const block = blocksStore.getBlock(documentBlockID);
-    return block;
-};
-
-export const useAnnotationBlockManager = () => {
-    const blocksStore = useBlocksStore();
-
-    const doMutation = React.useCallback((fingerprint: string, handler: (block: Block<DocumentContent>) => void) => {
-        const block = getBlockForDocument(blocksStore, fingerprint);
-        if (block && block.content.type === "document") {
-            handler(block as Block<DocumentContent>);
-        } else {
-            console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
-        }
-    }, [blocksStore]);
-    
-    const getBlock = React.useCallback(<T extends AnnotationContentType = AnnotationContentType>(id: BlockIDStr, type?: T): Block<AnnotationContentTypeMap[T]> | undefined => {
-        const block = blocksStore.getBlockForMutation(id);
-
-        if (! block || ! BlockPredicates.isAnnotationBlock(block)) {
-            console.log(`Could not find annotation block with the ID ${id}`);
-            return undefined;
-        }
-
-        if (type && type !== block.content.type) {
-            console.log(`Could not find ${type} block with the ID ${id}`);
-            return undefined;
-        }
-
-        return block as Block<AnnotationContentTypeMap[T]>;
-    }, [blocksStore]);
-
-    const updateMetadata = React.useCallback(<T extends IAnnotationContent>(annotation: T): T => {
-        return {
-            ...annotation,
-            value: {
-                ...annotation.value,
-                lastUpdated: ISODateTimeStrings.create(),
-            },
-        };
-    }, []);
-
-    const create = React.useCallback((fingerprint: string, annotation: IAnnotationContent) => {
-        doMutation(fingerprint, (block) => {
-            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotation) });
-        });
-    }, [blocksStore, updateMetadata, doMutation]);
-
-    const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
-        blocksStore.setBlockContent(id, updateMetadata(annotation));
-    }, [blocksStore, updateMetadata]);
-
-    const remove = React.useCallback((id: BlockIDStr) => {
-        const block = getBlock(id);
-
-        if (block) {
-            blocksStore.deleteBlocks([id]);
-        }
-    }, [blocksStore, getBlock]);
-
-    return { create, update, remove, getBlock };
-};
-
-export const useNamedBlocks = () => {
-    const blocksStore = useBlocksStore();
-    const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
-    const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
-
-    React.useEffect(() => {
-        const disposer = autorun(() => {
-            const namedBlocksIDs = Object.values(blocksStore.indexByName);
-            if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
-                setNamedBlocks(namedBlocks);
-                prevNamedBlocksIDsRef.current = namedBlocksIDs;
+    if (root) {
+        const getFirstChildID = (): BlockIDStr => {
+            if (root.content.type === "document") {
+                return root.itemsAsArray[0];
             }
-        });
-
-        return () => disposer();
-    }, [blocksStore]);
-
-    return namedBlocks;
+            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
+        };
+        blocksStore.setActiveWithPosition(getFirstChildID(), 'start');
+    }
 };
 
 export const useNoteWikiLinkCreator = () => {

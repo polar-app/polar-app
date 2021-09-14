@@ -1,14 +1,54 @@
 import * as React from "react";
-import {PageAnnotations} from "./PageAnnotations";
 import {TextHighlightRenderer} from "./TextHighlightRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {useAnnotationContainers} from "./AnnotationHooks";
-import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {useHighlightBlocks} from "../../../../web/js/notes/HighlightNotesUtils";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
+import {PageAnnotations} from "./PageAnnotations";
 
-export const TextHighlightsView = memoForwardRef(() => {
+interface ITextHighlightsViewRendererProps {
+    docMeta: IDocMeta;
+}
 
-    const {docMeta} = useDocViewerStore(['docMeta']);
+export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRendererProps> = ({ docMeta }) => {
+
+    const annotationContainers = useAnnotationContainers();
+    const highlights = useHighlightBlocks({
+        docID: docMeta.docInfo.fingerprint,
+        type: AnnotationContentType.TEXT_HIGHLIGHT,
+    });
+    
+    const pageHighlights = React.useMemo(() =>
+        highlights.map(({ content, id }) => {
+            const { value, pageNum, docID } = content.toJSON();
+            return {
+                annotation: { ...value, blockID: id },
+                fingerprint: docID,
+                pageNum,
+            };
+        })
+    , [highlights]);
+
+    const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageHighlights);
+
+    const rendered = visiblePageAnnotations.map(current =>
+                                             <TextHighlightRenderer
+                                                 type="block"
+                                                 id={current.annotation.blockID}
+                                                 key={current.annotation.id}
+                                                 container={current.container}
+                                                 pageNum={current.pageNum}
+                                                 fingerprint={docMeta?.docInfo.fingerprint}
+                                                 pageAnnotation={current}/>);
+
+    return <>{rendered}</>;
+};
+
+
+export const DocMetaTextHighlightsView: React.FC<ITextHighlightsViewRendererProps> = ({ docMeta }) => {
 
     const annotationContainers = useAnnotationContainers();
 
@@ -22,17 +62,28 @@ export const TextHighlightsView = memoForwardRef(() => {
 
     const rendered = visiblePageAnnotations.map(current =>
                                              <TextHighlightRenderer
+                                                 type="docMeta"
+                                                 id={current.annotation.id}
                                                  key={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
                                                  pageAnnotation={current}/>);
 
-    return (
-        <>
-            {rendered}
-        </>
-    );
+    return <>{rendered}</>;
+};
 
+
+export const TextHighlightsView = React.memo(() => {
+    const {docMeta} = useDocViewerStore(['docMeta']);
+
+    if (! docMeta) {
+        return null;
+    }
+
+    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        return <BlockTextHighlightsViewRenderer docMeta={docMeta} />
+    }
+
+    return <DocMetaTextHighlightsView docMeta={docMeta} />;
 });
-

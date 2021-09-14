@@ -113,4 +113,9 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/proj
 # Further steps
 
 - add the ZenHub chrome extension in order to see the tasks
+  
+      https://www.zenhub.com/extension
+
 - Request permission from kevin to be added to firestore console.
+
+
