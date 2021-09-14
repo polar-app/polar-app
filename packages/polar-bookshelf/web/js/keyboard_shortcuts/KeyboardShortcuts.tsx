@@ -53,8 +53,9 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
         const matchDigit = (event.code === `Digit${key}`);
         const matchBrackets = (event.code === 'BracketRight' || event.code === 'BracketLeft');
         const rest = (event.code === key);
+        const Slash = (event.code === 'Slash' && (key === '/' || key === '?'));
 
-        return (matchKey || matchDigit || matchBrackets || rest) && modifierPredicate(modifiers, event);
+        return (matchKey || matchDigit || matchBrackets || rest || Slash) && modifierPredicate(modifiers, event);
     }
 }
 
