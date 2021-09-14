@@ -51,7 +51,7 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
 
         const matchKey = (event.code.toLowerCase() === `key${key.toLowerCase()}`);
         const matchDigit = (event.code === `Digit${key}`);
-        const matchBrackets = (event.code === 'BracketRight' || event.code === 'BracketLeft');
+        const matchBrackets = (event.code === 'BracketRight' && key ===']') || (event.code === 'BracketLeft' && key ==='[' );
         const rest = (event.code === key);
         const Slash = (event.code === 'Slash' && (key === '/' || key === '?'));
 
