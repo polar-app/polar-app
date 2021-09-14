@@ -43,6 +43,11 @@ import {useJumpToAnnotationHandler} from "../../../web/js/annotation_sidebar/Jum
 import { Arrays } from "polar-shared/src/util/Arrays";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {AnnotationPtrs} from "../../../web/js/annotation_sidebar/AnnotationPtrs";
+import {useDocViewerElementsContext} from "./renderers/DocViewerElementsContext";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {useCreateBlockAreaHighlight} from "../../../web/js/notes/HighlightNotesUtils";
+import {useDocViewerContext} from "./renderers/DocRenderer";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -358,8 +363,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
     const annotationMetaToRefResolver = useAnnotationMetaToRefResolver();
+    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const dialogManager = useDialogManager();
     const jumpToAnnotationHandler = useJumpToAnnotationHandler();
+    const docViewerElements = useDocViewerElementsContext();
+    const createBlockAreaHighlight = useCreateBlockAreaHighlight();
+    const {fileType} = useDocViewerContext();
 
     const origin = props.origin!;
 
@@ -437,17 +446,44 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const onCreateAreaHighlight = React.useCallback(() => {
         const {pageNum, pointWithinPageElement} = origin;
 
-        onAreaHighlightCreated({
-            pageNum,
-            rectWithinPageElement: {
-                left: pointWithinPageElement.x,
-                top: pointWithinPageElement.y,
-                width: 150,
-                height: 150,
-            },
-        });
+        const rect: ILTRect = {
+            left: pointWithinPageElement.x,
+            top: pointWithinPageElement.y,
+            width: 150,
+            height: 150,
+        };
 
-    }, [onAreaHighlightCreated, origin]);
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (! docMeta || ! docScale) {
+                return;
+            }
+
+            const docViewerElement = docViewerElements.getDocViewerElement();
+            createBlockAreaHighlight({
+                rect,
+                pageNum,
+                fileType,
+                docScale,
+                fingerprint: docMeta.docInfo.fingerprint,
+                docViewerElement,
+            }).catch(console.error);
+
+        } else {
+            onAreaHighlightCreated({
+                pageNum,
+                rectWithinPageElement: rect
+            });
+        }
+
+    }, [
+        onAreaHighlightCreated,
+        origin,
+        docViewerElements,
+        docMeta,
+        docScale,
+        fileType,
+        createBlockAreaHighlight,
+    ]);
 
     const onDeletePagemark = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 
