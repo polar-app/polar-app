@@ -48,7 +48,13 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
         if(isModifier(event.key)){
             return false;
         }
-        return (event.code.toLowerCase() === `key${key.toLowerCase()}` && modifierPredicate(modifiers, event));
+
+        const matchKey = (event.code.toLowerCase() === `key${key.toLowerCase()}`);
+        const matchDigit = (event.code === `Digit${key}`);
+        const matchBrackets = (event.code === 'BracketRight' || event.code === 'BracketLeft');
+        const rest = (event.code === key);
+
+        return (matchKey || matchDigit || matchBrackets || rest) && modifierPredicate(modifiers, event);
     }
 }
 
