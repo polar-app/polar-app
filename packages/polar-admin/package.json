@@ -1,6 +1,6 @@
 {
   "name": "polar-admin",
-  "version": "2.1.122",
+  "version": "2.1.123",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -17,14 +17,14 @@
   "license": "ISC",
   "devDependencies": {
     "firebase-tools": "=9.16.0",
-    "polar-eslint": "^2.1.122",
-    "polar-typescript": "^2.1.122",
+    "polar-eslint": "^2.1.123",
+    "polar-typescript": "^2.1.123",
     "typescript": "=4.2.3"
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.13.2",
     "firebase-admin": "=9.11.0",
-    "polar-firebase": "^2.1.122",
-    "polar-shared": "^2.1.122"
+    "polar-firebase": "^2.1.123",
+    "polar-shared": "^2.1.123"
   }
 }
