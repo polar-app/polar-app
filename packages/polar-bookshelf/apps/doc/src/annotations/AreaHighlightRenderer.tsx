@@ -101,10 +101,6 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
     }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
 
-    const createID = React.useCallback(() => {
-        return `area-highlight-${id}`;
-    }, [areaHighlight]);
-
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
@@ -113,8 +109,6 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
         if (! overlayRect) {
             return null;
         }
-
-        const id = createID();
 
         const className = `area-highlight annotation area-highlight-${id}`;
 
@@ -150,7 +144,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
             container,
             id);
 
-    }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect, draggable]);
+    }, [areaHighlight, fingerprint, handleRegionResize, pageNum, toOverlayRect, draggable]);
 
     // const rect = Arrays.first(Object.values(areaHighlight.rects));
     //

@@ -48,6 +48,7 @@ import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {useCreateBlockAreaHighlight} from "../../../web/js/notes/HighlightNotesUtils";
 import {useDocViewerContext} from "./renderers/DocRenderer";
+import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -369,6 +370,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const docViewerElements = useDocViewerElementsContext();
     const createBlockAreaHighlight = useCreateBlockAreaHighlight();
     const {fileType} = useDocViewerContext();
+    const blocksStore = useBlocksStore();
 
     const origin = props.origin!;
 
@@ -501,10 +503,14 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     }
 
-    const onDelete = (annotations: ReadonlyArray<IAnnotationMeta>) => {
-        const selected = annotations.map(annotationMetaToRefResolver);
-        annotationMutationsContext.onDeleted({selected});
-    }
+    const onDelete = React.useCallback((annotations: ReadonlyArray<IAnnotationMeta>) => {
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            blocksStore.deleteBlocks(annotations.map(({ id }) => id));
+        } else {
+            const selected = annotations.map(annotationMetaToRefResolver);
+            annotationMutationsContext.onDeleted({selected});
+        }
+    }, [blocksStore, annotationMutationsContext]);
 
     const onCopy = () => {
         Clipboards.writeText(origin.selectionToText());
