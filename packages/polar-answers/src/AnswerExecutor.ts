@@ -178,7 +178,7 @@ export namespace AnswerExecutor {
                 }
 
                 async function filterUsingPoS() {
-                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, 'NOUN');
+                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, ['NOUN']);
                     return analysis.map(current => current.content).join(" ");
                 }
 
