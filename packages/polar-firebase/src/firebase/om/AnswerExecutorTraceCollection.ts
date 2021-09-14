@@ -2,6 +2,7 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -28,7 +29,7 @@ export namespace AnswerExecutorTraceCollection {
             data: JSON.stringify(trace)
         }
 
-        return record;
+        return Dictionaries.onlyDefinedProperties(record);
 
     }
 
