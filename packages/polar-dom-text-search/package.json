@@ -1,6 +1,6 @@
 {
   "name": "polar-dom-text-search",
-  "version": "2.1.118",
+  "version": "2.1.121",
   "description": "Provides a framework to search text within a DOM.",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -22,15 +22,15 @@
     "jsdom": "=16.7.0",
     "jsdom-global": "3.0.2",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.118",
-    "polar-typescript": "^2.1.118",
+    "polar-eslint": "^2.1.121",
+    "polar-typescript": "^2.1.121",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
     "@types/node": "=14.14.35",
-    "polar-shared": "^2.1.118",
-    "polar-test": "^2.1.118"
+    "polar-shared": "^2.1.121",
+    "polar-test": "^2.1.121"
   },
   "files": [
     "**/*.js",

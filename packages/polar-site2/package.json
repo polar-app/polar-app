@@ -1,7 +1,7 @@
 {
   "name": "polar",
   "description": "General information, support, and downloads for the polar app",
-  "version": "2.1.118",
+  "version": "2.1.121",
   "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
   "private": true,
   "scripts": {
@@ -44,8 +44,8 @@
     "ink": "=3.0.8",
     "ink-box": "=1.0.0",
     "pngquant-bin": "=6.0.0",
-    "polar-bookshelf": "^2.1.118",
-    "polar-shared": "^2.1.118",
+    "polar-bookshelf": "^2.1.121",
+    "polar-shared": "^2.1.121",
     "react": "=16.14.0",
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",

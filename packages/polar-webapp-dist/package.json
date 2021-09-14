@@ -1,10 +1,10 @@
 {
   "name": "polar-webapp-dist",
-  "version": "2.1.118",
+  "version": "2.1.121",
   "description": "An internal package to contain our assets for bundling with the webapp so that we can just depend on the bundle to include our assets.",
   "main": "index.js",
   "scripts": {
-    "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && yarn run build-webapp && cp -rp dist/public/* ../polar-webapp-dist/public",
+    "dist": "rm -rf public && mkdir -p public && cd ../polar-bookshelf && yarn run build-webapp && cp -rp dist/public/* ../polar-webapp-dist/public",
     "prepublishOnly": "yarn run dist"
   },
   "keywords": [],
