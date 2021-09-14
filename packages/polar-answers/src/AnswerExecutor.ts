@@ -22,8 +22,11 @@ import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutor
 import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
+import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 
 const MAX_DOCUMENTS = 200;
+const DEFAULT_FILTER_QUESTION = true;
+
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
@@ -163,19 +166,31 @@ export namespace AnswerExecutor {
 
             console.log("Running search with size: " + size);
 
-            function computeQueryTextFromQuestion() {
-                const doFilterStopwords = request.filter_stopwords || true;
+            async function computeQueryTextFromQuestion() {
 
-                if (doFilterStopwords) {
+                const doFilter = request.filter_question || DEFAULT_FILTER_QUESTION;
+
+                function filterUsingStopwords() {
                     const words = request.question.split(/[ \t]+/);
                     const stopwords = Stopwords.words('en');
                     return Stopwords.removeStopwords(words, stopwords).join(" ");
+                }
+
+                async function filterUsingPoS() {
+                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, 'NOUN');
+                    return analysis.map(current => current.content).join(" ");
+                }
+
+
+                if (doFilter) {
+                    return await filterUsingPoS();
                 } else {
                     return request.question;
                 }
+
             }
 
-            const queryText = computeQueryTextFromQuestion();
+            const queryText = await computeQueryTextFromQuestion();
 
             // TODO: trace the query
             // eslint-disable-next-line camelcase

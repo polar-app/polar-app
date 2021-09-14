@@ -31,7 +31,7 @@ xdescribe("AnswerExecutor", function () {
             uid,
             question,
             // rerank_elasticsearch: true,
-            filter_stopwords: true
+            filter_question: true
         });
 
         function isError(value: any): value is IAnswerExecutorError {
