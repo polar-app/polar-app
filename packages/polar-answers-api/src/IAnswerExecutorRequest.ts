@@ -10,8 +10,12 @@ export interface IAnswerExecutorRequest {
 
     readonly model?: AIModel;
 
+    /**
+     * Filter the question by removing stopwords or only including nouns.
+     *
+     */
     // eslint-disable-next-line camelcase
-    readonly filter_stopwords?: boolean;
+    readonly filter_question?: boolean;
 
     /**
      * Re-rank the results against the OpenAI search endpoint.
