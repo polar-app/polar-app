@@ -1,6 +1,7 @@
 import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
+import {IRPCError} from "polar-shared/src/util/IRPCError";
 
 export interface IAnswerExecutorTimings {
 
@@ -46,11 +47,10 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;
 
-export interface IAnswerExecutorErrorFailed {
-    readonly error: 'failed';
+export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'> {
     readonly message: string;
 }
 
-export interface IAnswerExecutorErrorNoAnswer {
-    readonly error: 'no-answer';
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IAnswerExecutorErrorNoAnswer extends IRPCError<'no-answer'> {
 }

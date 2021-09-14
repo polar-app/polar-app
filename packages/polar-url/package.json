@@ -1,6 +1,6 @@
 {
   "name": "polar-url",
-  "version": "2.1.117",
+  "version": "2.1.121",
   "description": "URL parsing framework that's portable to Node 8, 10, etc.",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -25,9 +25,9 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.117",
-    "polar-test": "^2.1.117",
-    "polar-typescript": "^2.1.117",
+    "polar-eslint": "^2.1.121",
+    "polar-test": "^2.1.121",
+    "polar-typescript": "^2.1.121",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },

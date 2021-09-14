@@ -1,6 +1,6 @@
 {
   "name": "polar-mocha",
-  "version": "2.1.117",
+  "version": "2.1.121",
   "description": "Basic mocha dependencies and utilities.",
   "scripts": {},
   "keywords": [],
@@ -9,6 +9,5 @@
   "dependencies": {
     "@types/mocha": "=9.0.0",
     "mocha": "=9.1.1"
-  },
-  "devDependencies": {}
+  }
 }

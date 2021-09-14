@@ -13,6 +13,7 @@ export namespace AnswerExecutorTraceCollection {
     const COLLECTION_NAME = 'answer_executor_trace';
 
     interface IRecordHolder {
+        readonly id: IDStr;
         readonly data: JSONStr;
     }
 
@@ -22,6 +23,7 @@ export namespace AnswerExecutorTraceCollection {
         const ref = collection.doc(id);
 
         const record: IRecordHolder = {
+            id,
             data: JSON.stringify(trace)
         }
 

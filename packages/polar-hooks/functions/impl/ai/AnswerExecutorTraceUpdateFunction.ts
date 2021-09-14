@@ -25,7 +25,8 @@ export namespace AnswerExecutorTraceUpdateImpl {
         } catch (e) {
             SentryReporters.reportError("Failed to execute: ", e);
             return {
-                error: 'failed',
+                error: true,
+                code: 'failed',
                 message: e.message
             };
         }

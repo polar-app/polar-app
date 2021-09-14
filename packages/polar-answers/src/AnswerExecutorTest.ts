@@ -35,7 +35,7 @@ xdescribe("AnswerExecutor", function () {
         });
 
         function isError(value: any): value is IAnswerExecutorError {
-            return value.error;
+            return value.error === true;
         }
 
         if (! isError(response)) {
@@ -47,7 +47,7 @@ xdescribe("AnswerExecutor", function () {
             return response.answers[0];
 
         } else {
-            throw new Error(response.error);
+            throw new Error(response.code);
         }
 
     }
