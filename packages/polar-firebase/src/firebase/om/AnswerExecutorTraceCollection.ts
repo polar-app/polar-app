@@ -12,9 +12,24 @@ export namespace AnswerExecutorTraceCollection {
 
     const COLLECTION_NAME = 'answer_executor_trace';
 
-    interface IRecordHolder {
-        readonly id: IDStr;
+    interface IRecordHolder extends Required<Pick<IAnswerExecutorTrace, 'id' | 'vote' | 'created' | 'type' | 'timings' | 'uid'>> {
         readonly data: JSONStr;
+    }
+
+    function createRecord(trace: IAnswerExecutorTrace) {
+
+        const record: IRecordHolder = {
+            id: trace.id,
+            vote: trace.vote,
+            created: trace.created,
+            type: trace.type,
+            timings: trace.timings,
+            uid: trace.uid,
+            data: JSON.stringify(trace)
+        }
+
+        return record;
+
     }
 
     export async function set<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, trace: IAnswerExecutorTrace) {
@@ -22,12 +37,7 @@ export namespace AnswerExecutorTraceCollection {
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        const record: IRecordHolder = {
-            id,
-            data: JSON.stringify(trace)
-        }
-
-        await ref.set(record);
+        await ref.set(createRecord(trace));
 
     }
 
@@ -49,7 +59,7 @@ export namespace AnswerExecutorTraceCollection {
                 expectation: update.expectation
             }
 
-            await ref.update(newTrace);
+            await ref.update(createRecord(newTrace));
 
         } else {
             throw new Error("Record does not exist");
