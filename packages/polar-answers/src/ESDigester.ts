@@ -12,6 +12,7 @@ export namespace ESDigester {
     import IElasticResponse = ESRequests.IElasticResponse;
 
     export interface IAttachment {
+        // eslint-disable-next-line camelcase
         readonly content_type: string;
         readonly content: string;
     }

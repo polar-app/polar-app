@@ -47,6 +47,7 @@ export interface UserMachineInit {
 }
 
 export interface UserMachine extends UserMachineInit {
+    // eslint-disable-next-line camelcase
     readonly user_id: UserIDStr;
     readonly lastUpdated: ISODateTimeString;
     readonly created: ISODateTimeString;

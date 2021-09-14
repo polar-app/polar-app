@@ -50,7 +50,7 @@ export namespace AutoFlashcardFunctions {
 
             return completionResponse;
 
-        } catch (e) {
+        } catch (e: any) {
             SentryReporters.reportError("Failed to run AutoFlashcardFunction: ", e);
             return {error: 'no-result'};
         }
