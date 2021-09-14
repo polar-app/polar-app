@@ -41,14 +41,15 @@ export class UnpaywallSearchEngine implements search.Engine {
         const toLinks = (): ReadonlyArray<search.DocLink> => {
 
             const result: search.DocLink[] = [];
-
+            // eslint-disable-next-line camelcase
             for (const current of response.oa_locations) {
+                // eslint-disable-next-line camelcase
                 result.push({
                     type: 'application/pdf',
                     href: current.url_for_pdf,
                     disposition: 'download'
                 });
-
+                // eslint-disable-next-line camelcase
                 result.push({
                     type: 'text/html',
                     href: current.url_for_landing_page,
@@ -84,7 +85,7 @@ export class UnpaywallSearchEngine implements search.Engine {
                 return "";
 
             };
-
+            // eslint-disable-next-line camelcase
             return response.z_authors.map(current => {
 
                 const displayName = joinLR(current.given, current.family);
@@ -102,6 +103,7 @@ export class UnpaywallSearchEngine implements search.Engine {
         const title = response.title;
         const doi = response.doi;
         const updated = response.updated;
+        // eslint-disable-next-line camelcase
         const published = response.published_date;
         const publisher = response.publisher;
 

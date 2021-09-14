@@ -327,7 +327,7 @@ export class Files {
 
             try {
                 await this.mkdirAsync(dir, mode);
-            } catch (e) {
+            } catch (e: any) {
 
                 if (e.code && e.code === 'EEXIST') {
                     // this is acceptable as the file already exists and there
@@ -648,7 +648,7 @@ export class Files {
 
         try {
             return await func();
-        } catch (err) {
+        } catch (err: any) {
 
             if (isNode) {
                 throw this.createProperException(anchor, err);

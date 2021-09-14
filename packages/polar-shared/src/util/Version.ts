@@ -1,4 +1,3 @@
-
 const pkg: any = require("../../package.json");
 
 export class Version {
@@ -29,6 +28,7 @@ export class Version {
 
     public static tokenized(version: VersionStr = Version.get()): IVersionTokens {
         const parsed = this.parsed(version);
+        // eslint-disable-next-line camelcase
         return {
             version_major: parsed.major,
             version_minor: parsed.major + '.' + parsed.minor,
@@ -45,7 +45,9 @@ export interface IVersion {
 }
 
 export interface IVersionTokens {
+    // eslint-disable-next-line camelcase
     readonly version_major: string;
+    // eslint-disable-next-line camelcase
     readonly version_minor: string;
     readonly version: string;
 }
