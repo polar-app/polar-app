@@ -389,9 +389,9 @@ const useDocumentBlockMigrator = () => {
             });
         };
 
-        const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | undefined => {
+        const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | null => {
 
-            const getContent = (): AnnotationContent | MarkdownContent | undefined => {
+            const getContent = (): AnnotationContent | MarkdownContent | null => {
                 switch (annotation.annotationType) {
                     case AnnotationType.TEXT_HIGHLIGHT:
                         return AnnotationBlockMigrator
@@ -401,12 +401,12 @@ const useDocumentBlockMigrator = () => {
                                 fingerprint
                             );
                     case AnnotationType.AREA_HIGHLIGHT:
-                        return new AreaHighlightAnnotationContent({
-                            type: AnnotationContentType.AREA_HIGHLIGHT,
-                            pageNum: annotation.pageNum,
-                            docID: fingerprint,
-                            value: annotation.original as IAreaHighlight,
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateAreaHighlight(
+                                annotation.original as IAreaHighlight,
+                                annotation.pageNum,
+                                fingerprint
+                            );
                     case AnnotationType.FLASHCARD:
                         const flashcard = annotation.original as IFlashcard;
                         const fields = Object.entries(flashcard.fields)
@@ -425,14 +425,14 @@ const useDocumentBlockMigrator = () => {
                             data: AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content),
                         });
                     default:
-                        return undefined;
+                        return null;
                 }
             };
 
             const content = getContent();
 
             if (! content) {
-                return undefined;
+                return null;
             }
 
             return blocksStore.createNewBlock(id, { content, asChild: true }).id;

@@ -19,6 +19,7 @@ import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnot
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -201,6 +202,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return (
             <BlockAnnotationContent
                 id={id}
+                created={block.created}
                 parent={parent}
                 className={className}
                 style={style}

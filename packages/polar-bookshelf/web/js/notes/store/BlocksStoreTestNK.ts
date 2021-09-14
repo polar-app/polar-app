@@ -30,6 +30,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -624,15 +625,13 @@ describe('BlocksStore', function() {
                         "_docID": '2020document',
                         "_pageNum": 15,
                         "_value": {
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "id": '15',
-                            "guid": '15',
-                            "notes": {},
                             "rects": {},
-                            "images": {},
-                            "questions": {},
-                            "flashcards": {},
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "color": 'yellow',
+                            "image": {
+                                "id": 'http://google.com',
+                                "type": 'image/png',
+                                "src": { backend: Backend.IMAGE, name: 'google.png' }
+                            },
                         }
                     },
                     "_items": PositionalArrays.create(['2023flashcard', '2024']), 

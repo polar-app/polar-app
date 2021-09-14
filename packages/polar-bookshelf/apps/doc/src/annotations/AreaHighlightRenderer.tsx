@@ -16,18 +16,19 @@ import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
 
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly areaHighlight: IAreaHighlight;
+    readonly areaHighlight: IAreaHighlight | IBlockAreaHighlight;
     readonly container: HTMLElement;
+    readonly id: string;
 }
 
 export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(props: IProps) {
 
-    const {areaHighlight, fingerprint, pageNum, container} = props;
-    const {id} = areaHighlight;
+    const {areaHighlight, fingerprint, pageNum, container, id} = props;
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
     const docViewerElementsContext = useDocViewerElementsContext();
@@ -101,7 +102,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
     }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
 
     const createID = React.useCallback(() => {
-        return `area-highlight-${areaHighlight.id}`;
+        return `area-highlight-${id}`;
     }, [areaHighlight]);
 
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
@@ -115,7 +116,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
         const id = createID();
 
-        const className = `area-highlight annotation area-highlight-${areaHighlight.id}`;
+        const className = `area-highlight annotation area-highlight-${id}`;
 
         const color: HighlightColor = areaHighlight.color || 'yellow';
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
@@ -126,8 +127,8 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
                  data-type="area-highlight"
                  draggable={draggable}
                  data-doc-fingerprint={fingerprint}
-                 data-area-highlight-id={areaHighlight.id}
-                 data-annotation-id={areaHighlight.id}
+                 data-area-highlight-id={id}
+                 data-annotation-id={id}
                  data-page-num={pageNum}
                  // annotation descriptor metadata - might not be needed
                  // anymore
