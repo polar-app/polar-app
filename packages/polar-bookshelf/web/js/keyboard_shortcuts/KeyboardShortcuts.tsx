@@ -3,45 +3,52 @@ import {deepMemo} from "../react/ReactUtils";
 import {
     IKeyboardShortcutWithHandler,
     KeyBinding,
-    KeyboardShortcutEventHandler,
     useKeyboardShortcutsStore,
     KeyboardEventHandlerUsingPredicate
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
 
 type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
+
+export const isModifier = (key: string): key is Modifier => ['shift', 'alt', 'command', 'ctrl'].indexOf(key) > -1;
+
+export type Modifier = 'ctrl' | 'alt' | 'shift' | 'command';
+
+export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent) => {
+    const unpressed: Modifier[] = (['ctrl', 'alt', 'shift', 'command'] as Modifier[])
+        .filter(mod => pressed.indexOf(mod) === -1);
+
+    const isModifierPressed = (modifier: Modifier) => {
+        switch (modifier) {
+            case 'ctrl':
+                return event.ctrlKey;
+            case 'alt':
+                return event.altKey;
+            case 'command':
+                return event.metaKey;
+            case 'shift':
+                return event.shiftKey;
+        }
+    };
+    
+    return pressed.every(isModifierPressed) && unpressed.every(modifier => ! isModifierPressed(modifier));
+};
+
 function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
-    // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
-    // ctrl+shift+h then we will match.
+
+    let modifiers = keys.filter(isModifier);
+    let key = keys.filter( (key) => !isModifier(key))[0];
+
+    if(!key){
+        throw new Error('Key is not defined!!!');
+    }
     return (event) => {
 
-        function matchesModifier(key: string) {
-
-            if (key === 'ctrl' && event.ctrlKey) {
-                return true;
-            }
-            if (key === 'command' && event.metaKey) {
-                return true;
-            }
-            if (key === 'alt' && event.altKey) {
-                return true;
-            }
-            if (key === 'shift' && event.shiftKey) {
-                return true;
-            }
-
-            return event.key === key;
-
+        if(isModifier(event.key)){
+            return false;
         }
-
-        for(const current of keys) {
-            if (! matchesModifier(current)) {
-                return false;
-            }
-        }
-        return true;
+        return (event.code.toLowerCase() === `key${key.toLowerCase()}` && modifierPredicate(modifiers, event));
     }
 }
 
@@ -63,7 +70,7 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
         const keys = sequence.keys.split('+');
 
         switch (keys.length) {
-            case 1: case 2: case 3: case 4:
+            case 1:  case 2:  case 3: case 4:
                 return createPredicateUsingArray(keys);
             default:
                 throw new Error("Too many keys for event: " + keys.length);

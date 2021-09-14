@@ -1,6 +1,6 @@
 {
   "name": "polar-answers-api",
-  "version": "2.1.117",
+  "version": "2.1.122",
   "description": "",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -19,12 +19,12 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.117",
-    "polar-typescript": "^2.1.117",
+    "polar-eslint": "^2.1.122",
+    "polar-typescript": "^2.1.122",
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.117"
+    "polar-shared": "^2.1.122"
   },
   "files": [
     "**/*.js",
