@@ -59,10 +59,6 @@ export const DailyNotesScreen: React.FC = () => {
         focusFirstChild(blocksStore, todaysBlockID);
     }, [blocksStore]);
 
-    React.useEffect(() => {
-        blocksStore.deleteBlocks(Object.values(blocksStore.indexByDocumentID));
-    }, [blocksStore]);
-
     const rootRef = React.useRef<HTMLDivElement>(null);
     const visibleNotes = React.useMemo(() => dailyNotes.slice(0, threshold), [dailyNotes, threshold]);
 
