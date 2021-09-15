@@ -13,27 +13,30 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-        }}
-    )
+            '& .Mui-selected':{
+                backgroundColor: '#6754D6',
+                color: 'white'
+            },
+        },
+    })
 );
 export const MUIBottomNavigation = ()  => {
     const classes = useStyles();
     const history = useHistory();
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = React.useState('/');
 
     return (
         <BottomNavigation value={value}
                           onChange={(event, newValue) => {
                             setValue(newValue);
                             history.replace(newValue);
-                            console.log(newValue)
                           }}                          
                           showLabels
                           className={classes.root}>
             <BottomNavigationAction label="Home" value='/' icon={<HomeIcon/>} />
-            <BottomNavigationAction label="Search" value='search' icon={<SearchIcon />} />
-            <BottomNavigationAction label="Add" value='add' icon={<AddIcon />} />
-            <BottomNavigationAction label="Switch" value='switch' icon={<ViewCarouselIcon />} />
+            <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} />
+            <BottomNavigationAction label="Add" value='#add' icon={<AddIcon />} />
+            <BottomNavigationAction label="Switch" value='#switch' icon={<ViewCarouselIcon />} />
         </BottomNavigation>
     );
 }
