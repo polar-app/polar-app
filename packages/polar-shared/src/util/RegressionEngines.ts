@@ -1,7 +1,11 @@
+import {Percentages} from "./Percentages";
+import {Strings} from "./Strings";
+
 /**
  * A regression framework for running tests that return boolean and we can then
  * print a matrix and overall accuracy report.
  */
+
 export namespace RegressionEngines {
 
     /**
@@ -82,11 +86,28 @@ export namespace RegressionEngines {
 
             function doReport(results: ReadonlyArray<IRegressionTestResult>) {
 
+                const nrPass = results.filter(current => current.result === 'pass').length;
+                const nrFail = results.filter(current => current.result === 'fail').length;
+                const nrTests = results.length;
+
+                const accuracy = Percentages.calculate(nrPass, nrTests);
+
+                console.log("========");
+
+                for(const result of results) {
+                    console.log(Strings.rpad(result.testName, ' ', 25) + " : " + result.result);
+                }
+
+                console.log("========");
+                console.log("pass:     " + nrPass);
+                console.log("fail:     " + nrFail);
+                console.log("accuracy: " + accuracy);
+
+
             }
 
             const results = await doTests();
-
-
+            doReport(results);
 
         }
 
