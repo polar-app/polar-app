@@ -28,6 +28,11 @@ export namespace RegressionEngines {
         readonly register: (testName: string, test: RegressionTest) => void;
 
         /**
+         * Skip a test... it's just not registered.
+         */
+        readonly xregister: (testName: string, test: RegressionTest) => void;
+
+        /**
          * Execute the regression engine with all registered tests.
          */
         readonly exec: () => Promise<RegressionResult>;
@@ -60,13 +65,21 @@ export namespace RegressionEngines {
             regressions.push({testName, test});
         }
 
+        function xregister(testName: string, test: RegressionTest) {
+            // noop
+        }
+
         async function exec() {
 
             async function doTests(): Promise<ReadonlyArray<IRegressionTestResult>> {
 
+                console.log("=== Running regression tests...");
+
                 const results: IRegressionTestResult[] = [];
 
                 for (const testEntry of regressions) {
+
+                    console.log("=== Running regression test: " + testEntry.testName);
 
                     try {
                         await testEntry.test();
@@ -86,6 +99,8 @@ export namespace RegressionEngines {
                     }
 
                 }
+
+                console.log("=== Running regression tests...done");
 
                 return results;
 
@@ -119,7 +134,7 @@ export namespace RegressionEngines {
 
         }
 
-        return {register, exec};
+        return {register, xregister, exec};
 
     }
 
