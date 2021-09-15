@@ -1,11 +1,10 @@
 import * as React from "react";
-import {PageAnnotation, PageAnnotations} from "./PageAnnotations";
+import {PageAnnotations} from "./PageAnnotations";
 import {AreaHighlightRenderer} from "./AreaHighlightRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlocks} from "../../../../web/js/notes/HighlightNotesUtils";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
@@ -21,11 +20,14 @@ export const BlockAreaHighlightsViewRenderer: React.FC<IAreaHighlightsViewRender
         type: AnnotationContentType.AREA_HIGHLIGHT
     });
     
-    const pageHighlights: ReadonlyArray<PageAnnotation<IAreaHighlight>> = React.useMemo(() =>
-        highlights.map(({ content }) => {
+    const pageHighlights = React.useMemo(() =>
+        highlights.map(({ content, id }) => {
             const { value, pageNum, docID } = content.toJSON();
             return {
-                annotation: value,
+                annotation: {
+                    id,
+                    ...value,
+                },
                 fingerprint: docID,
                 pageNum,
             };
@@ -37,6 +39,7 @@ export const BlockAreaHighlightsViewRenderer: React.FC<IAreaHighlightsViewRender
     const rendered = visiblePageAnnotations.map(current =>
                                              <AreaHighlightRenderer
                                                  key={current.annotation.id}
+                                                 id={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}
                                                  fingerprint={docMeta.docInfo.fingerprint}
@@ -61,6 +64,7 @@ export const DocMetaAreaHighlightsView = () => {
     const rendered = visiblePageAnnotations.map(current =>
                                              <AreaHighlightRenderer
                                                  key={current.annotation.id}
+                                                 id={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
