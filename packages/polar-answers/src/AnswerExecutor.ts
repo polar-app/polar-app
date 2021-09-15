@@ -19,13 +19,13 @@ import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/I
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
-import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
+import {AnswerExecutorTraceCollection} from "polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
-const MAX_DOCUMENTS = 200;
+const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION = true;
 
 export namespace AnswerExecutor {
@@ -159,11 +159,16 @@ export namespace AnswerExecutor {
             // run this query on the digest ...
             const index = ESAnswersIndexNames.createForUserDocs(uid);
 
+            // eslint-disable-next-line camelcase
+            const documents_limit = request.documents_limit || DEFAULT_DOCUMENTS_LIMIT;
+
             // TODO this has to be hard coded and we only submit docs that would be
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : 100;
+
+            // eslint-disable-next-line camelcase
+            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : documents_limit;
 
             console.log("Running search with size: " + size);
 
@@ -241,7 +246,7 @@ export namespace AnswerExecutor {
 
                 // eslint-disable-next-line camelcase
                 const records = arrayStream(openai_reranked_records)
-                    .head(MAX_DOCUMENTS)
+                    .head(documents_limit)
                     .collect();
 
                 return <ESDocumentResultsWithRerank> {
@@ -259,7 +264,7 @@ export namespace AnswerExecutor {
             } else {
 
                 const records = arrayStream(elasticsearch_records)
-                    .head(MAX_DOCUMENTS)
+                    .head(documents_limit)
                     .collect();
 
                 // eslint-disable-next-line camelcase
