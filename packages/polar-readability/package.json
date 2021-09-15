@@ -21,9 +21,7 @@
     "polar-eslint": "^2.1.124",
     "polar-shared": "^2.1.124",
     "polar-test": "^2.1.124",
-    "polar-typescript": "^2.1.124",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "polar-typescript": "^2.1.124"
   },
   "dependencies": {
     "readability": "0.2.0-polar.2"

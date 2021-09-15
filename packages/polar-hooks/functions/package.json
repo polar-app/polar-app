@@ -8,7 +8,6 @@
     "node": "14"
   },
   "scripts": {
-    "tslint": "tslint --project tsconfig.json --config tslint.yaml",
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
@@ -64,6 +63,7 @@
     "polar-sentry-cloud-functions": "^2.1.124",
     "polar-shared": "^2.1.124",
     "polar-shared-webserver": "^2.1.124",
+    "polar-typescript": "^2.1.124",
     "polar-url": "^2.1.124",
     "polar-webapp-dist": "^2.1.124",
     "polar-webapp-links": "^2.1.124",
@@ -71,7 +71,6 @@
     "prompts": "^2.3.2",
     "rollbar": "=2.19.4",
     "stripe": "=8.119.0",
-    "typescript": "=4.2.3",
     "uuid": "3.3.3",
     "yargs": "^15.3.1"
   },
@@ -85,7 +84,6 @@
     "mocha": "=9.1.1",
     "polar-eslint": "^2.1.124",
     "polar-test": "^2.1.124",
-    "polar-typescript": "^2.1.124",
-    "tslint": "6.1.2"
+    "polar-typescript": "^2.1.124"
   }
 }
