@@ -1,13 +1,16 @@
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockTextHighlight} from "./IBlockTextHighlight";
 
 export namespace BlockTextHighlights {
     
-    /*
-     * Get the text of a text highlight
+    /**
+     * Get the text contents of a text highlight
      *
-     * @param {IBlockTextHighlight} textHighlight - A block text highlight object.
+     * @param textHighlight - A text highlight block object.
+     *
+     * @return {string}
      */
-    export function toText(textHighlight: IBlockTextHighlight): string {
+    export function toText(textHighlight: IBlockTextHighlight): MarkdownStr {
         return textHighlight.revisedText || textHighlight.text;
     }
 }
