@@ -72,15 +72,14 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
                 {Devices.isDesktop() && <SidenavTrigger />}
                 <div style={{
                          display: 'flex',
-                         flexGrow: 1
                      }}>
 
-                    <div>
+                    {/* <div>
                         <MUICheckboxIconButton
                             indeterminate={selected.length > 0 && selected.length < view.length}
                             checked={selected.length === view.length && view.length !== 0}
                             onChange={(event, checked) => handleCheckbox(checked)}/>
-                    </div>
+                    </div> */}
 
                     {selected.length > 0 && (
                         <SelectionActiveButtons/>

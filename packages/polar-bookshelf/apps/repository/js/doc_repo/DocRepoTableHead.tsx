@@ -17,6 +17,7 @@ import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import FlagIcon from '@material-ui/icons/Flag';
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 import { MUIToggleButton } from "polar-bookshelf/web/js/ui/MUIToggleButton";
+import { MUICheckboxIconButton } from "polar-bookshelf/web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -93,18 +94,33 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
 
-    const {filters} = useDocRepoStore(['filters']);
+    const {view, filters, selected} = useDocRepoStore(['view', 'filters', 'selected']);
     const callbacks = useDocRepoCallbacks();
 
-    const {setFilters} = callbacks;
+    const {setFilters, setSelected} = callbacks;
+
+    const handleCheckbox = React.useCallback((checked: boolean) => {
+        // TODO: this is wrong... the '-' button should remove the checks...
+        // just like gmail.
+        if (checked) {
+            setSelected('all')
+        } else {
+            setSelected('none');
+        }
+    }, [setSelected]);
 
     return (
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-
-                    <Check/>
-
+                    <MUICheckboxIconButton
+                            indeterminate={selected.length > 0 && selected.length < view.length}
+                            checked={selected.length === view.length && view.length !== 0}
+                            onChange={(event, checked) => handleCheckbox(checked)}/>                    
+                    <DeviceRouter.Desktop>
+                        <Check/>
+                    </DeviceRouter.Desktop>
+                    
                     {columns.map((column) => {
 
                         const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
@@ -134,20 +150,24 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             </TableCell>
                         )
                     })}
-                    <MUIToggleButton id="toggle-flagged"
-                                    tooltip="Show only flagged docs"
-                                    size="medium"
-                                    label="Flagged"
-                                    icon={<FlagIcon/>}
-                                    initialValue={filters.flagged}
-                                    onChange={(value: any) => setFilters({...filters, flagged: value})}/>
-                    <MUIToggleButton id="toggle-archived"
-                                    tooltip="Toggle archived docs"
-                                    size="medium"
-                                    label="Archived"
-                                    initialValue={filters.archived}
-                                    onChange={(value: any) => setFilters({...filters, archived: value})}/>
-                    
+                    <DeviceRouters.NotDesktop>
+                        <MUIToggleButton id="toggle-flagged"
+                                        tooltip="Show only flagged docs"
+                                        size="small"
+                                        label="Flagged"
+                                        icon={<FlagIcon/>}
+                                        initialValue={filters.flagged}
+                                        onChange={(value: any) => setFilters({...filters, flagged: value})}/>
+                    </DeviceRouters.NotDesktop>
+                    <DeviceRouters.NotDesktop>
+                        <MUIToggleButton id="toggle-archived"
+                                        tooltip="Toggle archived docs"
+                                        size="small"
+                                        label="Archived"
+                                        initialValue={filters.archived}
+                                        onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                    </DeviceRouters.NotDesktop>
+
                     <DeviceRouter.Desktop>
                         <>
                             <ColumnSelector/>
