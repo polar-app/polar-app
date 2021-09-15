@@ -334,7 +334,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 const answer = await answerExecutorClient(request);
 
-                console.log("Got answer: ", answer);
+                console.log("Got answer: ", JSON.stringify(answer, null, '  '));
 
                 setAnswerResponse(answer);
 
