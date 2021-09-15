@@ -14,6 +14,12 @@ export namespace RegressionEngines {
      */
     export type RegressionTest = () => Promise<void>;
 
+    export interface RegressionResult {
+        readonly nrPass: number;
+        readonly nrFail: number;
+        readonly accuracy: number;
+    }
+
     export interface IRegressionEngine {
 
         /**
@@ -24,7 +30,7 @@ export namespace RegressionEngines {
         /**
          * Execute the regression engine with all registered tests.
          */
-        readonly exec: () => Promise<void>;
+        readonly exec: () => Promise<RegressionResult>;
 
     }
 
@@ -84,7 +90,7 @@ export namespace RegressionEngines {
 
             }
 
-            function doReport(results: ReadonlyArray<IRegressionTestResult>) {
+            function doReport(results: ReadonlyArray<IRegressionTestResult>): RegressionResult {
 
                 const nrPass = results.filter(current => current.result === 'pass').length;
                 const nrFail = results.filter(current => current.result === 'fail').length;
@@ -103,11 +109,12 @@ export namespace RegressionEngines {
                 console.log("fail:     " + nrFail);
                 console.log("accuracy: " + accuracy);
 
+                return {nrPass, nrFail, accuracy}
 
             }
 
             const results = await doTests();
-            doReport(results);
+            return doReport(results);
 
         }
 
