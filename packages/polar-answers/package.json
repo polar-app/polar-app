@@ -32,7 +32,8 @@
     "polar-blocks": "^2.1.124",
     "polar-google-cloud-language": "^2.1.124",
     "polar-pdf": "^2.1.124",
-    "polar-shared": "^2.1.124"
+    "polar-shared": "^2.1.124",
+    "polar-firebase": "^2.1.124"
   },
   "files": [
     "**/*.js",

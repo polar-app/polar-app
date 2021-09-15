@@ -8,6 +8,12 @@ export interface IAnswerExecutorRequest {
     // eslint-disable-next-line camelcase
     readonly search_model?: AIModel;
 
+    /**
+     * Apply a document limit so that we can keep costs minimal for tests.
+     */
+    // eslint-disable-next-line camelcase
+    readonly documents_limit?: number;
+
     readonly model?: AIModel;
 
     /**
