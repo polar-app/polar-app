@@ -2,7 +2,7 @@ import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {FilterQuestionType, IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
     IAnswerExecutorError,
     IAnswerExecutorResponse,
@@ -26,7 +26,7 @@ import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
-const DEFAULT_FILTER_QUESTION = true;
+const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
 export namespace AnswerExecutor {
 
@@ -174,7 +174,8 @@ export namespace AnswerExecutor {
 
             async function computeQueryTextFromQuestion() {
 
-                const doFilter = request.filter_question || DEFAULT_FILTER_QUESTION;
+                // eslint-disable-next-line camelcase
+                const filter_question = request.filter_question || DEFAULT_FILTER_QUESTION;
 
                 function filterUsingStopwords() {
                     const words = request.question.split(/[ \t]+/);
@@ -187,11 +188,18 @@ export namespace AnswerExecutor {
                     return analysis.map(current => current.content).join(" ");
                 }
 
+                // eslint-disable-next-line camelcase
+                switch (filter_question) {
 
-                if (doFilter) {
-                    return await filterUsingPoS();
-                } else {
-                    return request.question;
+                    case "stopwords":
+                        return filterUsingStopwords();
+
+                    case "part-of-speech":
+                        return await filterUsingPoS();
+
+                    case "none":
+                        return request.question;
+
                 }
 
             }
