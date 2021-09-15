@@ -1,17 +1,13 @@
 import {assert} from "chai";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {Refs} from "polar-shared/src/metadata/Refs";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
-import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
-import {Flashcards} from "../metadata/Flashcards";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
 import {DateContent} from "./content/DateContent";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
 import {BlockTextContentUtils} from "./NoteUtils";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 
 
 describe('BlockTextContentUtils', () => {
@@ -43,18 +39,17 @@ describe('BlockTextContentUtils', () => {
         },
     });
 
-    const ref = Refs.create('potato', 'flashcard');
     const clozeFlashcard = new FlashcardAnnotationContent({
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
-        value: Flashcards.createCloze('Hello', ref, 'MARKDOWN')
+        value: BlockFlashcards.createCloze('Hello')
     });
     const frontBackFlashcard = new FlashcardAnnotationContent({
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
-        value: Flashcards.createFrontBack('', 'Hello', ref, 'MARKDOWN')
+        value: BlockFlashcards.createFrontBack('', 'Hello')
     });
 
     describe('updateTextContentMarkdown', () => {
@@ -98,15 +93,16 @@ describe('BlockTextContentUtils', () => {
     describe('updateClozeFlashcardContentMarkdown', () => {
         it('Should update the content of cloze flashcard blocks properly', () => {
 
-            const newContent = BlockTextContentUtils.updateClozeFlashcardContentMarkdown(clozeFlashcard, 'Text');
+            const newContent = BlockTextContentUtils.updateFlashcardContentMarkdown(clozeFlashcard, 'text', 'Text');
 
             const JSONContent = clozeFlashcard.toJSON();
             assert.deepEqual(newContent, new FlashcardAnnotationContent({
                 ...JSONContent,
                 value: {
                     ...JSONContent.value,
+                    type: FlashcardType.CLOZE,
                     fields: {
-                        text: Texts.create('Text', TextType.MARKDOWN)
+                        text: 'Text',
                     },
                 },
             }));
@@ -116,16 +112,17 @@ describe('BlockTextContentUtils', () => {
     describe('updateFrontBackFlashcardContentMarkdown', () => {
         it('Should update the content of front/back flashcard blocks properly', () => {
 
-            const newContent = BlockTextContentUtils.updateFrontBackFlashcardContentMarkdown(frontBackFlashcard, 'Text', 'front');
+            const newContent = BlockTextContentUtils.updateFlashcardContentMarkdown(frontBackFlashcard, 'front', 'Text');
 
             const JSONContent = frontBackFlashcard.toJSON();
             assert.deepEqual(newContent, new FlashcardAnnotationContent({
                 ...JSONContent,
                 value: {
                     ...JSONContent.value,
+                    type: FlashcardType.BASIC_FRONT_BACK,
                     fields: {
-                        front: Texts.create('Text', TextType.MARKDOWN),
-                        back: Texts.create('Hello', TextType.MARKDOWN),
+                        front: 'Text',
+                        back: 'Hello',
                     },
                 },
             }));
@@ -145,7 +142,7 @@ describe('BlockTextContentUtils', () => {
         });
 
         it('Should be able to get the text content of flashcard block contents', () => {
-            const text = ITextConverters.create(AnnotationType.FLASHCARD, clozeFlashcard.value).text || '';
+            const text = clozeFlashcard.value.fields.text;
             assert.deepEqual(BlockTextContentUtils.getTextContentMarkdown(clozeFlashcard), text);
         });
     });

@@ -473,16 +473,12 @@ export namespace MockBlocks {
                     docID: '2020document',
                     pageNum: 15,
                     value: {
-                        created: now,
-                        id: '15',
-                        guid: '15',
-                        lastUpdated: now,
                         type: FlashcardType.BASIC_FRONT_BACK,
                         fields: {
-                            front: Texts.create('front', TextType.MARKDOWN),
-                            back: Texts.create('back', TextType.MARKDOWN),
+                            front: 'front',
+                            back: 'back',
                         },
-                        archetype: 'whatever'
+                        archetype: 'whatever',
                     }
                 },
                 items: {}, 

@@ -19,11 +19,10 @@ import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
 import {DateContent} from "./content/DateContent";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
-import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 
 
 export const useNamedBlocks = () => {
@@ -172,35 +171,17 @@ export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
 }
 
 export namespace BlockTextContentUtils {
-    export function updateClozeFlashcardContentMarkdown(
-        content: FlashcardAnnotationContent,
-        markdown: MarkdownStr,
-    ): FlashcardAnnotationContent {
-        const flashcardContent = content.toJSON();
-        return new FlashcardAnnotationContent({
-            ...flashcardContent,
-            value: {
-                ...flashcardContent.value,
-                fields: { 'text': Texts.create(markdown, TextType.MARKDOWN) },
-            }
-        });
-    }
 
-    export function updateFrontBackFlashcardContentMarkdown(
-        content: FlashcardAnnotationContent,
+    export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(
+        content: FlashcardAnnotationContent<T>,
+        field: keyof T['fields'],
         markdown: MarkdownStr,
-        field: 'front' | 'back'
     ): FlashcardAnnotationContent {
         const flashcardContent = content.toJSON();
+
         return new FlashcardAnnotationContent({
             ...flashcardContent,
-            value: {
-                ...flashcardContent.value,
-                fields: {
-                    ...flashcardContent.value.fields,
-                    [field]: Texts.create(markdown, TextType.MARKDOWN),
-                },
-            }
+            value: BlockFlashcards.updateField(flashcardContent.value, field, markdown),
         });
     }
 
@@ -235,7 +216,9 @@ export namespace BlockTextContentUtils {
             case AnnotationContentType.TEXT_HIGHLIGHT:
                 return BlockTextHighlights.toText(content.value);
             case AnnotationContentType.FLASHCARD:
-                return ITextConverters.create(AnnotationType.FLASHCARD, content.value).text || '';
+                return content.value.type === FlashcardType.CLOZE
+                    ? content.value.fields.text
+                    : content.value.fields.front;
         }
     }
 }

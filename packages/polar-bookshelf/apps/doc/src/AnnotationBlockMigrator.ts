@@ -3,10 +3,12 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
-import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
 import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
 import {Text} from "polar-shared/src/metadata/Text";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 export namespace AnnotationBlockMigrator {
     export const textToMarkdown = (text: Text | string) =>
@@ -45,6 +47,32 @@ export namespace AnnotationBlockMigrator {
                 order: areaHighlight.order,
                 position: areaHighlight.position,
             },
+        });
+    }
+
+    export function migrateFlashcard(flashcard: IFlashcard, pageNum: number, docID: DocIDStr) {
+        const getFlashcard = () => {
+            if (flashcard.type === FlashcardType.CLOZE) {
+                return {
+                    type: flashcard.type,
+                    fields: { text: AnnotationBlockMigrator.textToMarkdown(flashcard.fields.text) },
+                };
+            } else {
+                return {
+                    type: flashcard.type,
+                    fields: {
+                        front: AnnotationBlockMigrator.textToMarkdown(flashcard.fields.front),
+                        back: AnnotationBlockMigrator.textToMarkdown(flashcard.fields.back)
+                    },
+                };
+            }
+        };
+
+        return new FlashcardAnnotationContent({
+            docID,
+            pageNum,
+            type: AnnotationContentType.FLASHCARD,
+            value: { ...getFlashcard(), archetype: flashcard.archetype },
         });
     }
 }

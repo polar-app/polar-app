@@ -10,9 +10,6 @@ import {useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {Flashcards} from "../metadata/Flashcards";
-import {Refs} from "polar-shared/src/metadata/Refs";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {FileType} from "../apps/main/file_loaders/FileType";
 import {IDocScale} from "../../../apps/doc/src/DocViewerStore";
@@ -20,6 +17,7 @@ import {BlockAreaHighlight} from "./BlockAreaHighlight";
 import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -146,27 +144,17 @@ export const useAnnotationBlockManager = () => {
 
     const createFlashcard = React.useCallback((highlightID: BlockIDStr, flashcard: FlashcardContent) => {
         const highlightBlock = getBlock(highlightID);
+
         if (highlightBlock && BlockPredicates.isAnnotationHighlightBlock(highlightBlock)) {
             const getFlashcard = () => {
-                const ref = Refs.createFromAnnotationType(
-                    highlightBlock.id,
-                    AnnotationContentType.TEXT_HIGHLIGHT === highlightBlock.content.type
-                        ? AnnotationType.TEXT_HIGHLIGHT
-                        : AnnotationType.AREA_HIGHLIGHT
-                );
-
                 if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
-                    return Flashcards.createFrontBack(
+                    return BlockFlashcards.createFrontBack(
                         flashcard.front,
                         flashcard.back,
-                        ref,
-                        'MARKDOWN',
-                    )
+                    );
                 } else {
-                    return Flashcards.createCloze(
+                    return BlockFlashcards.createCloze(
                         flashcard.text,
-                        ref,
-                        'MARKDOWN'
                     );
                 }
             };

@@ -652,14 +652,10 @@ describe('BlocksStore', function() {
                         "_docID": '2020document',
                         "_pageNum": 15,
                         "_value": {
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "id": '15',
-                            "guid": '15',
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": FlashcardType.BASIC_FRONT_BACK,
                             "fields": {
-                                "front": Texts.create('front', TextType.MARKDOWN),
-                                "back": Texts.create('back', TextType.MARKDOWN),
+                                "front": 'front',
+                                "back": 'back',
                             },
                             "archetype": 'whatever'
                         }

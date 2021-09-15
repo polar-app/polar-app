@@ -1,8 +1,8 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IBaseContent} from "./IBaseContent";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IBlockTextHighlight} from "../../annotations/IBlockTextHighlight";
 import {IBlockAreaHighlight} from "../../annotations/IBlockAreaHighlight";
+import {IBlockFlashcard} from "../../annotations/IBlockFlashcard";
 
 export enum AnnotationContentType {
     TEXT_HIGHLIGHT = "annotation-text-highlight",
@@ -10,7 +10,7 @@ export enum AnnotationContentType {
     FLASHCARD = "annotation-flashcard",
 }
 
-export type IAnnotationContentValue = IBlockAreaHighlight | IBlockTextHighlight | IFlashcard;
+export type IAnnotationContentValue = IBlockAreaHighlight | IBlockTextHighlight | IBlockFlashcard;
 
 export type IAnnotationContentTypeMap = {
     [AnnotationContentType.FLASHCARD]: IFlashcardAnnotationContent,
@@ -51,7 +51,7 @@ export interface IAreaHighlightAnnotationContent extends IAnnotationContentBase<
 
 }
 
-export interface IFlashcardAnnotationContent extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, IFlashcard> {
+export interface IFlashcardAnnotationContent<T extends IBlockFlashcard = IBlockFlashcard> extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, T> {
 
 }
 

@@ -408,16 +408,12 @@ const useDocumentBlockMigrator = () => {
                                 fingerprint
                             );
                     case AnnotationType.FLASHCARD:
-                        const flashcard = annotation.original as IFlashcard;
-                        const fields = Object.entries(flashcard.fields)
-                            .reduce<typeof flashcard.fields>((fields, [key, value]) =>
-                                ({ ...fields, [key]: Texts.create(AnnotationBlockMigrator.textToMarkdown(value), TextType.MARKDOWN) }), {});
-                        return new FlashcardAnnotationContent({
-                            type: AnnotationContentType.FLASHCARD,
-                            docID: fingerprint,
-                            pageNum: annotation.pageNum,
-                            value: { ...flashcard, fields },
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateFlashcard(
+                                annotation.original as IFlashcard,
+                                annotation.pageNum,
+                                fingerprint
+                            );
                     case AnnotationType.COMMENT:
                         return new MarkdownContent({
                             type: 'markdown',
