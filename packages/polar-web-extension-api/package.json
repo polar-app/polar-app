@@ -29,8 +29,6 @@
     "polar-eslint": "^2.1.124",
     "polar-typescript": "^2.1.124",
     "ts-loader": "=8.0.18",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3",
     "webpack": "=5.26.3",
     "webpack-cli": "=4.5.0"
   },

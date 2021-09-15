@@ -23,9 +23,7 @@
     "mocha": "=9.1.1",
     "polar-eslint": "^2.1.124",
     "polar-test": "^2.1.124",
-    "polar-typescript": "^2.1.124",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "polar-typescript": "^2.1.124"
   },
   "dependencies": {
     "@google-cloud/storage": "=5.8.5",

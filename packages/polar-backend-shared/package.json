@@ -29,8 +29,7 @@
     "chai": "4.2.0",
     "mocha": "=9.1.1",
     "polar-eslint": "^2.1.124",
-    "polar-typescript": "^2.1.124",
-    "typescript": "=4.2.3"
+    "polar-typescript": "^2.1.124"
   },
   "dependencies": {
     "polar-shared-webserver": "^2.1.124",
