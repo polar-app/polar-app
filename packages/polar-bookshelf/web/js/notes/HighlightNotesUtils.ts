@@ -22,7 +22,14 @@ import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
 type IUseHighlightBlocks<T extends IHighlightContentType> = {
+    /**
+     * The ID of the document that the highlights belong to.
+     */
     docID: string;
+    
+    /**
+     * The type of the highlights we want to fetch @see IHighlightContentType
+     */
     type?: T;
 };
 
@@ -30,7 +37,14 @@ const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
     (item: Block): item is Block<AnnotationContentTypeMap[T]> =>
         type ? item.content.type === type : true
 
-export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>) => {
+/**
+ * Get highlight annotation blocks of a specific type
+ *
+ * @param opts Options object.
+ *
+ * @return {ReadonlyArray<Block<AnnotationContentTypeMap[T]>>}
+ */
+export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>): ReadonlyArray<Block<AnnotationContentTypeMap[T]>> => {
     const { docID, type } = opts;
     const [areaHighlights, setAreaHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
     const blocksStore = useBlocksStore();
@@ -57,10 +71,21 @@ export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHi
     return areaHighlights
 };
 
-
-export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: string) => {
+/**
+ * Get the document block of a specific document by ID.
+ *
+ * @param blocksStore BlocksStore instance.
+ * @param fingerprint The id of the document.
+ *
+ * @return {Readonly<Block<DocumentContent>> | undefined}
+ */
+export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: DocIDStr): Readonly<Block<DocumentContent>> | undefined => {
     const documentBlockID = blocksStore.indexByDocumentID[fingerprint];
     const block = blocksStore.getBlock(documentBlockID);
+    if (! block || ! BlockPredicates.isDocumentBlock(block)) {
+        return undefined;
+    }
+
     return block;
 };
 
@@ -70,7 +95,7 @@ export const useAnnotationBlockManager = () => {
     const doMutation = React.useCallback(<T>(fingerprint: string, handler: (block: Block<DocumentContent>) => T): T | undefined => {
         const block = getBlockForDocument(blocksStore, fingerprint);
 
-        if (block && block.content.type === "document") {
+        if (block) {
             return handler(block as Block<DocumentContent>);
         } else {
             console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
@@ -174,20 +199,47 @@ export const useAnnotationBlockManager = () => {
 };
 
 type IBlockAreaHighlightOpts = {
+    /**
+     * The position of the area highlight within the page @see ILTRect
+     */
     rect: ILTRect,
+
+    /**
+     * The page that the highlight was created under.
+     */
     pageNum: number,
+
+    /**
+     * The root element of the document viewer.
+     */
     docViewerElement: HTMLElement,
+
+    /**
+     * The file type of the document that the highlight belongs to @see FileType
+     */
     fileType: FileType,
+
+    /**
+     * The current scale (zoom) level of the document @see IDocScale
+     */
     docScale: IDocScale,
 };
 
 type ICreateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
     type: 'create',
+    
+    /**
+     * The ID of the document that the created areahighlight will belong to.
+     */
     docID: DocIDStr,
 };
 
 type IUpdateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
     type: 'update',
+
+    /**
+     * The id of the block to be updated
+     */
     blockID: BlockIDStr,
 };
 

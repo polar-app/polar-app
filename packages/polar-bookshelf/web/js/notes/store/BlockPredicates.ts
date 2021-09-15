@@ -7,6 +7,7 @@ import {AnnotationContent, AnnotationHighlightContent, FlashcardAnnotationConten
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {DocumentContent} from "../content/DocumentContent";
 
 export type TextContent = MarkdownContent
                           | NameContent
@@ -62,5 +63,9 @@ export namespace BlockPredicates {
     export function isClozeFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockClozeFlashcard>> {
         return block.content.type === AnnotationContentType.FLASHCARD
                && block.content.value.type === FlashcardType.CLOZE;
+    }
+
+    export function isDocumentBlock(block: Readonly<Block>): block is Block<DocumentContent> {
+        return block.content.type === 'document';
     }
 }
