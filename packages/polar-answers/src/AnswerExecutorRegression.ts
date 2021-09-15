@@ -10,6 +10,14 @@ import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorReque
 // TODO: CACHE THE OPENAI REQUEST/RESPONSE PAIRS if we already have a response
 // for the request.  No need to execute it twice.
 
+// TODO: compute the costs based on tokens
+
+// TODO: implement a cache with a 'fuzz' factor so we can test OpenAI
+// non-determinism
+
+// TODO: run the query in the cluster via the cloud function so we can record
+// timings as latency is going to be an issue.
+
 async function doRegression(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create();
@@ -847,6 +855,12 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
 async function runRegressions() {
 
+    // main things to test:
+
+    // - PoS filtering
+    // - reranking
+    // - models
+
     const options: ReadonlyArray<ExecutorOpts> = [
         {
             search_model: 'ada',
@@ -854,7 +868,7 @@ async function runRegressions() {
             rerank_elasticsearch: false,
             rerank_elasticsearch_size: 10000,
             rerank_elasticsearch_model: 'ada',
-        }
+        },
     ]
 
     for (const opts of options) {

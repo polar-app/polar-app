@@ -31,7 +31,8 @@ describe("AnswerExecutor", function () {
             question,
             model: 'ada',
             search_model: 'ada',
-            documents_limit: 1
+            documents_limit: 1,
+            // rerank_elasticsearch: true,
         });
 
         function isError(value: any): value is IAnswerExecutorError {
@@ -52,15 +53,13 @@ describe("AnswerExecutor", function () {
 
     }
 
-    describe("basic", () => {
 
-        // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
-        it("What is a Planet?", async function () {
+    // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
+    it("What is a Planet?", async function () {
 
-            const answer = await executeQuestion("What is a Planet?");
-            assert.isDefined(answer);
+        const answer = await executeQuestion("What is a Planet?");
+        assert.isDefined(answer);
 
-        });
     });
 
 })
