@@ -121,4 +121,9 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/proj
 
 - Request permission from kevin to be added to firestore console.
 
-
+- Install the React Chrome Devtools to help debug our app. It allows you to
+  explore the component tree to figure out which component is responsible for
+  rendering parts of the UI.  This is probably the easiest way to familiarize yourself
+  with our webapp.
+  
+  - https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en

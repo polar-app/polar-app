@@ -7,6 +7,9 @@ import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorRespons
 import {RegressionEngines} from "polar-shared/src/util/RegressionEngines";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 
+// TODO: CACHE THE OPENAI REQUEST/RESPONSE PAIRS if we already have a response
+// for the request.  No need to execute it twice.
+
 async function doRegression(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create();
