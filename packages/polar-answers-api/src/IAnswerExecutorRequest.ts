@@ -1,5 +1,6 @@
 import {AIModel} from "./AIModel";
 
+export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech';
 
 export interface IAnswerExecutorRequest {
 
@@ -17,11 +18,11 @@ export interface IAnswerExecutorRequest {
     readonly documents_limit?: number;
 
     /**
-     * Filter the question by removing stopwords or only including nouns.
+     * Filter the question and derive a query to ES via the specified algorithm.
      *
      */
     // eslint-disable-next-line camelcase
-    readonly filter_question?: boolean;
+    readonly filter_question?: FilterQuestionType;
 
     /**
      * Re-rank the results against the OpenAI search endpoint.
