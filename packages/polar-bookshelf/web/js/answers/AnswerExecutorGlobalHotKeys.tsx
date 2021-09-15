@@ -104,7 +104,7 @@ const TabPanel = (props: TabPanelProps) => {
 }
 
 function answerIsError(value: any): value is IAnswerExecutorError {
-    return value.error === 'no-answer' || value.error === 'failed';
+    return value.error === true;
 }
 
 function answerIsErrorNoAnswer(value: any): value is IAnswerExecutorError {
@@ -167,6 +167,7 @@ interface AnswerResponseProps {
 
 const AnswerResponse = (props: AnswerResponseProps) => {
 
+    // TODO: we have to differentiate between a real error and no-answer.
     if (answerIsError(props.answerResponse)) {
         return (
             <Box mt={1} mb={1} color='error.main'>
