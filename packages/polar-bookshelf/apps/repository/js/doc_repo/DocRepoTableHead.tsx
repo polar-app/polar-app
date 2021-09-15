@@ -14,8 +14,9 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {Devices} from "polar-shared/src/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FlagIcon from '@material-ui/icons/Flag';
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
+import { MUIToggleButton } from "polar-bookshelf/web/js/ui/MUIToggleButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -92,6 +93,11 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
 
+    const {filters} = useDocRepoStore(['filters']);
+    const callbacks = useDocRepoCallbacks();
+
+    const {setFilters} = callbacks;
+
     return (
 
             <TableHead className={classes.root}>
@@ -128,7 +134,20 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             </TableCell>
                         )
                     })}
-
+                    <MUIToggleButton id="toggle-flagged"
+                                    tooltip="Show only flagged docs"
+                                    size="medium"
+                                    label="Flagged"
+                                    icon={<FlagIcon/>}
+                                    initialValue={filters.flagged}
+                                    onChange={(value: any) => setFilters({...filters, flagged: value})}/>
+                    <MUIToggleButton id="toggle-archived"
+                                    tooltip="Toggle archived docs"
+                                    size="medium"
+                                    label="Archived"
+                                    initialValue={filters.archived}
+                                    onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                    
                     <DeviceRouter.Desktop>
                         <>
                             <ColumnSelector/>
