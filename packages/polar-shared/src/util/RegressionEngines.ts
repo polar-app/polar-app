@@ -77,6 +77,7 @@ export namespace RegressionEngines {
                         });
 
                     } catch (e) {
+                        console.error(`Failed to run regression test: ${testEntry.testName}`, e);
                         results.push({
                             testName: testEntry.testName,
                             result: 'fail',
