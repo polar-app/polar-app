@@ -11,7 +11,8 @@ async function createUserWhenAbsent(email: string, pass: string) {
             return true;
         } catch (e) {
 
-            if (e.code === 'auth/user-not-found') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((e as any).code === 'auth/user-not-found') {
                 return false;
             }
             throw e;

@@ -60,7 +60,8 @@ export class ExpressFunctions {
 
     private static handleError(functionName: string,
                                req: express.Request,
-                               res: express.Response, err: Error) {
+                               res: express.Response,
+                               err: unknown) {
 
         function createMessage() {
             if (req.body) {
