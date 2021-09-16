@@ -31,6 +31,7 @@ const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+    import PartOfSpeechTag = GCLAnalyzeSyntax.PartOfSpeechTag;
 
     export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
         readonly uid: UserIDStr;
@@ -183,8 +184,8 @@ export namespace AnswerExecutor {
                     return Stopwords.removeStopwords(words, stopwords).join(" ");
                 }
 
-                async function filterUsingPoS() {
-                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, ['NOUN']);
+                async function filterUsingPoS(pos: ReadonlyArray<PartOfSpeechTag>) {
+                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, pos);
                     return analysis.map(current => current.content).join(" ");
                 }
 
@@ -194,8 +195,12 @@ export namespace AnswerExecutor {
                     case "stopwords":
                         return filterUsingStopwords();
 
+                    case "part-of-speech-noun":
+                        return await filterUsingPoS(['NOUN']);
+
                     case "part-of-speech":
-                        return await filterUsingPoS();
+                    case "part-of-speech-noun-adj":
+                        return await filterUsingPoS(['NOUN', 'ADJ']);
 
                     case "none":
                         return request.question;
