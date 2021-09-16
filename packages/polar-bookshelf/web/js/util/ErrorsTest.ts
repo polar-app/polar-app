@@ -1,8 +1,6 @@
 import {assert} from 'chai';
-import {EmailAddressParser} from './EmailAddressParser';
 import {Errors} from './Errors';
 import {Simulate} from 'react-dom/test-utils';
-import compositionStart = Simulate.compositionStart;
 
 describe('Errors', function() {
 
@@ -15,7 +13,7 @@ describe('Errors', function() {
             assert.ok(false, "Should not have reached here");
 
         } catch (e) {
-            assert.equal(e.msg, "rethrow cause: : root cause: ");
+            assert.equal((e as any).msg, "rethrow cause: : root cause: ");
         }
 
     });

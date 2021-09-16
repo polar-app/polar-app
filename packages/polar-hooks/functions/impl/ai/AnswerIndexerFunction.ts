@@ -33,9 +33,12 @@ export namespace AnswerIndexerImpl {
 
         } catch (e) {
             SentryReporters.reportError("Failed to index document to ElasticSearch: ", e);
+
+            // TODO: convert this to an IRPC message like AnswerExecutor
             return {
                 error: 'failed',
-                message: e.message
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                message: (e as any).message || undefined
             };
         }
 

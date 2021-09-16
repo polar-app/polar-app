@@ -99,7 +99,7 @@ export namespace BatchMutators {
                 // Error so that the user could create a report and send it to
                 // us
                 dialogs.snackbar({
-                    message: opts.error + e.message,
+                    message: opts.error + (e as any).message,
                     type: 'error'
                 });
 
