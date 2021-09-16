@@ -252,7 +252,7 @@ export abstract class AbstractDatastore {
         } catch (e) {
 
             if (opts.onError) {
-                opts.onError(e);
+                opts.onError({err: e, unsubscriber});
             }
 
         }
