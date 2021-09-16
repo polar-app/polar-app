@@ -26,9 +26,9 @@ Runs all the tests
 fastlane android beta
 ```
 Deploy a new version to the Google Play internal testers track
-### android production
+### android release
 ```
-fastlane android production
+fastlane android release
 ```
 Deploy a new version to the Google Play
 
