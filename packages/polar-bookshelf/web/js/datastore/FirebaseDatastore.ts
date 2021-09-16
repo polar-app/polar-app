@@ -714,7 +714,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         } catch (e) {
 
-            if (e.code === "storage/object-not-found") {
+            if ((e as any).code === "storage/object-not-found") {
                 // this is acceptable for now as we want deletes to be
                 // idempotent
                 return;

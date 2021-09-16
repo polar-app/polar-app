@@ -2,6 +2,7 @@ import * as React from 'react';
 import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {ISnapshot} from "./CachedSnapshotSubscriberContext";
+import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
 
 export interface CachedSnapshotSubscriberOpts<V> {
 
@@ -14,7 +15,7 @@ export interface CachedSnapshotSubscriberOpts<V> {
 
     readonly onNext: (value: ISnapshot<V> | undefined) => void;
 
-    readonly onError: (err: Error) => void;
+    readonly onError: (err: ErrorType) => void;
 
 }
 

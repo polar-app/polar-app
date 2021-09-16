@@ -1,4 +1,8 @@
-import {SubscriptionValue, useSnapshotSubscriber} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
+import {
+    ErrorType,
+    SubscriptionValue,
+    useSnapshotSubscriber
+} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -10,7 +14,7 @@ export function useUserPrefs(): SubscriptionValue<IUserPref> {
     // const dictionaryPrefs = new DictionaryPrefs(userPref.value);
     // return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
 
-    const snapshotSubscriber = (onNext: (data: IUserPref | undefined) => void, onError?: (err: Error) => void) => {
+    const snapshotSubscriber = (onNext: (data: IUserPref | undefined) => void, onError?: (err: ErrorType) => void) => {
 
         if (! uid) {
             console.warn("No user");

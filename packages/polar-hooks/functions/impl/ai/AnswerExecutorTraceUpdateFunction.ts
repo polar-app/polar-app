@@ -27,7 +27,8 @@ export namespace AnswerExecutorTraceUpdateImpl {
             return {
                 error: true,
                 code: 'failed',
-                message: e.message
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                message: (e as any).message || undefined
             };
         }
 

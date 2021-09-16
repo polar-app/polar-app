@@ -7,7 +7,7 @@ Sentry.init({
 
 export namespace SentryReporters {
 
-    export function reportError(msg: string, err: Error, tags: {[name: string]: string} = {}) {
+    export function reportError(msg: string, err: unknown, tags: {[name: string]: string} = {}) {
         Sentry.captureException(err, {tags});
     }
 

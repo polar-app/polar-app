@@ -271,7 +271,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
             analytics.event2(methodName, {
                 error: true,
                 code: 'exception',
-                message: e.message
+                message: (e as any).message
             });
 
             throw e;

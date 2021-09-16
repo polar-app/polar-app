@@ -6,6 +6,7 @@
 import {SyncState} from './SyncState';
 import {SyncTaskResult} from './SyncTask';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
+import {ErrorType} from "../../../ui/data_loader/UseSnapshotSubscriber";
 
 export interface SyncProgress {
 
@@ -19,7 +20,7 @@ export interface SyncProgress {
     /**
      * The error for the sync when the status is failed.
      */
-    error?: Error;
+    error?: ErrorType;
 
     /**
      * An optional task result from the last task executed.
