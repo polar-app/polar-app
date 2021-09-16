@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProps {
     readonly id?: string;
     readonly initialValue?: boolean;
-    readonly label: string;
+    readonly label?: string;
     readonly icon?: JSX.Element;
     readonly onChange: (value: boolean) => void;
     readonly size?: 'small' | 'medium' | 'large';
     readonly tooltip?: string;
+    readonly className?: string;
 }
 
 export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps) {
@@ -54,18 +55,18 @@ export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps
         <MUITooltip title={props.tooltip}>
             <Button id={props.id}
                     startIcon={icon}
-                    className={active ? classes.buttonActive : classes.button}
+                    className={active ? classes.buttonActive : classes.button + ` ${props.className}`}
                     onClick={handleToggle}
                     variant={active ? "contained" : "outlined"}
                     disableFocusRipple
                     disableRipple
                     size={size}>
 
-                <DeviceRouters.NotPhone>
-                    <>
-                        {props.label}
-                    </>
-                </DeviceRouters.NotPhone>
+                    <DeviceRouters.NotPhone>
+                        <>
+                            {props.label}
+                        </>
+                    </DeviceRouters.NotPhone>
 
             </Button>
         </MUITooltip>

@@ -15,6 +15,7 @@ import {Devices} from "polar-shared/src/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import FlagIcon from '@material-ui/icons/Flag';
+import ArchiveIcon from "@material-ui/icons/Archive";
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 import { MUIToggleButton } from "polar-bookshelf/web/js/ui/MUIToggleButton";
 import { MUICheckboxIconButton } from "polar-bookshelf/web/js/mui/MUICheckboxIconButton";
@@ -47,6 +48,14 @@ const useStyles = makeStyles((theme: Theme) =>
                 borderCollapse: 'collapse',
                 lineHeight: '1em'
             }
+        },
+        selectionIconsContainer:{
+            display: 'flex', 
+            flexDirection:'row-reverse',
+            paddingRight: '15px'
+        },
+        selectionIcon:{
+            minWidth: '30px',
         }
     }),
 );
@@ -113,10 +122,12 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-                    <MUICheckboxIconButton
+                    <TableCell className={classes.th} style={{width: '55px'}}>
+                        <MUICheckboxIconButton
                             indeterminate={selected.length > 0 && selected.length < view.length}
                             checked={selected.length === view.length && view.length !== 0}
-                            onChange={(event, checked) => handleCheckbox(checked)}/>                    
+                            onChange={(event, checked) => handleCheckbox(checked)}/>  
+                    </TableCell>                  
                     <DeviceRouter.Desktop>
                         <Check/>
                     </DeviceRouter.Desktop>
@@ -151,21 +162,22 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                         )
                     })}
                     <DeviceRouters.NotDesktop>
-                        <MUIToggleButton id="toggle-flagged"
-                                        tooltip="Show only flagged docs"
-                                        size="small"
-                                        label="Flagged"
-                                        icon={<FlagIcon/>}
-                                        initialValue={filters.flagged}
-                                        onChange={(value: any) => setFilters({...filters, flagged: value})}/>
-                    </DeviceRouters.NotDesktop>
-                    <DeviceRouters.NotDesktop>
-                        <MUIToggleButton id="toggle-archived"
-                                        tooltip="Toggle archived docs"
-                                        size="small"
-                                        label="Archived"
-                                        initialValue={filters.archived}
-                                        onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
+                            <div className={classes.selectionIconsContainer}>
+                                <MUIToggleButton id="toggle-flagged"
+                                                tooltip="Show only flagged docs"
+                                                className={classes.selectionIcon}
+                                                icon={<FlagIcon/>}
+                                                initialValue={filters.flagged}
+                                                onChange={(value: any) => setFilters({...filters, flagged: value})}/>
+                                <MUIToggleButton id="toggle-archived"
+                                                tooltip="Toggle archived docs"
+                                                className={classes.selectionIcon}
+                                                icon={<ArchiveIcon/>}
+                                                initialValue={filters.archived}
+                                                onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                            </div>
+                        </TableCell>
                     </DeviceRouters.NotDesktop>
 
                     <DeviceRouter.Desktop>
@@ -173,12 +185,6 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <ColumnSelector/>
                         </>
                     </DeviceRouter.Desktop>
-
-                    <DeviceRouters.NotDesktop>
-                        <TableCell style={{width: '45px'}}>
-                        </TableCell>
-                    </DeviceRouters.NotDesktop>
-
                 </TableRow>
             </TableHead>
     );

@@ -53,18 +53,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
     const callbacks = useDocRepoCallbacks();
     const classes = useStyles();
 
-    const {setSelected} = callbacks;
-
-    const handleCheckbox = React.useCallback((checked: boolean) => {
-        // TODO: this is wrong... the '-' button should remove the checks...
-        // just like gmail.
-        if (checked) {
-            setSelected('all')
-        } else {
-            setSelected('none');
-        }
-    }, [setSelected]);
-
     return (
         <Paper square
                className={classes.root}>
@@ -73,14 +61,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
                 <div style={{
                          display: 'flex',
                      }}>
-
-                    {/* <div>
-                        <MUICheckboxIconButton
-                            indeterminate={selected.length > 0 && selected.length < view.length}
-                            checked={selected.length === view.length && view.length !== 0}
-                            onChange={(event, checked) => handleCheckbox(checked)}/>
-                    </div> */}
-
                     {selected.length > 0 && (
                         <SelectionActiveButtons/>
                     )}
