@@ -299,6 +299,10 @@ function useAnswerExecutorClient() {
 
 }
 
+
+
+// localStorage.setItem("CoreAnswerExecutorRequest", "{\"model\": \"babbage\", \"search_model\": \"babbage\"}");
+// localStorage.removeItem("CoreAnswerExecutorRequest");
 function useCoreAnswerExecutorRequestFromLocalStorage(): ICoreAnswerExecutorRequest | undefined {
 
     const item = localStorage.getItem('CoreAnswerExecutorRequest');
