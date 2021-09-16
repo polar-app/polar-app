@@ -363,7 +363,7 @@ workflows:
 
       # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
       - cypress/run:
-          name: cypress-mobile-chrome
+          name: cypress-phone-chrome
           executor: ff-chrome
           requires:
             - build-polar-app
