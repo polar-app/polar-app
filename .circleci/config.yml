@@ -151,7 +151,7 @@ jobs:
             yarn run karma
 
   # @ Run tests
-  test:
+  mocha:
     parameters:
       executor:
         type: executor
@@ -295,9 +295,19 @@ workflows:
   version: 2
   main:
     jobs:
+      ## ^ Approve the entire pipeline to start deployment
+      - approve-deploy:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
+          requires:
+            - approve-polar-site
           executor: large
 
       ## ^ Chrome Extension Sub-Workflow
@@ -314,7 +324,7 @@ workflows:
           requires:
             - setting-up
 
-      - test:
+      - mocha:
           executor: large
           requires:
             - setting-up
@@ -377,26 +387,17 @@ workflows:
           attach-workspace: true
           store_artifacts: true
 
-      # @ Approve Polar app build for deployment
-      - approve-polar-app:
-          type: approval
-          requires:
-            - karma
-            - cypress-desktop-firefox
-            - cypress-desktop-chrome
-            - cypress-tablet-chrome
-            - cypress-mobile-chrome
-          filters:
-            branches:
-              only:
-                - master
-
       # @ Deploy Approved Polar app build
       - deploy-polar-app:
           executor: xlarge
           firebase_hosting_target: polar-webapp
           requires:
-            - approve-polar-app
+            - mocha
+            - karma
+            - cypress-desktop-firefox
+            - cypress-desktop-chrome
+            - cypress-tablet-chrome
+            - cypress-mobile-chrome
           filters:
             branches:
               only:
