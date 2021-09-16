@@ -74,7 +74,7 @@ export function useBatchUploader() {
                     // NOTE that the firestore devs misspelled cancelled as canceled
                     // so we're checking for both strings so if they ever change it
                     // we're good
-                    if (['cancelled', 'canceled'].includes(e.code) || ['storage/cancelled', 'storage/canceled'].includes(e.code_)) {
+                    if (['cancelled', 'canceled'].includes((e as any).code) || ['storage/cancelled', 'storage/canceled'].includes((e as any).code_)) {
                         // this is acceptable as the user cancelled the upload
                         console.log("Caught cancelled upload exception");
                     } else {

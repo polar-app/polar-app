@@ -196,7 +196,7 @@ export namespace Highlights {
             range.setStart(node, highlight.start);
             range.setEnd(node, computeEnd());
         } catch (e) {
-            console.warn(`Unable to mount annotation on node: ${e.message}`, node);
+            console.warn(`Unable to mount annotation on node: ${(e as any).message}`, node);
             throw e;
         }
 
