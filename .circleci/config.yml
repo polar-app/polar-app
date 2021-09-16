@@ -307,7 +307,7 @@ workflows:
       # @ Setup the repo for the subsquent stages
       - setting-up:
           requires:
-            - approve-polar-site
+            - approve-deploy
           executor: large
 
       ## ^ Chrome Extension Sub-Workflow
