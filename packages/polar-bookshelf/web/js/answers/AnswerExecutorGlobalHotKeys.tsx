@@ -345,10 +345,10 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                     question,
                     model: coreAnswerExecutorRequest?.model || 'curie',
                     search_model: coreAnswerExecutorRequest?.search_model || 'curie',
-                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch,
-                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size,
-                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model,
-                    filter_question: coreAnswerExecutorRequest?.filter_question,
+                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
+                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
+                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
+                    filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
                 };
 
                 console.log("Executing request: ", JSON.stringify(request, null, '  '));
