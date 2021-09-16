@@ -1,6 +1,6 @@
 import {AIModel} from "./AIModel";
 
-export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech';
+export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
 
 export interface IAnswerExecutorRequest {
 
