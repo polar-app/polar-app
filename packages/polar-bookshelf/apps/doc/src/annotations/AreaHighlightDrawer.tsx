@@ -171,13 +171,13 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             }
             return false;
         };
-        
+
         const cleanup = (endPosition: IPoint) => {
             if (!pageElement || !rectElem || !start || !pageRect) {
                 return;
             }
 
-            const rect = calculateRectDimensions(start, endPosition, pageRect);
+            const rect = calculateRectDimensions(start, endPosition, pageRect as ClientRect);
             pageElement.removeChild(rectElem);
             if (rect.width > threshold.x || rect.height > threshold.y) {
                 callbackRef.current({
@@ -202,7 +202,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 return;
             }
             e.preventDefault();
-            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect);
+            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect as ClientRect);
             updateDOMRect(rectElem, rect);
         };
 
@@ -232,7 +232,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             e.preventDefault();
             const touch = e.touches[e.touches.length - 1];
             lastPosition = { x: touch.clientX, y: touch.clientY };
-            const rect = calculateRectDimensions(start, lastPosition, pageRect);
+            const rect = calculateRectDimensions(start, lastPosition, pageRect as ClientRect);
             updateDOMRect(rectElem, rect);
         };
 
