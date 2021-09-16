@@ -430,7 +430,7 @@ const EmailAuthButton = () => {
             await triggerFirebaseEmailAuth(email);
             setTriggered(true);
         } catch(err) {
-            setError(err.message);
+            setError((err as any).message);
         }
 
     }, [triggerFirebaseEmailAuth]);

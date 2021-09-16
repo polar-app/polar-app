@@ -7,6 +7,7 @@ import {
 } from "../snapshots/CachedFirestoreSnapshotSubscriber";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
 
 const COLLECTION_NAME = "account";
 
