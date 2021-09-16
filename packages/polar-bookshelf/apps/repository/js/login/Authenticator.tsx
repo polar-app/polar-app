@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {
     useAuthHandler,
     useTriggerFirebaseEmailAuth,
@@ -150,7 +150,7 @@ const GoogleAuthButton = () => {
         try {
             await triggerAuth();
         } catch (err) {
-            setError(err.message)
+            setError((err as any).message || 'error')
         }
 
     }, [triggerAuth]);
@@ -243,7 +243,7 @@ const EmailTokenAuthButton = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: err.message
+                message: (err as any).message || undefined
             });
         }
 
@@ -287,7 +287,7 @@ const EmailTokenAuthButton = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: err.message
+                message: (err as any).message || 'error'
             });
         }
 
