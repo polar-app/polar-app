@@ -19,6 +19,7 @@ import ArchiveIcon from "@material-ui/icons/Archive";
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 import { MUIToggleButton } from "polar-bookshelf/web/js/ui/MUIToggleButton";
 import { MUICheckboxIconButton } from "polar-bookshelf/web/js/mui/MUICheckboxIconButton";
+import { SelectionActiveButtons } from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,11 +77,41 @@ const ColumnSelector = React.memo(function ColumnSelector() {
                 <DocColumnsSelectorWithPrefs/>
 
             </div>
-            {/*<FilterListIcon/>*/}
         </TableCell>
 
     );
 
+});
+
+const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() {
+    const classes = useStyles();
+    const {filters, selected} = useDocRepoStore(['filters', 'selected']);
+    const callbacks = useDocRepoCallbacks();
+
+    const {setFilters} = callbacks;
+
+    return(<>
+            {selected.length > 0 ?
+                <SelectionActiveButtons/>
+                :
+                <div className={classes.selectionIconsContainer}>
+                    <MUIToggleButton id="toggle-archived" 
+                                    iconOnly
+                                    tooltip="Toggle archived docs"
+                                    size={'small'}
+                                    icon={<ArchiveIcon/>}
+                                    initialValue={filters.archived}
+                                    onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                    <MUIToggleButton id="toggle-flagged" 
+                                    iconOnly
+                                    tooltip="Show only flagged docs"
+                                    size={'small'}
+                                    icon={<FlagIcon/>}
+                                    initialValue={filters.flagged}
+                                    onChange={(value: any) => setFilters({...filters, flagged: value})}/>
+                </div>
+            }
+        </>);
 });
 
 export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
@@ -100,10 +131,10 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
 
-    const {view, filters, selected} = useDocRepoStore(['view', 'filters', 'selected']);
+    const {view, selected} = useDocRepoStore(['view','selected']);
     const callbacks = useDocRepoCallbacks();
 
-    const {setFilters, setSelected} = callbacks;
+    const {setSelected} = callbacks;
 
     const handleCheckbox = React.useCallback((checked: boolean) => {
         // TODO: this is wrong... the '-' button should remove the checks...
@@ -162,22 +193,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                     })}
                     <DeviceRouters.NotDesktop>
                         <TableCell className={classes.th} style={{ display: 'table-cell'}}>
-                            <div className={classes.selectionIconsContainer}>
-                                <MUIToggleButton id="toggle-archived" 
-                                                iconOnly
-                                                tooltip="Toggle archived docs"
-                                                size={'small'}
-                                                icon={<ArchiveIcon/>}
-                                                initialValue={filters.archived}
-                                                onChange={(value: any) => setFilters({...filters, archived: value})}/>
-                                <MUIToggleButton id="toggle-flagged" 
-                                                iconOnly
-                                                tooltip="Show only flagged docs"
-                                                size={'small'}
-                                                icon={<FlagIcon/>}
-                                                initialValue={filters.flagged}
-                                                onChange={(value: any) => setFilters({...filters, flagged: value})}/>
-                            </div>
+                            <SelectionOrToggleButtons/>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
 

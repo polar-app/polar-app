@@ -11,10 +11,12 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {Devices} from "polar-shared/src/util/Devices";
+import { PolarSVGIcon } from "polar-bookshelf/web/js/ui/svg_icons/PolarSVGIcon";
+import { Link } from "react-router-dom";
+import { RoutePathnames } from "polar-bookshelf/web/js/apps/repository/RoutePathnames";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -24,10 +26,13 @@ const useStyles = makeStyles((theme) =>
             paddingBottom: theme.spacing(1),
             paddingRight: theme.spacing(1),
         },
+        brand:{
+            marginLeft: '10px'
+        }
     }),
 );
 
-const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
+export const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
     const callbacks = useDocRepoCallbacks();
 
     return (
@@ -47,24 +52,25 @@ const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
 
 export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
-    const {view, selected}
-        = useDocRepoStore(['view', 'selected']);
+    const {selected}
+        = useDocRepoStore(['selected']);
 
-    const callbacks = useDocRepoCallbacks();
     const classes = useStyles();
 
     return (
         <Paper square
                className={classes.root}>
 
-                {Devices.isDesktop() && <SidenavTrigger />}
-                <div style={{
-                         display: 'flex',
-                     }}>
-                    {selected.length > 0 && (
-                        <SelectionActiveButtons/>
-                    )}
-
+                {Devices.isDesktop() ? 
+                    <SidenavTrigger/> 
+                    : 
+                    <Link to={RoutePathnames.HOME}>
+                        <PolarSVGIcon className={classes.brand} width={50} height={50}/>
+                    </Link>
+                }
+                
+                <div style={{ display: 'flex' }}>
+                    {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
                 </div>
 
                 <ChromeExtensionInstallBar/>
@@ -72,7 +78,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
             {/*always show the filter bar for desktop*/}
             {Devices.isDesktop() && <DocRepoFilterBar />}
             {/*on mobile, don't show if some rows are checked*/}
-            {!Devices.isDesktop() && selected.length === 0 && <DocRepoFilterBar />}
+            {!Devices.isDesktop() && <DocRepoFilterBar />}
 
         </Paper>
     );
