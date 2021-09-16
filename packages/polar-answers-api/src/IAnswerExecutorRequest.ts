@@ -43,3 +43,8 @@ export interface IAnswerExecutorRequest {
     readonly rerank_elasticsearch_model?: AIModel;
 
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ICoreAnswerExecutorRequest extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'filter_question'>> {
+
+}
