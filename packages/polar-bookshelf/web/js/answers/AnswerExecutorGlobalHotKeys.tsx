@@ -12,7 +12,7 @@ import {
     IAnswerExecutorResponse,
     ISelectedDocumentWithRecord
 } from "polar-answers-api/src/IAnswerExecutorResponse";
-import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {IAnswerExecutorRequest, ICoreAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {useAnalytics} from "../analytics/Analytics";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
@@ -299,6 +299,18 @@ function useAnswerExecutorClient() {
 
 }
 
+function useCoreAnswerExecutorRequestFromLocalStorage(): ICoreAnswerExecutorRequest | undefined {
+
+    const item = localStorage.getItem('CoreAnswerExecutorRequest');
+
+    if (item) {
+        return JSON.parse(item) as ICoreAnswerExecutorRequest;
+    }
+
+    return undefined;
+
+}
+
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     const questionRef = React.useRef("");
@@ -316,6 +328,8 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
     // - "Ask" button to the right of the question text
     // - docLoader to load the document by docID
 
+    const coreAnswerExecutorRequest = useCoreAnswerExecutorRequestFromLocalStorage();
+
     const executeRequest = React.useCallback((question: string) => {
 
         async function doExec() {
@@ -329,9 +343,15 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 const request: IAnswerExecutorRequest = {
                     question,
-                    model: 'curie',
-                    search_model: 'curie'
+                    model: coreAnswerExecutorRequest?.model || 'curie',
+                    search_model: coreAnswerExecutorRequest?.search_model || 'curie',
+                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch,
+                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size,
+                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model,
+                    filter_question: coreAnswerExecutorRequest?.filter_question,
                 };
+
+                console.log("Executing request: ", JSON.stringify(request, null, '  '));
 
                 const answer = await answerExecutorClient(request);
 
