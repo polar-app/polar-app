@@ -397,7 +397,7 @@ workflows:
             - cypress-desktop-firefox
             - cypress-desktop-chrome
             - cypress-tablet-chrome
-            - cypress-mobile-chrome
+            - cypress-phone-chrome
           filters:
             branches:
               only:
