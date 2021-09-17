@@ -330,7 +330,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
 
     return (
         <Menu
-            transitionDuration={0}
+            transitionDuration={Devices.isDesktop() ? 0 : undefined}
             keepMounted
             className={ !Devices.isDesktop()? classes.root : undefined }
             anchorEl={props.anchorEl}

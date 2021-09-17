@@ -3,6 +3,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -248,7 +249,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
 
     return (
         <Menu
-            transitionDuration={0}
+            transitionDuration={Devices.isDesktop() ? 0 : undefined}
             keepMounted
             anchorEl={props.anchorEl}
             open={true}
