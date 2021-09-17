@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex', 
             flexDirection:'row-reverse',
             paddingRight: '15px'
+        },
+        reverseRow:{
+            display: 'flex',
+            flexDirection: 'row-reverse'
         }
     }),
 );
@@ -92,7 +96,7 @@ const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() 
 
     return(<>
             {selected.length > 0 ?
-                <SelectionActiveButtons/>
+                <SelectionActiveButtons className={classes.reverseRow}/>
                 :
                 <div className={classes.selectionIconsContainer}>
                     <MUIToggleButton id="toggle-archived" 
@@ -170,8 +174,8 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <TableCell key={column.id}
                                        className={classes.th}
                                        style={{
-                                           width: column.id==='progress' ? '85px': column.width,
-                                           minWidth: column.id==='progress' ? '85px': column.width
+                                           width: column.width,
+                                           minWidth: column.width
                                        }}
                                        padding={column.disablePadding ? 'none' : 'default'}
                                        sortDirection={orderBy === column.id ? order : false}>
@@ -198,9 +202,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                     </DeviceRouters.NotDesktop>
 
                     <DeviceRouters.Desktop>
-                        <>
-                            <ColumnSelector/>
-                        </>
+                        <ColumnSelector/>
                     </DeviceRouters.Desktop>
                 </TableRow>
             </TableHead>

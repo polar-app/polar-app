@@ -32,11 +32,15 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
+interface IProps {
+    readonly className?: string;
+}
+
+export const SelectionActiveButtons = React.memo(function SelectionActiveButtons(props: IProps) {
     const callbacks = useDocRepoCallbacks();
 
     return (
-        <MUIButtonBar>
+        <MUIButtonBar className={props.className}>
             <>
                 <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>

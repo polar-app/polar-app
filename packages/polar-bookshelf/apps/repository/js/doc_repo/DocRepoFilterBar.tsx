@@ -36,7 +36,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
     return (
         <>
             <DeviceRouters.NotDesktop>
-                <span style={{display: 'flex', alignItems: 'center' ,textAlign: 'center'}}>Your workspace</span>
+                <span style={{display: 'flex', alignItems: 'center' ,textAlign: 'center'}}>My workspace</span>
             </DeviceRouters.NotDesktop>
             <DeviceRouters.Desktop>
                 <MUIButtonBar>
