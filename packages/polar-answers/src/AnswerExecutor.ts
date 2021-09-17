@@ -248,9 +248,9 @@ export namespace AnswerExecutor {
                 // eslint-disable-next-line camelcase
                 const [openai_reranked_records_with_score, openai_reranked_duration] =
                     await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                                                                        request.question,
-                                                                        elasticsearch_records,
-                                                                        hit => hit.text));
+                        request.question,
+                        elasticsearch_records,
+                        hit => hit.text));
 
                 // eslint-disable-next-line camelcase
                 const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
@@ -262,7 +262,7 @@ export namespace AnswerExecutor {
                     .head(documents_limit)
                     .collect();
 
-                return <ESDocumentResultsWithRerank> {
+                return <ESDocumentResultsWithRerank>{
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -281,7 +281,7 @@ export namespace AnswerExecutor {
                     .collect();
 
                 // eslint-disable-next-line camelcase
-                return <ESDocumentResultsWithoutRerank> {
+                return <ESDocumentResultsWithoutRerank>{
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -370,6 +370,10 @@ export namespace AnswerExecutor {
 
             const firestore = FirestoreAdmin.getInstance();
 
+            // One token is roughly 4 characters as per OpenAI docs
+            const openAiTokens = question.length / 4;
+            const costEstimated = openAiTokens * getPricePerToken(model);
+
             const trace: IAnswerExecutorTraceMinimal = {
                 id,
                 created: ISODateTimeStrings.create(),
@@ -384,11 +388,11 @@ export namespace AnswerExecutor {
                 docIDs: AnswerExecutorTracer.computeUniqueDocIDs(computedDocuments.elasticsearch_records),
                 timings,
                 vote: undefined,
-                expectation: undefined
+                expectation: undefined,
+                costEstimated,
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
-
         }
 
         await doTrace();
@@ -403,6 +407,23 @@ export namespace AnswerExecutor {
             timings
         }
 
+    }
+
+    /**
+     * Given an OpenAI model name, return how much will a single "token" will cost
+     * @see https://beta.openai.com/pricing/
+     */
+    function getPricePerToken(model: "ada" | "babbage" | "curie" | "davinci") {
+        switch (model) {
+            case "ada":
+                return 0.0008 / 1000;
+            case "babbage":
+                return 0.0012 / 1000;
+            case "curie":
+                return 0.0060 / 1000;
+            case "davinci":
+                return 0.0600 / 1000;
+        }
     }
 
 }
