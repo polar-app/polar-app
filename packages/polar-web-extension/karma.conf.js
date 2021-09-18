@@ -117,7 +117,8 @@ module.exports = (config) => {
                     fs: false,
                     net: false,
                     tls: false,
-                    child_process: false
+                    child_process: false,
+                    electron: false
                 }
             },
 

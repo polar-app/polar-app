@@ -175,8 +175,16 @@ export namespace CapturedContentEPUBGenerator {
     }
 
     export async function generate(capture: ICapturedEPUB): Promise<ArrayBuffer> {
-        const doc = await convertToEPUBDocument(capture);
-        return await EPUBGenerator.generate(doc);
+        try {
+            console.log('FIXME1')
+            const doc = await convertToEPUBDocument(capture);
+            console.log('FIXME2')
+            return await EPUBGenerator.generate(doc);
+            console.log('FIXME3')
+        } catch (e) {
+            console.log("FIXME: ", e);
+            throw e;
+        }
     }
 
 }

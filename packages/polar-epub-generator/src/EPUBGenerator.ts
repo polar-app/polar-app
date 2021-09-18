@@ -1,9 +1,6 @@
 import JSZip from "jszip";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {
-    ISODateString,
-    ISODateTimeString
-} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {TOC_HTML} from "./templates/TOC_HTML";
@@ -319,7 +316,11 @@ export namespace EPUBGenerator {
 
         */
 
+        console.log("FIXME: EPUBGenerator.1");
+
         const zip = new JSZip();
+
+        console.log("FIXME: EPUBGenerator.2");
 
         function writeControlFiles() {
             zip.file('mimetype', 'application/epub+zip', {compression: "STORE"});
@@ -328,6 +329,8 @@ export namespace EPUBGenerator {
             zip.file('OEBPS/toc.ncx', renderTOCNCX(doc));
             zip.file('OEBPS/toc.html', renderTOCHTML(doc));
         }
+
+        console.log("FIXME: EPUBGenerator.3");
 
         function writeContents() {
             const contents = withPath(doc.contents);
@@ -345,23 +348,43 @@ export namespace EPUBGenerator {
 
         async function toArrayBuffer() {
 
-            const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
-                type: 'arraybuffer',
-                streamFiles: true,
+            // FIXMEL this is the bug.. the JSZIP doesn't actually do aything!!!
+
+            const options: JSZip.JSZipGeneratorOptions<'blob'> = {
+                type: 'blob',
+                // streamFiles: true,
                 compression: "DEFLATE",
                 compressionOptions: {
                     level: 9
                 }
             };
 
-            return <ArrayBuffer> await zip.generateAsync(options);
+            // FIXME: build a DEdICATED karma test that JUST tests zip files...
+
+            try {
+                console.log("FIXME 112");
+                return await zip.generateAsync(options, () => console.log("FIXME callback at least"));
+                console.log("FIXME 113");
+
+            } catch(e) {
+                console.log("FIXME 111");
+                throw e;
+            }
 
         }
 
-        writeControlFiles();
-        writeContents();
+        console.log("FIXME: EPUBGenerator.5");
 
-        return await toArrayBuffer();
+        writeControlFiles();
+        console.log("FIXME: EPUBGenerator.6");
+        writeContents();
+        console.log("FIXME: EPUBGenerator.7");
+
+        const ab = await toArrayBuffer();
+
+        console.log("FIXME: EPUBGenerator.8");
+
+        return ab as any as ArrayBuffer;
 
     }
 

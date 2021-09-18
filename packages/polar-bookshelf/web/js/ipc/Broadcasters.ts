@@ -13,6 +13,10 @@ export class Broadcasters {
      */
     public static send(channel: string, message: any, ...excluding: BrowserWindowReference[]) {
 
+        if (typeof window !== 'undefined') {
+            return;
+        }
+
         const excludingIDs = excluding.map(current => current.id);
 
         let browserWindows = BrowserWindow.getAllWindows();

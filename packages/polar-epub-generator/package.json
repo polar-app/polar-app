@@ -24,7 +24,7 @@
     "polar-typescript": "^2.1.126"
   },
   "dependencies": {
-    "jszip": "=3.5.0",
+    "jszip": "=3.7.1",
     "polar-shared": "^2.1.126"
   }
 }

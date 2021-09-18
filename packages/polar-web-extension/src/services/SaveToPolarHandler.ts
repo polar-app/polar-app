@@ -1,21 +1,17 @@
 import {Tabs} from "../chrome/Tabs";
 import {CapturedContentEPUBGenerator} from "../captured/CapturedContentEPUBGenerator";
 import {DatastoreWriter} from "../datastore/DatastoreWriter";
-import {ReadabilityCapture} from "../capture/ReadabilityCapture";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {
-    WriteFileProgress,
-    WriteFileProgressListener
-} from "polar-bookshelf/web/js/datastore/Datastore";
-import WrittenDoc = DatastoreWriter.WrittenDoc;
-import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {WriteFileProgress, WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
 import {PHZMigrations} from "./PHZMigrations";
 import {PHZActiveMigrations} from "./PHZActiveMigrations";
 import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
+import WrittenDoc = DatastoreWriter.WrittenDoc;
+import IWriteOpts = DatastoreWriter.IWriteOpts;
 
 export namespace SaveToPolarHandler {
 
@@ -41,6 +37,9 @@ export namespace SaveToPolarHandler {
 
 
     async function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
+
+        // TODO/ FIXME: we should just send a message BACK to the sender saying
+        // to load a URL.  This would be a lot smarter.
         const url = 'https://app.getpolarized.io/doc/' + writtenDoc.id;
         await Tabs.loadLinkInActiveTab(url);
     }
@@ -151,54 +150,67 @@ export namespace SaveToPolarHandler {
 
     }
 
+    export function handleMessage(message: any, sender: IMessageSender) {
+
+        if (! message.type) {
+            console.warn("No message type: ", message)
+            return;
+        }
+
+        switch (message.type) {
+
+            case 'save-to-polar':
+
+                console.log("Handling save-to-polar message: ", message);
+
+                const request = <SaveToPolarRequest> message;
+
+                const progressListener = createProgressListener(sender);
+                const errorReporter = createErrorReporter(sender);
+
+                switch (request.strategy) {
+
+                    case "pdf":
+                        saveToPolarAsPDF(request.value, progressListener, errorReporter)
+                        break;
+                    case "epub":
+                        saveToPolarAsEPUB(request.value, progressListener, errorReporter)
+                        break;
+                    default:
+                        console.warn("Unable to handle request strategy: ", request);
+                        break;
+
+                }
+
+                break;
+            default:
+                console.warn("Unknown message type: ", message)
+                break;
+
+        }
+
+    }
+
     export function register() {
 
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
-            if (! message.type) {
-                console.warn("No message type: ", message)
-                return;
-            }
-
-            switch (message.type) {
-
-                case 'save-to-polar':
-
-                    console.log("Handling save-to-polar message: ", message);
-
-                    const request = <SaveToPolarRequest> message;
-
-                    const progressListener = createProgressListener(sender);
-                    const errorReporter = createErrorReporter(sender);
-
-                    switch (request.strategy) {
-
-                        case "pdf":
-                            saveToPolarAsPDF(request.value, progressListener, errorReporter)
-                            break;
-                        case "epub":
-                            saveToPolarAsEPUB(request.value, progressListener, errorReporter)
-                            break;
-                        default:
-                            console.warn("Unable to handle request strategy: ", request);
-                            break;
-
-                    }
-
-                    break;
-                default:
-                    console.warn("Unknown message type: ", message)
-                    break;
-
-            }
-
+            handleMessage(message, sender);
         });
 
     }
 
 }
 
-function createProgressListener(sender: chrome.runtime.MessageSender): WriteFileProgressListener {
+interface ITab {
+    id?: number;
+}
+
+interface IMessageSender {
+    tab?: ITab
+}
+
+function createProgressListener(sender: IMessageSender): WriteFileProgressListener {
+
     return (progress: WriteFileProgress) => {
 
         if (! sender.tab || ! sender.tab.id) {
@@ -214,6 +226,7 @@ function createProgressListener(sender: chrome.runtime.MessageSender): WriteFile
         chrome.tabs.sendMessage(sender.tab.id, message)
 
     }
+
 }
 
 export interface IError {

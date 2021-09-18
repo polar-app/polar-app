@@ -1,43 +1,13 @@
 import {ContentCaptureContext} from "./ContentCaptureContext";
 import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
 import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {MockChrome} from "./MockChrome";
 
-// eslint-disable-next-line no-var
-declare var window: any;
-
-const [interactions, chrome] = createChrome();
-
-window.chrome = chrome;
-
-function createChrome() {
-
-    interface IOPSendMessageInteraction {
-        op: 'sendMessage',
-        message: any
-    }
-
-    const interactions: IOPSendMessageInteraction[] = [];
-
-    const chrome = {
-        runtime: {
-            onMessage: {
-                addListener: () => console.log('MOCK chrome: addListener called'),
-                removeListener: () => console.log('MOCK chrome: removeListener called')
-            },
-            sendMessage: (message: any) => {
-                console.log("MOCK chrome: Sending message: ", message);
-                interactions.push({op: 'sendMessage', message});
-            }
-        }
-    }
-
-    return [interactions, chrome]
-
-}
-
-describe("ContentCaptureContext", function() {
+xdescribe("ContentCaptureContext", function() {
 
     it("load page", () => {
+
+        const interactions = MockChrome.createChromeAndInject();
 
         document.body.innerHTML = 'hello world';
         ContentCaptureContextEPUB.handleStartCaptureWithEPUB();
