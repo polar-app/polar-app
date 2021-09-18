@@ -234,7 +234,7 @@ jobs:
           name: Automatic Versioning
           command: |
             git fetch
-            TEMP_VERSION='polar.latest'
+            TEMP_VERSION='90.135.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             NEW_VERSION=$(semver $CURRENT_VERSION -i)
             sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json

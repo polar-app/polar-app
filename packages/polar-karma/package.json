@@ -1,6 +1,6 @@
 {
   "name": "polar-karma",
-  "version": "polar.latest",
+  "version": "90.135.0",
   "description": "Basic webpack dependencies and utilities.",
   "scripts": {},
   "keywords": [],

@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase",
-  "version": "polar.latest",
+  "version": "90.135.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,16 +20,16 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "polar.latest",
-    "polar-test": "polar.latest",
-    "polar-typescript": "polar.latest"
+    "polar-eslint": "90.135.0",
+    "polar-test": "90.135.0",
+    "polar-typescript": "90.135.0"
   },
   "dependencies": {
-    "polar-accounts": "polar.latest",
-    "polar-answers-api": "polar.latest",
-    "polar-blocks": "polar.latest",
-    "polar-firestore-like": "polar.latest",
-    "polar-shared": "polar.latest",
-    "polar-spaced-repetition-api": "polar.latest"
+    "polar-accounts": "90.135.0",
+    "polar-answers-api": "90.135.0",
+    "polar-blocks": "90.135.0",
+    "polar-firestore-like": "90.135.0",
+    "polar-shared": "90.135.0",
+    "polar-spaced-repetition-api": "90.135.0"
   }
 }

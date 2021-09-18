@@ -1,6 +1,6 @@
 {
   "name": "polar-null-package",
-  "version": "polar.latest",
+  "version": "90.135.0",
   "description": "Empty package to just test NPM registry usage.",
   "main": "index.js",
   "scripts": {},

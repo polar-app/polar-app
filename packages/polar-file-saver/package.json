@@ -1,6 +1,6 @@
 {
   "name": "polar-file-saver",
-  "version": "polar.latest",
+  "version": "90.135.0",
   "description": "n",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/file-saver": "^2.0.1",
-    "polar-eslint": "polar.latest",
-    "polar-typescript": "polar.latest"
+    "polar-eslint": "90.135.0",
+    "polar-typescript": "90.135.0"
   },
   "dependencies": {
     "file-saver": "^2.0.2"

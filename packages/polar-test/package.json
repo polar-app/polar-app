@@ -1,6 +1,6 @@
 {
   "name": "polar-test",
-  "version": "polar.latest",
+  "version": "90.135.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/diff": "4.0.2",
-    "polar-eslint": "polar.latest",
-    "polar-typescript": "polar.latest"
+    "polar-eslint": "90.135.0",
+    "polar-typescript": "90.135.0"
   },
   "dependencies": {
     "@types/node": "=14.14.35",
