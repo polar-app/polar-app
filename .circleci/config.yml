@@ -32,6 +32,16 @@ commands:
             sudo yarn global add npm@7.19.1
             sudo yarn global add firebase-tools@9.16.0
 
+  # & Install Semver
+  semver_setup:
+    description: Install Semver Globally
+    steps:
+      - run:
+          name: Install Semver Globally
+          command: |
+            sudo apt update -y
+            sudo apt install semver -y
+
   # & Publishing setup steps
   build_setup:
     description: setup the build for commands
@@ -217,8 +227,23 @@ jobs:
     steps:
       - global_modules_setup
       - publishing_setup
+      - semver_setup
       - attach_workspace:
           at: ~/
+      - run:
+          name: Automatic Versioning
+          command: |
+            git fetch
+            TEMP_VERSION='polar.latest'
+            CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
+            lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
+            LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            echo -e "Current Latest Version is $LATEST_VERSION"
+            echo -e "Pushing New Tag"
+            git push --tags
       - run:
           name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
