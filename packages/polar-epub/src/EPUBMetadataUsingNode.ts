@@ -31,7 +31,7 @@ export class EPUBMetadataUsingNode {
 
         const nrPages = rootFileAsJSON.package.spine
             .itemref
-            .filter((ref: { [x: string]: any; }) => ref['@_linear'] == 'yes')
+            .filter((ref: { [x: string]: any; }) => ref['@_linear'] === 'yes')
             .length;
 
         return {
