@@ -325,8 +325,6 @@ workflows:
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
-          requires:
-            - approve-deploy
           executor: large
 
       ## ^ Chrome Extension Sub-Workflow
