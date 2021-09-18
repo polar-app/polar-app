@@ -98,15 +98,15 @@ If what you're working on requires credentials please contact an admin
 ```bash
 npm install polar-npm -g
 lerna exec --concurrency=1 --parallel=false --no-bail -- npm-upgrade-pkg typescript 3.9.5
-lerna exec --concurrency=1 --parallel=false --no-bail -- /Users/burton/projects/polar-app/packages/polar-app-public/polar-npm/src/npm-upgrade-pkg.js
+lerna exec --concurrency=1 --parallel=false --no-bail -- /Users/burton/projects/polar-app/packages/polar-npm/src/npm-upgrade-pkg.js
 ```
 
 lerna exec --concurrency=1 --parallel=false --no-bail --
-/Users/burton/projects/polar-app/packages/polar-app-public/polar-npm/src/npm-stagnant.js
+/Users/burton/projects/polar-app/packages/polar-npm/src/npm-stagnant.js
 
 ## Computing all used package versions
 
-lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/projects/polar-app/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort |uniq
+lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/projects/polar-app/packages/polar-npm/src/npm-dump-dependencies.js | sort |uniq
 
 # Windows
 

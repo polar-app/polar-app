@@ -1,4 +1,4 @@
-import {handleStartCapture} from "./content";
+import {ContentCaptureContext} from "./ContentCaptureContext";
 
 export namespace ExtensionContextMenus {
 
@@ -6,6 +6,6 @@ export namespace ExtensionContextMenus {
         title: "Save to Polar"
     };
 
-    chrome.contextMenus.create(opts, handleStartCapture);
+    chrome.contextMenus.create(opts, ContentCaptureContext.handleStartCapture);
 
 }
