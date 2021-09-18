@@ -6,6 +6,7 @@ module.exports = (config) => {
         files: [
             // all files ending in "_test"
             { pattern: 'src/*Karma.ts', watched: false },
+            { pattern: 'src/*TestK.ts', watched: false },
             // each file acts as entry point for the webpack configuration
         ],
 
