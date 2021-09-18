@@ -1,5 +1,10 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const svgToMiniDataURI = require('mini-svg-data-uri');
+const os = require("os");
+const workers = os.cpus().length - 1;
+const isDevServer = process.argv.includes('serve');
+const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
+const isDev = mode === 'development';
 
 module.exports = (config) => {
     config.set({
@@ -55,6 +60,40 @@ module.exports = (config) => {
             ],
             module: {
                 rules: [
+                    {
+                        test: /\.(jsx|tsx|ts)$/,
+                        exclude: [
+                            /node_modules/,
+                        ],
+                        use: [
+                            {
+                                loader: 'thread-loader',
+                                options: {
+                                    // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                    workers,
+                                    // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+                                    workerParallelJobs: 100,
+                                    poolTimeout: 2000,
+                                }
+                            },
+                            {
+                                loader: 'ts-loader',
+                                options: {
+                                    // performance: this improved performance by about 2x.
+                                    // from 20s to about 10s
+                                    transpileOnly: isDev,
+                                    experimentalWatchApi: true,
+
+                                    // IMPORTANT! use happyPackMode mode to speed-up
+                                    // compilation and reduce errors reported to webpack
+                                    happyPackMode: true
+
+                                }
+                            }
+
+                        ]
+
+                    },
                     {
                         // make SVGs use data URLs.
                         test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,

@@ -1,7 +1,6 @@
-import {CaptureApp} from "./ui/capture/CaptureApp";
 import {SaveToPolarHandler} from "./services/SaveToPolarHandler";
 import {UploadProgressApp} from "./ui/capture/UploadProgressApp";
-import {ExtensionContentCapture} from "./capture/ExtensionContentCapture";
+import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
 import SaveToPolarRequestWithPDF = SaveToPolarHandler.SaveToPolarRequestWithPDF;
 
 /**
@@ -11,27 +10,7 @@ export namespace ContentCaptureContext {
 
     const PDF_CONTENT_TYPE = 'application/pdf';
 
-    function clearDocument() {
-        // clear the document so that we can render to it directly.
-
-        const title = document.title;
-
-        document.documentElement.innerHTML = `<html><head><title>${title}</title></head><body></body></html>`;
-
-    }
-
-    function handleStartCaptureWithEPUB() {
-
-        const capture = ExtensionContentCapture.capture();
-
-        console.log("Captured: ", capture);
-
-        clearDocument();
-
-        CaptureApp.start(capture);
-
-    }
-
+    // TODO: ContentCaptureContextEPUB
     function handleStartCaptureWithPDF() {
 
         console.log("handleStartCaptureWithPDF");
@@ -121,7 +100,7 @@ export namespace ContentCaptureContext {
             // this is just a raw PDF... so start the import.
             handleStartCaptureWithPDF();
         } else {
-            handleStartCaptureWithEPUB();
+            ContentCaptureContextEPUB.handleStartCaptureWithEPUB();
         }
 
     }
