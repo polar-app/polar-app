@@ -1,11 +1,9 @@
 {
   "packages": [],
-  "version": "2.1.126",
+  "version": "polar.latest",
   "concurrency": 10,
   "mutex": "network",
   "useWorkspaces": true,
   "npmClient": "yarn",
-  "npmClientArgs": [
-    "--no-optional"
-  ]
+  "npmClientArgs": ["--no-optional"]
 }

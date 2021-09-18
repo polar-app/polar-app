@@ -1,6 +1,6 @@
 {
   "name": "polar-create-module",
-  "version": "2.1.126",
+  "version": "polar.latest",
   "description": "A module to create polar-modules",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -14,12 +14,12 @@
     "polar-create-module": "./bin/polar-create-module"
   },
   "dependencies": {
-    "polar-shared": "^2.1.126"
+    "polar-shared": "polar.latest"
   },
   "author": "Polar",
   "license": "ISC",
   "devDependencies": {
-    "polar-eslint": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "polar.latest",
+    "polar-typescript": "polar.latest"
   }
 }

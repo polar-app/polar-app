@@ -1,6 +1,6 @@
 {
   "name": "polar-assets",
-  "version": "2.1.126",
+  "version": "polar.latest",
   "description": "",
   "scripts": {
     "dist": "echo noop"

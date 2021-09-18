@@ -1,6 +1,6 @@
 {
   "name": "polar-backend-shared",
-  "version": "2.1.126",
+  "version": "polar.latest",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -28,11 +28,11 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "polar.latest",
+    "polar-typescript": "polar.latest"
   },
   "dependencies": {
-    "polar-shared-webserver": "^2.1.126",
+    "polar-shared-webserver": "polar.latest",
     "tsconfig": "^7.0.0"
   }
 }

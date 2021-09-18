@@ -1,6 +1,6 @@
 {
   "name": "polar-thumbnail",
-  "version": "2.1.126",
+  "version": "polar.latest",
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
   "scripts": {
@@ -20,14 +20,14 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.126",
-    "polar-test": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "polar.latest",
+    "polar-test": "polar.latest",
+    "polar-typescript": "polar.latest"
   },
   "dependencies": {
     "@types/puppeteer": "=5.4.3",
-    "polar-pdf": "^2.1.126",
-    "polar-shared": "^2.1.126",
+    "polar-pdf": "polar.latest",
+    "polar-shared": "polar.latest",
     "puppeteer": "=9.1.1"
   }
 }
