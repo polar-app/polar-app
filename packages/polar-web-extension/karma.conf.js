@@ -1,6 +1,16 @@
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const svgToMiniDataURI = require('mini-svg-data-uri');
+
 module.exports = (config) => {
     config.set({
+        client: {
+            mocha: {
+                timeout : 60000
+            }
+        },
+        // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
+
         customHeaders: [
             {
                 match: '.*',
@@ -14,61 +24,64 @@ module.exports = (config) => {
             }
         ],
 
-        frameworks: ['mocha', 'karma-typescript'],
+        // make sure to include webpack as a framework
+        frameworks: ['mocha', 'webpack'],
+
+        plugins: [
+            'karma-chrome-launcher',
+            'karma-webpack',
+            'karma-mocha',
+            'karma-spec-reporter',
+            'karma-junit-reporter'
+        ],
+
         files: [
-            // all files ending in "_test"
-            { pattern: 'src/**/*.ts', watched: false },
-            { pattern: 'src/**/*.tsx', watched: false },
+
+            { pattern: 'src/**/*TestK.ts', watched: false },
+
         ],
 
         preprocessors: {
-            'src/**/*.ts': ['karma-typescript'],
-            'src/**/*.tsx': ['karma-typescript'],
+            // add webpack as preprocessor
+            'src/**/*TestK.ts': ['webpack'],
         },
-
-        reporters: ["dots", "karma-typescript"],
-
         singleRun: true,
-        karmaTypescriptConfig: {
-            tsconfig: "./tsconfig.json",
-            bundlerOptions: {
-                acornOptions: {
-                    ecmaVersion: 8,
-                },
-                transforms: [
-                    require("karma-typescript-es6-transform")({
-                        plugins: [
-                            '@babel/plugin-transform-runtime',
-                            '@babel/plugin-transform-spread',
-                            '@babel/plugin-transform-classes',
-                            '@babel/plugin-proposal-object-rest-spread'
-                        ],
-                        // presets: [
-                        //     ["@babel/preset-env", {
-                        //         // targets: {
-                        //         //     browsers: ["last 2 Chrome versions"]
-                        //         // }
-                        //     }]
-                        // ]
-                        // presets: [
-                        //     ["@babel/preset-env", {
-                        //         targets: {
-                        //             chrome: '60'
-                        //         },
-                        //     }]
-                        // ]
-                        // presets: ["es2015", "react"]
-                        presets: [
-                            ["@babel/preset-env", {
-                                targets: {
-                                    chrome: '60'
-                                },
-                            }]
-                        ]
 
-                    })
+        reporters: ['junit', 'spec'],
+
+        webpack: {
+            plugins: [
+                new NodePolyfillPlugin(),
+            ],
+            module: {
+                rules: [
+                    {
+                        // make SVGs use data URLs.
+                        test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'url-loader',
+                                options: {
+                                    limit: 32768,
+                                    generator: (content) => svgToMiniDataURI(content.toString()),
+                                }
+                            },
+                        ],
+                    },
+
                 ]
-            }
+
+            },
+            resolve: {
+                fallback: {
+                    fs: false,
+                    net: false,
+                    tls: false,
+                    child_process: false
+                }
+            },
+
         },
     });
-};
+}
