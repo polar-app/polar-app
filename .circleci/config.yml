@@ -31,16 +31,7 @@ commands:
             sudo yarn global add lerna@4.0.0
             sudo yarn global add npm@7.19.1
             sudo yarn global add firebase-tools@9.16.0
-
-  # & Install Semver
-  semver_setup:
-    description: Install Semver Globally
-    steps:
-      - run:
-          name: Install Semver Globally
-          command: |
-            sudo apt update -y
-            sudo apt install semver -y
+            sudo yarn global add semver
 
   # & Publishing setup steps
   build_setup:
@@ -227,7 +218,6 @@ jobs:
     steps:
       - global_modules_setup
       - publishing_setup
-      - semver_setup
       - attach_workspace:
           at: ~/
       - run:
