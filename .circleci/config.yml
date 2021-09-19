@@ -223,6 +223,10 @@ jobs:
       - run:
           name: Automatic Versioning
           command: |
+            sudo apt install golang-go
+            export GOPATH="$HOME/go"
+            PATH="$GOPATH/bin:$PATH"
+            go get github.com/github-release/github-release
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git fetch
             TEMP_VERSION='90.135.0'
