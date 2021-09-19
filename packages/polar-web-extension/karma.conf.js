@@ -9,6 +9,13 @@ const isDev = mode === 'development';
 module.exports = (config) => {
     config.set({
         client: {
+            // only run tests targeting node/karma or JUST karma but never JUST
+            // node.
+            args: [
+                './{,!(node_modules)/**}/*Test.js',
+                './{,!(node_modules)/**}/*TestK.js',
+                './{,!(node_modules)/**}/*TestNK.js'
+            ],
             mocha: {
                 timeout : 60000
             }
