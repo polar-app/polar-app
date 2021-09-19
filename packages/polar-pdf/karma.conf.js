@@ -53,6 +53,9 @@ module.exports = (config) => {
             { pattern: 'src/**/*.ts', watched: false },
 
         ],
+        exclude: [
+          'src/**/*.d.ts'
+        ],
 
         preprocessors: {
             // add webpack as preprocessor
