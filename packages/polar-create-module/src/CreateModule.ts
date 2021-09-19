@@ -565,6 +565,14 @@ module.exports = (config) => {
             module: {
                 rules: [
                     {
+                        test: /TestN.ts$/,
+                        use: [
+                            {
+                                loader: 'null-loader'
+                            }
+                        ]
+                    },
+                    {
                         test: /.d.ts$/,
                         use: [
                             {
@@ -577,6 +585,7 @@ module.exports = (config) => {
                         exclude: [
                             /node_modules/,
                             /.d.ts$/,
+                            /TestN.ts$/
                         ],
                         use: [
                             {
