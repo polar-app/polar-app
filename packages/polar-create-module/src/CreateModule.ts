@@ -99,8 +99,9 @@ async function updateScripts(): Promise<void> {
             }
 
             if (conf.noKarma) {
-                pkg.scripts.test = "echo no karma";
+                pkg.scripts.karma = "echo no karma";
             } else {
+                pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;";
                 pkg.devDependencies['polar-karma'] = `^${pkg.version}`;
                 pkg.devDependencies['polar-webpack'] = `^${pkg.version}`;
             }
@@ -485,6 +486,9 @@ export namespace Package {
 
 export namespace Karma {
 
+    // FIXME: ignore *.d.ts
+    // FIXME:
+
     export function createV0() {
 
         return `
@@ -539,13 +543,13 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'src/**/*TestK.ts', watched: false },
+            { pattern: 'src/**/*.ts', watched: false },
 
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            'src/**/*TestK.ts': ['webpack'],
+            'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -593,7 +597,7 @@ module.exports = (config) => {
                     },
                     {
                         // make SVGs use data URLs.
-                        test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                        test: /\\.(svg)(\\?v=\\d+\\.\\d+\\.\\d+)?$/i,
                         exclude: [],
                         use: [
                             {

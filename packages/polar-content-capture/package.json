@@ -9,7 +9,8 @@
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +26,9 @@
     "polar-mocha": "^2.1.126",
     "polar-test": "^2.1.126",
     "polar-typescript": "^2.1.126",
-    "wait-for-expect": "3.0.1"
+    "wait-for-expect": "3.0.1",
+    "polar-karma": "^2.1.126",
+    "polar-webpack": "^2.1.126"
   },
   "dependencies": {
     "jszip": "=3.5.0",

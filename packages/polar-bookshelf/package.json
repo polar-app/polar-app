@@ -26,7 +26,7 @@
     "webpack-serve": "node --max_old_space_size=4096 node_modules/.bin/webpack serve",
     "find-unhandled-promises": "yarn run tslint | grep 'Promises must be handled appropriately' | grep -v 'web/test' ; true",
     "serve": "node scripts/serve.js",
-    "karma": "../../node_modules/karma/bin/karma start",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
@@ -104,7 +104,9 @@
     "wait-for-expect": "3.0.1",
     "webpack": "=5.26.3",
     "webpack-cli": "=4.5.0",
-    "workbox-cli": "=5.1.3"
+    "workbox-cli": "=5.1.3",
+    "polar-karma": "^2.1.126",
+    "polar-eslint": "^2.1.126"
   },
   "dependencies": {
     "@antv/g6": "^4.3.2",
