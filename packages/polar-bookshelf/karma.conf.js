@@ -50,7 +50,8 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'src/**/*.ts', watched: false },
+            { pattern: 'apps/**/*.ts', watched: false },
+            { pattern: 'web/js/**/*.ts', watched: false },
 
         ],
         exclude: [
@@ -59,7 +60,8 @@ module.exports = (config) => {
 
         preprocessors: {
             // add webpack as preprocessor
-            'src/**/*.ts': ['webpack'],
+            'apps/**/*.ts': ['webpack'],
+            'web/js/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -133,6 +135,35 @@ module.exports = (config) => {
                                 options: {
                                     limit: 32768,
                                     generator: (content) => svgToMiniDataURI(content.toString()),
+                                }
+                            },
+                        ],
+                    },
+                    {
+                        test: /\.css$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'style-loader',
+                            },
+                            {
+                                loader: 'css-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /\.scss$/,
+                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                    },
+                    {
+                        test: /fonts\.googleapis\.com\/css/,
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
                                 }
                             },
                         ],

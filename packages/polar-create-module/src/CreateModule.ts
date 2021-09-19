@@ -630,7 +630,35 @@ module.exports = (config) => {
                             },
                         ],
                     },
-
+                    {
+                        test: /\\.css$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'style-loader',
+                            },
+                            {
+                                loader: 'css-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /\\.scss$/,
+                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                    },
+                    {
+                        test: /fonts\\.googleapis\\.com\\/css/,
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
+                                }
+                            },
+                        ],
+                    },
                 ]
 
             },
