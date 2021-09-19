@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Whitespace} from "./Whitespace";
-import { assertJSON } from 'polar-test/src/test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 
 describe('Whitespace', function() {
 
