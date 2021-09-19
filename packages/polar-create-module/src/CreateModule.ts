@@ -493,6 +493,7 @@ export namespace Karma {
 
         return `
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const os = require("os");
 const workers = os.cpus().length - 1;
@@ -662,6 +663,14 @@ module.exports = (config) => {
                 ]
 
             },
+            plugins: [
+                // ...webpackConfig.plugins,
+                new webpack.DefinePlugin({
+                    'process.env': { NODE_ENV: JSON.stringify('test') }
+                })
+            ],
+            entry: undefined,
+            devtool: "eval",
             resolve: {
                 fallback: {
                     fs: false,
