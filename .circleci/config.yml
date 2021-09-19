@@ -19,6 +19,7 @@ commands:
             - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
+            - "SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
 
   # & Install Global Modules
   global_modules_setup:
@@ -223,9 +224,6 @@ jobs:
       - run:
           name: Automatic Versioning
           command: |
-            ssh-keyscan github.com >> githubKey
-            GITHUB_KEY=$(ssh-keygen -lf githubKey)
-            echo $GITHUB_KEY >> ~/.ssh/known_hosts
             git fetch
             TEMP_VERSION='90.135.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
