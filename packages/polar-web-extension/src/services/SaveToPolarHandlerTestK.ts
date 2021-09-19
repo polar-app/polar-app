@@ -1,9 +1,9 @@
 import {SaveToPolarHandler} from "./SaveToPolarHandler";
 import {MockChrome} from "../MockChrome";
 
-const interactions = MockChrome.createChromeAndInject();
-
 describe("SaveToPolarHandler", function() {
+
+    const interactions = MockChrome.createChromeAndInject();
 
     it("load page", () => {
 
