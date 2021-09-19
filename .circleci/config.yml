@@ -8,6 +8,23 @@ orbs:
 
 # ~ Pre-Script Steps to Execute before Jobs
 commands:
+  # & Tag Publishing Setup
+  tag_publishing_setup:
+    description: Tag Publishing Setup
+    steps:
+      # ! Install Go,ghr,config git
+      - run:
+          name: Tag Publishing Setup
+          command: |
+            mkdir ~/.ssh
+            sudo apt install golang-go
+            go get -u github.com/tcnksm/ghr
+            export GOPATH="$HOME/go"
+            PATH="$GOPATH/bin:$PATH"
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git config --global user.email "$CI_PUBLISHER_EMAIL"
+            git config --global user.name "$CI_PUBLISHER_NAME"
+
   # & Publishing setup steps
   publishing_setup:
     description: set the SSH keys and Hashes required to deploy
@@ -218,16 +235,12 @@ jobs:
     steps:
       - global_modules_setup
       - publishing_setup
+      - tag_publishing_setup
       - attach_workspace:
           at: ~/
       - run:
           name: Automatic Versioning
           command: |
-            sudo apt install golang-go
-            export GOPATH="$HOME/go"
-            PATH="$GOPATH/bin:$PATH"
-            go get github.com/github-release/github-release
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
             git fetch
             TEMP_VERSION='90.135.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
@@ -236,9 +249,8 @@ jobs:
             lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            echo -e "Current Latest Version is $LATEST_VERSION"
-            echo -e "Pushing New Tag"
-            git push --tags
+            echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
       - run:
           name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
