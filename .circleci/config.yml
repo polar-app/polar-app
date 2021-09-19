@@ -223,6 +223,9 @@ jobs:
       - run:
           name: Automatic Versioning
           command: |
+            ssh-keyscan github.com >> githubKey
+            GITHUB_KEY=$(ssh-keygen -lf githubKey)
+            echo $GITHUB_KEY >> ~/.ssh/known_hosts
             git fetch
             TEMP_VERSION='90.135.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
