@@ -26,7 +26,7 @@
     "webpack-serve": "node --max_old_space_size=4096 node_modules/.bin/webpack serve",
     "find-unhandled-promises": "yarn run tslint | grep 'Promises must be handled appropriately' | grep -v 'web/test' ; true",
     "serve": "node scripts/serve.js",
-    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;",
+    "karma": "echo no karma for now",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
