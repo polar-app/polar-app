@@ -22,7 +22,7 @@
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
-    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
+    "karma": "echo no karma"
   },
   "dependencies": {
     "@types/escape-html": "0.0.20",
