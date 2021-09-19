@@ -57,7 +57,7 @@ describe('BlockContentStructureConverter', () => {
 
             const output = BlockContentStructureConverter.toHTML(blockStructure);
 
-            assert.equal(output, '<ul><li>item1</li><li><a href="https://www.google.com">a link</a><ul><li>hmm</li><li><img src="https://link.to.image" alt="image"/><ul><li>potato</li></ul></li></ul></li><li>item3</li><li>Test bold italics <a contenteditable="false" href="#Wiki">Wiki</a></li><li>Hello</li></ul>');
+            assert.equal(output, '<ul><li>item1</li><li><a href="https://www.google.com">a link</a><ul><li>hmm</li><li><img src="https://link.to.image" alt="image"/><ul><li>potato</li></ul></li></ul></li><li>item3</li><li>Test bold italics <a contenteditable="false" class="note-link" href="#Wiki">Wiki</a></li><li>Hello</li></ul>');
         });
     });
 });

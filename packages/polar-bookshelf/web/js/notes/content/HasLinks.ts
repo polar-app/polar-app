@@ -26,14 +26,18 @@ export class HasLinks implements IHasLinksContent {
     public removeLink(id: BlockIDStr) {
         const newLinks = [];
         let removed = false;
+
         // Only remove the first occurrence since we might have multiple links to the same block
         for (let link of this.links) {
+
             if (! removed && id === link.id) {
                 removed = true;
                 continue;
             }
+
             newLinks.push(link);
         }
+
         this._links = newLinks;
     }
 

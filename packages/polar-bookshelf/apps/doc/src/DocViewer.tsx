@@ -372,10 +372,16 @@ const useDocumentBlockMigrator = () => {
         };
 
         const createDocumentBlock = (): BlockIDStr => {
+            const tags = Object.entries(docMeta.docInfo.tags || {})
+                .reduce((acc, [key, tag]) => ({ ...acc, [key]: { ...tag, source: 'self' } }), {});
+
+            const links = AnnotationBlockMigrator.tagsToLinks(blocksStore, tags);
+
             return blocksStore.createNewNamedBlock({
                 content: new DocumentContent({
                     type: "document",
                     docInfo: docMeta.docInfo,
+                    links,
                 })
             });
         };
@@ -390,6 +396,9 @@ const useDocumentBlockMigrator = () => {
         };
 
         const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | null => {
+            const links = annotation.tags
+                ? AnnotationBlockMigrator.tagsToLinks(blocksStore, annotation.tags)
+                : [];
 
             const getContent = (): AnnotationContent | MarkdownContent | null => {
                 switch (annotation.annotationType) {
@@ -398,27 +407,32 @@ const useDocumentBlockMigrator = () => {
                             .migrateTextHighlight(
                                 annotation.original as ITextHighlight,
                                 annotation.pageNum,
-                                fingerprint
+                                fingerprint,
+                                links,
                             );
                     case AnnotationType.AREA_HIGHLIGHT:
                         return AnnotationBlockMigrator
                             .migrateAreaHighlight(
                                 annotation.original as IAreaHighlight,
                                 annotation.pageNum,
-                                fingerprint
+                                fingerprint,
+                                links,
                             );
                     case AnnotationType.FLASHCARD:
                         return AnnotationBlockMigrator
                             .migrateFlashcard(
                                 annotation.original as IFlashcard,
                                 annotation.pageNum,
-                                fingerprint
+                                fingerprint,
+                                links,
                             );
                     case AnnotationType.COMMENT:
+                        const wikiLinks = AnnotationBlockMigrator.linksToMarkdown(links);
+                        const markdown = AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content);
                         return new MarkdownContent({
                             type: 'markdown',
                             links: [],
-                            data: AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content),
+                            data: `${markdown} ${wikiLinks}`,
                         });
                     default:
                         return null;
@@ -430,6 +444,8 @@ const useDocumentBlockMigrator = () => {
             if (! content) {
                 return null;
             }
+
+            links.map(content.addLink.bind(content));
 
             return blocksStore.createNewBlock(id, { content, asChild: true }).id;
         };

@@ -1,10 +1,8 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {IActiveBlock, useBlocksStore} from '../store/BlocksStore';
-import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
-import {BlockAction} from "./BlockAction";
 import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
@@ -14,11 +12,11 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
-import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
 import {BlockPredicates} from '../store/BlockPredicates';
 import {DOMBlocks} from './DOMBlocks';
+import {BlockActionsProvider} from './BlockActions';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -129,20 +127,6 @@ export const BlockContentEditable = (props: IProps) => {
         onPasteText,
         id: props.id,
     });
-    const namedBlocks = useNamedBlocks();
-
-    const noteLinkActions = React.useMemo(() => {
-        return namedBlocks.map((block) => {
-            const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
-            return {
-                id: name,
-                text: name,
-            };
-        });
-    }, [namedBlocks]);
-
-    const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
-
 
     const handleChange = React.useCallback(() => {
 
@@ -172,7 +156,7 @@ export const BlockContentEditable = (props: IProps) => {
         handleChange();
     }, [handleChange]);
 
-    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyUp = React.useCallback(() => {
 
         // note that we have to first use trim on this because sometimes
         // chrome uses &nbsp; which is dumb
@@ -241,55 +225,38 @@ export const BlockContentEditable = (props: IProps) => {
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
-    const contentEditableInner = (
-        <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
-            <div ref={handleRef}
-                 onPaste={handlePaste}
-                 onClick={props.onClick}
-                 onMouseDown={props.onMouseDown}
-                 contentEditable={true}
-                 spellCheck={props.spellCheck}
-                 data-id={props.id}
-                 className={props.className}
-                 id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
-                 style={{
-                     outline: 'none',
-                     whiteSpace: 'pre-wrap',
-                     wordBreak: 'break-word',
-                     ...props.style
-                 }}
-                 dangerouslySetInnerHTML={{__html: content}}/>
-        </NoteFormatPopper>
-    );
-
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
             <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
-
-                {props.canHaveLinks
-                    ? (
-                        <BlockAction id={props.id}
-                                     trigger="[["
-                                     actionsProvider={createNoteActionsProvider}
-                                     onAction={(id) => ({
-                                        type: 'link-to-block',
-                                        target: id
-                                    })}>
-
-                            {contentEditableInner}
-
-                        </BlockAction>
-                    ) : contentEditableInner
-                }
-
+                <BlockActionsProvider id={props.id}>
+                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
+                        <div ref={handleRef}
+                             onPaste={handlePaste}
+                             onClick={props.onClick}
+                             onMouseDown={props.onMouseDown}
+                             contentEditable={true}
+                             spellCheck={props.spellCheck}
+                             data-id={props.id}
+                             className={props.className}
+                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+                             style={{
+                                 outline: 'none',
+                                 whiteSpace: 'pre-wrap',
+                                 wordBreak: 'break-word',
+                                 ...props.style
+                             }}
+                             dangerouslySetInnerHTML={{__html: content}} />
+                    </NoteFormatPopper>
+                </BlockActionsProvider>
             </div>
 
         </NoteContentEditableElementContext.Provider>
     );
 
 };
+
 
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.

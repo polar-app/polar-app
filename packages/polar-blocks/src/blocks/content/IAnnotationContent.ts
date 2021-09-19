@@ -3,6 +3,7 @@ import {IBaseContent} from "./IBaseContent";
 import {IBlockTextHighlight} from "../../annotations/IBlockTextHighlight";
 import {IBlockAreaHighlight} from "../../annotations/IBlockAreaHighlight";
 import {IBlockFlashcard} from "../../annotations/IBlockFlashcard";
+import {IHasLinksContent} from "./IHasLinksContent";
 
 export enum AnnotationContentType {
     TEXT_HIGHLIGHT = "annotation-text-highlight",
@@ -22,7 +23,7 @@ export type IAnnotationContentTypeMap = {
  * Reference to a polar annotation.  We directly extend ITextHighlight and
  * IAnnotationHighlight here and reference the rest as inline metadata.
  */
-export interface IAnnotationContentBase<T extends `${AnnotationContentType}`, V extends IAnnotationContentValue> extends IBaseContent {
+export interface IAnnotationContentBase<T extends `${AnnotationContentType}`, V extends IAnnotationContentValue> extends IBaseContent, IHasLinksContent {
 
     readonly type: T;
 

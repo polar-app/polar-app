@@ -7,8 +7,9 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import isNil from "lodash/isNil";
 import omitBy from "lodash/omitBy";
 import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {HasLinks} from "./HasLinks";
 
-export abstract class AnnotationContentBase<T extends IAnnotationContent> implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
+export abstract class AnnotationContentBase<T extends IAnnotationContent> extends HasLinks implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
     @observable private readonly _type: T['type'];
     @observable private _mutator: DeviceIDStr;
     @observable private _docID: IDStr;
@@ -16,6 +17,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> implem
     @observable private _value: T['value'];
 
     constructor(opts: T) {
+        super(opts);
 
         this._type = opts.type;
         this._mutator = opts.mutator || '';
@@ -57,6 +59,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> implem
             this._docID = content.docID;
             this._value = content.value;
             this._mutator = content.mutator || '';
+            this.updateLinks(content.links);
         } else {
             throw new Error("Invalid type: " +  content.type)
         }
@@ -76,6 +79,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> implem
             pageNum: this._pageNum,
             value: this.valueToJSON(this._value),
             mutator: this._mutator,
+            links: toJS(this.links),
         } as T;
     }
 }

@@ -8,7 +8,7 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {BlockPredicates, TextContent} from "./store/BlockPredicates";
+import {BlockPredicates, EditableContent, TextContent} from "./store/BlockPredicates";
 import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
@@ -185,7 +185,7 @@ export namespace BlockTextContentUtils {
         });
     }
 
-    export function updateTextContentMarkdown(content: Exclude<TextContent, FlashcardAnnotationContent>, markdown: MarkdownStr): TextContent {
+    export function updateTextContentMarkdown(content: Exclude<EditableContent, FlashcardAnnotationContent>, markdown: MarkdownStr): EditableContent {
         switch(content.type) {
             case "markdown":
                 return new MarkdownContent({ ...content.toJSON(), data: markdown });
@@ -205,7 +205,7 @@ export namespace BlockTextContentUtils {
         }
     };
 
-    export function getTextContentMarkdown(content: TextContent | DocumentContent) {
+    export function getTextContentMarkdown(content: TextContent) {
         switch (content.type) {
             case 'date':
             case 'name':

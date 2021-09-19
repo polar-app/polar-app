@@ -32,6 +32,7 @@ describe('BlockTextContentUtils', () => {
         type: AnnotationContentType.TEXT_HIGHLIGHT,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: {
             text: 'hello world',
             rects: {},
@@ -43,12 +44,14 @@ describe('BlockTextContentUtils', () => {
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: BlockFlashcards.createCloze('Hello')
     });
     const frontBackFlashcard = new FlashcardAnnotationContent({
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: BlockFlashcards.createFrontBack('', 'Hello')
     });
 

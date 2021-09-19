@@ -27,8 +27,6 @@ import {BlockTextContentUtils} from "../NoteUtils";
 import {DateContent} from "../content/DateContent";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 
@@ -568,6 +566,7 @@ describe('BlocksStore', function() {
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
                         "_type": 'document',
+                        "_links": [],
                         "_docInfo": {
                             "flagged": false,
                             "nrPages": 55,
@@ -600,6 +599,7 @@ describe('BlocksStore', function() {
                         "_type": AnnotationContentType.TEXT_HIGHLIGHT,
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
+                        "_links": [],
                         "_pageNum": 15,
                         "_value": {
                             "text": 'text highlight content',
@@ -624,6 +624,7 @@ describe('BlocksStore', function() {
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
                         "_pageNum": 15,
+                        "_links": [],
                         "_value": {
                             "rects": {},
                             "color": 'yellow',
@@ -651,6 +652,7 @@ describe('BlocksStore', function() {
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
                         "_pageNum": 15,
+                        "_links": [],
                         "_value": {
                             "type": FlashcardType.BASIC_FRONT_BACK,
                             "fields": {
