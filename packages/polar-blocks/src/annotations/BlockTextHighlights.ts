@@ -11,6 +11,6 @@ export namespace BlockTextHighlights {
      * @return {string}
      */
     export function toText(textHighlight: IBlockTextHighlight): MarkdownStr {
-        return textHighlight.revisedText || textHighlight.text;
+        return textHighlight.revisedText !== undefined ? textHighlight.revisedText : textHighlight.text;
     }
 }
