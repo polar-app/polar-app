@@ -50,8 +50,7 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'apps/**/*.ts', watched: false },
-            { pattern: 'web/js/**/*.ts', watched: false },
+            { pattern: 'src/**/*.ts', watched: false },
 
         ],
         exclude: [
@@ -60,8 +59,7 @@ module.exports = (config) => {
 
         preprocessors: {
             // add webpack as preprocessor
-            'apps/**/*.ts': ['webpack'],
-            'web/js/**/*.ts': ['webpack'],
+            'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -168,7 +166,6 @@ module.exports = (config) => {
                             },
                         ],
                     },
-
                 ]
 
             },
