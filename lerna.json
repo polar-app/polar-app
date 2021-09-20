@@ -5,7 +5,5 @@
   "mutex": "network",
   "useWorkspaces": true,
   "npmClient": "yarn",
-  "npmClientArgs": [
-    "--no-optional"
-  ]
+  "npmClientArgs": ["--no-optional"]
 }
