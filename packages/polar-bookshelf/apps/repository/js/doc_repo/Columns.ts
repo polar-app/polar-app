@@ -33,7 +33,7 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'keywords', numeric: false, disablePadding: true, label: 'Keywords', width: '250px', defaultOrder: 'asc' },
     { id: 'authors', numeric: true, disablePadding: true, label: 'Authors', width: '250px', defaultOrder: 'asc' },
     { id: 'editor', numeric: true, disablePadding: true, label: 'Editors', width: '250px', defaultOrder: 'asc' },
-    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px', defaultOrder: 'desc' },
+    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '85px', defaultOrder: 'desc' },
 ];
 
 export const DOC_BUTTON_COLUMN_WIDTH = '130px';
