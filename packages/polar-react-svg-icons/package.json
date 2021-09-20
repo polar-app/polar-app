@@ -1,6 +1,6 @@
 {
   "name": "polar-react-svg-icons",
-  "version": "90.135.0",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
   "devDependencies": {
-    "polar-eslint": "90.135.0",
-    "polar-karma": "90.135.0",
-    "polar-typescript": "90.135.0",
-    "polar-webpack": "90.135.0"
+    "polar-eslint": "0.0.0",
+    "polar-karma": "0.0.0",
+    "polar-typescript": "0.0.0",
+    "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "polar-react": "90.135.0"
+    "polar-react": "0.0.0"
   },
   "files": [
     "**/*.js",

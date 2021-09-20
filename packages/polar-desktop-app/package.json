@@ -1,6 +1,6 @@
 {
   "name": "polar-desktop-app",
-  "version": "90.135.0",
+  "version": "0.0.0",
   "description": "Polar",
   "main": "./main-bundle.js",
   "private": true,
@@ -52,10 +52,10 @@
     "fork-ts-checker-webpack-plugin": "=6.2.0",
     "mocha": "=9.1.1",
     "null-loader": "=4.0.1",
-    "polar-eslint": "90.135.0",
-    "polar-karma": "90.135.0",
-    "polar-typescript": "90.135.0",
-    "polar-webpack": "90.135.0",
+    "polar-eslint": "0.0.0",
+    "polar-karma": "0.0.0",
+    "polar-typescript": "0.0.0",
+    "polar-webpack": "0.0.0",
     "source-map-support": "=0.5.19",
     "thread-loader": "=3.0.1",
     "ts-loader": "=8.0.18",
@@ -63,8 +63,8 @@
     "webpack-cli": "=4.5.0"
   },
   "dependencies": {
-    "polar-bookshelf": "90.135.0",
-    "polar-shared": "90.135.0"
+    "polar-bookshelf": "0.0.0",
+    "polar-shared": "0.0.0"
   },
   "collective": {
     "type": "opencollective",
