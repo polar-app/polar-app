@@ -6,6 +6,8 @@ import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import {UserAvatar} from '../../../../web/js/ui/cloud_auth/UserAvatar';
+import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 
 export interface IProps {
 
@@ -20,6 +22,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
 
     const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();
+    const userInfoContext = useUserInfoContext()
 
     const {setFilters} = callbacks;
 
@@ -36,7 +39,13 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
     return (
         <>
             <DeviceRouters.NotDesktop>
-                <span style={{display: 'flex', alignItems: 'center' ,textAlign: 'center'}}>My workspace</span>
+                <div style={{display: 'flex',  width: '100%', alignItems: 'center'}}>
+
+                    <span>My workspace</span>
+
+                    <UserAvatar style={{marginLeft: 'auto'}} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
+
+                </div>
             </DeviceRouters.NotDesktop>
             <DeviceRouters.Desktop>
                 <MUIButtonBar>
