@@ -371,7 +371,6 @@ export namespace AnswerExecutor {
             const firestore = FirestoreAdmin.getInstance();
 
             // One token is roughly 4 characters as per OpenAI docs
-            const openAiTokens = question.length / 4;
             const costEstimated = openAiTokens * getPricePerToken(model);
 
             const trace: IAnswerExecutorTraceMinimal = {
@@ -389,7 +388,6 @@ export namespace AnswerExecutor {
                 timings,
                 vote: undefined,
                 expectation: undefined,
-                costEstimated,
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
@@ -407,23 +405,6 @@ export namespace AnswerExecutor {
             timings
         }
 
-    }
-
-    /**
-     * Given an OpenAI model name, return how much will a single "token" will cost
-     * @see https://beta.openai.com/pricing/
-     */
-    function getPricePerToken(model: "ada" | "babbage" | "curie" | "davinci") {
-        switch (model) {
-            case "ada":
-                return 0.0008 / 1000;
-            case "babbage":
-                return 0.0012 / 1000;
-            case "curie":
-                return 0.0060 / 1000;
-            case "davinci":
-                return 0.0600 / 1000;
-        }
     }
 
 }

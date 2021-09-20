@@ -50,11 +50,6 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
      */
     readonly expectation: string | undefined;
 
-    /**
-     * Approximately how much this request cost, in USD
-     */
-    readonly costEstimated: number;
-
 }
 export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
