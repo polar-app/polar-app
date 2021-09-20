@@ -1,5 +1,4 @@
 import React from "react";
-import { Plans } from "polar-accounts/src/Plans";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
@@ -7,10 +6,8 @@ import KeyboardIcon from '@material-ui/icons/Keyboard';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Divider from "@material-ui/core/Divider";
 import {Analytics} from "../analytics/Analytics";
-import { useActiveKeyboardShortcutsCallbacks } from "../hotkeys/ActiveKeyboardShortcutsStore";
-import {deepMemo} from "../react/ReactUtils";
-import { useLinkLoader } from "../ui/util/LinkLoaderHook";
-import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
+import {useActiveKeyboardShortcutsCallbacks} from "../hotkeys/ActiveKeyboardShortcutsStore";
+import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import {FADiscordIcon} from "../mui/MUIFontAwesome";
 import {Nav} from "../ui/util/Nav";
 import {useZest} from "../zest/ZestInjector";
@@ -18,6 +15,7 @@ import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {SideNavQuestionMenuItem} from "./SideNavQuestionMenuItem";
 import Menu from "@material-ui/core/Menu";
+import {Devices} from "polar-shared/src/util/Devices";
 
 function useReportFeedback() {
 
@@ -202,7 +200,7 @@ export function SideNavQuestionButton() {
             <Menu open={anchorEl !== null}
                   onClose={handleClose}
                   onClick={handleClose}
-                  transitionDuration={0}
+                  transitionDuration={Devices.isDesktop() ? 0 : undefined}
                   autoFocus={true}
                   anchorOrigin={{
                       vertical: 'top',

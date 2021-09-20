@@ -1,6 +1,6 @@
 {
   "name": "polar-html",
-  "version": "2.1.126",
+  "version": "90.135.0",
   "description": "",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -19,9 +19,9 @@
     "@types/sanitize-html": "=1.27.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.126",
-    "polar-test": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "90.135.0",
+    "polar-test": "90.135.0",
+    "polar-typescript": "90.135.0"
   },
   "dependencies": {
     "sanitize-html": "~2.1.1"
