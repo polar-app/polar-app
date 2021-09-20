@@ -21,7 +21,8 @@
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "karma": "echo no karma"
   },
   "dependencies": {
     "@types/escape-html": "0.0.20",
@@ -34,6 +35,8 @@
   },
   "devDependencies": {
     "polar-eslint": "90.135.0",
-    "polar-typescript": "90.135.0"
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   }
 }

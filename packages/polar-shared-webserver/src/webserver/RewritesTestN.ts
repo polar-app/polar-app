@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {Rewrites} from "./Rewrites";
 import {PathToRegexps} from "polar-shared/src/url/PathToRegexps";
-import { assertJSON } from 'polar-test/src/test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 
 describe('RewritesTest', function() {
 

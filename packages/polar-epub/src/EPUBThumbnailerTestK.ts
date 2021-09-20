@@ -6,7 +6,8 @@ import Crypto from 'crypto';
 
 describe('EPUBThumbnailer', function () {
 
-    it("given a valid epub THEN extract its thumbnail", async function () {
+    // TODO: can't run in karma due to FS so we need an alternative
+    xit("given a valid epub THEN extract its thumbnail", async function () {
 
         // Arrange
         const epubFile = FilePaths.resolve(__dirname, '../alice.epub');

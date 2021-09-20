@@ -4,6 +4,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {DOMTextHits} from "./DOMTextHits";
 import {Strings} from "polar-shared/src/util/Strings";
 import {DOMTextIndexes} from "./DOMTextIndexes";
+
 const jsdomGlobal = require('jsdom-global');
 
 describe('DOMTextIndexes', function() {

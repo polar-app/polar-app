@@ -7,7 +7,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "karma": "=6.3.2",
+    "karma": "=6.3.4",
     "karma-chai": "=0.1.0",
     "karma-chrome-launcher": "=3.1.0",
     "karma-firefox-launcher": "=2.1.1",
@@ -16,9 +16,10 @@
     "karma-safari-launcher": "=1.0.0",
     "karma-sourcemap-loader": "=0.3.8",
     "karma-spec-reporter": "=0.0.32",
-    "karma-typescript": "=5.5.1",
-    "karma-typescript-es6-transform": "=5.5.1",
+    "karma-typescript": "=5.5.2",
+    "karma-typescript-es6-transform": "=5.5.2",
     "karma-webpack": "=5.0.0",
     "puppeteer": "=9.1.1"
-  }
+  },
+  "devDependencies": {}
 }
