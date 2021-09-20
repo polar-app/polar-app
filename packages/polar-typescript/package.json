@@ -1,6 +1,6 @@
 {
   "name": "polar-typescript",
-  "version": "2.1.126",
+  "version": "90.135.0",
   "description": "Typescript support and all dependent packages",
   "scripts": {},
   "keywords": [],
@@ -9,6 +9,5 @@
   "dependencies": {
     "@types/estree": "=0.0.47",
     "typescript": "=4.4.3"
-  },
-  "devDependencies": {}
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "polar-assets-basic-flat-icons",
-  "version": "2.1.126",
+  "version": "90.135.0",
   "description": "",
   "scripts": {
     "dist": "echo noop"
@@ -19,6 +19,5 @@
   "files": [
     "**/*.svg",
     "package.json"
-  ],
-  "devDependencies": {}
+  ]
 }

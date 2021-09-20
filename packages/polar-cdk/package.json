@@ -1,6 +1,6 @@
 {
   "name": "polar-cdk",
-  "version": "2.1.126",
+  "version": "90.135.0",
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -21,11 +21,11 @@
     "aws-cdk": "^1.117.0",
     "esbuild": "^0.12.19",
     "firebase-admin": "=9.11.0",
-    "polar-eslint": "^2.1.126",
-    "polar-typescript": "^2.1.126",
-    "ts-node": "^10.2.0",
-    "polar-karma": "^2.1.126",
-    "polar-webpack": "^2.1.126"
+    "polar-eslint": "^90.135.0",
+    "polar-karma": "^90.135.0",
+    "polar-typescript": "^90.135.0",
+    "polar-webpack": "^90.135.0",
+    "ts-node": "^10.2.0"
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.117.0",
@@ -34,10 +34,10 @@
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
     "node-fetch": "=2.6.1",
-    "polar-accounts": "^2.1.126",
-    "polar-admin": "^2.1.126",
-    "polar-firebase": "^2.1.126",
-    "polar-hooks-functions": "^2.1.126",
+    "polar-accounts": "^90.135.0",
+    "polar-admin": "^90.135.0",
+    "polar-firebase": "^90.135.0",
+    "polar-hooks-functions": "^90.135.0",
     "source-map-support": "=0.5.19"
   }
 }
