@@ -17,10 +17,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/file-saver": "^2.0.1",
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
     "file-saver": "^2.0.2"

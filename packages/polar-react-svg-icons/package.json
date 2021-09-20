@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
   "devDependencies": {
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
-    "polar-react": "^90.135.0"
+    "polar-react": "90.135.0"
   },
   "files": [
     "**/*.js",

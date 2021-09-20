@@ -28,15 +28,15 @@
     "@types/escape-html": "0.0.20",
     "@types/uuid": "3.4.5",
     "escape-html": "^1.0.3",
-    "polar-backend-shared": "^90.135.0",
-    "polar-firebase": "^90.135.0",
-    "polar-webapp-dist": "^90.135.0",
+    "polar-backend-shared": "90.135.0",
+    "polar-firebase": "90.135.0",
+    "polar-webapp-dist": "90.135.0",
     "uuid": "3.3.3"
   },
   "devDependencies": {
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   }
 }

@@ -18,15 +18,15 @@
   "license": "ISC",
   "devDependencies": {
     "firebase-tools": "=9.16.0",
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.13.2",
     "firebase-admin": "=9.11.0",
-    "polar-firebase": "^90.135.0",
-    "polar-shared": "^90.135.0"
+    "polar-firebase": "90.135.0",
+    "polar-shared": "90.135.0"
   }
 }

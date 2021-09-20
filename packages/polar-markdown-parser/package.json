@@ -19,10 +19,10 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
     "@types/marked": "=1.2.0",

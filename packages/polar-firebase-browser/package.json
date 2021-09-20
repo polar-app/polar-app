@@ -21,17 +21,17 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-test": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-test": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
     "firebase": "=8.8.1",
-    "polar-firebase-test": "^90.135.0",
-    "polar-firestore-like": "^90.135.0",
-    "polar-shared": "^90.135.0",
-    "polar-snapshot-cache": "^90.135.0"
+    "polar-firebase-test": "90.135.0",
+    "polar-firestore-like": "90.135.0",
+    "polar-shared": "90.135.0",
+    "polar-snapshot-cache": "90.135.0"
   }
 }

@@ -23,13 +23,13 @@
   "devDependencies": {
     "@types/node": "=14.14.35",
     "@types/pdfjs-dist": "2.1.71-polar.2",
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   },
   "dependencies": {
-    "polar-shared": "^90.135.0"
+    "polar-shared": "90.135.0"
   },
   "files": [
     "**/*.js",

@@ -15,14 +15,14 @@
     "polar-create-module": "./bin/polar-create-module"
   },
   "dependencies": {
-    "polar-shared": "^90.135.0"
+    "polar-shared": "90.135.0"
   },
   "author": "Polar",
   "license": "ISC",
   "devDependencies": {
-    "polar-eslint": "^90.135.0",
-    "polar-karma": "^90.135.0",
-    "polar-typescript": "^90.135.0",
-    "polar-webpack": "^90.135.0"
+    "polar-eslint": "90.135.0",
+    "polar-karma": "90.135.0",
+    "polar-typescript": "90.135.0",
+    "polar-webpack": "90.135.0"
   }
 }
