@@ -34,7 +34,7 @@ export const MUIBottomNavigation = ()  => {
                           showLabels
                           className={classes.root}>
             <BottomNavigationAction label="Home" value='/' icon={<HomeIcon/>} />
-            <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} />
+            {/* <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} /> */}
             <BottomNavigationAction label="Add" value='#add' icon={<AddIcon />} />
             <BottomNavigationAction label="Switch" value='#switch' icon={<ViewCarouselIcon />} />
         </BottomNavigation>
