@@ -170,14 +170,14 @@ module.exports = (config) => {
                 ]
 
             },
-            plugins: [
-                // ...webpackConfig.plugins,
-                new webpack.DefinePlugin({
-                    'process.env': { NODE_ENV: JSON.stringify('test') }
-                })
-            ],
-            entry: undefined,
-            devtool: "eval",
+            // plugins: [
+            //     // ...webpackConfig.plugins,
+            //     new webpack.DefinePlugin({
+            //         'process.env': { NODE_ENV: JSON.stringify('development') }
+            //     })
+            // ],
+            // entry: undefined,
+            // devtool: "eval",
             resolve: {
                 fallback: {
                     fs: false,
