@@ -1,6 +1,6 @@
 {
   "name": "polar-answers",
-  "version": "2.1.126",
+  "version": "90.135.0",
   "description": "",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -19,19 +19,19 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.126",
-    "polar-firebase-admin": "^2.1.126",
-    "polar-test": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "90.135.0",
+    "polar-firebase-admin": "90.135.0",
+    "polar-test": "90.135.0",
+    "polar-typescript": "90.135.0"
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5",
-    "polar-answers-api": "^2.1.126",
-    "polar-blocks": "^2.1.126",
-    "polar-firebase": "^2.1.126",
-    "polar-google-cloud-language": "^2.1.126",
-    "polar-pdf": "^2.1.126",
-    "polar-shared": "^2.1.126"
+    "polar-answers-api": "90.135.0",
+    "polar-blocks": "90.135.0",
+    "polar-firebase": "90.135.0",
+    "polar-google-cloud-language": "90.135.0",
+    "polar-pdf": "90.135.0",
+    "polar-shared": "90.135.0"
   },
   "files": [
     "**/*.js",
