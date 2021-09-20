@@ -8,10 +8,13 @@ import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
 import {BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {BlockImageContent} from "../BlockImageContent";
+import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 
 interface IProps extends BlockEditorGenericProps {
-    annotation: AreaHighlightAnnotationContent;
+    readonly annotation: AreaHighlightAnnotationContent;
+
+    readonly created: ISODateString;
 }
 
 export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => {
@@ -55,7 +58,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
                         readonly={readonly}
                         onKeyDown={onKeyDown} />
                 )}
-                <DocAnnotationMoment style={{ marginTop: 4 }} created={highlight.created} />
+                <DocAnnotationMoment style={{ marginTop: 4 }} created={props.created} />
             </BlockHighlightContentWrapper>
         </BlockAnnotationActionsWrapper>
     );

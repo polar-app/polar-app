@@ -29,7 +29,7 @@ describe('Results', function() {
 
     it("Serializing an error", async function () {
 
-        let error = new Error("test");
+        const error = new Error("test");
 
         let result = Results.createError(error);
 
@@ -41,7 +41,7 @@ describe('Results', function() {
         result = JSON.parse(JSON.stringify(result));
 
         assert.notEqual(result.err, undefined);
-        assert.notEqual(result.err!.stack, undefined);
+        assert.notEqual((result.err! as any).stack, undefined);
 
         let expected = {
             err: {
@@ -53,7 +53,8 @@ describe('Results', function() {
 
         let canonicalizedResult = Object.assign({}, result);
 
-        canonicalizedResult.err!.stack = "...";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (canonicalizedResult.err! as any).stack = "...";
 
         assertJSON(canonicalizedResult, expected)
 

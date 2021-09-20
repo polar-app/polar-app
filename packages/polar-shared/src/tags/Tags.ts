@@ -1,3 +1,4 @@
+// eslint-disable-next-line camelcase
 import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
@@ -73,7 +74,7 @@ export namespace Tags {
         if ( ! strippedLabel.isPresent()) {
             return Optional.empty();
         }
-
+        // eslint-disable-next-line camelcase
         if (twitter_txt.isValidHashtag(strippedLabel.get())) {
             return Optional.of(label);
         }

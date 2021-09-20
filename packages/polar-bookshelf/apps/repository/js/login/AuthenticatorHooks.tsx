@@ -280,7 +280,7 @@ export async function executeCloudFunction<S, E>(cloudFunctionName: string, body
     } catch (e) {
         return {
             code: 'fetch-error',
-            message: e.message
+            message: (e as any).message || 'error'
         };
     }
 }

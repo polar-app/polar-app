@@ -11,30 +11,28 @@ import {CloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Images} from "../metadata/Images";
 import {ICapturedScreenshot} from "../screenshots/Screenshot";
 import {AreaHighlightAnnotationContent} from "./content/AnnotationContent";
+import {MAIN_HIGHLIGHT_COLORS} from "../ui/ColorMenu";
 
 export namespace BlockAreaHighlight {
+
+    export function screenshotDataToBlob(data: string | ArrayBuffer) {
+        if (typeof data === 'string') {
+            return DataURLs.toBlob(data);
+        } else {
+            return ArrayBuffers.toBlob(data);
+        }
+    }
     
     export async function persistScreenshot(cloudStorage: CloudStorage, screenshot: ICapturedScreenshot) {
         const id = Images.createID();
         const ext = Images.toExt(screenshot.type);
-
-
-        const toBlob = () => {
-
-            if (typeof screenshot.data === 'string') {
-                return DataURLs.toBlob(screenshot.data);
-            } else {
-                return ArrayBuffers.toBlob(screenshot.data);
-            }
-
-        };
 
         const name = `${id}.${ext}`;
 
         const writeResult = await cloudStorage.writeFile(
             Backend.IMAGE,
             { name },
-            toBlob(),
+            BlockAreaHighlight.screenshotDataToBlob(screenshot.data),
             { visibility: Visibility.PUBLIC },
         );
 
@@ -66,7 +64,7 @@ export namespace BlockAreaHighlight {
 
         const {
             capturedScreenshot: screenshot,
-            areaHighlight,
+            areaHighlight: { rects, color, order, position },
         } = await AreaHighlightRenderers.createAreaHighlightFromEvent(
             pageNum,
             rect,
@@ -81,7 +79,12 @@ export namespace BlockAreaHighlight {
                 pageNum,
                 type: AnnotationContentType.AREA_HIGHLIGHT,
                 docID: fingerprint,
-                value: areaHighlight,
+                value: {
+                    color: color || MAIN_HIGHLIGHT_COLORS[0],
+                    rects,
+                    position,
+                    order,
+                },
             }),
         };
     }

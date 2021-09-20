@@ -8,7 +8,7 @@ export function useIntercomData(): IntercomData | undefined {
 
     const userInfo = context?.userInfo;
 
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line camelcase
     const app_id = "wk5j7vo0";
 
     if (! userInfo) {

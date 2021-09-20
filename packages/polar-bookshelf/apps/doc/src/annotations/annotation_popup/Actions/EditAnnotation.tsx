@@ -1,14 +1,10 @@
 import React from "react";
-import {getAnnotationData, useAnnotationPopup} from "../AnnotationPopupContext";
+import {getTextHighlightText, useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
-import {ITextConverters} from "../../../../../../web/js/annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
 
 type EditAnnotationForm = {
     body: string;
@@ -19,19 +15,18 @@ export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => 
     const { clear } = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
-    const { annotation: annotationData } = React.useMemo(() => getAnnotationData(annotation), [annotation]);
     const { update } = useAnnotationBlockManager();
 
     const inputs = React.useMemo<InputOptions<EditAnnotationForm>>(() => {
-        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
+        const text = getTextHighlightText(annotation);
 
         return {
             body: {
                 placeholder: "Highlight text",
                 initialValue: text
-            }
+            },
         };
-    }, [annotationData]);
+    }, [annotation]);
 
     const onSubmit = React.useCallback(({ body }: EditAnnotationForm) => {
         if (annotation.type === 'docMeta') {
@@ -44,7 +39,7 @@ export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => 
             const contentJSON = annotation.annotation.content.toJSON();
             update(annotation.annotation.id, {
                 ...contentJSON,
-                value: { ...contentJSON.value, revisedText: Texts.create(body, TextType.MARKDOWN) }
+                value: { ...contentJSON.value, revisedText: body }
             })
         }
         dialogs.snackbar({ message: "Highlight updated successfully." });

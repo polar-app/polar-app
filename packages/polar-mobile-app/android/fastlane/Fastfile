@@ -35,7 +35,7 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play"
-  lane :production do
+  lane :release do
     increment_version_code(gradle_file_path: "./app/build.gradle")
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'production')

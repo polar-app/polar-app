@@ -148,14 +148,14 @@ export function createIntercomClient(): IIntercomClient | undefined {
 
 export function toIntercomData(user: IAnalyticsUser | undefined): IntercomData {
 
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line camelcase
     const app_id = "wk5j7vo0";
 
     if (! user) {
         return {app_id};
     }
 
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line camelcase
     const created_at = Math.floor(ISODateTimeStrings.parse(user.created).getTime() / 1000);
 
     const data: IIntercomDataForAuthenticatedUser = {

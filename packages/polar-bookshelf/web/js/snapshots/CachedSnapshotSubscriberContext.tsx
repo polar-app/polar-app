@@ -2,9 +2,8 @@ import * as React from 'react';
 import {Subject} from "rxjs";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
-import {
-    useLocalCachedSnapshotSubscriber
-} from "./CachedSnapshotSubscriber";
+import {useLocalCachedSnapshotSubscriber} from "./CachedSnapshotSubscriber";
+import {ErrorType} from '../ui/data_loader/UseSnapshotSubscriber';
 
 export interface ISnapshot<V> {
 
@@ -50,7 +49,7 @@ const DEFAULT_PREDICATE = (value: ISnapshot<any> | undefined) => true;
 interface ProviderProps<V> {
     readonly id: string;
     readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
-    readonly onError: (err: Error) => void;
+    readonly onError: (err: ErrorType) => void;
     readonly children: JSX.Element | React.ReactNode;
 
     /**

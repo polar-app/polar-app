@@ -79,7 +79,7 @@ export class Providers {
         let memoized: boolean = false;
 
         // an error that the provider threw
-        let err: Error | undefined;
+        let err: unknown | undefined;
 
         // the value that the provider returned.
         let memo: T | undefined;
@@ -124,7 +124,7 @@ export class Providers {
         let lastUpdated: number = 0;
 
         // an error that the provider threw
-        let err: Error | undefined;
+        let err: unknown | undefined;
 
         // the value that the provider returned.
         let value: T | undefined;

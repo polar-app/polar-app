@@ -2,39 +2,31 @@ import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
-import {
-    AbstractPersistenceLayer,
-    PersistenceLayer,
-    PersistenceLayerID
-} from '../PersistenceLayer';
-import {DocMeta} from '../../metadata/DocMeta';
+import {AbstractPersistenceLayer, PersistenceLayer, PersistenceLayerID, WriteOpts} from '../PersistenceLayer';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {
     BinaryFileData,
     Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
+    DatastoreOverview,
     DeleteResult,
     DocMetaSnapshotEventListener,
-    DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
-    SnapshotResult
+    SnapshotResult,
+    WriteFileOpts
 } from '../Datastore';
-import {WriteFileOpts} from '../Datastore';
-import {DatastoreOverview} from '../Datastore';
-import {DatastoreCapabilities} from '../Datastore';
-import {DatastoreInitOpts} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
-import {WriteOpts} from '../PersistenceLayer';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {UserTagsDB} from "../UserTagsDB";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersistenceLayer implements ListenablePersistenceLayer {
@@ -86,7 +78,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
                 });
 
             } catch (e) {
-                onError(e);
+                onError({err: e, unsubscriber});
             }
 
         }

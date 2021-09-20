@@ -26,12 +26,19 @@ interface AppleVerifyReceiptResponse {
     receipt: {
         [key: string]: string | number | unknown[],
     },
+    // eslint-disable-next-line camelcase
     latest_receipt_info: {
+        // eslint-disable-next-line camelcase
         product_id: "plan_plus" | "plan_pro",
+        // eslint-disable-next-line camelcase
         transaction_id: string,
+        // eslint-disable-next-line camelcase
         original_transaction_id: string,
+        // eslint-disable-next-line camelcase
         purchase_date_ms: string,
+        // eslint-disable-next-line camelcase
         expire_date_ms: string,
+        // eslint-disable-next-line camelcase
         in_app_ownership_type: "PURCHASED",
     }[],
 }
@@ -65,16 +72,12 @@ export const AppleIapCallback = ExpressFunctions.createHookAsync('AppleIapCallba
         return;
     }
 
-    const email = request.email;
-
     const result = await verifyReceipt(request.receipt);
 
     if (!result.receipt || result.status === 21002) {
         ExpressFunctions.sendError(res, Error('Failed to validate the receipt with Apple'));
         return;
     }
-
-    // console.log("Response from Apple verifyReceipt(): ", JSON.stringify(result, null, 2));
 
     console.log('latest_receipt_info->sorted', result.latest_receipt_info);
 

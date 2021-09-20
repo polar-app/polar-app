@@ -7,6 +7,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 export namespace MockBlocks {
 
@@ -421,17 +422,9 @@ export namespace MockBlocks {
                     docID: '2020document',
                     pageNum: 15,
                     value: {
-                        created: now,
-                        id: '15',
-                        guid: '15',
-                        text: Texts.create('text highlight content', TextType.MARKDOWN),
-                        notes: {},
+                        text: 'text highlight content',
                         rects: {},
-                        images: {},
-                        questions: {},
-                        flashcards: {},
-                        lastUpdated: now,
-                        textSelections: {},
+                        color: 'yellow',
                     }
                 },
                 items: {}, 
@@ -451,15 +444,13 @@ export namespace MockBlocks {
                     docID: '2020document',
                     pageNum: 15,
                     value: {
-                        created: now,
-                        id: '15',
-                        guid: '15',
-                        notes: {},
                         rects: {},
-                        images: {},
-                        questions: {},
-                        flashcards: {},
-                        lastUpdated: now,
+                        color: 'yellow',
+                        image: {
+                            id: 'http://google.com',
+                            type: 'image/png',
+                            src: { backend: Backend.IMAGE, name: 'google.png' }
+                        },
                     }
                 },
                 items: PositionalArrays.create([
@@ -482,16 +473,12 @@ export namespace MockBlocks {
                     docID: '2020document',
                     pageNum: 15,
                     value: {
-                        created: now,
-                        id: '15',
-                        guid: '15',
-                        lastUpdated: now,
                         type: FlashcardType.BASIC_FRONT_BACK,
                         fields: {
-                            front: Texts.create('front', TextType.MARKDOWN),
-                            back: Texts.create('back', TextType.MARKDOWN),
+                            front: 'front',
+                            back: 'back',
                         },
-                        archetype: 'whatever'
+                        archetype: 'whatever',
                     }
                 },
                 items: {}, 

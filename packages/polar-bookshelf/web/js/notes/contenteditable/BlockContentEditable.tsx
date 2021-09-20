@@ -6,7 +6,7 @@ import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
 import {CursorPositions} from "./CursorPositions";
-import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
+import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {BlockEditorGenericProps} from '../BlockEditor';
@@ -88,7 +88,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     const onPasteHTML = React.useCallback((html: HTMLStr) => document.execCommand("insertHTML", false, html), []);
 
-    const onPasteError = React.useCallback((err: Error) => console.error("Got paste error: ", err), []);
+    const onPasteError = React.useCallback((err: unknown) => console.error("Got paste error: ", err), []);
 
     const onPasteText = React.useCallback((text: string) => {
         document.execCommand("insertHTML", false, text);
@@ -97,10 +97,10 @@ export const BlockContentEditable = (props: IProps) => {
          * This is mainly done so that when links are pasted they get converted into anchor tags and immediately reflected onto the UI
          *
          * Usually we don't need to update the contentEditable div with new data once it arrives
-         * unless it's coming from somewhere else (another user) because the user is the one changing 
+         * unless it's coming from somewhere else (another user) because the user is the one changing
          * the content of the contentEditable div, so we know that the data from the store will match
          * the data in the contentEditable div.
-         * 
+         *
          * But here we have to do it because MarkdownContentConverter.toHTML uses the `marked` package
          * which converts links into anchor tags automatically.
          */
@@ -208,7 +208,7 @@ export const BlockContentEditable = (props: IProps) => {
 
                 /**
                  * Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
-                 * 
+                 *
                  * This is because of when we split the content of a block
                  * the cursor gets reset to the start in that block before getting transferred to the new one.
                  */

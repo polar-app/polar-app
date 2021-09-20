@@ -6,6 +6,7 @@ import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDStr} from "polar-shared/src/util/Strings";
 import isNil from "lodash/isNil";
 import omitBy from "lodash/omitBy";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 
 export abstract class AnnotationContentBase<T extends IAnnotationContent> implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
     @observable private readonly _type: T['type'];
@@ -84,7 +85,11 @@ export class TextHighlightAnnotationContent extends AnnotationContentBase<ITextH
 
 export class AreaHighlightAnnotationContent extends AnnotationContentBase<IAreaHighlightAnnotationContent> {}
 
-export class FlashcardAnnotationContent extends AnnotationContentBase<IFlashcardAnnotationContent> {}
+export class FlashcardAnnotationContent<T extends IBlockFlashcard = IBlockFlashcard> extends AnnotationContentBase<IFlashcardAnnotationContent<T>> {
+    constructor(opts: IFlashcardAnnotationContent<T>) {
+        super(opts);
+    }
+}
 
 
 export type AnnotationHighlightContent = TextHighlightAnnotationContent
