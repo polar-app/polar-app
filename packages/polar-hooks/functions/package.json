@@ -86,7 +86,7 @@
     "polar-eslint": "90.135.0",
     "polar-karma": "90.135.0",
     "polar-test": "90.135.0",
-    "polar-typescript": "^2.1.126",
+    "polar-typescript": "90.135.0",
     "polar-webpack": "90.135.0"
   }
 }

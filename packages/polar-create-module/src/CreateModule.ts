@@ -102,12 +102,12 @@ async function updateScripts(): Promise<void> {
                 pkg.scripts.karma = "echo no karma";
             } else {
                 pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;";
-                pkg.devDependencies['polar-karma'] = `^${pkg.version}`;
-                pkg.devDependencies['polar-webpack'] = `^${pkg.version}`;
+                pkg.devDependencies['polar-karma'] = `${pkg.version}`;
+                pkg.devDependencies['polar-webpack'] = `${pkg.version}`;
             }
 
-            pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
-            pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
+            pkg.devDependencies['polar-eslint'] = `${pkg.version}`;
+            pkg.devDependencies['polar-typescript'] = `${pkg.version}`;
 
         } else {
             delete pkg.scripts.mocha;
@@ -469,7 +469,7 @@ export namespace Package {
     export function createV0(name: string, description: string) {
         return {
             "name": name,
-            "version": "2.1.107", // TODO: how do we set this now?
+            "version": "0.0.0", // TODO: how do we set this now?
             "description": description,
             "scripts": {
                 "test": "",

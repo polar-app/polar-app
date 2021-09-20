@@ -20,5 +20,6 @@
     "karma-typescript-es6-transform": "=5.5.2",
     "karma-webpack": "=5.0.0",
     "puppeteer": "=9.1.1"
-  }
+  },
+  "devDependencies": {}
 }
