@@ -63,8 +63,8 @@
     "webpack-cli": "=4.5.0"
   },
   "dependencies": {
-    "polar-bookshelf": "^90.135.0",
-    "polar-shared": "^90.135.0"
+    "polar-bookshelf": "90.135.0",
+    "polar-shared": "90.135.0"
   },
   "collective": {
     "type": "opencollective",
