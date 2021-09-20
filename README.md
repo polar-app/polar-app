@@ -37,9 +37,12 @@ with all the code kept in one place.
 
 - To compile all packages, run `lerna run compile`
 
-- To compile only Polar Bookshelf (the main React app), go to `cd packages/polar-bookshelf` and run `npx webpack serve`
-  or if you get "JavaScript heap out of memory" errors, an alternative that's slightly slower but uses slightly less
-  RAM: `node --max-old-space-size=7000 ./node_modules/.bin/webpack serve`
+- To compile only Polar Bookshelf (the main React app), go to `cd packages/polar-bookshelf` and run `yarn run webpack-serve`
+
+  - NOTE: if you get "JavaScript heap out of memory" errors, an alternative that's
+  slightly slower but uses slightly less RAM: 
+  
+  ```node --max-old-space-size=7000 ./node_modules/.bin/webpack serve```
 
 This _should_ mean you have all code running and Polar should load http://127.0.0.1:8050 in your browser.
 
@@ -118,4 +121,9 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/proj
 
 - Request permission from kevin to be added to firestore console.
 
-
+- Install the React Chrome Devtools to help debug our app. It allows you to
+  explore the component tree to figure out which component is responsible for
+  rendering parts of the UI.  This is probably the easiest way to familiarize yourself
+  with our webapp.
+  
+  - https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en

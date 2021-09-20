@@ -65,11 +65,11 @@ AAA: Sacramento
         extended
     }
 
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line camelcase
     export function create(key: keyof IPrompts, query_text: string) {
 
         const basePrompt = PROMPTS[key];
-
+    // eslint-disable-next-line camelcase
         return `${basePrompt}\nText: ${query_text.trim()}\nQQQ:`
 
     }

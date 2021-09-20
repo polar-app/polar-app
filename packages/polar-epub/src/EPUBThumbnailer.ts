@@ -4,6 +4,10 @@ import {Canvases} from "polar-shared/src/util/Canvases";
 import {Images} from "polar-shared/src/util/Images";
 import {Blobs} from "polar-shared/src/util/Blobs";
 import {ImageTypes} from "polar-shared/src/util/ImageTypes";
+import * as path from "path";
+import StreamZip from "node-stream-zip";
+import {PathOrURLStr} from "polar-shared/src/util/Strings";
+import {getXmlToJSON} from "./util/getXmlToJSON";
 
 export namespace EPUBThumbnailer {
 
@@ -13,7 +17,7 @@ export namespace EPUBThumbnailer {
 
         const coverURL = await book.coverUrl();
 
-        if (! coverURL) {
+        if (!coverURL) {
             return undefined;
         }
 
@@ -22,7 +26,7 @@ export namespace EPUBThumbnailer {
         const response = await fetch(coverURL);
         const blob = await response.blob();
 
-        if (! ImageTypes.isImageType(blob.type)) {
+        if (!ImageTypes.isImageType(blob.type)) {
             throw new Error("Type not accepted: " + blob.type);
         }
 
@@ -47,4 +51,55 @@ export namespace EPUBThumbnailer {
 
     }
 
+    /**
+     * Given a path to an epub file, try to resolve the path to its cover image
+     * from the epub manifest and unzip that file to `targetPath`
+     *
+     * @param epubFilePath
+     * @param coverTargetPath
+     */
+    export async function extractToFile(epubFilePath: PathOrURLStr, coverTargetPath: string,) {
+        const zip = new StreamZip.async({
+            file: path.resolve(__dirname, epubFilePath),
+            storeEntries: true,
+        });
+
+        const data = await zip.entryData('META-INF/container.xml');
+
+        const rootFile = getXmlToJSON(data.toString())
+            .container
+            .rootfiles
+            .rootfile['@_full-path'];
+
+        const rootFileData = await zip.entryData(rootFile);
+
+        const rootFileAsJSON = getXmlToJSON(rootFileData.toString());
+        const coverXmlElement = rootFileAsJSON.package.metadata.meta.find((el: { [x: string]: string; }) => el['@_name'] === 'cover');
+        const coverId = coverXmlElement['@_content'];
+
+        const coverPathRelativeToRootFile = rootFileAsJSON.package.manifest.item
+            .map((item: { [x: string]: any; }) => {
+                const id = item['@_id'];
+                const href = item['@_href'];
+                const properties = String(item['@_properties']);
+                const hrefIsAnImage = (href.match(/^.*\.(jpg|jpeg|png)$/g) || []).length > 0;
+
+                const itemIdMightBeCover = (id === coverId) || (id.includes('cover') && hrefIsAnImage);
+                const itemPropertiesMightBeCover = (properties === coverId) || (properties.includes('cover') && hrefIsAnImage);
+
+                return itemIdMightBeCover || itemPropertiesMightBeCover ? href : undefined;
+            })
+            .find((value: any) => !!value);
+
+        const coverPathRelativeToEpubRoot = path.join(path.parse(rootFile).dir, coverPathRelativeToRootFile);
+
+        if (!coverPathRelativeToEpubRoot) {
+            await zip.close();
+            throw new Error('@TODO Can not extract cover from this EPUB');
+        }
+        await zip.extract(coverPathRelativeToEpubRoot, coverTargetPath);
+
+        await zip.close();
+        return true;
+    }
 }

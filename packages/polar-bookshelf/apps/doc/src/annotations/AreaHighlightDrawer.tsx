@@ -11,7 +11,7 @@ import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {useCreateBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -31,7 +31,7 @@ export const AreaHighlightCreator: React.FC = () => {
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const classes = useAreaHighlightCreatorStyles();
     const {fileType} = useDocViewerContext();
-    const createBlockAreaHighlight = useCreateBlockAreaHighlight();
+    const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
@@ -47,12 +47,11 @@ export const AreaHighlightCreator: React.FC = () => {
             }
 
             const docViewerElement = docViewerElements.getDocViewerElement();
-            createBlockAreaHighlight({
+            createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
                 rect,
                 pageNum,
                 fileType,
                 docScale,
-                fingerprint: docMeta.docInfo.fingerprint,
                 docViewerElement,
             }).catch(console.error);
 
@@ -171,13 +170,13 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             }
             return false;
         };
-        
+
         const cleanup = (endPosition: IPoint) => {
             if (!pageElement || !rectElem || !start || !pageRect) {
                 return;
             }
 
-            const rect = calculateRectDimensions(start, endPosition, pageRect);
+            const rect = calculateRectDimensions(start, endPosition, pageRect as ClientRect);
             pageElement.removeChild(rectElem);
             if (rect.width > threshold.x || rect.height > threshold.y) {
                 callbackRef.current({
@@ -202,7 +201,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 return;
             }
             e.preventDefault();
-            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect);
+            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect as ClientRect);
             updateDOMRect(rectElem, rect);
         };
 
@@ -232,7 +231,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             e.preventDefault();
             const touch = e.touches[e.touches.length - 1];
             lastPosition = { x: touch.clientX, y: touch.clientY };
-            const rect = calculateRectDimensions(start, lastPosition, pageRect);
+            const rect = calculateRectDimensions(start, lastPosition, pageRect as ClientRect);
             updateDOMRect(rectElem, rect);
         };
 

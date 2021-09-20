@@ -9,10 +9,13 @@
  */
 
 import React from 'react';
-import {Alert, Linking, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Alert, Linking, Platform, SafeAreaView, StatusBar, StyleSheet, View, Text} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
 import {EmailTempStorage} from "./util/EmailTempStorage";
+
+const hasNotch = DeviceInfo.hasNotch();
 
 const App = () => {
     const billing = new Billing();
@@ -23,7 +26,7 @@ const App = () => {
     });
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={styles.safeAreaView}>
             <View
                 style={styles.container}>
                 <InAppLiteServer
@@ -64,6 +67,11 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
+    safeAreaView: {
+        flex: 1,
+        backgroundColor: '#323638',
+        paddingTop: Platform.OS === 'android' && hasNotch ? StatusBar.currentHeight : 0,
+    },
     container: {
         flex: 1,
     },

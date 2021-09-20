@@ -8,7 +8,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("NSpaces", function() {
 
-    this.timeout(10000);
+    this.timeout(60000);
 
     // FIXME: make sure the same user can't create two namespaces with the same name.
 

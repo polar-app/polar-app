@@ -5,6 +5,9 @@ import {DateContent} from "../content/DateContent";
 import {NamedContent} from "./BlocksStore";
 import {AnnotationContent, AnnotationHighlightContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {DocumentContent} from "../content/DocumentContent";
 
 export type TextContent = MarkdownContent
                           | NameContent
@@ -46,5 +49,23 @@ export namespace BlockPredicates {
     export function isAnnotationHighlightBlock(block: Readonly<Block>): block is Block<AnnotationHighlightContent> {
         const highlightTypes = [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT];
         return highlightTypes.some(type => block.content.type === type);
+    }
+
+    export function isFrontBackFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockFrontBackFlashcard>> {
+        return block.content.type === AnnotationContentType.FLASHCARD
+               && [
+                   FlashcardType.BASIC_FRONT_BACK,
+                   FlashcardType.BASIC_FRONT_BACK_OR_REVERSE,
+                   FlashcardType.BASIC_FRONT_BACK_AND_REVERSE,
+               ].indexOf(block.content.value.type) > -1;
+    }
+
+    export function isClozeFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockClozeFlashcard>> {
+        return block.content.type === AnnotationContentType.FLASHCARD
+               && block.content.value.type === FlashcardType.CLOZE;
+    }
+
+    export function isDocumentBlock(block: Readonly<Block>): block is Block<DocumentContent> {
+        return block.content.type === 'document';
     }
 }

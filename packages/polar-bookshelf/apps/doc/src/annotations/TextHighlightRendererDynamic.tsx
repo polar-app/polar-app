@@ -8,9 +8,11 @@ import {DOMHighlight} from "../../../../web/js/dom_highlighter/DOMHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {PageAnnotation} from "./PageAnnotations";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {IBlockTextHighlight} from 'polar-blocks/src/annotations/IBlockTextHighlight';
 
 interface IProps {
-    readonly pageAnnotation: PageAnnotation<ITextHighlight>;
+    readonly id: string;
+    readonly pageAnnotation: PageAnnotation<ITextHighlight | IBlockTextHighlight>;
     readonly container: HTMLElement,
     readonly onClick?: React.EventHandler<React.MouseEvent>;
 }
@@ -32,7 +34,7 @@ export const TextHighlightRendererDynamic = deepMemo(function TextHighlightRende
     }
 
     if (! text) {
-        console.log("No text for highlight: " + annotation.id);
+        console.log("No text for highlight: " + props.id);
         return null;
     }
 
@@ -57,20 +59,20 @@ export const TextHighlightRendererDynamic = deepMemo(function TextHighlightRende
 
     const {fingerprint, pageNum} = pageAnnotation;
 
-    const className = `text-highlight annotation text-highlight-${annotation.id}`;
+    const className = `text-highlight annotation text-highlight-${props.id}`;
 
     return ReactDOM.createPortal(<DOMHighlight {...hit}
                                                color={color}
                                                data-doc-fingerprint={fingerprint}
-                                               data-text-highlight-id={annotation.id}
+                                               data-text-highlight-id={props.id}
                                                data-page-num={pageNum}
                                                data-annotation-type="text-highlight"
-                                               data-annotation-id={annotation.id}
+                                               data-annotation-id={props.id}
                                                data-annotation-page-num={pageNum}
                                                data-annotation-doc-fingerprint={fingerprint}
                                                data-annotation-color={color}
                                                className={className}
                                                onClick={onClick}
-                                               id={annotation.id}/>, container);
+                                               id={props.id}/>, container);
 
 });

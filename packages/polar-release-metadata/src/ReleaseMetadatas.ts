@@ -42,7 +42,9 @@ export interface ReleaseMetadata {
      */
     readonly id: VersionStr;
     readonly title: string;
+    // eslint-disable-next-line camelcase
     readonly large_image: URLStr | undefined;
+    // eslint-disable-next-line camelcase
     readonly video_embed: URLStr | undefined;
     readonly release: VersionStr;
     readonly html: HTMLStr;

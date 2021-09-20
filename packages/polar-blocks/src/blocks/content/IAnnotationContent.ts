@@ -1,10 +1,8 @@
 import {IDStr} from "polar-shared/src/util/Strings";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {IComment} from "polar-shared/src/metadata/IComment";
 import {IBaseContent} from "./IBaseContent";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-import {IHasLinksContent} from "./IHasLinksContent";
+import {IBlockTextHighlight} from "../../annotations/IBlockTextHighlight";
+import {IBlockAreaHighlight} from "../../annotations/IBlockAreaHighlight";
+import {IBlockFlashcard} from "../../annotations/IBlockFlashcard";
 
 export enum AnnotationContentType {
     TEXT_HIGHLIGHT = "annotation-text-highlight",
@@ -12,7 +10,7 @@ export enum AnnotationContentType {
     FLASHCARD = "annotation-flashcard",
 }
 
-export type IAnnotationContentValue = IAreaHighlight | ITextHighlight | IComment | IFlashcard;
+export type IAnnotationContentValue = IBlockAreaHighlight | IBlockTextHighlight | IBlockFlashcard;
 
 export type IAnnotationContentTypeMap = {
     [AnnotationContentType.FLASHCARD]: IFlashcardAnnotationContent,
@@ -45,15 +43,15 @@ export interface IAnnotationContentBase<T extends `${AnnotationContentType}`, V 
 
 }
 
-export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, ITextHighlight> {
+export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, IBlockTextHighlight> {
 
 }
 
-export interface IAreaHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.AREA_HIGHLIGHT, IAreaHighlight> {
+export interface IAreaHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.AREA_HIGHLIGHT, IBlockAreaHighlight> {
 
 }
 
-export interface IFlashcardAnnotationContent extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, IFlashcard> {
+export interface IFlashcardAnnotationContent<T extends IBlockFlashcard = IBlockFlashcard> extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, T> {
 
 }
 

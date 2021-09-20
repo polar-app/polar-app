@@ -3,13 +3,14 @@ import Alert from "@material-ui/lab/Alert";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {typedMemo} from "../../hooks/ReactHooks";
 import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
+import {ErrorType} from "./UseSnapshotSubscriber";
 
 export interface IDataProps<T> {
     readonly data: T | undefined;
 }
 
 export interface IErrorProps {
-    readonly err: Error;
+    readonly err: ErrorType;
 }
 
 export interface IProps<T> {
@@ -71,7 +72,7 @@ export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
 
     }, []);
 
-    const onError = React.useCallback((err: Error) => {
+    const onError = React.useCallback((err: ErrorType) => {
 
         const data: DataResultError = {
             err,
@@ -105,7 +106,7 @@ export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
         } else {
             return (
                 <Alert severity="error">
-                    Error: {state.data.err.message}
+                    Error: {(state.data.err as any).message}
                 </Alert>
             );
         }
@@ -122,7 +123,7 @@ export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
 export type Unsubscriber = () => void;
 
 export interface DataResultError {
-    readonly err: Error;
+    readonly err: ErrorType;
     readonly value: undefined;
 }
 
