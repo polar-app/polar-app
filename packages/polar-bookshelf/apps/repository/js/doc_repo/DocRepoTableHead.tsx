@@ -17,8 +17,8 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import FlagIcon from '@material-ui/icons/Flag';
 import ArchiveIcon from "@material-ui/icons/Archive";
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
-import { MUIToggleButton } from "polar-bookshelf/web/js/ui/MUIToggleButton";
-import { MUICheckboxIconButton } from "polar-bookshelf/web/js/mui/MUICheckboxIconButton";
+import { MUIToggleButton } from "../../../../web/js/ui/MUIToggleButton";
+import { MUICheckboxIconButton } from "../../../../web/js/mui/MUICheckboxIconButton";
 import { SelectionActiveButtons } from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -159,7 +159,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <MUICheckboxIconButton
                                 indeterminate={selected.length > 0 && selected.length < view.length}
                                 checked={selected.length === view.length && view.length !== 0}
-                                onChange={(event, checked) => handleCheckbox(checked)}/>  
+                                onChange={(_event, checked) => handleCheckbox(checked)}/>  
                         </TableCell> 
                     </DeviceRouters.NotDesktop>                 
                     <DeviceRouters.Desktop>

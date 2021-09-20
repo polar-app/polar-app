@@ -14,20 +14,15 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {Devices} from "polar-shared/src/util/Devices";
-import { PolarSVGIcon } from "polar-bookshelf/web/js/ui/svg_icons/PolarSVGIcon";
-import { Link } from "react-router-dom";
-import { RoutePathnames } from "polar-bookshelf/web/js/apps/repository/RoutePathnames";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
+            flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
             paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(1),
             paddingRight: theme.spacing(1),
-        },
-        brand:{
-            marginLeft: '10px'
         }
     }),
 );
@@ -62,27 +57,17 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
     const classes = useStyles();
 
     return (
-        <Paper square
-               className={classes.root}>
+        <Paper square className={classes.root}>
 
-                {Devices.isDesktop() ? 
-                    <SidenavTrigger/> 
-                    : 
-                    <Link to={RoutePathnames.HOME}>
-                        <PolarSVGIcon className={classes.brand} width={50} height={50}/>
-                    </Link>
-                }
-                
-                <div style={{ display: 'flex' }}>
-                    {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
-                </div>
+            <SidenavTrigger/> 
 
-                <ChromeExtensionInstallBar/>
+            <div style={{ display: 'flex' }}>
+                {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
+            </div>
 
-            {/*always show the filter bar for desktop*/}
-            {Devices.isDesktop() && <DocRepoFilterBar />}
-            {/*on mobile, don't show if some rows are checked*/}
-            {!Devices.isDesktop() && <DocRepoFilterBar />}
+            <ChromeExtensionInstallBar/>
+
+            <DocRepoFilterBar/>
 
         </Paper>
     );

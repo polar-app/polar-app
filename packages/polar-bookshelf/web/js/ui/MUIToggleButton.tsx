@@ -31,7 +31,7 @@ interface IProps {
     readonly label?: string;
     readonly icon?: JSX.Element;
     readonly onChange: (value: boolean) => void;
-    readonly size?: 'small' | 'medium' | 'large';
+    readonly size?: 'small' | 'medium';
     readonly tooltip?: string;
     readonly iconOnly?: boolean;
     readonly className?: string;
