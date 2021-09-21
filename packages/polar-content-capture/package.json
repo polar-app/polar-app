@@ -31,7 +31,7 @@
     "wait-for-expect": "3.0.1"
   },
   "dependencies": {
-    "jszip": "=3.5.0",
+    "jszip": "=3.7.1",
     "polar-shared": "0.0.0"
   },
   "files": [
