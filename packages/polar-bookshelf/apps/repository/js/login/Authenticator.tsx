@@ -25,6 +25,7 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
+import Themes from 'epubjs/types/themes';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -102,8 +103,15 @@ const useStyles = makeStyles((theme) =>
             height: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
+        },
+        linkDecoration: {
+            color: theme.palette.secondary.main, 
+            textDecoration: 'underline'
+        }, 
+        a: {
+            color: theme.palette.text.secondary,
+            textDecoration: 'underline'
         }
-
     }),
 );
 
@@ -158,6 +166,22 @@ const AuthButtonMobile = (props: IAuthButtonProps) => {
 
             </Button>
 
+        </>
+    );
+}
+
+const Links = () => {
+
+    const classes = useStyles();
+
+    const mode = React.useContext(AuthenticatorModeContext);
+
+    return (
+        <>
+            <p className={classes.legal}>
+                You acknowledge that you will read, and agree to
+                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+            </p>
         </>
     );
 }
@@ -829,14 +853,7 @@ const Main = React.memo(function Main(props: IProps) {
             <div style={{flexGrow: 1}}>
 
             </div>
-
-            <div>
-                <p className={classes.legal}>
-                    You acknowledge that you will read, and agree to
-                    our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                </p>
-            </div>
-
+                <Links/>
             </div>
         </DeviceRouters.NotPhone>
 
@@ -873,7 +890,7 @@ const Main = React.memo(function Main(props: IProps) {
                     <div>
                         <p style={{fontSize: '10px'}} className={classes.legal}>
                             You acknowledge that you will read, and agree to
-                            our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
                         </p>
                     </div>
                 </div>
