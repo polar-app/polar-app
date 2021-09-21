@@ -3,7 +3,7 @@ import {MockChrome} from "../MockChrome";
 
 xdescribe("SaveToPolarHandler", function() {
 
-    it("load page", () => {
+    xit("load page", () => {
 
         MockChrome.createChromeAndInject();
 

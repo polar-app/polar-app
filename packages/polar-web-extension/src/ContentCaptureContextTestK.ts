@@ -5,7 +5,7 @@ import {MockChrome} from "./MockChrome";
 
 xdescribe("ContentCaptureContext", function() {
 
-    it("load page", () => {
+    xit("load page", () => {
 
         const interactions = MockChrome.createChromeAndInject();
 

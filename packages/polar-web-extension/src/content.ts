@@ -1,5 +1,7 @@
 import {ContentCaptureContext} from "./ContentCaptureContext";
+import {Karma} from "./Karma";
 
-ContentCaptureContext.handleStartCapture();
-
-console.log("Content script loaded");
+if (! Karma.isKarma()) {
+    ContentCaptureContext.handleStartCapture();
+    console.log("Started capture")
+}

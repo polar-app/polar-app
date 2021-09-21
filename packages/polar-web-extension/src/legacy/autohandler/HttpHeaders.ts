@@ -1,6 +1,3 @@
-import WebResponseHeadersDetails = chrome.webRequest.WebResponseHeadersDetails;
-import WebRequestBodyDetails = chrome.webRequest.WebRequestBodyDetails;
-import WebNavigationParentedCallbackDetails = chrome.webNavigation.WebNavigationParentedCallbackDetails;
 
 class HttpHeaders {
 
@@ -36,7 +33,7 @@ class HttpHeaders {
      *     event. Object with key "responseHeaders" if the headers have been
      *     modified, undefined otherwise.
      */
-    public static createContentDispositionAttachmentHeaders(details: WebResponseHeadersDetails): any | undefined {
+    public static createContentDispositionAttachmentHeaders(details: any /* WebResponseHeadersDetails */): any | undefined {
 
         const headers = details.responseHeaders;
 
