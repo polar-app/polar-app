@@ -1,9 +1,9 @@
 import {SaveToPolarHandler} from "./SaveToPolarHandler";
 import {MockChrome} from "../MockChrome";
 
-xdescribe("SaveToPolarHandler", function() {
+describe("SaveToPolarHandler", function() {
 
-    xit("load page", () => {
+    it("load page", () => {
 
         MockChrome.createChromeAndInject();
 
