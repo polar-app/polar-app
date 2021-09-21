@@ -43,6 +43,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
+import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -325,7 +326,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path="/migration/phz">
                     <PHZMigrationScreen/>
-            </Route>
+                </Route>
 
                 <AuthRequired>
                     <DataProviders>
@@ -351,6 +352,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.ANNOTATIONS}>
                                     <RenderAnnotationRepoScreen/>
+                                </PersistentRoute>
+                                
+                                <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
+                                    <AddFilesMobileScreen/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
