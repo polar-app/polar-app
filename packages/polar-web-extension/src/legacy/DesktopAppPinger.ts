@@ -3,7 +3,7 @@
  * Background 'task' that sends 'ping' requests to the desktop app continually
  * to detect its state.
  */
-class DesktopAppPinger {
+export class DesktopAppPinger {
 
     // TODO: instead of constantly pinging maybe we could ping when we need
     // the app.  We could have a way to just directly fetch the state.

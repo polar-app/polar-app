@@ -1,11 +1,15 @@
-import {handleStartCapture} from "./content";
+import {ContentCaptureContext} from "./ContentCaptureContext";
+import {Karma} from "./Karma";
 
 export namespace ExtensionContextMenus {
 
-    const opts = {
-        title: "Save to Polar"
-    };
+    if (! Karma.isKarma()) {
 
-    chrome.contextMenus.create(opts, handleStartCapture);
+        const opts = {
+            title: "Save to Polar"
+        };
+
+        chrome.contextMenus.create(opts, ContentCaptureContext.handleStartCapture);
+    }
 
 }
