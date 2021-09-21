@@ -1,7 +1,6 @@
-import {QueryRegexps} from "./QueryRegExps";
-import {assert} from "chai";
 import {DOMTextIndexes} from "./DOMTextIndexes";
 import {TextLookupIndexes} from "./TextLookupIndexes";
+
 const jsdomGlobal = require('jsdom-global');
 
 describe('TextLookupIndexes', function() {

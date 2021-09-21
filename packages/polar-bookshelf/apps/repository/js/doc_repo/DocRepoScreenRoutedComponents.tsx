@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
+import {Route, Switch, useHistory} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {RepoHeader} from "../repo_header/RepoHeader3";
