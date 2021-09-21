@@ -24,7 +24,8 @@ describe('DateContents', function() {
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'en-US'}), {
             "data": "2011-12-31",
             "format": "YYYY-MM-DD",
-            "type": "date"
+            "type": "date",
+            "links": [],
         });
 
         TestingTime.forward('5d');
@@ -32,13 +33,15 @@ describe('DateContents', function() {
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'en-US'}), {
             "data": "2012-01-05",
             "format": "YYYY-MM-DD",
-            "type": "date"
+            "type": "date",
+            "links": [],
         });
 
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'es-US'}), {
             "data": "2012-01-05",
             "format": "YYYY-MM-DD",
-            "type": "date"
+            "type": "date",
+            "links": [],
         });
 
         // assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'ja-JP'}), {

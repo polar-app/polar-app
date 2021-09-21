@@ -1,6 +1,6 @@
 {
   "name": "polar-block-permissions",
-  "version": "2.1.126",
+  "version": "0.0.0",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
   },
   "keywords": [],
   "author": "",
@@ -21,17 +22,19 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.126",
-    "polar-firebase-admin": "^2.1.126",
-    "polar-firebase-browser": "^2.1.126",
-    "polar-firebase-test": "^2.1.126",
-    "polar-test": "^2.1.126",
-    "polar-typescript": "^2.1.126"
+    "polar-eslint": "0.0.0",
+    "polar-firebase-admin": "0.0.0",
+    "polar-firebase-browser": "0.0.0",
+    "polar-firebase-test": "0.0.0",
+    "polar-karma": "0.0.0",
+    "polar-test": "0.0.0",
+    "polar-typescript": "0.0.0",
+    "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "polar-blocks": "^2.1.126",
-    "polar-firebase": "^2.1.126",
-    "polar-firestore-like": "^2.1.126",
-    "polar-shared": "^2.1.126"
+    "polar-blocks": "0.0.0",
+    "polar-firebase": "0.0.0",
+    "polar-firestore-like": "0.0.0",
+    "polar-shared": "0.0.0"
   }
 }

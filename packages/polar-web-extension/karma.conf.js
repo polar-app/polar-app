@@ -1,4 +1,6 @@
+
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const os = require("os");
 const workers = os.cpus().length - 1;
@@ -49,13 +51,16 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'src/**/*TestK.ts', watched: false },
+            { pattern: 'src/**/*.ts', watched: false },
 
+        ],
+        exclude: [
+          'src/**/*.d.ts'
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            'src/**/*TestK.ts': ['webpack'],
+            'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -68,9 +73,27 @@ module.exports = (config) => {
             module: {
                 rules: [
                     {
-                        test: /\.(jsx|tsx|ts)$/,
+                        test: /TestN.ts$/,
+                        use: [
+                            {
+                                loader: 'null-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /.d.ts$/,
+                        use: [
+                            {
+                                loader: 'null-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /.(jsx|tsx|ts)$/,
                         exclude: [
                             /node_modules/,
+                            /.d.ts$/,
+                            /TestN.ts$/
                         ],
                         use: [
                             {
@@ -115,10 +138,46 @@ module.exports = (config) => {
                             },
                         ],
                     },
-
+                    {
+                        test: /\.css$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'style-loader',
+                            },
+                            {
+                                loader: 'css-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /\.scss$/,
+                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                    },
+                    {
+                        test: /fonts\.googleapis\.com\/css/,
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
+                                }
+                            },
+                        ],
+                    },
                 ]
 
             },
+            // plugins: [
+            //     // ...webpackConfig.plugins,
+            //     new webpack.DefinePlugin({
+            //         'process.env': { NODE_ENV: JSON.stringify('development') }
+            //     })
+            // ],
+            // entry: undefined,
+            // devtool: "eval",
             resolve: {
                 fallback: {
                     fs: false,

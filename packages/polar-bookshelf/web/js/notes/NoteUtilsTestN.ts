@@ -15,11 +15,13 @@ describe('BlockTextContentUtils', () => {
         data: '2020-11-20',
         format: 'YYYY-MM-DD',
         type: 'date',
+        links: [],
     });
 
     const name = new NameContent({
         data: 'Dog',
         type: 'name',
+        links: [],
     });
 
     const markdown = new MarkdownContent({
@@ -32,6 +34,7 @@ describe('BlockTextContentUtils', () => {
         type: AnnotationContentType.TEXT_HIGHLIGHT,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: {
             text: 'hello world',
             rects: {},
@@ -43,12 +46,14 @@ describe('BlockTextContentUtils', () => {
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: BlockFlashcards.createCloze('Hello')
     });
     const frontBackFlashcard = new FlashcardAnnotationContent({
         type: AnnotationContentType.FLASHCARD,
         docID: 'fingerprint',
         pageNum: 11,
+        links: [],
         value: BlockFlashcards.createFrontBack('', 'Hello')
     });
 

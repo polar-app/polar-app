@@ -1,6 +1,5 @@
 import {Button} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React from "react";
 import {useHistory} from "react-router";
@@ -23,6 +22,7 @@ export const CreateNote = () => {
                 const content = new NameContent({
                     type: 'name',
                     data: text,
+                    links: [],
                 });
                 const id = blocksStore.createNewNamedBlock({ content });
                 history.push(RoutePathnames.NOTE(id));
