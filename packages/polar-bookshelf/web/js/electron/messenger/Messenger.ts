@@ -1,7 +1,7 @@
 import {BrowserWindow} from 'electron';
 import {PostMessageRequest} from './PostMessageRequest';
 import {Functions} from 'polar-shared/src/util/Functions';
-import {isPresent} from "polar-shared/src/Preconditions";
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 declare var window: Window;
 
