@@ -348,8 +348,6 @@ export namespace EPUBGenerator {
 
         async function toArrayBuffer() {
 
-            // FIXMEL this is the bug.. the JSZIP doesn't actually do aything!!!
-
             const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
                 type: 'arraybuffer',
                 // streamFiles: true,
@@ -359,34 +357,14 @@ export namespace EPUBGenerator {
                 }
             };
 
-            // FIXME: build a DEdICATED karma test that JUST tests zip files...
-
-            try {
-                console.log("FIXME 112");
-                return await zip.generateAsync(options, () => console.log("FIXME callback at least"));
-                console.log("FIXME 113");
-
-            } catch(e) {
-                console.log("FIXME 111");
-                throw e;
-            } finally {
-                console.log("FIXME 114 finally.");
-            }
+            return await zip.generateAsync(options);
 
         }
 
-        console.log("FIXME: EPUBGenerator.5");
-
         writeControlFiles();
-        console.log("FIXME: EPUBGenerator.6");
         writeContents();
-        console.log("FIXME: EPUBGenerator.7");
 
-        const ab = await toArrayBuffer();
-
-        console.log("FIXME: EPUBGenerator.8");
-
-        return ab;
+        return await toArrayBuffer();
 
     }
 

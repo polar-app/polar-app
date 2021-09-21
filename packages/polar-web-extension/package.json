@@ -41,6 +41,7 @@
     "@types/page-metadata-parser": "0.0.0",
     "@types/react": "=16.9.53",
     "@types/react-dom": "=16.9.8",
+    "polar-firebase-test": "0.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
     "polar-eslint": "0.0.0",

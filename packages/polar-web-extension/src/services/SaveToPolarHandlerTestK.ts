@@ -3,11 +3,14 @@ import {MockChrome} from "../MockChrome";
 
 describe("SaveToPolarHandler", function() {
 
-    it("load page", () => {
+    it("load page", async () => {
 
         MockChrome.createChromeAndInject();
 
-        SaveToPolarHandler.handleMessage({
+        // FIXME: ok this is the bug... we're handling the message BUT we're not
+        // waiting for the result...
+
+        await SaveToPolarHandler.handleMessage({
             "type": "save-to-polar",
             "strategy": "epub",
             "value": {

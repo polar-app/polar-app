@@ -12,6 +12,7 @@ import {PHZActiveMigrations} from "./PHZActiveMigrations";
 import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {ErrorType} from "polar-bookshelf/web/js/ui/data_loader/UseSnapshotSubscriber";
 
 export namespace SaveToPolarHandler {
 
@@ -44,9 +45,11 @@ export namespace SaveToPolarHandler {
         await Tabs.loadLinkInActiveTab(url);
     }
 
-    function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
-                              progressListener: WriteFileProgressListener,
-                              errorReporter: (err: Error) => void) {
+    export function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
+                                     progressListener: WriteFileProgressListener,
+                                     errorReporter: (err: ErrorType) => void) {
+
+        // FIXME: make as async function...
 
         console.log("saveToPolarAsPDF")
 
@@ -82,9 +85,9 @@ export namespace SaveToPolarHandler {
 
     }
 
-    function saveToPolarAsEPUB(capture: ICapturedEPUB,
-                               progressListener: WriteFileProgressListener,
-                               errorReporter: (err: Error) => void) {
+    export async function saveToPolarAsEPUB(capture: ICapturedEPUB,
+                                            progressListener: WriteFileProgressListener,
+                                            errorReporter: (err: ErrorType) => void) {
 
         console.log("saveToPolarAsEPUB")
 
@@ -145,12 +148,15 @@ export namespace SaveToPolarHandler {
 
         }
 
-        doAsync()
-            .catch(errorReporter);
+        try {
+            await doAsync()
+        } catch(e) {
+            errorReporter(e);
+        }
 
     }
 
-    export function handleMessage(message: any, sender: IMessageSender) {
+    export async function handleMessage(message: any, sender: IMessageSender) {
 
         if (! message.type) {
             console.warn("No message type: ", message)
@@ -174,7 +180,7 @@ export namespace SaveToPolarHandler {
                         saveToPolarAsPDF(request.value, progressListener, errorReporter)
                         break;
                     case "epub":
-                        saveToPolarAsEPUB(request.value, progressListener, errorReporter)
+                        await saveToPolarAsEPUB(request.value, progressListener, errorReporter)
                         break;
                     default:
                         console.warn("Unable to handle request strategy: ", request);
@@ -194,7 +200,11 @@ export namespace SaveToPolarHandler {
     export function register() {
 
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-            handleMessage(message, sender);
+            handleMessage(message, sender)
+                .catch(err => {
+                    console.error(err);
+                });
+
         });
 
     }
@@ -234,8 +244,8 @@ export interface IError {
     readonly stack?: string;
 }
 
-function createErrorReporter(sender: IMessageSender): (err: Error) => void {
-    return (err: Error) => {
+function createErrorReporter(sender: IMessageSender): (err: ErrorType) => void {
+    return (err: ErrorType) => {
 
         // make sure to always report it to the console in the background tab
         // so that we have the error there too.
@@ -249,8 +259,8 @@ function createErrorReporter(sender: IMessageSender): (err: Error) => void {
         const message = {
             type: 'error',
             value: {
-                message: err.message,
-                stack: err.stack
+                message: (err as any).message,
+                stack: (err as any).stack
             }
         };
 
