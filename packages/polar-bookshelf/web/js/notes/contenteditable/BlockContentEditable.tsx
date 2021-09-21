@@ -73,7 +73,8 @@ export const BlockContentEditable = (props: IProps) => {
             width: image.width,
             height: image.height,
             naturalWidth: image.width,
-            naturalHeight: image.height
+            naturalHeight: image.height,
+            links: [],
         };
 
         blocksTreeStore.createNewBlock(props.id, {content});

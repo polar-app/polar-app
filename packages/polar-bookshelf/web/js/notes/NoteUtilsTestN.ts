@@ -15,11 +15,13 @@ describe('BlockTextContentUtils', () => {
         data: '2020-11-20',
         format: 'YYYY-MM-DD',
         type: 'date',
+        links: [],
     });
 
     const name = new NameContent({
         data: 'Dog',
         type: 'name',
+        links: [],
     });
 
     const markdown = new MarkdownContent({

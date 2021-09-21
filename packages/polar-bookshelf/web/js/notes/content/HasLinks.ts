@@ -15,7 +15,7 @@ export class HasLinks implements IHasLinksContent {
         return this._links;
     }
 
-    protected updateLinks(links: ReadonlyArray<IBlockLink>): void {
+    public updateLinks(links: ReadonlyArray<IBlockLink>): void {
         this._links = links;
     }
 

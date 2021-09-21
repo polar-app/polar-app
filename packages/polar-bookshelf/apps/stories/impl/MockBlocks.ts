@@ -57,6 +57,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: "World War II",
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: PositionalArrays.create([
                     '103',
@@ -153,6 +154,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: "Russia",
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: {},
                 mutation: 0,
@@ -169,6 +171,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: "Canada",
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: PositionalArrays.create([
                     '111'
@@ -226,6 +229,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: "Germany",
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: PositionalArrays.create([
                     '110',
@@ -266,6 +270,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: 'Winston Churchill',
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: {},
                 mutation: 0,
@@ -333,6 +338,7 @@ export namespace MockBlocks {
                     type: 'name',
                     data: 'Image parent',
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: PositionalArrays.create([
                     '114image',
@@ -356,6 +362,7 @@ export namespace MockBlocks {
                     width: 100,
                     height: 100,
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    links: [],
                 },
                 items: {}, 
                 mutation: 0,

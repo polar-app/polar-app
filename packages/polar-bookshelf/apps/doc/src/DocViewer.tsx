@@ -445,8 +445,6 @@ const useDocumentBlockMigrator = () => {
                 return null;
             }
 
-            links.map(content.addLink.bind(content));
-
             return blocksStore.createNewBlock(id, { content, asChild: true }).id;
         };
 

@@ -31,7 +31,7 @@ export namespace AnnotationBlockMigrator {
             if (block) {
                 return { text: `#${tag.label}`, id: block.id };
             } else {
-                const content = new NameContent({ type: 'name', data: tag.label });
+                const content = new NameContent({ type: 'name', data: tag.label, links: [] });
                 const id = blocksStore.createNewNamedBlock({ content });
 
                 return { text: `#${tag.label}`, id };

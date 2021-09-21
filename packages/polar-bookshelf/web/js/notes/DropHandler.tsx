@@ -6,9 +6,11 @@ import {UploadedFile, useUploadHandler} from "./UploadHandler";
 
 const getBlockContent = (uploadedFile: UploadedFile) => {
     const {type, url} = uploadedFile;
+
     switch (type) {
         case 'image':
             const {width, height} = uploadedFile;
+
             return new ImageContent({
                 type: 'image',
                 src: url,
@@ -16,6 +18,7 @@ const getBlockContent = (uploadedFile: UploadedFile) => {
                 height: height,
                 naturalWidth: width,
                 naturalHeight: height,
+                links: [],
             });
     }
 };

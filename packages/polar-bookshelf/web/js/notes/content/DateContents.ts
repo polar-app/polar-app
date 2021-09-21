@@ -35,8 +35,9 @@ export namespace DateContents {
         return {
             type: 'date',
             data: ts,
-            format
-        }
+            format,
+            links: [],
+        };
 
     }
 

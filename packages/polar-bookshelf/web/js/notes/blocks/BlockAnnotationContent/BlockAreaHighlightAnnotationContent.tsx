@@ -1,16 +1,14 @@
 import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
-import {BlockHighlightContentWrapper} from "./BlockHighlightContentWrapper";
+import {BlockHighlightContentWrapper, BlockTagsSection} from "./BlockHighlightContentWrapper";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
 import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
-import {BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
+import {BlockAnnotationActionsWrapper, ISharedActionType, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {BlockImageContent} from "../BlockImageContent";
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
-import {createStyles, makeStyles} from "@material-ui/core";
 
 
 interface IProps extends BlockEditorGenericProps {
@@ -41,7 +39,14 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         return Images.toImg(resolver, highlight.image);
     }, [persistenceLayerProvider, highlight.image]);
 
-    const actions = useSharedAnnotationBlockActions({ id, annotation });
+    const actionsList: ISharedActionType[] = React.useMemo(() =>
+        ['createFlashcard',  'changeColor', 'remove', 'open', 'editTags'], []);
+
+    const actions = useSharedAnnotationBlockActions({
+        id,
+        annotation,
+        actions: actionsList,
+    });
 
     return (
         <BlockAnnotationActionsWrapper actions={actions}>
@@ -64,34 +69,5 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
                 <DocAnnotationMoment style={{ marginTop: 4 }} created={props.created} />
             </BlockHighlightContentWrapper>
         </BlockAnnotationActionsWrapper>
-    );
-};
-
-interface IBlockTagsSectionProps {
-    links: ReadonlyArray<IBlockLink>;
-    onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
-
-export const useBlockTagsSectionStyles = makeStyles(() =>
-    createStyles({
-        root: {
-            margin: '3px 0',
-            '& > a': {
-                marginRight: 4,
-                fontSize: 12,
-            }
-        },
-    }),
-);
-
-export const BlockTagsSection: React.FC<IBlockTagsSectionProps> = ({ links, onClick }) => {
-    const classes = useBlockTagsSectionStyles();
-
-    return (
-        <div className={classes.root} onClick={onClick}>
-            {links.map(({ text, id }, i) => 
-                <a href={`${text}`} className="note-tag" key={`${id}-${i}`}>{text}</a>
-            )}
-        </div>
     );
 };

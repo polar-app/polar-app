@@ -1325,7 +1325,7 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[newName.toLowerCase()] = id;
 
                 block.withMutation(() => {
-                    block.setContent(new NameContent({ type: 'name', data: newName }));
+                    block.setContent(new NameContent({ type: 'name', data: newName, links: block.content.toJSON().links }));
                 });
 
                 this.doPut([block]);
@@ -1391,6 +1391,7 @@ export class BlocksStore implements IBlocksStore {
             const targetBlockContent = new NameContent({
                 type: 'name',
                 data: targetName,
+                links: [],
             });
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
