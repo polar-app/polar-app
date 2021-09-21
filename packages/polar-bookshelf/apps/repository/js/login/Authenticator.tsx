@@ -375,7 +375,7 @@ const EmailTokenAuthButton = () => {
                                        className={classes.email}
                                        onChange={event => challengeRef.current = event.target.value}
                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                       placeholder="email@ "
+                                       placeholder="Enter your Code Here"
                                        variant="outlined" 
                                        style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
 
@@ -397,7 +397,7 @@ const EmailTokenAuthButton = () => {
                                    className={classes.email}
                                    onChange={event => emailRef.current = event.target.value}
                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="email@ "
+                                   placeholder="email@"
                                    variant="outlined" 
                                    style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
                     )}
