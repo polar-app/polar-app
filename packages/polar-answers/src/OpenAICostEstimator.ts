@@ -6,6 +6,7 @@ export namespace OpenAICostEstimator {
     /**
      * Given an OpenAI model name, return how much will a single "token" will cost
      * @see https://beta.openai.com/pricing/
+     * The pricing page defines the price as "price per 1k tokens", hence the division by 1k
      */
     function pricePerToken(model: "ada" | "babbage" | "curie" | "davinci") {
         switch (model) {
@@ -29,12 +30,12 @@ export namespace OpenAICostEstimator {
         documents: ReadonlyArray<string>
     }) {
         // @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
-        return pricePerToken(opts.model) *
-            (opts.documents.join('').length / 4)
+        const tokensUsed = (opts.documents.join('').length / 4)
             // "The 14 represents the additional tokens the API uses per document to accomplish the Semantic Search task"
             + (opts.documents.length + 1) * 14
             // The query is appended to every document in terms of cost
             + (opts.documents.length + 1) * (opts.query.length / 4);
+        return pricePerToken(opts.model) * tokensUsed;
     }
 
     export function costOfAnswers(request: IOpenAIAnswersRequest, response: IOpenAIAnswersResponse) {

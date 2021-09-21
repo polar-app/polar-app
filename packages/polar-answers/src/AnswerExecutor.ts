@@ -370,9 +370,6 @@ export namespace AnswerExecutor {
 
             const firestore = FirestoreAdmin.getInstance();
 
-            // One token is roughly 4 characters as per OpenAI docs
-            const costEstimated = openAiTokens * getPricePerToken(model);
-
             const trace: IAnswerExecutorTraceMinimal = {
                 id,
                 created: ISODateTimeStrings.create(),
