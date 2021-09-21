@@ -3,9 +3,9 @@ import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
 import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
 import {MockChrome} from "./MockChrome";
 
-xdescribe("ContentCaptureContext", function() {
+describe("ContentCaptureContext", function() {
 
-    xit("load page", () => {
+    it("load page", () => {
 
         const interactions = MockChrome.createChromeAndInject();
 
@@ -20,7 +20,7 @@ xdescribe("ContentCaptureContext", function() {
 
         assertJSON(interactions, [
             {
-                "op": "sendMessage",
+                "op": "chrome.runtime.sendMessage",
                 "message": {
                     "type": "save-to-polar",
                     "strategy": "epub",
