@@ -79,6 +79,7 @@ export namespace BlockAreaHighlight {
                 pageNum,
                 type: AnnotationContentType.AREA_HIGHLIGHT,
                 docID: fingerprint,
+                links: [],
                 value: {
                     color: color || MAIN_HIGHLIGHT_COLORS[0],
                     rects,

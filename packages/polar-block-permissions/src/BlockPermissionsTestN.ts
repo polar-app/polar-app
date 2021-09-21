@@ -424,7 +424,8 @@ describe("BlockPermissions", function() {
             updated: now,
             content: {
                 type: 'name',
-                data: 'Hello World'
+                data: 'Hello World',
+                links: [],
             },
             mutation: 0
         }

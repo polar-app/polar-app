@@ -28,6 +28,7 @@ export namespace HTMLToBlocks {
 
     export async function createImageContent(dataurl: string): Promise<IImageContent> {
         const {width, height} = await Images.getDimensions(dataurl);
+
         return {
             type: 'image',
             src: dataurl,
@@ -35,6 +36,7 @@ export namespace HTMLToBlocks {
             height,
             naturalWidth: width,
             naturalHeight: height,
+            links: [],
         };
     }
 

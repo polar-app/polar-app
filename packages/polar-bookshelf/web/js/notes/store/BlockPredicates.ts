@@ -9,11 +9,21 @@ import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/a
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {DocumentContent} from "../content/DocumentContent";
 
+export type EditableContent = MarkdownContent
+                              | NameContent
+                              | DateContent
+                              | TextHighlightAnnotationContent
+                              | FlashcardAnnotationContent;
+
 export type TextContent = MarkdownContent
+                          | DocumentContent
                           | NameContent
                           | DateContent
                           | TextHighlightAnnotationContent
                           | FlashcardAnnotationContent;
+
+
+export type HasLinksContent = MarkdownContent | TextHighlightAnnotationContent;
 
 /**
  * Note we have to have IBlockPredicates and BlockPredicates as the typescript
@@ -22,12 +32,16 @@ export type TextContent = MarkdownContent
  */
 export namespace BlockPredicates {
 
-    export function isTextBlock(block: Readonly<Block>): block is Block<TextContent> {
+    export function isEditableBlock(block: Readonly<Block>): block is Block<EditableContent> {
         return block.content.type === 'markdown'
                || block.content.type === 'name'
                || block.content.type === 'date'
                || block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
                || block.content.type === AnnotationContentType.FLASHCARD;
+    }
+
+    export function isTextBlock(block: Readonly<Block>): block is Block<TextContent> {
+        return isEditableBlock(block) || block.content.type === 'document';
     }
 
     export function isDateBlock(block: Readonly<Block>): block is Block<DateContent> {
@@ -38,8 +52,12 @@ export namespace BlockPredicates {
         return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
     }
 
-    export function canHaveLinks(block: Readonly<Block>): block is Block<MarkdownContent> {
-        return ['markdown'].indexOf(block.content.type) > -1;
+    export function canHaveLinks(block: Readonly<Block>): block is Block<HasLinksContent> {
+        return [
+            'markdown', 
+            AnnotationContentType.TEXT_HIGHLIGHT,
+            AnnotationContentType.AREA_HIGHLIGHT,
+        ].indexOf(block.content.type) > -1;
     }
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
@@ -47,8 +65,8 @@ export namespace BlockPredicates {
     }
 
     export function isAnnotationHighlightBlock(block: Readonly<Block>): block is Block<AnnotationHighlightContent> {
-        const highlightTypes = [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT];
-        return highlightTypes.some(type => block.content.type === type);
+        return [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT]
+            .some(type => block.content.type === type);
     }
 
     export function isFrontBackFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockFrontBackFlashcard>> {

@@ -1,9 +1,10 @@
 import {URLStr} from "polar-shared/src/util/Strings";
 import {IBaseContent} from "./IBaseContent";
+import {IHasLinksContent} from "./IHasLinksContent";
 
 export type DataURLStr = string;
 
-export interface IImageContent extends IBaseContent {
+export interface IImageContent extends IBaseContent, IHasLinksContent {
 
     readonly type: 'image';
 

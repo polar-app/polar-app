@@ -16,6 +16,7 @@ import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/a
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockTextContentUtils} from "../../NoteUtils";
 import {BlockPredicates} from "../../store/BlockPredicates";
+import {BlockTagsSection} from "./BlockHighlightContentWrapper";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -41,6 +42,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
     const {
         annotation,
         id,
+        onClick,
     } = props;
     const classes = useStyles();
 
@@ -48,7 +50,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
     const actions = useSharedAnnotationBlockActions({
         id,
         annotation,
-        actions: ['remove'],
+        actions: ['remove', 'editTags'],
     });
     const { update, getBlock } = useAnnotationBlockManager();
 
@@ -113,6 +115,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
                     )
                 }
             </div>
+            <BlockTagsSection onClick={onClick} links={annotation.links} />
         </BlockAnnotationActionsWrapper>
     );
 };

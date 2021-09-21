@@ -1,7 +1,6 @@
 import React from 'react';
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
 import {AppTags} from "./AppTags";
 import {

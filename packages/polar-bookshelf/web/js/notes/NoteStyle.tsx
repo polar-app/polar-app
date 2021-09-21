@@ -25,8 +25,10 @@ const useStyles = makeStyles((theme) =>
             },
             "& a:not([href^=http])": {
                 textDecorationStyle: 'dotted',
-                textUnderlinePosition: 'under'
-
+                textUnderlinePosition: 'under',
+                "&.note-tag": {
+                    color: "#A7B6C2",
+                }
             },
             "& img": {
                 maxWidth: '100%',

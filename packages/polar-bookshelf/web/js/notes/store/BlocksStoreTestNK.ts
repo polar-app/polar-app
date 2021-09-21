@@ -27,8 +27,6 @@ import {BlockTextContentUtils} from "../NoteUtils";
 import {DateContent} from "../content/DateContent";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 
@@ -217,6 +215,7 @@ describe('BlocksStore', function() {
                         "_data": "World War II",
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
+                        "_links": [],
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
@@ -336,6 +335,7 @@ describe('BlocksStore', function() {
                         "_data": "Germany",
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
+                        "_links": [],
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "107",
@@ -354,6 +354,7 @@ describe('BlocksStore', function() {
                         "_data": "Russia",
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
+                        "_links": [],
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "108",
@@ -370,6 +371,7 @@ describe('BlocksStore', function() {
                         "_data": "Canada",
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
+                        "_links": [],
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "109",
@@ -433,6 +435,7 @@ describe('BlocksStore', function() {
                         "_data": "Winston Churchill",
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
+                        "_links": [],
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "112",
@@ -512,6 +515,7 @@ describe('BlocksStore', function() {
                         "_data": 'Image parent',
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": 'name',
+                        "_links": [],
                     },
                     "_items": PositionalArrays.create([
                         '114image',
@@ -536,6 +540,7 @@ describe('BlocksStore', function() {
                         "_naturalWidth": 100,
                         "_width": 100,
                         "_height": 100,
+                        "_links": [],
                     },
                     "_items": {}, 
                     "_mutation": 0,
@@ -568,6 +573,7 @@ describe('BlocksStore', function() {
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
                         "_type": 'document',
+                        "_links": [],
                         "_docInfo": {
                             "flagged": false,
                             "nrPages": 55,
@@ -600,6 +606,7 @@ describe('BlocksStore', function() {
                         "_type": AnnotationContentType.TEXT_HIGHLIGHT,
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
+                        "_links": [],
                         "_pageNum": 15,
                         "_value": {
                             "text": 'text highlight content',
@@ -624,6 +631,7 @@ describe('BlocksStore', function() {
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
                         "_pageNum": 15,
+                        "_links": [],
                         "_value": {
                             "rects": {},
                             "color": 'yellow',
@@ -651,6 +659,7 @@ describe('BlocksStore', function() {
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_docID": '2020document',
                         "_pageNum": 15,
+                        "_links": [],
                         "_value": {
                             "type": FlashcardType.BASIC_FRONT_BACK,
                             "fields": {
@@ -882,6 +891,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -909,6 +919,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -967,6 +978,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "type": "name",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1059,6 +1071,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1295,6 +1308,7 @@ describe('BlocksStore', function() {
                 "data": "World War II",
                 "mutator": DeviceIDManager.TEST_DEVICE_ID,
                 "type": "name",
+                "links": [],
             },
             "created": "2012-03-02T11:38:49.321Z",
             "id": "102",
@@ -1341,11 +1355,11 @@ describe('BlocksStore', function() {
         it('Should not allow creating links on name or date blocks', () => {
             const store = createStore();
             const dateID = store.createNewNamedBlock({
-                content: new DateContent({ format: 'YYYY-MM-DD', data: 'date', type: 'date' })
+                content: new DateContent({ format: 'YYYY-MM-DD', data: 'date', type: 'date', links: [] })
             });
 
             const nameID = store.createNewNamedBlock({
-                content: new NameContent({ data: 'name', type: 'name' })
+                content: new NameContent({ data: 'name', type: 'name', links: [] })
             });
 
             store.createLinkToBlock(dateID, '102', 'hello');
@@ -1872,6 +1886,7 @@ describe('BlocksStore', function() {
                         "data": "World War II",
                         "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "type": "name",
+                        "links": [],
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
@@ -1891,7 +1906,7 @@ describe('BlocksStore', function() {
                 TestingTime.forward(1000);
 
                 block.withMutation(() => {
-                    block.setContent({type: 'name', data: "World War Two"})
+                    block.setContent({ type: 'name', data: "World War Two", links: [] })
                 })
 
                 assertJSON(block?.toJSON(),{
@@ -1899,6 +1914,7 @@ describe('BlocksStore', function() {
                         "data": "World War Two",
                         "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "type": "name",
+                        "links": [],
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
@@ -1964,6 +1980,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1997,6 +2014,7 @@ describe('BlocksStore', function() {
                     "data": "World War II",
                     "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
+                    "links": [],
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -2115,6 +2133,7 @@ describe('BlocksStore', function() {
                         "data": "World War II",
                         "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "type": "name",
+                        "links": [],
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",

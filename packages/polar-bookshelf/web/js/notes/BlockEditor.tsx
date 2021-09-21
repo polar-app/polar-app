@@ -19,7 +19,6 @@ import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnot
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
-import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -68,7 +67,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     return React.useCallback((data: MarkdownStr) => {
         const block = blocksTreeStore.getBlock(id);
 
-        if (! block || ! BlockPredicates.isTextBlock(block)) {
+        if (! block || ! BlockPredicates.isEditableBlock(block)) {
             return;
         }
 

@@ -22,6 +22,7 @@ import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards
 import {ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
@@ -88,9 +89,11 @@ export const AnnotationPopupBar: React.FC = () => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
-                    <LocalOfferIcon />
-                </ActionButton>
+                {! NEW_NOTES_ANNOTATION_BAR_ENABLED && (
+                    <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
+                        <LocalOfferIcon />
+                    </ActionButton>
+                )}
                 <Divider orientation="vertical" flexItem />
                 <StandardIconButton
                     tooltip="Copy"
