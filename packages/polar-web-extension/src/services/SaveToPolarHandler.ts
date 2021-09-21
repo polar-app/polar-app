@@ -234,7 +234,7 @@ export interface IError {
     readonly stack?: string;
 }
 
-function createErrorReporter(sender: chrome.runtime.MessageSender): (err: Error) => void {
+function createErrorReporter(sender: IMessageSender): (err: Error) => void {
     return (err: Error) => {
 
         // make sure to always report it to the console in the background tab

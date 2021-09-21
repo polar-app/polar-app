@@ -24,6 +24,18 @@ export class Messenger {
             return;
         }
 
+        // let targetBrowserWindow = postMessageRequest.window;
+        //
+        // if (! isPresent(targetBrowserWindow)) {
+        //     targetBrowserWindow = BrowserWindow.getFocusedWindow();
+        // }
+        //
+        // if (! isPresent(targetBrowserWindow)) {
+        //     throw new Error("No target browser window found");
+        // }
+        //
+        // await this.postMessageWithElectronBrowserWindow(postMessageRequest.message, targetBrowserWindow!);
+
     }
 
     /**

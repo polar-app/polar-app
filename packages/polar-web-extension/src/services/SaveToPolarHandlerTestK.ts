@@ -1,11 +1,11 @@
 import {SaveToPolarHandler} from "./SaveToPolarHandler";
 import {MockChrome} from "../MockChrome";
 
-describe("SaveToPolarHandler", function() {
-
-    const interactions = MockChrome.createChromeAndInject();
+xdescribe("SaveToPolarHandler", function() {
 
     it("load page", () => {
+
+        MockChrome.createChromeAndInject();
 
         SaveToPolarHandler.handleMessage({
             "type": "save-to-polar",

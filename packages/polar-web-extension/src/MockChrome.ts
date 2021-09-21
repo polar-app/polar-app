@@ -1,19 +1,21 @@
 export namespace MockChrome {
 
-    export function createChrome() {
+    export interface IOPChromeRuntimeSendMessageInteraction {
+        op: 'chrome.runtime.sendMessage',
+        message: any
+    }
 
-        interface IOPChromeRuntimeSendMessageInteraction {
-            op: 'chrome.runtime.sendMessage',
-            message: any
-        }
+    export interface IOPChromeTabsSendMessageInteraction {
+        op: 'chrome.tabs.sendMessage',
+        id: number,
+        message: any
+    }
 
-        interface IOPChromeTabsSendMessageInteraction {
-            op: 'chrome.tabs.sendMessage',
-            id: number,
-            message: any
-        }
+    export type IOPChromeInteraction = IOPChromeRuntimeSendMessageInteraction | IOPChromeTabsSendMessageInteraction;
 
-        type IOPChromeInteraction = IOPChromeRuntimeSendMessageInteraction | IOPChromeTabsSendMessageInteraction;
+    export type IChrome = any;
+
+    export function createChrome(): [ReadonlyArray<IOPChromeInteraction>, IChrome] {
 
         const interactions: IOPChromeInteraction[] = [];
 
@@ -40,14 +42,24 @@ export namespace MockChrome {
 
     }
 
-    export function createChromeAndInject() {
+    export function createChromeAndInject(): ReadonlyArray<IOPChromeInteraction> {
 
-        const [interactions, chrome] = MockChrome.createChrome();
+        const win = window as any;
+
+        if (win.chrome) {
+            // this is already defined...
+            // purge the interactions for the next test.
+            win.chromeInteractions.splice();
+            return win.chromeInteractions;
+        }
+
+        const [chromeInteractions, chrome] = MockChrome.createChrome();
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).chrome = chrome;
+        win.chrome = chrome;
+        win.chromeInteractions = chromeInteractions;
 
-        return interactions;
+        return chromeInteractions;
 
     }
 
