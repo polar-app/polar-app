@@ -15142,7 +15142,7 @@ isarray@2.0.1:
   resolved "https://verdaccio.getpolarized.io/isarray/-/isarray-2.0.1.tgz#a37d94ed9cda2d59865c9f76fe596ee1f338741e"
   integrity sha1-o32U7ZzaLVmGXJ92/llu4fM4dB4=
 
-isbinaryfile@^4.0.6:
+isbinaryfile@^4.0.6, isbinaryfile@^4.0.8:
   version "4.0.8"
   resolved "https://verdaccio.getpolarized.io/isbinaryfile/-/isbinaryfile-4.0.8.tgz#5d34b94865bd4946633ecc78a026fc76c5b11fcf"
   integrity sha512-53h6XFniq77YdW+spoRrebh0mnmTxRPTlcuIArO57lmMdq4uBKFKaeTjnb92oYWrSn/LVL+LT+Hap2tFQj8V+w==
@@ -15851,21 +15851,22 @@ karma-spec-reporter@=0.0.32:
   dependencies:
     colors "^1.1.2"
 
-karma-typescript-es6-transform@=5.5.1:
-  version "5.5.1"
-  resolved "https://verdaccio.getpolarized.io/karma-typescript-es6-transform/-/karma-typescript-es6-transform-5.5.1.tgz#bb1061279e22b0259496c037e3014719cc6b3344"
-  integrity sha512-5iCFir1hLGdWlFEZk5+hfHKu9sDlSEAt1fJO46v8oqElszlMLVjoGQtSzb9E4uWg9fHo7mlRnjFhwM+WKScQHQ==
+karma-typescript-es6-transform@=5.5.2:
+  version "5.5.2"
+  resolved "https://verdaccio.getpolarized.io/karma-typescript-es6-transform/-/karma-typescript-es6-transform-5.5.2.tgz#6f86b0150ab8148acfaf1b06003aaee6c3f52d4a"
+  integrity sha512-Qog/jfI97KAYFoPe/8kQ+4WcmVX4gg1W1QmzD66NeLWfAGUf4szQ/fyb0yQd8rNSelvy0NNMDl+hWh5slMiLIw==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
+    acorn "^8.1.0"
     acorn-walk "^8.0.2"
     log4js "^6.3.0"
     magic-string "^0.25.7"
 
-karma-typescript@=5.5.1:
-  version "5.5.1"
-  resolved "https://verdaccio.getpolarized.io/karma-typescript/-/karma-typescript-5.5.1.tgz#3ceb79ecec695c73d2633aff8714524b5440f38f"
-  integrity sha512-iQDh48sHv+1pCO/Fvlz4b6HwcmaTuAzx1H0Q6zkUQMQH+5sjz8GNFB9jVDiDblbZcgdr+luVBk7NGUV5mXj+eg==
+karma-typescript@=5.5.2:
+  version "5.5.2"
+  resolved "https://verdaccio.getpolarized.io/karma-typescript/-/karma-typescript-5.5.2.tgz#02abf88d507f396d647cd6972bc0bd28d0c69dd0"
+  integrity sha512-2rNhiCMrIF+VR8jMuovOLSRjNkjdoE/kQ4XYZU94lMkHNQtnqCaToAnztMj4fuOPRErL7VIkwvJEO7jBd47Q6A==
   dependencies:
     acorn "^8.1.0"
     acorn-walk "^8.0.2"
@@ -15947,6 +15948,35 @@ karma@=6.3.2:
     source-map "^0.6.1"
     tmp "0.2.1"
     ua-parser-js "^0.7.23"
+    yargs "^16.1.1"
+
+karma@=6.3.4:
+  version "6.3.4"
+  resolved "https://verdaccio.getpolarized.io/karma/-/karma-6.3.4.tgz#359899d3aab3d6b918ea0f57046fd2a6b68565e6"
+  integrity sha512-hbhRogUYIulfkBTZT7xoPrCYhRBnBoqbbL4fszWD0ReFGUxU+LYBr3dwKdAluaDQ/ynT9/7C+Lf7pPNW4gSx4Q==
+  dependencies:
+    body-parser "^1.19.0"
+    braces "^3.0.2"
+    chokidar "^3.5.1"
+    colors "^1.4.0"
+    connect "^3.7.0"
+    di "^0.0.1"
+    dom-serialize "^2.2.1"
+    glob "^7.1.7"
+    graceful-fs "^4.2.6"
+    http-proxy "^1.18.1"
+    isbinaryfile "^4.0.8"
+    lodash "^4.17.21"
+    log4js "^6.3.0"
+    mime "^2.5.2"
+    minimatch "^3.0.4"
+    qjobs "^1.2.0"
+    range-parser "^1.2.1"
+    rimraf "^3.0.2"
+    socket.io "^3.1.0"
+    source-map "^0.6.1"
+    tmp "^0.2.1"
+    ua-parser-js "^0.7.28"
     yargs "^16.1.1"
 
 keyv@3.0.0:
@@ -24011,7 +24041,7 @@ ua-parser-js@0.7.21:
   resolved "https://verdaccio.getpolarized.io/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
   integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
-ua-parser-js@^0.7.18, ua-parser-js@^0.7.23:
+ua-parser-js@^0.7.18, ua-parser-js@^0.7.23, ua-parser-js@^0.7.28:
   version "0.7.28"
   resolved "https://verdaccio.getpolarized.io/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
   integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==

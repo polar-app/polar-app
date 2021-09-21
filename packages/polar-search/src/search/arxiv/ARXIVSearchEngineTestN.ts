@@ -1,7 +1,7 @@
 import {ARXIVSearchEngine} from "./ARXIVSearchEngine";
 import {Files} from "polar-shared/src/util/Files";
 import {Paths} from "polar-shared/src/util/Paths";
-import { assertJSON } from "polar-test/src/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {DOMParser} from 'xmldom';
 
 describe('ARXIVSearchEngine', function() {

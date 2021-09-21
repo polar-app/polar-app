@@ -242,11 +242,11 @@ jobs:
           name: Automatic Versioning
           command: |
             git fetch
-            TEMP_VERSION='90.135.0'
+            TEMP_VERSION='0.0.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             NEW_VERSION=$(semver $CURRENT_VERSION -i)
-            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
-            lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
+            lerna exec -- sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" package.json
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
@@ -433,8 +433,6 @@ workflows:
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
-          requires:
-            - approve-deploy
           executor: large
 
       ## ^ Chrome Extension Sub-Workflow
@@ -519,6 +517,7 @@ workflows:
           executor: xlarge
           firebase_hosting_target: polar-webapp
           requires:
+            - approve-deploy
             - mocha
             - karma
             - cypress-desktop-firefox

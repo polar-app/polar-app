@@ -1,7 +1,7 @@
 import {ConstructorOptions, JSDOM} from "jsdom";
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import { Fetches } from "polar-shared/src/util/Fetch";
-import { ARXIVParser } from './ARXIVParser';
+import {existsSync, readFileSync, writeFileSync} from "fs";
+import {Fetches} from "polar-shared/src/util/Fetch";
+import {ARXIVParser} from './ARXIVParser';
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 async function readTestData(url: string): Promise<string> {
