@@ -6,6 +6,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {NULL_FUNCTION} from "../../../../../polar-shared/src/util/Functions";
 
 
 const useStyles = makeStyles((theme) =>
@@ -134,11 +135,13 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             onClose('cancel');
         }
 
-        if (event.key === 'Enter') {
-            abortEvent();
+        if (event.key === 'Tab') {
             if (index !== undefined) {
                 const command = items[index];
-                handleActionExecuted(command);
+                if (command) {
+                    abortEvent();
+                    handleActionExecuted(command);
+                }
             }
         }
 
@@ -154,6 +157,22 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
     })
 
+    const menuItems = items.map((item, idx) => {
+
+        const selected = index === idx;
+        const key = item.id + ':' + selected;
+
+        return (
+            <MUICommandMenuItem key={key}
+                                className={classes.item}
+                                text={item.text}
+                                icon={item.icon}
+                                selected={selected}
+                                sequences={item.sequences}
+                                onSelected={() => handleActionExecuted(item)}/>
+        );
+    });
+
     return (
 
         <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
@@ -165,23 +184,13 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
 
                 <List component="nav">
-
-                    {items.map((item, idx) => {
-
-                        const selected = index === idx;
-                        const key = item.id + ':' + selected;
-
-                        return (
-                            <MUICommandMenuItem key={key}
-                                                className={classes.item}
-                                                text={item.text}
-                                                icon={item.icon}
-                                                selected={selected}
-                                                sequences={item.sequences}
-                                                onSelected={() => handleActionExecuted(item)}/>
-                        );
-                    })}
-
+                    {items.length
+                        ? menuItems
+                        : (<MUICommandMenuItem
+                            text="Search for a note"
+                            onSelected={NULL_FUNCTION}
+                        />)
+                    }
                 </List>
             </div>
         </ClickAwayListener>

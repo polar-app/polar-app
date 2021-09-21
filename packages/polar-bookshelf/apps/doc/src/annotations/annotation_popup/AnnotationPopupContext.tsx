@@ -219,8 +219,11 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                         textHighlight,
                         pageNum, 
                         fingerprint,
+                        [],
                     );
+
                     const id = createAnnotation(fingerprint, content);
+
                     if (id) {
                         setActiveHighlight({
                             highlightID: id,

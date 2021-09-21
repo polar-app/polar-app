@@ -16,6 +16,8 @@ import {BlockPredicates} from "../../store/BlockPredicates";
 import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import {useBlockTagEditorDialog} from "../../NoteUtils";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -171,7 +173,7 @@ interface IUseSharedAnnotationBlockActionsOpts {
     actions?: ISharedActionType[];
 }
 
-type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open';
+export type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open' | 'editTags';
 
 type ISharedActionMap = {
     [key in ISharedActionType]: React.FC;
@@ -182,6 +184,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const blocksTreeStore = useBlocksTreeStore();
     const { update, getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();
+    const blockTagEditorDialog = useBlockTagEditorDialog();
 
     const handleDelete = React.useCallback(() => {
         blocksTreeStore.deleteBlocks([id]);
@@ -229,6 +232,10 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const color = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
 
+    const editTags = React.useCallback(() => {
+        blockTagEditorDialog(id);
+    }, [blockTagEditorDialog]);
+
     return React.useMemo(() => {
         const actionMap: ISharedActionMap = {
             remove: () => <BlockAnnotationAction
@@ -247,10 +254,14 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                 color={color}
                 onChange={handleColorChange}
             />,
+            editTags: () => <BlockAnnotationAction
+                icon={<LocalOfferIcon />}
+                onClick={editTags}
+            />
         };
 
         return Object.entries(actionMap)
             .filter(([key]) => actions.indexOf(key as ISharedActionType) > -1)
             .map(([key, Action]) => <Action key={key} />);
-    }, [handleDelete, handleOpen, color, handleColorChange, handleCreateFlashcard, actions]);
+    }, [handleDelete, handleOpen, color, editTags, handleColorChange, handleCreateFlashcard, actions]);
 };

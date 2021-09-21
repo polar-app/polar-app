@@ -27,7 +27,8 @@ const root = createBasicBlock({
     parents: [],
     content: {
         type: 'name',
-        data: "United States"
+        data: "United States",
+        links: [],
     }
 })
 

@@ -1,10 +1,11 @@
-import {makeObservable, observable, computed} from "mobx"
+import {makeObservable, observable, computed, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DataURLStr, IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
+import {HasLinks} from "./HasLinks";
 
-export class ImageContent implements IImageContent, IBaseBlockContent {
+export class ImageContent extends HasLinks implements IImageContent, IBaseBlockContent {
 
     @observable private readonly _type: 'image';
     @observable private _src: DataURLStr;
@@ -19,6 +20,7 @@ export class ImageContent implements IImageContent, IBaseBlockContent {
 
 
     constructor(opts: IImageContent) {
+        super(opts);
 
         this._type = opts.type;
         this._src = opts.src;
@@ -68,6 +70,7 @@ export class ImageContent implements IImageContent, IBaseBlockContent {
             this._naturalHeight = content.naturalHeight;
             this._naturalWidth = content.naturalWidth;
             this._mutator = content.mutator || '';
+            this.updateLinks(content.links);
         } else {
             throw new Error("Invalid type: " +  content.type)
         }
@@ -88,6 +91,7 @@ export class ImageContent implements IImageContent, IBaseBlockContent {
             naturalWidth: this._naturalWidth,
             naturalHeight: this._naturalHeight,
             mutator: this._mutator,
+            links: toJS(this.links),
         };
 
     }

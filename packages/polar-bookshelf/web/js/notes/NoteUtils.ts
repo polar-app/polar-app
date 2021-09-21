@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
@@ -8,11 +8,10 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {BlockPredicates, TextContent} from "./store/BlockPredicates";
+import {BlockPredicates, EditableContent, HasLinksContent, TextContent} from "./store/BlockPredicates";
 import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
@@ -23,6 +22,10 @@ import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlig
 import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
+import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {useRefWithUpdates} from "../hooks/ReactHooks";
 
 
 export const useNamedBlocks = () => {
@@ -170,6 +173,83 @@ export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
 
 }
 
+export const useBlockTagEditorDialog = () => {
+    const blocksStore = useBlocksStore();
+    const namedBlocksRef = useRefWithUpdates(useNamedBlocks());
+    const dialogs = useDialogManager();
+
+    return React.useCallback((id: BlockIDStr) => {
+        const block = blocksStore.getBlockForMutation(id);
+
+        if (! block) {
+            return console.error('useBlockTagEditorDialog: Block to be edited was not found.');
+        }
+
+        interface ITaggedBlock extends TaggedCallbacks.ITagsHolder {
+            id: BlockIDStr,
+        };
+
+        const doTagged = ([target]: ReadonlyArray<ITaggedBlock>,
+                          tags: ReadonlyArray<Tag>,
+                          strategy: Tags.ComputeNewTagsStrategy) => {
+            const newTags = Tags.computeNewTags(target.tags, tags, strategy);
+
+            const newTagLinks = newTags.map(({ label }) => {
+                const getBlockID = (): string => {
+                    const block = blocksStore.getBlockByName(label);
+
+                    if (block) {
+                        return block.id;
+                    }
+
+                    const content = new NameContent({ type: 'name', data: label, links: [] });
+                    return blocksStore.createNewNamedBlock({ content });
+                };
+
+                const blockID = getBlockID();
+
+                return { text: `#${label}`, id: blockID };
+            });
+
+            const newLinks = block.content.links.filter(link => ! link.text.startsWith('#'));
+
+            const newContent = block.content;
+            newContent.updateLinks([...newLinks, ...newTagLinks]);
+
+            blocksStore.setBlockContent(id, newContent);
+        };
+
+        const isTag = (link: IBlockLink) => link.text.startsWith('#');
+        const linksToTags = (links: IBlockLink[]) => links.reduce((tags, { text, id }) => ({
+            ...tags,
+            [id]: { label: text.slice(1), id }, // We slice to remove the initial # sign
+        }), {});
+
+        const toTarget = (block: Block): ITaggedBlock => {
+            const tagLinks = block.content.links.filter(isTag);
+            const tags = linksToTags(tagLinks);
+
+            return {
+                id: block.id,
+                tags,
+            };
+        };
+
+        const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
+            targets: () => [toTarget(block)],
+            tagsProvider: () => namedBlocksRef.current.map(block => ({
+                label: BlockTextContentUtils.getTextContentMarkdown(block.content),
+                id: block.id,
+            })),
+            dialogs,
+            doTagged,
+        };
+
+
+        TaggedCallbacks.create(opts)();
+    }, [blocksStore, namedBlocksRef, dialogs]);
+};
+
 export namespace BlockTextContentUtils {
 
     export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(
@@ -185,7 +265,7 @@ export namespace BlockTextContentUtils {
         });
     }
 
-    export function updateTextContentMarkdown(content: Exclude<TextContent, FlashcardAnnotationContent>, markdown: MarkdownStr): TextContent {
+    export function updateTextContentMarkdown(content: Exclude<EditableContent, FlashcardAnnotationContent>, markdown: MarkdownStr): EditableContent {
         switch(content.type) {
             case "markdown":
                 return new MarkdownContent({ ...content.toJSON(), data: markdown });
@@ -205,7 +285,7 @@ export namespace BlockTextContentUtils {
         }
     };
 
-    export function getTextContentMarkdown(content: TextContent | DocumentContent) {
+    export function getTextContentMarkdown(content: TextContent) {
         switch (content.type) {
             case 'date':
             case 'name':
