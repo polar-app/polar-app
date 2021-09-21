@@ -32,7 +32,10 @@ describe('EPUBGenerator', function() {
         }
 
         const epub = await EPUBGenerator.generate(doc);
-        await Files.writeFileAsync('/tmp/test-epub.epub', ArrayBuffers.toBuffer(epub));
+
+        if (typeof window === 'undefined') {
+            await Files.writeFileAsync('/tmp/test-epub.epub', ArrayBuffers.toBuffer(epub));
+        }
 
     });
 });

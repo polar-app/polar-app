@@ -23,6 +23,15 @@ export namespace ReadabilityCapture {
 
         const readable = parseReadability();
         const metadata = parseMetadata();
+
+        if (! readable) {
+            throw new Error("Readability parse failed.");
+        }
+
+        if (! readable.content) {
+            throw new Error("No readable content");
+        }
+
         const sanitized = HTMLSanitizer.sanitizePortableDocument(readable.content);
 
         return {
