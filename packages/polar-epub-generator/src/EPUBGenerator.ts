@@ -350,8 +350,8 @@ export namespace EPUBGenerator {
 
             // FIXMEL this is the bug.. the JSZIP doesn't actually do aything!!!
 
-            const options: JSZip.JSZipGeneratorOptions<'blob'> = {
-                type: 'blob',
+            const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
+                type: 'arraybuffer',
                 // streamFiles: true,
                 compression: "DEFLATE",
                 compressionOptions: {
@@ -369,6 +369,8 @@ export namespace EPUBGenerator {
             } catch(e) {
                 console.log("FIXME 111");
                 throw e;
+            } finally {
+                console.log("FIXME 114 finally.");
             }
 
         }
@@ -384,7 +386,7 @@ export namespace EPUBGenerator {
 
         console.log("FIXME: EPUBGenerator.8");
 
-        return ab as any as ArrayBuffer;
+        return ab;
 
     }
 

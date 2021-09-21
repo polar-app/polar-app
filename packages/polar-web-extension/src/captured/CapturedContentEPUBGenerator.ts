@@ -176,11 +176,12 @@ export namespace CapturedContentEPUBGenerator {
 
     export async function generate(capture: ICapturedEPUB): Promise<ArrayBuffer> {
         try {
-            console.log('FIXME1')
+            console.log('FIXME CapturedContentEPUBGenerator.generate.1')
             const doc = await convertToEPUBDocument(capture);
-            console.log('FIXME2')
-            return await EPUBGenerator.generate(doc);
-            console.log('FIXME3')
+            console.log('FIXME CapturedContentEPUBGenerator.generate.2')
+            const result = await EPUBGenerator.generate(doc);
+            console.log('FIXME CapturedContentEPUBGenerator.generate.3')
+            return result;
         } catch (e) {
             console.log("FIXME: ", e);
             throw e;
