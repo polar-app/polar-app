@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { DeviceRouters } from './DeviceRouter';
@@ -27,11 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProps {
     readonly id?: string;
     readonly initialValue?: boolean;
-    readonly label: string;
+    readonly label?: string;
     readonly icon?: JSX.Element;
     readonly onChange: (value: boolean) => void;
-    readonly size?: 'small' | 'medium' | 'large';
+    readonly size?: 'small' | 'medium';
     readonly tooltip?: string;
+    readonly iconOnly?: boolean;
+    readonly className?: string;
 }
 
 export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps) {
@@ -52,7 +55,7 @@ export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps
     return (
 
         <MUITooltip title={props.tooltip}>
-            <Button id={props.id}
+            {!props.iconOnly ? <Button id={props.id}
                     startIcon={icon}
                     className={active ? classes.buttonActive : classes.button}
                     onClick={handleToggle}
@@ -61,13 +64,23 @@ export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps
                     disableRipple
                     size={size}>
 
-                <DeviceRouters.NotPhone>
-                    <>
-                        {props.label}
-                    </>
-                </DeviceRouters.NotPhone>
+                    <DeviceRouters.NotPhone>
+                        <>
+                            {props.label}
+                        </>
+                    </DeviceRouters.NotPhone>
 
-            </Button>
+            </Button>:
+            <IconButton id={props.id}
+                        disableFocusRipple
+                        disableRipple
+                        size={size}
+                        onClick={handleToggle} 
+                        className={active ? classes.buttonActive : classes.button}
+            >
+                {icon}
+            </IconButton> 
+            } 
         </MUITooltip>
 
     );

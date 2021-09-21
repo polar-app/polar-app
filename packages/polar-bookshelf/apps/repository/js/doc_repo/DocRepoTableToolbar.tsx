@@ -11,7 +11,6 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {Devices} from "polar-shared/src/util/Devices";
@@ -20,18 +19,23 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
+            flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
             paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(1),
             paddingRight: theme.spacing(1),
-        },
+        }
     }),
 );
 
-const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
+interface IProps {
+    readonly className?: string;
+}
+
+export const SelectionActiveButtons = React.memo(function SelectionActiveButtons(props: IProps) {
     const callbacks = useDocRepoCallbacks();
 
     return (
-        <MUIButtonBar>
+        <MUIButtonBar className={props.className}>
             <>
                 <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>
@@ -47,53 +51,23 @@ const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
 
 export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
-    const {view, selected}
-        = useDocRepoStore(['view', 'selected']);
+    const {selected}
+        = useDocRepoStore(['selected']);
 
-    const callbacks = useDocRepoCallbacks();
     const classes = useStyles();
 
-    const {setSelected} = callbacks;
-
-    const handleCheckbox = React.useCallback((checked: boolean) => {
-        // TODO: this is wrong... the '-' button should remove the checks...
-        // just like gmail.
-        if (checked) {
-            setSelected('all')
-        } else {
-            setSelected('none');
-        }
-    }, [setSelected]);
-
     return (
-        <Paper square
-               className={classes.root}>
+        <Paper square className={classes.root}>
 
-                <SidenavTrigger />
-                <div style={{
-                         display: 'flex',
-                         flexGrow: 1
-                     }}>
+            <SidenavTrigger/> 
 
-                    <div>
-                        <MUICheckboxIconButton
-                            indeterminate={selected.length > 0 && selected.length < view.length}
-                            checked={selected.length === view.length && view.length !== 0}
-                            onChange={(event, checked) => handleCheckbox(checked)}/>
-                    </div>
+            <div style={{ display: 'flex' }}>
+                {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
+            </div>
 
-                    {selected.length > 0 && (
-                        <SelectionActiveButtons/>
-                    )}
+            <ChromeExtensionInstallBar/>
 
-                </div>
-
-                <ChromeExtensionInstallBar/>
-
-            {/*always show the filter bar for desktop*/}
-            {Devices.isDesktop() && <DocRepoFilterBar />}
-            {/*on mobile, don't show if some rows are checked*/}
-            {!Devices.isDesktop() && selected.length === 0 && <DocRepoFilterBar />}
+            <DocRepoFilterBar/>
 
         </Paper>
     );
