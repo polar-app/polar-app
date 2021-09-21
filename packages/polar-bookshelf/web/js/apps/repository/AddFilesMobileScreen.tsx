@@ -6,7 +6,7 @@ import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
 import { Uploads } from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
-import { DocRepoTableToolbar } from 'polar-bookshelf/apps/repository/js/doc_repo/DocRepoTableToolbar';
+import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import { useHistory } from 'react-router-dom';
 
 
