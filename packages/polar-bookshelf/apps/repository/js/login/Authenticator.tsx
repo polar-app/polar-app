@@ -113,7 +113,31 @@ interface IAuthButtonProps {
     readonly strategy: string;
 }
 
-const AuthButton = (props: IAuthButtonProps) => {
+const AuthButtonotMobile = (props: IAuthButtonProps) => {
+
+    const classes = useStyles();
+
+    const mode = React.useContext(AuthenticatorModeContext);
+
+    const hint = mode === 'create-account' ? 'Continue' : 'Sign In'
+
+    return (
+        <>
+            <Button variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={props.onClick}
+                    startIcon={props.startIcon}>
+
+                {hint} with {props.strategy}
+
+            </Button>
+
+        </>
+    );
+}
+
+const AuthButtonMobile = (props: IAuthButtonProps) => {
 
     const classes = useStyles();
 
@@ -177,7 +201,7 @@ const GoogleAuthButton = () => {
                 </Alert>
             )}
 
-            <AuthButton onClick={handleTriggerAuth}
+            <AuthButtonotMobile onClick={handleTriggerAuth}
                         strategy="Google"
                         startIcon={<FAGoogleIcon />}/>
 
@@ -207,7 +231,217 @@ const ProgressActive = () => {
     );
 }
 
-const EmailTokenAuthButton = () => {
+const EmailTokenAuthButtonNotPhone = () => {
+
+    const classes = useStyles();
+
+    interface IAlert {
+        readonly type: 'error' | 'success';
+        readonly message: string;
+    }
+
+    const [pending, setPending] = React.useState(false);
+    const [alert, setAlert] = React.useState<IAlert | undefined>();
+    const [active, setActive] = React.useState(true);
+    const [triggered, setTriggered, triggeredRef] = useStateRef(false);
+
+    const triggerStartTokenAuth = useTriggerStartTokenAuth();
+    const triggerVerifyTokenAuth = useTriggerVerifyTokenAuth();
+
+    const emailRef = React.useRef("");
+    const challengeRef = React.useRef("");
+
+    const emailBeingVerifiedRef = React.useRef("");
+
+    const doTriggerVerifyTokenAuth = React.useCallback(async (email: string, challenge: string) => {
+
+        setAlert(undefined);
+
+        try {
+
+            try {
+                setPending(true);
+
+                await triggerVerifyTokenAuth(email, challenge);
+            } finally {
+                setPending(false);
+            }
+
+
+        } catch(err) {
+            setAlert({
+                type: 'error',
+                message: err.message
+            });
+        }
+
+    }, [triggerVerifyTokenAuth]);
+
+    const handleTriggerVerifyTokenAuth = React.useCallback(() => {
+
+        const email = emailBeingVerifiedRef.current.trim();
+        const challenge = challengeRef.current.replace(/ /g, "");
+
+        doTriggerVerifyTokenAuth(email, challenge)
+            .catch(err => console.log("Unable to handle auth: ", err));
+
+    }, [doTriggerVerifyTokenAuth])
+
+    const doTriggerStartTokenAuth = React.useCallback(async (email: string) => {
+
+        setAlert(undefined);
+
+        try {
+
+            try {
+
+                Analytics.event2("auth:EmailTokenAuthStarted", {resend: triggeredRef.current})
+
+                setPending(true);
+
+                await triggerStartTokenAuth(email, triggeredRef.current);
+
+                setTriggered(true);
+
+                setAlert({
+                    type: 'success',
+                    message: 'Check your email for a code to login to your account!'
+                });
+
+            } finally {
+                setPending(false);
+            }
+
+        } catch(err) {
+            setAlert({
+                type: 'error',
+                message: err.message
+            });
+        }
+
+    }, [triggerStartTokenAuth, setTriggered, triggeredRef]);
+
+    const handleTriggerStartTokenAuth = React.useCallback((email: string) => {
+
+        Analytics.event2("auth:EmailTokenAuthTriggered", {resend: triggeredRef.current})
+
+        emailBeingVerifiedRef.current = email;
+
+        doTriggerStartTokenAuth(email)
+            .catch(err => console.log("Unable to handle auth: ", err));
+
+    }, [doTriggerStartTokenAuth, triggeredRef])
+
+    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent<any>, callback: () => void) => {
+
+        if (event.key === 'Enter') {
+            callback();
+        }
+
+    }, []);
+
+    const handleEmailProvided = React.useCallback(() => {
+
+        const email = emailRef.current.trim();
+
+        if (email !== '') {
+            handleTriggerStartTokenAuth(email);
+        }
+
+    }, [handleTriggerStartTokenAuth]);
+
+    const handleClick = React.useCallback(() => {
+
+        if (active) {
+
+            if (triggered) {
+
+                if (challengeRef.current.trim() !== '') {
+                    handleTriggerVerifyTokenAuth();
+                }
+
+            } else {
+                handleEmailProvided();
+            }
+
+        } else {
+            Analytics.event2("auth:EmailTokenAuthActivated")
+            setActive(true)
+        }
+
+    }, [active, handleEmailProvided, handleTriggerVerifyTokenAuth, triggered])
+
+    return (
+        <>
+            {active && (
+                <>
+                    <Divider className={classes.sendLinkDivider}/>
+
+                    {pending && (
+                        <ProgressActive/>
+                    )}
+
+                    {! pending && (
+                        <ProgressInactive/>
+                    )}
+
+                    {alert && (
+                        <Alert severity={alert.type}
+                               className={classes.alert}>
+                            {alert.message}
+                        </Alert>
+                    )}
+
+                    {triggered && (
+                        <>
+
+                            <TextField autoFocus={true}
+                                       className={classes.email}
+                                       onChange={event => challengeRef.current = event.target.value}
+                                       onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                       placeholder="Enter your Code Here"
+                                       variant="outlined" />
+
+                            <div className={classes.alternate}>
+                                <Button onClick={handleEmailProvided}>Resend Email</Button>
+                            </div>
+                            <Button variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={handleClick}>
+                                Verify Code
+                            </Button>
+                        </>
+                    )}
+
+                    {! triggered && (
+                        <TextField autoFocus={true}
+                                   className={classes.email}
+                                   onChange={event => emailRef.current = event.target.value}
+                                   onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                   placeholder="email@"
+                                   variant="outlined" />
+                    )}
+
+                </>
+            )}
+
+            {!triggered && (
+
+                <AuthButtonotMobile onClick={handleClick}
+                            strategy="Email"
+                            startIcon={<EmailIcon />}
+                            />
+            )}
+
+            <Divider className={classes.sendLinkDivider}/>
+        </>
+    );
+};
+
+// end comp 1
+
+const EmailTokenAuthButtonPhone = () => {
 
     const classes = useStyles();
 
@@ -407,7 +641,7 @@ const EmailTokenAuthButton = () => {
 
             {!triggered && (
 
-                <AuthButton onClick={handleClick}
+                <AuthButtonMobile onClick={handleClick}
                             strategy="Email"
                             startIcon={<EmailIcon />}
                             />
@@ -501,7 +735,7 @@ const EmailAuthButton = () => {
                 </>
             )}
 
-            <AuthButton onClick={handleClick}
+            <AuthButtonotMobile onClick={handleClick}
                         strategy="Email"
                         startIcon={<EmailIcon />}/>
 
@@ -574,7 +808,7 @@ const Main = React.memo(function Main(props: IProps) {
 
                     {/*<GoogleAuthButton/>*/}
 
-                    <EmailTokenAuthButton/>
+                    <EmailTokenAuthButtonNotPhone/>
 
                     {/*<EmailAuthButton/>*/}
 
@@ -622,7 +856,7 @@ const Main = React.memo(function Main(props: IProps) {
 
                 <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                    <EmailTokenAuthButton/>
+                    <EmailTokenAuthButtonPhone/>
 
                     {props.mode === 'create-account' && (
                         <SignInWithExistingAccount/>
