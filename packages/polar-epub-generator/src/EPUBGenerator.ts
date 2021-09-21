@@ -1,6 +1,9 @@
 import JSZip from "jszip";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {
+    ISODateString,
+    ISODateTimeString
+} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {TOC_HTML} from "./templates/TOC_HTML";
@@ -316,11 +319,7 @@ export namespace EPUBGenerator {
 
         */
 
-        console.log("FIXME: EPUBGenerator.1");
-
         const zip = new JSZip();
-
-        console.log("FIXME: EPUBGenerator.2");
 
         function writeControlFiles() {
             zip.file('mimetype', 'application/epub+zip', {compression: "STORE"});
@@ -329,8 +328,6 @@ export namespace EPUBGenerator {
             zip.file('OEBPS/toc.ncx', renderTOCNCX(doc));
             zip.file('OEBPS/toc.html', renderTOCHTML(doc));
         }
-
-        console.log("FIXME: EPUBGenerator.3");
 
         function writeContents() {
             const contents = withPath(doc.contents);
@@ -350,14 +347,14 @@ export namespace EPUBGenerator {
 
             const options: JSZip.JSZipGeneratorOptions<'arraybuffer'> = {
                 type: 'arraybuffer',
-                // streamFiles: true,
+                streamFiles: true,
                 compression: "DEFLATE",
                 compressionOptions: {
                     level: 9
                 }
             };
 
-            return await zip.generateAsync(options);
+            return <ArrayBuffer> await zip.generateAsync(options);
 
         }
 
