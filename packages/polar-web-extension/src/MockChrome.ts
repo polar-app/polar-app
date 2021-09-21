@@ -11,7 +11,13 @@ export namespace MockChrome {
         message: any
     }
 
-    export type IOPChromeInteraction = IOPChromeRuntimeSendMessageInteraction | IOPChromeTabsSendMessageInteraction;
+    export interface IOPChromeTabsUpdateInteraction {
+        op: 'chrome.tabs.update',
+        id: number,
+        updateProperties: any
+    }
+
+    export type IOPChromeInteraction = IOPChromeRuntimeSendMessageInteraction | IOPChromeTabsSendMessageInteraction | IOPChromeTabsUpdateInteraction;
 
     export type IChrome = any;
 
@@ -34,6 +40,18 @@ export namespace MockChrome {
                 sendMessage: (id: number, message: any) => {
                     console.log("MOCK chrome: chrome.tabs.sendMessage: ", message);
                     interactions.push({op: 'chrome.tabs.sendMessage', id, message});
+                },
+                query: (query: any, callback: (tabs: ReadonlyArray<any>) => void) => {
+                    // eslint-disable-next-line node/no-callback-literal
+                    callback([
+                        {
+                            active: true,
+                            id: 1
+                        }
+                    ])
+                },
+                update: (id: number, updateProperties: any) => {
+                    interactions.push({op: 'chrome.tabs.update', id, updateProperties});
                 }
             }
         }

@@ -1,14 +1,16 @@
 import {SaveToPolarHandler} from "./SaveToPolarHandler";
 import {MockChrome} from "../MockChrome";
+import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
+import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import { Arrays } from "polar-shared/src/util/Arrays";
 
 describe("SaveToPolarHandler", function() {
 
     it("load page", async () => {
 
-        MockChrome.createChromeAndInject();
+        const interactions = MockChrome.createChromeAndInject();
 
-        // FIXME: ok this is the bug... we're handling the message BUT we're not
-        // waiting for the result...
+        await FirebaseBrowserTesting.authWithUser0();
 
         await SaveToPolarHandler.handleMessage({
             "type": "save-to-polar",
@@ -20,6 +22,17 @@ describe("SaveToPolarHandler", function() {
                 "content": "<div>hello world</div>"
             }
         }, {tab: {id: 101}});
+
+        const update = Arrays.last(interactions);
+        (update as any).updateProperties.url = 'xxx'
+
+        assertJSON(update, {
+            "op": "chrome.tabs.update",
+            "id": 1,
+            "updateProperties": {
+                "url": "xxx"
+            }
+        });
 
     });
 
