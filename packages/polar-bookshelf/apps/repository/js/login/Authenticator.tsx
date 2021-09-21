@@ -4,7 +4,9 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
+import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
@@ -22,6 +24,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
+import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -124,7 +127,8 @@ const AuthButton = (props: IAuthButtonProps) => {
                     color="primary"
                     className={classes.button}
                     onClick={props.onClick}
-                    startIcon={props.startIcon}>
+                    startIcon={props.startIcon}
+                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
                 {hint} with {props.strategy}
 
@@ -371,8 +375,9 @@ const EmailTokenAuthButton = () => {
                                        className={classes.email}
                                        onChange={event => challengeRef.current = event.target.value}
                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                       placeholder="Enter your verification code... "
-                                       variant="outlined" />
+                                       placeholder="Enter your Code Here"
+                                       variant="outlined" 
+                                       style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
 
                             <div className={classes.alternate}>
                                 <Button onClick={handleEmailProvided}>Resend Email</Button>
@@ -380,7 +385,8 @@ const EmailTokenAuthButton = () => {
                             <Button variant="contained"
                                     color="primary"
                                     className={classes.button}
-                                    onClick={handleClick}>
+                                    onClick={handleClick}
+                                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
                                 Verify Code
                             </Button>
                         </>
@@ -391,8 +397,9 @@ const EmailTokenAuthButton = () => {
                                    className={classes.email}
                                    onChange={event => emailRef.current = event.target.value}
                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="Enter your email address... "
-                                   variant="outlined" />
+                                   placeholder="email@"
+                                   variant="outlined" 
+                                   style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
                     )}
 
                 </>
@@ -402,8 +409,11 @@ const EmailTokenAuthButton = () => {
 
                 <AuthButton onClick={handleClick}
                             strategy="Email"
-                            startIcon={<EmailIcon />}/>
+                            startIcon={<EmailIcon />}
+                            />
             )}
+
+            <Divider className={classes.sendLinkDivider}/>
         </>
     );
 };
@@ -505,6 +515,7 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
+        
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -530,7 +541,10 @@ const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
 
     return (
-        <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+
+        <>
+            <DeviceRouters.NotPhone>
+            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
 
             <div id="firebaseui-auth-container" style={{display: 'none'}}/>
 
@@ -554,9 +568,9 @@ const Main = React.memo(function Main(props: IProps) {
                 )}
 
                 <div style={{
-                         display: 'flex',
-                         flexDirection: 'column'
-                     }}>
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
 
                     {/*<GoogleAuthButton/>*/}
 
@@ -585,12 +599,55 @@ const Main = React.memo(function Main(props: IProps) {
             <div>
                 <p className={classes.legal}>
                     You acknowledge that you will read, and agree to
-                    our <a href="https://getpolarized.io/terms/">Terms of Service</a> and <a href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                    our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
                 </p>
             </div>
 
+            </div>
+        </DeviceRouters.NotPhone>
 
-        </div>
+        <DeviceRouters.Phone>
+            <div style={{height:"100vh"}}>
+                <div style={{textAlign: 'center', marginTop: '100px'}}>
+                    <div className={classes.logo}>
+                        <PolarSVGIcon width={125} height={125}/>
+                    </div>
+
+                    <div>
+                        <p className={classes.legal}>
+                            Welcome to Polar
+                        </p>
+                    </div>
+                </div>
+
+                <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+
+                    <EmailTokenAuthButton/>
+
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <OrCreateNewAccount/>
+                    )}
+
+                    <div style={{flexGrow: 1}}>
+
+                    </div>
+
+                    <div>
+                        <p style={{fontSize: '10px'}} className={classes.legal}>
+                            You acknowledge that you will read, and agree to
+                            our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </DeviceRouters.Phone>
+        </>
+
     );
 });
 
@@ -623,38 +680,53 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
             <>
+            <DeviceRouters.NotPhone>
                 <div style={{
-                         display: 'flex',
-                         width: '100%',
-                         height: '100%'
-                     }}>
+                            display: 'flex',
+                            width: '100%',
+                            height: '100%'
+                        }}>
 
-                    <Paper style={{
-                               margin: 'auto',
-                               maxWidth: '450px',
-                               minHeight: '500px',
-                               maxHeight: '800px',
-                               width: '100%',
-                               display: 'flex',
-                               flexDirection: 'column'
-                           }}>
+                        <Paper style={{
+                                margin: 'auto',
+                                maxWidth: '450px',
+                                minHeight: '500px',
+                                maxHeight: '800px',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
 
-                        <>
+                            <>
 
-                            {authStatus === undefined && (
-                                <Pending/>
-                            )}
+                                {authStatus === undefined && (
+                                    <Pending/>
+                                )}
 
 
-                            {authStatus === 'needs-auth' && (
-                               <Main {...props}/>
-                            )}
+                                {authStatus === 'needs-auth' && (
+                                <Main {...props}/>
+                                )}
 
-                        </>
+                            </>
 
-                    </Paper>
+                        </Paper>
 
-                </div>
+                    </div>
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+                    <>
+                    {authStatus === undefined && (
+                        <Pending/>
+                    )}
+
+                    {authStatus === 'needs-auth' && (
+                    <Main {...props}/>
+                    )}
+                    </>
+            </DeviceRouters.Phone>
+                
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>
