@@ -7,6 +7,8 @@ const workers = os.cpus().length - 1;
 const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
+const path = require("path");
+const fs = require("fs");
 
 module.exports = (config) => {
     config.set({
@@ -167,6 +169,13 @@ module.exports = (config) => {
                             },
                         ],
                     },
+                    {
+                        // We have to use a null-loader for Electron because if we don't require()
+                        // will attempt to use 'fs' which doesn't exist in the browser.
+                        test: path.resolve(__dirname, '../../node_modules/electron/index.js'),
+                        use: 'null-loader'
+                    }
+
                 ]
 
             },
