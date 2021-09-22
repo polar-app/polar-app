@@ -1,3 +1,42 @@
+# Creating Hooks
+
+Often it's nice to share the logic across components by creating hooks.
+
+Hooks are really just magic functions that can reload when their dependencies change.
+
+I usually will use something like
+
+```typescript jsx
+
+export function useMutationHandler() {
+    
+    const firestore = useFirestore();
+    
+    return React.useCallback(() => {
+        // do some mutation here
+        
+        // note that we have to add 'firestore' to the list of dependencies
+        // which will cause our callback to be re-created when/if 'firestore' 
+        // changes lower in the react tree.
+        
+    }, [firestore]);
+    
+}
+
+export const MyMutationButton = () => {
+    
+    const mutationHandler = useMutationHandler();
+    
+    return (
+        <Button onClick={() => mutationHandler()}>
+            Do Mutation
+        </Button>
+    );
+    
+}
+```
+
+
 # Using multiple children instead of just one child.
 
 You might have a component that only takes one child but you need to specify two or more children.
