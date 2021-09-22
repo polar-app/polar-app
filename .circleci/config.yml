@@ -111,18 +111,20 @@ commands:
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link
 
-      # ! Compile all Typescript Packages
-      - run:
-          name: Lerna Compile
-          command: npx lerna run compile
-
       # ? Debug step for checking if there are any duplicate packages
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
           command: |
+            (cd packages/polar-shared && yarn run compile)
+            (cd packages/polar-npm && yarn run compile)
             DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
             lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+
+      # ! Compile all Typescript Packages
+      - run:
+          name: Lerna Compile
+          command: npx lerna run compile
 
       # ! Save Cache
       - save_cache:
@@ -324,103 +326,7 @@ executors:
 
 # ~ Define Workflow Steps
 workflows:
-  branches-workflow:
-    when:
-      not:
-        equal: [master, << pipeline.git.branch >>]
-    jobs:
-      ## ^ Commonality Between Sub-Workflows
-      # @ Setup the repo for the subsquent stages
-      - setting-up:
-          executor: large
-
-      ## ^ Chrome Extension Sub-Workflow
-      # @ Build Chrome Extension
-      - build-chrome-extension:
-          executor: large
-          requires:
-            - "setting-up"
-
-      ## ^ Polar App Sub-Workflow Below Here
-      # @ Run Karma Tests
-      - karma:
-          executor: large
-          requires:
-            - setting-up
-
-      - mocha:
-          executor: large
-          requires:
-            - setting-up
-
-      # @ Build Polar app
-      - build-polar-app:
-          executor: large
-          requires:
-            - setting-up
-
-      # @ Run Cypress tests for chrome-desktop (1080p)
-      - cypress/run:
-          name: cypress-desktop-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
-          attach-workspace: true
-          store_artifacts: true
-
-      # @ Run Cypress tests for firefox-desktop (1080p)
-      - cypress/run:
-          name: cypress-desktop-firefox
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
-
-      # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
-      - cypress/run:
-          name: cypress-phone-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
-
-      # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
-      - cypress/run:
-          name: cypress-tablet-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
-
-      ## ^ Polar Site Sub-Workflow Below Here
-      # @ Build Polar Site
-      - build-polar-site:
-          executor: large
-          requires:
-            - setting-up
-
-  master-workflow:
-    when:
-      equal: [master, << pipeline.git.branch >>]
+  main-workflow:
     jobs:
       ## ^ Approve the entire pipeline to start deployment
       - approve-deploy:

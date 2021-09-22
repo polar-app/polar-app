@@ -1,9 +1,9 @@
 import WebResponseHeadersDetails = chrome.webRequest.WebResponseHeadersDetails;
 import WebRequestBodyDetails = chrome.webRequest.WebRequestBodyDetails;
 import WebNavigationParentedCallbackDetails = chrome.webNavigation.WebNavigationParentedCallbackDetails;
-import BlockingResponse = chrome.webRequest.BlockingResponse;
 import {RequestIndex} from './RequestIndex';
-import RequestFilter = chrome.webRequest.RequestFilter;
+import {DesktopAppPinger} from "../DesktopAppPinger";
+import {Karma} from "../../Karma";
 
 const HOST = 'app.getpolarized.io';
 
@@ -20,12 +20,13 @@ const ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers';
 
 const ENABLE_VIEWER_FILE_URLS = false;
 
-// TODO: only do this on AuthPDFHandler start.
 const requestIndex = new RequestIndex();
-requestIndex.start();
-
 const desktopAppPinger = new DesktopAppPinger();
-desktopAppPinger.start();
+
+if (! Karma.isKarma()) {
+    requestIndex.start();
+    desktopAppPinger.start();
+}
 
 export class AutoPDFHandler {
 

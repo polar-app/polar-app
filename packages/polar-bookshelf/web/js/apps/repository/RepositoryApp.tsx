@@ -43,6 +43,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
+import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -65,6 +66,7 @@ import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
+import {AndroidHistoryListener} from "./AndroidHistoryListener";
 
 interface IProps {
     readonly app: App;
@@ -273,7 +275,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <UseLocationChangeRoot>
                                         <MUIDialogController>
                                             <AddFileDropzoneRoot>
-                                                {children}
+                                                <>
+                                                    <AndroidHistoryListener/>
+                                                    {children}
+                                                </>
                                             </AddFileDropzoneRoot>
                                         </MUIDialogController>
                                     </UseLocationChangeRoot>
@@ -325,7 +330,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path="/migration/phz">
                     <PHZMigrationScreen/>
-            </Route>
+                </Route>
 
                 <AuthRequired>
                     <DataProviders>
@@ -335,10 +340,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <DeviceRouters.Desktop>
                                 <SideNav />
-                            </DeviceRouters.Desktop>                             
+                            </DeviceRouters.Desktop>
                             <DeviceRouters.NotDesktop>
-                                <MUIBottomNavigation/>   
-                            </DeviceRouters.NotDesktop>           
+                                <MUIBottomNavigation/>
+                            </DeviceRouters.NotDesktop>
                             <Intercom />
 
                             <RouteContainer>
@@ -351,6 +356,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.ANNOTATIONS}>
                                     <RenderAnnotationRepoScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
+                                    <AddFilesMobileScreen/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
