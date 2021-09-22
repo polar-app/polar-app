@@ -2,7 +2,7 @@ import React from "react";
 import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {AnnotationContentBase, AnnotationContentTypeMap, FlashcardAnnotationContent} from "./content/AnnotationContent";
+import {AnnotationContentBase, AnnotationContentTypeMap, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -10,20 +10,26 @@ import {useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {Flashcards} from "../metadata/Flashcards";
-import {Refs} from "polar-shared/src/metadata/Refs";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {FileType} from "../apps/main/file_loaders/FileType";
 import {IDocScale} from "../../../apps/doc/src/DocViewerStore";
 import {BlockAreaHighlight} from "./BlockAreaHighlight";
 import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import {DocIDStr} from "polar-shared/src/util/Strings";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
 type IUseHighlightBlocks<T extends IHighlightContentType> = {
+    /**
+     * The ID of the document that the highlights belong to.
+     */
     docID: string;
+    
+    /**
+     * The type of the highlights we want to fetch @see IHighlightContentType
+     */
     type?: T;
 };
 
@@ -31,7 +37,14 @@ const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
     (item: Block): item is Block<AnnotationContentTypeMap[T]> =>
         type ? item.content.type === type : true
 
-export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>) => {
+/**
+ * Get highlight annotation blocks of a specific type
+ *
+ * @param opts Options object.
+ *
+ * @return {ReadonlyArray<Block<AnnotationContentTypeMap[T]>>}
+ */
+export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>): ReadonlyArray<Block<AnnotationContentTypeMap[T]>> => {
     const { docID, type } = opts;
     const [areaHighlights, setAreaHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
     const blocksStore = useBlocksStore();
@@ -58,10 +71,21 @@ export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHi
     return areaHighlights
 };
 
-
-export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: string) => {
+/**
+ * Get the document block of a specific document by ID.
+ *
+ * @param blocksStore BlocksStore instance.
+ * @param fingerprint The id of the document.
+ *
+ * @return {Readonly<Block<DocumentContent>> | undefined}
+ */
+export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: DocIDStr): Readonly<Block<DocumentContent>> | undefined => {
     const documentBlockID = blocksStore.indexByDocumentID[fingerprint];
     const block = blocksStore.getBlock(documentBlockID);
+    if (! block || ! BlockPredicates.isDocumentBlock(block)) {
+        return undefined;
+    }
+
     return block;
 };
 
@@ -71,7 +95,7 @@ export const useAnnotationBlockManager = () => {
     const doMutation = React.useCallback(<T>(fingerprint: string, handler: (block: Block<DocumentContent>) => T): T | undefined => {
         const block = getBlockForDocument(blocksStore, fingerprint);
 
-        if (block && block.content.type === "document") {
+        if (block) {
             return handler(block as Block<DocumentContent>);
         } else {
             console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
@@ -145,27 +169,17 @@ export const useAnnotationBlockManager = () => {
 
     const createFlashcard = React.useCallback((highlightID: BlockIDStr, flashcard: FlashcardContent) => {
         const highlightBlock = getBlock(highlightID);
+
         if (highlightBlock && BlockPredicates.isAnnotationHighlightBlock(highlightBlock)) {
             const getFlashcard = () => {
-                const ref = Refs.createFromAnnotationType(
-                    highlightBlock.content.value.id,
-                    AnnotationContentType.TEXT_HIGHLIGHT === highlightBlock.content.type
-                        ? AnnotationType.TEXT_HIGHLIGHT
-                        : AnnotationType.AREA_HIGHLIGHT
-                );
-
                 if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
-                    return Flashcards.createFrontBack(
+                    return BlockFlashcards.createFrontBack(
                         flashcard.front,
                         flashcard.back,
-                        ref,
-                        'MARKDOWN',
-                    )
+                    );
                 } else {
-                    return Flashcards.createCloze(
+                    return BlockFlashcards.createCloze(
                         flashcard.text,
-                        ref,
-                        'MARKDOWN'
                     );
                 }
             };
@@ -174,6 +188,7 @@ export const useAnnotationBlockManager = () => {
                 type: AnnotationContentType.FLASHCARD,
                 docID: highlightBlock.content.docID,
                 pageNum: highlightBlock.content.pageNum,
+                links: highlightBlock.content.links,
                 value: getFlashcard(),
             });
 
@@ -184,28 +199,98 @@ export const useAnnotationBlockManager = () => {
     return { create, update, remove, getBlock, createFlashcard };
 };
 
-type ICreateBlockAreaHighlightOpts = {
+type IBlockAreaHighlightOpts = {
+    /**
+     * The position of the area highlight within the page @see ILTRect
+     */
     rect: ILTRect,
+
+    /**
+     * The page that the highlight was created under.
+     */
     pageNum: number,
+
+    /**
+     * The root element of the document viewer.
+     */
     docViewerElement: HTMLElement,
+
+    /**
+     * The file type of the document that the highlight belongs to @see FileType
+     */
     fileType: FileType,
-    fingerprint: string,
-    docScale: IDocScale
+
+    /**
+     * The current scale (zoom) level of the document @see IDocScale
+     */
+    docScale: IDocScale,
 };
 
-export const useCreateBlockAreaHighlight = () => {
-    const {create, getBlock, update} = useAnnotationBlockManager();
-    const cloudStorage = useFirebaseCloudStorage();
+type ICreateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
+    type: 'create',
+    
+    /**
+     * The ID of the document that the created areahighlight will belong to.
+     */
+    docID: DocIDStr,
+};
 
-    return React.useCallback(async (opts: ICreateBlockAreaHighlightOpts) => {
+type IUpdateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
+    type: 'update',
+
+    /**
+     * The id of the block to be updated
+     */
+    blockID: BlockIDStr,
+};
+
+export const useBlockAreaHighlight = () => {
+    const {create: createAnnotationBlock, getBlock, update: updateAnnotationBlock} = useAnnotationBlockManager();
+    const cloudStorage = useFirebaseCloudStorage();
+    const blocksStore = useBlocksStore();
+
+    const save = React.useCallback(async (opts: ICreateBlockAreaHighlightOpts | IUpdateBlockAreaHighlightOpts): Promise<string | undefined> => {
         const {
-            fingerprint,
             rect,
             docScale,
             docViewerElement,
             pageNum,
-            fileType
+            fileType,
         } = opts;
+
+        const getFingerprint = (): string | null => {
+            if (opts.type === 'create') {
+                return opts.docID;
+            } else {
+                const block = getBlock(opts.blockID, AnnotationContentType.AREA_HIGHLIGHT);
+
+                if (! block ) {
+                    return null;
+                }
+
+                const root = blocksStore.getBlock(block.root);
+
+                if (root && root.content.type === 'document') {
+                    return root.content.docInfo.fingerprint;
+                }
+            }
+            
+            return null;
+        };
+
+        const getBlockID = (fingerprint: DocIDStr, content: AreaHighlightAnnotationContent): string | undefined => {
+            if (opts.type === 'create') {
+                return createAnnotationBlock(fingerprint, content);
+            } else {
+                return opts.blockID;
+            }
+        };
+
+        const fingerprint = getFingerprint();
+        
+        if (! fingerprint) {
+            return;
+        }
 
         const { content, screenshot } = await BlockAreaHighlight.create({
             fingerprint,
@@ -216,7 +301,8 @@ export const useCreateBlockAreaHighlight = () => {
             docViewerElement,
         });
     
-        const blockID = create(fingerprint, content);
+
+        const blockID = getBlockID(fingerprint, content);
 
         if (blockID) {
             const { id, ext } = await BlockAreaHighlight.persistScreenshot(cloudStorage, screenshot);
@@ -228,7 +314,7 @@ export const useCreateBlockAreaHighlight = () => {
             }
 
             const contentJSON = block.content.toJSON();
-            update(blockID, {
+            updateAnnotationBlock(blockID, {
                 ...contentJSON,
                 value: {
                     ...contentJSON.value,
@@ -238,9 +324,36 @@ export const useCreateBlockAreaHighlight = () => {
                         height: screenshot.height,
                         src: { name: name, backend: Backend.IMAGE },
                         id,
-                    }
+                    },
                 },
             });
+            return blockID;
         }
-    }, [create, update, getBlock, cloudStorage]);
+
+        return undefined;
+    }, [
+        createAnnotationBlock,
+        updateAnnotationBlock,
+        getBlock,
+        cloudStorage,
+        blocksStore
+    ]);
+
+    const create = React.useCallback((docID: DocIDStr, opts: IBlockAreaHighlightOpts) => {
+        return save({
+            ...opts,
+            docID,
+            type: 'create',
+        });
+    }, [save]);
+
+    const update = React.useCallback((blockID: BlockIDStr, opts: IBlockAreaHighlightOpts) => {
+        return save({
+            ...opts,
+            blockID,
+            type: 'update',
+        });
+    }, [save]);
+
+    return { create, update };
 };

@@ -40,12 +40,12 @@ export class DiskCache {
 
     }
 
-    public static async markFailed(url: string, err: Error) {
+    public static async markFailed(url: string, err: unknown) {
 
         const path = this.computePath(url, 'err');
 
         const content = {
-            msg: err.message
+            msg: (err as any).message || 'error'
         };
 
         await Files.createDirAsync(DIR);

@@ -5,13 +5,12 @@ import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useBlockContentEditableElement} from "./BlockContentEditable";
-import { observer } from "mobx-react-lite"
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import {observer} from "mobx-react-lite"
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-
-const THINSP = ' ';
+import {useRefWithUpdates} from "../../hooks/ReactHooks";
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -25,23 +24,30 @@ export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset
 // TODO: need operations for bold, italics, and any other type of action we want
 // to perform here.
 
+export interface IActionTypeWithBlockLink {
+    readonly type: "block-link";
+    readonly target: string;
+}
+
 /**
  * Link to a node.
  */
-export interface IActionOpWithBlockLink {
-    readonly type: 'link-to-block';
-    readonly target: string;
+export interface IActionOpWithBlockLink extends IActionTypeWithBlockLink {
     readonly undoContent: MarkdownStr;
 }
 
-export type ActionOp = IActionOpWithBlockLink;
-
-export interface IActionTypeWithBlockLink {
-    readonly type: 'link-to-block';
+export interface IActionTypeWithBlockTag {
+    readonly type: "block-tag";
     readonly target: string;
 }
 
-export type ActionType = IActionTypeWithBlockLink;
+export interface IActionOpWithBlockLink {
+    readonly undoContent: MarkdownStr;
+}
+
+export type ActionOp = IActionOpWithBlockLink | IActionTypeWithBlockTag;
+
+export type ActionType = IActionTypeWithBlockLink | IActionTypeWithBlockTag;
 
 /**
  * Given an id for the action to, perform the given operation.
@@ -68,7 +74,15 @@ interface IProps {
      */
     readonly onAction: ActionHandler;
 
-    readonly children: JSX.Element;
+    readonly actionType: ActionType['type'];
+
+    readonly computeActionInputText: (str: string) => string;
+
+    readonly wrapStart: string;
+
+    readonly wrapEnd: string;
+
+    readonly disabled?: boolean;
 }
 
 /**
@@ -92,29 +106,37 @@ function useActionExecutor(id: BlockIDStr) {
             return range;
         }
 
+        function createLink(type: 'tag' | 'link') {
+            const updateSelection = () => {
+
+                const coveringRange = createCoveringRange();
+                coveringRange.deleteContents();
+
+                const a = document.createElement('a');
+                a.setAttribute('contenteditable', 'false');
+                a.setAttribute('href', '#' + actionOp.target);
+                const prefix = type === 'tag' ? '#' : '';
+                a.appendChild(document.createTextNode(prefix + actionOp.target.trim()));
+                const textNode = document.createTextNode('');
+                coveringRange.insertNode(textNode);
+                coveringRange.insertNode(a);
+                ContentEditables.setCaretPosition(textNode, 'end');
+            };
+
+            updateSelection();
+
+            const content = contentEditableMarkdownReader();
+            blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
+        }
+
         switch (actionOp.type) {
 
-            case "link-to-block":
+            case "block-link":
+                createLink('link');
+                break;
 
-                const updateSelection = () => {
-
-                    const coveringRange = createCoveringRange();
-                    coveringRange.deleteContents();
-
-                    const a = document.createElement('a');
-                    a.setAttribute('contenteditable', 'false');
-                    a.setAttribute('href', '#' + actionOp.target);
-                    a.appendChild(document.createTextNode(actionOp.target.trim()));
-                    const textNode = document.createTextNode('');
-                    coveringRange.insertNode(textNode);
-                    coveringRange.insertNode(a);
-                    ContentEditables.setCaretPosition(textNode, 'end');
-                }
-
-                updateSelection();
-
-                const content = contentEditableMarkdownReader();
-                blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
+            case "block-tag":
+                createLink('tag');
                 break;
 
         }
@@ -149,14 +171,15 @@ interface ActivePrompt {
     readonly positionRange: Range;
 
     readonly actionInput: HTMLSpanElement;
-
 }
 
-export const BlockAction = observer((props: IProps) => {
+export const BlockAction: React.FC<IProps> = observer((props) => {
 
     const theme = useTheme();
 
-    const {trigger, actionsProvider, onAction} = props;
+    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, actionType, disabled} = props;
+
+    const computeActionInputTextRef = useRefWithUpdates(props.computeActionInputText);
 
     const actionStore = useActionMenuStore();
     const actionExecutor = useActionExecutor(props.id);
@@ -178,13 +201,13 @@ export const BlockAction = observer((props: IProps) => {
 
     }, [actionsProvider])
 
+    const computeItemsRef = useRefWithUpdates(computeItems);
 
-    const computeActionInputText = React.useCallback((): string => {
 
-        return (activePromptRef.current?.actionInput.textContent || '')
-            .replace(/^\[\[./, '')
-            .replace(/.\]\]$/, '');
+    const handleComputeActionInputText = React.useCallback((): string => {
+        const text = activePromptRef.current?.actionInput.textContent || '';
 
+        return computeActionInputTextRef.current(text);
     }, []);
 
     const clearActivePrompt = React.useCallback((noRange?: boolean) => {
@@ -197,11 +220,11 @@ export const BlockAction = observer((props: IProps) => {
 
         if (actionInput.parentElement) {
 
-            const prompt = computeActionInputText();
+            const prompt = handleComputeActionInputText();
 
-            const newPromptText = prompt !== '' ? prompt : '[[';
+            const newPromptText = prompt !== '' ? prompt : wrapStart.trim();
 
-            // **** replace the range of teh actionInput element so that it's not part of the DOM
+            // **** replace the range of the actionInput element so that it's not part of the DOM
 
             const replaceRange = document.createRange();
             replaceRange.setStartBefore(actionInput);
@@ -221,7 +244,7 @@ export const BlockAction = observer((props: IProps) => {
 
         }
 
-    }, [computeActionInputText]);
+    }, [handleComputeActionInputText, wrapStart]);
 
     const cursorWithinInput = React.useCallback((delta: number = 0): boolean => {
 
@@ -239,8 +262,8 @@ export const BlockAction = observer((props: IProps) => {
 
             const inputRange = document.createRange();
 
-            inputRange.setStart(activePromptRef.current!.actionInput.firstChild!, 3);
-            inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
+            inputRange.setStart(activePromptRef.current!.actionInput.firstChild!, wrapStart.length);
+            inputRange.setEnd(inputEnd.node, inputEnd.offset - wrapEnd.length);
 
             return inputRange;
 
@@ -253,7 +276,7 @@ export const BlockAction = observer((props: IProps) => {
         return inputRange.isPointInRange(range.startContainer, range.startOffset + delta) &&
                inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
 
-    }, [divRef]);
+    }, [divRef, wrapStart, wrapEnd]);
 
     const createActionRangeForHandler = React.useCallback(() => {
 
@@ -306,25 +329,25 @@ export const BlockAction = observer((props: IProps) => {
 
     const doComplete = React.useCallback(() => {
 
-        const prompt = computeActionInputText();
+        const prompt = handleComputeActionInputText();
 
         const {from, to} = createActionRangeForHandler()
 
         const undoContent = initialMarkdownContentRef.current!;
 
         actionExecutor(from, to, {
-            type: 'link-to-block',
+            type: actionType,
             target: prompt,
             undoContent
         });
 
         doReset();
 
-    }, [actionExecutor, computeActionInputText, createActionRangeForHandler, doReset]);
+    }, [actionType, actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
 
     const doCompleteOrReset = React.useCallback(() => {
 
-        const prompt = computeActionInputText();
+        const prompt = handleComputeActionInputText();
 
         if (prompt.length !== 0) {
             doComplete();
@@ -332,33 +355,7 @@ export const BlockAction = observer((props: IProps) => {
             doReset();
         }
 
-    }, [computeActionInputText, doComplete, doReset]);
-
-    const hasAborted = React.useCallback((event: React.KeyboardEvent): boolean => {
-
-        if (! activePromptRef.current) {
-            return true;
-        }
-
-        if (! activePromptRef.current.actionInput.parentElement) {
-            return true;
-        }
-
-        const actionText = activePromptRef.current.actionInput.textContent || '';
-
-        if (! actionText.startsWith(`[[${THINSP}`)) {
-            console.log("Aborted: left");
-            return true;
-        }
-
-        if (! actionText.endsWith(`${THINSP}]]`)) {
-            console.log("Aborted: right");
-            return true;
-        }
-
-        return false;
-
-    }, []);
+    }, [handleComputeActionInputText, doComplete, doReset]);
 
     const createActionHandler = React.useCallback(() => {
 
@@ -366,7 +363,7 @@ export const BlockAction = observer((props: IProps) => {
 
             const actionType = onAction(id);
 
-            const {from, to} = createActionRangeForHandler()
+            const {from, to} = createActionRangeForHandler();
 
             const undoContent = initialMarkdownContentRef.current!;
 
@@ -407,7 +404,7 @@ export const BlockAction = observer((props: IProps) => {
                 const span = document.createElement('span');
                 span.setAttribute('class', 'action-input');
 
-                const textNode = document.createTextNode(`[[${THINSP}${THINSP}]]`);
+                const textNode = document.createTextNode(`${wrapStart}${wrapEnd}`);
                 span.appendChild(textNode);
 
                 return span;
@@ -416,7 +413,7 @@ export const BlockAction = observer((props: IProps) => {
             const range = sel.getRangeAt(0);
 
             const wrapRange = document.createRange();
-            wrapRange.setStart(range.startContainer, range.startOffset - 2);
+            wrapRange.setStart(range.startContainer, range.startOffset - trigger.length);
             wrapRange.setEnd(range.endContainer, range.endOffset);
 
             wrapRange.deleteContents();
@@ -425,13 +422,15 @@ export const BlockAction = observer((props: IProps) => {
 
             wrapRange.insertNode(actionInput);
 
-            range.setStart(actionInput.firstChild!, 3);
-            range.setEnd(actionInput.firstChild!, 3);
+            const position = wrapStart.length;
+
+            range.setStart(actionInput.firstChild!, position);
+            range.setEnd(actionInput.firstChild!, position);
 
             function createPositionRange() {
                 const range = document.createRange();
-                range.setStart(actionInput.firstChild!, 3);
-                range.setEnd(actionInput.firstChild!, 3);
+                range.setStart(actionInput.firstChild!, position);
+                range.setEnd(actionInput.firstChild!, position);
                 return range;
             }
 
@@ -440,13 +439,13 @@ export const BlockAction = observer((props: IProps) => {
             return {
                 positionRange,
                 actionInput
-            }
+            };
 
         }
 
         throw new Error("No selection");
 
-    }, [theme.palette.text.hint]);
+    }, [theme.palette.text.hint, trigger, wrapStart]);
 
     const computePosition = React.useCallback(() => {
 
@@ -565,11 +564,9 @@ export const BlockAction = observer((props: IProps) => {
                     case 'Backspace':
                         event.stopPropagation();
                         event.preventDefault();
-                        break;
+                        return;
 
                 }
-
-                return;
 
             }
 
@@ -577,96 +574,95 @@ export const BlockAction = observer((props: IProps) => {
 
     }, [cursorWithinInput, doCompleteOrReset, doCompleteOrResetWithKeyboardEvent, doResetWithKeyboardEvent]);
 
-    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
+    React.useEffect(() => {
+        const elem = divRef.current;
 
-        if (! divRef.current) {
+        if (! elem || disabled) {
             return;
-        }
+        };
 
-        const split = ContentEditables.splitAtCursor(divRef.current)
+        const handleInput = (e: Event) => {
+            const event = e as InputEvent;
 
-        if (! split) {
-            return;
-        }
+            const split = ContentEditables.splitAtCursor(elem)
 
-        const prefixText = ContentEditables.fragmentToText(split.prefix);
-
-        function computeActionInputText(): string {
-
-            return (activePromptRef.current?.actionInput.textContent || '')
-                .replace(/^\[\[./, '')
-                .replace(/.\]\]$/, '');
-
-        }
-
-        if (activeRef.current) {
-
-            if (doResetWithKeyboardEvent(event)) {
+            if (! split) {
                 return;
             }
 
-            if (doCompleteOrResetWithKeyboardEvent(event)) {
-                return;
-            }
+            const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-            const prompt = computeActionInputText();
+            const isTriggered = () => {
+                if (trigger.length === 1) {
+                    return event.data === trigger;
+                }
 
-            if (hasAborted(event)) {
-                doReset();
-                return;
-            }
+                return prefixText.endsWith(trigger) && event.data === trigger.slice(-1);
+            };
 
-            const items = computeItems(prompt);
-            actionStore.updateState(items);
+            if (activeRef.current) {
+                const prompt = handleComputeActionInputText();
 
-        } else {
+                const items = computeItemsRef.current(prompt);
+                actionStore.updateState(items);
 
-            if (prefixText.endsWith(trigger) && event.key === '[') {
+            } else {
 
-                activePromptRef.current = createActivePrompt();
+                if (isTriggered()) {
 
-                const prompt = computeActionInputText();
+                    activePromptRef.current = createActivePrompt();
 
-                const position = computePosition();
-                const actionHandler = createActionHandler();
+                    const prompt = handleComputeActionInputText();
 
-                if (position) {
+                    const position = computePosition();
+                    const actionHandler = createActionHandler();
 
-                    activeRef.current = true;
+                    if (position) {
 
-                    initialMarkdownContentRef.current = captureInitialMarkdownContent();
+                        activeRef.current = true;
 
-                    const items = computeItems(prompt);
+                        initialMarkdownContentRef.current = captureInitialMarkdownContent();
 
-                    actionStore.setState({
-                        position,
-                        items,
-                        onAction: actionHandler
-                    });
+                        const items = computeItemsRef.current(prompt);
 
-                } else {
-                    console.warn("No position for menu");
+                        actionStore.setState({
+                            position,
+                            items,
+                            onAction: actionHandler
+                        });
+
+                    } else {
+                        console.warn("No position for menu");
+                    }
+
                 }
 
             }
+        };
 
-        }
+        elem.addEventListener('input', handleInput);
 
-        return activeRef.current;
-
-    }, [divRef, doResetWithKeyboardEvent, doCompleteOrResetWithKeyboardEvent, hasAborted, computeItems,
-        actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler,
-        captureInitialMarkdownContent]);
+        return () => {
+            elem.removeEventListener('input', handleInput);
+        };
+    }, [computeItemsRef, disabled]);
 
     const handleClick = React.useCallback(() => {
 
+        if (disabled) {
+            return;
+        }
+
         doCompleteOrReset();
 
-    }, [doCompleteOrReset]);
+    }, [doCompleteOrReset, disabled]);
 
     return (
         <ClickAwayListener onClickAway={() => doReset(true)}>
-            <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} onClick={handleClick}>
+            <div
+                onKeyDown={handleKeyDown}
+                onClick={handleClick}
+            >
                 {props.children}
             </div>
         </ClickAwayListener>

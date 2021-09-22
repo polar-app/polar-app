@@ -1,6 +1,6 @@
 {
   "name": "polar-doc-preview-loader",
-  "version": "2.1.121",
+  "version": "0.0.0",
   "description": "Loads up doc preview URLs into be queued for processing",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
   },
   "keywords": [],
   "author": "",
@@ -22,18 +23,18 @@
     "@types/node": "=14.14.35",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.121",
-    "polar-test": "^2.1.121",
-    "polar-typescript": "^2.1.121",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "polar-eslint": "0.0.0",
+    "polar-karma": "0.0.0",
+    "polar-test": "0.0.0",
+    "polar-typescript": "0.0.0",
+    "polar-webpack": "0.0.0"
   },
   "dependencies": {
     "@google-cloud/tasks": "=1.9.0",
     "firebase-admin": "=9.11.0",
-    "polar-firebase": "^2.1.121",
-    "polar-firebase-admin": "^2.1.121",
-    "polar-shared": "^2.1.121",
-    "polar-webapp-links": "^2.1.121"
+    "polar-firebase": "0.0.0",
+    "polar-firebase-admin": "0.0.0",
+    "polar-shared": "0.0.0",
+    "polar-webapp-links": "0.0.0"
   }
 }

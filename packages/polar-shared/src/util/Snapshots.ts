@@ -4,7 +4,7 @@ import {IDStr} from "./Strings";
 /**
  * Callback for receiving errors
  */
-export type OnErrorCallback = (err: Error) => void;
+export type OnErrorCallback = (err: ErrorType) => void;
 
 export type OnNextCallback<V> = (value: V | undefined) => void;
 
@@ -45,7 +45,8 @@ export interface SubscriptionValue<T> {
     readonly error: Error | undefined;
 }
 
-export type SnapshotTuple<T> = [T | undefined, Error | undefined];
+type ErrorType = unknown;
+export type SnapshotTuple<T> = [T | undefined, ErrorType | undefined];
 
 /**
  * A null snapshot subscriber which can be used when you don't want to do

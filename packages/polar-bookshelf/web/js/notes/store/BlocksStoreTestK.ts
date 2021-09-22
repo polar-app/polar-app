@@ -27,7 +27,7 @@ namespace HTMLBlockUtils {
         elem.id = `${DOMBlocks.BLOCK_ID_PREFIX}${block.id}`;
         elem.dataset.id = block.id;
         container.appendChild(elem);
-        if (BlockPredicates.isTextBlock(block)) {
+        if (BlockPredicates.isEditableBlock(block)) {
             const text = document.createTextNode(BlockTextContentUtils.getTextContentMarkdown(block.content));
             elem.appendChild(text);
         }

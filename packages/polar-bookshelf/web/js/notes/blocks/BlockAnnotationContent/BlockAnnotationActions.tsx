@@ -6,17 +6,18 @@ import {useHistory} from "react-router";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContent} from "../../content/AnnotationContent";
+import {AnnotationContent, AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {BlockPredicates} from "../../store/BlockPredicates";
 import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import {useBlockTagEditorDialog} from "../../NoteUtils";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -172,7 +173,7 @@ interface IUseSharedAnnotationBlockActionsOpts {
     actions?: ISharedActionType[];
 }
 
-type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open';
+export type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open' | 'editTags';
 
 type ISharedActionMap = {
     [key in ISharedActionType]: React.FC;
@@ -183,6 +184,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const blocksTreeStore = useBlocksTreeStore();
     const { update, getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();
+    const blockTagEditorDialog = useBlockTagEditorDialog();
 
     const handleDelete = React.useCallback(() => {
         blocksTreeStore.deleteBlocks([id]);
@@ -190,7 +192,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     
     const handleOpen = React.useCallback(() => {
         const ptr = AnnotationPtrs.create({
-            target: annotation.value.id,
+            target: id,
             pageNum: annotation.pageNum,
             docID: annotation.docID,
         });
@@ -200,15 +202,28 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const handleColorChange = React.useCallback((color: ColorStr) => {
         const block = getBlock(id, annotation.type);
         if (block && BlockPredicates.isAnnotationHighlightBlock(block)) {
-            const content = block.content.toJSON();
-            content.value.color = color;
-            update(id, content);
+            const contentJSON = block.content.toJSON();
+
+            switch (contentJSON.type) {
+                case AnnotationContentType.TEXT_HIGHLIGHT:
+                    update(id, new TextHighlightAnnotationContent({
+                        ...contentJSON,
+                        value: { ...contentJSON.value, color },
+                    }));
+                    break;
+                case AnnotationContentType.AREA_HIGHLIGHT:
+                    update(id, new AreaHighlightAnnotationContent({
+                        ...contentJSON,
+                        value: { ...contentJSON.value, color },
+                    }));
+                    break;
+            }
         }
     }, [update, id, getBlock, annotation.type]);
 
     const handleCreateFlashcard = React.useCallback(() => {
         const back = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT
-            ? ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation.value).text || ''
+            ? BlockTextHighlights.toText(annotation.value)
             : '';
 
         createFlashcard(id, { type: FlashcardType.BASIC_FRONT_BACK, front: '', back });
@@ -216,6 +231,10 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
 
     const color = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
+
+    const editTags = React.useCallback(() => {
+        blockTagEditorDialog(id);
+    }, [blockTagEditorDialog]);
 
     return React.useMemo(() => {
         const actionMap: ISharedActionMap = {
@@ -235,10 +254,14 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                 color={color}
                 onChange={handleColorChange}
             />,
+            editTags: () => <BlockAnnotationAction
+                icon={<LocalOfferIcon />}
+                onClick={editTags}
+            />
         };
 
         return Object.entries(actionMap)
             .filter(([key]) => actions.indexOf(key as ISharedActionType) > -1)
             .map(([key, Action]) => <Action key={key} />);
-    }, [handleDelete, handleOpen, color, handleColorChange, handleCreateFlashcard, actions]);
+    }, [handleDelete, handleOpen, color, editTags, handleColorChange, handleCreateFlashcard, actions]);
 };

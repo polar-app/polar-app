@@ -45,7 +45,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -59,8 +59,7 @@ import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnota
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
-import {Text} from "polar-shared/src/metadata/Text";
-import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
+import {AnnotationBlockMigrator} from "./AnnotationBlockMigrator";
 
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
@@ -373,10 +372,16 @@ const useDocumentBlockMigrator = () => {
         };
 
         const createDocumentBlock = (): BlockIDStr => {
+            const tags = Object.entries(docMeta.docInfo.tags || {})
+                .reduce((acc, [key, tag]) => ({ ...acc, [key]: { ...tag, source: 'self' } }), {});
+
+            const links = AnnotationBlockMigrator.tagsToLinks(blocksStore, tags);
+
             return blocksStore.createNewNamedBlock({
                 content: new DocumentContent({
                     type: "document",
                     docInfo: docMeta.docInfo,
+                    links,
                 })
             });
         };
@@ -390,61 +395,54 @@ const useDocumentBlockMigrator = () => {
             });
         };
 
-        const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | undefined => {
-            const toMarkdownText = (text: Text | string) => {
-                const str = Texts.isText(text) ? (Texts.toHTML(text) || '') : text;
-                return Texts.create(MarkdownContentConverter.toMarkdown(str), TextType.MARKDOWN);
-            };
+        const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | null => {
+            const links = annotation.tags
+                ? AnnotationBlockMigrator.tagsToLinks(blocksStore, annotation.tags)
+                : [];
 
-            const getContent = (): AnnotationContent | MarkdownContent | undefined => {
+            const getContent = (): AnnotationContent | MarkdownContent | null => {
                 switch (annotation.annotationType) {
                     case AnnotationType.TEXT_HIGHLIGHT:
-                        const textHighlight = annotation.original as ITextHighlight;
-                        return new TextHighlightAnnotationContent({
-                            type: AnnotationContentType.TEXT_HIGHLIGHT,
-                            pageNum: annotation.pageNum,
-                            docID: fingerprint,
-                            value: {
-                                ...textHighlight,
-                                text: toMarkdownText(textHighlight.text),
-                                revisedText: textHighlight.revisedText
-                                    ? toMarkdownText(textHighlight.revisedText || '')
-                                    : undefined,
-                            },
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateTextHighlight(
+                                annotation.original as ITextHighlight,
+                                annotation.pageNum,
+                                fingerprint,
+                                links,
+                            );
                     case AnnotationType.AREA_HIGHLIGHT:
-                        return new AreaHighlightAnnotationContent({
-                            type: AnnotationContentType.AREA_HIGHLIGHT,
-                            pageNum: annotation.pageNum,
-                            docID: fingerprint,
-                            value: annotation.original as IAreaHighlight,
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateAreaHighlight(
+                                annotation.original as IAreaHighlight,
+                                annotation.pageNum,
+                                fingerprint,
+                                links,
+                            );
                     case AnnotationType.FLASHCARD:
-                        const flashcard = annotation.original as IFlashcard;
-                        const fields = Object.entries(flashcard.fields)
-                            .reduce<typeof flashcard.fields>((fields, [key, value]) =>
-                                ({ ...fields, [key]: toMarkdownText(value) }), {});
-                        return new FlashcardAnnotationContent({
-                            type: AnnotationContentType.FLASHCARD,
-                            docID: fingerprint,
-                            pageNum: annotation.pageNum,
-                            value: { ...flashcard, fields },
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateFlashcard(
+                                annotation.original as IFlashcard,
+                                annotation.pageNum,
+                                fingerprint,
+                                links,
+                            );
                     case AnnotationType.COMMENT:
+                        const wikiLinks = AnnotationBlockMigrator.linksToMarkdown(links);
+                        const markdown = AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content);
                         return new MarkdownContent({
                             type: 'markdown',
                             links: [],
-                            data: toMarkdownText((annotation.original as IComment).content).MARKDOWN || '',
+                            data: `${markdown} ${wikiLinks}`,
                         });
                     default:
-                        return undefined;
+                        return null;
                 }
             };
 
             const content = getContent();
 
             if (! content) {
-                return undefined;
+                return null;
             }
 
             return blocksStore.createNewBlock(id, { content, asChild: true }).id;

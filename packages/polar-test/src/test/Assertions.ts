@@ -48,7 +48,7 @@ export function assertJSON(actual: any,
         assert.equal(actual, expected, opts.message);
 
     } catch (e) {
-        console.error(e.message);
+        console.error("Assertion failed: ", e);
         throw e;
     }
 

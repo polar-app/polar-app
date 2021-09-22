@@ -1,21 +1,17 @@
-import {Tabs} from "../chrome/Tabs";
 import {CapturedContentEPUBGenerator} from "../captured/CapturedContentEPUBGenerator";
 import {DatastoreWriter} from "../datastore/DatastoreWriter";
-import {ReadabilityCapture} from "../capture/ReadabilityCapture";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {
-    WriteFileProgress,
-    WriteFileProgressListener
-} from "polar-bookshelf/web/js/datastore/Datastore";
-import WrittenDoc = DatastoreWriter.WrittenDoc;
-import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {WriteFileProgress, WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
 import {PHZMigrations} from "./PHZMigrations";
 import {PHZActiveMigrations} from "./PHZActiveMigrations";
 import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
+import WrittenDoc = DatastoreWriter.WrittenDoc;
+import IWriteOpts = DatastoreWriter.IWriteOpts;
+import {ErrorType} from "polar-bookshelf/web/js/ui/data_loader/UseSnapshotSubscriber";
 
 export namespace SaveToPolarHandler {
 
@@ -25,29 +21,43 @@ export namespace SaveToPolarHandler {
         readonly url: URLStr;
     }
 
-    export type SaveToPolarRequest = SaveToPolarRequestWithEPUB | SaveToPolarRequestWithPDF;
+    export interface SaveToPolarRequestBase {
 
-    export interface SaveToPolarRequestWithEPUB {
+        /**
+         * Needed so that we can determine which tab should have its URL changed.
+         */
+        readonly tab: number;
+
+    }
+
+    export interface SaveToPolarRequestWithEPUB extends SaveToPolarRequestBase {
         readonly type: 'save-to-polar',
         readonly strategy: 'epub';
         readonly value: ICapturedEPUB;
     }
 
-    export interface SaveToPolarRequestWithPDF {
+    export interface SaveToPolarRequestWithPDF extends SaveToPolarRequestBase {
         readonly type: 'save-to-polar',
         readonly strategy: 'pdf';
         readonly value: ICapturedPDF;
     }
 
+    export type SaveToPolarRequest = SaveToPolarRequestWithEPUB | SaveToPolarRequestWithPDF;
 
-    async function doLoadWrittenDoc(writtenDoc: WrittenDoc) {
+    async function doLoadWrittenDoc(tab: number, writtenDoc: WrittenDoc) {
+
         const url = 'https://app.getpolarized.io/doc/' + writtenDoc.id;
-        await Tabs.loadLinkInActiveTab(url);
+
+        chrome.tabs.update(tab, {url});
+
     }
 
-    function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
-                              progressListener: WriteFileProgressListener,
-                              errorReporter: (err: Error) => void) {
+    export function saveToPolarAsPDF(tab: number,
+                                     capture: SaveToPolarHandler.ICapturedPDF,
+                                     progressListener: WriteFileProgressListener,
+                                     errorReporter: (err: ErrorType) => void) {
+
+        // FIXME: make as async function...
 
         console.log("saveToPolarAsPDF")
 
@@ -70,7 +80,7 @@ export namespace SaveToPolarHandler {
                 }
 
                 const writtenDoc = await DatastoreWriter.write(opts)
-                await doLoadWrittenDoc(writtenDoc);
+                await doLoadWrittenDoc(tab, writtenDoc);
 
             } finally {
                 await persistenceLayer.stop();
@@ -83,9 +93,10 @@ export namespace SaveToPolarHandler {
 
     }
 
-    function saveToPolarAsEPUB(capture: ICapturedEPUB,
-                               progressListener: WriteFileProgressListener,
-                               errorReporter: (err: Error) => void) {
+    export async function saveToPolarAsEPUB(tab: number,
+                                            capture: ICapturedEPUB,
+                                            progressListener: WriteFileProgressListener,
+                                            errorReporter: (err: ErrorType) => void) {
 
         console.log("saveToPolarAsEPUB")
 
@@ -128,7 +139,7 @@ export namespace SaveToPolarHandler {
                 console.log("Writing to datastore...done");
 
                 console.log("Loading written doc..");
-                await doLoadWrittenDoc(writtenDoc);
+                await doLoadWrittenDoc(tab, writtenDoc);
                 console.log("Loading written doc..done");
 
                 const migration = PHZActiveMigrations.get();
@@ -146,51 +157,66 @@ export namespace SaveToPolarHandler {
 
         }
 
-        doAsync()
-            .catch(errorReporter);
+        try {
+            await doAsync()
+        } catch(e) {
+            errorReporter(e);
+        }
+
+    }
+
+    export async function handleMessage(message: any, sender: IMessageSender) {
+
+        if (! message.type) {
+            console.warn("No message type: ", message)
+            return;
+        }
+
+        switch (message.type) {
+
+            case 'save-to-polar':
+
+                console.log("Handling save-to-polar message: ", message);
+
+                // eslint-disable-next-line no-case-declarations
+                const request = <SaveToPolarRequest> message;
+
+                // eslint-disable-next-line no-case-declarations
+                const progressListener = createProgressListener(sender);
+
+                // eslint-disable-next-line no-case-declarations
+                const errorReporter = createErrorReporter(sender);
+
+                switch (request.strategy) {
+
+                    case "pdf":
+                        saveToPolarAsPDF(request.tab, request.value, progressListener, errorReporter)
+                        break;
+                    case "epub":
+                        await saveToPolarAsEPUB(request.tab, request.value, progressListener, errorReporter)
+                        break;
+                    default:
+                        console.warn("Unable to handle request strategy: ", request);
+                        break;
+
+                }
+
+                break;
+            default:
+                console.warn("Unknown message type: ", message)
+                break;
+
+        }
 
     }
 
     export function register() {
 
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
-            if (! message.type) {
-                console.warn("No message type: ", message)
-                return;
-            }
-
-            switch (message.type) {
-
-                case 'save-to-polar':
-
-                    console.log("Handling save-to-polar message: ", message);
-
-                    const request = <SaveToPolarRequest> message;
-
-                    const progressListener = createProgressListener(sender);
-                    const errorReporter = createErrorReporter(sender);
-
-                    switch (request.strategy) {
-
-                        case "pdf":
-                            saveToPolarAsPDF(request.value, progressListener, errorReporter)
-                            break;
-                        case "epub":
-                            saveToPolarAsEPUB(request.value, progressListener, errorReporter)
-                            break;
-                        default:
-                            console.warn("Unable to handle request strategy: ", request);
-                            break;
-
-                    }
-
-                    break;
-                default:
-                    console.warn("Unknown message type: ", message)
-                    break;
-
-            }
+            handleMessage(message, sender)
+                .catch(err => {
+                    console.error(err);
+                });
 
         });
 
@@ -198,7 +224,16 @@ export namespace SaveToPolarHandler {
 
 }
 
-function createProgressListener(sender: chrome.runtime.MessageSender): WriteFileProgressListener {
+interface ITab {
+    id?: number;
+}
+
+interface IMessageSender {
+    tab?: ITab
+}
+
+function createProgressListener(sender: IMessageSender): WriteFileProgressListener {
+
     return (progress: WriteFileProgress) => {
 
         if (! sender.tab || ! sender.tab.id) {
@@ -214,6 +249,7 @@ function createProgressListener(sender: chrome.runtime.MessageSender): WriteFile
         chrome.tabs.sendMessage(sender.tab.id, message)
 
     }
+
 }
 
 export interface IError {
@@ -221,8 +257,8 @@ export interface IError {
     readonly stack?: string;
 }
 
-function createErrorReporter(sender: chrome.runtime.MessageSender): (err: Error) => void {
-    return (err: Error) => {
+function createErrorReporter(sender: IMessageSender): (err: ErrorType) => void {
+    return (err: ErrorType) => {
 
         // make sure to always report it to the console in the background tab
         // so that we have the error there too.
@@ -236,8 +272,8 @@ function createErrorReporter(sender: chrome.runtime.MessageSender): (err: Error)
         const message = {
             type: 'error',
             value: {
-                message: err.message,
-                stack: err.stack
+                message: (err as any).message,
+                stack: (err as any).stack
             }
         };
 

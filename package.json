@@ -43,8 +43,6 @@
     "lerna-run-dist": "lerna run --concurrency=1 --parallel=false --stream dist",
     "lerna-run-test": "lerna run --concurrency=1 --parallel=false test",
     "rebuild": "yarn run purge-node-modules && lerna bootstrap && lerna run compile",
-    "dist-version": "lerna --yes --no-git-tag-version version patch && lerna bootstrap",
-    "dist-version-for-release": "./sbin/dist-version-for-release.sh",
     "dist-validate-env": "./sbin/dist-validate-env.sh",
     "dist-clean": "git clean -Xfd && git clean -fd",
     "dist-build": "yarn run purge-node-modules && lerna bootstrap && yarn run lerna-run-compile && yarn run lerna-run-dist",
@@ -67,6 +65,7 @@
     "find-package-versions": "lerna exec --concurrency=1 --parallel=false --no-private -- jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
     "find-package-versions-conflicting": "yarn run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
     "bootstrap-with-link": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link",
+    "create-module": "node $(pwd)/packages/polar-create-module/src/CreateModule.js",
     "update-modules": "lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
   },
   "deprecated": {},

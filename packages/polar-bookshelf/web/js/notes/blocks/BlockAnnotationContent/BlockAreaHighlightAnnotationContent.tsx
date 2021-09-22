@@ -1,17 +1,20 @@
 import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
-import {BlockHighlightContentWrapper} from "./BlockHighlightContentWrapper";
+import {BlockHighlightContentWrapper, BlockTagsSection} from "./BlockHighlightContentWrapper";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
 import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
-import {BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
+import {BlockAnnotationActionsWrapper, ISharedActionType, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {BlockImageContent} from "../BlockImageContent";
+import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 
 interface IProps extends BlockEditorGenericProps {
-    annotation: AreaHighlightAnnotationContent;
+    readonly annotation: AreaHighlightAnnotationContent;
+
+    readonly created: ISODateString;
 }
 
 export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => {
@@ -36,7 +39,14 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         return Images.toImg(resolver, highlight.image);
     }, [persistenceLayerProvider, highlight.image]);
 
-    const actions = useSharedAnnotationBlockActions({ id, annotation });
+    const actionsList: ISharedActionType[] = React.useMemo(() =>
+        ['createFlashcard',  'changeColor', 'remove', 'open', 'editTags'], []);
+
+    const actions = useSharedAnnotationBlockActions({
+        id,
+        annotation,
+        actions: actionsList,
+    });
 
     return (
         <BlockAnnotationActionsWrapper actions={actions}>
@@ -55,7 +65,8 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
                         readonly={readonly}
                         onKeyDown={onKeyDown} />
                 )}
-                <DocAnnotationMoment style={{ marginTop: 4 }} created={highlight.created} />
+                <BlockTagsSection onClick={onClick} links={annotation.links} />
+                <DocAnnotationMoment style={{ marginTop: 4 }} created={props.created} />
             </BlockHighlightContentWrapper>
         </BlockAnnotationActionsWrapper>
     );

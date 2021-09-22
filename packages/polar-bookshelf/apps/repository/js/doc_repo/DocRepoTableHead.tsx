@@ -13,9 +13,13 @@ import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Devices} from "polar-shared/src/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import FilterListIcon from '@material-ui/icons/FilterList';
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import FlagIcon from '@material-ui/icons/Flag';
+import ArchiveIcon from "@material-ui/icons/Archive";
 import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
+import { MUIToggleButton } from "../../../../web/js/ui/MUIToggleButton";
+import { MUICheckboxIconButton } from "../../../../web/js/mui/MUICheckboxIconButton";
+import { SelectionActiveButtons } from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +49,15 @@ const useStyles = makeStyles((theme: Theme) =>
                 borderCollapse: 'collapse',
                 lineHeight: '1em'
             }
+        },
+        selectionIconsContainer:{
+            display: 'flex', 
+            flexDirection:'row-reverse',
+            paddingRight: '15px'
+        },
+        reverseRow:{
+            display: 'flex',
+            flexDirection: 'row-reverse'
         }
     }),
 );
@@ -68,11 +81,41 @@ const ColumnSelector = React.memo(function ColumnSelector() {
                 <DocColumnsSelectorWithPrefs/>
 
             </div>
-            {/*<FilterListIcon/>*/}
         </TableCell>
 
     );
 
+});
+
+const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() {
+    const classes = useStyles();
+    const {filters, selected} = useDocRepoStore(['filters', 'selected']);
+    const callbacks = useDocRepoCallbacks();
+
+    const {setFilters} = callbacks;
+
+    return(<>
+            {selected.length > 0 ?
+                <SelectionActiveButtons className={classes.reverseRow}/>
+                :
+                <div className={classes.selectionIconsContainer}>
+                    <MUIToggleButton id="toggle-archived" 
+                                    iconOnly
+                                    tooltip="Toggle archived docs"
+                                    size={'small'}
+                                    icon={<ArchiveIcon/>}
+                                    initialValue={filters.archived}
+                                    onChange={(value: any) => setFilters({...filters, archived: value})}/>
+                    <MUIToggleButton id="toggle-flagged" 
+                                    iconOnly
+                                    tooltip="Show only flagged docs"
+                                    size={'small'}
+                                    icon={<FlagIcon/>}
+                                    initialValue={filters.flagged}
+                                    onChange={(value: any) => setFilters({...filters, flagged: value})}/>
+                </div>
+            }
+        </>);
 });
 
 export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
@@ -92,13 +135,37 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
 
+    const {view, selected} = useDocRepoStore(['view','selected']);
+    const callbacks = useDocRepoCallbacks();
+
+    const {setSelected} = callbacks;
+
+    const handleCheckbox = React.useCallback((checked: boolean) => {
+        // TODO: this is wrong... the '-' button should remove the checks...
+        // just like gmail.
+        if (checked) {
+            setSelected('all')
+        } else {
+            setSelected('none');
+        }
+    }, [setSelected]);
+
     return (
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-
-                    <Check/>
-
+                    <DeviceRouters.NotDesktop>
+                        <TableCell className={classes.th} style={{width: '55px'}}>
+                            <MUICheckboxIconButton
+                                indeterminate={selected.length > 0 && selected.length < view.length}
+                                checked={selected.length === view.length && view.length !== 0}
+                                onChange={(_event, checked) => handleCheckbox(checked)}/>  
+                        </TableCell> 
+                    </DeviceRouters.NotDesktop>                 
+                    <DeviceRouters.Desktop>
+                        <Check/>
+                    </DeviceRouters.Desktop>
+                    
                     {columns.map((column) => {
 
                         const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
@@ -107,8 +174,8 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <TableCell key={column.id}
                                        className={classes.th}
                                        style={{
-                                           width: column.id==='progress' ? '85px': column.width,
-                                           minWidth: column.id==='progress' ? '85px': column.width
+                                           width: column.width,
+                                           minWidth: column.width
                                        }}
                                        padding={column.disablePadding ? 'none' : 'default'}
                                        sortDirection={orderBy === column.id ? order : false}>
@@ -128,18 +195,15 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             </TableCell>
                         )
                     })}
-
-                    <DeviceRouter.Desktop>
-                        <>
-                            <ColumnSelector/>
-                        </>
-                    </DeviceRouter.Desktop>
-
                     <DeviceRouters.NotDesktop>
-                        <TableCell style={{width: '45px'}}>
+                        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
+                            <SelectionOrToggleButtons/>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
 
+                    <DeviceRouters.Desktop>
+                        <ColumnSelector/>
+                    </DeviceRouters.Desktop>
                 </TableRow>
             </TableHead>
     );

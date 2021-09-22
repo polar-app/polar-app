@@ -67,7 +67,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     return React.useCallback((data: MarkdownStr) => {
         const block = blocksTreeStore.getBlock(id);
 
-        if (! block || ! BlockPredicates.isTextBlock(block)) {
+        if (! block || ! BlockPredicates.isEditableBlock(block)) {
             return;
         }
 
@@ -201,6 +201,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return (
             <BlockAnnotationContent
                 id={id}
+                created={block.created}
                 parent={parent}
                 className={className}
                 style={style}

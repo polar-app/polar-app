@@ -1,4 +1,4 @@
-import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {ForwardTagToDocIDIndex} from "./ForwardTagToDocIDIndex";
@@ -7,7 +7,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import { IDStr } from 'polar-shared/src/util/Strings';
 
 
-class TagIndex {
+export class TagIndex {
 
     // tags to docs
     private forward = new ForwardTagToDocIDIndex();
@@ -15,7 +15,7 @@ class TagIndex {
     // docs to tags
     private reverse = new ReverseDocIDToTagIndex();
 
-    public prune () {
+    public prune() {
         this.forward.purge(value => value.count() === 0);
     }
 

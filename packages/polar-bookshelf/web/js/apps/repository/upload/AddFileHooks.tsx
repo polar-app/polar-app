@@ -2,10 +2,7 @@ import React from 'react';
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
 import {useLogger} from "../../../mui/MUILogger";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {DeterminateProgressBar} from "../../../ui/progress_bar/DeterminateProgressBar";
-import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {WriteFileProgressListener} from "../../../datastore/Datastore";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {useDocLoader} from "../../main/DocLoaderHooks";
 import IconButton from '@material-ui/core/IconButton';
@@ -18,7 +15,6 @@ import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
-import {useBatchProgressTaskbar, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
@@ -132,7 +128,7 @@ export namespace AddFileHooks {
 
                     } catch (e) {
                         analytics.event2('add-file-import-failed', {count: uploads.length});
-                        log.error("Unable to upload files: " + e.message, uploads, e);
+                        log.error("Unable to upload files: " + (e as any).message, uploads, e);
                     }
 
                 }

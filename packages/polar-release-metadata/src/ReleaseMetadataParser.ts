@@ -37,9 +37,9 @@ export class ReleaseMetadataParser {
             }
 
             const title = Preconditions.assertPresent(getFrontStr('title'), 'title');
-            // tslint:disable-next-line:variable-name
+            // eslint-disable-next-line camelcase
             const video_embed = getFrontStr('video_embed');
-            // tslint:disable-next-line:variable-name
+            // eslint-disable-next-line camelcase
             const large_image = getFrontStr('large_image');
 
 

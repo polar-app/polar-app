@@ -43,6 +43,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
+import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -55,6 +56,7 @@ import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
 import {EnableFeatureToggle} from "./EnableFeatureToggle";
 import {SideNav, useSidenavWidth} from '../../sidenav/SideNav';
+import {MUIBottomNavigation} from "../../mui/MUIBottomNavigation";
 import {DocRepoScreen2} from '../../../../apps/repository/js/doc_repo/DocRepoScreen2';
 import {DocRepoSidebarTagStore} from '../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore';
 import {Devices} from 'polar-shared/src/util/Devices';
@@ -63,7 +65,7 @@ import {RoutePathnames} from './RoutePathnames';
 import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
-import {DeviceRouter} from "../../ui/DeviceRouter";
+import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 
 interface IProps {
     readonly app: App;
@@ -220,6 +222,7 @@ const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
+            flexDirection: Devices.isDesktop() ? 'row': 'column-reverse',
             minWidth: 0,
             minHeight: 0,
             flexGrow: 1,
@@ -330,8 +333,13 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                         <div className={classes.root}>
 
                             <Initializers />
-                            <SideNav />
 
+                            <DeviceRouters.Desktop>
+                                <SideNav />
+                            </DeviceRouters.Desktop>                             
+                            <DeviceRouters.NotDesktop>
+                                <MUIBottomNavigation/>   
+                            </DeviceRouters.NotDesktop>           
                             <Intercom />
 
                             <RouteContainer>
@@ -344,6 +352,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.ANNOTATIONS}>
                                     <RenderAnnotationRepoScreen/>
+                                </PersistentRoute>
+                                
+                                <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
+                                    <AddFilesMobileScreen/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
@@ -385,6 +397,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <DeviceRouter handheld={<SharedRoutes />} />
 
                         </Switch>
+
                     </DataProviders>
                 </AuthRequired>
 

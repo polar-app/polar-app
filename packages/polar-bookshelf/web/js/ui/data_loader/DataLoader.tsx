@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Alert from "@material-ui/lab/Alert";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
+import {ErrorType} from './UseSnapshotSubscriber';
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
@@ -47,7 +48,7 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
         };
 
-        const onError = (err: Error) => {
+        const onError = (err: ErrorType) => {
 
             const data: DataResultError = {
                 err,
@@ -83,7 +84,7 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
             } else {
                 return (
                     <Alert severity="error">
-                        Error: {this.state.data.err.message}
+                        Error: {(this.state.data.err as any).message}
                     </Alert>
                 );
             }
@@ -118,7 +119,7 @@ export interface IProps<D> {
      */
     readonly render: (data: D | undefined) => React.ReactElement;
 
-    readonly error?: (err: Error) => React.ReactElement;
+    readonly error?: (err: ErrorType) => React.ReactElement;
 
 }
 
@@ -127,7 +128,7 @@ export interface IState<D> {
 }
 
 export interface DataResultError {
-    readonly err: Error;
+    readonly err: ErrorType;
     readonly value: undefined;
 }
 

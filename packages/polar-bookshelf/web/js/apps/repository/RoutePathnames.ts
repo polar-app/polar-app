@@ -27,6 +27,7 @@ const FEATURE_REQUESTS = createHybrid("/feature-requests");
 const SUPPORT = createHybrid("/support");
 const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
+const ADD_MOBILE = '/addmobile';
 const ACCOUNT = "#account";
 
 export const RoutePathnames = {
@@ -34,6 +35,7 @@ export const RoutePathnames = {
     ANNOTATIONS,
     NOTES,
     NOTE,
+    ADD_MOBILE,
     ANKI_SYNC,
     SETTINGS,
     STATISTICS,

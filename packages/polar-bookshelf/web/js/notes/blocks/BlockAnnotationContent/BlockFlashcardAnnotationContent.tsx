@@ -1,6 +1,5 @@
 import {createStyles, makeStyles} from "@material-ui/core";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
@@ -8,18 +7,20 @@ import {BlockEditorGenericProps} from "../../BlockEditor";
 import {FlashcardAnnotationContent} from "../../content/AnnotationContent";
 import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
-import {Flashcards} from "../../../metadata/Flashcards";
 import CachedIcon from '@material-ui/icons/Cached';
 import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {Refs} from "polar-shared/src/metadata/Refs";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
 import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
+import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlockTextContentUtils} from "../../NoteUtils";
+import {BlockPredicates} from "../../store/BlockPredicates";
+import {BlockTagsSection} from "./BlockHighlightContentWrapper";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
+    readonly created: ISODateString;
 }
 
 export const useStyles = makeStyles((theme) =>
@@ -41,6 +42,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
     const {
         annotation,
         id,
+        onClick,
     } = props;
     const classes = useStyles();
 
@@ -48,7 +50,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
     const actions = useSharedAnnotationBlockActions({
         id,
         annotation,
-        actions: ['remove'],
+        actions: ['remove', 'editTags'],
     });
     const { update, getBlock } = useAnnotationBlockManager();
 
@@ -66,24 +68,23 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
 
             if (parent.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
                 const highlight = parent.content.toJSON().value;
-                return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text || '';
+                return BlockTextHighlights.toText(highlight);
             }
 
             return '';
         };
 
         const getNewContent = (): IFlashcardAnnotationContent => {
-            const ref = Refs.create(flashcard.id, 'flashcard');
             const text = getText();
             if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
                 return {
                     ...contentJSON,
-                    value: Flashcards.createCloze(text, ref, 'MARKDOWN')
+                    value: BlockFlashcards.createCloze(text),
                 };
             } else {
                 return {
                     ...contentJSON,
-                    value: Flashcards.createFrontBack('', text, ref, 'MARKDOWN')
+                    value: BlockFlashcards.createFrontBack('', text),
                 };
             }
         };
@@ -100,41 +101,41 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
             ]}
         >
             <div className={classes.flashcardWrapper}>
-                {flashcard.type === FlashcardType.BASIC_FRONT_BACK
+                {flashcard.type === FlashcardType.CLOZE
                     ? (
-                        <FrontBackFlashcard
+                        <ClozeFlashcard
                             {...props}
                             flashcard={flashcard}
                         />
                     ) : (
-                        <ClozeFlashcard
+                        <FrontBackFlashcard
                             {...props}
                             flashcard={flashcard}
                         />
                     )
                 }
             </div>
+            <BlockTagsSection onClick={onClick} links={annotation.links} />
         </BlockAnnotationActionsWrapper>
     );
 };
 
-interface IFlashcardProps extends BlockEditorGenericProps {
-    flashcard: IFlashcard;
+interface IFrontBackFlashcardProps extends BlockEditorGenericProps {
+    readonly flashcard: IBlockFrontBackFlashcard;
+    readonly created: ISODateString;
 }
 
-const FrontBackFlashcard: React.FC<IFlashcardProps> = (props) => {
-    const { flashcard, id, onKeyDown, innerRef: frontRef } = props;
-    const { fields, created } = flashcard;
-    const { front, back } = React.useMemo(() => Flashcards.convertFieldsToMap(fields, 'MARKDOWN'), [fields]);
+const FrontBackFlashcard: React.FC<IFrontBackFlashcardProps> = (props) => {
+    const { flashcard, id, onKeyDown, innerRef: frontRef, created } = props;
+    const { fields: { front, back } } = flashcard;
     const backRef = React.useRef<HTMLDivElement>(null);
     const { update, getBlock } = useAnnotationBlockManager();
 
-    const handleChange = React.useCallback((type: 'front' | 'back') => (markdown: MarkdownStr) => {
+    const handleChange = React.useCallback((field: keyof IBlockFrontBackFlashcard['fields']) => (markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
-        if (block) {
-            const contentJSON = block.content.toJSON();
-            contentJSON.value.fields[type] = Texts.create(markdown, TextType.MARKDOWN);
-            update(id, { ...contentJSON });
+        if (block && BlockPredicates.isFrontBackFlashcardBlock(block)) {
+            const content = BlockTextContentUtils.updateFlashcardContentMarkdown(block.content, field, markdown);
+            update(id, content);
         }
     }, [id, getBlock, update]);
 
@@ -165,18 +166,21 @@ const FrontBackFlashcard: React.FC<IFlashcardProps> = (props) => {
     );
 };
 
-const ClozeFlashcard: React.FC<IFlashcardProps> = (props) => {
-    const { flashcard, id } = props;
-    const { fields, created } = flashcard;
-    const { text } = React.useMemo(() => Flashcards.convertFieldsToMap(fields, 'MARKDOWN'), [fields]);
+interface IClozeFlashcardProps extends BlockEditorGenericProps {
+    readonly flashcard: IBlockClozeFlashcard;
+    readonly created: ISODateString;
+}
+
+const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
+    const { flashcard, id, created } = props;
+    const { fields: { text } } = flashcard;
     const { update, getBlock } = useAnnotationBlockManager();
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
-        if (block) {
-            const contentJSON = block.content.toJSON();
-            contentJSON.value.fields.text = Texts.create(markdown, TextType.MARKDOWN);
-            update(id, { ...contentJSON });
+        if (block && BlockPredicates.isClozeFlashcardBlock(block)) {
+            const content = BlockTextContentUtils.updateFlashcardContentMarkdown(block.content, 'text', markdown);
+            update(id, content);
         }
     }, [id, update, getBlock]);
 
