@@ -276,7 +276,7 @@ const EmailTokenAuthButtonNotPhone = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: err.message
+                message: (err as any).message
             });
         }
 
@@ -320,7 +320,7 @@ const EmailTokenAuthButtonNotPhone = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: err.message
+                message: (err as any).message
             });
         }
 
