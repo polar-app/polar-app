@@ -1,3 +1,23 @@
+# Using multiple children instead of just one child.
+
+You might have a component that only takes one child but you need to specify two or more children.
+
+You can do this by wrapping the children with ```<>``` and ```</>```
+
+For example:
+
+```typescript jsx
+
+<ParentComponent>
+    <>
+        <FirstChild/>
+        <SecondChild/>
+    </>
+</ParentComponent>
+
+```
+
+
 # Re-use the logic of a component but change the style
 
 Sometimes it's nice to create a new component but just change some of the CSS
