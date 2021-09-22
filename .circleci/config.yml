@@ -372,7 +372,7 @@ workflows:
           executor: ff-chrome
           requires:
             - build-polar-app
-          cache_key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          cache-key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
           wait-on: "http://localhost:8050"
