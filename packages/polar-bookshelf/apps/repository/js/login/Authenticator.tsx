@@ -4,7 +4,6 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -24,8 +23,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
-import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
-import Themes from 'epubjs/types/themes';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -105,9 +102,9 @@ const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: theme.palette.secondary.main, 
+            color: theme.palette.secondary.main,
             textDecoration: 'underline'
-        }, 
+        },
         a: {
             color: theme.palette.text.secondary,
             textDecoration: 'underline'
@@ -121,7 +118,7 @@ interface IAuthButtonProps {
     readonly strategy: string;
 }
 
-const AuthButtonotMobile = (props: IAuthButtonProps) => {
+const AuthButtonNotMobile = (props: IAuthButtonProps) => {
 
     const classes = useStyles();
 
@@ -225,7 +222,7 @@ const GoogleAuthButton = () => {
                 </Alert>
             )}
 
-            <AuthButtonotMobile onClick={handleTriggerAuth}
+            <AuthButtonNotMobile onClick={handleTriggerAuth}
                         strategy="Google"
                         startIcon={<FAGoogleIcon />}/>
 
@@ -452,7 +449,7 @@ const EmailTokenAuthButtonNotPhone = () => {
 
             {!triggered && (
 
-                <AuthButtonotMobile onClick={handleClick}
+                <AuthButtonNotMobile onClick={handleClick}
                             strategy="Email"
                             startIcon={<EmailIcon />}
                             />
@@ -634,7 +631,7 @@ const EmailTokenAuthButtonPhone = () => {
                                        onChange={event => challengeRef.current = event.target.value}
                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                        placeholder="Enter your Code Here"
-                                       variant="outlined" 
+                                       variant="outlined"
                                        style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
 
                             <div className={classes.alternate}>
@@ -656,7 +653,7 @@ const EmailTokenAuthButtonPhone = () => {
                                    onChange={event => emailRef.current = event.target.value}
                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                    placeholder="email@"
-                                   variant="outlined" 
+                                   variant="outlined"
                                    style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
                     )}
 
@@ -759,7 +756,7 @@ const EmailAuthButton = () => {
                 </>
             )}
 
-            <AuthButtonotMobile onClick={handleClick}
+            <AuthButtonNotMobile onClick={handleClick}
                         strategy="Email"
                         startIcon={<EmailIcon />}/>
 
@@ -773,7 +770,7 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
-        
+
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -977,7 +974,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                     )}
                     </>
             </DeviceRouters.Phone>
-                
+
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>
