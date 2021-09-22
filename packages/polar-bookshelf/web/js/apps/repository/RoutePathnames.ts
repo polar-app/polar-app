@@ -29,7 +29,7 @@ const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
 const ADD_MOBILE = '/addmobile';
 const ACCOUNT = "#account";
-const SWITCH = "switch";
+const SWITCH = "/switch";
 
 export const RoutePathnames = {
     HOME,

@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import HomeIcon from '@material-ui/icons/Home';
 import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { RoutePathnames } from '../apps/repository/RoutePathnames';
 
 const useStyles = makeStyles((theme) =>
@@ -24,24 +25,25 @@ const useStyles = makeStyles((theme) =>
 export const MUIBottomNavigation = ()  => {
     const classes = useStyles();
     const history = useHistory();
-    const [value, setValue] = React.useState('/');
+    const location = useLocation();
 
     const changeRoute = (newValue: string) =>{
-        if(newValue !== value){
-            setValue(newValue);
-            history.push(newValue);
+        if(newValue !== location.pathname){
+            history.replace(newValue);
         }
     }
 
     return (
-        <BottomNavigation value={value}
+        <BottomNavigation value={location.pathname}
                           onChange={(event, newValue) => changeRoute(newValue)}                          
                           showLabels
                           className={classes.root}>
-            <BottomNavigationAction label="Home" value='/' icon={<HomeIcon/>} />
+
+            <BottomNavigationAction label="Home" value={RoutePathnames.HOME} icon={<HomeIcon/>} />
             {/* <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} /> */}
             <BottomNavigationAction label="Add" value={RoutePathnames.ADD_MOBILE} icon={<AddIcon />} />
-            <BottomNavigationAction label="Switch" value='#switch' icon={<ViewCarouselIcon />} />
+            <BottomNavigationAction label="Switch" value={RoutePathnames.SWITCH} icon={<ViewCarouselIcon />} />
+
         </BottomNavigation>
     );
 }
