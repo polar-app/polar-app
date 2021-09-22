@@ -4,13 +4,45 @@ A cheatsheet for React usage.
 
 Also see [[MUI_CHEATSHEET.md]] too.
 
+# Registering / unregistering global HTML event listeners
+
+Hooks that use legacy HTML event listeners like ```window.addEventListener```
+need a corresponding ```window.removeEventListener``` when the component is 
+unmounted or the hook won't be removed and will still be called even for
+unmounted components and will cause bugs.
+
+```typescript jsx
+
+export function useMouseDown() {
+    
+    const handler = React.useCallback((event: MouseEvent) => {
+        // do something cool with window mousedown
+    }, []);
+    
+    React.useEffect(() => {
+
+        // this is called when the component mounts and/or the useEffect dependencies change.
+        window.addEventListener('mousedown', handler);
+
+        return () => {
+            // we return a function that is called when the component unmounts and/or the 
+            // useEffect dependencies change.
+            window.removeEventListener('mousedown', handler);
+        }
+        
+    }, []);
+    
+}
+
+```
+
 # Creating Hooks
 
 Often it's nice to share the logic across components by creating hooks.
 
 Hooks are really just magic functions that can reload when their dependencies change.
 
-I usually will use something like
+I will use something like:
 
 ```typescript jsx
 
