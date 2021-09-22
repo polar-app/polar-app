@@ -103,6 +103,15 @@ commands:
             echo "yarn config list: ======"
             yarn config list
 
+      # ? Debug step for checking if there are any duplicate packages
+      - run:
+          name: DEBUG(Check if duplicate packages with different versions exist)
+          command: |
+            (cd packages/polar-npm && yarn run compile)
+            DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
+            echo -e "\n\n $DUPLICATES \n\n"
+            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+
       # ! Hoist all Dependencies
       - run:
           name: lerna bootstrap
@@ -115,14 +124,6 @@ commands:
       - run:
           name: Lerna Compile
           command: npx lerna run compile
-
-      # ? Debug step for checking if there are any duplicate packages
-      - run:
-          name: DEBUG(Check if duplicate packages with different versions exist)
-          command: |
-            DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
-            echo -e "\n\n $DUPLICATES \n\n"
-            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
 
       # ! Save Cache
       - save_cache:
