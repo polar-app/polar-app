@@ -25,8 +25,32 @@ const useStyles = makeStyles<Theme>((theme) =>
                 lineHeight: '1em'
             }
         },
+        headerFont:{
+            fontSize: '1.2em'
+        }
     })
 );
+interface TableHeaderProps {
+    readonly nonEmpty?: boolean;
+}
+
+const TableHeader = (props: TableHeaderProps) => {
+    const classes = useStyles();
+
+    return(
+        <TableHead>   
+            <TableRow>
+                <TableCell>
+                    { props.nonEmpty ? 
+                        <span className={classes.headerFont}>Recently opened documents:</span>
+                        :
+                        <span className={classes.headerFont}>No files opened recently</span>
+                    }
+                </TableCell>
+            </TableRow>
+        </TableHead>
+    );
+}
 
 export const SwitchScreen = () => {
     
@@ -42,8 +66,6 @@ export const SwitchScreen = () => {
     }, [tabs]);
 
     const orderedTabsByRecency = getRecentDocs();
-    
-    console.log(orderedTabsByRecency);
 
     return (
         <>
@@ -58,23 +80,20 @@ export const SwitchScreen = () => {
                     size={'medium'}
                     aria-label="enhanced table">
 
-                <TableHead className={classes.root}>
                     {orderedTabsByRecency.length > 0 ? 
-                        orderedTabsByRecency.map( column =>
-                            <TableRow onClick={()=>history.push(column.url)}>
-                                <TableCell key={column.id} className={classes.th}>
-                                    {column.title}
-                                </TableCell>
-                            </TableRow>
-                            )
+                        <>
+                            <TableHeader nonEmpty/>
+                            {orderedTabsByRecency.map( column =>
+                                <TableRow onClick={()=>history.push(column.url)}>
+                                    <TableCell key={column.id} className={classes.th}>
+                                        {column.title}
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
                         :
-                        <TableRow>
-                            <TableCell>
-                                <span>No files opened recently</span>
-                            </TableCell>
-                        </TableRow>
+                        <TableHeader/>
                     }
-                </TableHead>   
             </Table>                
         </>
     );
