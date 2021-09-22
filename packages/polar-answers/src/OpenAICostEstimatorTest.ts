@@ -8,7 +8,6 @@ const fakeDocument = 'The Milky Way is the galaxy that includes the Solar System
 describe('OpenAICostEstimator', function () {
     it('OpenAICostEstimator.costOfSearch() example 1', async () => {
         const model = 'curie';
-
         const query = "How many planets are there in the Milky Way?";
         const documents = [];
         for (let i = 0; i < 30; i++) {
