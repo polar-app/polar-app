@@ -66,6 +66,7 @@ import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
+import {AndroidHistoryListener} from "./AndroidHistoryListener";
 
 interface IProps {
     readonly app: App;
@@ -274,7 +275,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <UseLocationChangeRoot>
                                         <MUIDialogController>
                                             <AddFileDropzoneRoot>
-                                                {children}
+                                                <>
+                                                    <AndroidHistoryListener/>
+                                                    {children}
+                                                </>
                                             </AddFileDropzoneRoot>
                                         </MUIDialogController>
                                     </UseLocationChangeRoot>
@@ -336,10 +340,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <DeviceRouters.Desktop>
                                 <SideNav />
-                            </DeviceRouters.Desktop>                             
+                            </DeviceRouters.Desktop>
                             <DeviceRouters.NotDesktop>
-                                <MUIBottomNavigation/>   
-                            </DeviceRouters.NotDesktop>           
+                                <MUIBottomNavigation/>
+                            </DeviceRouters.NotDesktop>
                             <Intercom />
 
                             <RouteContainer>
@@ -353,7 +357,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.ANNOTATIONS}>
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
-                                
+
                                 <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
                                     <AddFilesMobileScreen/>
                                 </PersistentRoute>
