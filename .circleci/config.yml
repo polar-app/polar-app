@@ -115,6 +115,7 @@ commands:
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
           command: |
+            (cd packages/polar-shared && yarn run compile)
             (cd packages/polar-npm && yarn run compile)
             DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
