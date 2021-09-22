@@ -29,12 +29,14 @@ const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
 const ADD_MOBILE = '/addmobile';
 const ACCOUNT = "#account";
+const SWITCH = "switch";
 
 export const RoutePathnames = {
     HOME,
     ANNOTATIONS,
     NOTES,
     NOTE,
+    SWITCH,
     ADD_MOBILE,
     ANKI_SYNC,
     SETTINGS,

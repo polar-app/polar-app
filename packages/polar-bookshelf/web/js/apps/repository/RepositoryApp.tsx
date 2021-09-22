@@ -66,6 +66,7 @@ import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
+import { SwitchScreen } from './SwitchScreen';
 
 interface IProps {
     readonly app: App;
@@ -356,6 +357,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 
                                 <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
                                     <AddFilesMobileScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" path={RoutePathnames.SWITCH}>
+                                    <SwitchScreen/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
