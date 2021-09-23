@@ -314,10 +314,15 @@ export const useBlockAreaHighlight = () => {
             }
 
             const contentJSON = block.content.toJSON();
+            const { rects, order, position } = content.value;
+
             updateAnnotationBlock(blockID, {
                 ...contentJSON,
                 value: {
                     ...contentJSON.value,
+                    rects,
+                    order,
+                    position,
                     image: {
                         type: screenshot.type,
                         width: screenshot.width,
@@ -327,6 +332,7 @@ export const useBlockAreaHighlight = () => {
                     },
                 },
             });
+
             return blockID;
         }
 
