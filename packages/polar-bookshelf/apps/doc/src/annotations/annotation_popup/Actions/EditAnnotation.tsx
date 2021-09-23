@@ -4,7 +4,7 @@ import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
-import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
 
 type EditAnnotationForm = {
     body: string;

@@ -9,7 +9,7 @@ import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/P
 import {useCopyAnnotation} from "./AnnotationPopupBar";
 import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
 import {IBlockAnnotationProps, IDocMetaAnnotationProps} from "./AnnotationPopupActions";
-import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 
