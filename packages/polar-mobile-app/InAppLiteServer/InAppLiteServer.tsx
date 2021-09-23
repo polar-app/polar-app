@@ -6,7 +6,6 @@ import WebView from 'react-native-webview';
 import StaticServer from 'react-native-static-server';
 import injectedJavaScriptBeforeContentLoaded from "./util/injectedJavaScriptBeforeContentLoaded";
 import tryParseWebviewPostMessage from "./util/tryParseWebviewPostMessage";
-import {UrlStack} from "./util/UrlStack";
 
 const useEmbeddedServer = false;
 
@@ -18,15 +17,13 @@ export class InAppLiteServer extends Component<Props, State> {
     // A reference to the WebView component, populated after first render
     webview: WebView | undefined = undefined;
 
-    private urlStack = new UrlStack();
-
     constructor(props: any) {
         super(props);
 
         // Initial state
         this.state = {
             isRunning: !useEmbeddedServer,
-            url: !useEmbeddedServer ? 'https://app.getpolarized.io' : '',
+            url: !useEmbeddedServer ? 'http://192.168.1.12:8050' : '',
         };
 
         if (useEmbeddedServer) {
@@ -39,27 +36,8 @@ export class InAppLiteServer extends Component<Props, State> {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', () => {
-            if (!this.urlStack.getLast()) {
-                // Nothing to go back to. Exiting...
-                return false;
-            }
-
-            // Remove the current URL from the stack, since we are now navigating away from it
-            this.urlStack.pop();
-
-            const prevUrl = this.urlStack.getLast();
-            if (!prevUrl) {
-                // Was there a previous URL before the one we are navigating away from?
-                // If not, just exit the app. We have no previous URL to go back to
-                return false;
-            }
-
-            // There is a previous URL to go back to. Redirect to it. Standard mechanisms like
-            // `this.webview.goBack()` or `window.history.back()` do not seem to behave consistently
-            // so we resort to a regular redirect, which is also documented here:
-            // https://github.com/react-native-webview/react-native-webview/blob/master/docs/Guide.md#controlling-navigation-state-changes
-            const redirectTo = 'window.location = "' + prevUrl + '"';
-            this.webview?.injectJavaScript(redirectTo);
+            const js = `window.postMessage({type: "android-go-back"});`;
+            this.webview?.injectJavaScript(js);
             return true;
         });
 
@@ -140,13 +118,6 @@ export class InAppLiteServer extends Component<Props, State> {
                     default:
                         throw Error('Switch case not implemented: ' + dataPayload.action);
                 }
-            }}
-            onNavigationStateChange={(navState) => {
-                if (!navState.url) {
-                    // Ignore low level events like "Loading started", etc
-                    return;
-                }
-                this.urlStack.pushIfChanged(navState.url);
             }}
         />;
     }

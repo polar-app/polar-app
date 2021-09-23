@@ -435,6 +435,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve('dist/public'),
         compress: true,
+        host: '0.0.0.0',
         port,
         open: false,
         openPage,
