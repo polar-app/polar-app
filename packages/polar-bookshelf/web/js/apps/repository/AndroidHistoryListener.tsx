@@ -9,6 +9,35 @@ export const AndroidHistoryListener = () => {
 
     const history = useHistory();
 
+    const depthRef = React.useRef(0);
+
+    React.useEffect(() => {
+
+        const unsubscriber = history.listen((location, action) => {
+
+            switch (action) {
+
+                case "PUSH":
+                    ++depthRef.current;
+                    break;
+                case "POP":
+                    --depthRef.current;
+                    break;
+                case "REPLACE":
+                    // TODO: what happens if we goBack, then replace, does it
+                    // prune the parents?
+                    break;
+
+            }
+
+        });
+
+        return () => {
+            unsubscriber();
+        }
+
+    }, [history]);
+
     const sendBackFailed = React.useCallback(() => {
 
         if ((window as any).ReactNativeWebView) {
@@ -23,13 +52,15 @@ export const AndroidHistoryListener = () => {
 
         if (event.data.type === 'android-go-back') {
 
-            if (history.length > 0) {
-                console.log("Going back as requested via postMessage: android-go-back: ", event.data);
+            // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not
+            if (depthRef.current > 0) {
+                console.log("Going back successful as requested via postMessage: android-go-back: ", event.data);
                 history.goBack();
             } else {
-                console.warn("Can not go back with android-go-back.  No more history.");
+                console.warn(`Can not go back with android-go-back.  No more history: ` + document.referrer);
                 sendBackFailed();
             }
+
         }
 
     }, [history, sendBackFailed]);
