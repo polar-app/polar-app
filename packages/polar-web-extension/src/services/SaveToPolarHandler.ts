@@ -12,6 +12,7 @@ import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
 import {ErrorType} from "polar-bookshelf/web/js/ui/data_loader/UseSnapshotSubscriber";
+import {Tabs} from "../chrome/Tabs";
 
 export namespace SaveToPolarHandler {
 
@@ -21,22 +22,13 @@ export namespace SaveToPolarHandler {
         readonly url: URLStr;
     }
 
-    export interface SaveToPolarRequestBase {
-
-        /**
-         * Needed so that we can determine which tab should have its URL changed.
-         */
-        readonly tab: number;
-
-    }
-
-    export interface SaveToPolarRequestWithEPUB extends SaveToPolarRequestBase {
+    export interface SaveToPolarRequestWithEPUB {
         readonly type: 'save-to-polar',
         readonly strategy: 'epub';
         readonly value: ICapturedEPUB;
     }
 
-    export interface SaveToPolarRequestWithPDF extends SaveToPolarRequestBase {
+    export interface SaveToPolarRequestWithPDF {
         readonly type: 'save-to-polar',
         readonly strategy: 'pdf';
         readonly value: ICapturedPDF;
@@ -57,7 +49,7 @@ export namespace SaveToPolarHandler {
                                      progressListener: WriteFileProgressListener,
                                      errorReporter: (err: ErrorType) => void) {
 
-        // FIXME: make as async function...
+        // TODO: make as async function...
 
         console.log("saveToPolarAsPDF")
 
@@ -187,13 +179,20 @@ export namespace SaveToPolarHandler {
                 // eslint-disable-next-line no-case-declarations
                 const errorReporter = createErrorReporter(sender);
 
+                // eslint-disable-next-line no-case-declarations
+                const activeTab = await Tabs.activeTab();
+
+                if (! activeTab || activeTab.id === undefined) {
+                    throw new Error("No active tab")
+                }
+
                 switch (request.strategy) {
 
                     case "pdf":
-                        saveToPolarAsPDF(request.tab, request.value, progressListener, errorReporter)
+                        saveToPolarAsPDF(activeTab.id, request.value, progressListener, errorReporter)
                         break;
                     case "epub":
-                        await saveToPolarAsEPUB(request.tab, request.value, progressListener, errorReporter)
+                        await saveToPolarAsEPUB(activeTab.id, request.value, progressListener, errorReporter)
                         break;
                     default:
                         console.warn("Unable to handle request strategy: ", request);
