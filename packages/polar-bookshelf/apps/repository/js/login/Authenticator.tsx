@@ -146,8 +146,8 @@ const AuthButton = (props: IAuthButtonProps) => {
 
 const AuthButtonMobile = (props: IAuthButtonProps) => {
     return (
-        <AuthButtonMobile {...props}
-                          style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
+        <AuthButton {...props}
+                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
     );
 }
 
