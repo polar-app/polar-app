@@ -12,6 +12,9 @@ import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {assert} from "chai";
+import {Asserts} from "polar-shared/src/Asserts";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -293,6 +296,58 @@ describe("BlocksStoreUndoQueues", () => {
                 }
             ]);
 
+        });
+
+    });
+
+    describe("getSideEffectIdentifiers", () => {
+
+        it('should return the id of the parent document block when given a descendant of that block', () => {
+            const blocksStore = createStore();
+
+            const sideEffectIdentifiers = BlocksStoreUndoQueues.getSideEffectIdentifiers(blocksStore, ['2024', '2023flashcard']);
+
+            assert.deepEqual(sideEffectIdentifiers, ['2020document']);
+        });
+
+        it('should ignore root types other than "document"', () => {
+            const blocksStore = createStore();
+
+            const sideEffectIdentifiers = BlocksStoreUndoQueues.getSideEffectIdentifiers(blocksStore, ['111', '118']);
+
+            assert.deepEqual(sideEffectIdentifiers, []);
+        });
+
+    });
+
+    describe("performSideEffects", () => {
+        beforeEach(() => {
+            TestingTime.freeze();
+        });
+
+        afterEach(() => {
+            TestingTime.unfreeze();
+        });
+
+        it('should update the timestamp of the given blocks', () => {
+            const blocksStore = createStore();
+            const id = '2020document';
+
+            const block = blocksStore.getBlockForMutation(id);
+
+            Asserts.assertPresent(block);
+
+            TestingTime.forward(1000);
+
+            BlocksStoreUndoQueues.performSideEffects(blocksStore, ['2020document']);
+
+            const updatedBlock = blocksStore.getBlockForMutation(id);
+
+            Asserts.assertPresent(updatedBlock);
+
+            const updatedTime = ISODateTimeStrings.create((new Date(block.updated).getTime()) + 1000);
+            
+            assert.equal(updatedBlock.updated, updatedTime);
         });
 
     });
