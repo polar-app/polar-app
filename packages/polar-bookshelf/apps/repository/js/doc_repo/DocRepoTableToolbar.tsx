@@ -61,11 +61,11 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
             <SidenavTrigger/> 
 
+            <ChromeExtensionInstallBar/>
+            
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
             </div>
-
-            <ChromeExtensionInstallBar/>
 
             <DocRepoFilterBar/>
 

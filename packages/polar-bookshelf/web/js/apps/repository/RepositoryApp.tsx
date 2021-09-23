@@ -338,9 +338,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <Initializers />
 
-                            <DeviceRouters.Desktop>
-                                <SideNav />
-                            </DeviceRouters.Desktop>
+                            <SideNav />
                             <DeviceRouters.NotDesktop>
                                 <MUIBottomNavigation/>
                             </DeviceRouters.NotDesktop>
