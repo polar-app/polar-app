@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
-            flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
+            flexDirection: 'row',
             paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(1),
             paddingRight: theme.spacing(1),
@@ -59,13 +59,13 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
     return (
         <Paper square className={classes.root}>
 
-            <SidenavTrigger/> 
+            <SidenavTrigger/>
+
+            <ChromeExtensionInstallBar/>
 
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
             </div>
-
-            <ChromeExtensionInstallBar/>
 
             <DocRepoFilterBar/>
 
