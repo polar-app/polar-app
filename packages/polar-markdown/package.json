@@ -26,11 +26,11 @@
   },
   "dependencies": {
     "@types/node": "=14.14.35",
-    "@types/showdown": "^1.9.3",
-    "gray-matter": "^4.0.2",
+    "@types/showdown": "=1.9.3",
+    "gray-matter": "=4.0.2",
     "polar-shared": "0.0.0",
     "polar-test": "0.0.0",
-    "showdown": "^1.9.1"
+    "showdown": "=1.9.1"
   },
   "files": [
     "**/*.js",

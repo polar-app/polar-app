@@ -16,14 +16,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/file-saver": "^2.0.1",
+    "@types/file-saver": "=2.0.1",
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "file-saver": "^2.0.2"
+    "file-saver": "=2.0.2"
   },
   "files": [
     "**/*.js",

@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "epubjs": "=0.3.89-polar.16",
-    "fast-xml-parser": "^3.19.0",
-    "node-stream-zip": "^1.14.0",
+    "fast-xml-parser": "=3.19.0",
+    "node-stream-zip": "=1.14.0",
     "polar-shared": "0.0.0"
   }
 }

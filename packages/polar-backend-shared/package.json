@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "polar-shared-webserver": "0.0.0",
-    "tsconfig": "^7.0.0"
+    "tsconfig": "=7.0.0"
   }
 }
