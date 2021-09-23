@@ -24,8 +24,7 @@ export const AndroidHistoryListener = () => {
                     --depthRef.current;
                     break;
                 case "REPLACE":
-                    // TODO: what happens if we goBack, then replace, does it
-                    // prune the parents?
+                    // does not need to be implemented
                     break;
 
             }
