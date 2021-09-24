@@ -14,6 +14,7 @@ export namespace PrivateBetaReqCollection {
          * The tags for this user which are usually what is used to invite them.
          */
         readonly tags: ReadonlyArray<TagStr>;
+
         readonly email: EmailStr;
 
 
@@ -62,6 +63,10 @@ export namespace PrivateBetaReqCollection {
 
     export async function getByEmail<SM = unknown>(firestore: IFirestore<SM>, email: EmailStr): Promise<IPrivateBetaReq | undefined> {
         return Collections.getByFieldValue(firestore, COLLECTION_NAME, 'email', email);
+    }
+
+    export async function list<SM = unknown>(firestore: IFirestore<SM>): Promise<ReadonlyArray<IPrivateBetaReq>> {
+        return Collections.list<IPrivateBetaReq>(firestore, COLLECTION_NAME, []);
     }
 
 }
