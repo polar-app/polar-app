@@ -317,3 +317,4 @@ export type HandleStr = string;
 
 export type DocIDStr = string;
 
+export type TagStr = string;
