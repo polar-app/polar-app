@@ -21,7 +21,32 @@ export namespace ComputeNextUserPriority {
         readonly priority: number;
     }
 
-    const TAG_PRIORITIES: IPriorityMap = {
+
+    export interface IComputeOpts {
+        readonly tagPriorities: IPriorityMap;
+    }
+
+    export async function compute(opts: IComputeOpts) {
+
+        // ** get the list of all users that haven't yet been invited.
+
+        const firestore = FirestoreAdmin.getInstance();
+
+        const records = await PrivateBetaReqCollection.list(firestore);
+
+        return computeUsingRecords(records, opts);
+
+    }
+
+    export async function computeUsingRecords(records: ReadonlyArray<IPrivateBetaReq>, opts: IComputeOpts) {
+
+        return records
+            // make sure we only compute users that have not been invited yet.
+            .filter(current => current.invited === undefined)
+            // ** get their priority
+            .map(current => computePriority(opts.tagPriorities, current))
+            // ** sort them by prioritized tags, using a score, then created
+            .sort(sortWithPriority)
 
     }
 
@@ -44,10 +69,10 @@ export namespace ComputeNextUserPriority {
      *  - change the priorities at runtime based on which signup codes we're
      *    using
      */
-    export function computePriority(req: IPrivateBetaReq): IPrivateBetaReqWithPriority {
+    export function computePriority(tagPriorities: IPriorityMap, req: IPrivateBetaReq): IPrivateBetaReqWithPriority {
 
         function getPriorityForTag(tag: TagStr): IPriority | undefined {
-            return TAG_PRIORITIES[tag] || undefined;
+            return tagPriorities[tag] || undefined;
         }
 
         function computePriority() {
@@ -81,30 +106,6 @@ export namespace ComputeNextUserPriority {
 
         // now sort by the created time
         return ISODateTimeStrings.compare(a.created, b.created);
-
-    }
-
-    export async function compute() {
-
-        // ** get the list of all users that haven't yet been invited.
-
-        const firestore = FirestoreAdmin.getInstance();
-
-        const records = await PrivateBetaReqCollection.list(firestore);
-
-        return computeUsingRecords(records);
-
-    }
-
-    export async function computeUsingRecords(records: ReadonlyArray<IPrivateBetaReq>) {
-
-        return records
-            // make sure we only compute users that have not been invited yet.
-            .filter(current => current.invited === undefined)
-            // ** get their priority
-            .map(current => computePriority(current))
-            // ** sort them by prioritized tags, using a score, then created
-            .sort(sortWithPriority)
 
     }
 
