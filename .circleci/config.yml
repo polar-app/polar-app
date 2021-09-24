@@ -3,7 +3,6 @@ version: 2.1
 
 # @ Custom Orbs
 orbs:
-  win: circleci/windows@2.2.0
   cypress: cypress-io/cypress@1.28.0
 
 # ~ Pre-Script Steps to Execute before Jobs
@@ -185,6 +184,8 @@ jobs:
           command: |
             cd /home/circleci/project
             npx lerna run test
+      - store_test_results:
+          path: /home/circleci/project/packages
 
   # @ Build polar chrome extension
   build-chrome-extension:
