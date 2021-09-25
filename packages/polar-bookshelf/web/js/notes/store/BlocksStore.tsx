@@ -508,19 +508,17 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-            if (BlockPredicates.canHaveLinks(block)) {
 
-                if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
-                    for (const link of existingBlock.content.links) {
-                        this._reverse.remove(link.id, block.id);
-                    }
+            if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
+                for (const link of existingBlock.content.links) {
+                    this._reverse.remove(link.id, block.id);
                 }
-
-                for (const link of block.content.links) {
-                    this._reverse.add(link.id, block.id);
-                }
-
             }
+
+            for (const link of block.content.links) {
+                this._reverse.add(link.id, block.id);
+            }
+
 
         }
 
