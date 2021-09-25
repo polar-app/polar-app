@@ -36,6 +36,10 @@ export type IBlockContent = IMarkdownContent
                             | IDocumentContent
                             | IAnnotationContent;
 
+export type IBlockContentMap = {
+    [K in IBlockContent as K['type']]: K;
+};
+
 export interface IBlockLink {
 
     /**
