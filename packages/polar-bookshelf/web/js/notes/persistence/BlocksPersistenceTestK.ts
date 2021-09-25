@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "../../test/Assertions";
@@ -18,6 +18,7 @@ import createBasicBlock = BlocksStoreTests.createBasicBlock;
 const ID = Hashcodes.createRandomID();
 
 describe("BlocksPersistence", () => {
+    let uid: UserIDStr;
 
     beforeEach(async () => {
 
@@ -31,6 +32,7 @@ describe("BlocksPersistence", () => {
 
         await FirestoreBlocks.doDelete(ID);
 
+        uid = (await FirebaseBrowser.currentUserID())!;
     });
 
     afterEach(() => {
@@ -41,15 +43,13 @@ describe("BlocksPersistence", () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, []);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, []);
 
     });
 
     it("new document", async () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
-
-        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const mutation: IBlocksStoreMutation = {
             "id": ID,
@@ -78,7 +78,7 @@ describe("BlocksPersistence", () => {
             }
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
             mutation
         ]);
 
@@ -118,7 +118,7 @@ describe("BlocksPersistence", () => {
             "added": before
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
             mutation
         ]);
 
@@ -141,7 +141,7 @@ describe("BlocksPersistence", () => {
 
         const mutations = BlocksStoreUndoQueues.computeMutatedBlocks([before], [after]);
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, mutations);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, mutations);
 
         const actual = await FirestoreBlocks.get(ID);
 
@@ -181,7 +181,7 @@ describe("BlocksPersistence", () => {
             "added": before
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
             mutation
         ]);
 
@@ -207,7 +207,7 @@ describe("BlocksPersistence", () => {
 
         const mutations = BlocksStoreUndoQueues.computeMutatedBlocks([before], [after]);
 
-        await FirestoreBlocksPersistenceWriter.doExec(firestore, mutations);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, mutations);
 
         assertJSON(await FirestoreBlocks.get(ID), after);
 
