@@ -100,7 +100,8 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
                              alignItems: 'center'
                          }}>
 
-                        <Box color="text.secondary">
+                        <Box ml={1}
+                             color="text.secondary">
                             <Typography gutterBottom color="textSecondary">
                                 {docInfo?.title || 'Untitled'}
                             </Typography>
