@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {AnswerTests} from "./AnswerTests";
