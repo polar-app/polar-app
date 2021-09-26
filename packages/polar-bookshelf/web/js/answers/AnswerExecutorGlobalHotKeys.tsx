@@ -26,6 +26,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -67,9 +68,12 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
     const docInfo = useDocInfo(props.doc.record.docID)
 
     const handleViewSection = React.useCallback(() => {
+
         props.onViewSection();
-        docLoader((props.doc.record as any).docID)
-    }, [])
+        const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
+        docLoader(pdfRecord.docID, pdfRecord.pageNum);
+
+    }, [docLoader])
 
     return (
         <Box mb={1} mr={1}>

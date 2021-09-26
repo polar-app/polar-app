@@ -1,6 +1,7 @@
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-export interface LoadDocRequest {
+export interface LoadDocRequestBase {
 
     readonly title: string;
 
@@ -12,7 +13,7 @@ export interface LoadDocRequest {
     readonly url: string | undefined;
 
     /**
-     * Used for jumping to specific areas in the document upon load
+     * Used for jumping to specific areas in the document upon load.
      */
     readonly initialUrl?: string;
 
@@ -23,6 +24,29 @@ export interface LoadDocRequest {
      */
     readonly newWindow: boolean;
 
-    // TODO: extend with page and annotation parameters.
+}
+
+export interface LoadDocRequestForEPUB extends LoadDocRequestBase {
+
+}
+
+export interface LoadDocRequestForPDF extends LoadDocRequestBase {
+
+    /**
+     * When given, jump to this PDF on load.
+     */
+    readonly page?: number;
+
+}
+
+export type LoadDocRequest = LoadDocRequestForPDF | LoadDocRequestForEPUB;
+
+export function isLoadDocRequestForPDF(req: LoadDocRequestBase): req is LoadDocRequestForPDF {
+
+    const {backendFileRef} = req;
+
+    const fileName = backendFileRef.name;
+
+    return FilePaths.hasExtension(fileName, "pdf");
 
 }
