@@ -51,6 +51,11 @@ import TypeConverter = Sorting.TypeConverter;
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
+import {BlockContentUtils, useBlockTagEditorDialog} from "../../../../web/js/notes/NoteUtils";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../doc/src/DocViewer";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
 
 interface IDocRepoStore {
 
@@ -242,6 +247,8 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     const docLoader = useDocLoader();
     const {updateTab} = useSideNavCallbacks();
+    const blockTagEditorDialog = useBlockTagEditorDialog();
+    const blocksStore = useBlocksStore();
 
     function firstSelected() {
         const selected = selectedProvider();
@@ -389,8 +396,19 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             return {prepare, commit};
         }
 
+        const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
+            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
+                content.docInfo.archived = archived;
+            });
+        };
+
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toAsyncTransaction));
+
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                repoDocInfos.forEach(persistToBlocksStore);
+            } else {
+                await withBatch(repoDocInfos.map(toAsyncTransaction));
+            }
         }
 
         doHandle()
@@ -416,8 +434,19 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         }
 
+        const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
+            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
+                content.docInfo.flagged = flagged;
+                console.log('debug', content.docInfo);
+            });
+        };
+
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toAsyncTransaction));
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                repoDocInfos.forEach(persistToBlocksStore);
+            } else {
+                await withBatch(repoDocInfos.map(toAsyncTransaction));
+            }
         }
 
         doHandle()
@@ -453,7 +482,16 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         async function doHandle() {
-            await withBatch([repoDocInfo].map(toAsyncTransaction));
+
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                const fingerprint =  docInfo.fingerprint;
+
+                const updater = (content: IDocumentContent) => content.docInfo = docInfo;
+
+                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
+            } else {
+                await withBatch([repoDocInfo].map(toAsyncTransaction));
+            }
         }
 
         doHandle()
@@ -521,8 +559,21 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
-        // this basically tags the document.
-        doTagged(repoDocInfos, [tag], 'add');
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            const toTarget = (repoDocInfo: RepoDocInfo): BlockContentUtils.IHasLinksBlockTarget | null => {
+                const block = getBlockForDocument(blocksStore, repoDocInfo.fingerprint);
+
+                return block ? { id: block.id, content: block.content } : null;
+            };
+
+            const targets = arrayStream(repoDocInfos).map(toTarget).filterPresent().collect();
+
+            BlockContentUtils.updateTags(blocksStore, targets, [tag], 'add');
+        } else {
+
+            doTagged(repoDocInfos, [tag], 'add');
+
+        }
     }
 
     function doOpen(repoDocInfo: RepoDocInfo): void {
@@ -548,7 +599,15 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         async function doHandle() {
             mutator.refresh();
-            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
+
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
+                    content.docInfo.title = title;
+                });
+            } else {
+                await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
+            }
+
             updateTab(repoDocInfo.fingerprint, { title });
         }
 
@@ -722,20 +781,30 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
-        const {relatedTagsManager} = repoDocMetaManager;
-        const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            const selectedDocs = selectedProvider();
+            const blockIDs = arrayStream(selectedDocs)
+                .map(doc => blocksStore.indexByDocumentID[doc.fingerprint])
+                .filterPresent()
+                .collect();
 
-        const opts: TaggedCallbacksOpts<RepoDocInfo> = {
-            targets: selectedProvider,
-            tagsProvider: () => tagsProvider(),
-            dialogs,
-            doTagged,
-            relatedOptionsCalculator
-        };
+            blockTagEditorDialog(blockIDs)
+        } else {
+            const {relatedTagsManager} = repoDocMetaManager;
+            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
 
-        const callback = TaggedCallbacks.create(opts);
+            const opts: TaggedCallbacksOpts<RepoDocInfo> = {
+                targets: selectedProvider,
+                tagsProvider: () => tagsProvider(),
+                dialogs,
+                doTagged,
+                relatedOptionsCalculator
+            };
 
-        callback();
+            const callback = TaggedCallbacks.create(opts);
+
+            callback();
+        }
     }
 
     // I don't know of a better way to return / organize the callbacks here
@@ -777,7 +846,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         onDropped,
 
         onTagSelected,
-
     };
 
 }

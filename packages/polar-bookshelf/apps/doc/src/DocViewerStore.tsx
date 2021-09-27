@@ -56,9 +56,14 @@ import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_
 import {UUIDs} from "../../../web/js/metadata/UUIDs";
 import { IOutline } from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
-import {Analytics} from '../../../web/js/analytics/Analytics';
+import {Analytics} from "../../../web/js/analytics/Analytics";
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
-import {ActiveHighlightData} from './annotations/annotation_popup/AnnotationPopupHooks';
+import {ActiveHighlightData} from "./annotations/annotation_popup/AnnotationPopupHooks";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
+import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
+import {useBlockTagEditorDialog} from "../../../web/js/notes/NoteUtils";
+import {getBlockForDocument} from "../../../web/js/notes/HighlightBlocksHooks";
+import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -350,6 +355,8 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
     const dialogs = useDialogManager();
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
+    const blocksStore = useBlocksStore();
+    const blockTagEditorDialog = useBlockTagEditorDialog();
 
     // HACK: this is a hack until we find a better way memoize our variables.
     // I really hate this aspect of hook.
@@ -880,8 +887,25 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             mutator(docMeta);
 
-            writeUpdatedDocMetas([docMeta])
-                .catch(err => log.error(err));
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                const documentBlock = getBlockForDocument(blocksStore, docMeta.docInfo.fingerprint);
+
+                if (! documentBlock) {
+                    return;
+                }
+
+                const content = new DocumentContent({
+                    ...documentBlock.content.toJSON(),
+                    docInfo: docMeta.docInfo,
+                });
+
+                blocksStore.setBlockContent(documentBlock.id, content);
+
+            } else {
+
+                writeUpdatedDocMetas([docMeta])
+                    .catch(err => log.error(err));
+            }
 
         }
 
@@ -924,55 +948,65 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 return;
             }
 
-            function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                const blockID = blocksStore.indexByDocumentID[docMeta.docInfo.fingerprint];
 
-                if (! docMeta) {
-                    return [];
+                if (blockID) {
+                    blockTagEditorDialog([blockID]);
                 }
 
-                return [
-                    {
-                        docMeta,
-                        tags: docMeta.docInfo.tags
+            } else {
+
+                function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
+
+                    if (! docMeta) {
+                        return [];
                     }
-                ];
 
-            }
+                    return [
+                        {
+                            docMeta,
+                            tags: docMeta.docInfo.tags
+                        }
+                    ];
 
-            function createRelatedTagsManager() {
-
-                function createNullRelatedTagsData(): IRelatedTagsData {
-                    console.warn("Using null related tags data");
-                    return {
-                        docTagsIndex: {},
-                        tagDocsIndex: {},
-                        tagsIndex: {}
-                    };
                 }
 
-                const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
+                function createRelatedTagsManager() {
 
-                return new RelatedTagsManager(data);
+                    function createNullRelatedTagsData(): IRelatedTagsData {
+                        console.warn("Using null related tags data");
+                        return {
+                            docTagsIndex: {},
+                            tagDocsIndex: {},
+                            tagsIndex: {}
+                        };
+                    }
+
+                    const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
+
+                    return new RelatedTagsManager(data);
+
+                }
+
+                const relatedTagsManager = createRelatedTagsManager();
+                const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+
+                const tagsProvider = () => relatedTagsManager.tags();
+
+                const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
+                    targets,
+                    tagsProvider,
+                    dialogs,
+                    doTagged: doDocTagged,
+                    relatedOptionsCalculator
+                };
+
+                const callback = TaggedCallbacks.create(opts);
+
+                callback();
 
             }
-
-            const relatedTagsManager = createRelatedTagsManager();
-            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
-
-            const tagsProvider = () => relatedTagsManager.tags();
-
-            const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
-                targets,
-                tagsProvider,
-                dialogs,
-                doTagged: doDocTagged,
-                relatedOptionsCalculator
-            };
-
-            const callback = TaggedCallbacks.create(opts);
-
-            callback();
-
         }
 
         function toggleDocFlagged() {
@@ -986,6 +1020,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setDocFlagged(! docMeta?.docInfo?.flagged)
 
         }
+
         function toggleDocArchived() {
 
             const {docMeta} = storeProvider();
@@ -1062,7 +1097,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setAreaHighlightMode
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
-        dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);
+        dialogs, annotationMutationCallbacksFactory, setStore, storeProvider, blocksStore, blockTagEditorDialog]);
 
 }
 

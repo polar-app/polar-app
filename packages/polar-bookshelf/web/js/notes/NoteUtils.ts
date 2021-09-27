@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr, IBlockContent, IBlockContentMap, IBlockLink} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContent, IBlockContentMap} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
@@ -23,7 +23,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useRefWithUpdates} from "../hooks/ReactHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
-import {TAG_IDENTIFIER} from "./content/HasLinks";
+import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 
 
 /**
@@ -88,59 +88,13 @@ export const useBlockTagEditorDialog = () => {
             return console.error('useBlockTagEditorDialog: Blocks to be edited were not found.');
         }
 
-        interface ITaggedBlock extends TaggedCallbacks.ITagsHolder {
-            id: BlockIDStr,
-        };
+        type ITaggedBlock = TaggedCallbacks.ITagsHolder & BlockContentUtils.IHasLinksBlockTarget;
 
-        const doTagged = (targets: ReadonlyArray<ITaggedBlock>,
-                          tags: ReadonlyArray<Tag>,
-                          strategy: Tags.ComputeNewTagsStrategy) => {
-
-            const updateTarget = (target: ITaggedBlock) => {
-                const newTags = Tags.computeNewTags(target.tags, tags, strategy);
-
-                const newTagLinks = newTags.map(({ label }) => {
-                    const getBlockID = (): string => {
-                        const block = blocksStore.getBlockByName(label);
-
-                        if (block) {
-                            return block.id;
-                        }
-
-                        const content = new NameContent({ type: 'name', data: label, links: [] });
-                        return blocksStore.createNewNamedBlock({ content });
-                    };
-
-                    const blockID = getBlockID();
-
-                    return { text: `${TAG_IDENTIFIER}${label}`, id: blockID };
-                });
-
-                const block = blocksStore.getBlockForMutation(target.id);
-
-                if (! block) {
-                    return;
-                }
-
-                const wikiLinks = block.content.wikiLinks;
-
-                const newContent = block.content;
-                newContent.updateLinks([...wikiLinks, ...newTagLinks]);
-
-                blocksStore.setBlockContent(target.id, newContent);
-            };
-
-            targets.forEach(updateTarget);
-        };
-
-        const toTarget = (block: Block): ITaggedBlock => {
-            const tagsMap = block.content.getTagsMap();
-
-            return {
-                id: block.id,
-                tags: tagsMap,
-            };
-        };
+        const toTarget = (block: Block): ITaggedBlock => ({
+            id: block.id,
+            content: block.content,
+            tags: block.content.getTagsMap(),
+        });
 
         const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
             targets: () => blocks.map(toTarget),
@@ -149,7 +103,7 @@ export const useBlockTagEditorDialog = () => {
                 id: block.id,
             })),
             dialogs,
-            doTagged,
+            doTagged: BlockContentUtils.updateTags.bind(null, blocksStore),
         };
 
 
@@ -159,7 +113,61 @@ export const useBlockTagEditorDialog = () => {
 
 
 
-export namespace BlockUtils {
+export namespace BlockContentUtils {
+
+    export interface IHasLinksBlockTarget {
+        id: BlockIDStr;
+        content: HasLinks;
+    };
+
+    /**
+     * @param blocksStore BlocksStore instance
+     * @param targets An array of targets to updated @see IHasLinksBlockTarget
+     * @param tags The new tags
+     * @param strategy The strategy on how to calculate the new tags for a target @see Tags.ComputeNewTagsStrategy
+     */
+    export function updateTags(
+        blocksStore: IBlocksStore,
+        targets: ReadonlyArray<IHasLinksBlockTarget>,
+        tags: ReadonlyArray<Tag>,
+        strategy: Tags.ComputeNewTagsStrategy = 'set'
+    ): void {
+        const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
+            const newTags = Tags.computeNewTags(content.getTagsMap(), tags, strategy);
+
+            const newTagLinks = newTags.map(({ label }) => {
+                const getBlockID = (): string => {
+                    const block = blocksStore.getBlockByName(label);
+
+                    if (block) {
+                        return block.id;
+                    }
+
+                    const content = new NameContent({ type: 'name', data: label, links: [] });
+                    return blocksStore.createNewNamedBlock({ content });
+                };
+
+                const blockID = getBlockID();
+
+                return { text: `${TAG_IDENTIFIER}${label}`, id: blockID };
+            });
+
+            const block = blocksStore.getBlockForMutation(id);
+
+            if (! block) {
+                return;
+            }
+
+            const wikiLinks = block.content.wikiLinks;
+
+            const newContent = block.content;
+            newContent.updateLinks([...wikiLinks, ...newTagLinks]);
+
+            blocksStore.setBlockContent(id, newContent);
+        };
+
+        targets.forEach(updateTarget);
+    }
 
     /**
      * A Generic Utility function to update the content of a block.

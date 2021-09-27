@@ -14,11 +14,13 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
 
 const ID = Hashcodes.createRandomID();
 
 describe("BlocksPersistence", () => {
     let uid: UserIDStr;
+    let docInfoIndex: RepoDocInfoDataObjectIndex;
 
     beforeEach(async () => {
 
@@ -33,6 +35,8 @@ describe("BlocksPersistence", () => {
         await FirestoreBlocks.doDelete(ID);
 
         uid = (await FirebaseBrowser.currentUserID())!;
+
+        docInfoIndex = new RepoDocInfoDataObjectIndex();
     });
 
     afterEach(() => {
@@ -43,7 +47,7 @@ describe("BlocksPersistence", () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, []);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, []);
 
     });
 
@@ -78,7 +82,7 @@ describe("BlocksPersistence", () => {
             }
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
             mutation
         ]);
 
@@ -118,7 +122,7 @@ describe("BlocksPersistence", () => {
             "added": before
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
             mutation
         ]);
 
@@ -141,7 +145,7 @@ describe("BlocksPersistence", () => {
 
         const mutations = BlocksStoreUndoQueues.computeMutatedBlocks([before], [after]);
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, mutations);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, mutations);
 
         const actual = await FirestoreBlocks.get(ID);
 
@@ -181,7 +185,7 @@ describe("BlocksPersistence", () => {
             "added": before
         };
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, [
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
             mutation
         ]);
 
@@ -207,7 +211,7 @@ describe("BlocksPersistence", () => {
 
         const mutations = BlocksStoreUndoQueues.computeMutatedBlocks([before], [after]);
 
-        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, mutations);
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, mutations);
 
         assertJSON(await FirestoreBlocks.get(ID), after);
 

@@ -1323,7 +1323,12 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[newName.toLowerCase()] = id;
 
                 block.withMutation(() => {
-                    block.setContent(new NameContent({ type: 'name', data: newName, links: block.content.toJSON().links }));
+                    const content = new NameContent({
+                        ...block.content.toJSON(),
+                        data: newName,
+                    });
+
+                    block.setContent(content);
                 });
 
                 this.doPut([block]);
