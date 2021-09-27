@@ -8,7 +8,7 @@ export class ApiGatewayRoutes extends Construct {
         apiGateway: RestApi,
     }) {
         super(scope, id);
-
+        // eslint-disable-next-line
         new Billing(this, 'Billing', {
             rootResource: props.apiGateway.root
                 .resourceForPath('billing'),

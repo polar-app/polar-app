@@ -11,7 +11,7 @@ export class PolarInfrastructure extends cdk.Stack {
         const apiGateway = new ApiGateway(this, 'ApiGateway', {
             description: "Polar API Gateway for environment: " + envName(),
         });
-
+        // eslint-disable-next-line
         new ApiGatewayRoutes(this, 'Routes', {
             apiGateway: apiGateway,
         })

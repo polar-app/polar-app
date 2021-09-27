@@ -10,4 +10,5 @@ if (!envName()) {
 }
 
 const app = new cdk.App();
+// eslint-disable-next-line
 new PolarInfrastructure(app, 'Polar-' + envName(), {});
