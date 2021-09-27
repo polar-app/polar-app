@@ -330,7 +330,7 @@ export namespace AnswerExecutor {
             n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
-            // logprobs: 10,
+            return_prompt: true
         }
 
         // TODO: trace this.

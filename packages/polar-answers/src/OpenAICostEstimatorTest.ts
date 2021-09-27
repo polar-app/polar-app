@@ -84,8 +84,6 @@ describe('OpenAICostEstimator', function () {
 
         const promptAndAnswers = await computePromptAndAnswersUsingDebugData();
 
-        // const promptAndAnswers = await computePromptAndAnswersUsingClient();
-
         console.log("Computing with prompt and answers: ", JSON.stringify(promptAndAnswers, null, "  "));
 
         const req: IOpenAIAnswersRequest = {
@@ -94,6 +92,7 @@ describe('OpenAICostEstimator', function () {
             documents,
             examples: AnswerExecutor.EXAMPLES,
             examples_context: AnswerExecutor.EXAMPLES_CONTEXT,
+            return_prompt: true
         };
 
         const res: IOpenAIAnswersResponseWithPrompt = {
