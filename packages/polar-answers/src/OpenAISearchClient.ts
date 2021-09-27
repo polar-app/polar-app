@@ -1,5 +1,6 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {OpenAIRequests} from "./OpenAIRequests";
+import {OpenAICostEstimator} from "./OpenAICostEstimator";
 
 /**
  * Create search
@@ -23,6 +24,7 @@ import {OpenAIRequests} from "./OpenAIRequests";
  *
  */
 export namespace OpenAISearchClient {
+
 
     export interface IOpenAISearchRequest {
 
@@ -61,7 +63,7 @@ export namespace OpenAISearchClient {
     export interface IOpenAISearchDoc {
         readonly document: number;
         readonly object: "search_result";
-        readonly score:  number;
+        readonly score: number;
     }
 
     export interface IOpenAISearchResponse {
