@@ -41,7 +41,7 @@ export const AndroidHistoryListener = () => {
 
         if ((window as any).ReactNativeWebView) {
             (window as any).ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'android-go-back-exhausted'
+                action: 'android-go-back-exhausted'
             }))
         }
 

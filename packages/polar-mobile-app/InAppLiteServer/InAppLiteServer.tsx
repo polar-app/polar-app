@@ -23,7 +23,7 @@ export class InAppLiteServer extends Component<Props, State> {
         // Initial state
         this.state = {
             isRunning: !useEmbeddedServer,
-            url: !useEmbeddedServer ? 'http://192.168.1.12:8050' : '',
+            url: !useEmbeddedServer ? 'https://app.getpolarized.io' : '',
         };
 
         if (useEmbeddedServer) {
@@ -115,8 +115,11 @@ export class InAppLiteServer extends Component<Props, State> {
                         // Buying a plan
                         this.props.onBuy(dataPayload.data!.plan!, dataPayload.data!.email!);
                         break;
+                    case "android-go-back-exhausted":
+                        BackHandler.exitApp();
+                        break;
                     default:
-                        throw Error('Switch case not implemented: ' + dataPayload.action);
+                        throw Error('Switch case not implemented: ' + JSON.stringify(dataPayload));
                 }
             }}
         />;
