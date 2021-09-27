@@ -3,10 +3,12 @@ import {UserBackupCreator} from "./UserBackupCreator";
 import {Sendgrid} from "../Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CreateSnapshotRequest {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CreateSnapshotResponse {
 
 }
