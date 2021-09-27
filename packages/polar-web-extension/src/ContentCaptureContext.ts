@@ -18,19 +18,12 @@ export namespace ContentCaptureContext {
 
         async function triggerSaveToPolar() {
 
-            const currentTab = await Tabs.currentTab();
-
-            if (! currentTab || currentTab.id === undefined) {
-                throw new Error("No active tab")
-            }
-
             const message: SaveToPolarRequestWithPDF = {
                 type: 'save-to-polar',
                 strategy: 'pdf',
                 value: {
                     url: document.location.href
-                },
-                tab: currentTab.id
+                }
             }
 
             chrome.runtime.sendMessage(message);

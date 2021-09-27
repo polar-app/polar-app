@@ -1,13 +1,11 @@
 import React from 'react';
 import {CompositeAnalytics} from "./CompositeAnalytics";
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "./IAnalytics";
-import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
 import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
-import {IntercomAnalytics} from "./intercom/IntercomAnalytics";
 import {CannyAnalytics} from "./canny/CannyAnalytics";
 import {SentryAnalytics} from "./sentry/SentryAnalytics";
 
@@ -25,7 +23,7 @@ function createDelegates(): ReadonlyArray<IAnalytics> {
 
     return [
         new AmplitudeAnalytics(),
-        webExtension ? undefined : new GAAnalytics(),
+        // webExtension ? undefined : new GAAnalytics(),
         webExtension ? undefined : new FirestoreAnalytics(),
         new ConsoleAnalytics(),
         webExtension ? undefined : new CannyAnalytics(),

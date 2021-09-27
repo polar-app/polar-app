@@ -3,6 +3,7 @@ lerna-debug.log
 .idea
 .cache
 tsconfig.tsbuildinfo
+test_results.xml
 
 # Ignore IntelliJ related configuration
 *.iml

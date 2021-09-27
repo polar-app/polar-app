@@ -7,7 +7,7 @@ import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {AnnotationSidebar2} from "./AnnotationSidebar2";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
-import {useHighlightBlocks} from "../notes/HighlightNotesUtils";
+import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
@@ -35,7 +35,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
 
     const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docFingerprint]);
 
-    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint });
+    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint, sort: true });
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>
