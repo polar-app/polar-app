@@ -1,10 +1,22 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
-import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
-
-const {encode} = require('gpt-3-encoder');
+import {IOpenAIAnswersResponseWithPrompt} from "polar-answers-api/src/IOpenAIAnswersResponse";
+import {OpenAITokenEncoder} from "./OpenAITokenEncoder";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import { Reducers } from "polar-shared/src/util/Reducers";
 
 export namespace OpenAICostEstimator {
+
+    /**
+     * US dollar cost as a floating point of dollars and cents.
+     */
+    export type USD = number;
+
+    export interface ICostEstimation {
+        readonly tokens: number;
+        readonly cost: USD;
+    }
+
     /**
      * Given an OpenAI model name, return how much will a single "token" will cost
      * @see https://beta.openai.com/pricing/
@@ -24,54 +36,86 @@ export namespace OpenAICostEstimator {
     }
 
     /**
-     * @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
+     * The 14 represents the additional tokens the API uses per document to
+     * accomplish the Semantic Search task
      */
-    export function costOfSearch(opts: {
-        model: AIModel,
-        query: string,
-        documents: ReadonlyArray<string>
-    }) {
-        // @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
-        const tokensUsed = encode(opts.documents.join('')).length
-            // "The 14 represents the additional tokens the API uses per document to accomplish the Semantic Search task"
-            + ((opts.documents.length + 1) * 14)
-            // The query is appended to every document in terms of cost
-            + ((opts.documents.length + 1) * encode(opts.query).length);
+    export const SEMANTIC_SEARCH_PER_DOC_OVERHEAD = 14;
 
-        return pricePerToken(opts.model) * tokensUsed;
+    interface ICostOfSearchOpts {
+        readonly model: AIModel,
+        readonly query: string,
+        readonly documents: ReadonlyArray<string>
     }
 
-    export function costOfAnswers(request: IOpenAIAnswersRequest, response: IOpenAIAnswersResponse) {
-        const searchCostInUSD = OpenAICostEstimator.costOfSearch({
+    /**
+     * @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
+     */
+    export function costOfSearch(opts: ICostOfSearchOpts): ICostEstimation {
+
+        const text = opts.documents.join(' ');
+
+        const nrTokensForText = OpenAITokenEncoder.encode(text).length;
+        const nrTokensForQuery = OpenAITokenEncoder.encode(opts.query).length;
+
+        // @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
+        const tokens = nrTokensForText +
+            + ((opts.documents.length + 1) * SEMANTIC_SEARCH_PER_DOC_OVERHEAD)
+            // The query is appended to every document in terms of cost
+            + ((opts.documents.length + 1) * nrTokensForQuery);
+
+        const cost = pricePerToken(opts.model) * tokens;
+
+        return {tokens, cost};
+    }
+
+    interface ICompletionResponseChoice {
+        readonly text: string;
+    }
+
+    interface ICostOfCompletionOpts {
+        readonly model: AIModel,
+        readonly prompt: string;
+        readonly choices: ReadonlyArray<ICompletionResponseChoice>;
+    }
+
+    export function costOfCompletion(opts: ICostOfCompletionOpts): ICostEstimation {
+
+        const nrTokensForPrompt = OpenAITokenEncoder.nrTokens(opts.prompt);
+
+        const nrTokensForChoices
+                = arrayStream(opts.choices)
+                    .map(current => OpenAITokenEncoder.nrTokens(current.text))
+                    .collect()
+                    .reduce(Reducers.SUM)
+
+        const tokens = nrTokensForPrompt + nrTokensForChoices;
+
+        const cost = pricePerToken(opts.model) * tokens;
+
+        return {tokens, cost}
+
+    }
+
+    export function costOfAnswers(request: IOpenAIAnswersRequest, response: IOpenAIAnswersResponseWithPrompt): ICostEstimation {
+
+        const searchCost = OpenAICostEstimator.costOfSearch({
             model: request.search_model ?? 'ada',
             query: request.question,
             documents: request.documents,
         });
 
-        const completionCostInUSD = pricePerToken(request.model) *
-            (
-                encode(response.prompt ?? request.question).length
-                + (
-                    (request.max_tokens ?? 16)
-                    * (request.n ?? 1)
-                )
-            );
+        const completionCost = costOfCompletion({
+            model: response.model,
+            prompt: response.prompt,
+            choices: response.answers.map(current => ({
+                text: current
+            }))
+        });
 
-        const fixedCostInUSD = pricePerToken(request.model) *
-            (
-                encode(request.examples_context).length // length of "examples_content"
-                +
-                request.examples
-                    // Merge the "example" questions and answers
-                    .map(value => value.join(''))
-                    // Calculate the sum of their lengths
-                    .reduce((previousValue, currentValue) => previousValue + encode(currentValue).length, 0)
-                +
-                encode(response.prompt ?? request.question).length  // add length of the original question
-                +
-                encode(response.answers.join('')).length // length of returned answer
-            )
+        return {
+            tokens: searchCost.tokens + completionCost.tokens,
+            cost: searchCost.cost + completionCost.cost
+        }
 
-        return searchCostInUSD + completionCostInUSD + fixedCostInUSD;
     }
 }
