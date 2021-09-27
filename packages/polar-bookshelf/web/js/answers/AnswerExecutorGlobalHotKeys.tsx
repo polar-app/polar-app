@@ -82,7 +82,7 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
                 <CardContent>
 
                     <div style={{
-                        fontSize: '2.0rem',
+                        fontSize: '1.3rem',
                         overflow: 'auto'
                     }}>
 
@@ -247,7 +247,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                         </Box>
 
                         <p style={{
-                            fontSize: '2.0rem',
+                            fontSize: '1.8rem',
                             overflow: 'auto'
                         }}>
 

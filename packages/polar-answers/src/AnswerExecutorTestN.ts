@@ -5,7 +5,7 @@ import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorRespons
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
 
-describe("AnswerExecutor", function () {
+xdescribe("Answer Executor", function () {
 
     this.timeout(600000);
 
