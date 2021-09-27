@@ -49,9 +49,7 @@
     "polar-karma": "0.0.0",
     "polar-mocha": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0",
-    "webpack": "=5.26.3",
-    "webpack-cli": "=4.5.0"
+    "polar-webpack": "0.0.0"
   },
   "files": [
     "package.json"
