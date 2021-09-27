@@ -819,6 +819,49 @@ const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
 }
 
+/**
+ * Use the DocInfo for a docID
+ */
+export function useDocInfo(docID: string): IDocInfo | undefined {
+
+    const {data} = useDocRepoStore(['data']);
+
+    return arrayStream(data)
+        .filter(current => current.docInfo.fingerprint === docID)
+        .first()?.docInfo;
+
+}
+
+export function useDocLoaderFromDocID() {
+
+    const {data} = useDocRepoStore(['data']);
+    const docLoader = useDocLoader();
+
+    return React.useCallback((docID: string) => {
+
+        const doc = arrayStream(data)
+           .filter(current => current.docInfo.fingerprint === docID)
+           .first();
+
+        if (doc) {
+
+            const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(doc.docInfo))!;
+
+            docLoader({
+                title: doc.title,
+                fingerprint: doc.fingerprint,
+                backendFileRef,
+                url: doc.url,
+                newWindow: true
+            });
+
+        } else {
+            console.warn("No document for ID: " + docID);
+        }
+
+    }, [docLoader]);
+}
+
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator, useDocRepoStoreReducer]
     = createObservableStoreWithPrefsContext<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,

@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, TextField, Typography} from "@material-ui/core";
+import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField, Typography, useTheme} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -25,6 +25,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -61,24 +62,44 @@ interface SelectedDocumentProps {
 
 const SelectedDocument = (props: SelectedDocumentProps) => {
 
+    const docLoader = useDocLoaderFromDocID();
+    const docInfo = useDocInfo(props.doc.record.docID)
+
     return (
-        <>
-            <p style={{
-                   fontSize: '2.0rem',
-                   overflow: 'auto'
-               }}>
+        <Box mb={1} mr={1}>
+            <Card variant="outlined">
 
-                {props.doc.record.text}
+                <CardContent>
 
-            </p>
-            <p>score: {props.doc.score}</p>
+                    <Box color="text.secondary">
+                        <Typography gutterBottom color="textSecondary">
+                            {docInfo?.title || 'Untitled'}
+                        </Typography>
+                    </Box>
 
-            {props.doc.record.type === 'pdf' && (
-                <>
-                    <p>docID: {props.doc.record.docID}</p>
-                </>
-            )}
-        </>
+                    <div style={{
+                        fontSize: '2.0rem',
+                        overflow: 'auto'
+                    }}>
+
+                        {props.doc.record.text}
+
+                    </div>
+
+                </CardContent>
+
+                <CardActions>
+
+                    {props.doc.record.type === 'pdf' && (
+                        <>
+                            <p>docID: {props.doc.record.docID}</p>
+                            <Button size="small" onClick={() => docLoader((props.doc.record as any).docID)}>View Section</Button>
+                        </>
+                    )}
+
+                </CardActions>
+            </Card>
+        </Box>
     );
 
 }
@@ -118,6 +139,7 @@ interface AnswerFeedbackProps {
 const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
     const answerExecutorTraceUpdateClient = useAnswerExecutorTraceUpdateClient();
+    const theme = useTheme();
 
     const [voted, setVoted] = React.useState(false);
 
@@ -141,19 +163,26 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
         <Box color="text.secondary"
              style={{
                  display: 'flex',
-                 justifyContent: 'flex-end'
+                 justifyContent: 'flex-end',
+                 alignItems: 'center'
              }}>
+
+            <Box mr={1}>
+                Was this answer helpful?
+            </Box>
 
             <MUILoadingIconButton disabled={voted}
                                   icon={<ThumbUpIcon/>}
                                   onDone={handleDone}
                                   onError={handleError}
+                                  style={{color: theme.palette.text.secondary}}
                                   onClick={async () => doVote('up')}/>
 
             <MUILoadingIconButton disabled={voted}
                                   icon={<ThumbDownIcon/>}
                                   onDone={handleDone}
                                   onError={handleError}
+                                  style={{color: theme.palette.text.secondary}}
                                   onClick={async () => doVote('down')}/>
 
         </Box>
@@ -208,7 +237,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                     <>
                         <Box mt={1} mb={1} color="text.secondary">
                             <Typography variant="h6">
-                                Relevant text extracts:
+                                Relevant sections:
                             </Typography>
                         </Box>
 
@@ -374,13 +403,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     }, [executeWithoutDocuments])
 
+    const executeQuestion = React.useCallback(() => {
+        executeRequest(questionRef.current)
+    }, []);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (event.key === 'Enter') {
-            executeRequest(questionRef.current)
+            executeQuestion();
         }
 
-    }, [executeRequest])
+    }, [executeRequest, executeQuestion])
 
     return (
         <MUIDialog open={true}
@@ -406,21 +439,41 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                flexDirection: 'column',
                            }}>
 
-                <TextField label="Ask a question... "
-                           placeholder="What would you like to know?"
-                           autoFocus={true}
-                           onChange={event => questionRef.current = event.currentTarget.value}
-                           onKeyUp={handleKeyUp}
-                           InputProps={{
-                               style: {
-                                   fontSize: '2.0rem'
-                               }
-                           }}
-                           style={{
-                               marginTop: '10px',
-                               marginBottom: '10px',
-                               flexGrow: 1,
-                           }}/>
+
+                <div style={{
+                         flexGrow: 1,
+                         alignItems: 'center',
+                         display: 'flex'
+                     }}>
+
+                    <TextField label="Ask a question... "
+                               placeholder="What would you like to know?"
+                               autoFocus={true}
+                               onChange={event => questionRef.current = event.currentTarget.value}
+                               onKeyUp={handleKeyUp}
+                               InputProps={{
+                                   style: {
+                                       fontSize: '2.0rem'
+                                   }
+                               }}
+                               style={{
+                                   marginTop: '10px',
+                                   marginBottom: '10px',
+                                   flexGrow: 1,
+                               }}/>
+
+                    <Box ml={1}>
+                        <Button variant="contained"
+                                onClick={() => executeQuestion()}
+                                size="large"
+                                color="primary">
+                            Ask Question
+                        </Button>
+                    </Box>
+
+                </div>
+
+
 
                 {/*<FormControlLabel*/}
                 {/*    control={*/}
