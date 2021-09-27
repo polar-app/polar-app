@@ -1,6 +1,10 @@
 import {IHasLinksContent} from "polar-blocks/src/blocks/content/IHasLinksContent";
 import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {observable, computed, makeObservable} from "mobx";
+import {Tag} from "polar-shared/src/tags/Tags";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+
+export const TAG_IDENTIFIER = '#';
 
 export class HasLinks implements IHasLinksContent {
     @observable private _links: ReadonlyArray<IBlockLink>;
@@ -13,6 +17,28 @@ export class HasLinks implements IHasLinksContent {
 
     @computed get links() {
         return this._links;
+    }
+
+    @computed get wikiLinks() {
+        return this._links.filter(({ text }) => ! text.startsWith(TAG_IDENTIFIER));
+    }
+
+    @computed get tagLinks() {
+        return this._links.filter(({ text }) => text.startsWith(TAG_IDENTIFIER));
+    }
+
+    public getTags(): Tag[] {
+        const toTag = ({ text }: IBlockLink): Tag => {
+            const label = text.slice(1);
+            return { label, id: label };
+        };
+
+        return this.tagLinks.map(toTag);
+    }
+
+    public getTagsMap(): Record<string, Tag> {
+        return arrayStream(this.getTags())
+            .toMap(({ label }) => label);
     }
 
     public updateLinks(links: ReadonlyArray<IBlockLink>): void {
