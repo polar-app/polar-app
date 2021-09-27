@@ -17,6 +17,10 @@ export namespace OpenAICostEstimator {
         readonly cost: USD;
     }
 
+    export interface ICostEstimationWithModel extends ICostEstimation {
+        readonly model: AIModel;
+    }
+
     /**
      * Given an OpenAI model name, return how much will a single "token" will cost
      * @see https://beta.openai.com/pricing/
@@ -50,7 +54,7 @@ export namespace OpenAICostEstimator {
     /**
      * @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
      */
-    export function costOfSearch(opts: ICostOfSearchOpts): ICostEstimation {
+    export function costOfSearch(opts: ICostOfSearchOpts): ICostEstimationWithModel {
 
         const text = opts.documents.join(' ');
 
@@ -63,9 +67,11 @@ export namespace OpenAICostEstimator {
             // The query is appended to every document in terms of cost
             + ((opts.documents.length + 1) * nrTokensForQuery);
 
-        const cost = pricePerToken(opts.model) * tokens;
+        const {model} = opts;
 
-        return {tokens, cost};
+        const cost = pricePerToken(model) * tokens;
+
+        return {model, tokens, cost};
     }
 
     interface ICompletionResponseChoice {
@@ -78,7 +84,7 @@ export namespace OpenAICostEstimator {
         readonly choices: ReadonlyArray<ICompletionResponseChoice>;
     }
 
-    export function costOfCompletion(opts: ICostOfCompletionOpts): ICostEstimation {
+    export function costOfCompletion(opts: ICostOfCompletionOpts): ICostEstimationWithModel {
 
         const nrTokensForPrompt = OpenAITokenEncoder.nrTokens(opts.prompt);
 
@@ -90,31 +96,43 @@ export namespace OpenAICostEstimator {
 
         const tokens = nrTokensForPrompt + nrTokensForChoices;
 
-        const cost = pricePerToken(opts.model) * tokens;
+        const {model} = opts;
+        const cost = pricePerToken(model) * tokens;
 
-        return {tokens, cost}
+        return {model, tokens, cost}
 
     }
 
-    export function costOfAnswers(request: IOpenAIAnswersRequest, response: IOpenAIAnswersResponseWithPrompt): ICostEstimation {
+    export interface IAnswersCostEstimation extends ICostEstimation {
+        readonly search: ICostEstimationWithModel,
+        readonly completion: ICostEstimationWithModel;
+    }
 
-        const searchCost = OpenAICostEstimator.costOfSearch({
+    export function costOfAnswers(request: IOpenAIAnswersRequest,
+                                  response: IOpenAIAnswersResponseWithPrompt): IAnswersCostEstimation {
+
+        const search = OpenAICostEstimator.costOfSearch({
             model: request.search_model ?? 'ada',
             query: request.question,
             documents: request.documents,
         });
 
-        const completionCost = costOfCompletion({
-            model: response.model,
+        const completion = costOfCompletion({
+            model: request.model,
             prompt: response.prompt,
             choices: response.answers.map(current => ({
                 text: current
             }))
         });
 
+        const tokens = search.tokens + completion.tokens;
+        const cost = search.cost + completion.cost;
+
         return {
-            tokens: searchCost.tokens + completionCost.tokens,
-            cost: searchCost.cost + completionCost.cost
+            tokens,
+            cost,
+            search,
+            completion
         }
 
     }
