@@ -78,8 +78,11 @@ export interface IOpenAIAnswersRequest {
      * If set to true, the returned JSON will include a "prompt" field
      * containing the final prompt that was used to request a completion.
      * This is mainly useful for debugging purposes.
+     *
+     * NOTE: technically this is not required but we have to use it with
+     * our cost implementation.
      */
     // eslint-disable-next-line camelcase
-    readonly return_prompt?: boolean;
+    readonly return_prompt: true;
 
 }
