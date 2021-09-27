@@ -46,17 +46,10 @@ export const CaptureRoot = deepMemo(() => {
 
             setSaving(true);
 
-            const currentTab = await Tabs.currentTab();
-
-            if (! currentTab || currentTab.id === undefined) {
-                throw new Error("No active tab")
-            }
-
             const message: SaveToPolarRequestWithEPUB = {
                 type: 'save-to-polar',
                 strategy: 'epub',
                 value: capture,
-                tab: currentTab.id
             }
 
             console.log("Sending Save to Polar message to chrome runtime: ", message);

@@ -87,7 +87,7 @@ async function updateScripts(): Promise<void> {
             // TODO we have to crank up --jobs to that we operate in parallel but some of our tests fail in this
             // scenario because they use cloud resources which act as mutex / shared state and the tests will
             // clash with one another.
-            pkg.scripts.mocha = "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
+            pkg.scripts.mocha = "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
             pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";

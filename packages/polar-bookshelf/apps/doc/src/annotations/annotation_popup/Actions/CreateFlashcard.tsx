@@ -8,7 +8,7 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
-import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
 import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
 import IconButton from "@material-ui/core/IconButton";
 import {ClozeDeletions} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/ClozeDeletions";

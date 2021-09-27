@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, TextField, Typography} from "@material-ui/core";
+import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField, Typography, useTheme} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -25,6 +25,8 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -56,29 +58,73 @@ interface IAnswerExecutorDialogProps {
 }
 
 interface SelectedDocumentProps {
-    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>
+    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>;
+    readonly onViewSection: () => void;
 }
 
 const SelectedDocument = (props: SelectedDocumentProps) => {
 
+    const docLoader = useDocLoaderFromDocID();
+    const docInfo = useDocInfo(props.doc.record.docID)
+
+    const handleViewSection = React.useCallback(() => {
+
+        props.onViewSection();
+        const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
+        docLoader(pdfRecord.docID, pdfRecord.pageNum);
+
+    }, [docLoader])
+
     return (
-        <>
-            <p style={{
-                   fontSize: '2.0rem',
-                   overflow: 'auto'
-               }}>
+        <Box mb={1} mr={1}>
+            <Card variant="outlined">
 
-                {props.doc.record.text}
+                <CardContent>
 
-            </p>
-            <p>score: {props.doc.score}</p>
+                    <div style={{
+                        fontSize: '1.3rem',
+                        overflow: 'auto'
+                    }}>
 
-            {props.doc.record.type === 'pdf' && (
-                <>
-                    <p>docID: {props.doc.record.docID}</p>
-                </>
-            )}
-        </>
+                        {props.doc.record.text}
+
+                    </div>
+
+                </CardContent>
+
+                <CardActions>
+
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             alignItems: 'center'
+                         }}>
+
+                        <Box ml={1}
+                             color="text.secondary">
+                            <Typography gutterBottom color="textSecondary">
+                                {docInfo?.title || 'Untitled'}
+                            </Typography>
+                        </Box>
+
+                        {props.doc.record.type === 'pdf' && (
+                            <div style={{
+                                     flexGrow: 1,
+                                     justifyContent: 'flex-end',
+                                     display: 'flex'
+                                 }}>
+                                <Button size="medium"
+                                        onClick={handleViewSection}>
+                                    View Section
+                                </Button>
+                            </div>
+                        )}
+
+                    </div>
+
+                </CardActions>
+            </Card>
+        </Box>
     );
 
 }
@@ -118,6 +164,7 @@ interface AnswerFeedbackProps {
 const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
     const answerExecutorTraceUpdateClient = useAnswerExecutorTraceUpdateClient();
+    const theme = useTheme();
 
     const [voted, setVoted] = React.useState(false);
 
@@ -141,19 +188,26 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
         <Box color="text.secondary"
              style={{
                  display: 'flex',
-                 justifyContent: 'flex-end'
+                 justifyContent: 'flex-end',
+                 alignItems: 'center'
              }}>
+
+            <Box mr={1}>
+                Was this answer helpful?
+            </Box>
 
             <MUILoadingIconButton disabled={voted}
                                   icon={<ThumbUpIcon/>}
                                   onDone={handleDone}
                                   onError={handleError}
+                                  style={{color: theme.palette.text.secondary}}
                                   onClick={async () => doVote('up')}/>
 
             <MUILoadingIconButton disabled={voted}
                                   icon={<ThumbDownIcon/>}
                                   onDone={handleDone}
                                   onError={handleError}
+                                  style={{color: theme.palette.text.secondary}}
                                   onClick={async () => doVote('down')}/>
 
         </Box>
@@ -163,6 +217,7 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
+    readonly onViewSection: () => void;
 }
 
 const AnswerResponse = (props: AnswerResponseProps) => {
@@ -192,7 +247,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                         </Box>
 
                         <p style={{
-                            fontSize: '2.0rem',
+                            fontSize: '1.8rem',
                             overflow: 'auto'
                         }}>
 
@@ -208,13 +263,13 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                     <>
                         <Box mt={1} mb={1} color="text.secondary">
                             <Typography variant="h6">
-                                Relevant text extracts:
+                                Relevant sections:
                             </Typography>
                         </Box>
 
                         {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
                             .map((current, idx) => (
-                                <SelectedDocument key={idx} doc={current}/>))}
+                                <SelectedDocument key={idx} doc={current} onViewSection={props.onViewSection}/>))}
 
                     </>)}
 
@@ -301,8 +356,6 @@ function useAnswerExecutorClient() {
 
 
 
-// localStorage.setItem("CoreAnswerExecutorRequest", "{\"model\": \"babbage\", \"search_model\": \"babbage\"}");
-// localStorage.removeItem("CoreAnswerExecutorRequest");
 function useCoreAnswerExecutorRequestFromLocalStorage(): ICoreAnswerExecutorRequest | undefined {
 
     const item = localStorage.getItem('CoreAnswerExecutorRequest');
@@ -374,13 +427,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     }, [executeWithoutDocuments])
 
+    const executeQuestion = React.useCallback(() => {
+        executeRequest(questionRef.current)
+    }, []);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (event.key === 'Enter') {
-            executeRequest(questionRef.current)
+            executeQuestion();
         }
 
-    }, [executeRequest])
+    }, [executeRequest, executeQuestion])
 
     return (
         <MUIDialog open={true}
@@ -406,21 +463,41 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                flexDirection: 'column',
                            }}>
 
-                <TextField label="Ask a question... "
-                           placeholder="What would you like to know?"
-                           autoFocus={true}
-                           onChange={event => questionRef.current = event.currentTarget.value}
-                           onKeyUp={handleKeyUp}
-                           InputProps={{
-                               style: {
-                                   fontSize: '2.0rem'
-                               }
-                           }}
-                           style={{
-                               marginTop: '10px',
-                               marginBottom: '10px',
-                               flexGrow: 1,
-                           }}/>
+
+                <div style={{
+                         flexGrow: 1,
+                         alignItems: 'center',
+                         display: 'flex'
+                     }}>
+
+                    <TextField label="Ask a question... "
+                               placeholder="What would you like to know?"
+                               autoFocus={true}
+                               onChange={event => questionRef.current = event.currentTarget.value}
+                               onKeyUp={handleKeyUp}
+                               InputProps={{
+                                   style: {
+                                       fontSize: '2.0rem'
+                                   }
+                               }}
+                               style={{
+                                   marginTop: '10px',
+                                   marginBottom: '10px',
+                                   flexGrow: 1,
+                               }}/>
+
+                    <Box ml={1}>
+                        <Button variant="contained"
+                                onClick={() => executeQuestion()}
+                                size="large"
+                                color="primary">
+                            Ask Question
+                        </Button>
+                    </Box>
+
+                </div>
+
+
 
                 {/*<FormControlLabel*/}
                 {/*    control={*/}
@@ -436,7 +513,9 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                 {answerResponse && (
                     <>
 
-                        <AnswerResponse key={questionRef.current} answerResponse={answerResponse}/>
+                        <AnswerResponse key={questionRef.current}
+                                        answerResponse={answerResponse}
+                                        onViewSection={props.onClose}/>
 
                     </>
                 )}

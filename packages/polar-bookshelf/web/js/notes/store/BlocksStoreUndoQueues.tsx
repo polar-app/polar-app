@@ -2,11 +2,14 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlocksStore, IActiveBlock} from "./BlocksStore";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {IWithMutationOpts} from "./Block";
+import {Block, IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {IBlocksStore} from "./IBlocksStore";
+import {BlockPredicates} from "./BlockPredicates";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -105,19 +108,23 @@ export namespace BlocksStoreUndoQueues {
      * parent
      */
     export function createUndoCapture(blocksStore: BlocksStore,
-                                      identifiers: ReadonlyArray<BlockIDStr>,
-                                      blocksPersistenceWriter: BlocksPersistenceWriter): BlocksStoreUndoQueues.IUndoCapture {
+                                      identifiers: ReadonlyArray<BlockIDStr>, blocksPersistenceWriter: BlocksPersistenceWriter): BlocksStoreUndoQueues.IUndoCapture {
 
         if (identifiers.length === 0) {
             throw new Error("Not given any identifiers");
         }
 
-        identifiers = expandToParentAndChildren(blocksStore, identifiers);
+        const sideAffectedIdentifiers = getSideEffectIdentifiers(blocksStore, identifiers);
+
+        identifiers = [
+            ...expandToParentAndChildren(blocksStore, identifiers),
+            ...sideAffectedIdentifiers,
+        ];
 
         if (identifiers.length === 0) {
             throw new Error("Expansion failed to identify additional identifiers");
         }
-
+        
         /**
          * Computes only the blocks that are applicable to this operation.  We
          * have to know all the block IDs that would be involved with this
@@ -125,7 +132,7 @@ export namespace BlocksStoreUndoQueues {
          */
         const computeApplicableBlocks = (blocks: ReadonlyArray<IBlock>) => {
             return blocks.filter(block => identifiers.includes(block.id));
-        }
+        ;}
 
         const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
         const oldActive: IActiveBlock | undefined = blocksStore.cursorOffsetCapture();
@@ -134,6 +141,8 @@ export namespace BlocksStoreUndoQueues {
         let newActive: IActiveBlock | undefined;
 
         const capture = () => {
+
+            performSideEffects(blocksStore, sideAffectedIdentifiers);
 
             const snapshot = blocksStore.createSnapshot(identifiers);
 
@@ -566,6 +575,57 @@ export namespace BlocksStoreUndoQueues {
     }
 
     /**
+     * Get the ids of the side affected blocks when given a set of blocks.
+     *
+     * Updating some types of blocks should also update the 'updated' field of their root block.
+     * Here we get the ids of the side affected blocks.
+     *
+     * eg: Updating a nested child of a document block should also update the 'updated' timestamp
+     * of that document block.
+     */
+    export function getSideEffectIdentifiers(blocksStore: IBlocksStore,
+                                             identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
+        
+        const getDocumentRootID = (block: Block): BlockIDStr | null => {
+            const rootBlock = blocksStore.getBlock(block.root);
+
+            if (
+                rootBlock
+                && block.id !== block.root
+                && BlockPredicates.isDocumentBlock(rootBlock)
+            ) {
+                return rootBlock.id;
+            }
+
+            return null;
+        };
+
+        return arrayStream(blocksStore.idsToBlocks(identifiers))
+            .map(getDocumentRootID)
+            .filterPresent()
+            .unique(x => x)
+            .collect();
+    }
+
+    /**
+     * Update the 'updated' field for a specific set of blocks.
+     *
+     * @see getSideEffectIdentifiers for more info
+     */
+    export function performSideEffects(blocksStore: IBlocksStore,
+                                       identifiers: ReadonlyArray<BlockIDStr>): void {
+
+        const updateTimestamp = (block: Block) => {
+            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
+            block.withMutation(NULL_FUNCTION, opts);
+            blocksStore.doPut([block]);
+        };
+
+        blocksStore.idsToBlocks(identifiers).forEach(updateTimestamp);
+
+    }
+
+    /**
      * Compute just the mutated blocks so that we can figure out which ones need
      * to be patched.
      */
@@ -589,7 +649,7 @@ export namespace BlocksStoreUndoQueues {
             const toUpdated = (beforeBlock: IBlock): IBlocksStoreMutationUpdated | undefined => {
 
                 const afterBlock = afterBlockIndex[beforeBlock.id];
-                if ( afterBlock) {
+                if (afterBlock) {
                     if (afterBlock.mutation !== beforeBlock.mutation || afterBlock.updated !== beforeBlock.updated) {
                         return {
                             id: beforeBlock.id,

@@ -3,6 +3,8 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {AnswerIndexer} from "./AnswerIndexer";
 import * as path from "path";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
+import {AnswerTests} from "./AnswerTests";
+import getUID = AnswerTests.getUID;
 
 xdescribe("AnswerIndexer", function() {
 
@@ -14,25 +16,12 @@ xdescribe("AnswerIndexer", function() {
         readonly skipPages?: ReadonlyArray<PageNumber>;
     }
 
-    async function getUserID() {
-
-        const auth = app.auth();
-        const user = await auth.getUserByEmail('burton@inputneuron.io')
-
-        if (! user) {
-            throw new Error("No user");
-        }
-
-        return user.uid;
-
-    }
-
     async function doIndexDoc(path: string, docID: string, opts: IOpts = {}) {
         console.log(`Indexing document from path ${path} with docID ${docID} inside ES index`);
 
         const url = FilePaths.toURL(path);
 
-        const uid = await getUserID();
+        const uid = await getUID();
 
         await AnswerIndexer.doIndex({
             docID,

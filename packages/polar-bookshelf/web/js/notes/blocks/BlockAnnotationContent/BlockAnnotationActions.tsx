@@ -13,7 +13,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockPredicates} from "../../store/BlockPredicates";
-import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
@@ -233,7 +233,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
 
     const editTags = React.useCallback(() => {
-        blockTagEditorDialog(id);
+        blockTagEditorDialog([id]);
     }, [blockTagEditorDialog]);
 
     return React.useMemo(() => {

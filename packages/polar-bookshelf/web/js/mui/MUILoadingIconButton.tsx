@@ -1,5 +1,5 @@
 import * as React from "react";
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import IconButton, { IconButtonTypeMap } from '@material-ui/core/IconButton/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface MUILoadingIconButtonProps {
@@ -8,6 +8,7 @@ interface MUILoadingIconButtonProps {
     readonly onClick: () => Promise<any>;
     readonly onDone: () => void;
     readonly onError: (err: Error) => void;
+    readonly style?: React.CSSProperties;
 }
 
 export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
@@ -27,7 +28,7 @@ export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
 
     if (props.disabled || state === 'done') {
         return (
-            <IconButton disabled={true}>
+            <IconButton disabled={true} style={props.style}>
                 {props.icon}
             </IconButton>
         )
@@ -35,15 +36,15 @@ export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
 
     if (state === 'loading') {
         return (
-            <IconButton>
+            <IconButton style={props.style}>
                 <CircularProgress size={25}/>
             </IconButton>
         );
     }
 
     return (
-
-        <IconButton onClick={() => handleClick()} >
+        <IconButton style={props.style}
+                    onClick={() => handleClick()} >
             {props.icon}
         </IconButton>
     );
