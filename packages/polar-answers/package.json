@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5",
+    "gpt-3-encoder": "^1.1.3",
     "polar-answers-api": "0.0.0",
     "polar-blocks": "0.0.0",
     "polar-firebase": "0.0.0",

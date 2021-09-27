@@ -2,6 +2,8 @@ import {AIModel} from "polar-answers-api/src/AIModel";
 import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
 
+const {encode} = require('gpt-3-encoder');
+
 export namespace OpenAICostEstimator {
     /**
      * Given an OpenAI model name, return how much will a single "token" will cost
@@ -30,11 +32,12 @@ export namespace OpenAICostEstimator {
         documents: ReadonlyArray<string>
     }) {
         // @see https://beta.openai.com/pricing/ - Section "How is pricing calculated for Search?"
-        const tokensUsed = (opts.documents.join('').length / 4)
+        const tokensUsed = encode(opts.documents.join('')).length
             // "The 14 represents the additional tokens the API uses per document to accomplish the Semantic Search task"
-            + (opts.documents.length + 1) * 14
+            + ((opts.documents.length + 1) * 14)
             // The query is appended to every document in terms of cost
-            + (opts.documents.length + 1) * (opts.query.length / 4);
+            + ((opts.documents.length + 1) * encode(opts.query).length);
+
         return pricePerToken(opts.model) * tokensUsed;
     }
 
@@ -44,26 +47,29 @@ export namespace OpenAICostEstimator {
             query: request.question,
             documents: request.documents,
         });
+
         const completionCostInUSD = pricePerToken(request.model) *
             (
-                (request.question.length / 4)
-                + (request.max_tokens ?? 0)
-                * (request.n ?? 0)
+                encode(response.prompt ?? request.question).length
+                + (
+                    (request.max_tokens ?? 16)
+                    * (request.n ?? 1)
+                )
             );
 
         const fixedCostInUSD = pricePerToken(request.model) *
             (
-                (request.examples_context.length / 4) // length of "examples_content"
+                encode(request.examples_context).length // length of "examples_content"
                 +
                 request.examples
                     // Merge the "example" questions and answers
                     .map(value => value.join(''))
                     // Calculate the sum of their lengths
-                    .reduce((previousValue, currentValue) => previousValue + currentValue.length, 0) / 4
+                    .reduce((previousValue, currentValue) => previousValue + encode(currentValue).length, 0)
                 +
-                request.question.length / 4 // add length of the original question
+                encode(response.prompt ?? request.question).length  // add length of the original question
                 +
-                response.answers.join('').length / 4 // length of returned answer
+                encode(response.answers.join('')).length // length of returned answer
             )
 
         return searchCostInUSD + completionCostInUSD + fixedCostInUSD;
