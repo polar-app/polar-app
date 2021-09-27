@@ -118,3 +118,10 @@ Some users report a bug with npm that causes it to tail to garbage collect open 
 ```bash
 sudo launchctl limit maxfiles 1000000 1000000
 ```
+
+# Key Developer Documentation
+
+- [React Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/REACT_CHEATSHEET.md)
+- [Material UI Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/MUI_CHEATSHEET.md)
+- [Pull Request Management](https://github.com/polar-app/polar-app/blob/master/docs/PULL_REQUEST_MANAGEMENT.md)
+- [React Router Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/REACT_ROUTER_HISTORY.md)
