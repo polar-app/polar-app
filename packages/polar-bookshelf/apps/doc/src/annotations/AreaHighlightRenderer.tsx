@@ -18,7 +18,7 @@ import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
-import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 
 interface IProps {

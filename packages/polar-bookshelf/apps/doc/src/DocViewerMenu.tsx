@@ -46,7 +46,7 @@ import {AnnotationPtrs} from "../../../web/js/annotation_sidebar/AnnotationPtrs"
 import {useDocViewerElementsContext} from "./renderers/DocViewerElementsContext";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightNotesUtils";
+import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "./renderers/DocRenderer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 

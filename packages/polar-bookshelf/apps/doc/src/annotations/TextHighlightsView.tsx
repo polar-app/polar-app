@@ -4,7 +4,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useHighlightBlocks} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {PageAnnotations} from "./PageAnnotations";

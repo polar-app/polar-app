@@ -12,12 +12,13 @@ import {autorun} from "mobx";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {FileType} from "../apps/main/file_loaders/FileType";
-import {IDocScale} from "../../../apps/doc/src/DocViewerStore";
+import {IDocScale, useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {BlockAreaHighlight} from "./BlockAreaHighlight";
 import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
+import {BlockHighlights} from "./BlockHighlights";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -31,6 +32,11 @@ type IUseHighlightBlocks<T extends IHighlightContentType> = {
      * The type of the highlights we want to fetch @see IHighlightContentType
      */
     type?: T;
+
+    /**
+     * Whether to sort the highlights based on their position in their owner document.
+     */
+    sort?: boolean;
 };
 
 const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
@@ -45,30 +51,39 @@ const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
  * @return {ReadonlyArray<Block<AnnotationContentTypeMap[T]>>}
  */
 export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>): ReadonlyArray<Block<AnnotationContentTypeMap[T]>> => {
-    const { docID, type } = opts;
-    const [areaHighlights, setAreaHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
+    const { docID, type, sort = false } = opts;
+    const [highlights, setHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
+    const { docMeta } = useDocViewerStore(['docMeta']);
     const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
-        if (! docID) {
+        if (! docID || ! docMeta) {
             return;
         }
 
         const updateHighlights = () => {
             const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docID]);
+
             if (! documentBlock) {
                 return;
             }
+
             const blocks = blocksStore
                 .idsToBlocks(documentBlock.itemsAsArray)
                 .filter(isHighlightBlockOfType(type))
-            setAreaHighlights(blocks);
+
+            if (sort) {
+                const sortedBlocks = BlockHighlights.sortByPositionInDocument(docMeta, blocks);
+                setHighlights(sortedBlocks);
+            } else {
+                setHighlights(blocks);
+            }
         };
 
         return autorun(updateHighlights);
-    }, [docID, blocksStore, type]);
+    }, [docID, blocksStore, type, docMeta, sort]);
 
-    return areaHighlights
+    return highlights;
 };
 
 /**

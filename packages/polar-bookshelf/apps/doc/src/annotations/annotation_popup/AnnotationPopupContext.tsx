@@ -27,7 +27,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {AnnotationBlockMigrator} from "../../AnnotationBlockMigrator";
