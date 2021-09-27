@@ -26,6 +26,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -57,7 +58,8 @@ interface IAnswerExecutorDialogProps {
 }
 
 interface SelectedDocumentProps {
-    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>
+    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>;
+    readonly onViewSection: () => void;
 }
 
 const SelectedDocument = (props: SelectedDocumentProps) => {
@@ -65,20 +67,22 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
     const docLoader = useDocLoaderFromDocID();
     const docInfo = useDocInfo(props.doc.record.docID)
 
+    const handleViewSection = React.useCallback(() => {
+
+        props.onViewSection();
+        const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
+        docLoader(pdfRecord.docID, pdfRecord.pageNum);
+
+    }, [docLoader])
+
     return (
         <Box mb={1} mr={1}>
             <Card variant="outlined">
 
                 <CardContent>
 
-                    <Box color="text.secondary">
-                        <Typography gutterBottom color="textSecondary">
-                            {docInfo?.title || 'Untitled'}
-                        </Typography>
-                    </Box>
-
                     <div style={{
-                        fontSize: '2.0rem',
+                        fontSize: '1.3rem',
                         overflow: 'auto'
                     }}>
 
@@ -90,12 +94,33 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
 
                 <CardActions>
 
-                    {props.doc.record.type === 'pdf' && (
-                        <>
-                            <p>docID: {props.doc.record.docID}</p>
-                            <Button size="small" onClick={() => docLoader((props.doc.record as any).docID)}>View Section</Button>
-                        </>
-                    )}
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             alignItems: 'center'
+                         }}>
+
+                        <Box ml={1}
+                             color="text.secondary">
+                            <Typography gutterBottom color="textSecondary">
+                                {docInfo?.title || 'Untitled'}
+                            </Typography>
+                        </Box>
+
+                        {props.doc.record.type === 'pdf' && (
+                            <div style={{
+                                     flexGrow: 1,
+                                     justifyContent: 'flex-end',
+                                     display: 'flex'
+                                 }}>
+                                <Button size="medium"
+                                        onClick={handleViewSection}>
+                                    View Section
+                                </Button>
+                            </div>
+                        )}
+
+                    </div>
 
                 </CardActions>
             </Card>
@@ -192,6 +217,7 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
+    readonly onViewSection: () => void;
 }
 
 const AnswerResponse = (props: AnswerResponseProps) => {
@@ -221,7 +247,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                         </Box>
 
                         <p style={{
-                            fontSize: '2.0rem',
+                            fontSize: '1.8rem',
                             overflow: 'auto'
                         }}>
 
@@ -243,7 +269,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
 
                         {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
                             .map((current, idx) => (
-                                <SelectedDocument key={idx} doc={current}/>))}
+                                <SelectedDocument key={idx} doc={current} onViewSection={props.onViewSection}/>))}
 
                     </>)}
 
@@ -330,8 +356,6 @@ function useAnswerExecutorClient() {
 
 
 
-// localStorage.setItem("CoreAnswerExecutorRequest", "{\"model\": \"babbage\", \"search_model\": \"babbage\"}");
-// localStorage.removeItem("CoreAnswerExecutorRequest");
 function useCoreAnswerExecutorRequestFromLocalStorage(): ICoreAnswerExecutorRequest | undefined {
 
     const item = localStorage.getItem('CoreAnswerExecutorRequest');
@@ -489,7 +513,9 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                 {answerResponse && (
                     <>
 
-                        <AnswerResponse key={questionRef.current} answerResponse={answerResponse}/>
+                        <AnswerResponse key={questionRef.current}
+                                        answerResponse={answerResponse}
+                                        onViewSection={props.onClose}/>
 
                     </>
                 )}

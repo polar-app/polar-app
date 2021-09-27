@@ -837,7 +837,7 @@ export function useDocLoaderFromDocID() {
     const {data} = useDocRepoStore(['data']);
     const docLoader = useDocLoader();
 
-    return React.useCallback((docID: string) => {
+    return React.useCallback((docID: string, page?: number) => {
 
         const doc = arrayStream(data)
            .filter(current => current.docInfo.fingerprint === docID)
@@ -852,7 +852,8 @@ export function useDocLoaderFromDocID() {
                 fingerprint: doc.fingerprint,
                 backendFileRef,
                 url: doc.url,
-                newWindow: true
+                newWindow: true,
+                page
             });
 
         } else {

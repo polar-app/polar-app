@@ -6,6 +6,8 @@ import {Mappers} from "polar-shared/src/util/Mapper";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {RegressionEngines} from "polar-shared/src/util/RegressionEngines";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {AnswerTests} from "./AnswerTests";
+import getUID = AnswerTests.getUID;
 
 // TODO: CACHE THE OPENAI REQUEST/RESPONSE PAIRS if we already have a response
 // for the request.  No need to execute it twice.
@@ -772,20 +774,6 @@ interface IExecutor {
 }
 
 function createExecutor(opts: ExecutorOpts) : IExecutor {
-
-    const app = FirebaseAdmin.app()
-
-    async function getUID(forEmail = 'burton@inputneuron.io') {
-        const auth = app.auth();
-        const user = await auth.getUserByEmail(forEmail)
-
-        if (!user) {
-            throw new Error("no user");
-        }
-
-        return user.uid;
-
-    }
 
     async function executeQuestion(question: string, forEmail = 'burton@inputneuron.io'): Promise<string> {
 
