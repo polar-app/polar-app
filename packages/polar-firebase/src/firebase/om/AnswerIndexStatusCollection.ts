@@ -9,7 +9,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
  * metadata for custom handling outside of ES
  *
  */
-export namespace AnswerExecutorTraceCollection {
+export namespace AnswerIndexStatusCollection {
 
     const COLLECTION_NAME = 'answer_index_status';
 
