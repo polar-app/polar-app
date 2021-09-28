@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@types/jsdom": "=16.12.13",
-    "@types/node": "=14.14.35",
+    "@types/node": "=14.17.9",
     "jsdom": "=16.7.0",
     "polar-shared": "0.0.0"
   }
