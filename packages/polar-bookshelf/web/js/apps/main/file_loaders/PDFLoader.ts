@@ -1,12 +1,28 @@
 import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
+import {ViewerURLs} from "../doc_loaders/ViewerURLs";
 
-export class PDFLoader {
+export namespace PDFLoader {
 
-    public static createViewerURL(fingerprint: string,
-                                  fileURL: string,
-                                  filename: string) {
+    import IViewerURL = ViewerURLs.IViewerURL;
 
-        return ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
+    interface CreateOpts {
+        readonly fingerprint: string;
+        readonly page?: number;
+
+    }
+
+    export function createViewerURL(opts: CreateOpts): IViewerURL {
+
+        const {fingerprint, page} = opts;
+
+        const url = ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
+
+        if (page) {
+            const initialUrl = url + `#?page=${page}`;
+            return {url, initialUrl};
+        }
+
+        return {url};
 
     }
 

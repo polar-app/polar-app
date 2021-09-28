@@ -35,14 +35,22 @@ export function useSideNavDocLoader() {
 
             const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
 
-            const url = viewerURL.replace(/^(http|https):\/\/[^/]+/g, "")
+            function computeToRelativeURL(url: string | undefined): string | undefined {
+
+                if (url === undefined) {
+                    return undefined;
+                }
+
+                return url.replace(/^(http|https):\/\/[^/]+/g, "");
+
+            }
 
             addTab({
                 id: loadDocRequest.fingerprint,
-                url,
+                url: computeToRelativeURL(viewerURL.url)!,
                 title: loadDocRequest.title,
                 type,
-                initialUrl: loadDocRequest.initialUrl,
+                initialUrl: computeToRelativeURL(viewerURL.initialUrl || loadDocRequest.initialUrl),
             })
 
         }

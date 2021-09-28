@@ -1,26 +1,13 @@
 import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {AnswerTests} from "./AnswerTests";
+import getUID = AnswerTests.getUID;
 
-describe("AnswerExecutor", function () {
+xdescribe("Answer Executor", function () {
 
     this.timeout(600000);
-
-    const app = FirebaseAdmin.app()
-
-    async function getUID(forEmail = 'burton@inputneuron.io') {
-        const auth = app.auth();
-        const user = await auth.getUserByEmail(forEmail)
-
-        if (!user) {
-            throw new Error("no user");
-        }
-
-        return user.uid;
-
-    }
 
     async function executeQuestion(question: string, forEmail = 'burton@inputneuron.io') {
 

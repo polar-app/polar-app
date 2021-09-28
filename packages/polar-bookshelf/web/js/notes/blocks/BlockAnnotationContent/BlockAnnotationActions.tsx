@@ -233,7 +233,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
 
     const editTags = React.useCallback(() => {
-        blockTagEditorDialog(id);
+        blockTagEditorDialog([id]);
     }, [blockTagEditorDialog]);
 
     return React.useMemo(() => {
