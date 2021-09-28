@@ -49,6 +49,7 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "./renderers/DocRenderer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
+import {DOMBlocks} from "../../../web/js/notes/contenteditable/DOMBlocks";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -594,9 +595,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         const {pageNum} = highlight;
 
         // TODO make sure the right doc panel is exposed
+    
+        const targetPrefix = NEW_NOTES_ANNOTATION_BAR_ENABLED ? DOMBlocks.BLOCK_ID_PREFIX : 'annotation-';
 
         const ptr = AnnotationPtrs.create({
-            target: 'annotation-' + highlight.id,
+            target: targetPrefix + highlight.id,
             docID: docDescriptor.fingerprint,
             pageNum,
             pos: 'top'
