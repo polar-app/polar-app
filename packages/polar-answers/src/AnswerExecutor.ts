@@ -248,9 +248,9 @@ export namespace AnswerExecutor {
                 // eslint-disable-next-line camelcase
                 const [openai_reranked_records_with_score, openai_reranked_duration] =
                     await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                                                                        request.question,
-                                                                        elasticsearch_records,
-                                                                        hit => hit.text));
+                        request.question,
+                        elasticsearch_records,
+                        hit => hit.text));
 
                 // eslint-disable-next-line camelcase
                 const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
@@ -262,7 +262,7 @@ export namespace AnswerExecutor {
                     .head(documents_limit)
                     .collect();
 
-                return <ESDocumentResultsWithRerank> {
+                return <ESDocumentResultsWithRerank>{
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -281,7 +281,7 @@ export namespace AnswerExecutor {
                     .collect();
 
                 // eslint-disable-next-line camelcase
-                return <ESDocumentResultsWithoutRerank> {
+                return <ESDocumentResultsWithoutRerank>{
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -330,7 +330,7 @@ export namespace AnswerExecutor {
             n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
-            // logprobs: 10,
+            return_prompt: true
         }
 
         // TODO: trace this.
@@ -384,11 +384,10 @@ export namespace AnswerExecutor {
                 docIDs: AnswerExecutorTracer.computeUniqueDocIDs(computedDocuments.elasticsearch_records),
                 timings,
                 vote: undefined,
-                expectation: undefined
+                expectation: undefined,
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
-
         }
 
         await doTrace();
