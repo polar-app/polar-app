@@ -50,7 +50,14 @@ export namespace AnswerDigestRecordPruner {
 
         function computeResult() {
             const shinglesToRemove = computeShinglesToRemove();
-            return shingles.filter(current => shinglesToRemove[current.id] === null);
+
+            function needsRemoval(record: IAnswerDigestRecord) {
+                const entry = shinglesToRemove[record.id]
+                return entry !== undefined && entry !== null;
+            }
+
+            return shingles.filter(current => ! needsRemoval(current));
+
         }
 
         return computeResult();
