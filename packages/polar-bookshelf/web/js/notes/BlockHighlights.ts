@@ -12,8 +12,10 @@ export namespace BlockHighlights {
 
     export function toSortable<T extends AnnotationHighlightContent>(block: Block<T>): ISortableBlock<T> {
         const rect = block.content.value.rects[0] || { left: 0, top: 0 };
-        const position = block.content.type === AnnotationContentType.AREA_HIGHLIGHT
-            ? block.content.value.position
+        const content = block.content.toJSON();
+
+        const position = content.type === AnnotationContentType.AREA_HIGHLIGHT
+            ? content.value.position
             : undefined;
 
         return {
