@@ -13,8 +13,6 @@ import {TDocumentChangeType} from "./IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
 
 import {TWhereFilterOp} from "./ICollectionReference";
-import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
-import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 
 /**
  * Main collections interface.  The rest are deprecated and we're trying to move
