@@ -3,6 +3,7 @@ import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {FirestoreRecords} from "polar-firestore-like/src/FirestoreRecords";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -38,7 +39,7 @@ export namespace AnswerExecutorTraceCollection {
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        await ref.set(Dictionaries.onlyDefinedProperties(trace));
+        await ref.set(FirestoreRecords.convert(trace));
 
     }
 
