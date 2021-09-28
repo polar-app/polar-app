@@ -267,8 +267,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  minWidth: 0,
                                  minHeight: 0,
                                  flexDirection: 'column',
-                                 flexGrow: 1
-                             }}>
+                                 flexGrow: 1,
+                                 height: 'calc(100% - 58px)'
+                                }}>
 
                             <UseLocationChangeStoreProvider>
                                 <BrowserRouter>
