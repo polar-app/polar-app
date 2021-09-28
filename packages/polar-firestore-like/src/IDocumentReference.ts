@@ -7,6 +7,7 @@ import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 import {TUpdateData} from "./TUpdateData";
+import {ISetOptions} from "./ISetOptions";
 
 export interface IDocumentSnapshotObserver<SM> {
     readonly next?: (snapshot: IDocumentSnapshot<SM>) => void;
@@ -22,6 +23,7 @@ export interface IDocumentSnapshotObserverClient extends IDocumentSnapshotObserv
 export function isDocumentSnapshotObserver<SM>(arg: any): arg is IDocumentSnapshotObserver<SM> {
     return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
 }
+
 
 /**
  * A `DocumentReference` refers to a document location in a Firestore database
@@ -40,7 +42,12 @@ export interface IDocumentReference<SM> {
 
     create(data: TDocumentData): Promise<void>;
     get(options?: IGetOptions): Promise<IDocumentSnapshot<SM>>;
+
+
+    // TODO we should return WriteResult not void.
     set(data: TDocumentData): Promise<void>;
+    set(data: Partial<TDocumentData>, options: ISetOptions): Promise<void>;
+
     update(data: TUpdateData /* , precondition?: Precondition */): Promise<void>;
     delete(): Promise<void>;
 

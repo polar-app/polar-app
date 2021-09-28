@@ -15,6 +15,8 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
 
     readonly type: 'trace-minimal';
 
+    readonly ver: 'v2';
+
     readonly uid: UserIDStr;
 
     // eslint-disable-next-line camelcase
@@ -51,7 +53,9 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
     readonly expectation: string | undefined;
 
 }
-export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
+
+// TODO: this is a new experimental trace format BUT it used too much data storage.
+interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
     readonly id: IDStr;
 
@@ -94,4 +98,4 @@ export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
 }
 
-export type IAnswerExecutorTrace = IAnswerExecutorTraceMinimal | IAnswerExecutorTraceExtended;
+export type IAnswerExecutorTrace = IAnswerExecutorTraceMinimal;

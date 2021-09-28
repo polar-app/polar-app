@@ -13,7 +13,13 @@ import {TDocumentChangeType} from "./IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
 
 import {TWhereFilterOp} from "./ICollectionReference";
+import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
+import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 
+/**
+ * Main collections interface.  The rest are deprecated and we're trying to move
+ * toward this version.
+ */
 export namespace Collections {
 
     export interface DocumentChangeValue<T> {
@@ -73,7 +79,7 @@ export namespace Collections {
 
     export type OrderByClause = [string, TOrderByDirection | undefined];
 
-    export type ValueType = object | string | number;
+    export type ValueType = Record<string, unknown> | string | number;
 
     export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
 
@@ -102,8 +108,7 @@ export namespace Collections {
         readonly orderBy?: ReadonlyArray<OrderByClause>;
     }
 
-    export interface ListOpts extends IterateOpts {
-    }
+    export type ListOpts = IterateOpts
 
     export interface GetOrCreateRecord<T> {
         readonly created: boolean;
@@ -388,7 +393,7 @@ export namespace Collections {
         let startAfter: any[] | undefined;
 
         // we always have at least one page...
-        let hasNext: boolean = true;
+        let hasNext = true;
 
         const next = async (): Promise<ReadonlyArray<T>> => {
 
@@ -429,11 +434,6 @@ export namespace Collections {
             }
         };
 
-    }
-
-    export interface GetOrCreateRecord<T> {
-        readonly created: boolean;
-        readonly record: T;
     }
 
     /**
