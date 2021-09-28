@@ -268,7 +268,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  minHeight: 0,
                                  flexDirection: 'column',
                                  flexGrow: 1,
-                                 height: 'calc(100% - 58px)'
+                                 height: Devices.isDesktop() ? '100%':'calc(100% - 58px)'
                                 }}>
 
                             <UseLocationChangeStoreProvider>
