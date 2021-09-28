@@ -374,6 +374,7 @@ export namespace AnswerExecutor {
                 id,
                 created: ISODateTimeStrings.create(),
                 type: 'trace-minimal',
+                ver: 'v2',
                 ...request,
                 elasticsearch_query: computedDocuments.elasticsearch_query,
                 elasticsearch_url: computedDocuments.elasticsearch_url,
