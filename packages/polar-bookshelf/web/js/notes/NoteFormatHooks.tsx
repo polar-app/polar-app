@@ -1,14 +1,13 @@
 import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { BlockType } from './store/BlocksStore';
 import {useBlocksTreeStore} from './BlocksTree';
 
-export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: () => void) {
+export function useNoteFormatHandlers(enabled: boolean, onUpdated: () => void) {
 
     const doExecCommand = React.useCallback((command: string, value?: string) => {
 
-        if (type !== 'markdown') {
+        if (! enabled) {
             return;
         }
 
@@ -16,7 +15,7 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
         document.execCommand(command, false, value);
         onUpdated();
 
-    }, [onUpdated, type]);
+    }, [onUpdated, enabled]);
 
     const onBold = React.useCallback(() => {
         doExecCommand('bold');
@@ -60,9 +59,9 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
 
 }
 
-export function useNoteFormatKeyboardHandler(type: BlockType | undefined, onUpdated: () => void = NULL_FUNCTION) {
+export function useNoteFormatKeyboardHandler(enabled: boolean, onUpdated: () => void = NULL_FUNCTION) {
 
-    const noteFormatHandlers = useNoteFormatHandlers(type, onUpdated);
+    const noteFormatHandlers = useNoteFormatHandlers(enabled, onUpdated);
     const blocksTreeStore = useBlocksTreeStore();
 
     return React.useCallback((event: React.KeyboardEvent) => {
