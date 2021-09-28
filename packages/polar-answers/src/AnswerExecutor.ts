@@ -24,6 +24,7 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -117,6 +118,9 @@ export namespace AnswerExecutor {
 
             // eslint-disable-next-line camelcase
             readonly elasticsearch_hits: number;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_pruned: undefined | number;
 
             /**
              * The resulting records.
@@ -227,13 +231,57 @@ export namespace AnswerExecutor {
             // eslint-disable-next-line camelcase
             const elasticsearch_url = `/${index}*/_search?allow_no_indices=true`;
 
-            // TODO: trace the esResponse
-            // eslint-disable-next-line camelcase
-            const [esResponse, elasticsearch_duration]
-                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
+            interface IElasticsearchResults {
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_duration: number;
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_pruned: undefined | number;
+
+            }
+
+            async function executeElasticsearch(): Promise<IElasticsearchResults> {
+
+                // TODO: trace the esResponse
+                // eslint-disable-next-line camelcase
+                const [esResponse, elasticsearch_duration]
+                    = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
+
+                // eslint-disable-next-line camelcase
+                const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+
+                return {
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_pruned: undefined
+                };
+
+            }
+
+            async function executeElasticsearchWithPrune(): Promise<IElasticsearchResults> {
+
+                // eslint-disable-next-line camelcase
+                const {elasticsearch_records, elasticsearch_duration} = await executeElasticsearch();
+
+                const recordPruned = AnswerDigestRecordPruner.prune(elasticsearch_records);
+
+                return {
+                    elasticsearch_records: recordPruned,
+                    elasticsearch_duration,
+                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length
+                }
+
+            }
 
             // eslint-disable-next-line camelcase
-            const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned} =
+                request.prune_contiguous_records ?
+                    await executeElasticsearchWithPrune() :
+                    await executeElasticsearch();
 
             // TODO: do this in the indexer, not the executor? this way we can
             // same some CPU time during execution.
@@ -262,7 +310,7 @@ export namespace AnswerExecutor {
                     .head(documents_limit)
                     .collect();
 
-                return <ESDocumentResultsWithRerank>{
+                return <ESDocumentResultsWithRerank> {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -271,7 +319,8 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
-                    records
+                    records,
+                    elasticsearch_pruned
                 };
 
             } else {
@@ -281,7 +330,7 @@ export namespace AnswerExecutor {
                     .collect();
 
                 // eslint-disable-next-line camelcase
-                return <ESDocumentResultsWithoutRerank>{
+                return <ESDocumentResultsWithoutRerank> {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
@@ -290,7 +339,8 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records: undefined,
                     openai_reranked_duration: undefined,
-                    records
+                    records,
+                    elasticsearch_pruned
                 };
 
             }
@@ -386,6 +436,7 @@ export namespace AnswerExecutor {
                 timings,
                 vote: undefined,
                 expectation: undefined,
+                elasticsearch_pruned: computedDocuments.elasticsearch_pruned
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);

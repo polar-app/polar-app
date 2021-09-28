@@ -4,7 +4,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tuples} from "polar-shared/src/util/Tuples";
 
 /**
- * Document shingles are indexed like:
+ * Document records are indexed like:
  *
  * 0, 1, 2, 3, 4
  *
@@ -13,14 +13,14 @@ import {Tuples} from "polar-shared/src/util/Tuples";
  */
 export namespace AnswerDigestRecordPruner {
 
-    export function prune(shingles: ReadonlyArray<IAnswerDigestRecord>) {
+    export function prune(records: ReadonlyArray<IAnswerDigestRecord>) {
 
         function createMultimapIndex() {
 
             const multimap = new ArrayListMultimap<string, IAnswerDigestRecord>();
 
             // create these in the multimap...
-            for(const shingle of shingles) {
+            for(const shingle of records) {
                 multimap.put(shingle.docID, shingle);
             }
 
@@ -28,7 +28,7 @@ export namespace AnswerDigestRecordPruner {
 
         }
 
-        function createShinglesPerDocumentSorted(): ReadonlyArray<ReadonlyArray<IAnswerDigestRecord>> {
+        function createRecordsPerDocumentSorted(): ReadonlyArray<ReadonlyArray<IAnswerDigestRecord>> {
 
             const multimap = createMultimapIndex();
 
@@ -39,24 +39,25 @@ export namespace AnswerDigestRecordPruner {
 
         }
 
-        const shinglesPerDocumentSorted = createShinglesPerDocumentSorted();
+        const recordsPerDocumentSorted = createRecordsPerDocumentSorted();
 
-        function computeShinglesToRemove() {
-            return arrayStream(shinglesPerDocumentSorted)
-                .map(computeRedundantShingles)
+        function computeRecordsToRemove() {
+            return arrayStream(recordsPerDocumentSorted)
+                .map(computeRedundantRecords)
                 .flatMap(current => current)
                 .toMap(current => current.id)
         }
 
         function computeResult() {
-            const shinglesToRemove = computeShinglesToRemove();
+
+            const recordsToRemove = computeRecordsToRemove();
 
             function needsRemoval(record: IAnswerDigestRecord) {
-                const entry = shinglesToRemove[record.id]
+                const entry = recordsToRemove[record.id]
                 return entry !== undefined && entry !== null;
             }
 
-            return shingles.filter(current => ! needsRemoval(current));
+            return records.filter(current => ! needsRemoval(current));
 
         }
 
@@ -67,14 +68,14 @@ export namespace AnswerDigestRecordPruner {
     /**
      * When given a sorted array of shingles, compute the redundant ones.
      */
-    export function computeRedundantShingles(shingles: ReadonlyArray<IAnswerDigestRecord>): ReadonlyArray<IAnswerDigestRecord> {
+    export function computeRedundantRecords(records: ReadonlyArray<IAnswerDigestRecord>): ReadonlyArray<IAnswerDigestRecord> {
 
         let i = 0;
 
         const result: IAnswerDigestRecord[] = [];
 
-        const siblings = Tuples.createSiblings(shingles);
-        while(i < shingles.length) {
+        const siblings = Tuples.createSiblings(records);
+        while(i < records.length) {
             const current = siblings[i];
 
             const adjacent =
