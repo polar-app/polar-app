@@ -9,17 +9,28 @@ describe("AnswerDigestRecordPruner", () => {
 
     describe("prune", () => {
 
+        function doPrune(nrRecords: number) {
+            const records = createFakeRecords(nrRecords)
+            assert.equal(records.length, nrRecords);
+            return AnswerDigestRecordPruner.prune(records);
+        }
+
         it("empty array", () => {
             assertJSON(AnswerDigestRecordPruner.prune([]), []);
         });
 
         it("ten records", () => {
 
-            const records = createFakeRecords(10)
-            assert.equal(records.length, 10);
-            const pruned = AnswerDigestRecordPruner.prune(records);
+            assertJSON(doPrune(3).map(current => current.idx), [
+                0,
+                2,
+            ]);
 
-            assertJSON(pruned.map(current => current.idx), [
+        });
+
+        it("ten records", () => {
+
+            assertJSON(doPrune(10).map(current => current.idx), [
                 0,
                 2,
                 4,
@@ -107,8 +118,8 @@ describe("AnswerDigestRecordPruner", () => {
 
 })
 
-function createFakeRecords(count: number, docID = '12345') : ReadonlyArray<IAnswerDigestRecord> {
-    return Numbers.range(0, count - 1)
+function createFakeRecords(nrRecords: number, docID = '12345') : ReadonlyArray<IAnswerDigestRecord> {
+    return Numbers.range(0, nrRecords - 1)
         .map(current => createFakeRecord(current, docID));
 }
 
