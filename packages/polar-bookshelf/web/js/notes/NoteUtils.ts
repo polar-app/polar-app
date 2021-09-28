@@ -8,7 +8,7 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {BlockPredicates, EditableContent, HasLinksContent, TextContent} from "./store/BlockPredicates";
+import {BlockPredicates, EditableContent, TextContent} from "./store/BlockPredicates";
 import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
