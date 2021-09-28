@@ -3,6 +3,7 @@ import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {UserIDStr} from "../Collections";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -20,9 +21,11 @@ export namespace AnswerIndexStatusCollection {
          * then it's a docID.
          */
         readonly id: IDStr;
+        readonly uid: UserIDStr;
         readonly status: 'pending' | 'done';
         readonly ver: 'v1';
         readonly type: 'doc';
+
     }
 
     export interface IAnswerIndexerUpdate extends Pick<IAnswerIndexerStatus, 'id'> {
@@ -38,7 +41,7 @@ export namespace AnswerIndexStatusCollection {
 
     }
 
-    export async function update<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, update: IAnswerIndexerUpdate) {
+    export async function update<SM = unknown>(firestore: IFirestore<SM>, update: IAnswerIndexerUpdate) {
 
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(update.id);
