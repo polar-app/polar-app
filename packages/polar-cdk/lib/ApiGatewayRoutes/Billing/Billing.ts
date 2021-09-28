@@ -9,11 +9,11 @@ export class Billing extends Construct {
         rootResource: IResource,
     }) {
         super(scope, id);
-
+        // eslint-disable-next-line no-new
         new AppleEndpoints(this, 'AppleEndpoints', {
             rootResource: props.rootResource,
         });
-
+        // eslint-disable-next-line no-new
         new GoogleEndpoints(this, 'GoogleEndpoints', {
             rootResource: props.rootResource,
         });
