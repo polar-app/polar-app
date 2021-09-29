@@ -195,23 +195,33 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
                  alignItems: 'center'
              }}>
 
-            <Box mr={1}>
-                Was this answer helpful?
-            </Box>
+            {! voted && (
+                <>
+                    <Box mr={1}>
+                        Was this answer helpful?
+                    </Box>
 
-            <MUILoadingIconButton disabled={voted}
-                                  icon={<ThumbUpIcon/>}
-                                  onDone={handleDone}
-                                  onError={handleError}
-                                  style={{color: theme.palette.text.secondary}}
-                                  onClick={async () => doVote('up')}/>
+                    <MUILoadingIconButton disabled={voted}
+                                          icon={<ThumbUpIcon/>}
+                                          onDone={handleDone}
+                                          onError={handleError}
+                                          style={{color: theme.palette.text.secondary}}
+                                          onClick={async () => doVote('up')}/>
 
-            <MUILoadingIconButton disabled={voted}
-                                  icon={<ThumbDownIcon/>}
-                                  onDone={handleDone}
-                                  onError={handleError}
-                                  style={{color: theme.palette.text.secondary}}
-                                  onClick={async () => doVote('down')}/>
+                    <MUILoadingIconButton disabled={voted}
+                                          icon={<ThumbDownIcon/>}
+                                          onDone={handleDone}
+                                          onError={handleError}
+                                          style={{color: theme.palette.text.secondary}}
+                                          onClick={async () => doVote('down')}/>
+                </>
+            )}
+
+            {voted && (
+                <Box mr={1}>
+                    Thanks for your feedback!
+                </Box>
+            )}
 
         </Box>
     );
