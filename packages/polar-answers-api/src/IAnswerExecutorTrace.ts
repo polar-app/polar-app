@@ -52,6 +52,13 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
      */
     readonly expectation: string | undefined;
 
+    /**
+     * When we are in prune mode, the number of records that were pruned or
+     * undefined if we didn't prune anything.
+     */
+    // eslint-disable-next-line camelcase
+    readonly elasticsearch_pruned: number | undefined;
+
 }
 
 // TODO: this is a new experimental trace format BUT it used too much data storage.

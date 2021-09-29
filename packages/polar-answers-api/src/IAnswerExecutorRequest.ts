@@ -42,6 +42,12 @@ export interface IAnswerExecutorRequest {
     // eslint-disable-next-line camelcase
     readonly rerank_elasticsearch_model?: AIModel;
 
+    /**
+     * When true, we prune the elasticsearch results of contiguous records.
+     */
+    // eslint-disable-next-line camelcase
+    readonly prune_contiguous_records?: boolean;
+
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
