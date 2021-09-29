@@ -101,7 +101,8 @@ export const DocRepoTable2 = deepMemo(() => {
                 <TableContainer ref={setRoot}
                                 style={{
                                     flexGrow: 1,
-                                    height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
+                                    // height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
+                                    height: '100%'
                                 }}>
                     <Table
                         stickyHeader
