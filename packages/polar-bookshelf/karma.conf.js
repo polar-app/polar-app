@@ -53,7 +53,10 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'src/**/*.ts', watched: false },
+            { pattern: 'web/**/*TestK.ts', watched: false },
+            { pattern: 'web/**/*TestNK.ts', watched: false },
+            { pattern: 'web/**/*Karma.ts', watched: false },
+            { pattern: 'apps/**/*Karma.ts', watched: false },
 
         ],
         exclude: [
