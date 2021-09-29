@@ -163,11 +163,9 @@ jobs:
       - run:
           name: karma
           command: |
-            cd /home/circleci/project/packages/polar-bookshelf
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
-            yarn run webpack
-            yarn run karma
+            lerna run karma
       - store_test_results:
           path: /home/circleci/project/packages
 
