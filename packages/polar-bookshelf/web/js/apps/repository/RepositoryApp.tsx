@@ -67,6 +67,7 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
+import {BetaRegister} from "../../../../apps/repository/js/login/BetaRegister";
 
 interface IProps {
     readonly app: App;
@@ -318,6 +319,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path={["/sign-in", "/login", "/login.html"]}>
                     <SignInScreen/>
+                </Route>
+
+                <Route exact path={'/beta-register'}>
+                    <BetaRegister/>
                 </Route>
 
                 <Route exact path={["/login-with-custom-token"]}>

@@ -161,7 +161,9 @@ const Links = () => {
         <>
             <p className={classes.legal}>
                 You acknowledge that you will read, and agree to
-                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of
+                Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy
+                Policy</a>.
             </p>
         </>
     );
@@ -208,7 +210,7 @@ const GoogleAuthButton = () => {
 
             <AuthButton onClick={handleTriggerAuth}
                         strategy="Google"
-                        startIcon={<FAGoogleIcon />}/>
+                        startIcon={<FAGoogleIcon/>}/>
 
         </>
     );
@@ -273,7 +275,7 @@ const EmailTokenAuthButtonNotPhone = () => {
             }
 
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -317,7 +319,7 @@ const EmailTokenAuthButtonNotPhone = () => {
                 setPending(false);
             }
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -386,7 +388,7 @@ const EmailTokenAuthButtonNotPhone = () => {
                         <ProgressActive/>
                     )}
 
-                    {! pending && (
+                    {!pending && (
                         <ProgressInactive/>
                     )}
 
@@ -405,7 +407,7 @@ const EmailTokenAuthButtonNotPhone = () => {
                                        onChange={event => challengeRef.current = event.target.value}
                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                        placeholder="Enter your Code Here"
-                                       variant="outlined" />
+                                       variant="outlined"/>
 
                             <div className={classes.alternate}>
                                 <Button onClick={handleEmailProvided}>Resend Email</Button>
@@ -419,13 +421,13 @@ const EmailTokenAuthButtonNotPhone = () => {
                         </>
                     )}
 
-                    {! triggered && (
+                    {!triggered && (
                         <TextField autoFocus={true}
                                    className={classes.email}
                                    onChange={event => emailRef.current = event.target.value}
                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                    placeholder="email@"
-                                   variant="outlined" />
+                                   variant="outlined"/>
                     )}
 
                 </>
@@ -435,8 +437,8 @@ const EmailTokenAuthButtonNotPhone = () => {
 
                 <AuthButton onClick={handleClick}
                             strategy="Email"
-                            startIcon={<EmailIcon />}
-                            />
+                            startIcon={<EmailIcon/>}
+                />
             )}
 
             <Divider className={classes.sendLinkDivider}/>
@@ -483,7 +485,7 @@ const EmailTokenAuthButtonPhone = () => {
             }
 
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message || undefined
@@ -527,7 +529,7 @@ const EmailTokenAuthButtonPhone = () => {
                 setPending(false);
             }
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message || 'error'
@@ -596,7 +598,7 @@ const EmailTokenAuthButtonPhone = () => {
                         <ProgressActive/>
                     )}
 
-                    {! pending && (
+                    {!pending && (
                         <ProgressInactive/>
                     )}
 
@@ -631,14 +633,14 @@ const EmailTokenAuthButtonPhone = () => {
                         </>
                     )}
 
-                    {! triggered && (
+                    {!triggered && (
                         <TextField autoFocus={true}
                                    className={classes.email}
                                    onChange={event => emailRef.current = event.target.value}
                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                    placeholder="email@"
                                    variant="outlined"
-                                   style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
+                                   style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
                     )}
 
                 </>
@@ -647,9 +649,9 @@ const EmailTokenAuthButtonPhone = () => {
             {!triggered && (
 
                 <AuthButtonMobile onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                            />
+                                  strategy="Email"
+                                  startIcon={<EmailIcon/>}
+                />
             )}
 
             <Divider className={classes.sendLinkDivider}/>
@@ -678,7 +680,7 @@ const EmailAuthButton = () => {
             localStorage.setItem('emailForSignIn', email);
             await triggerFirebaseEmailAuth(email);
             setTriggered(true);
-        } catch(err) {
+        } catch (err) {
             setError((err as any).message);
         }
 
@@ -728,7 +730,8 @@ const EmailAuthButton = () => {
 
                     {triggered && (
                         <Alert severity="success"
-                               className={classes.alert}>Check your email for a link to login to your new Polar account!</Alert>
+                               className={classes.alert}>Check your email for a link to login to your new Polar
+                            account!</Alert>
                     )}
 
                     <TextField autoFocus={true}
@@ -736,13 +739,13 @@ const EmailAuthButton = () => {
                                onChange={event => emailRef.current = event.target.value}
                                onKeyPress={handleKeyPress}
                                placeholder="Enter your email address... "
-                               variant="outlined" />
+                               variant="outlined"/>
                 </>
             )}
 
             <AuthButton onClick={handleClick}
                         strategy="Email"
-                        startIcon={<EmailIcon />}/>
+                        startIcon={<EmailIcon/>}/>
 
         </>
     );
@@ -783,78 +786,45 @@ const Main = React.memo(function Main(props: IProps) {
 
         <>
             <DeviceRouters.NotPhone>
-            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
 
-            <div id="firebaseui-auth-container" style={{display: 'none'}}/>
+                    <div id="firebaseui-auth-container" style={{display: 'none'}}/>
 
-            <div className="text-center">
+                    <div className="text-center">
 
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
-                </div>
+                        <div className={classes.logo}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </div>
 
 
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create your Polar Account
-                    </h2>
-                )}
+                        {props.mode === 'create-account' && (
+                            <h2 className={classes.intro}>
+                                Create your Polar Account
+                            </h2>
+                        )}
 
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In to Polar
-                    </h2>
-                )}
+                        {props.mode === 'sign-in' && (
+                            <h2 className={classes.intro}>
+                                Sign In to Polar
+                            </h2>
+                        )}
 
-                <div style={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
 
-                    {/*<GoogleAuthButton/>*/}
+                            {/*<GoogleAuthButton/>*/}
 
-                    <EmailTokenAuthButtonNotPhone/>
+                            <EmailTokenAuthButtonNotPhone/>
 
-                    {/*<EmailAuthButton/>*/}
+                            {/*<EmailAuthButton/>*/}
 
-                </div>
+                        </div>
 
-            </div>
-
-            <Divider className={classes.divider}/>
-
-            {props.mode === 'create-account' && (
-                <SignInWithExistingAccount/>
-            )}
-
-            {props.mode === 'sign-in' && (
-                <OrCreateNewAccount/>
-            )}
-
-            <div style={{flexGrow: 1}}>
-
-            </div>
-                <Links/>
-            </div>
-        </DeviceRouters.NotPhone>
-
-        <DeviceRouters.Phone>
-            <div style={{height:"100vh"}}>
-                <div style={{textAlign: 'center', marginTop: '100px'}}>
-                    <div className={classes.logo}>
-                        <PolarSVGIcon width={125} height={125}/>
                     </div>
 
-                    <div>
-                        <p className={classes.legal}>
-                            Welcome to Polar
-                        </p>
-                    </div>
-                </div>
-
-                <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
-
-                    <EmailTokenAuthButtonPhone/>
+                    <Divider className={classes.divider}/>
 
                     {props.mode === 'create-account' && (
                         <SignInWithExistingAccount/>
@@ -867,17 +837,52 @@ const Main = React.memo(function Main(props: IProps) {
                     <div style={{flexGrow: 1}}>
 
                     </div>
+                    <Links/>
+                </div>
+            </DeviceRouters.NotPhone>
 
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
+            <DeviceRouters.Phone>
+                <div style={{height: "100vh"}}>
+                    <div style={{textAlign: 'center', marginTop: '100px'}}>
+                        <div className={classes.logo}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </div>
+
+                        <div>
+                            <p className={classes.legal}>
+                                Welcome to Polar
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+
+                        <EmailTokenAuthButtonPhone/>
+
+                        {props.mode === 'create-account' && (
+                            <SignInWithExistingAccount/>
+                        )}
+
+                        {props.mode === 'sign-in' && (
+                            <OrCreateNewAccount/>
+                        )}
+
+                        <div style={{flexGrow: 1}}>
+
+                        </div>
+
+                        <div>
+                            <p style={{fontSize: '10px'}} className={classes.legal}>
+                                You acknowledge that you will read, and agree to
+                                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of
+                                Service</a> and <a className={classes.linkDecoration}
+                                                   href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </DeviceRouters.Phone>
+            </DeviceRouters.Phone>
         </>
 
     );
@@ -886,12 +891,12 @@ const Main = React.memo(function Main(props: IProps) {
 const Pending = () => {
     return (
         <div style={{
-                 flexGrow: 1,
-                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'center',
-                 alignItems: 'center'
-            }}>
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
             <CircularProgress style={{width: '150px', height: '150px'}}/>
         </div>
     )
@@ -912,22 +917,22 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
             <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                            display: 'flex',
-                            width: '100%',
-                            height: '100%'
-                        }}>
+                <DeviceRouters.NotPhone>
+                    <div style={{
+                        display: 'flex',
+                        width: '100%',
+                        height: '100%'
+                    }}>
 
                         <Paper style={{
-                                margin: 'auto',
-                                maxWidth: '450px',
-                                minHeight: '500px',
-                                maxHeight: '800px',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
+                            margin: 'auto',
+                            maxWidth: '450px',
+                            minHeight: '500px',
+                            maxHeight: '800px',
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
 
                             <>
 
@@ -937,7 +942,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
 
                                 {authStatus === 'needs-auth' && (
-                                <Main {...props}/>
+                                    <Main {...props}/>
                                 )}
 
                             </>
@@ -945,19 +950,19 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         </Paper>
 
                     </div>
-            </DeviceRouters.NotPhone>
+                </DeviceRouters.NotPhone>
 
-            <DeviceRouters.Phone>
+                <DeviceRouters.Phone>
                     <>
-                    {authStatus === undefined && (
-                        <Pending/>
-                    )}
+                        {authStatus === undefined && (
+                            <Pending/>
+                        )}
 
-                    {authStatus === 'needs-auth' && (
-                    <Main {...props}/>
-                    )}
+                        {authStatus === 'needs-auth' && (
+                            <Main {...props}/>
+                        )}
                     </>
-            </DeviceRouters.Phone>
+                </DeviceRouters.Phone>
 
                 <Intercom/>
             </>
