@@ -160,6 +160,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - global_modules_setup
       - run:
           name: karma
           command: |
