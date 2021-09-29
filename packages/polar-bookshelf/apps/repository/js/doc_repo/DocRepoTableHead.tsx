@@ -4,7 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
+import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH, CONTEXT_MENU_ICON_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
 import {
     useDocRepoStore, useDocRepoCallbacks
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         th: {
             whiteSpace: 'nowrap',
+            width: CONTEXT_MENU_ICON_WIDTH
         },
         row: {
             "& th": {
@@ -53,7 +54,8 @@ const useStyles = makeStyles((theme: Theme) =>
         selectionIconsContainer:{
             display: 'flex', 
             flexDirection:'row-reverse',
-            paddingRight: '15px'
+            paddingRight: '15px',
+            marginLeft: 'auto'
         },
         reverseRow:{
             display: 'flex',
