@@ -168,6 +168,8 @@ jobs:
             export CHROME_BIN='/usr/bin/chromium'
             yarn run webpack
             yarn run karma
+      - store_test_results:
+          path: /home/circleci/project/packages
 
   # @ Run tests
   mocha:
