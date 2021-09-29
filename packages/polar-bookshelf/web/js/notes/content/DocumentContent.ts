@@ -53,8 +53,8 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
     public toJSON(): IDocumentContent {
         return {
             type: this._type,
-            docInfo: toJS(this._docInfo),
             mutator: this._mutator,
+            docInfo: toJS(this._docInfo),
             links: toJS(this.links),
         };
     }

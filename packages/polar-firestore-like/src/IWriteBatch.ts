@@ -2,24 +2,9 @@ import {IDocumentReference} from "./IDocumentReference";
 import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 import { TUpdateData } from "./TUpdateData";
+import {ISetOptions} from "./ISetOptions";
 
 export type TFieldPath = any;
-
-export interface ISetOptions {
-    /**
-     * Changes the behavior of a set() call to only replace the values specified
-     * in its data argument. Fields omitted from the set() call remain
-     * untouched.
-     */
-    readonly merge?: boolean;
-
-    /**
-     * Changes the behavior of set() calls to only replace the specified field
-     * paths. Any field path that is not specified is ignored and remains
-     * untouched.
-     */
-    readonly mergeFields?: (string /* | FieldPath */)[];
-}
 
 export interface IWriteBatch<SM> {
 
@@ -53,6 +38,7 @@ export interface IWriteBatch<SM> {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IWriteBatchClient extends IWriteBatch<ISnapshotMetadata> {
 
 }

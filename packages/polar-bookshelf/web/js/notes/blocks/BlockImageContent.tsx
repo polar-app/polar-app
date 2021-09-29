@@ -7,6 +7,7 @@ import {useBlocksTreeStore} from "../BlocksTree";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
 import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {useScrollIntoViewUsingLocation} from "../../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;
@@ -32,6 +33,8 @@ export const BlockImageContent: React.FC<IProps> = observer((props) => {
     const classes = useStyles();
     const blocksTreeStore = useBlocksTreeStore();
 
+    const scrollIntoViewRef = useScrollIntoViewUsingLocation();
+
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
         divRef.current = current;
@@ -40,7 +43,9 @@ export const BlockImageContent: React.FC<IProps> = observer((props) => {
             innerRef.current = current;
         }
 
-    }, [innerRef]);
+        scrollIntoViewRef(current);
+
+    }, [innerRef, scrollIntoViewRef]);
 
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
         if ((e.key === 'Backspace' || e.key === 'Delete') && ! hasModifiers(e)) {

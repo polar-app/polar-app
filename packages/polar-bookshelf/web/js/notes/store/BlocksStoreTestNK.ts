@@ -38,7 +38,7 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 
 }
 
-function assertBlockType<T extends BlockContent['type']>(type: T, block: Block): asserts block is Block<BlockContentMap[T]> {
+export function assertBlockType<T extends BlockContent['type']>(type: T, block: Block): asserts block is Block<BlockContentMap[T]> {
     if (block.content.type !== type) {
         throw new Error("wrong type: " + block.content.type);
     }
@@ -584,6 +584,11 @@ describe('BlocksStore', function() {
                             "fingerprint": '2020document',
                             "pagemarkType": PagemarkType.SINGLE_COLUMN,
                             "title": "Potato document",
+                            "nrAreaHighlights": 1,
+                            "nrTextHighlights": 1,
+                            "nrFlashcards": 1,
+                            "nrComments": 1,
+                            "nrAnnotations": 4,
                         },
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                     },

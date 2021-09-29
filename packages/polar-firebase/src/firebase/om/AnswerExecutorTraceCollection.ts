@@ -3,6 +3,7 @@ import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {FirestoreRecords} from "polar-firestore-like/src/FirestoreRecords";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -17,7 +18,7 @@ export namespace AnswerExecutorTraceCollection {
         readonly data: JSONStr;
     }
 
-    function createRecord(trace: IAnswerExecutorTrace) {
+    function createRecordForExtendedTrace(trace: IAnswerExecutorTrace) {
 
         const record: IRecordHolder = {
             id: trace.id,
@@ -38,7 +39,7 @@ export namespace AnswerExecutorTraceCollection {
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        await ref.set(createRecord(trace));
+        await ref.set(FirestoreRecords.convert(trace));
 
     }
 
@@ -47,24 +48,12 @@ export namespace AnswerExecutorTraceCollection {
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        const snapshot = await ref.get();
+        const data = {
+            vote: update.vote,
+            expectation: update.expectation
+        };
 
-        if (snapshot.exists) {
-
-            const record = snapshot.data() as IRecordHolder;
-            const recordAsTrace: IAnswerExecutorTrace = JSON.parse(record.data);
-
-            const newTrace = <IAnswerExecutorTrace> {
-                ...recordAsTrace,
-                vote: update.vote,
-                expectation: update.expectation
-            }
-
-            await ref.update(createRecord(newTrace));
-
-        } else {
-            throw new Error("Record does not exist");
-        }
+        await ref.set(data, {merge: true});
 
     }
 

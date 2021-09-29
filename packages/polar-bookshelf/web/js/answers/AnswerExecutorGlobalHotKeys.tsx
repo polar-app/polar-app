@@ -165,16 +165,19 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
     const answerExecutorTraceUpdateClient = useAnswerExecutorTraceUpdateClient();
     const theme = useTheme();
+    const analytics = useAnalytics();
+
 
     const [voted, setVoted] = React.useState(false);
 
     const doVote = React.useCallback(async (vote: 'up' | 'down') => {
 
         await answerExecutorTraceUpdateClient({id: props.id, vote, expectation: ''})
+        analytics.event2('ai-answer-vote', {vote});
 
         setVoted(true);
 
-    }, [answerExecutorTraceUpdateClient]);
+    }, [answerExecutorTraceUpdateClient, analytics]);
 
     const handleDone = React.useCallback(() => {
         setVoted(true);
@@ -286,7 +289,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
  * @param toEvent Convert the request to an analytics event
  */
 function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
-                                                                toEvent: (request: REQ) => Record<string, string | number>) {
+                                                       toEvent: (request: REQ) => Record<string, string | number>) {
 
     const analytics = useAnalytics();
     const dialogManager = useDialogManager();
@@ -319,6 +322,8 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
                 analytics.event2(methodName, toEvent(request));
             }
 
+            // TODO: this is a problem because we return an error response AND
+            // trigger a dialog by side effect.
             return response;
 
         } catch (e) {

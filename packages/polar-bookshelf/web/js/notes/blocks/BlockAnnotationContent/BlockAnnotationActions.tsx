@@ -22,8 +22,15 @@ import {useBlockTagEditorDialog} from "../../NoteUtils";
 export const useStyles = makeStyles(() =>
     createStyles({
         root: {
+            display: 'flex',
+        },
+        contentWrapper: {
+            flex: '1',
+        },
+        actionsWrapper: {
+            width: 30,
+            flex: '0 0 30px',
             position: 'relative',
-            paddingRight: 30,
         },
         actionsOuter: {
             position: 'absolute',
@@ -58,8 +65,13 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
             onMouseEnter={handleShow}
             onMouseLeave={handleHide}
         >
-            {hovered && <div className={classes.actionsOuter}>{actions}</div>}
-            {children}
+            
+            <div className={classes.contentWrapper}>
+                {children}
+            </div>
+            <div className={classes.actionsWrapper}>
+                {hovered && <div className={classes.actionsOuter}>{actions}</div>}
+            </div>
         </div>
     );
 };
