@@ -9,8 +9,6 @@ const workers = os.cpus().length - 1;
 const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
-const path = require("path");
-const fs = require("fs");
 
 module.exports = (config) => {
     config.set({
