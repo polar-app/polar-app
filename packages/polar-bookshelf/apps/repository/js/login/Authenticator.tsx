@@ -582,17 +582,30 @@ const Main = React.memo(function Main(props: IProps) {
 
                 <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                    <Button variant="contained" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px'}}>
-                        LOG IN
-                    </Button>
+                    <EmailTokenAuthButton/>
 
-                    <Button variant="outlined" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px', borderColor: 'white', color: 'white', textDecorationColor: 'white'}}>
-                        SIGN UP
-                    </Button>
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <OrCreateNewAccount/>
+                    )}
+
+                    <div style={{flexGrow: 1}}>
+
+                    </div>
+
+                    <div>
+                        <p style={{fontSize: '10px'}} className={classes.legal}>
+                            You acknowledge that you will read, and agree to
+                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                        </p>
+                    </div>
                 </div>
             </div>
 
-`       </DeviceRouters.Phone>
+        </DeviceRouters.Phone>
         </>
 
     );
