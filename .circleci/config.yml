@@ -277,38 +277,6 @@ jobs:
             rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
             time firebase deploy --only functions
 
-  # @ Build getpolarized.io Website
-  build-polar-site:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - global_modules_setup
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: build and verify site (getpolarized.io)
-          command: |
-            cd /home/circleci/project/packages/polar-site2
-            yarn run dist
-
-  # @ Deploy getpolarized.io
-  deploy-polar-site:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - publishing_setup
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: deploy
-          command: |
-            cd /home/circleci/project/packages/polar-site2
-            yarn run dist-release
-
 # ~ Define Custom Executors
 executors:
   # ! Default Executor for most jobs
@@ -431,33 +399,6 @@ workflows:
             - cypress-desktop-chrome
             - cypress-tablet-chrome
             - cypress-phone-chrome
-          filters:
-            branches:
-              only:
-                - master
-
-      ## ^ Polar Site Sub-Workflow Below Here
-      # @ Build Polar Site
-      - build-polar-site:
-          executor: large
-          requires:
-            - setting-up
-
-      # @ Approve Polar Site build for deployment
-      - approve-polar-site:
-          type: approval
-          requires:
-            - build-polar-site
-          filters:
-            branches:
-              only:
-                - master
-
-      # @ Deploy Approved Polar Site build
-      - deploy-polar-site:
-          executor: large
-          requires:
-            - approve-polar-site
           filters:
             branches:
               only:
