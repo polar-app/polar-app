@@ -120,18 +120,17 @@ export namespace ShortHeadCalculator {
 
     }
 
-    export function calcAngleBetweenPoints(p0: INormalizedPoint, p1: INormalizedPoint) {
+    export interface IAngleBetweenPoints {
+        readonly width: number;
+        readonly height: number;
+        readonly hyp: number;
+        readonly angle: number;
 
-        // TODO: I do not thinking I'm properly spacing things out because the
-        // points are too high I think and the vector isn't really normalized.
-        // It might have to be some function of the sum of the space.
-        console.log("FIXME: p0, and p1", p0, p1);
+        readonly p0: INormalizedPoint;
+        readonly p1: INormalizedPoint;
+    }
 
-        // FIXME: compute this into a right triangle
-
-        // FIXME: the angles are off so ...
-
-        // FIXME: compute hyp and opp
+    export function calcAngleBetweenPoints(p0: INormalizedPoint, p1: INormalizedPoint): IAngleBetweenPoints {
 
         const height = Math.abs(p0.y.value - p1.y.value);
         const width = Math.abs(p0.x.value - p1.x.value);
@@ -139,43 +138,58 @@ export namespace ShortHeadCalculator {
         // need the pythagorean theory to compute hyp...
         const hyp = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
 
-        return calcAngle(height, hyp)
+        const angle = calcAngle(height, hyp)
+
+        return {height, width, hyp, angle, p0, p1};
 
     }
 
-    /**
-     * Compute the angle between points. Note that we have N-1 angles in a given vector.
-     */
-    export function computeAngles(normalizedPoints: NormalizedPoints) {
+    export function computeShortHead(normalizedPoints: NormalizedPoints) {
 
-        return arrayStream(Tuples.createSiblings(normalizedPoints))
-            .map(current => {
+        /**
+         * Factor to determine what % of total nodes is used as a buffer to
+         * determine the angle.
+         */
+        const fact = 0.1;
 
-                if (current.prev === undefined || current.next === undefined) {
-                    // we are at the beginning or end.
-                    return undefined;
+        const buff = Math.max(normalizedPoints.length * fact, 5);
+
+        if (normalizedPoints.length <= buff) {
+            return undefined;
+        }
+
+        // eslint-disable-next-line camelcase
+        const min_angle = 20;
+
+        function computeTermination(): number | undefined {
+
+            for(let i = 0; normalizedPoints.length - buff; ++i) {
+                const p0 = normalizedPoints[i];
+                const p1 = normalizedPoints[i + buff];
+                const angle = calcAngleBetweenPoints(p0, p1).angle
+
+                // eslint-disable-next-line camelcase
+                if (angle < min_angle) {
+                    return i;
                 }
 
-                const p0 = {
-                    x: current.curr.x,
-                    y: current.curr.y
-                };
+            }
 
-                const p1 = {
-                    x: current.next.x,
-                    y: current.next.y
-                };
+            return undefined;
 
-                return calcAngleBetweenPoints(p0, p1);
+        }
 
-            })
-            .filterPresent()
-            .collect();
+        const term = computeTermination();
+
+        if (term === undefined) {
+            return undefined;
+        }
+
+        return normalizedPoints.slice(0, term).map(current => current.y.original);
 
     }
 
     export function calcAngle(opp: number, hyp: number) {
-        console.log("FIXME: ", {opp, hyp});
         return radiansToDegrees(Math.asin(opp / hyp));
     }
 
