@@ -508,19 +508,17 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-            if (BlockPredicates.canHaveLinks(block)) {
 
-                if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
-                    for (const link of existingBlock.content.links) {
-                        this._reverse.remove(link.id, block.id);
-                    }
+            if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
+                for (const link of existingBlock.content.links) {
+                    this._reverse.remove(link.id, block.id);
                 }
-
-                for (const link of block.content.links) {
-                    this._reverse.add(link.id, block.id);
-                }
-
             }
+
+            for (const link of block.content.links) {
+                this._reverse.add(link.id, block.id);
+            }
+
 
         }
 
@@ -1325,7 +1323,12 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[newName.toLowerCase()] = id;
 
                 block.withMutation(() => {
-                    block.setContent(new NameContent({ type: 'name', data: newName }));
+                    const content = new NameContent({
+                        ...block.content.toJSON(),
+                        data: newName,
+                    });
+
+                    block.setContent(content);
                 });
 
                 this.doPut([block]);
@@ -1391,18 +1394,19 @@ export class BlocksStore implements IBlocksStore {
             const targetBlockContent = new NameContent({
                 type: 'name',
                 data: targetName,
+                links: [],
             });
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
                 content: targetBlockContent,
             });
-            const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
-                blockContent.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.content.addLink({id: targetBlockID, text: targetName});
+                ;
                 sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
-            })
+            });
 
             this.doPut([sourceBlock]);
 
@@ -1428,7 +1432,7 @@ export class BlocksStore implements IBlocksStore {
     @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
         const selectedIDs = this.selectedIDs();
         const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
-        const textBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isTextBlock);
+        const textBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
 
         if (textBlocks.length === 0) {
             return;
@@ -1997,7 +2001,7 @@ export class BlocksStore implements IBlocksStore {
 
         const block = this._index[id];
 
-        if (BlockPredicates.isTextBlock(block)) {
+        if (BlockPredicates.isEditableBlock(block)) {
             return BlockTextContentUtils.getTextContentMarkdown(block.content).trim() === '';
         }
 

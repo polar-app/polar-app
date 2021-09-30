@@ -17,6 +17,8 @@ import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 import {PolarLogoImage} from "polar-bookshelf/apps/repository/js/nav/PolarLogoImage";
 import {PolarLogoText} from "polar-bookshelf/apps/repository/js/nav/PolarLogoText";
+import {WebExtensions} from "polar-web-extension-api/src/WebExtensions";
+import {Tabs} from "../../chrome/Tabs";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,23 +42,24 @@ export const CaptureRoot = deepMemo(() => {
 
     const saveToPolar = React.useCallback((capture: ICapturedEPUB) => {
 
-        try {
+        async function doAsync() {
 
             setSaving(true);
 
             const message: SaveToPolarRequestWithEPUB = {
                 type: 'save-to-polar',
                 strategy: 'epub',
-                value: capture
+                value: capture,
             }
 
             console.log("Sending Save to Polar message to chrome runtime: ", message);
 
             chrome.runtime.sendMessage(message);
 
-        } catch (e) {
-            console.error("Could not send message to chrome runtime: ", e);
         }
+
+        doAsync()
+            .catch(e => console.error("Could not send message to chrome runtime: ", e));
 
     }, []);
 

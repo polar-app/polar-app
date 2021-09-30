@@ -28,7 +28,7 @@ export class BrowserDocLoader implements IDocLoader {
 
             async load(): Promise<void> {
                 console.log("Loading URL: ", viewerURL);
-                linkLoader(viewerURL);
+                linkLoader(viewerURL.url);
             }
 
         };
@@ -47,7 +47,7 @@ export function useBrowserDocLoader() {
 
         if (! docMigration(loadDocRequest)) {
             const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
-            docURLLoader(viewerURL);
+            docURLLoader(viewerURL.url);
         }
 
     }, [docMigration, docURLLoader, persistenceLayerProvider]);

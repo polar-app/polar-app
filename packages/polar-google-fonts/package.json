@@ -1,9 +1,10 @@
 {
   "name": "polar-google-fonts",
-  "version": "2.1.121",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {},
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {}
 }

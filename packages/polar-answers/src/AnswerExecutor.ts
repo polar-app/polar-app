@@ -2,7 +2,7 @@ import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {FilterQuestionType, IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
     IAnswerExecutorError,
     IAnswerExecutorResponse,
@@ -19,14 +19,20 @@ import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/I
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
-import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
+import {AnswerExecutorTraceCollection} from "polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
+import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 
-const MAX_DOCUMENTS = 200;
+const DEFAULT_DOCUMENTS_LIMIT = 200;
+const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
+
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+    import PartOfSpeechTag = GCLAnalyzeSyntax.PartOfSpeechTag;
 
     export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
         readonly uid: UserIDStr;
@@ -113,6 +119,9 @@ export namespace AnswerExecutor {
             // eslint-disable-next-line camelcase
             readonly elasticsearch_hits: number;
 
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_pruned: undefined | number;
+
             /**
              * The resulting records.
              */
@@ -155,27 +164,56 @@ export namespace AnswerExecutor {
             // run this query on the digest ...
             const index = ESAnswersIndexNames.createForUserDocs(uid);
 
+            // eslint-disable-next-line camelcase
+            const documents_limit = request.documents_limit || DEFAULT_DOCUMENTS_LIMIT;
+
             // TODO this has to be hard coded and we only submit docs that would be
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : 100;
+
+            // eslint-disable-next-line camelcase
+            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : documents_limit;
 
             console.log("Running search with size: " + size);
 
-            function computeQueryTextFromQuestion() {
-                const doFilterStopwords = request.filter_stopwords || true;
+            async function computeQueryTextFromQuestion() {
 
-                if (doFilterStopwords) {
+                // eslint-disable-next-line camelcase
+                const filter_question = request.filter_question || DEFAULT_FILTER_QUESTION;
+
+                function filterUsingStopwords() {
                     const words = request.question.split(/[ \t]+/);
                     const stopwords = Stopwords.words('en');
                     return Stopwords.removeStopwords(words, stopwords).join(" ");
-                } else {
-                    return request.question;
                 }
+
+                async function filterUsingPoS(pos: ReadonlyArray<PartOfSpeechTag>) {
+                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, pos);
+                    return analysis.map(current => current.content).join(" ");
+                }
+
+                // eslint-disable-next-line camelcase
+                switch (filter_question) {
+
+                    case "stopwords":
+                        return filterUsingStopwords();
+
+                    case "part-of-speech-noun":
+                        return await filterUsingPoS(['NOUN']);
+
+                    case "part-of-speech":
+                    case "part-of-speech-noun-adj":
+                        return await filterUsingPoS(['NOUN', 'ADJ']);
+
+                    case "none":
+                        return request.question;
+
+                }
+
             }
 
-            const queryText = computeQueryTextFromQuestion();
+            const queryText = await computeQueryTextFromQuestion();
 
             // TODO: trace the query
             // eslint-disable-next-line camelcase
@@ -193,13 +231,57 @@ export namespace AnswerExecutor {
             // eslint-disable-next-line camelcase
             const elasticsearch_url = `/${index}*/_search?allow_no_indices=true`;
 
-            // TODO: trace the esResponse
-            // eslint-disable-next-line camelcase
-            const [esResponse, elasticsearch_duration]
-                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
+            interface IElasticsearchResults {
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_duration: number;
+
+                // eslint-disable-next-line camelcase
+                readonly elasticsearch_pruned: undefined | number;
+
+            }
+
+            async function executeElasticsearch(): Promise<IElasticsearchResults> {
+
+                // TODO: trace the esResponse
+                // eslint-disable-next-line camelcase
+                const [esResponse, elasticsearch_duration]
+                    = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
+
+                // eslint-disable-next-line camelcase
+                const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+
+                return {
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_pruned: undefined
+                };
+
+            }
+
+            async function executeElasticsearchWithPrune(): Promise<IElasticsearchResults> {
+
+                // eslint-disable-next-line camelcase
+                const {elasticsearch_records, elasticsearch_duration} = await executeElasticsearch();
+
+                const recordPruned = AnswerDigestRecordPruner.prune(elasticsearch_records);
+
+                return {
+                    elasticsearch_records: recordPruned,
+                    elasticsearch_duration,
+                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length
+                }
+
+            }
 
             // eslint-disable-next-line camelcase
-            const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned} =
+                request.prune_contiguous_records ?
+                    await executeElasticsearchWithPrune() :
+                    await executeElasticsearch();
 
             // TODO: do this in the indexer, not the executor? this way we can
             // same some CPU time during execution.
@@ -214,9 +296,9 @@ export namespace AnswerExecutor {
                 // eslint-disable-next-line camelcase
                 const [openai_reranked_records_with_score, openai_reranked_duration] =
                     await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                                                                        request.question,
-                                                                        elasticsearch_records,
-                                                                        hit => hit.text));
+                        request.question,
+                        elasticsearch_records,
+                        hit => hit.text));
 
                 // eslint-disable-next-line camelcase
                 const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
@@ -225,7 +307,7 @@ export namespace AnswerExecutor {
 
                 // eslint-disable-next-line camelcase
                 const records = arrayStream(openai_reranked_records)
-                    .head(MAX_DOCUMENTS)
+                    .head(documents_limit)
                     .collect();
 
                 return <ESDocumentResultsWithRerank> {
@@ -237,12 +319,15 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
-                    records
+                    records,
+                    elasticsearch_pruned
                 };
 
             } else {
-                // the array of digest records so that we can map from the
-                // selected_documents AFTER the request is executed.
+
+                const records = arrayStream(elasticsearch_records)
+                    .head(documents_limit)
+                    .collect();
 
                 // eslint-disable-next-line camelcase
                 return <ESDocumentResultsWithoutRerank> {
@@ -254,7 +339,8 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records: undefined,
                     openai_reranked_duration: undefined,
-                    records
+                    records,
+                    elasticsearch_pruned
                 };
 
             }
@@ -276,7 +362,6 @@ export namespace AnswerExecutor {
         // examples that are answered by the examples_context as well. Does this
         // make sense?
 
-        // tslint:disable-next-line:variable-name
         // eslint-disable-next-line camelcase
         const search_model = request.search_model || SEARCH_MODEL;
         const model = request.model || MODEL;
@@ -295,7 +380,7 @@ export namespace AnswerExecutor {
             n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
-            // logprobs: 10,
+            return_prompt: true
         }
 
         // TODO: trace this.
@@ -337,7 +422,9 @@ export namespace AnswerExecutor {
 
             const trace: IAnswerExecutorTraceMinimal = {
                 id,
+                created: ISODateTimeStrings.create(),
                 type: 'trace-minimal',
+                ver: 'v2',
                 ...request,
                 elasticsearch_query: computedDocuments.elasticsearch_query,
                 elasticsearch_url: computedDocuments.elasticsearch_url,
@@ -346,11 +433,13 @@ export namespace AnswerExecutor {
                 openai_answers_request: openai_answers_request,
                 openai_answers_response: openai_answers_response,
                 docIDs: AnswerExecutorTracer.computeUniqueDocIDs(computedDocuments.elasticsearch_records),
-                timings
+                timings,
+                vote: undefined,
+                expectation: undefined,
+                elasticsearch_pruned: computedDocuments.elasticsearch_pruned
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
-
         }
 
         await doTrace();

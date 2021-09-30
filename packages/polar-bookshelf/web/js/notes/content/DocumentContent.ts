@@ -1,17 +1,19 @@
-import {makeObservable, observable, computed} from "mobx"
+import {makeObservable, observable, computed, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {HasLinks} from "./HasLinks";
 
-export class DocumentContent implements IDocumentContent, IBaseBlockContent {
+export class DocumentContent extends HasLinks implements IDocumentContent, IBaseBlockContent {
 
     @observable private readonly _type: 'document';
     @observable private _mutator: DeviceIDStr;
     @observable private _docInfo: IDocInfo;
 
     constructor(opts: IDocumentContent) {
+        super(opts);
 
         this._type = opts.type;
         this._docInfo = opts.docInfo;
@@ -37,6 +39,7 @@ export class DocumentContent implements IDocumentContent, IBaseBlockContent {
         if (content.type === this._type) {
             this._docInfo = content.docInfo;
             this._mutator = content.mutator || '';
+            this.updateLinks(content.links);
         } else {
             throw new Error("Invalid type: " +  content.type)
         }
@@ -50,8 +53,9 @@ export class DocumentContent implements IDocumentContent, IBaseBlockContent {
     public toJSON(): IDocumentContent {
         return {
             type: this._type,
-            docInfo: this.docInfo,
             mutator: this._mutator,
+            docInfo: toJS(this._docInfo),
+            links: toJS(this.links),
         };
     }
 

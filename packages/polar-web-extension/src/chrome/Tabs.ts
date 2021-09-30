@@ -27,6 +27,8 @@ export namespace Tabs {
      */
     export function currentTab(): Promise<chrome.tabs.Tab | undefined> {
 
+        // TODO: this does not work from our content script now.
+
         return new Promise<chrome.tabs.Tab | undefined>(((resolve, reject) => {
 
             chrome.tabs.getCurrent((tab) => {

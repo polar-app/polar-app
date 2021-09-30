@@ -1,4 +1,5 @@
 import {LoginApp} from "./ui/login/LoginApp";
+import {Karma} from "./Karma";
 
 export function startApp() {
     console.log("Starting react app...");
@@ -8,6 +9,8 @@ export function startApp() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    startApp();
+    if (! Karma.isKarma()) {
+        startApp();
+    }
 
 });

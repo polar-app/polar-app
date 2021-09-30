@@ -27,7 +27,7 @@ export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems()
             return;
         }
 
-        if (! BlockPredicates.isTextBlock(activeBlock)) {
+        if (! BlockPredicates.isEditableBlock(activeBlock)) {
             return;
         }
 

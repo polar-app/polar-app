@@ -5,9 +5,9 @@ export class Errors {
      * @param err
      * @param message
      */
-    public static rethrow(err: Error, message: string) {
-
-        const msg = `${message}: ${err.message}`;
+    public static rethrow(err: unknown, message: string) {
+        
+        const msg = `${message}: ${(err as any).message || 'none'}`;
         throw Object.assign({msg}, err);
 
     }

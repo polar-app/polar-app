@@ -4,22 +4,14 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {
-    DeterminateProgress,
-    IndeterminateProgress,
-    Progress,
-} from 'polar-shared/src/util/ProgressTracker';
+import {DeterminateProgress, IndeterminateProgress, Progress,} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {
-    InterceptedPersistentPrefs,
-    InterceptedPersistentPrefsFactory,
-    IPersistentPrefs
-} from '../util/prefs/Prefs';
+import {InterceptedPersistentPrefs, InterceptedPersistentPrefsFactory, IPersistentPrefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -31,14 +23,9 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SimpleReactor} from "../reactor/SimpleReactor";
-import {
-    OnErrorCallback,
-    SnapshotUnsubscriber
-} from 'polar-shared/src/util/Snapshots';
-import {
-    NetworkLayer,
-    ReadableBinaryDatastore
-} from "polar-shared/src/datastore/IDatastore";
+import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
+import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
+import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -69,7 +56,7 @@ export interface DocMetaSnapshot<T> {
 
 export interface DocMetaSnapshotError {
 
-    readonly err: Error;
+    readonly err: ErrorType;
 
     readonly unsubscriber: SnapshotUnsubscriber;
 
@@ -265,7 +252,7 @@ export abstract class AbstractDatastore {
         } catch (e) {
 
             if (opts.onError) {
-                opts.onError(e);
+                opts.onError({err: e, unsubscriber});
             }
 
         }
@@ -684,7 +671,7 @@ export type FileSynchronizationEventListener = (fileSynchronizationEvent: FileSy
  */
 export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => Promise<void>;
 
-export type ErrorListener = (err: Error) => void;
+export type ErrorListener = (err: ErrorType) => void;
 
 /**
  * A DocMetaSnapshotEvent is a snapshot of the Datastore based on the current

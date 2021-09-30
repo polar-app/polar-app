@@ -3,6 +3,8 @@ import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
 import {IAnswerIndexerRequest} from "polar-answers-api/src/IAnswerIndexerRequest";
+import {AnswerIndexStatusCollection} from "polar-firebase/src/firebase/om/AnswerIndexStatusCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export namespace AnswerIndexer {
 
@@ -15,6 +17,17 @@ export namespace AnswerIndexer {
         const {uid, docID} = opts;
 
         const writer = ESShingleWriter.create({uid});
+
+        const firestore = FirestoreAdmin.getInstance();
+
+        await AnswerIndexStatusCollection.set(firestore, {
+            id: docID,
+            uid,
+            status: 'pending',
+            ver: 'v1',
+            type: 'doc'
+        });
+
         // const writer = ESShingleWriter.createBatcher({uid, type: 'pdf'});
 
         await PDFText.getText(opts.url, async pdfTextContent => {
@@ -39,6 +52,11 @@ export namespace AnswerIndexer {
             });
 
         await writer.sync();
+
+        await AnswerIndexStatusCollection.update(firestore, {
+            id: docID,
+            status: 'done',
+        });
 
     }
 

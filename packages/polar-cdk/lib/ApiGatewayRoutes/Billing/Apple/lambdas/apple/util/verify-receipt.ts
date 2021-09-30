@@ -1,4 +1,4 @@
-import {default as fetch} from "node-fetch";
+import fetch from "node-fetch";
 import {AppleVerifyReceiptResponse} from "./types/AppleVerifyReceiptResponse";
 
 export async function verifyReceipt(

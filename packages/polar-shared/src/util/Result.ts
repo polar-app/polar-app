@@ -6,7 +6,7 @@ export interface IResult<T> {
 
     readonly value?: T;
 
-    readonly err?: Error;
+    readonly err?: unknown;
 
 }
 
@@ -14,7 +14,7 @@ export class Result<T> implements IResult<T> {
 
     public readonly value?: T;
 
-    public readonly err?: Error;
+    public readonly err?: unknown;
 
     constructor(opts: IResult<T>) {
         this.value = opts.value;
@@ -47,9 +47,12 @@ export class Result<T> implements IResult<T> {
 
             return {
                 err: {
-                    name: this.err.name,
-                    message: this.err.message,
-                    stack: this.err.stack
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    name: (this.err as any).name || 'none',
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    message: (this.err as any).message || undefined,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    stack: (this.err as any).stack || []
                 }
             };
 

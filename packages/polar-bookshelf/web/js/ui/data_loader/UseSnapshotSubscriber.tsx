@@ -1,23 +1,22 @@
 import React from 'react';
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {
     OnErrorCallback,
     OnNextCallback,
-    SnapshotSubscriberWithID,
-    SnapshotUnsubscriber,
     SnapshotSubscriber,
-    SnapshotTuple
+    SnapshotSubscriberWithID,
+    SnapshotTuple,
+    SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import {IDStr} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 
+export type ErrorType = unknown;
+
 export interface SubscriptionValue<T> {
     // FIXME: add exists
     readonly value: T | undefined;
-    readonly error: Error | undefined;
+    readonly error: ErrorType | undefined;
 }
 
 export function useSnapshotSubscriberUsingCallbacks<T>(subscriber: SnapshotSubscriberWithID<T>,
@@ -89,7 +88,7 @@ export function useSnapshotSubscriber<T>(subscriber: SnapshotSubscriberWithID<T>
         setState({value, error: undefined});
     }
 
-    function onError(error: Error) {
+    function onError(error: unknown) {
         setState({value: undefined, error});
     }
 
@@ -109,7 +108,7 @@ export function useSnapshots<T>(subscriber: SnapshotSubscriber<T>): SnapshotTupl
         setState([value, undefined]);
     }
 
-    function onError(error: Error) {
+    function onError(error: unknown) {
         setState([undefined, error]);
     }
 

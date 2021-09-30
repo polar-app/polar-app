@@ -84,7 +84,7 @@ export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, act
         const id = action.payload
                 ? (action.payload.type === "docMeta"
                     ? action.payload.annotation.guid
-                    : action.payload.annotation.content.value.guid)
+                    : action.payload.annotation.id)
                 : undefined;
         if (state.pendingAction) {
             return {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, BackHandler, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
@@ -35,6 +35,12 @@ export class InAppLiteServer extends Component<Props, State> {
     }
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            const js = `window.postMessage({type: "android-go-back"});`;
+            this.webview?.injectJavaScript(js);
+            return true;
+        });
+
         if (!useEmbeddedServer) {
             return;
         }
@@ -109,8 +115,11 @@ export class InAppLiteServer extends Component<Props, State> {
                         // Buying a plan
                         this.props.onBuy(dataPayload.data!.plan!, dataPayload.data!.email!);
                         break;
+                    case "android-go-back-exhausted":
+                        BackHandler.exitApp();
+                        break;
                     default:
-                        throw Error('Switch case not implemented: ' + dataPayload.action);
+                        throw Error('Switch case not implemented: ' + JSON.stringify(dataPayload));
                 }
             }}
         />;

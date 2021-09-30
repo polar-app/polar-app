@@ -69,7 +69,7 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
 
     const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
     const inbound = React.useMemo(() => {
-        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isTextBlock);
+        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isEditableBlock);
         return blocks.sort((a, b) => (new Date(b.created)).getTime() - (new Date(a.created).getTime()));
     }, [inboundNoteIDs, blocksTreeStore]);
 

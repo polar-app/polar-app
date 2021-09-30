@@ -26,7 +26,6 @@ export namespace OpenAISearchReRanker {
 
         const batches = Arrays.createBatches(records, MAX_DOCS_PER_REQUEST);
 
-
         const requests = batches.map((records) => {
 
             return async (): Promise<ReadonlyArray<IRecordWithScore<V>>> => {

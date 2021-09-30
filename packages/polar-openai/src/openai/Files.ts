@@ -17,6 +17,7 @@ export namespace Files {
         readonly id: string;
         readonly object: 'file',
         readonly bytes: number;
+        // eslint-disable-next-line camelcase
         readonly created_at: number;
         readonly filename: "string";
     }

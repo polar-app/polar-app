@@ -3,11 +3,28 @@ version: 2.1
 
 # @ Custom Orbs
 orbs:
-  win: circleci/windows@2.2.0
   cypress: cypress-io/cypress@1.28.0
+  slack: circleci/slack@4.4.4
 
 # ~ Pre-Script Steps to Execute before Jobs
 commands:
+  # & Tag Publishing Setup
+  tag_publishing_setup:
+    description: Tag Publishing Setup
+    steps:
+      # ! Install Go,ghr,config git
+      - run:
+          name: Tag Publishing Setup
+          command: |
+            mkdir ~/.ssh
+            sudo apt install golang-go
+            go get -u github.com/tcnksm/ghr
+            export GOPATH="$HOME/go"
+            PATH="$GOPATH/bin:$PATH"
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git config --global user.email "$CI_PUBLISHER_EMAIL"
+            git config --global user.name "$CI_PUBLISHER_NAME"
+
   # & Publishing setup steps
   publishing_setup:
     description: set the SSH keys and Hashes required to deploy
@@ -31,6 +48,7 @@ commands:
             sudo yarn global add lerna@4.0.0
             sudo yarn global add npm@7.19.1
             sudo yarn global add firebase-tools@9.16.0
+            sudo yarn global add semver
 
   # & Publishing setup steps
   build_setup:
@@ -93,18 +111,20 @@ commands:
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link
 
-      # ! Compile all Typescript Packages
-      - run:
-          name: Lerna Compile
-          command: npx lerna run compile
-
       # ? Debug step for checking if there are any duplicate packages
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
           command: |
+            (cd packages/polar-shared && yarn run compile)
+            (cd packages/polar-npm && yarn run compile)
             DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
             lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+
+      # ! Compile all Typescript Packages
+      - run:
+          name: Lerna Compile
+          command: npx lerna run compile
 
       # ! Save Cache
       - save_cache:
@@ -141,17 +161,18 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - global_modules_setup
       - run:
           name: karma
           command: |
-            cd /home/circleci/project/packages/polar-bookshelf
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
-            yarn run webpack
-            yarn run karma
+            lerna run karma
+      - store_test_results:
+          path: /home/circleci/project/packages
 
   # @ Run tests
-  test:
+  mocha:
     parameters:
       executor:
         type: executor
@@ -165,6 +186,8 @@ jobs:
           command: |
             cd /home/circleci/project
             npx lerna run test
+      - store_test_results:
+          path: /home/circleci/project/packages
 
   # @ Build polar chrome extension
   build-chrome-extension:
@@ -217,8 +240,27 @@ jobs:
     steps:
       - global_modules_setup
       - publishing_setup
+      - tag_publishing_setup
       - attach_workspace:
           at: ~/
+      - run:
+          name: Automatic Versioning
+          command: |
+            git fetch
+            TEMP_VERSION='0.0.0'
+            CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
+            lerna exec -- sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" package.json
+            git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
+            LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
+            LOG=$(git log --pretty=format:"• %s" --no-merges $NEW_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq)
+            ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
+            echo "export DATE=$(date +\"%a %b %d %Y\")" >> $BASH_ENV
+            echo "export TAG=\"$LATEST_VERSION\"" >> $BASH_ENV
+            echo "export \"CHANGELOG=$LOG\"" >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
@@ -241,38 +283,58 @@ jobs:
             cd /home/circleci/polar-hooks
             rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
             time firebase deploy --only functions
-
-  # @ Build getpolarized.io Website
-  build-polar-site:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - global_modules_setup
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: build and verify site (getpolarized.io)
-          command: |
-            cd /home/circleci/project/packages/polar-site2
-            yarn run dist
-
-  # @ Deploy getpolarized.io
-  deploy-polar-site:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - publishing_setup
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: deploy
-          command: |
-            cd /home/circleci/project/packages/polar-site2
-            yarn run dist-release
+            source $BASH_ENV
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "New Version Released :tada::tada:"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*TAG:*\n • $TAG"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When:*\n • $DATE"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Log:*\n ```$CHANGELOG```"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View on Github",
+                        "emoji": true
+                      },
+                      "value": "click_me_123",
+                      "style": "primary",
+                      "url": "https://github.com/polar-app/polar-app/releases/tag/$TAG",
+                      "action_id": "button-action"
+                    }
+                  ]
+                }
+              ]
+            }
+          event: pass
 
 # ~ Define Custom Executors
 executors:
@@ -292,9 +354,16 @@ executors:
 
 # ~ Define Workflow Steps
 workflows:
-  version: 2
-  main:
+  main-workflow:
     jobs:
+      ## ^ Approve the entire pipeline to start deployment
+      - approve-deploy:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
@@ -314,7 +383,7 @@ workflows:
           requires:
             - setting-up
 
-      - test:
+      - mocha:
           executor: large
           requires:
             - setting-up
@@ -332,7 +401,7 @@ workflows:
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
           attach-workspace: true
@@ -345,7 +414,7 @@ workflows:
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
           attach-workspace: true
@@ -353,12 +422,12 @@ workflows:
 
       # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
       - cypress/run:
-          name: cypress-mobile-chrome
+          name: cypress-phone-chrome
           executor: ff-chrome
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
           attach-workspace: true
@@ -371,59 +440,26 @@ workflows:
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
           attach-workspace: true
           store_artifacts: true
 
-      # @ Approve Polar app build for deployment
-      - approve-polar-app:
-          type: approval
+      # @ Deploy Approved Polar app build
+      - deploy-polar-app:
+          context:
+            - Slack
+          executor: xlarge
+          firebase_hosting_target: polar-webapp
           requires:
+            - approve-deploy
+            - mocha
             - karma
             - cypress-desktop-firefox
             - cypress-desktop-chrome
             - cypress-tablet-chrome
-            - cypress-mobile-chrome
-          filters:
-            branches:
-              only:
-                - master
-
-      # @ Deploy Approved Polar app build
-      - deploy-polar-app:
-          executor: xlarge
-          firebase_hosting_target: polar-webapp
-          requires:
-            - approve-polar-app
-          filters:
-            branches:
-              only:
-                - master
-
-      ## ^ Polar Site Sub-Workflow Below Here
-      # @ Build Polar Site
-      - build-polar-site:
-          executor: large
-          requires:
-            - setting-up
-
-      # @ Approve Polar Site build for deployment
-      - approve-polar-site:
-          type: approval
-          requires:
-            - build-polar-site
-          filters:
-            branches:
-              only:
-                - master
-
-      # @ Deploy Approved Polar Site build
-      - deploy-polar-site:
-          executor: large
-          requires:
-            - approve-polar-site
+            - cypress-phone-chrome
           filters:
             branches:
               only:

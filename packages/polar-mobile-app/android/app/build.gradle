@@ -134,8 +134,8 @@ android {
         applicationId "io.getpolarized.polar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "16"
+        versionCode 21
+        versionName "21"
         multiDexEnabled true
 
         // react-native-iap: we only use the Google Play flavor

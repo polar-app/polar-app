@@ -2,7 +2,7 @@ import React from "react";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
 
 
 export const DeleteAnnotation: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {

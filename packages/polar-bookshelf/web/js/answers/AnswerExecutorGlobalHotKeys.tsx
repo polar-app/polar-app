@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, Tab, Tabs, TextField, Typography} from "@material-ui/core";
+import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField, Typography, useTheme} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -12,7 +12,7 @@ import {
     IAnswerExecutorResponse,
     ISelectedDocumentWithRecord
 } from "polar-answers-api/src/IAnswerExecutorResponse";
-import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {IAnswerExecutorRequest, ICoreAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {useAnalytics} from "../analytics/Analytics";
 import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
@@ -21,6 +21,12 @@ import {
     IAnswerExecutorTraceUpdateResponse
 } from "polar-answers-api/src/IAnswerExecutorTraceUpdateResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -52,29 +58,73 @@ interface IAnswerExecutorDialogProps {
 }
 
 interface SelectedDocumentProps {
-    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>
+    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>;
+    readonly onViewSection: () => void;
 }
 
 const SelectedDocument = (props: SelectedDocumentProps) => {
 
+    const docLoader = useDocLoaderFromDocID();
+    const docInfo = useDocInfo(props.doc.record.docID)
+
+    const handleViewSection = React.useCallback(() => {
+
+        props.onViewSection();
+        const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
+        docLoader(pdfRecord.docID, pdfRecord.pageNum);
+
+    }, [docLoader])
+
     return (
-        <>
-            <p style={{
-                   fontSize: '2.0rem',
-                   overflow: 'auto'
-               }}>
+        <Box mb={1} mr={1}>
+            <Card variant="outlined">
 
-                {props.doc.record.text}
+                <CardContent>
 
-            </p>
-            <p>score: {props.doc.score}</p>
+                    <div style={{
+                        fontSize: '1.3rem',
+                        overflow: 'auto'
+                    }}>
 
-            {props.doc.record.type === 'pdf' && (
-                <>
-                    <p>docID: {props.doc.record.docID}</p>
-                </>
-            )}
-        </>
+                        {props.doc.record.text}
+
+                    </div>
+
+                </CardContent>
+
+                <CardActions>
+
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             alignItems: 'center'
+                         }}>
+
+                        <Box ml={1}
+                             color="text.secondary">
+                            <Typography gutterBottom color="textSecondary">
+                                {docInfo?.title || 'Untitled'}
+                            </Typography>
+                        </Box>
+
+                        {props.doc.record.type === 'pdf' && (
+                            <div style={{
+                                     flexGrow: 1,
+                                     justifyContent: 'flex-end',
+                                     display: 'flex'
+                                 }}>
+                                <Button size="medium"
+                                        onClick={handleViewSection}>
+                                    View Section
+                                </Button>
+                            </div>
+                        )}
+
+                    </div>
+
+                </CardActions>
+            </Card>
+        </Box>
     );
 
 }
@@ -100,25 +150,92 @@ const TabPanel = (props: TabPanelProps) => {
 }
 
 function answerIsError(value: any): value is IAnswerExecutorError {
-    return value.error === 'no-answer' || value.error === 'failed';
+    return value.error === true;
 }
 
 function answerIsErrorNoAnswer(value: any): value is IAnswerExecutorError {
     return value.error === 'no-answer';
 }
 
+interface AnswerFeedbackProps {
+    readonly id: string;
+}
+
+const AnswerFeedback = (props: AnswerFeedbackProps) => {
+
+    const answerExecutorTraceUpdateClient = useAnswerExecutorTraceUpdateClient();
+    const theme = useTheme();
+    const analytics = useAnalytics();
+
+
+    const [voted, setVoted] = React.useState(false);
+
+    const doVote = React.useCallback(async (vote: 'up' | 'down') => {
+
+        await answerExecutorTraceUpdateClient({id: props.id, vote, expectation: ''})
+        analytics.event2('ai-answer-vote', {vote});
+
+        setVoted(true);
+
+    }, [answerExecutorTraceUpdateClient, analytics]);
+
+    const handleDone = React.useCallback(() => {
+        setVoted(true);
+    }, [doVote]);
+
+    const handleError = React.useCallback((err: Error) => {
+        console.error("Unable to handle vote: ", err);
+    }, [doVote]);
+
+    return (
+        <Box color="text.secondary"
+             style={{
+                 display: 'flex',
+                 justifyContent: 'flex-end',
+                 alignItems: 'center'
+             }}>
+
+            {! voted && (
+                <>
+                    <Box mr={1}>
+                        Was this answer helpful?
+                    </Box>
+
+                    <MUILoadingIconButton disabled={voted}
+                                          icon={<ThumbUpIcon/>}
+                                          onDone={handleDone}
+                                          onError={handleError}
+                                          style={{color: theme.palette.text.secondary}}
+                                          onClick={async () => doVote('up')}/>
+
+                    <MUILoadingIconButton disabled={voted}
+                                          icon={<ThumbDownIcon/>}
+                                          onDone={handleDone}
+                                          onError={handleError}
+                                          style={{color: theme.palette.text.secondary}}
+                                          onClick={async () => doVote('down')}/>
+                </>
+            )}
+
+            {voted && (
+                <Box mr={1}>
+                    Thanks for your feedback!
+                </Box>
+            )}
+
+        </Box>
+    );
+
+}
+
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
+    readonly onViewSection: () => void;
 }
 
 const AnswerResponse = (props: AnswerResponseProps) => {
 
-    const [tabIndex, setTabIndex] = React.useState(0);
-
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setTabIndex(newValue);
-    };
-
+    // TODO: we have to differentiate between a real error and no-answer.
     if (answerIsError(props.answerResponse)) {
         return (
             <Box mt={1} mb={1} color='error.main'>
@@ -131,37 +248,44 @@ const AnswerResponse = (props: AnswerResponseProps) => {
 
     return (
         <>
-
-            <Tabs indicatorColor="primary"
-                  textColor="primary"
-                  centered
-                  value={tabIndex}
-                  onChange={handleChange}>
-                <Tab label="Answer"/>
-                <Tab label="Context" />
-            </Tabs>
-
             <div style={{overflow: 'auto'}}>
-                <TabPanel index={0} tabIndex={tabIndex}>
-                    <>
-                        {props.answerResponse.answers.length > 0 && (
-                            <p style={{
-                                fontSize: '2.0rem',
-                                overflow: 'auto'
-                            }}>
 
-                                {Arrays.first(props.answerResponse.answers)}
-
-                            </p>)}
-                    </>
-                </TabPanel>
-                <TabPanel index={1} tabIndex={tabIndex}>
+                {props.answerResponse.answers.length > 0 && (
                     <>
+
+                        <Box mt={1} mb={1} color="text.secondary">
+                            <Typography variant="h6">
+                                Answer:
+                            </Typography>
+                        </Box>
+
+                        <p style={{
+                            fontSize: '1.8rem',
+                            overflow: 'auto'
+                        }}>
+
+                            {Arrays.first(props.answerResponse.answers)}
+
+                        </p>
+
+                        <AnswerFeedback id={props.answerResponse.id}/>
+
+                    </>)}
+
+                {props.answerResponse.selected_documents.length > 0 && (
+                    <>
+                        <Box mt={1} mb={1} color="text.secondary">
+                            <Typography variant="h6">
+                                Relevant sections:
+                            </Typography>
+                        </Box>
+
                         {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
-                                                                     .map((current, idx) => (
-                            <SelectedDocument key={idx} doc={current}/>))}
-                    </>
-                </TabPanel>
+                            .map((current, idx) => (
+                                <SelectedDocument key={idx} doc={current} onViewSection={props.onViewSection}/>))}
+
+                    </>)}
+
             </div>
 
         </>
@@ -175,9 +299,10 @@ const AnswerResponse = (props: AnswerResponseProps) => {
  * @param toEvent Convert the request to an analytics event
  */
 function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
-                                                                toEvent: (request: REQ) => Record<string, string | number>) {
+                                                       toEvent: (request: REQ) => Record<string, string | number>) {
 
     const analytics = useAnalytics();
+    const dialogManager = useDialogManager();
 
     return React.useCallback(async (request: REQ) => {
 
@@ -198,10 +323,17 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
                     code: response.code
                 });
 
+                dialogManager.snackbar({
+                    type: 'error',
+                    message: `The request failed: ${(response as any).message || response.code}`
+                });
+
             } else {
                 analytics.event2(methodName, toEvent(request));
             }
 
+            // TODO: this is a problem because we return an error response AND
+            // trigger a dialog by side effect.
             return response;
 
         } catch (e) {
@@ -209,7 +341,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
             analytics.event2(methodName, {
                 error: true,
                 code: 'exception',
-                message: e.message
+                message: (e as any).message
             });
 
             throw e;
@@ -224,7 +356,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
 function useAnswerExecutorTraceUpdateClient() {
 
     return useRPC<IAnswerExecutorTraceUpdate, IAnswerExecutorTraceUpdateResponse, IAnswerExecutorTraceUpdateError>('AnswerExecutorTraceUpdate', (req) => ({
-        vote: req.vote
+        vote: req.vote!
     }));
 
 }
@@ -234,6 +366,20 @@ function useAnswerExecutorClient() {
 
     return useRPC<IAnswerExecutorRequest, IAnswerExecutorResponse, IAnswerExecutorError>('AnswerExecutor', (req) => ({
     }));
+
+}
+
+
+
+function useCoreAnswerExecutorRequestFromLocalStorage(): ICoreAnswerExecutorRequest | undefined {
+
+    const item = localStorage.getItem('CoreAnswerExecutorRequest');
+
+    if (item) {
+        return JSON.parse(item) as ICoreAnswerExecutorRequest;
+    }
+
+    return undefined;
 
 }
 
@@ -254,6 +400,8 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
     // - "Ask" button to the right of the question text
     // - docLoader to load the document by docID
 
+    const coreAnswerExecutorRequest = useCoreAnswerExecutorRequestFromLocalStorage();
+
     const executeRequest = React.useCallback((question: string) => {
 
         async function doExec() {
@@ -267,13 +415,19 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 const request: IAnswerExecutorRequest = {
                     question,
-                    model: 'curie',
-                    search_model: 'curie'
+                    model: coreAnswerExecutorRequest?.model || 'curie',
+                    search_model: coreAnswerExecutorRequest?.search_model || 'curie',
+                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
+                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
+                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
+                    filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
                 };
+
+                console.log("Executing request: ", JSON.stringify(request, null, '  '));
 
                 const answer = await answerExecutorClient(request);
 
-                console.log("Got answer: ", answer);
+                console.log("Got answer: ", JSON.stringify(answer, null, '  '));
 
                 setAnswerResponse(answer);
 
@@ -288,13 +442,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     }, [executeWithoutDocuments])
 
+    const executeQuestion = React.useCallback(() => {
+        executeRequest(questionRef.current)
+    }, []);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (event.key === 'Enter') {
-            executeRequest(questionRef.current)
+            executeQuestion();
         }
 
-    }, [executeRequest])
+    }, [executeRequest, executeQuestion])
 
     return (
         <MUIDialog open={true}
@@ -320,21 +478,41 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                flexDirection: 'column',
                            }}>
 
-                <TextField label="Ask a question... "
-                           placeholder="What would you like to know?"
-                           autoFocus={true}
-                           onChange={event => questionRef.current = event.currentTarget.value}
-                           onKeyUp={handleKeyUp}
-                           InputProps={{
-                               style: {
-                                   fontSize: '2.0rem'
-                               }
-                           }}
-                           style={{
-                               marginTop: '10px',
-                               marginBottom: '10px',
-                               flexGrow: 1,
-                           }}/>
+
+                <div style={{
+                         flexGrow: 1,
+                         alignItems: 'center',
+                         display: 'flex'
+                     }}>
+
+                    <TextField label="Ask a question... "
+                               placeholder="What would you like to know?"
+                               autoFocus={true}
+                               onChange={event => questionRef.current = event.currentTarget.value}
+                               onKeyUp={handleKeyUp}
+                               InputProps={{
+                                   style: {
+                                       fontSize: '2.0rem'
+                                   }
+                               }}
+                               style={{
+                                   marginTop: '10px',
+                                   marginBottom: '10px',
+                                   flexGrow: 1,
+                               }}/>
+
+                    <Box ml={1}>
+                        <Button variant="contained"
+                                onClick={() => executeQuestion()}
+                                size="large"
+                                color="primary">
+                            Ask Question
+                        </Button>
+                    </Box>
+
+                </div>
+
+
 
                 {/*<FormControlLabel*/}
                 {/*    control={*/}
@@ -350,7 +528,9 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                 {answerResponse && (
                     <>
 
-                        <AnswerResponse key={questionRef.current} answerResponse={answerResponse}/>
+                        <AnswerResponse key={questionRef.current}
+                                        answerResponse={answerResponse}
+                                        onViewSection={props.onClose}/>
 
                     </>
                 )}

@@ -2,7 +2,7 @@ import {MachineDatastore} from "./MachineDatastores";
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
 import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
-import {useSnapshots} from "../ui/data_loader/UseSnapshotSubscriber";
+import {ErrorType, useSnapshots} from "../ui/data_loader/UseSnapshotSubscriber";
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
 export namespace MachineDatastoreHooks {
@@ -62,6 +62,6 @@ export namespace MachineDatastoreHooks {
         return useSnapshots(snapshotProvider);
     }
 
-    const ERR_HANDLER = (err: Error) => console.error("Error during snapshot: ", err);
+    const ERR_HANDLER = (err: ErrorType) => console.error("Error during snapshot: ", err);
 
 }

@@ -35,7 +35,7 @@ export class Results {
 
     }
 
-    public static createError<T>(err: Error): Result<T> {
+    public static createError<T>(err: unknown): Result<T> {
 
         return new Result<T>( {
             value: undefined,

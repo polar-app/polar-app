@@ -7,12 +7,13 @@ import {TextHighlightRendererStatic} from "./TextHighlightRendererStatic";
 import {TextHighlightRendererDynamic} from "./TextHighlightRendererDynamic";
 import {PageAnnotation} from "./PageAnnotations";
 import {useDocViewerCallbacks} from "../DocViewerStore";
+import {IBlockTextHighlight} from "polar-blocks/src/annotations/IBlockTextHighlight";
 
 interface IProps {
     readonly id: string;
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly pageAnnotation: PageAnnotation<ITextHighlight>;
+    readonly pageAnnotation: PageAnnotation<ITextHighlight | IBlockTextHighlight>;
     readonly container: HTMLElement,
     readonly type: 'block' | 'docMeta';
 }
