@@ -12,3 +12,4 @@ tsconfig.tsbuildinfo
 .webpack-cache-loader
 
 TESTS*.xml
+*.d.ts
