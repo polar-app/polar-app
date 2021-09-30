@@ -158,6 +158,7 @@ const AuthButton = (props: IAuthButtonProps) => {
     );
 }
 
+// new Links component
 const Links = () => {
 
     const classes = useStyles();
