@@ -24,7 +24,7 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 
-const useStyles = makeStyles((theme) =>
+export const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {

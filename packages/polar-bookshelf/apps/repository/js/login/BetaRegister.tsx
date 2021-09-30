@@ -6,35 +6,7 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        logo: {
-            marginTop: theme.spacing(2),
-        },
-        button: {
-            flexGrow: 1,
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-            fontSize: '1.5em'
-        },
-        intro: {
-            color: theme.palette.text.secondary,
-            fontSize: '2.2em'
-        },
-        email: {
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-        },
-        divider: {
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-        },
-    }),
-);
+import {useStyles} from "./Authenticator";
 
 export const BetaRegister = React.memo(function BetaRegister(props: {}) {
     const classes = useStyles();
@@ -86,6 +58,15 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
                                 }}>
                             Join
                         </Button>
+                    </div>
+
+                    <div>
+                        <p className={classes.legal}>
+                            You acknowledge that you will read, and agree to
+                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of
+                            Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy
+                            Policy</a>.
+                        </p>
                     </div>
                 </div>
             </>
