@@ -283,6 +283,7 @@ jobs:
             cd /home/circleci/polar-hooks
             rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
             time firebase deploy --only functions
+            source $BASH_ENV
       - slack/notify:
           custom: |
             {
