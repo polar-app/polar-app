@@ -56,16 +56,16 @@ module.exports = (config) => {
             { pattern: 'web/**/*Test.ts', type: 'js', watched: false },
             { pattern: 'web/**/*TestK.ts', type: 'js', watched: false },
             { pattern: 'web/**/*TestNK.ts', type: 'js', watched: false },
-            { pattern: 'app/**/*Test.ts', type: 'js', watched: false },
-            { pattern: 'app/**/*TestK.ts', type: 'js', watched: false },
-            { pattern: 'app/**/*TestNK.ts', type: 'js', watched: false },
+            { pattern: 'apps/**/*Test.ts', type: 'js', watched: false },
+            { pattern: 'apps/**/*TestK.ts', type: 'js', watched: false },
+            { pattern: 'apps/**/*TestNK.ts', type: 'js', watched: false },
 
         ],
 
         preprocessors: {
             // add webpack as preprocessor
             'web/**/*.ts': ['webpack'],
-            'app/**/*.ts': ['webpack'],
+            'apps/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
