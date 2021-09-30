@@ -35,6 +35,9 @@ export namespace RegisterForPrivateBeta {
                 challenge
             })
 
+            // TODO: send them an email thanking them...
+            // TODO: no metadata yet...
+
             return {};
 
         } catch (e) {
