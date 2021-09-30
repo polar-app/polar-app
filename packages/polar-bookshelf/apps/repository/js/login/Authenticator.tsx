@@ -105,15 +105,9 @@ const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-<<<<<<< HEAD
             color: '#6754D6 !important', 
             textDecoration: 'underline !important'
         }, 
-=======
-            color: theme.palette.secondary.main,
-            textDecoration: 'underline'
-        },
->>>>>>> master
         a: {
             color: theme.palette.text.secondary,
             textDecoration: 'underline'
@@ -138,7 +132,6 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     return (
         <>
-<<<<<<< HEAD
             <DeviceRouters.Phone>
                 <Button variant="contained"
                         color="primary"
@@ -161,72 +154,13 @@ const AuthButton = (props: IAuthButtonProps) => {
                     {hint} with {props.strategy}
                 </Button>
             </DeviceRouters.NotPhone>
-=======
-            <Button variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={props.onClick}
-                    startIcon={props.startIcon}
-                    style={props.style}>
-
-                {hint} with {props.strategy}
-
-            </Button>
-
->>>>>>> master
         </>
-    );
-}
-
-<<<<<<< HEAD
-const Links = () => {
-
-    const classes = useStyles();
-=======
-const AuthButtonMobile = (props: IAuthButtonProps) => {
-    return (
-        <AuthButton {...props}
-                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
     );
 }
 
 const Links = () => {
 
     const classes = useStyles();
-
-    const mode = React.useContext(AuthenticatorModeContext);
-
-    return (
-        <>
-            <p className={classes.legal}>
-                You acknowledge that you will read, and agree to
-                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-            </p>
-        </>
-    );
-}
-
-const GoogleAuthButton = () => {
-
-    const classes = useStyles();
-    const [error, setError] = React.useState<string | undefined>();
-
-    const triggerAuth = useTriggerFirebaseGoogleAuth();
-
-    const doTriggerAuth = React.useCallback(async () => {
-
-        Analytics.event2("auth:GoogleAuthButtonTriggered")
-
-        setError(undefined);
-
-        try {
-            await triggerAuth();
-        } catch (err) {
-            setError((err as any).message || 'error')
-        }
-
-    }, [triggerAuth]);
->>>>>>> master
 
     const mode = React.useContext(AuthenticatorModeContext);
 
@@ -262,12 +196,8 @@ const ProgressActive = () => {
     );
 }
 
-<<<<<<< HEAD
 // Function to keep
 const EmailTokenAuthButton = () => {
-=======
-const EmailTokenAuthButtonNotPhone = () => {
->>>>>>> master
 
     const classes = useStyles();
 
@@ -462,7 +392,6 @@ const EmailTokenAuthButtonNotPhone = () => {
                                         variant="outlined" />
                             )}
 
-<<<<<<< HEAD
                         </>
                     )}
 
@@ -476,293 +405,6 @@ const EmailTokenAuthButtonNotPhone = () => {
 
                 </>
             </DeviceRouters.Phone>
-=======
-                            <TextField autoFocus={true}
-                                       className={classes.email}
-                                       onChange={event => challengeRef.current = event.target.value}
-                                       onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                       placeholder="Enter your Code Here"
-                                       variant="outlined" />
-
-                            <div className={classes.alternate}>
-                                <Button onClick={handleEmailProvided}>Resend Email</Button>
-                            </div>
-                            <Button variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    onClick={handleClick}>
-                                Verify Code
-                            </Button>
-                        </>
-                    )}
-
-                    {! triggered && (
-                        <TextField autoFocus={true}
-                                   className={classes.email}
-                                   onChange={event => emailRef.current = event.target.value}
-                                   onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="email@"
-                                   variant="outlined" />
-                    )}
-
-                </>
-            )}
-
-            {!triggered && (
-
-                <AuthButton onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                            />
-            )}
-
-            <Divider className={classes.sendLinkDivider}/>
-        </>
-    );
-};
-
-// end comp 1
-
-const EmailTokenAuthButtonPhone = () => {
-
-    const classes = useStyles();
-
-    interface IAlert {
-        readonly type: 'error' | 'success';
-        readonly message: string;
-    }
-
-    const [pending, setPending] = React.useState(false);
-    const [alert, setAlert] = React.useState<IAlert | undefined>();
-    const [active, setActive] = React.useState(true);
-    const [triggered, setTriggered, triggeredRef] = useStateRef(false);
-
-    const triggerStartTokenAuth = useTriggerStartTokenAuth();
-    const triggerVerifyTokenAuth = useTriggerVerifyTokenAuth();
-
-    const emailRef = React.useRef("");
-    const challengeRef = React.useRef("");
-
-    const emailBeingVerifiedRef = React.useRef("");
-
-    const doTriggerVerifyTokenAuth = React.useCallback(async (email: string, challenge: string) => {
-
-        setAlert(undefined);
-
-        try {
-
-            try {
-                setPending(true);
-
-                await triggerVerifyTokenAuth(email, challenge);
-            } finally {
-                setPending(false);
-            }
-
-
-        } catch(err) {
-            setAlert({
-                type: 'error',
-                message: (err as any).message || undefined
-            });
-        }
-
-    }, [triggerVerifyTokenAuth]);
-
-    const handleTriggerVerifyTokenAuth = React.useCallback(() => {
-
-        const email = emailBeingVerifiedRef.current.trim();
-        const challenge = challengeRef.current.replace(/ /g, "");
-
-        doTriggerVerifyTokenAuth(email, challenge)
-            .catch(err => console.log("Unable to handle auth: ", err));
-
-    }, [doTriggerVerifyTokenAuth])
-
-    const doTriggerStartTokenAuth = React.useCallback(async (email: string) => {
-
-        setAlert(undefined);
-
-        try {
-
-            try {
-
-                Analytics.event2("auth:EmailTokenAuthStarted", {resend: triggeredRef.current})
-
-                setPending(true);
-
-                await triggerStartTokenAuth(email, triggeredRef.current);
-
-                setTriggered(true);
-
-                setAlert({
-                    type: 'success',
-                    message: 'Check your email for a code to login to your account!'
-                });
-
-            } finally {
-                setPending(false);
-            }
-
-        } catch(err) {
-            setAlert({
-                type: 'error',
-                message: (err as any).message || 'error'
-            });
-        }
-
-    }, [triggerStartTokenAuth, setTriggered, triggeredRef]);
-
-    const handleTriggerStartTokenAuth = React.useCallback((email: string) => {
-
-        Analytics.event2("auth:EmailTokenAuthTriggered", {resend: triggeredRef.current})
-
-        emailBeingVerifiedRef.current = email;
-
-        doTriggerStartTokenAuth(email)
-            .catch(err => console.log("Unable to handle auth: ", err));
-
-    }, [doTriggerStartTokenAuth, triggeredRef])
-
-    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent<any>, callback: () => void) => {
-
-        if (event.key === 'Enter') {
-            callback();
-        }
-
-    }, []);
-
-    const handleEmailProvided = React.useCallback(() => {
-
-        const email = emailRef.current.trim();
-
-        if (email !== '') {
-            handleTriggerStartTokenAuth(email);
-        }
-
-    }, [handleTriggerStartTokenAuth]);
-
-    const handleClick = React.useCallback(() => {
-
-        if (active) {
-
-            if (triggered) {
-
-                if (challengeRef.current.trim() !== '') {
-                    handleTriggerVerifyTokenAuth();
-                }
-
-            } else {
-                handleEmailProvided();
-            }
-
-        } else {
-            Analytics.event2("auth:EmailTokenAuthActivated")
-            setActive(true)
-        }
-
-    }, [active, handleEmailProvided, handleTriggerVerifyTokenAuth, triggered])
-
-    return (
-        <>
-            {active && (
-                <>
-                    <Divider className={classes.sendLinkDivider}/>
-
-                    {pending && (
-                        <ProgressActive/>
-                    )}
-
-                    {! pending && (
-                        <ProgressInactive/>
-                    )}
-
-                    {alert && (
-                        <Alert severity={alert.type}
-                               className={classes.alert}>
-                            {alert.message}
-                        </Alert>
-                    )}
-
-                    {triggered && (
-                        <>
-
-                            <TextField autoFocus={true}
-                                       className={classes.email}
-                                       onChange={event => challengeRef.current = event.target.value}
-                                       onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                       placeholder="Enter your Code Here"
-                                       variant="outlined"
-                                       style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
-
-                            <div className={classes.alternate}>
-                                <Button onClick={handleEmailProvided}>Resend Email</Button>
-                            </div>
-                            <Button variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    onClick={handleClick}
-                                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
-                                Verify Code
-                            </Button>
-                        </>
-                    )}
-
-                    {! triggered && (
-                        <TextField autoFocus={true}
-                                   className={classes.email}
-                                   onChange={event => emailRef.current = event.target.value}
-                                   onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="email@"
-                                   variant="outlined"
-                                   style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
-                    )}
-
-                </>
-            )}
-
-            {!triggered && (
-
-                <AuthButtonMobile onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                            />
-            )}
-
-            <Divider className={classes.sendLinkDivider}/>
-        </>
-    );
-};
-
-const EmailAuthButton = () => {
-
-    const classes = useStyles();
-
-    const [error, setError] = React.useState<string | undefined>();
-
-    const [active, setActive] = React.useState(false);
-    const [triggered, setTriggered] = React.useState(false);
-
-    const triggerFirebaseEmailAuth = useTriggerFirebaseEmailAuth();
-
-    const emailRef = React.useRef("");
-
-    const doTriggerAuth = React.useCallback(async (email: string) => {
-
-        setError(undefined);
-
-        try {
-            localStorage.setItem('emailForSignIn', email);
-            await triggerFirebaseEmailAuth(email);
-            setTriggered(true);
-        } catch(err) {
-            setError((err as any).message);
-        }
-
-    }, [triggerFirebaseEmailAuth]);
-
-    const handleAuth = React.useCallback(() => {
->>>>>>> master
 
             <DeviceRouters.NotPhone>
                 <>
@@ -840,11 +482,7 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
-<<<<<<< HEAD
         
-=======
-
->>>>>>> master
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -903,7 +541,7 @@ const Main = React.memo(function Main(props: IProps) {
 
                     {/*<GoogleAuthButton/>*/}
 
-                    <EmailTokenAuthButtonNotPhone/>
+                    <EmailTokenAuthButton/>
 
                     {/*<EmailAuthButton/>*/}
 
@@ -944,34 +582,17 @@ const Main = React.memo(function Main(props: IProps) {
 
                 <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-<<<<<<< HEAD
-                    <EmailTokenAuthButton/>
-=======
-                    <EmailTokenAuthButtonPhone/>
->>>>>>> master
+                    <Button variant="contained" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px'}}>
+                        LOG IN
+                    </Button>
 
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-
-                    <div style={{flexGrow: 1}}>
-
-                    </div>
-
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
-                    </div>
+                    <Button variant="outlined" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px', borderColor: 'white', color: 'white', textDecorationColor: 'white'}}>
+                        SIGN UP
+                    </Button>
                 </div>
             </div>
 
-        </DeviceRouters.Phone>
+`       </DeviceRouters.Phone>
         </>
 
     );
@@ -1035,7 +656,6 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                                 )}
 
                             </>
-<<<<<<< HEAD
 
                         </Paper>
 
@@ -1054,26 +674,6 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                     </>
             </DeviceRouters.Phone>
                 
-=======
-
-                        </Paper>
-
-                    </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-                    <>
-                    {authStatus === undefined && (
-                        <Pending/>
-                    )}
-
-                    {authStatus === 'needs-auth' && (
-                    <Main {...props}/>
-                    )}
-                    </>
-            </DeviceRouters.Phone>
-
->>>>>>> master
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>
