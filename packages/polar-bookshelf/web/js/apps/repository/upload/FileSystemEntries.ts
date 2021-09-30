@@ -1,5 +1,6 @@
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
 import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace FileSystemEntries {
 
@@ -16,7 +17,13 @@ export namespace FileSystemEntries {
     }
 
     export async function recurseDataTransferItems(items: ReadonlyArray<DataTransferItem>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
-        return recurseFileSystemEntries(items.map(item => item.webkitGetAsEntry()));
+
+        const entries = arrayStream(items.map(item => item.webkitGetAsEntry()))
+                            .filterPresent()
+                            .map(current => (current as any) as IWebkitFileSystemFileEntry)
+                            .collect();
+
+        return recurseFileSystemEntries(entries);
     }
 
     export async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystemEntry>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {

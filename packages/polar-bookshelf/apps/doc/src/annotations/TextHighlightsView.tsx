@@ -4,7 +4,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useHighlightBlocks} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {PageAnnotations} from "./PageAnnotations";
@@ -25,7 +25,7 @@ export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRender
         highlights.map(({ content, id }) => {
             const { value, pageNum, docID } = content.toJSON();
             return {
-                annotation: { ...value, blockID: id },
+                annotation: { ...value, id },
                 fingerprint: docID,
                 pageNum,
             };
@@ -37,7 +37,7 @@ export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRender
     const rendered = visiblePageAnnotations.map(current =>
                                              <TextHighlightRenderer
                                                  type="block"
-                                                 id={current.annotation.blockID}
+                                                 id={current.annotation.id}
                                                  key={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}

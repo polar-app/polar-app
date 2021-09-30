@@ -48,7 +48,7 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
         if(isModifier(event.key)){
             return false;
         }
-        return (event.code.toLowerCase() === `key${key.toLowerCase()}` && modifierPredicate(modifiers, event));
+        return (event.key === key) && modifierPredicate(modifiers, event);
     }
 }
 

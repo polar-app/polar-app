@@ -7,6 +7,7 @@ import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snaps
 import firebase from 'firebase/app'
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {ErrorType} from "../../ui/data_loader/UseSnapshotSubscriber";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersistentPrefs {
 
@@ -24,7 +25,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersiste
         this.firestore = await FirestoreBrowserClient.getInstance();
         this.user = await FirebaseBrowser.currentUserAsync();
 
-        function onError(err: Error) {
+        function onError(err: ErrorType) {
             console.error("Unable to read user prefs:", err);
         }
 

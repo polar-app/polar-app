@@ -1,4 +1,5 @@
 import {Hashcodes} from "./Hashcodes";
+import {Karma} from "./Karma";
 
 const IS_NODE = typeof window === 'undefined' || process.env.NODE_ENV === 'test';
 
@@ -11,7 +12,7 @@ export namespace DeviceIDManager {
     export const DEVICE_ID = getDeviceID();
 
     function getDeviceID() {
-        if (IS_NODE) {
+        if (IS_NODE || Karma.isKarma()) {
             return TEST_DEVICE_ID;
         }
 

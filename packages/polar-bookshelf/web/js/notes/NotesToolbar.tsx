@@ -1,9 +1,12 @@
-import {createStyles, Divider, makeStyles} from '@material-ui/core';
+import {Button, createStyles, Divider, makeStyles} from '@material-ui/core';
 import React from 'react';
 import {CreateNote} from './toolbar/CreateNote';
 import {SearchForNote} from "./toolbar/SearchForNote";
 import {NotesRepoButton} from './toolbar/NotesRepoButton';
 import {SidenavTrigger} from '../sidenav/SidenavTrigger';
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
+import {useBlocksStore} from './store/BlocksStore';
+import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -20,9 +23,13 @@ const useStyles = makeStyles(() =>
         },
         left: {
             flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
         },
         right: {
             flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
         },
         mid: {
             flex: '0 1 522px',
@@ -34,6 +41,24 @@ const useStyles = makeStyles(() =>
 
 export const NotesToolbar = () => {
     const classes = useStyles();
+    const blocksStore = useBlocksStore();
+    const dialogs = useDialogManager();
+
+    const handlePurgeDocumentNotes = React.useCallback(() => {
+        const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
+        if (documentBlockIDs.length) {
+            blocksStore.deleteBlocks(documentBlockIDs);
+            dialogs.snackbar({
+                message: `Deleting a total of ${documentBlockIDs.length} document blocks!`,
+                type: 'success',
+            });
+        } else {
+            dialogs.snackbar({
+                message: `No document blocks were found!`,
+                type: 'error',
+            });
+        }
+    }, [blocksStore, dialogs]);
 
     return (
         <>
@@ -41,6 +66,17 @@ export const NotesToolbar = () => {
                 <div className={classes.left}>
                     <SidenavTrigger />
                     <NotesRepoButton />
+                    {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            style={{ height: 38, marginLeft: 10 }}
+                            disableElevation
+                            onClick={handlePurgeDocumentNotes}
+                        >
+                            Purge document blocks
+                        </Button>
+                    )}
                 </div>
                 <div className={classes.mid}><SearchForNote /></div>
                 <div className={classes.right}><CreateNote /></div>

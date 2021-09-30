@@ -2,10 +2,13 @@
 
 https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
 
+```typescript jsx
 fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
+```
 
 # Styles 
 
+```typescript jsx
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 
@@ -15,11 +18,12 @@ const useStyles = makeStyles((theme) =>
         },
     }),
 );
+```
 
 # Adding style to sub-elements
 
 # hover
-```
+```typescript jsx
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) =>
 ```
 
 
-```
+```typescript jsx
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {

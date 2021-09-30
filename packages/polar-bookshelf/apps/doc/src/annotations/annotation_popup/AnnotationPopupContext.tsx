@@ -8,7 +8,7 @@ import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnota
 import {IDocScale, useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {IDocViewerElements, useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
-import {DocAnnotations} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
+import {DocAnnotations, ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ActiveHighlightData} from "./AnnotationPopupHooks";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
@@ -26,10 +26,11 @@ import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/
 import {isPresent} from "polar-shared/src/Preconditions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
-import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {AnnotationBlockMigrator} from "../../AnnotationBlockMigrator";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -214,13 +215,15 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 const {pageMeta, textHighlight} = createdTextHighlight;
 
                 if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
-                    const content = new TextHighlightAnnotationContent({
-                        type: AnnotationContentType.TEXT_HIGHLIGHT,
-                        pageNum,
-                        docID: fingerprint,
-                        value: textHighlight,
-                    });
+                    const content = AnnotationBlockMigrator.migrateTextHighlight(
+                        textHighlight,
+                        pageNum, 
+                        fingerprint,
+                        [],
+                    );
+
                     const id = createAnnotation(fingerprint, content);
+
                     if (id) {
                         setActiveHighlight({
                             highlightID: id,
@@ -384,3 +387,8 @@ export const getAnnotationData = (data: IDocMetaAnnotation | IBlockAnnotation) =
         };
     }
 };
+
+export const getTextHighlightText = (annotation: IDocMetaAnnotation | IBlockAnnotation): string =>
+    annotation.type === 'docMeta'
+        ? (ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation.annotation.original).text || '')
+        : BlockTextHighlights.toText(annotation.annotation.content.value);

@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import {AddContentFab} from "./AddContentFab";
 import {useHistory} from 'react-router-dom';
-import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 
 export namespace AddContent {
 

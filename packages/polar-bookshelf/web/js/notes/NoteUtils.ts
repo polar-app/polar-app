@@ -1,43 +1,47 @@
 import React from "react";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContent, IBlockContentMap} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import equal from "deep-equal";
-import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {useHistory} from "react-router";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import {BlockPredicates, TextContent} from "./store/BlockPredicates";
-import {RoutePathnames} from "../apps/repository/RoutePathnames";
+import {BlockPredicates, EditableContent, TextContent} from "./store/BlockPredicates";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
-import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
 import {DateContent} from "./content/DateContent";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
-import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
+import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {useRefWithUpdates} from "../hooks/ReactHooks";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 
 
-export const useNamedBlocks = () => {
+/**
+ * Get all the named blocks in notes.
+ */
+export const useNamedBlocks = (): ReadonlyArray<Block<NamedContent>> => {
 	const blocksStore = useBlocksStore();
 	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
 	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
     
 	React.useEffect(() => {
 	    const disposer = autorun(() => {
-		const namedBlocksIDs = Object.values(blocksStore.indexByName);
-		if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-		    const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
-		    setNamedBlocks(namedBlocks);
-		    prevNamedBlocksIDsRef.current = namedBlocksIDs;
-		}
+            const namedBlocksIDs = Object.values(blocksStore.indexByName);
+            if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
+                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+                setNamedBlocks(namedBlocks);
+                prevNamedBlocksIDsRef.current = namedBlocksIDs;
+            }
 	    });
     
 	    return () => disposer();
@@ -46,164 +50,215 @@ export const useNamedBlocks = () => {
 	return namedBlocks;
 };
 
-
-// TODO: move this into BlocksStore
+/**
+ * Focus the first child of a block and create one if one doesn't already exist.
+ *
+ * TODO: move this into BlocksStore
+ */
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
+
     if (root) {
         const getFirstChildID = (): BlockIDStr => {
-            if (root.content.type === "document") {
+
+            if (BlockPredicates.isDocumentBlock(root)) {
                 return root.itemsAsArray[0];
             }
+
             return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
         };
+
         blocksStore.setActiveWithPosition(getFirstChildID(), 'start');
     }
 };
 
-export const useNoteWikiLinkCreator = () => {
+
+export const useBlockTagEditorDialog = () => {
     const blocksStore = useBlocksStore();
+    const namedBlocksRef = useRefWithUpdates(useNamedBlocks());
+    const dialogs = useDialogManager();
 
-    return React.useCallback((id: BlockIDStr, linkText: string): string | null => {
-        const block = blocksStore.getBlock(id);
+    return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
+        const blocks = arrayStream(ids)
+            .map(id => blocksStore.getBlockForMutation(id))
+            .filterPresent()
+            .collect();
 
-        if (! block || block.content.type !== "markdown") {
-            return null;
-        }
-        
-        const link = block.content.links.find(({ text }) => text === linkText);
-
-        if (! link) {
-            return null;
-        }
-
-        const targetBlock = blocksStore.getBlock(link.id);
-
-        if (targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
-            return BlockTextContentUtils.getTextContentMarkdown(targetBlock.content);
+        if (! blocks.length) {
+            return console.error('useBlockTagEditorDialog: Blocks to be edited were not found.');
         }
 
-        return null;
-    }, [blocksStore]);
+        type ITaggedBlock = TaggedCallbacks.ITagsHolder & BlockContentUtils.IHasLinksBlockTarget;
+
+        const toTarget = (block: Block): ITaggedBlock => ({
+            id: block.id,
+            content: block.content,
+            tags: block.content.getTagsMap(),
+        });
+
+        const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
+            targets: () => blocks.map(toTarget),
+            tagsProvider: () => namedBlocksRef.current.map(block => ({
+                label: BlockTextContentUtils.getTextContentMarkdown(block.content),
+                id: block.id,
+            })),
+            dialogs,
+            doTagged: BlockContentUtils.updateTags.bind(null, blocksStore),
+        };
+
+
+        TaggedCallbacks.create(opts)();
+    }, [blocksStore, namedBlocksRef, dialogs]);
 };
 
 
-type IUseLinkNavigationOpts = {
-    id: BlockIDStr;
-};
 
-interface ILinkNavigationEvent {
-    readonly abortEvent: () => void;
-    readonly target: EventTarget | null;
-}
+export namespace BlockContentUtils {
 
-function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
+    export interface IHasLinksBlockTarget {
+        id: BlockIDStr;
+        content: HasLinks;
+    };
 
-    const linkLoaderRef = useLinkLoaderRef();
-    const noteLinkLoader = useNoteLinkLoader();
-    const noteWikiLinkCreator = useNoteWikiLinkCreator();
-    const history = useHistory();
+    /**
+     * @param blocksStore BlocksStore instance
+     * @param targets An array of targets to updated @see IHasLinksBlockTarget
+     * @param tags The new tags
+     * @param strategy The strategy on how to calculate the new tags for a target @see Tags.ComputeNewTagsStrategy
+     */
+    export function updateTags(
+        blocksStore: IBlocksStore,
+        targets: ReadonlyArray<IHasLinksBlockTarget>,
+        tags: ReadonlyArray<Tag>,
+        strategy: Tags.ComputeNewTagsStrategy = 'set'
+    ): void {
+        const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
+            const newTags = Tags.computeNewTags(content.getTagsMap(), tags, strategy);
 
-    return React.useCallback((event: ILinkNavigationEvent): boolean => {
+            const newTagLinks = newTags.map(({ label }) => {
+                const getBlockID = (): string => {
+                    const block = blocksStore.getBlockByName(label);
 
-        const {target, abortEvent} = event;
-
-        if (target instanceof HTMLAnchorElement) {
-
-            const href = target.getAttribute('href');
-
-            if (href !== null) {
-
-                if (href.startsWith('#')) {
-
-                    const anchor = Arrays.last(href.split("#"));
-
-                    if (anchor) {
-                        const link = noteWikiLinkCreator(id, anchor);
-                        if (link) {
-                            noteLinkLoader(link);
-                        } else {
-                            noteLinkLoader(anchor);
-                        }
-                        abortEvent();
-                        return true;
+                    if (block) {
+                        return block.id;
                     }
 
-                } else {
-                    if (href.startsWith(RoutePathnames.NOTE(""))) {
-                        history.push(href);
-                    } else {
-                        const linkLoader = linkLoaderRef.current;
-                        linkLoader(href, {newWindow: true, focus: true});
-                    }
-                    abortEvent();
-                    return true;
+                    const content = new NameContent({ type: 'name', data: label, links: [] });
+                    return blocksStore.createNewNamedBlock({ content });
+                };
 
-                }
+                const blockID = getBlockID();
 
+                return { text: `${TAG_IDENTIFIER}${label}`, id: blockID };
+            });
+
+            const block = blocksStore.getBlockForMutation(id);
+
+            if (! block) {
+                return;
             }
 
+            const wikiLinks = block.content.wikiLinks;
+
+            const newContent = block.content;
+            newContent.updateLinks([...wikiLinks, ...newTagLinks]);
+
+            blocksStore.setBlockContent(id, newContent);
+        };
+
+        targets.forEach(updateTarget);
+    }
+
+    /**
+     * A Generic Utility function to update the content of a block.
+     *
+     * @param blocksStore BlocksStore instance
+     * @param id The id of the block being updated
+     * @param type The content type of the block @see IBlockContent
+     * @param updater Function Callback function that is used to update the content
+     */
+    export function updateContent<T extends IBlockContent['type']>(
+        blocksStore: IBlocksStore,
+        id: BlockIDStr,
+        type: T,
+        updater: (content: IBlockContentMap[T]) => void,
+    ): void {
+        const block = blocksStore.getBlockForMutation(id);
+
+        if (! block) {
+            return console.error(`Block to be updated was not found (id: ${id})`);
         }
 
-        return false;
-
-    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, history, id]);
-
-}
-
-export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
-
-    const linkNavigationEventListener = useLinkNavigationEventListener({ id });
-
-    return React.useCallback((event: React.MouseEvent) => {
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
+        if (block.content.type !== type) {
+            return console.error(`
+                Block to updated doesn't have the correct type, skipping...
+                Expected: ${type}
+                Actual: ${block.content.type}
+            `);
         }
 
-        const target = event.target;
+        const content = block.content.toJSON() as IBlockContentMap[T];
 
-        return linkNavigationEventListener({target, abortEvent});
+        updater(content);
 
-    }, [linkNavigationEventListener]);
+        blocksStore.setBlockContent(id, content);
+    }
 
+    /**
+     * Update the contents of a document block by its document identifier.
+     *
+     * @param blocksStore BlocksStore instance
+     * @param id The id of the block being updated
+     * @param updater Function Callback function that is used to update the content
+     */
+    export function updateDocumentContentByFingerprint(
+        blocksStore: IBlocksStore,
+        docID: DocIDStr,
+        updater: (content: IDocumentContent) => void,
+    ): void {
+        const id = blocksStore.indexByDocumentID[docID];
+
+        if (! id) {
+            return console.error(`Document block to be updated was not found for docID: ${docID}`);
+        }
+
+        updateContent(blocksStore, id, 'document', updater);
+    }
 }
 
 export namespace BlockTextContentUtils {
-    export function updateClozeFlashcardContentMarkdown(
-        content: FlashcardAnnotationContent,
+
+    /**
+     * Update the markdown content of a flashcard given the field.
+     *
+     * @param content FlashcardAnnotationContent instance
+     * @param field The flashcard field to be updated
+     * @param markdown The new markdown content
+     */
+    export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(
+        content: FlashcardAnnotationContent<T>,
+        field: keyof T['fields'],
         markdown: MarkdownStr,
     ): FlashcardAnnotationContent {
         const flashcardContent = content.toJSON();
+
         return new FlashcardAnnotationContent({
             ...flashcardContent,
-            value: {
-                ...flashcardContent.value,
-                fields: { 'text': Texts.create(markdown, TextType.MARKDOWN) },
-            }
+            value: BlockFlashcards.updateField(flashcardContent.value, field, markdown),
         });
     }
 
-    export function updateFrontBackFlashcardContentMarkdown(
-        content: FlashcardAnnotationContent,
-        markdown: MarkdownStr,
-        field: 'front' | 'back'
-    ): FlashcardAnnotationContent {
-        const flashcardContent = content.toJSON();
-        return new FlashcardAnnotationContent({
-            ...flashcardContent,
-            value: {
-                ...flashcardContent.value,
-                fields: {
-                    ...flashcardContent.value.fields,
-                    [field]: Texts.create(markdown, TextType.MARKDOWN),
-                },
-            }
-        });
-    }
+    /**
+     * Update the markdown content of an editable text block.
+     *
+     * @param content An instance of the block's content instance
+     * @param markdown The new markdown content
+     */
+    export function updateTextContentMarkdown(
+        content: Exclude<EditableContent, FlashcardAnnotationContent>,
+        markdown: MarkdownStr
+    ): EditableContent {
 
-    export function updateTextContentMarkdown(content: Exclude<TextContent, FlashcardAnnotationContent>, markdown: MarkdownStr): TextContent {
         switch(content.type) {
             case "markdown":
                 return new MarkdownContent({ ...content.toJSON(), data: markdown });
@@ -217,13 +272,18 @@ export namespace BlockTextContentUtils {
                     ...textHighlightContent,
                     value: {
                         ...textHighlightContent.value,
-                        revisedText: Texts.create(markdown, TextType.MARKDOWN),
+                        revisedText: markdown,
                     }
                 });
         }
     };
 
-    export function getTextContentMarkdown(content: TextContent | DocumentContent) {
+    /**
+     * Get the markdown text of an editable text block
+     *
+     * @param content An editable text content instance @see TextContent
+     */
+    export function getTextContentMarkdown(content: TextContent): string {
         switch (content.type) {
             case 'date':
             case 'name':
@@ -232,9 +292,11 @@ export namespace BlockTextContentUtils {
             case 'document':
                 return DocInfos.bestTitle(content.docInfo);
             case AnnotationContentType.TEXT_HIGHLIGHT:
-                return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, content.value).text || '';
+                return BlockTextHighlights.toText(content.value);
             case AnnotationContentType.FLASHCARD:
-                return ITextConverters.create(AnnotationType.FLASHCARD, content.value).text || '';
+                return content.value.type === FlashcardType.CLOZE
+                    ? content.value.fields.text
+                    : content.value.fields.front;
         }
     }
 }

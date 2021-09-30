@@ -1,82 +1,202 @@
-// Karma configuration
-// Generated on Thu Jan 28 2021 18:52:09 GMT-0700 (Mountain Standard Time)
 
-module.exports = function(config) {
-  config.set({
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const webpack = require("webpack");
+const svgToMiniDataURI = require('mini-svg-data-uri');
+const os = require("os");
+const workers = os.cpus().length - 1;
+const isDevServer = process.argv.includes('serve');
+const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
+const isDev = mode === 'development';
+const path = require("path");
+const fs = require("fs");
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '.',
+module.exports = (config) => {
+    config.set({
+        client: {
+            // only run tests targeting node/karma or JUST karma but never JUST
+            // node.
+            args: [
+                './{,!(node_modules)/**}/*Test.js',
+                './{,!(node_modules)/**}/*TestK.js',
+                './{,!(node_modules)/**}/*TestNK.js'
+            ],
+            mocha: {
+                timeout : 60000
+            }
+        },
+        // browsers: ['Chrome'],
+        browsers: ['ChromeHeadless'],
 
+        customHeaders: [
+            {
+                match: '.*',
+                name: 'Cross-Origin-Opener-Policy',
+                value: 'same-origin'
+            },
+            {
+                match: '.*',
+                name: 'Cross-Origin-Embedder-Policy',
+                value: 'require-corp',
+            }
+        ],
 
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'karma-typescript'],
+        // make sure to include webpack as a framework
+        frameworks: ['mocha', 'webpack'],
 
+        plugins: [
+            'karma-chrome-launcher',
+            'karma-webpack',
+            'karma-mocha',
+            'karma-spec-reporter',
+            'karma-junit-reporter'
+        ],
 
-    // list of files / patterns to load in the browser
-    files: [
-      'src/**/*.ts'
-    ],
+        files: [
 
+            { pattern: 'src/**/*.ts', watched: false },
 
-    // list of files / patterns to exclude
-    exclude: [
-      'src/**/*.d.ts'
-    ],
+        ],
+        exclude: [
+          'src/**/*.d.ts'
+        ],
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      "src/**/*.ts": "karma-typescript" // *.tsx for React Jsx
-    },
+        preprocessors: {
+            // add webpack as preprocessor
+            'src/**/*.ts': ['webpack'],
+        },
+        singleRun: true,
 
+        reporters: ['junit', 'spec'],
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'karma-typescript'],
+        webpack: {
+            plugins: [
+                new NodePolyfillPlugin(),
+            ],
+            module: {
+                rules: [
+                    {
+                        test: /TestN.ts$/,
+                        use: [
+                            {
+                                loader: 'null-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /.d.ts$/,
+                        use: [
+                            {
+                                loader: 'null-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /.(jsx|tsx|ts)$/,
+                        exclude: [
+                            /node_modules/,
+                            /.d.ts$/,
+                            /TestN.ts$/
+                        ],
+                        use: [
+                            {
+                                loader: 'thread-loader',
+                                options: {
+                                    // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                    workers,
+                                    // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+                                    workerParallelJobs: 100,
+                                    poolTimeout: 2000,
+                                }
+                            },
+                            {
+                                loader: 'ts-loader',
+                                options: {
+                                    // performance: this improved performance by about 2x.
+                                    // from 20s to about 10s
+                                    transpileOnly: isDev,
+                                    experimentalWatchApi: true,
 
+                                    // IMPORTANT! use happyPackMode mode to speed-up
+                                    // compilation and reduce errors reported to webpack
+                                    happyPackMode: true
 
-    // web server port
-    port: 9876,
+                                }
+                            }
 
+                        ]
 
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
+                    },
+                    {
+                        // make SVGs use data URLs.
+                        test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'url-loader',
+                                options: {
+                                    limit: 32768,
+                                    generator: (content) => svgToMiniDataURI(content.toString()),
+                                }
+                            },
+                        ],
+                    },
+                    {
+                        test: /\.css$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'style-loader',
+                            },
+                            {
+                                loader: 'css-loader'
+                            }
+                        ]
+                    },
+                    {
+                        test: /\.scss$/,
+                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                    },
+                    {
+                        test: /fonts\.googleapis\.com\/css/,
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
+                                }
+                            },
+                        ],
+                    },
+                    {
+                        // We have to use a null-loader for Electron because if we don't require()
+                        // will attempt to use 'fs' which doesn't exist in the browser.
+                        test: path.resolve(__dirname, '../../node_modules/electron/index.js'),
+                        use: 'null-loader'
+                    }
 
+                ]
 
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+            },
+            // plugins: [
+            //     // ...webpackConfig.plugins,
+            //     new webpack.DefinePlugin({
+            //         'process.env': { NODE_ENV: JSON.stringify('development') }
+            //     })
+            // ],
+            // entry: undefined,
+            // devtool: "eval",
+            resolve: {
+                fallback: {
+                    fs: false,
+                    net: false,
+                    tls: false,
+                    child_process: false,
+                    electron: false
+                }
+            },
 
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['ChromeHeadless'],
-
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
-
-    // Concurrency level
-    // how many browser should be started simultaneous
-    concurrency: Infinity,
-    // karmaTypescriptConfig: JSON.parse(fs.readFileSync('./tsconfig.json').toString())
-    karmaTypescriptConfig: {
-      compilerOptions: {
-        module: "commonjs"
-      },
-      tsconfig: "./tsconfig.json",
-      bundlerOptions: {
-        transforms: [
-          require("karma-typescript-es6-transform")()
-        ]
-      }
-    }
-  })
+        },
+    });
 }

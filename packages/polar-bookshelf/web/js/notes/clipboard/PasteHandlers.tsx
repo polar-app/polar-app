@@ -12,8 +12,8 @@ export interface IPasteImageData {
 
 export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
-    readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
-    readonly onPasteError: (err: Error) => void;
+    readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void;
+    readonly onPasteError: (err: unknown) => void;
     readonly onPasteHTML: (html: HTMLStr) => void;
     readonly onPasteText: (text: string) => void;
     readonly id: BlockIDStr;
@@ -119,7 +119,7 @@ type PasteHandler = {
 
 const executePasteHandlers = async (
     handlers: ReadonlyArray<PasteHandler>,
-    onError: (err: Error) => void,
+    onError: (err: unknown) => void,
 ) => {
     for (const {handler, type} of handlers) {
         try {

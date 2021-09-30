@@ -4,10 +4,9 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Mailgun} from "../Mailgun";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
-import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
-import {FirestoreAdminClient} from "@google-cloud/firestore/types/v1/firestore_admin_client";
-import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -185,7 +184,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         const response: IStartTokenErrorResponse = {
             code: 'unable-to-send-email',
             status: "unable-to-send-email",
-            message: e.message,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            message: (e as any).message || undefined,
             email,
         };
 

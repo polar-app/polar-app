@@ -1,11 +1,11 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
-import { UserRecord } from "firebase-functions/lib/providers/auth";
+import {UserRecord} from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
-import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -85,7 +85,8 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
         } catch (err) {
 
-            if (err.code === 'auth/user-not-found') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((err as any).code === 'auth/user-not-found') {
                 return undefined;
             }
 

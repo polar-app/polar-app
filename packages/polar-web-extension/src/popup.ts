@@ -4,6 +4,7 @@ import {PopupApp} from "./ui/popup/PopupApp";
 import {Tabs} from "./chrome/Tabs";
 import loadLinkInActiveTab = Tabs.loadLinkInActiveTab;
 import {SignInSuccessURLs} from "polar-bookshelf/apps/repository/js/login/SignInSuccessURLs";
+import {Karma} from "./Karma";
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -102,11 +103,15 @@ async function onExtensionActivated() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    onExtensionActivated()
-        .catch(err => {
-            console.log("failed");
-            // closeWindowAfterDelay();
-            console.error("Unable to send URL to polar: ", err)
-        });
+    if (! Karma.isKarma()) {
+
+        onExtensionActivated()
+            .catch(err => {
+                console.log("failed");
+                // closeWindowAfterDelay();
+                console.error("Unable to send URL to polar: ", err)
+            });
+
+    }
 
 });

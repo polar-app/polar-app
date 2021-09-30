@@ -12,12 +12,14 @@ import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 import {PageAnnotation} from "./PageAnnotations";
 import {TextHighlightMerger} from "../text_highlighter/TextHighlightMerger";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {IBlockTextHighlight} from "polar-blocks/src/annotations/IBlockTextHighlight";
 
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly pageAnnotation: PageAnnotation<ITextHighlight>;
+    readonly pageAnnotation: PageAnnotation<ITextHighlight | IBlockTextHighlight>;
     readonly container: HTMLElement,
+    readonly id: string;
     readonly onClick?: React.EventHandler<React.MouseEvent>;
 }
 
@@ -58,7 +60,7 @@ export const TextHighlightRendererStatic = deepMemo(function TextHighlightRender
     }
 
     if (rects.length === 0) {
-        console.log("No textHighlight rects for text highlight: ", props.pageAnnotation.annotation.id);
+        console.log("No textHighlight rects for text highlight: ", props.id);
         return null;
     }
 
@@ -93,7 +95,7 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
     }
 
     if (rects.length === 0) {
-        console.log("No textHighlight rects for text highlight: ", props.pageAnnotation.annotation.id);
+        console.log("No textHighlight rects for text highlight: ", props.id);
         return null;
     }
 
@@ -108,7 +110,7 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
 
     }, [scaleValue]);
 
-    const className = `text-highlight annotation text-highlight-${annotation.id}`;
+    const className = `text-highlight annotation text-highlight-${props.id}`;
     const textHighlightRect = createScaledRect(rawTextHighlightRect);
 
     const color: HighlightColor = annotation.color || 'yellow';
@@ -117,12 +119,12 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
     const createDOMID = React.useCallback(() => {
 
         if (idx === 0) {
-            return annotation.id;
+            return props.id;
         }
 
-        return annotation.id + "-" + idx;
+        return props.id + "-" + idx;
 
-    }, [annotation.id, idx]);
+    }, [props.id, idx]);
 
     const id = createDOMID();
 
@@ -131,12 +133,12 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
              ref={scrollIntoViewRef}
              data-type="text-highlight"
              data-doc-fingerprint={fingerprint}
-             data-text-highlight-id={annotation.id}
+             data-text-highlight-id={props.id}
              data-page-num={pageNum}
             // annotation descriptor metadata - might not be needed
             // anymore
              data-annotation-type="text-highlight"
-             data-annotation-id={annotation.id}
+             data-annotation-id={props.id}
              data-annotation-page-num={pageNum}
              data-annotation-doc-fingerprint={fingerprint}
              data-annotation-color={color}

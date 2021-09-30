@@ -4,6 +4,7 @@ import {IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission"
 import {BlockPermissions} from "polar-block-permissions/src/BlockPermissions";
 import {FirestoreAdmin} from 'polar-firebase-admin/src/FirestoreAdmin';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IBlockPermissionResponse {
 
 }

@@ -125,4 +125,5 @@ export class ActionStore {
 
 }
 
-export const [ActionMenuStoreProvider, useActionMenuStore] = createReactiveStore(() => new ActionStore())
+export const [ActionMenuStoreProvider, useActionMenuStore] = createReactiveStore(() =>
+    React.useMemo(() => new ActionStore(), []));

@@ -1,13 +1,8 @@
 import * as React from 'react';
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import Alert from "@material-ui/lab/Alert";
-import {
-    SnapshotSubscriber,
-    SnapshotUnsubscriber
-} from 'polar-shared/src/util/Snapshots';
+import {SnapshotSubscriber, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
+import {ErrorType} from "./UseSnapshotSubscriber";
 
 export namespace DataSubscribers {
 
@@ -26,7 +21,7 @@ export namespace DataSubscribers {
         const useComponent: DataProvider = (props: DataProviderProps) => {
 
             const [data, setData] = React.useState<D | undefined>(undefined);
-            const [err, setError] = React.useState<Error | undefined>(undefined);
+            const [err, setError] = React.useState<ErrorType | undefined>(undefined);
 
             const unsubscriber = React.useRef<SnapshotUnsubscriber>();
 
@@ -48,7 +43,7 @@ export namespace DataSubscribers {
                 };
 
 
-                const onError = (err: Error) => {
+                const onError = (err: unknown) => {
                     setError(err);
                 };
 

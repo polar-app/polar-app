@@ -13,12 +13,13 @@ import {NameContent} from "./content/NameContent";
 import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {useLinkNavigationClickHandler, BlockTextContentUtils} from "./NoteUtils";
+import {useLinkNavigationClickHandler} from "./NoteLinksHooks";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {BlockTextContentUtils} from "./NoteUtils";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -67,7 +68,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     return React.useCallback((data: MarkdownStr) => {
         const block = blocksTreeStore.getBlock(id);
 
-        if (! block || ! BlockPredicates.isTextBlock(block)) {
+        if (! block || ! BlockPredicates.isEditableBlock(block)) {
             return;
         }
 
@@ -201,6 +202,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return (
             <BlockAnnotationContent
                 id={id}
+                created={block.created}
                 parent={parent}
                 className={className}
                 style={style}

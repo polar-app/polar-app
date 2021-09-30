@@ -1,10 +1,11 @@
-import {makeObservable, observable, computed} from "mobx"
+import {makeObservable, observable, computed, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DateContentFormat, IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
+import {HasLinks} from "./HasLinks";
 
-export class DateContent implements IDateContent, IBaseBlockContent {
+export class DateContent extends HasLinks implements IDateContent, IBaseBlockContent {
 
     @observable private readonly _type: 'date';
     @observable private _data: string;
@@ -12,13 +13,14 @@ export class DateContent implements IDateContent, IBaseBlockContent {
     @observable private _mutator: DeviceIDStr;
 
     constructor(opts: IDateContent) {
+        super(opts);
 
         this._type = opts.type;
         this._data = opts.data;
         this._format = opts.format;
         this._mutator = opts.mutator || '';
 
-        makeObservable(this)
+        makeObservable(this);
 
     }
 
@@ -43,6 +45,7 @@ export class DateContent implements IDateContent, IBaseBlockContent {
         if (content.type === 'date') {
             this._data = content.data;
             this._mutator = content.mutator || '';
+            this.updateLinks(content.links);
         } else {
             throw new Error("Invalid type: " +  content.type)
         }
@@ -59,6 +62,7 @@ export class DateContent implements IDateContent, IBaseBlockContent {
             data: this._data,
             format: this._format,
             mutator: this._mutator,
+            links: toJS(this.links),
         };
     }
 
