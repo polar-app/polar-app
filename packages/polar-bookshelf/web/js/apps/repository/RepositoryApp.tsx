@@ -67,6 +67,7 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
+import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface IProps {
     readonly app: App;
@@ -85,7 +86,7 @@ interface IUseRouteContainerStylesProps {
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
-        root({ isSidenavOpen, sidenavWidth }) {
+        root({isSidenavOpen, sidenavWidth}) {
 
             return {
                 display: 'flex',
@@ -98,7 +99,7 @@ const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>
                 height: '100%',
                 background: theme.palette.background.default,
                 overflowX: 'hidden',
-                ...(! Devices.isDesktop() && {
+                ...(!Devices.isDesktop() && {
                     position: 'relative',
                     top: 0,
                     zIndex: 2,
@@ -125,16 +126,16 @@ const FeatureRequestsScreen = () => {
 };
 
 const SHARED_ROUTES = [
-    { path: RoutePathnames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen) },
-    { path: RoutePathnames.INVITE, component: withMobilePopup(InviteScreen) },
-    { path: RoutePathnames.PLANS, component: withMobilePopup(PricingScreen) },
-    { path: RoutePathnames.PREMIUM, component: withMobilePopup(PricingScreen) },
-    { path: RoutePathnames.SUPPORT, component: withMobilePopup(SupportScreen) },
-    { path: RoutePathnames.STATISTICS, component: withMobilePopup(StatsScreen) },
-    { path: RoutePathnames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings") },
-    { path: RoutePathnames.LOGS, component: withMobilePopup(LogsScreen, "Logs") },
-    { path: RoutePathnames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info") },
-    { path: RoutePathnames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen) },
+    {path: RoutePathnames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen)},
+    {path: RoutePathnames.INVITE, component: withMobilePopup(InviteScreen)},
+    {path: RoutePathnames.PLANS, component: withMobilePopup(PricingScreen)},
+    {path: RoutePathnames.PREMIUM, component: withMobilePopup(PricingScreen)},
+    {path: RoutePathnames.SUPPORT, component: withMobilePopup(SupportScreen)},
+    {path: RoutePathnames.STATISTICS, component: withMobilePopup(StatsScreen)},
+    {path: RoutePathnames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings")},
+    {path: RoutePathnames.LOGS, component: withMobilePopup(LogsScreen, "Logs")},
+    {path: RoutePathnames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info")},
+    {path: RoutePathnames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen)},
 ];
 
 const useSharedRoutesStyles = makeStyles(() =>
@@ -177,22 +178,22 @@ const SharedRoutes: React.FC = () => {
 
     return (
         <>
-            {SHARED_ROUTES.map(({ path, component: Component }) => (
+            {SHARED_ROUTES.map(({path, component: Component}) => (
                 <Route location={location} key={path} exact path={path}>
-                    {({ match }) => (
+                    {({match}) => (
                         <CSSTransition
-                          in={match != null}
-                          timeout={300}
-                          classNames={{
-                            enter: classes.pageEnter,
-                            enterActive: classes.pageEnterActive,
-                            exit: classes.pageExit,
-                          }}
-                          unmountOnExit
+                            in={match != null}
+                            timeout={300}
+                            classNames={{
+                                enter: classes.pageEnter,
+                                enterActive: classes.pageEnterActive,
+                                exit: classes.pageExit,
+                            }}
+                            unmountOnExit
                         >
-                          <div className={classes.page}>
-                            <Component />
-                          </div>
+                            <div className={classes.page}>
+                                <Component/>
+                            </div>
                         </CSSTransition>
                     )}
                 </Route>
@@ -201,11 +202,11 @@ const SharedRoutes: React.FC = () => {
     );
 };
 
-export const RouteContainer: React.FC = ({ children }) => {
-    const { isOpen } = useSideNavStore(['isOpen']);
-    const { setOpen } = useSideNavCallbacks();
+export const RouteContainer: React.FC = ({children}) => {
+    const {isOpen} = useSideNavStore(['isOpen']);
+    const {setOpen} = useSideNavCallbacks();
     const sidenavWidth = useSidenavWidth();
-    const classes = useRouteContainerStyles({ isSidenavOpen: isOpen, sidenavWidth });
+    const classes = useRouteContainerStyles({isSidenavOpen: isOpen, sidenavWidth});
 
     const closeSidenav = React.useCallback(() => setOpen(false), [setOpen]);
 
@@ -213,7 +214,7 @@ export const RouteContainer: React.FC = ({ children }) => {
         <>
             <div className={classes.root}>
                 {children}
-                {isOpen && <div onClick={closeSidenav} className={classes.overlay} />}
+                {isOpen && <div onClick={closeSidenav} className={classes.overlay}/>}
             </div>
         </>
     );
@@ -223,7 +224,7 @@ const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
-            flexDirection: Devices.isDesktop() ? 'row': 'column-reverse',
+            flexDirection: Devices.isDesktop() ? 'row' : 'column-reverse',
             minWidth: 0,
             minHeight: 0,
             flexGrow: 1,
@@ -231,13 +232,35 @@ const useStyles = makeStyles(() =>
     }),
 );
 
+function CDKDemo() {
+    const [rpcResult, setRpcResult] = React.useState<any | undefined>(undefined);
+
+    React.useEffect(() => {
+        JSONRPC.exec('rpc-sample', {}).then(result => {
+            setRpcResult(result);
+        }).catch(reason => alert(reason));
+    }, []);
+
+    return <>
+        <div style={{
+            flex: '100%',
+            textAlign: 'center',
+        }}>
+            <p>Result from AWS API Gateway call:</p>
+            <div>
+                {JSON.stringify(rpcResult)}
+            </div>
+        </div>
+    </>;
+}
+
 export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     const classes = useStyles();
-    const { app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager } = props;
+    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
     Preconditions.assertPresent(app, 'app');
 
-    const DataProviders: React.FC = React.useCallback(({ children }) => (
+    const DataProviders: React.FC = React.useCallback(({children}) => (
         <PrefsContext2>
             <UserTagsDataLoader>
                 <BlockStoreDefaultContextProvider>
@@ -256,11 +279,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         </PrefsContext2>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
-    const GlobalProviders: React.FC = React.useCallback(({ children }) => (
+    const GlobalProviders: React.FC = React.useCallback(({children}) => (
         <RepoDocMetaManagerContext.Provider value={repoDocMetaManager}>
             <MUIRepositoryRoot>
                 <RepositoryRoot>
-                    <PersistenceLayerContext.Provider value={{ persistenceLayerProvider: app.persistenceLayerProvider }}>
+                    <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
                         <div className="RepositoryApp"
                              style={{
                                  display: 'flex',
@@ -297,14 +320,14 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  repoDocMetaManager={repoDocMetaManager}
                                  repoDocMetaLoader={repoDocMetaLoader}
                                  persistenceLayerManager={persistenceLayerManager}>
-                 <AnnotationRepoStore2>
-                     <AnnotationRepoSidebarTagStore>
-                         <>
-                             <ReviewRouter/>
-                             <AnnotationRepoScreen2/>
-                         </>
-                     </AnnotationRepoSidebarTagStore>
-                 </AnnotationRepoStore2>
+                <AnnotationRepoStore2>
+                    <AnnotationRepoSidebarTagStore>
+                        <>
+                            <ReviewRouter/>
+                            <AnnotationRepoScreen2/>
+                        </>
+                    </AnnotationRepoSidebarTagStore>
+                </AnnotationRepoStore2>
             </PersistenceLayerApp>
         );
     });
@@ -336,15 +359,19 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                     <DataProviders>
                         <div className={classes.root}>
 
-                            <Initializers />
+                            <Initializers/>
 
-                            <SideNav />
+                            <SideNav/>
                             <DeviceRouters.NotDesktop>
                                 <MUIBottomNavigation/>
                             </DeviceRouters.NotDesktop>
-                            <Intercom />
+                            <Intercom/>
 
                             <RouteContainer>
+
+                                <Route exact path="/cdk-demo">
+                                    <CDKDemo/>
+                                </Route>
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.HOME}>
                                     <DocRepoSidebarTagStore>
@@ -379,7 +406,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 </Switch>
 
-                                <DeviceRouter desktop={<SharedRoutes />} />
+                                <DeviceRouter desktop={<SharedRoutes/>}/>
                             </RouteContainer>
                         </div>
 
@@ -391,12 +418,13 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <Route path="#account" component={AccountDialogScreen}/>
 
                             <Route path="#add">
-                                <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                                <PersistenceLayerContext.Provider
+                                    value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
                                     <AddFileDropzoneScreen/>
                                 </PersistenceLayerContext.Provider>
                             </Route>
 
-                            <DeviceRouter handheld={<SharedRoutes />} />
+                            <DeviceRouter handheld={<SharedRoutes/>}/>
 
                         </Switch>
 

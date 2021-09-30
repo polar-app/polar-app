@@ -1,6 +1,7 @@
+import {lambdaWrapper} from "../../shared/lambdaWrapper";
 import {APIGatewayProxyHandler} from "aws-lambda";
 
-export const handler: APIGatewayProxyHandler = async (event) => {
+const lambda: APIGatewayProxyHandler = async (event) => {
     return {
         statusCode: 200,
         body: JSON.stringify({
@@ -8,4 +9,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             message: "Hello, world!",
         })
     }
-}
+};
+
+export const handler = lambdaWrapper(lambda);
