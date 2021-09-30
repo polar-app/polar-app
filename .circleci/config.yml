@@ -333,7 +333,7 @@ jobs:
                         "emoji": true
                       },
                       "style": "primary",
-                      "url": "https://github.com/polar-app/polar-app/releases/tag/$TAG",
+                      "url": "https://github.com/polar-app/polar-app/releases/tag/$TAG"
                     }
                   ]
                 }
