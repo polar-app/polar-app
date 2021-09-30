@@ -4,6 +4,7 @@ version: 2.1
 # @ Custom Orbs
 orbs:
   cypress: cypress-io/cypress@1.28.0
+  slack: circleci/slack@4.4.4
 
 # ~ Pre-Script Steps to Execute before Jobs
 commands:
