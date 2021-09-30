@@ -15,6 +15,8 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
 
     readonly type: 'trace-minimal';
 
+    readonly ver: 'v2';
+
     readonly uid: UserIDStr;
 
     // eslint-disable-next-line camelcase
@@ -50,8 +52,17 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
      */
     readonly expectation: string | undefined;
 
+    /**
+     * When we are in prune mode, the number of records that were pruned or
+     * undefined if we didn't prune anything.
+     */
+    // eslint-disable-next-line camelcase
+    readonly elasticsearch_pruned: number | undefined;
+
 }
-export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
+
+// TODO: this is a new experimental trace format BUT it used too much data storage.
+interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
     readonly id: IDStr;
 
@@ -94,4 +105,4 @@ export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
 }
 
-export type IAnswerExecutorTrace = IAnswerExecutorTraceMinimal | IAnswerExecutorTraceExtended;
+export type IAnswerExecutorTrace = IAnswerExecutorTraceMinimal;

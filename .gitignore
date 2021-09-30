@@ -10,3 +10,6 @@ test_results.xml
 
 tsconfig.tsbuildinfo
 .webpack-cache-loader
+
+TESTS*.xml
+*.d.ts

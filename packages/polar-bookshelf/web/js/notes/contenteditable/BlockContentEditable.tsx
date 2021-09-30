@@ -17,6 +17,7 @@ import {useSideNavStore} from '../../sidenav/SideNavStore';
 import {BlockPredicates} from '../store/BlockPredicates';
 import {DOMBlocks} from './DOMBlocks';
 import {BlockActionsProvider} from './BlockActions';
+import {useScrollIntoViewUsingLocation} from "../../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -214,6 +215,8 @@ export const BlockContentEditable = (props: IProps) => {
 
     }, [props.content, props.id, blocksTreeStore, updateCursorPosition]);
 
+    const scrollIntoViewRef = useScrollIntoViewUsingLocation();
+
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
         divRef.current = current;
@@ -222,7 +225,9 @@ export const BlockContentEditable = (props: IProps) => {
             props.innerRef.current = current;
         }
 
-    }, [props]);
+        scrollIntoViewRef(current);
+
+    }, [props, scrollIntoViewRef]);
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 

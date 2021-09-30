@@ -6,11 +6,18 @@ import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {Flashcard} from './Flashcard';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
-TestingTime.freeze();
 
 describe('Flashcards', function() {
 
     const archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+
+    beforeEach(() => {
+        TestingTime.freeze();
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze();
+    });
 
     describe('create', function() {
 
@@ -79,86 +86,3 @@ describe('Flashcards', function() {
     });
 
 });
-
-const FORM_DATA: {[path: string]: string } = {
-    "back": "This is the back",
-    "front": "This is the front"
-};
-
-const CARD_CREATOR_JSON = {
-    "annotationType": "flashcard",
-    "context": {
-        "docDescriptor": {
-            "fingerprint": "1rDeShSojg8migc4SsL4"
-        },
-        "matchingSelectors": {
-            ".area-highlight": {
-                "annotationDescriptors": [],
-                "elements": [],
-                "selector": ".area-highlight"
-            },
-            ".pagemark": {
-                "annotationDescriptors": [],
-                "elements": [],
-                "selector": ".pagemark"
-            },
-            ".text-highlight": {
-                "annotationDescriptors": [
-                    {
-                        "docFingerprint": "1rDeShSojg8migc4SsL4",
-                        "pageNum": 1,
-                        "textHighlightId": "1LS7NToNer",
-                        "type": "text-highlight"
-                    }
-                ],
-                "elements": [
-                    {}
-                ],
-                "selector": ".text-highlight"
-            }
-        }
-    },
-    "edit": false,
-    "errorSchema": {},
-    "errors": [],
-    "flashcard": {
-        "id": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
-    },
-    "formData": {
-        "back": "This is the back",
-        "front": "This is the front"
-    },
-    "idSchema": {
-        "$id": "root",
-        "back": {
-            "$id": "root_back"
-        },
-        "front": {
-            "$id": "root_front"
-        }
-    },
-    "schema": {
-        "description": "",
-        "properties": {
-            "back": {
-                "title": "Back",
-                "type": "string"
-            },
-            "front": {
-                "title": "Front",
-                "type": "string"
-            }
-        },
-        "required": [
-            "front",
-            "back"
-        ],
-        "title": "Flashcard",
-        "type": "object"
-    },
-    "status": "submitted",
-    "uiSchema": {
-        "back": {},
-        "front": {}
-    }
-};

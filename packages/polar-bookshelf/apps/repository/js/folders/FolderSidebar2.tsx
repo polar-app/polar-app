@@ -64,6 +64,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                           flexGrow: 1,
                           flexDirection: "column",
                           height: '100%',
+                          minWidth: '100%',
                           minHeight: 0
                       }}>
             <>
