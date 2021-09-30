@@ -52,7 +52,7 @@ namespace HTMLBlockUtils {
 }
 
 
-describe('BlocksStore', () => {
+describe('BlocksStore (Karma)', () => {
     let store: BlocksStore;
 
     beforeEach(() => {
@@ -195,7 +195,7 @@ describe('BlocksStore', () => {
             store.navPrev(root, {shiftKey: true, autoExpandRoot: true});
             store.navPrev(root, {shiftKey: true, autoExpandRoot: true});
             assert.deepEqual(store.selected, { '103': true, '104': true, '105': true });
-            
+
         });
     });
 
@@ -206,7 +206,7 @@ describe('BlocksStore', () => {
 
             store.setActive(root);
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
-            
+
             assert.deepEqual(store.selected, { [root]: true });
         });
         it("Should create a selection range properly when shift is true", () => {
@@ -220,7 +220,7 @@ describe('BlocksStore', () => {
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
-            
+
             assert.deepEqual(store.selected, { '104': true, '105': true });
         });
     });
