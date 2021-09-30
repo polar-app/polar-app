@@ -26,10 +26,7 @@
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0",
-    "ts-loader": "=8.0.18",
-    "webpack": "=5.26.3",
-    "webpack-cli": "=4.5.0"
+    "polar-webpack": "0.0.0"
   },
   "dependencies": {
     "@types/karma": "=5.0.1",
