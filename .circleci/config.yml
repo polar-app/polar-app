@@ -256,7 +256,7 @@ jobs:
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
             LOG=$(git log --pretty=format:"• %s" --no-merges $NEW_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq)
-            ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b ${LOG} -delete ${LATEST_VERSION}
+            ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
             echo 'export DATE=$(date +"%a %b %d %Y")' >> $BASH_ENV
             echo 'export TAG="$NEW_VERSION"' >> $BASH_ENV
             echo 'export CHANGELOG="$LOG"' >> $BASH_ENV
@@ -332,7 +332,7 @@ jobs:
                 }
               ]
             }
-          event: always
+          event: pass
 
 # ~ Define Custom Executors
 executors:
@@ -446,7 +446,7 @@ workflows:
 
       # @ Deploy Approved Polar app build
       - deploy-polar-app:
-          context: 
+          context:
             - Slack
           executor: xlarge
           firebase_hosting_target: polar-webapp
