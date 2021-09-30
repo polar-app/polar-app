@@ -1,20 +1,8 @@
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
-import {Tuples} from "polar-shared/src/util/Tuples";
 
 // https://www.mathsisfun.com/algebra/trig-finding-angle-right-triangle.html
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asin
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin
 export namespace ShortHeadCalculator {
-
-    // FIXME: these are the changes we should make here:
-    //
-    // - normalize everything around the minimum point in the set being 1.0...  It doesn't have to be based on 1.0
-    //   but it makes things easier to reason over since there's a standard anchor/min.
-
-    // - once the vector is normalized, compute the max
-
-    // - redistribute the x-axis over the range of the max so that it's now a square cartesian plane.
-
 
     /**
      * A point type.  This could be a tuple too but it's less well documented
