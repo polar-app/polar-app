@@ -15,22 +15,22 @@
     "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.117.0",
+    "@aws-cdk/assert": "=1.121.0",
     "@google-cloud/firestore": "=4.13.2",
-    "@types/node": "=14.14.35",
-    "aws-cdk": "^1.117.0",
-    "esbuild": "^0.12.19",
+    "@types/node": "=14.17.9",
+    "aws-cdk": "=1.121.0",
+    "esbuild": "=0.12.25",
     "firebase-admin": "=9.11.0",
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-webpack": "0.0.0",
-    "ts-node": "^10.2.0"
+    "ts-node": "=10.2.1"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.117.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.117.0",
-    "@aws-cdk/core": "^1.117.0",
+    "@aws-cdk/aws-apigateway": "=1.121.0",
+    "@aws-cdk/aws-lambda-nodejs": "=1.121.0",
+    "@aws-cdk/core": "=1.121.0",
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
     "node-fetch": "=2.6.1",

@@ -1,7 +1,6 @@
 import React from "react";
 import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnnotationContentBase, AnnotationContentTypeMap, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
@@ -134,32 +133,26 @@ export const useAnnotationBlockManager = () => {
         return block as Block<AnnotationContentTypeMap[T]>;
     }, [blocksStore]);
 
-    const updateMetadata = React.useCallback(<T extends IAnnotationContent>(annotation: T): T => {
-        return {
-            ...annotation,
-            value: {
-                ...annotation.value,
-                lastUpdated: ISODateTimeStrings.create(),
-            },
-        };
-    }, []);
-
-    const create = React.useCallback((fingerprint: string, annotation: IAnnotationContent): BlockIDStr | undefined => {
+    const create = React.useCallback((fingerprint: DocIDStr, annotation: IAnnotationContent): BlockIDStr | undefined => {
         const annotationJSON = annotation instanceof AnnotationContentBase
             ? annotation.toJSON()
             : annotation;
+
         const createdBlock = doMutation(fingerprint, (block) =>
-            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotationJSON) })
+            blocksStore.createNewBlock(block.id, { content: annotationJSON })
         );
+
         return createdBlock ? createdBlock.id : undefined;
-    }, [blocksStore, updateMetadata, doMutation]);
+    }, [blocksStore, doMutation]);
 
     const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
+
         const annotationJSON = annotation instanceof AnnotationContentBase
             ? annotation.toJSON()
             : annotation;
-        blocksStore.setBlockContent(id, updateMetadata(annotationJSON));
-    }, [blocksStore, updateMetadata]);
+
+        blocksStore.setBlockContent(id, annotationJSON);
+    }, [blocksStore]);
 
     const remove = React.useCallback((id: BlockIDStr) => {
         const block = getBlock(id);

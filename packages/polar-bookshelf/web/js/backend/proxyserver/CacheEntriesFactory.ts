@@ -1,4 +1,3 @@
-import {forDict} from 'polar-shared/src/util/Functions';
 import {CacheEntriesHolder} from './CacheEntriesHolder';
 import {DiskCacheEntry} from './DiskCacheEntry';
 import {PHZCacheEntry} from './PHZCacheEntry';
@@ -9,6 +8,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 /**
  * Cache entry which is just buffered in memory.
+ * @Deprecated this is from Polar 1.0 and these file formats are no longer used.
  */
 export class CacheEntriesFactory {
 

@@ -2,7 +2,7 @@ import {NativeSyntheticEvent} from "react-native";
 import {WebViewMessage} from "react-native-webview/lib/WebViewTypes";
 
 export default function tryParseWebviewPostMessage(event: NativeSyntheticEvent<WebViewMessage>): {
-    action: "console_log" | "buy_play",
+    action: "console_log" | "buy_play" | "android-go-back-exhausted",
     data?: {
         plan?: "plus" | "pro",
         email: string,

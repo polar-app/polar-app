@@ -14,6 +14,7 @@ import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {NameContent} from "../../../web/js/notes/content/NameContent";
 import {InheritedTag} from "polar-shared/src/tags/InheritedTags";
 import {Tag} from "polar-shared/src/tags/Tags";
+import {TAG_IDENTIFIER} from "../../../web/js/notes/content/HasLinks";
 
 export namespace AnnotationBlockMigrator {
     export const textToMarkdown = (text: Text | string) =>
@@ -29,12 +30,12 @@ export namespace AnnotationBlockMigrator {
             const block = blocksStore.getBlockByName(tag.label);
             
             if (block) {
-                return { text: `#${tag.label}`, id: block.id };
+                return { text: `${TAG_IDENTIFIER}${tag.label}`, id: block.id };
             } else {
                 const content = new NameContent({ type: 'name', data: tag.label, links: [] });
                 const id = blocksStore.createNewNamedBlock({ content });
 
-                return { text: `#${tag.label}`, id };
+                return { text: `${TAG_IDENTIFIER}${tag.label}`, id };
             }
         };
 

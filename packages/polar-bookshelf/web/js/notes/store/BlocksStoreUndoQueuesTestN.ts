@@ -3,7 +3,7 @@ import {assertJSON} from "../../test/Assertions";
 import {BlocksStore} from "./BlocksStore";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {JSDOMParser} from "./BlocksStoreTestNK";
+import {assertBlockType, JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";
@@ -15,6 +15,9 @@ import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {assert} from "chai";
 import {Asserts} from "polar-shared/src/Asserts";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {JSDOM} from "jsdom";
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -305,7 +308,7 @@ describe("BlocksStoreUndoQueues", () => {
         it('should return the id of the parent document block when given a descendant of that block', () => {
             const blocksStore = createStore();
 
-            const sideEffectIdentifiers = BlocksStoreUndoQueues.getSideEffectIdentifiers(blocksStore, ['2024', '2023flashcard']);
+            const sideEffectIdentifiers = BlocksStoreUndoQueues.getAffectedDocumentBlocksIdentifiers(blocksStore, ['2024', '2023flashcard']);
 
             assert.deepEqual(sideEffectIdentifiers, ['2020document']);
         });
@@ -313,7 +316,7 @@ describe("BlocksStoreUndoQueues", () => {
         it('should ignore root types other than "document"', () => {
             const blocksStore = createStore();
 
-            const sideEffectIdentifiers = BlocksStoreUndoQueues.getSideEffectIdentifiers(blocksStore, ['111', '118']);
+            const sideEffectIdentifiers = BlocksStoreUndoQueues.getAffectedDocumentBlocksIdentifiers(blocksStore, ['111', '118']);
 
             assert.deepEqual(sideEffectIdentifiers, []);
         });
@@ -323,6 +326,9 @@ describe("BlocksStoreUndoQueues", () => {
     describe("performSideEffects", () => {
         beforeEach(() => {
             TestingTime.freeze();
+            const dom = new JSDOM('<html><body></body></html>');
+
+            global.document = dom.window.document;
         });
 
         afterEach(() => {
@@ -339,7 +345,11 @@ describe("BlocksStoreUndoQueues", () => {
 
             TestingTime.forward(1000);
 
-            BlocksStoreUndoQueues.performSideEffects(blocksStore, ['2020document']);
+            BlocksStoreUndoQueues.performDocumentSideEffects(
+                blocksStore,
+                ['2020document'],
+                []
+            );
 
             const updatedBlock = blocksStore.getBlockForMutation(id);
 
@@ -350,6 +360,117 @@ describe("BlocksStoreUndoQueues", () => {
             assert.equal(updatedBlock.updated, updatedTime);
         });
 
+
+        it('should update the counters of docInfo when a child gets added', () => {
+            // Set up
+            const blocksStore = createStore();
+            const documentBlockID = '2020document';
+             
+            const content = new TextHighlightAnnotationContent({
+                type: AnnotationContentType.TEXT_HIGHLIGHT,
+                links: [],
+                docID: '2020document',
+                pageNum: 11,
+                value: {
+                    text: 'hello world',
+                    color: 'yellow',
+                    rects: {},
+                    revisedText: 'erm'
+                }
+            });
+
+            const { id: blockID } = blocksStore.createNewBlock(documentBlockID, { content });
+            const block = blocksStore.getBlock(blockID); 
+
+            Asserts.assertPresent(block);
+            const blockJSON = block.toJSON();
+
+            const mutations: ReadonlyArray<IBlocksStoreMutation> = [{
+                type: 'added',
+                id: blockID,
+                added: blockJSON,
+            }];
+
+            const oldOwnerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
+            Asserts.assertPresent(oldOwnerDocumentBlock);
+            assertBlockType('document', oldOwnerDocumentBlock);
+            const oldDocInfo = oldOwnerDocumentBlock.content.toJSON().docInfo;
+
+
+            // Act
+            BlocksStoreUndoQueues.performDocumentSideEffects(blocksStore, [documentBlockID], mutations);
+
+
+            // Assert
+            const ownerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
+            Asserts.assertPresent(ownerDocumentBlock);
+            assertBlockType('document', ownerDocumentBlock);
+
+            const newDocInfo = ownerDocumentBlock.content.toJSON().docInfo;
+
+            assert.equal(newDocInfo.nrTextHighlights, (oldDocInfo.nrTextHighlights || 0) + 1, 'nrTextHighlights should have the correct number');
+            assert.equal(newDocInfo.nrAnnotations, (oldDocInfo.nrAnnotations || 0) + 1, 'nrAnnotations should have the correct number');
+        });
+
+        it('should update the counters of docInfo when a child gets removed (it should also ignore mutations of type "modified")', () => {
+            // Set up
+            const blocksStore = createStore();
+            const documentBlockID = '2020document';
+            const randomBlock = blocksStore.getBlock('102');
+            Asserts.assertPresent(randomBlock);
+             
+            const content = new AreaHighlightAnnotationContent({
+                type: AnnotationContentType.AREA_HIGHLIGHT,
+                links: [],
+                docID: '2020document',
+                pageNum: 11,
+                value: {
+                    color: 'yellow',
+                    rects: {},
+                }
+            });
+
+            const { id: blockID } = blocksStore.createNewBlock(documentBlockID, { content });
+            const block = blocksStore.getBlock(blockID); 
+
+            Asserts.assertPresent(block);
+            const blockJSON = block.toJSON();
+
+            const mutations: ReadonlyArray<IBlocksStoreMutation> = [
+                {
+                    type: 'removed',
+                    id: blockID,
+                    removed: blockJSON,
+                },
+                {
+                    type: 'modified',
+                    id: randomBlock.id,
+                    before: randomBlock.toJSON(),
+                    after: randomBlock.toJSON(),
+                }
+            ];
+
+            const oldOwnerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
+            Asserts.assertPresent(oldOwnerDocumentBlock);
+            assertBlockType('document', oldOwnerDocumentBlock);
+            const oldDocInfo = oldOwnerDocumentBlock.content.toJSON().docInfo;
+
+
+            // Act
+            BlocksStoreUndoQueues.performDocumentSideEffects(blocksStore, [documentBlockID], mutations);
+
+
+            // Assert
+            const ownerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
+            Asserts.assertPresent(ownerDocumentBlock);
+            assertBlockType('document', ownerDocumentBlock);
+
+            const newDocInfo = ownerDocumentBlock.content.toJSON().docInfo;
+
+            console.log('debug', newDocInfo.nrAreaHighlights, oldDocInfo.nrAreaHighlights || 0);
+            assert.equal(newDocInfo.nrAreaHighlights, (oldDocInfo.nrAreaHighlights || 0) - 1, 'nrAreaHighlights should have the correct number');
+            assert.equal(newDocInfo.nrAnnotations, (oldDocInfo.nrAnnotations || 0) - 1, 'nrAnnotations should have the correct number');
+        });
     });
 
     describe("expandToParentAndChildren", () => {

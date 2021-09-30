@@ -29,7 +29,8 @@ xdescribe("OpenAIAnswersClient", function() {
                 stop: STOP,
                 documents,
                 n: 10,
-                temperature: 0
+                temperature: 0,
+                return_prompt: true
             }
 
             const answerResponse = await OpenAIAnswersClient.exec(request);
@@ -79,7 +80,8 @@ xdescribe("OpenAIAnswersClient", function() {
                 stop: STOP,
                 documents,
                 n: 1,
-                temperature: 0
+                temperature: 0,
+                return_prompt: true
             }
 
             const answerResponse = await OpenAIAnswersClient.exec(request);

@@ -47,7 +47,7 @@ xdescribe("AnswerIndexer", function() {
 
     });
 
-    it("doc 3", async function() {
+    xit("doc 3", async function() {
 
         // skipPages, 43, 44
 
