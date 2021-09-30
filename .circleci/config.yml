@@ -446,6 +446,8 @@ workflows:
 
       # @ Deploy Approved Polar app build
       - deploy-polar-app:
+          context: 
+            - Slack
           executor: xlarge
           firebase_hosting_target: polar-webapp
           requires:
