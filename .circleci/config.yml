@@ -331,7 +331,7 @@ jobs:
                       "type": "button",
                       "text": {
                         "type": "plain_text",
-                        "text": "View on Github",
+                        "text": "Github Release",
                         "emoji": true
                       },
                       "style": "primary",
