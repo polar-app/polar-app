@@ -18,23 +18,23 @@ class CreateSnapshotFunctions {
     public static async exec(idUser: IDUser,
                              request: CreateSnapshotRequest): Promise<CreateSnapshotResponse> {
 
-        const to = iduser.user.email;
+        const to = idUser.user.email;
         const from = 'noreply@getpolarized.io';
 
-        await sendgrid.send({
+        await Sendgrid.send({
             to,
             from,
-            subject: `polar data snapshot is being prepared.`,
-            html: `<p>your polar data snapshot is being prepared. you should receive another email in a few moments.</a></p>`
+            subject: `Polar data snapshot is being prepared.`,
+            html: `<p>Your Polar data snapshot is being prepared. You should receive another email in a few moments.</a></p>`
         })
 
-        const {url} = await userbackupcreator.create(iduser.uid);
+        const {url} = await UserBackupCreator.create(idUser.uid);
 
-        await sendgrid.send({
+        await Sendgrid.send({
             to,
             from,
-            subject: `polar data snapshot is ready to download.`,
-            html: `<p>your polar data snapshot has been created and can be downloaded here:</p><p><a href="${url}">${url}</a></p>`
+            subject: `Polar data snapshot is ready to download.`,
+            html: `<p>Your Polar data snapshot has been created and can be downloaded here:</p><p><a href="${url}">${url}</a></p>`
         })
 
         return {};
