@@ -359,7 +359,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 </PersistentRoute>
 
                                 <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
-                                    <AddFilesMobileScreen/>
+                                    <DocRepoSidebarTagStore>
+                                        <AddFilesMobileScreen/>
+                                    </DocRepoSidebarTagStore>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}

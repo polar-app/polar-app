@@ -10,7 +10,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 
-
 // There are 2-3 main problems with using display: none and potentially
 // visibility: hidden here.
 //
@@ -91,9 +90,11 @@ const MountListener = React.memo(function MountListener(props: MountListenerProp
 
 export interface IPersistentRouteContext {
     readonly active: boolean;
+    readonly path: string | string[];
+    readonly exact?: boolean;
 }
 
-const PersistentRouteContext = React.createContext<IPersistentRouteContext>({active: true});
+const PersistentRouteContext = React.createContext<IPersistentRouteContext>({active: true, path: ''});
 
 export function usePersistentRouteContext() {
     return React.useContext(PersistentRouteContext);
@@ -131,7 +132,7 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
     const className = computeClassName(active);
 
     return (
-        <PersistentRouteContext.Provider value={{ active }}>
+        <PersistentRouteContext.Provider value={{ active, path: props.path, exact: props.exact}}>
             <Switch>
 
                 <Route path="/">

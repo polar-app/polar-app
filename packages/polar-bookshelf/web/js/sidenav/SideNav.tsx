@@ -376,12 +376,21 @@ interface IUseSideCarStylesProps {
 export const SideCar: React.FC = ({ children }) => {
     const sidenavWidth = useSidenavWidth();
     const classes = useSideCarStyles({ sidenavWidth });
-    const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), []);
     const {active} = usePersistentRouteContext();
 
-    if (! mountElem || ! active) { // This technically would never happen.
+    // NOTE: we have a dependency on active here so we try to get the mountElem again
+    // when we change back to active.
+    const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), [active]);
+
+    if (! mountElem) {
+        // This technically would never happen.
+        return null;
+    }
+
+    if (! active) {
         return null;
     }
 
     return ReactDOM.createPortal(<div className={classes.root} children={children} />, mountElem);
+
 };
