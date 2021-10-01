@@ -1,7 +1,7 @@
 {
-  "name": "polar-private-beta",
+  "name": "polar-rpc",
   "version": "0.0.0",
-  "description": "Provides support importing users in our private beta.",
+  "description": "Basic RPC framework interfaces for use across Amazon CDK/Lamba and Firebase.",
   "main": "index.js",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
