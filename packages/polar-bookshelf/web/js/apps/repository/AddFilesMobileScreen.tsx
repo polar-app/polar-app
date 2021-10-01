@@ -8,6 +8,8 @@ import {AddFileHooks} from "./upload/AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import { useHistory } from 'react-router-dom';
+import {SideCar} from "../../sidenav/SideNav";
+import {FolderSidebar2} from "../../../../apps/repository/js/folders/FolderSidebar2";
 
 
 const useStyles = makeStyles<Theme>((theme) =>
@@ -63,6 +65,10 @@ export const AddFilesMobileScreen = () => {
     return(
         <>
             <DocRepoTableToolbar/>
+
+            <SideCar>
+                <FolderSidebar2/>
+            </SideCar>
 
             <div className={classes.root}>
                 <label htmlFor={id} className={classes.container}>
