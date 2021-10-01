@@ -43,6 +43,12 @@ export interface IAnswerExecutorRequest {
     readonly rerank_elasticsearch_model?: AIModel;
 
     /**
+     * When true we truncate the re-ranked results to JUST the short head.
+     */
+    // eslint-disable-next-line camelcase
+    readonly rerank_truncate_short_head?: boolean;
+
+    /**
      * When true, we prune the elasticsearch results of contiguous records.
      */
     // eslint-disable-next-line camelcase

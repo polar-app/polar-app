@@ -26,6 +26,8 @@ import {OpenAICostEstimator} from "./OpenAICostEstimator";
 export namespace OpenAISearchClient {
 
 
+    import ICostEstimation = OpenAICostEstimator.ICostEstimation;
+
     export interface IOpenAISearchRequest {
 
         /**
@@ -73,10 +75,14 @@ export namespace OpenAISearchClient {
 
     }
 
-    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse> {
+    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse & ICostEstimation> {
 
         const url = `https://api.openai.com/v1/engines/${model}/search`;
-        return OpenAIRequests.exec(url, request);
+        const response = await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);
+
+        const cost = OpenAICostEstimator.costOfSearch({model, query: request.query, documents: request.documents});
+
+        return {...response, ...cost};
 
     }
 
