@@ -1,26 +1,18 @@
 import {SentryReporters} from "polar-hooks-functions/impl/reporters/SentryReporter";
-import {IRPCError} from "polar-shared/src/util/IRPCError";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {Challenges} from "polar-shared/src/util/Challenges";
+import {IRegisterForPrivateBetaRequest} from "polar-private-beta-api/src/IRegisterForPrivateBetaRequest";
+import {
+    IRegisterForPrivateBetaError,
+    IRegisterForPrivateBetaResponse
+} from "polar-private-beta-api/src/IRegisterForPrivateBetaResponse";
 
+/**
+ * Main function for adding users to our private beta.  Takes a user and a tag
+ * as part of the request and updates the collection
+ */
 export namespace RegisterForPrivateBeta {
-
-    export interface IRegisterForPrivateBetaRequest {
-        readonly email: string;
-        readonly tag: string;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    export interface IRegisterForPrivateBetaResponse {
-
-    }
-
-    export interface IRegisterForPrivateBetaErrorFailed extends IRPCError<'failed'> {
-        readonly message: string;
-    }
-
-    export type IRegisterForPrivateBetaError = IRegisterForPrivateBetaErrorFailed;
 
     export async function exec(request: IRegisterForPrivateBetaRequest): Promise<IRegisterForPrivateBetaResponse | IRegisterForPrivateBetaError> {
 
