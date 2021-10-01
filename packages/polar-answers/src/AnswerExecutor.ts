@@ -18,13 +18,14 @@ import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {IAnswerExecutorTrace, IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {AnswerExecutorTraceCollection} from "polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
+import {ShortHeadCalculator} from "./ShortHeadCalculator";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -301,14 +302,37 @@ export namespace AnswerExecutor {
                         hit => hit.text));
 
                 // eslint-disable-next-line camelcase
-                const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
-                    .map(current => current.record)
-                    .collect();
+                const openai_reranked_records
+                    = arrayStream(openai_reranked_records_with_score.records)
+                        .map(current => current.record)
+                        .collect();
 
                 // eslint-disable-next-line camelcase
-                const records = arrayStream(openai_reranked_records)
-                    .head(documents_limit)
-                    .collect();
+                function computeRecords() {
+
+                    function computeLimit() {
+
+                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > 10) {
+                            console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
+                            return ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score))!.length;
+                        }
+
+                        // eslint-disable-next-line camelcase
+                        return documents_limit;
+
+                    }
+
+                    const limit = computeLimit();
+
+                    // eslint-disable-next-line camelcase
+                    return arrayStream(openai_reranked_records)
+                        .head(limit)
+                        .collect();
+
+                }
+
+                // eslint-disable-next-line camelcase
+                const records = computeRecords();
 
                 return <ESDocumentResultsWithRerank> {
                     elasticsearch_query,
@@ -416,7 +440,7 @@ export namespace AnswerExecutor {
             openai_answer: openai_answer_duration
         }
 
-        async function doTrace() {
+        async function doTrace(): Promise<IAnswerExecutorTrace> {
 
             const firestore = FirestoreAdmin.getInstance();
 
@@ -440,6 +464,11 @@ export namespace AnswerExecutor {
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
+
+            console.log("Stored trace data in firestore: ", trace);
+
+            return trace;
+
         }
 
         await doTrace();

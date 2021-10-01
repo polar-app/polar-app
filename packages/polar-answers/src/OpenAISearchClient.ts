@@ -25,7 +25,6 @@ import {OpenAICostEstimator} from "./OpenAICostEstimator";
  */
 export namespace OpenAISearchClient {
 
-
     import ICostEstimation = OpenAICostEstimator.ICostEstimation;
 
     export interface IOpenAISearchRequest {

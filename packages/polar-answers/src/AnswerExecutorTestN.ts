@@ -5,7 +5,7 @@ import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorRespons
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
 
-describe("Answer Executor", function () {
+xdescribe("Answer Executor", function () {
 
     this.timeout(600000);
 
@@ -19,7 +19,10 @@ describe("Answer Executor", function () {
             model: 'ada',
             search_model: 'ada',
             documents_limit: 1,
-            // rerank_elasticsearch: true,
+            rerank_elasticsearch: true,
+            rerank_elasticsearch_model: 'ada',
+            rerank_truncate_short_head: true,
+            prune_contiguous_records: true,
         });
 
         function isError(value: any): value is IAnswerExecutorError {

@@ -2,6 +2,8 @@ import {AIModel} from "polar-answers-api/src/AIModel";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {OpenAISearchClient} from "./OpenAISearchClient";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {OpenAICostEstimator} from "./OpenAICostEstimator";
+import { Reducers } from "polar-shared/src/util/Reducers";
 
 /**
  * There is a limit to the number of docs we can request at once.
@@ -14,6 +16,11 @@ const MAX_DOCS_PER_REQUEST = 200;
  */
 export namespace OpenAISearchReRanker {
 
+    import ICostEstimation = OpenAICostEstimator.ICostEstimation;
+
+    export interface IRerankedResults<R> extends ICostEstimation {
+        readonly records: ReadonlyArray<IRecordWithScore<R>>
+    }
     export interface IRecordWithScore<R> {
         readonly record: R;
         readonly score: number;
@@ -22,26 +29,28 @@ export namespace OpenAISearchReRanker {
     export async function exec<V>(model: AIModel,
                                   query: string,
                                   records: ReadonlyArray<V>,
-                                  toText: (value: V) => string): Promise<ReadonlyArray<IRecordWithScore<V>>> {
+                                  toText: (value: V) => string): Promise<IRerankedResults<V>> {
 
         const batches = Arrays.createBatches(records, MAX_DOCS_PER_REQUEST);
 
-        const requests = batches.map((records) => {
+        const requests = batches.map((batch) => {
 
-            return async (): Promise<ReadonlyArray<IRecordWithScore<V>>> => {
+            return async (): Promise<IRerankedResults<V>> => {
 
-                const documents = records.map(current => toText(current));
+                const documents = batch.map(current => toText(current));
 
                 const response = await OpenAISearchClient.exec(model, {
                     documents,
                     query
                 });
 
-                return response.data.map((current): IRecordWithScore<V> => {
-                    const record = records[current.document];
+                const reranked = response.data.map((current): IRecordWithScore<V> => {
+                    const record = batch[current.document];
                     const score = current.score;
                     return {record, score};
                 });
+
+                return {records: reranked, cost: response.cost, tokens: response.tokens};
 
             }
 
@@ -49,11 +58,24 @@ export namespace OpenAISearchReRanker {
 
         const responses = await Promise.all(requests.map(current => current()));
 
-        return arrayStream(responses)
-            .flatMap(current => current)
-            // now sort descending by score
-            .sort((a, b) => b.score - a.score)
-            .collect();
+        const cost = responses.map(current => current.cost).reduce(Reducers.SUM);
+        const tokens = responses.map(current => current.tokens).reduce(Reducers.SUM);
+
+        const reranked =
+            arrayStream(responses)
+                .map(current => current.records)
+                .flatMap(current => current)
+                // now sort descending by score
+                .sort((a, b) => b.score - a.score)
+                .collect();
+
+        console.log("Rerank cost: ", {cost, tokens, model});
+
+        return {
+            cost,
+            tokens,
+            records: reranked
+        };
 
     }
 

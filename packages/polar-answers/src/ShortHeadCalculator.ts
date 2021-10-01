@@ -132,6 +132,13 @@ export namespace ShortHeadCalculator {
 
     }
 
+    export function compute(vector: Vector) {
+
+        const normalized = ShortHeadCalculator.normalizeXY(vector);
+        return ShortHeadCalculator.computeShortHead(normalized);
+
+    }
+
     export function computeShortHead(normalizedPoints: NormalizedPoints) {
 
         /**
