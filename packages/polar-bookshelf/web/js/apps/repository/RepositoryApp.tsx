@@ -236,9 +236,11 @@ function CDKDemo() {
     const [rpcResult, setRpcResult] = React.useState<any | undefined>(undefined);
 
     React.useEffect(() => {
-        JSONRPC.exec('rpc-sample', {}).then(result => {
-            setRpcResult(result);
-        }).catch(reason => alert(reason));
+        JSONRPC.exec('rpc-sample', {})
+            .then(result => {
+                setRpcResult(result);
+            })
+            .catch(reason => console.error(reason));
     }, []);
 
     return <>

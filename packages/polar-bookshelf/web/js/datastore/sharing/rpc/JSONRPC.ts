@@ -75,6 +75,7 @@ export class JSONRPC {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'User-Token': props.idToken,
             },
             body: JSON.stringify(props.request)
         });
