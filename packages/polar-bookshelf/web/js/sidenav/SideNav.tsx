@@ -311,7 +311,7 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-            <SideNavInitializer />
+        <SideNavInitializer />
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
