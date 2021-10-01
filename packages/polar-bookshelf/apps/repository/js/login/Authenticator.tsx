@@ -363,7 +363,6 @@ const EmailTokenAuthButton = () => {
 
                             {triggered && (
                                 <>
-
                                     <TextField autoFocus={true}
                                             className={classes.email}
                                             onChange={event => challengeRef.current = event.target.value}
@@ -390,7 +389,8 @@ const EmailTokenAuthButton = () => {
                                         onChange={event => emailRef.current = event.target.value}
                                         onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                         placeholder="email@"
-                                        variant="outlined" />
+                                        variant="outlined" 
+                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}}/>
                             )}
                         </>
                     )}
@@ -568,7 +568,7 @@ const Main = React.memo(function Main(props: IProps) {
         </DeviceRouters.NotPhone>
 
         <DeviceRouters.Phone>
-            <div style={{height:"100vh"}}>
+            <div style={{display: 'block', height:"100vh"}}>
                 <div style={{textAlign: 'center', marginTop: '100px'}}>
                     <div className={classes.logo}>
                         <PolarSVGIcon width={125} height={125}/>
@@ -583,7 +583,7 @@ const Main = React.memo(function Main(props: IProps) {
 
                 <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                    <EmailTokenAuthButton/>
+                    <EmailTokenAuthButton />
 
                     {props.mode === 'create-account' && (
                         <SignInWithExistingAccount/>
@@ -593,9 +593,7 @@ const Main = React.memo(function Main(props: IProps) {
                         <OrCreateNewAccount/>
                     )}
 
-                    <div style={{flexGrow: 1}}>
-
-                    </div>
+                    <div style={{flexGrow: 1}} />
 
                     <div>
                         <p style={{fontSize: '10px'}} className={classes.legal}>
