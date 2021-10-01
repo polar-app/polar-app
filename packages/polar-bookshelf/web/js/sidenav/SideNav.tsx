@@ -311,14 +311,12 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-            <SideNavInitializer />
+        <SideNavInitializer />
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
-                <DeviceRouters.Desktop>
-                    <>
-                        <ZenModeActiveContainer>
-                            <div className={classes.root} style={{ height: '100%' }}>
+                {Devices.isDesktop() && <ZenModeActiveContainer>
+                    <div className={classes.root} style={{ height: '100%' }}>
 
                                 <PolarButton/>
 
@@ -349,12 +347,9 @@ export const SideNav = React.memo(function SideNav() {
                                     <SideNavQuestionButton/>
                                     <SettingsButton/>
                                 </div>
-
-                            </div>
-                        </ZenModeActiveContainer>
-                        <Divider orientation="vertical" />
-                    </>
-                </DeviceRouters.Desktop>
+                    </div>
+                </ZenModeActiveContainer>}
+                <Divider orientation="vertical" />
                 <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>
         </>

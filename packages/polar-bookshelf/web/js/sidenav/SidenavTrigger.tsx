@@ -8,19 +8,29 @@ import {useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 export const SidenavTrigger: React.FC = () => {
     const {setOpen} = useSideNavCallbacks();
     const {isOpen} = useSideNavStore(['isOpen']);
-    // const history = useHistory();
+    const history = useHistory();
 
-    const handleToggle = React.useCallback(() => {
-        setOpen(! isOpen);
-        // history.push(`#sidenav${Date.now()}`);
-    }, [setOpen, isOpen]);
+    const handleToggle = (url: string) => {
+        setOpen(!isOpen);
+        history.push(url);
+    };
+            
+    React.useEffect(()=>{
+        return history.listen((location) => {
+            // if we press the back button
+            if (history.action === 'POP') {
+                setOpen(false)
+            }
+
+        })
+    },[history]);
 
     if (Devices.isDesktop()) {
         return null;
     }
 
     return (
-        <IconButton onClick={handleToggle}>
+        <IconButton onClick={ () => handleToggle(`#sidenav${Date.now()}`)}>
             <MenuIcon/>
         </IconButton>
     );
