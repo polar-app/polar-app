@@ -368,7 +368,8 @@ const EmailTokenAuthButton = () => {
                                             onChange={event => challengeRef.current = event.target.value}
                                             onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                             placeholder="Enter your Code Here"
-                                            variant="outlined" />
+                                            variant="outlined" 
+                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
 
                                     <div className={classes.alternate}>
                                         <Button onClick={handleEmailProvided}>Resend Email</Button>
@@ -377,7 +378,8 @@ const EmailTokenAuthButton = () => {
                                     <Button variant="contained"
                                             color="primary"
                                             className={classes.button}
-                                            onClick={handleClick}>
+                                            onClick={handleClick}
+                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} >
                                         Verify Code
                                     </Button>
                                 </>
