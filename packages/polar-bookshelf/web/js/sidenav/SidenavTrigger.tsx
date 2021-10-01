@@ -12,21 +12,16 @@ export const SidenavTrigger: React.FC = () => {
 
     const handleToggle = (url: string) => {
         setOpen(!isOpen);
-        history.replace(url);
+        history.push(url);
     };
             
     React.useEffect(()=>{
         return history.listen((location) => {
             // if we press the back button
-            if (history.action === 'POP' && history.location.pathname !== '/') {
-                handleToggle('/');
-            
-                //if we try to open the sidenave not from the homepage
-                if (history.location.pathname !== '/' ){
-                    history.push('/');// not working yet!
-                    handleToggle(`#sidenav${Date.now()}`)
-                }
+            if (history.action === 'POP') {
+                setOpen(false)
             }
+
         })
     },[history]);
 
