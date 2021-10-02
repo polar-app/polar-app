@@ -1,10 +1,10 @@
 import {OpenAISecrets} from "./OpenAISecrets";
 import {Fetches} from "polar-shared/src/util/Fetch";
-import {OpenAIRequestCache} from "./OpenAIRequestCache";
+import {OpenAIRequestsCache} from "./OpenAIRequestsCache";
 
 export namespace OpenAIRequests {
 
-    const cache = OpenAIRequestCache.create();
+    const cache = OpenAIRequestsCache.create();
 
     export async function exec<B extends Record<string, string | number | boolean>, T>(url: string, body: B): Promise<T> {
 

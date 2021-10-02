@@ -7,7 +7,7 @@ import {AsyncCaches} from "polar-cache/src/AsyncCaches";
  * Note that this isn't really optimized for speed, just to avoid OpenAI
  * calls.
  */
-export namespace OpenAIRequestCache {
+export namespace OpenAIRequestsCache {
 
     export type Req =  Record<string, string | number | boolean>;
     export type Res = Req;
