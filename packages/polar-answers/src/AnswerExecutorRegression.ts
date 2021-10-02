@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
@@ -21,6 +20,10 @@ import getUID = AnswerTests.getUID;
 // timings as latency is going to be an issue.
 
 async function doRegression(opts: ExecutorOpts) {
+
+    interface IRegressionAnswer {
+        readonly answer: string;
+    }
 
     const engine = RegressionEngines.create();
 

@@ -1,5 +1,6 @@
 import {Percentages} from "./Percentages";
 import {Strings} from "./Strings";
+import {ErrorType} from "./Errors";
 
 /**
  * A regression framework for running tests that return boolean and we can then
@@ -12,7 +13,7 @@ export namespace RegressionEngines {
      * A basic regression test will 'pass' as long as it doesn't throw an
      * exception.
      */
-    export type RegressionTest = () => Promise<void>;
+    export type RegressionTest<A> = () => Promise<A>;
 
     export interface RegressionResult {
         readonly nrPass: number;
@@ -20,17 +21,17 @@ export namespace RegressionEngines {
         readonly accuracy: number;
     }
 
-    export interface IRegressionEngine {
+    export interface IRegressionEngine<A> {
 
         /**
          * Register a test.
          */
-        readonly register: (testName: string, test: RegressionTest) => void;
+        readonly register: (testName: string, test: RegressionTest<A>) => void;
 
         /**
-         * Skip a test... it's just not registered.
+         * Skip a test... it's just not registered but you don't need to comment it out.
          */
-        readonly xregister: (testName: string, test: RegressionTest) => void;
+        readonly xregister: (testName: string, test: RegressionTest<A>) => void;
 
         /**
          * Execute the regression engine with all registered tests.
@@ -39,11 +40,11 @@ export namespace RegressionEngines {
 
     }
 
-    export function create(): IRegressionEngine {
+    export function create<A>(): IRegressionEngine<A> {
 
         interface IRegressionTestEntry {
             readonly testName: string;
-            readonly test: RegressionTest;
+            readonly test: RegressionTest<A>;
         }
 
         interface IRegressionTestResultPass {
@@ -54,18 +55,18 @@ export namespace RegressionEngines {
         interface IRegressionTestResultFail {
             readonly testName: string;
             readonly result: 'fail';
-            readonly err: any;
+            readonly err: ErrorType
         }
 
         type IRegressionTestResult = IRegressionTestResultPass | IRegressionTestResultFail;
 
         const regressions: IRegressionTestEntry[] = [];
 
-        function register(testName: string, test: RegressionTest) {
+        function register(testName: string, test: RegressionTest<A>) {
             regressions.push({testName, test});
         }
 
-        function xregister(testName: string, test: RegressionTest) {
+        function xregister(testName: string, test: RegressionTest<A>) {
             // noop
         }
 
@@ -82,6 +83,7 @@ export namespace RegressionEngines {
                     console.log("=== Running regression test: " + testEntry.testName);
 
                     try {
+
                         await testEntry.test();
 
                         results.push({
