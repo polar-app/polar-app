@@ -30,6 +30,13 @@ import {ShortHeadCalculator} from "./ShortHeadCalculator";
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
+/**
+ * The minimum docs needed to run the short head computation.
+ */
+const SHORT_HEAD_MIN_DOCS = 50;
+
+const SHORT_HEAD_ANGLE = 45;
+
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
@@ -291,6 +298,10 @@ export namespace AnswerExecutor {
 
                 console.log("Re-ranking N ES results via OpenAI: " + elasticsearch_records.length)
 
+                // TODO: technically if we have < 200 documents, the re-rank
+                // isn't really needed and would in fact cost us more money
+                // because we re-rank again with currie.
+
                 // TODO: trace the latency of the rerank too..
 
                 // TODO: trace the ranked
@@ -312,13 +323,11 @@ export namespace AnswerExecutor {
 
                     function computeLimit() {
 
-                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > 10) {
+                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > SHORT_HEAD_MIN_DOCS) {
+
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
 
-                            // FIXME: 45 (angle_cutoff) should be a constant ant configurable
-                            // FIXME: there needs to be a min-rerank variable so that we don't attempt to re-rank when there
-                            // are too few records but this also might need a cost-based optimizer.
-                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), 45);
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), SHORT_HEAD_ANGLE);
 
                             if (head) {
                                 console.log("Short head truncated to N entries: " + head.length)
