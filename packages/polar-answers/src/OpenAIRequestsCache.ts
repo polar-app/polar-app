@@ -13,7 +13,7 @@ export namespace OpenAIRequestsCache {
     }
 
     export function create() {
-        return AsyncCaches.create<IOpenAIRequestCacheKey, Res>('firestore', 'test-only');
+        return AsyncCaches.create<IOpenAIRequestCacheKey, Res>('answers-openai-requests', 'firestore', 'test-only');
     }
 
 }

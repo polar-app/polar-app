@@ -1,6 +1,7 @@
 import {DiskBasedAsyncCacheDelegate} from "./delegates/DiskBasedAsyncCacheDelegate";
 import {TestOnlyWrapper} from "./wrappers/TestOnlyWrapper";
 import {FirestoreBasedAsyncCacheDelegate} from "./delegates/FirestoreBasedAsyncCacheDelegate";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export namespace AsyncCaches {
 
@@ -10,15 +11,17 @@ export namespace AsyncCaches {
         readonly put: (key: K, value: V) => Promise<void>
     }
 
-    export function create<K, V>(delegateName: 'disk' | 'firestore', wrapperName?: 'test-only'): IAsyncCache<K, V> {
+    export function create<K, V>(nspace: IDStr,
+                                 delegateName: 'disk' | 'firestore',
+                                 wrapperName?: 'test-only'): IAsyncCache<K, V> {
 
         function createDelegate() {
 
             switch(delegateName) {
                 case "disk":
-                    return DiskBasedAsyncCacheDelegate.create<K, V>();
+                    return DiskBasedAsyncCacheDelegate.create<K, V>(nspace);
                 case "firestore":
-                    return FirestoreBasedAsyncCacheDelegate.create<K, V>();
+                    return FirestoreBasedAsyncCacheDelegate.create<K, V>(nspace);
 
             }
 

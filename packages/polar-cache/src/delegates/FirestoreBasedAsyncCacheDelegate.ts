@@ -8,12 +8,13 @@ export namespace FirestoreBasedAsyncCacheDelegate {
 
     const COLLECTION_NAME = 'cache';
 
-    export function create<K, V>(): AsyncCacheDelegate<K, V> {
+    export function create<K, V>(nspace: IDStr): AsyncCacheDelegate<K, V> {
 
         interface ICacheEntry {
             readonly id: IDStr;
             readonly written: ISODateTimeString;
             readonly value: JSONStr;
+            readonly nspace: IDStr;
         }
 
         function computeID(key: K): IDStr {
@@ -66,7 +67,8 @@ export namespace FirestoreBasedAsyncCacheDelegate {
             const entry: ICacheEntry = {
                 id: computeID(key),
                 written: ISODateTimeStrings.create(),
-                value: JSON.stringify(value)
+                value: JSON.stringify(value),
+                nspace
             }
 
             const doc = getDocumentReference(key);
