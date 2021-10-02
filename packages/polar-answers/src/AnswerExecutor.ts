@@ -321,7 +321,7 @@ export namespace AnswerExecutor {
                             const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), 45);
 
                             if (head) {
-                                console.log("Short head truncated to N entries: " + head.length;)
+                                console.log("Short head truncated to N entries: " + head.length)
                                 return head.length;
                             } else {
                                 console.warn("No short head computed");

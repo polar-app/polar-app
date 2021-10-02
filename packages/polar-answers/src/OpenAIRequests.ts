@@ -6,7 +6,7 @@ export namespace OpenAIRequests {
 
     const cache = OpenAIRequestsCache.create();
 
-    export async function exec<B extends Record<string, string | number | boolean>, T>(url: string, body: B): Promise<T> {
+    export async function exec<B, T>(url: string, body: B): Promise<T> {
 
         OpenAISecrets.init();
 

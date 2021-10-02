@@ -1,20 +1,15 @@
 import {AsyncCaches} from "polar-cache/src/AsyncCaches";
 
 /**
- * A very basic HTTP request cache, that works on disk, which is disabled when
- * not running in Mocha.
- *
- * Note that this isn't really optimized for speed, just to avoid OpenAI
- * calls.
  */
 export namespace OpenAIRequestsCache {
 
-    export type Req =  Record<string, string | number | boolean>;
+    export type Req =  Record<string, unknown>;
     export type Res = Req;
 
     export interface IOpenAIRequestCacheKey {
         readonly url: string;
-        readonly body: Req;
+        readonly body: any;
     }
 
     export function create() {
