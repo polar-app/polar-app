@@ -18,6 +18,8 @@ export namespace OpenAIRequests {
             return await OpenAIRequestCache.get({url, body}) as any;
         }
 
+        console.log("Executing request against OpenAI URL: ", url);
+
         const response = await Fetches.fetch(url, {
             method: 'POST',
             body: JSON.stringify(body),

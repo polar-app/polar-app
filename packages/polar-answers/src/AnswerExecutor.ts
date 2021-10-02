@@ -314,7 +314,15 @@ export namespace AnswerExecutor {
 
                         if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > 10) {
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
-                            return ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score))!.length;
+
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), 45);
+
+                            if (head) {
+                                console.log("Short head truncated to N entries: " + head.length;)
+                                return head.length;
+                            } else {
+                                console.warn("No short head computed");
+                            }
                         }
 
                         // eslint-disable-next-line camelcase
@@ -465,7 +473,7 @@ export namespace AnswerExecutor {
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
 
-            console.log("Stored trace data in firestore: ", trace);
+            console.log("Stored trace data in firestore: ", JSON.stringify(trace, null, "  "));
 
             return trace;
 

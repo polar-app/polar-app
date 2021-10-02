@@ -16,8 +16,8 @@ xdescribe("Answer Executor", function () {
         const response = await AnswerExecutor.exec({
             uid,
             question,
-            model: 'ada',
-            search_model: 'ada',
+            model: 'curie',
+            search_model: 'curie',
             documents_limit: 1,
             rerank_elasticsearch: true,
             rerank_elasticsearch_model: 'ada',
@@ -42,7 +42,6 @@ xdescribe("Answer Executor", function () {
         }
 
     }
-
 
     // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
     it("What is a Planet?", async function () {

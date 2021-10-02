@@ -74,7 +74,7 @@ export namespace OpenAIRequestCache {
         const path = await computePath(key);
         await Files.writeFileAsync(path, JSON.stringify(response))
 
-        console.log("OpenAIRequestCache: MISS (stored)");
+        console.log("OpenAIRequestCache: MISS (stored): " + path);
 
     }
 
