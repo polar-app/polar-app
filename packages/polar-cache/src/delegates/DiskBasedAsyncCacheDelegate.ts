@@ -33,12 +33,15 @@ export namespace DiskBasedAsyncCacheDelegate {
 
         async function get(key: K): Promise<V | undefined> {
 
+            const path = await computePath(key);
+
             if(await containsKey(key)) {
-                const path = await computePath(key);
                 console.log("DiskBasedAsyncCacheDelegate: HIT: " + path);
                 const data = await Files.readFileAsync(path)
                 return JSON.parse(data.toString('utf-8'));
             }
+
+            console.log("DiskBasedAsyncCacheDelegate: MISS: " + path);
 
             return undefined;
 
@@ -49,7 +52,7 @@ export namespace DiskBasedAsyncCacheDelegate {
             const path = await computePath(key);
             await Files.writeFileAsync(path, JSON.stringify(value))
 
-            console.log("DiskBasedAsyncCacheDelegate: MISS (stored): " + path);
+            console.log("DiskBasedAsyncCacheDelegate: PUT: " + path);
 
         }
 

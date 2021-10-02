@@ -1,5 +1,6 @@
 import {DiskBasedAsyncCacheDelegate} from "./delegates/DiskBasedAsyncCacheDelegate";
 import {TestOnlyWrapper} from "./wrappers/TestOnlyWrapper";
+import {FirestoreBasedAsyncCacheDelegate} from "./delegates/FirestoreBasedAsyncCacheDelegate";
 
 export namespace AsyncCaches {
 
@@ -9,10 +10,18 @@ export namespace AsyncCaches {
         readonly put: (key: K, value: V) => Promise<void>
     }
 
-    export function create<K, V>(delegateName: 'disk', wrapperName?: 'test-only'): IAsyncCache<K, V> {
+    export function create<K, V>(delegateName: 'disk' | 'firestore', wrapperName?: 'test-only'): IAsyncCache<K, V> {
 
         function createDelegate() {
-            return DiskBasedAsyncCacheDelegate.create<K, V>();
+
+            switch(delegateName) {
+                case "disk":
+                    return DiskBasedAsyncCacheDelegate.create<K, V>();
+                case "firestore":
+                    return FirestoreBasedAsyncCacheDelegate.create<K, V>();
+
+            }
+
         }
 
         const delegate = createDelegate();
