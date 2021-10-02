@@ -9,74 +9,100 @@ import {ErrorType} from "./Errors";
 
 export namespace RegressionEngines {
 
+    export type ResultType = string | number | boolean;
+
+    export interface IRegressionTestResult<R extends ResultType> {
+
+        /**
+         * The status of this regression result ... pass or fail.
+         */
+        readonly status: 'pass' | 'fail';
+
+        /**
+         * The actual value.
+         */
+        readonly actual: R;
+
+        /**
+         * The expected value.
+         */
+        readonly expected: R | ReadonlyArray<R>;
+
+        /**
+         * Metadata for this result.
+         */
+        readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
+
+    }
+
+    export interface IRegressionTestError {
+        readonly status: 'fail';
+        readonly err: ErrorType;
+    }
+
+    export interface IRegressionTestName {
+        readonly testName: string;
+    }
+
     /**
      * A basic regression test will 'pass' as long as it doesn't throw an
      * exception.
      */
-    export type RegressionTest<A> = () => Promise<A>;
+    export type RegressionTest<R extends ResultType> = () => Promise<IRegressionTestResult<R>>;
 
-    export interface RegressionResult {
+    export interface RegressionExecResult {
         readonly nrPass: number;
         readonly nrFail: number;
         readonly accuracy: number;
     }
 
-    export interface IRegressionEngine<A> {
+    export interface IRegressionEngine<R extends ResultType> {
 
         /**
          * Register a test.
          */
-        readonly register: (testName: string, test: RegressionTest<A>) => void;
+        readonly register: (testName: string, test: RegressionTest<R>) => void;
 
         /**
          * Skip a test... it's just not registered but you don't need to comment it out.
          */
-        readonly xregister: (testName: string, test: RegressionTest<A>) => void;
+        readonly xregister: (testName: string, test: RegressionTest<R>) => void;
 
         /**
          * Execute the regression engine with all registered tests.
          */
-        readonly exec: () => Promise<RegressionResult>;
+        readonly exec: () => Promise<RegressionExecResult>;
 
     }
 
-    export function create<A>(): IRegressionEngine<A> {
+    export function create<R extends ResultType>(): IRegressionEngine<R> {
 
         interface IRegressionTestEntry {
             readonly testName: string;
-            readonly test: RegressionTest<A>;
+            readonly test: RegressionTest<R>;
         }
-
-        interface IRegressionTestResultPass {
-            readonly testName: string;
-            readonly result: 'pass';
-        }
-
-        interface IRegressionTestResultFail {
-            readonly testName: string;
-            readonly result: 'fail';
-            readonly err: ErrorType
-        }
-
-        type IRegressionTestResult = IRegressionTestResultPass | IRegressionTestResultFail;
 
         const regressions: IRegressionTestEntry[] = [];
 
-        function register(testName: string, test: RegressionTest<A>) {
+        function register(testName: string, test: RegressionTest<R>) {
             regressions.push({testName, test});
         }
 
-        function xregister(testName: string, test: RegressionTest<A>) {
+        function xregister(testName: string, test: RegressionTest<R>) {
             // noop
         }
 
         async function exec() {
 
-            async function doTests(): Promise<ReadonlyArray<IRegressionTestResult>> {
+            type IRegressionTestResultExecuted
+                = (IRegressionTestResult<R> & IRegressionTestName) |
+                  (IRegressionTestError & IRegressionTestName);
+
+            async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted>> {
 
                 console.log("=== Running regression tests...");
 
-                const results: IRegressionTestResult[] = [];
+                const results: IRegressionTestResultExecuted[] = [];
 
                 for (const testEntry of regressions) {
 
@@ -84,18 +110,18 @@ export namespace RegressionEngines {
 
                     try {
 
-                        await testEntry.test();
+                        const testResult = await testEntry.test();
 
                         results.push({
                             testName: testEntry.testName,
-                            result: 'pass'
+                            ...testResult
                         });
 
                     } catch (e) {
                         console.error(`Failed to run regression test: ${testEntry.testName}`, e);
                         results.push({
                             testName: testEntry.testName,
-                            result: 'fail',
+                            status: 'fail',
                             err: e
                         });
                     }
@@ -108,10 +134,10 @@ export namespace RegressionEngines {
 
             }
 
-            function doReport(results: ReadonlyArray<IRegressionTestResult>): RegressionResult {
+            function doReport(results: ReadonlyArray<IRegressionTestResultExecuted>): RegressionExecResult {
 
-                const nrPass = results.filter(current => current.result === 'pass').length;
-                const nrFail = results.filter(current => current.result === 'fail').length;
+                const nrPass = results.filter(current => current.status === 'pass').length;
+                const nrFail = results.filter(current => current.status === 'fail').length;
                 const nrTests = results.length;
 
                 const accuracy = Percentages.calculate(nrPass, nrTests);
@@ -119,7 +145,9 @@ export namespace RegressionEngines {
                 console.log("========");
 
                 for(const result of results) {
-                    console.log(Strings.rpad(result.testName, ' ', 25) + " : " + result.result);
+                    // TODO print metadata
+                    // TODO: show actual ...
+                    console.log(Strings.rpad(result.testName, ' ', 25) + " : " + result.status + " " + ((result as any).actual || ''));
                 }
 
                 console.log("========");
