@@ -315,6 +315,9 @@ export namespace AnswerExecutor {
                         if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > 10) {
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
 
+                            // FIXME: 45 (angle_cutoff) should be a constant ant configurable
+                            // FIXME: there needs to be a min-rerank variable so that we don't attempt to re-rank when there
+                            // are too few records but this also might need a cost-based optimizer.
                             const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), 45);
 
                             if (head) {
