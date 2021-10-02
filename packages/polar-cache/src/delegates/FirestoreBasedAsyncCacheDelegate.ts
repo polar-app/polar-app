@@ -18,7 +18,7 @@ export namespace FirestoreBasedAsyncCacheDelegate {
         }
 
         function computeID(key: K): IDStr {
-            return Hashcodes.create(key);
+            return Hashcodes.create({nspace, key});
         }
 
         function getDocumentReference(key: K) {
