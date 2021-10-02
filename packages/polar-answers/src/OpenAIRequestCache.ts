@@ -10,6 +10,8 @@ import {Mocha} from "polar-shared/src/util/Mocha";
  *
  * Note that this isn't really optimized for speed, just to avoid OpenAI
  * calls.
+ *
+ * @Deprecated use polar-cache
  */
 export namespace OpenAIRequestCache {
 
