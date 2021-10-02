@@ -39,7 +39,6 @@ export namespace FirestoreBasedAsyncCacheDelegate {
         async function containsKey(key: K): Promise<boolean> {
 
             const snapshot = await getSnapshot(key);
-
             return snapshot.exists;
 
         }

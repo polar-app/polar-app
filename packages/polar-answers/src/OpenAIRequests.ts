@@ -4,6 +4,8 @@ import {OpenAIRequestCache} from "./OpenAIRequestCache";
 
 export namespace OpenAIRequests {
 
+    const cache = OpenAIRequestCache.create();
+
     export async function exec<B extends Record<string, string | number | boolean>, T>(url: string, body: B): Promise<T> {
 
         OpenAISecrets.init();
@@ -14,8 +16,8 @@ export namespace OpenAIRequests {
             throw new Error("No OPENAI_API_KEY in environment");
         }
 
-        if (await OpenAIRequestCache.contains({url, body})) {
-            return await OpenAIRequestCache.get({url, body}) as any;
+        if (await cache.containsKey({url, body})) {
+            return await cache.get({url, body}) as any;
         }
 
         console.log("Executing request against OpenAI URL: ", url);
@@ -31,7 +33,7 @@ export namespace OpenAIRequests {
 
         if (response.ok) {
             const json = await response.json();
-            await OpenAIRequestCache.set({url, body}, json);
+            await cache.put({url, body}, json);
             return json;
         }
 
