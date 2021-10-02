@@ -8,9 +8,13 @@ export namespace TestOnlyWrapper {
      */
     export function create<K, V>(delegate: AsyncCacheDelegate<K, V>) {
 
+        function cacheDisabled() {
+            return !Mocha.isMocha() && ! process.env.POLAR_CACHE_FORCED;
+        }
+
         async function containsKey(key: K): Promise<boolean> {
 
-            if (!Mocha.isMocha()) {
+            if (cacheDisabled()) {
                 return false;
             }
 
@@ -21,7 +25,7 @@ export namespace TestOnlyWrapper {
 
         async function get(key: K): Promise<V | undefined> {
 
-            if (!Mocha.isMocha()) {
+            if (cacheDisabled()) {
                 return undefined;
             }
 
@@ -31,7 +35,7 @@ export namespace TestOnlyWrapper {
 
         async function put(key: K, value: V) {
 
-            if (!Mocha.isMocha()) {
+            if (cacheDisabled()) {
                 return;
             }
 

@@ -841,7 +841,10 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
 }
 
-async function runRegressions() {
+async function main() {
+
+    // force the cache usage
+    process.env.POLAR_CACHE_FORCED='true';
 
     // main things to test:
 
@@ -866,5 +869,5 @@ async function runRegressions() {
 
 }
 
-runRegressions()
+main()
     .catch(err => console.error("Failed to run regression: ", err));
