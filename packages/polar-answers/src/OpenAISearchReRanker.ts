@@ -3,7 +3,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {OpenAISearchClient} from "./OpenAISearchClient";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { Reducers } from "polar-shared/src/util/Reducers";
-import {ICostEstimation} from "polar-answers-api/src/ICostEstimation";
+import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 
 /**
  * There is a limit to the number of docs we can request at once.
@@ -16,7 +16,7 @@ const MAX_DOCS_PER_REQUEST = 200;
  */
 export namespace OpenAISearchReRanker {
 
-    export interface IRerankedResults<R> extends ICostEstimation {
+    export interface IRerankedResults<R> extends ICostEstimationHolder<ICostEstimation> {
         readonly records: ReadonlyArray<IRecordWithScore<R>>
     }
     export interface IRecordWithScore<R> {
@@ -48,7 +48,13 @@ export namespace OpenAISearchReRanker {
                     return {record, score};
                 });
 
-                return {records: reranked, cost: response.cost_estimation.cost, tokens: response.cost_estimation.tokens};
+                return {
+                    records: reranked,
+                    cost_estimation: {
+                        cost: response.cost_estimation.cost,
+                        tokens: response.cost_estimation.tokens
+                    }
+                };
 
             }
 
@@ -56,8 +62,8 @@ export namespace OpenAISearchReRanker {
 
         const responses = await Promise.all(requests.map(current => current()));
 
-        const cost = responses.map(current => current.cost).reduce(Reducers.SUM);
-        const tokens = responses.map(current => current.tokens).reduce(Reducers.SUM);
+        const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM);
+        const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM);
 
         const reranked =
             arrayStream(responses)
@@ -70,8 +76,9 @@ export namespace OpenAISearchReRanker {
         console.log("Rerank cost: ", {cost, tokens, model});
 
         return {
-            cost,
-            tokens,
+            cost_estimation: {
+                cost, tokens
+            },
             records: reranked
         };
 

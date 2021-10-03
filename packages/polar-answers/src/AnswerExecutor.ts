@@ -373,8 +373,8 @@ export namespace AnswerExecutor {
                     openai_reranked_records,
                     openai_reranked_duration,
                     openai_reranked_cost_estimation: {
-                        cost: openai_reranked_records_with_score.cost,
-                        tokens: openai_reranked_records_with_score.tokens,
+                        cost: openai_reranked_records_with_score.cost_estimation.cost,
+                        tokens: openai_reranked_records_with_score.cost_estimation.tokens,
                     },
                     records,
                     elasticsearch_pruned
