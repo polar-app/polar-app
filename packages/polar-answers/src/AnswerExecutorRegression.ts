@@ -46,374 +46,292 @@ async function doRegression(opts: ExecutorOpts) {
     engine.xregister("covid 3", executor.create("What neutralized the prototype B virus?", ""));
 
 
-    // engine.register("astronomy #1", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
-    //         "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
-    //         "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
-    //         // TODO: this one is wrong but it might be a bug in the indexer not the executor.
-    //         "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a",
-    //         "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("astronomy #2", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
-    //         "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
-    //         "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
-    //         "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
-    //         "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
-    //         "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #1", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which native peoples built homes in cliff dwellings that still exist?", [
-    //         "Anasazi",
-    //         "The Anasazi."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #2", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which culture developed the first writing system in the Western Hemisphere?", [
-    //         "Olmec",
-    //         "The Olmec."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #3", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which culture developed a road system rivaling that of the Romans?", [
-    //         "Inca",
-    //         "The Inca."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #4", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
-    //         "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
-    //         "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.",
-    //         "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival.",
-    //         "The Native peoples of North America were not as advanced as the Aztec, Inca, and Maya.",
-    //         "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies.",
-    //         "The Native peoples of North America were not as large in population size or as organized in social structure."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #5", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was the series of attempts by Christian armies to retake the Holy Lands from Muslims was known as?", [
-    //         "The Crusades."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #6", async function () {
-    //
-    //     // TODO not sure about this one.  Need to review.
-    //     await executor.assertQuestionAndAnswer("Which city became wealthy by trading with the East?", [
-    //         "Venice.",
-    //         "Venice"
-    //     ]);
-    //
-    // })
-    // engine.register("US history chap 1 #7", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
-    //         "Muslims and Jews",
-    //         "Jews and Muslims"
-    //     ]);
-    //
-    // })
-    // engine.register("US history chap 1 #8", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("How did European feudal society operate?", [
-    //         "Nobility held lands from the Crown in exchange for military service",
-    //         "The lords owned the land; knights gave military service to a lord and carried out his justice",
-    //         "The peasants (villeins or serfs) were obliged to live on their lord's land and give him homage, labour, and a share of the produce",
-    //         "It was a mutually supportive system.",
-    //         "Feudal society was a mutually supportive system.",
-    //         // TODO: parser issue
-    //         "The lords owned the land; knights gave military service to a lord and carried out his justice; serfs worked the land in return for the protection offered by the",
-    //         "Europe’s feudal society was a mutually supportive system."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 1 #9", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which city became a leading center for Muslim scholarship and trade?", [
-    //         "timbuktu",
-    //         "Timbuktu"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #1", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which country initiated the era of Atlantic exploration?", [
-    //         "Portugal",
-    //         "Portugal initiated the era of Atlantic exploration in the 15th century"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #2", async function () {
-    //
-    //     // TODO: this might be wrong. It's also answering England which is arguably true.
-    //     await executor.assertQuestionAndAnswer("Which country established the first colonies in the Americas?", [
-    //         "Spain",
-    //         "England",
-    //         "The Spanish were among the first Europeans to explore the New World and the first to settle in what is now the United State"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #3", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Where did Christopher Columbus first land?", [
-    //         "The Bahamas",
-    //         "The Bahamas.",
-    //         "In the Bahamas."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #4", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Why did the authors of probanzas de méritos choose to write in the way that they did?", [
-    //         "To convince the Spanish crown to fund more voyages",
-    //         "They wanted to win royal favor.",
-    //         "They wanted to win royal patronage.",
-    //         "They wanted to win royal patronage."
-    //     ]);
-    //
-    // })
-    // engine.xregister("US history chap 2 #5", async function () {
-    //     // this book gives the impression that the protestant reformation began in Spain, it didn't it was
-    //     // intoduced by Martin Luthor in 1517 in GERMANY!
-    //     // this book is making me question what the hell are they teaching americans about history over there
-    //     await executor.assertQuestionAndAnswer("Where did the Protestant Reformation begin?", [
-    //         "Wittenberg, Germany",
-    //         "Wittenberg, Germany, on October 31, 1517",
-    //         "Germany",
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #6", async function () {
-    //
-    //     // TODO: it's giving this answer which might be wrong:
-    //     // to achieve a lasting peace with the Catholic nations of Spain and France
-    //
-    //     // TODO: i think this would benefit from query expansion.
-    //
-    //     await executor.assertQuestionAndAnswer("What was the chief goal of the Puritans?", [
-    //         "To eliminate any traces of Catholicism from the church of England.",
-    //         "The eliminatation of Catholicism",
-    //         "To purify the Church of England of Roman Catholic practices"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #8", async function () {
-    //
-    //     // TODO: parser- the PDF is not parsing the document out properly
-    //     // and is having two spaces sometimes which then confused OpenAI.
-    //     // One hack is to replace two spaces with a single but the PDF text
-    //     // extraction just doesn't work.
-    //
-    //     await executor.assertQuestionAndAnswer("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", [
-    //         "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
-    //         "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
-    //         "England lacked the financial resources for such endeavors.",
-    //         "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #9", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was the main goal of the French in colonizing the Americas?", [
-    //         "Trading, especially for furs",
-    //         "To create trading posts for the fur trade",
-    //         "establishing a colony with French subjects",
-    //         "To establish commercially viable colonial outposts."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #11", async function () {
-    //
-    //     // TODO not sure about this one.  The word encomiendas might be the
-    //     // beginning of a chapter... not just plain text.
-    //
-    //     // Physical power—to work the fields, build villages, process raw
-    //     // materials—is a necessity for maintaining a society. During the
-    //     // sixteenth and seventeenth centuries, humans could derive power
-    //     // only from the wind, water, animals, or other humans. Everywhere
-    //     // in the Americas, a crushing demand for labor bedeviled Europeans
-    //     // because there were not enough colonists to perform the work
-    //     // necessary to keep the colonies going. Spain granted
-    //     // encomiendas—legal rights to native labor—to conquistadors who
-    //     // could prove their service to the crown. This system reflected the
-    //     // Spanish view of colonization: the king rewarded successful
-    //     // conquistadors who expanded the empire. Some native peoples who
-    //     // had sided with the conquistadors, like the Tlaxcalan, also gained
-    //     // encomiendas; Malintzin, the Nahua woman who helped Cortés defeat
-    //     // the Mexica, was granted one.
-    //
-    //     // TODO: we don't even see this data in the index results.  This is
-    //     // a bug I think.  There's no reaso this shouldn't show up.
-    //
-    //     await executor.assertQuestionAndAnswer("How could Spaniards obtain encomiendas?", [
-    //         "By serving the Spanish crown",
-    //         "By conquering territory in the name of the Spanish Crown",
-    //         "by serving the Spanish crown"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 2 #13", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Why did diseases like smallpox affect Native Americans so badly?", [
-    //         "Native Americans had no immunity to European diseases",
-    //         "The immunity system of native americans was not ready for European diseases",
-    //         "Native Americans were less robust than Europeans.",
-    //         "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
-    //         "They had no immunity to diseases from across the Atlantic."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #2", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Why did the Spanish build Castillo de San Marcos?", [
-    //         "To defend against imperial challengers",
-    //         "To protect the local Timucua.",
-    //         "To defend St. Augustine against challengers.",
-    //         "To better defend St. Augustine against challengers."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #3", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", [
-    //         "Through revolt",
-    //         "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #4", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was patroonship?", [
-    //         "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
-    //         "A system of granting tracts of land in New Netherland",
-    //         "A patroonship was a large tract of land in the colony of New Netherland, which was granted by the Dutch West India Company to a patroon, or patron, in exchange for settling a specified number of colonists there.",
-    //         "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company.",
-    //         "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
-    //         "Patroonship was a system of land distribution in the colony of New Netherland.",
-    //         "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company."
-    //     ]);
-    //
-    // })
-    // //
-    // engine.register("US history chap 3 #5", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
-    //         "Jesuits",
-    //         "The Jesuits."
-    //     ]);
-    //
-    // })
-    // engine.register("US history chap 3 #7", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was the most lucrative product of the Chesapeake colonies?", [
-    //         "tobacco",
-    //         "Tobacco.",
-    //         "The tabacco trade"
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #8", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was the primary cause of Bacon’s Rebellion ?", [
-    //         "former indentured servants wanted more opportunities to expand their territory",
-    //         "Former indentured servants wanted more opportunities to expand their territory.",
-    //         "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
-    //         "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
-    //         "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
-    //         "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
-    //         "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #9", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("The founders of the Plymouth colony were?", [
-    //         "Puritans",
-    //         "Puritans ",
-    //         "Puritans.",
-    //         "Pilgrims",
-    //         "The Pilgrims.",
-    //         "Separatists."
-    //     ]);
-    //
-    // })
-    //
-    // engine.register("US history chap 3 #12", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("What was the Middle Passage?", [
-    //         "The transatlantic journey that enslaved Africans made to America",
-    //         "The Middle Passage was the transatlantic journey that enslaved Africans made to America.",
-    //         "the journey slaves took from Africa to the Americas",
-    //         "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade",
-    //         "The Middle Passage was the leg of the triangle trade that connected Africa and the Americas.",
-    //         "The Middle Passage was the name given to the transportation of enslaved Africans across the Atlantic Ocean to the Americas.",
-    //         "The Middle Passage was the voyage across the Atlantic from Africa to the Americas."
-    //     ]);
-    //
-    // })
-    // engine.register("US history chap 3 #14", async function () {
-    //
-    //     await executor.assertQuestionAndAnswer("How did European muskets change life for native peoples in the Americas?", [
-    //         "Tribes with ties to Europeans had a distinct advantage in wars",
-    //         "Guns changed the balance of power among different groups and tribes",
-    //         "Muskets made combat more deadly",
-    //         "They made warfare more lethal and changed traditional patterns of authority among tribes.",
-    //         "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
-    //     ]);
-    //
-    // })
-    //
+    engine.register("astronomy #1",
+        executor.create("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
+            "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
+            "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
+            // TODO: this one is wrong but it might be a bug in the indexer not the executor.
+            "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a",
+            "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
+    ]));
+
+    engine.register("astronomy #2",
+        executor.create("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
+            "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
+            "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
+            "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
+            "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
+            "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell"
+    ]));
+
+
+    engine.register("US history chap 1 #1",
+        executor.create("Which native peoples built homes in cliff dwellings that still exist?", [
+            "Anasazi",
+            "The Anasazi."
+    ]));
+
+    engine.register("US history chap 1 #2",
+        executor.create("Which culture developed the first writing system in the Western Hemisphere?", [
+            "Olmec",
+            "The Olmec."
+    ]));
+
+
+    engine.register("US history chap 1 #3", executor.create("Which culture developed a road system rivaling that of the Romans?", [
+            "Inca",
+            "The Inca."
+    ]));
+
+
+    engine.register("US history chap 1 #4",
+        executor.create("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
+            "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
+            "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.",
+            "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival.",
+            "The Native peoples of North America were not as advanced as the Aztec, Inca, and Maya.",
+            "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies.",
+            "The Native peoples of North America were not as large in population size or as organized in social structure."
+    ]));
+
+    engine.register("US history chap 1 #5",
+        executor.create("What was the series of attempts by Christian armies to retake the Holy Lands from Muslims was known as?", [
+            "The Crusades."
+    ]));
+
+    // TODO not sure about this one.  Need to review.
+
+    engine.register("US history chap 1 #6",
+        executor.create("Which city became wealthy by trading with the East?", [
+            "Venice.",
+            "Venice"
+    ]));
+
+    engine.register("US history chap 1 #7",
+        executor.create("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
+            "Muslims and Jews",
+            "Jews and Muslims"
+    ]));
+
+    engine.register("US history chap 1 #8",
+        executor.create("How did European feudal society operate?", [
+            "Nobility held lands from the Crown in exchange for military service",
+            "The lords owned the land; knights gave military service to a lord and carried out his justice",
+            "The peasants (villeins or serfs) were obliged to live on their lord's land and give him homage, labour, and a share of the produce",
+            "It was a mutually supportive system.",
+            "Feudal society was a mutually supportive system.",
+            // TODO: parser issue
+            "The lords owned the land; knights gave military service to a lord and carried out his justice; serfs worked the land in return for the protection offered by the",
+            "Europe’s feudal society was a mutually supportive system."
+    ]));
+
+    engine.register("US history chap 1 #9",
+        executor.create("Which city became a leading center for Muslim scholarship and trade?", [
+            "timbuktu",
+            "Timbuktu"
+    ]));
+
+    engine.register("US history chap 2 #1",
+        executor.create("Which country initiated the era of Atlantic exploration?", [
+            "Portugal",
+            "Portugal initiated the era of Atlantic exploration in the 15th century"
+    ]));
+
+    engine.register("US history chap 2 #2",
+        // TODO: this might be wrong. It's also answering England which is arguably true.
+        executor.create("Which country established the first colonies in the Americas?", [
+            "Spain",
+            "England",
+            "The Spanish were among the first Europeans to explore the New World and the first to settle in what is now the United State"
+    ]));
+
+    engine.register("US history chap 2 #3",
+        executor.create("Where did Christopher Columbus first land?", [
+            "The Bahamas",
+            "The Bahamas.",
+            "In the Bahamas."
+    ]));
+
+    engine.register("US history chap 2 #4",
+        executor.create("Why did the authors of probanzas de méritos choose to write in the way that they did?", [
+            "To convince the Spanish crown to fund more voyages",
+            "They wanted to win royal favor.",
+            "They wanted to win royal patronage.",
+            "They wanted to win royal patronage."
+    ]));
+
+
+    engine.xregister("US history chap 2 #5",
+        // this book gives the impression that the protestant reformation began in Spain, it didn't it was
+        // intoduced by Martin Luthor in 1517 in GERMANY!
+        // this book is making me question what the hell are they teaching americans about history over there
+        executor.create("Where did the Protestant Reformation begin?", [
+            "Wittenberg, Germany",
+            "Wittenberg, Germany, on October 31, 1517",
+            "Germany",
+    ]));
+
+    engine.register("US history chap 2 #6",
+        // TODO: it's giving this answer which might be wrong:
+        // to achieve a lasting peace with the Catholic nations of Spain and France
+
+        // TODO: i think this would benefit from query expansion.
+        executor.create("What was the chief goal of the Puritans?", [
+            "To eliminate any traces of Catholicism from the church of England.",
+            "The eliminatation of Catholicism",
+            "To purify the Church of England of Roman Catholic practices"
+    ]));
+
+    engine.register("US history chap 2 #8",
+        // TODO: parser- the PDF is not parsing the document out properly
+        // and is having two spaces sometimes which then confused OpenAI.
+        // One hack is to replace two spaces with a single but the PDF text
+        // extraction just doesn't work.
+
+        executor.create("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", [
+            "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
+            "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
+            "England lacked the financial resources for such endeavors.",
+            "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
+    ]));
+
+    engine.register("US history chap 2 #9",
+        executor.create("What was the main goal of the French in colonizing the Americas?", [
+            "Trading, especially for furs",
+            "To create trading posts for the fur trade",
+            "establishing a colony with French subjects",
+            "To establish commercially viable colonial outposts."
+    ]));
+
+    engine.register("US history chap 2 #11",
+        // TODO not sure about this one.  The word encomiendas might be the
+        // beginning of a chapter... not just plain text.
+
+        // Physical power—to work the fields, build villages, process raw
+        // materials—is a necessity for maintaining a society. During the
+        // sixteenth and seventeenth centuries, humans could derive power
+        // only from the wind, water, animals, or other humans. Everywhere
+        // in the Americas, a crushing demand for labor bedeviled Europeans
+        // because there were not enough colonists to perform the work
+        // necessary to keep the colonies going. Spain granted
+        // encomiendas—legal rights to native labor—to conquistadors who
+        // could prove their service to the crown. This system reflected the
+        // Spanish view of colonization: the king rewarded successful
+        // conquistadors who expanded the empire. Some native peoples who
+        // had sided with the conquistadors, like the Tlaxcalan, also gained
+        // encomiendas; Malintzin, the Nahua woman who helped Cortés defeat
+        // the Mexica, was granted one.
+
+        // TODO: we don't even see this data in the index results.  This is
+        // a bug I think.  There's no reaso this shouldn't show up.
+
+        executor.create("How could Spaniards obtain encomiendas?", [
+            "By serving the Spanish crown",
+            "By conquering territory in the name of the Spanish Crown",
+            "by serving the Spanish crown"
+    ]));
+
+    engine.register("US history chap 2 #13",
+        executor.create("Why did diseases like smallpox affect Native Americans so badly?", [
+            "Native Americans had no immunity to European diseases",
+            "The immunity system of native americans was not ready for European diseases",
+            "Native Americans were less robust than Europeans.",
+            "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
+            "They had no immunity to diseases from across the Atlantic."
+    ]));
+
+    engine.register("US history chap 3 #2",
+        executor.create("Why did the Spanish build Castillo de San Marcos?", [
+            "To defend against imperial challengers",
+            "To protect the local Timucua.",
+            "To defend St. Augustine against challengers.",
+            "To better defend St. Augustine against challengers."
+    ]));
+
+
+    engine.register("US history chap 3 #3",
+        executor.create("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", [
+            "Through revolt",
+            "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish."
+    ]));
+
+    engine.register("US history chap 3 #4",
+        executor.create("What was patroonship?", [
+            "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
+            "A system of granting tracts of land in New Netherland",
+            "A patroonship was a large tract of land in the colony of New Netherland, which was granted by the Dutch West India Company to a patroon, or patron, in exchange for settling a specified number of colonists there.",
+            "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company.",
+            "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
+            "Patroonship was a system of land distribution in the colony of New Netherland.",
+            "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company."
+    ]));
+
+    engine.register("US history chap 3 #5",
+        executor.create("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
+            "Jesuits",
+            "The Jesuits."
+    ]));
+
+    engine.register("US history chap 3 #7",
+        executor.create("What was the most lucrative product of the Chesapeake colonies?", [
+            "tobacco",
+            "Tobacco.",
+            "The tabacco trade"
+    ]));
+
+    engine.register("US history chap 3 #8",
+        executor.create("What was the primary cause of Bacon’s Rebellion ?", [
+            "former indentured servants wanted more opportunities to expand their territory",
+            "Former indentured servants wanted more opportunities to expand their territory.",
+            "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
+            "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
+            "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
+            "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
+            "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River."
+    ]));
+
+    engine.register("US history chap 3 #9",
+        executor.create("The founders of the Plymouth colony were?", [
+            "Puritans",
+            "Puritans ",
+            "Puritans.",
+            "Pilgrims",
+            "The Pilgrims.",
+            "Separatists."
+    ]));
+
+    engine.register("US history chap 3 #12",
+        executor.create("What was the Middle Passage?", [
+            "The transatlantic journey that enslaved Africans made to America",
+            "The Middle Passage was the transatlantic journey that enslaved Africans made to America.",
+            "the journey slaves took from Africa to the Americas",
+            "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade",
+            "The Middle Passage was the leg of the triangle trade that connected Africa and the Americas.",
+            "The Middle Passage was the name given to the transportation of enslaved Africans across the Atlantic Ocean to the Americas.",
+            "The Middle Passage was the voyage across the Atlantic from Africa to the Americas."
+    ]));
+
+    engine.register("US history chap 3 #14",
+        executor.create("How did European muskets change life for native peoples in the Americas?", [
+            "Tribes with ties to Europeans had a distinct advantage in wars",
+            "Guns changed the balance of power among different groups and tribes",
+            "Muskets made combat more deadly",
+            "They made warfare more lethal and changed traditional patterns of authority among tribes.",
+            "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
+    ]));
+
     // // Chapter 2
-    // engine.register("astronomy Chapter 2 #1", async function() {
-    //     await executor.assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
-    //         "Approximately 50% like anywhere else on the planet.",
-    //         "Only half the sky can be seen from the North Pole.",
-    //         "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 2 #2", async function() {
-    //     await executor.assertQuestionAndAnswer("How quickly we can learn about events in the universe?", [
-    //         "As soon as the light from that universe reaches us",
-    //         "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light"
-    //     ]);
-    // })
+    engine.register("astronomy Chapter 2 #1",
+        executor.create("What fraction of the sky can be seen from the North Pole?", [
+            "Approximately 50% like anywhere else on the planet.",
+            "Only half the sky can be seen from the North Pole.",
+            "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
+    ]));
+    engine.register("astronomy Chapter 2 #2",
+        executor.create("How quickly we can learn about events in the universe?", [
+            "As soon as the light from that universe reaches us",
+            "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light"
+    ]));
 
     engine.register("astronomy Chapter 2 #3", executor.create("The Sun was once thought to be a planet. Explain why.", [
             "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
