@@ -3,11 +3,16 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
-import {RegressionEngines} from "polar-shared/src/util/RegressionEngines";
+import {
+    RegressionEngines
+} from "polar-shared/src/util/RegressionEngines";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
-import IRegressionTestResult = RegressionEngines.IRegressionTestResult;
+import IRegressionTestResult = RegressionEngines.IRegressionTestResultPass;
+import IRegressionTestError = RegressionEngines.IRegressionTestResultError;
+import IRegressionTestResultPass = RegressionEngines.IRegressionTestResultPass;
+import IRegressionTestResultError = RegressionEngines.IRegressionTestResultError;
 
 // TODO: CACHE THE OPENAI REQUEST/RESPONSE PAIRS if we already have a response
 // for the request.  No need to execute it twice.
@@ -29,7 +34,7 @@ async function doRegression(opts: ExecutorOpts) {
     // FIXME: the answers engine itself
     // needs to take a question,
 
-    const engine = RegressionEngines.create();
+    const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>();
 
     const executor = createExecutor(opts);
 
@@ -702,18 +707,27 @@ export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'sea
 }
 
 interface IExecutor {
-    readonly create: (question: string, expectedAnswer: string | ReadonlyArray<string>) => () => Promise<IRegressionTestResult<string>>;
+    readonly create: (question: string, expectedAnswer: string | ReadonlyArray<string>) => () => Promise<IRegressionTestResultPass<string> | IRegressionTestResultError<'failed' | 'no-answer'>>;
     readonly executeQuestion: (question: string, forEmail?: string) => Promise<string>;
     readonly assertQuestionAndAnswer: (question: string, expectedAnswer: string | ReadonlyArray<string>) => Promise<void>;
 }
 
 function createExecutor(opts: ExecutorOpts) : IExecutor {
 
-    function create(question: string, expectedAnswer: string | ReadonlyArray<string>): () => Promise<IRegressionTestResult<string>> {
+    function create(question: string,
+                    expectedAnswer: string | ReadonlyArray<string>,
+                    forEmail = 'burton@inputneuron.io'): () => Promise<IRegressionTestResultPass<string> | IRegressionTestResultError<'failed' | 'no-answer'>> {
 
         return async () => {
 
-            const answer = await executeQuestion(question);
+            const uid = await getUID(forEmail);
+
+            // eslint-disable-next-line camelcase
+            const answer_response = await AnswerExecutor.exec({
+                uid,
+                question,
+                ...opts
+            });
 
             /**
              * Convert to lower case and remove any whitespace and potential
@@ -735,33 +749,53 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             }
 
-            function computeStatus(): 'pass' | 'fail' {
+            const metadata = {};
 
-                if (typeof expectedAnswer === 'string') {
-
-                    if (canonicalize(answer) === canonicalize(expectedAnswer)) {
-                        return 'pass';
-                    }
-
-                } else {
-                    if (expectedAnswer.map(canonicalize).includes(canonicalize(answer))) {
-                        return 'pass';
-                    }
-                }
-
-                return 'fail';
-
+            function isError(value: any): value is IAnswerExecutorError {
+                return value.error === true;
             }
 
-            const status = computeStatus();
+            if (! isError(answer_response)) {
 
-            return {
-                status,
-                actual: answer,
-                expected: expectedAnswer,
+                const answer = answer_response.answers[0];
+
+                function hasPassed(): boolean {
+
+                    if (typeof expectedAnswer === 'string') {
+
+                        if (canonicalize(answer) === canonicalize(expectedAnswer)) {
+                            return true;
+                        }
+
+                    } else {
+                        if (expectedAnswer.map(canonicalize).includes(canonicalize(answer))) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+
+                }
+
+                const status = hasPassed() ? 'pass' : 'fail';
+
+                return {
+                    status,
+                    actual: answer,
+                    expected: expectedAnswer,
+                    metadata
+                };
+
+            } else {
+                return <IRegressionTestError<'failed' | 'no-answer'>> {
+                    status: 'fail',
+                    err: answer_response.code,
+                    metadata
+                };
             }
 
         }
+
     }
 
     async function executeQuestion(question: string, forEmail = 'burton@inputneuron.io'): Promise<string> {

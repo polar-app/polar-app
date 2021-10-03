@@ -11,7 +11,7 @@ export namespace RegressionEngines {
 
     export type ResultType = string | number | boolean;
 
-    export interface IRegressionTestResult<R extends ResultType> {
+    export interface IRegressionTestResultPass<R extends ResultType> {
 
         /**
          * The status of this regression result ... pass or fail.
@@ -35,9 +35,11 @@ export namespace RegressionEngines {
 
     }
 
-    export interface IRegressionTestError {
+    export interface IRegressionTestResultError<E> {
         readonly status: 'fail';
-        readonly err: ErrorType;
+        readonly err: E;
+        readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
+
     }
 
     export interface IRegressionTestName {
@@ -48,7 +50,7 @@ export namespace RegressionEngines {
      * A basic regression test will 'pass' as long as it doesn't throw an
      * exception.
      */
-    export type RegressionTest<R extends ResultType> = () => Promise<IRegressionTestResult<R>>;
+    export type RegressionTest<R extends ResultType, E> = () => Promise<IRegressionTestResultPass<R> | IRegressionTestResultError<E>>;
 
     export interface RegressionExecResult {
         readonly nrPass: number;
@@ -56,17 +58,17 @@ export namespace RegressionEngines {
         readonly accuracy: number;
     }
 
-    export interface IRegressionEngine<R extends ResultType> {
+    export interface IRegressionEngine<R extends ResultType, E> {
 
         /**
          * Register a test.
          */
-        readonly register: (testName: string, test: RegressionTest<R>) => void;
+        readonly register: (testName: string, test: RegressionTest<R, E>) => void;
 
         /**
          * Skip a test... it's just not registered but you don't need to comment it out.
          */
-        readonly xregister: (testName: string, test: RegressionTest<R>) => void;
+        readonly xregister: (testName: string, test: RegressionTest<R, E>) => void;
 
         /**
          * Execute the regression engine with all registered tests.
@@ -75,28 +77,34 @@ export namespace RegressionEngines {
 
     }
 
-    export function create<R extends ResultType>(): IRegressionEngine<R> {
+    /**
+     * Specify the error type using E which should probably be ErrorType but
+     * could also be a code.  Normally, both ErrorType and a list of codes is
+     * probably best.
+     */
+    export function create<R extends ResultType, E>(): IRegressionEngine<R, E> {
 
         interface IRegressionTestEntry {
             readonly testName: string;
-            readonly test: RegressionTest<R>;
+            readonly test: RegressionTest<R, E>;
         }
 
         const regressions: IRegressionTestEntry[] = [];
 
-        function register(testName: string, test: RegressionTest<R>) {
+        function register(testName: string, test: RegressionTest<R, E>) {
             regressions.push({testName, test});
         }
 
-        function xregister(testName: string, test: RegressionTest<R>) {
+        function xregister(testName: string, test: RegressionTest<R, E>) {
             // noop
         }
 
         async function exec() {
 
             type IRegressionTestResultExecuted
-                = (IRegressionTestResult<R> & IRegressionTestName) |
-                  (IRegressionTestError & IRegressionTestName);
+                = (IRegressionTestResultPass<R> & IRegressionTestName) |
+                  (IRegressionTestResultError<E> & IRegressionTestName) |
+                  (IRegressionTestResultError<ErrorType> & IRegressionTestName);
 
             async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted>> {
 
