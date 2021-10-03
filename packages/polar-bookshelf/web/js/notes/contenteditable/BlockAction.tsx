@@ -117,10 +117,7 @@ function useActionExecutor(id: BlockIDStr) {
                 a.setAttribute('href', '#' + actionOp.target);
                 const prefix = type === 'tag' ? '#' : '';
                 a.appendChild(document.createTextNode(prefix + actionOp.target.trim()));
-                const textNode = document.createTextNode('');
-                coveringRange.insertNode(textNode);
                 coveringRange.insertNode(a);
-                ContentEditables.setCaretPosition(textNode, 'end');
             };
 
             updateSelection();
