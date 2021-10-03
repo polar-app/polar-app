@@ -85,6 +85,11 @@ export namespace RegressionEngines {
         readonly xregister: (testName: string, test: RegressionTest<R, E>) => void;
 
         /**
+         * Limit the number of regressions to execute.
+         */
+        readonly limit: (max: number) => void;
+
+        /**
          * Execute the regression engine with all registered tests.
          */
         readonly exec: () => Promise<RegressionExecResult>;
@@ -103,7 +108,7 @@ export namespace RegressionEngines {
             readonly test: RegressionTest<R, E>;
         }
 
-        const regressions: IRegressionTestEntry[] = [];
+        let regressions: IRegressionTestEntry[] = [];
 
         function register(testName: string, test: RegressionTest<R, E>) {
             regressions.push({testName, test});
@@ -111,6 +116,10 @@ export namespace RegressionEngines {
 
         function xregister(testName: string, test: RegressionTest<R, E>) {
             // noop
+        }
+
+        function limit(max: number) {
+            regressions = regressions.slice(0, max);
         }
 
         async function exec() {
@@ -211,7 +220,7 @@ export namespace RegressionEngines {
 
         }
 
-        return {register, xregister, exec};
+        return {register, xregister, limit, exec};
 
     }
 
