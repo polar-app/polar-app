@@ -1,7 +1,7 @@
-import {Numbers} from "src/util/Numbers";
-import {arrayStream} from "src/util/ArrayStreams";
-import {Reducers} from "src/util/Reducers";
-import { Strings } from "src/util/Strings";
+import {Numbers} from "./Numbers";
+import {arrayStream} from "./ArrayStreams";
+import {Reducers} from "./Reducers";
+import { Strings } from "./Strings";
 
 export namespace TextGrid {
 

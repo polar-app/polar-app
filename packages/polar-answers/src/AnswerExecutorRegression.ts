@@ -499,15 +499,18 @@ async function doRegression(opts: ExecutorOpts) {
 
     const engine = createRegressionEngine(opts);
 
+    // engine.limit(10)
     const result = await engine.exec();
 
     const summarizer = (results: ReadonlyArray<IRegressionTestResultExecuted<any, unknown>>) => {
 
-        const count
-            = results.map(current => (current.metadata || {}).count as number || 0)
+        const cost
+            = results.map(current => (current.metadata || {}).cost as number || 0)
                      .reduce(Reducers.SUM);
 
-        return {count};
+        return {
+            cost: Numbers.toFixedFloat(cost, 2)
+        };
 
     }
 

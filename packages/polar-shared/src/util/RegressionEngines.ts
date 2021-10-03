@@ -231,7 +231,8 @@ export namespace RegressionEngines {
 
                     const buff = new StringBuffer();
 
-                    buff.append("Report generated on: " + ISODateTimeStrings.create())
+                    const now = ISODateTimeStrings.create();
+                    buff.append(`Report generated on: ${now}\n`)
 
                     buff.append(`=======================\n`);
                     buff.append(createResultGrid());
