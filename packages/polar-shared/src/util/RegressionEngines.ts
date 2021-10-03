@@ -1,6 +1,8 @@
 import {Percentages} from "./Percentages";
 import {Strings} from "./Strings";
 import {ErrorType} from "./Errors";
+import {StringBuffer} from "./StringBuffer";
+import {TextGrid} from "polar-bookshelf/web/js/util/TextGrid";
 
 /**
  * A regression framework for running tests that return boolean and we can then
@@ -52,10 +54,21 @@ export namespace RegressionEngines {
      */
     export type RegressionTest<R extends ResultType, E> = () => Promise<IRegressionTestResultPass<R> | IRegressionTestResultError<E>>;
 
+    /**
+     * Multi-line report string intended for human consumption.
+     */
+    export type ReportStr = string;
+
     export interface RegressionExecResult {
         readonly nrPass: number;
         readonly nrFail: number;
         readonly accuracy: number;
+
+        /**
+         * Create a report using the keys from the metadata we have.
+         */
+        readonly createReport: (keys: ReadonlyArray<string>) => ReportStr
+
     }
 
     export interface IRegressionEngine<R extends ResultType, E> {
@@ -150,20 +163,45 @@ export namespace RegressionEngines {
 
                 const accuracy = Percentages.calculate(nrPass, nrTests);
 
-                console.log("========");
+                function createReport(keys: ReadonlyArray<string>): ReportStr {
 
-                for(const result of results) {
-                    // TODO print metadata
-                    // TODO: show actual ...
-                    console.log(Strings.rpad(result.testName, ' ', 25) + " : " + result.status + " " + ((result as any).actual || ''));
+
+                    const nrColumns =
+                        // we need two core columns for the name and the status
+                        2 +
+                        // we also need all the metadata columns
+                        keys.length;
+
+                    const textGrid = TextGrid.create(nrColumns);
+
+                    textGrid.headers('test name', 'status', ...keys);
+
+                    for(const result of results) {
+
+                        const row: ReadonlyArray<string | number | boolean> = [
+                            result.testName,
+                            result.status,
+                            ...keys.map(key => (result.metadata || {})[key] || '')
+                        ]
+
+                        textGrid.row(...row);
+
+                    }
+
+                    const buff = new StringBuffer();
+
+                    buff.append(textGrid.format());
+
+                    buff.append(`=======================\n`);
+                    buff.append(`pass:        ${nrPass}\n`);
+                    buff.append(`fail:        ${nrFail}\n`);
+                    buff.append(`accuracy:    ${accuracy}\n`);
+
+                    return buff.toString();
+
                 }
 
-                console.log("========");
-                console.log("pass:     " + nrPass);
-                console.log("fail:     " + nrFail);
-                console.log("accuracy: " + accuracy);
-
-                return {nrPass, nrFail, accuracy}
+                return {nrPass, nrFail, accuracy, createReport}
 
             }
 
