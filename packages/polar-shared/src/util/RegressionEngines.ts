@@ -67,7 +67,7 @@ export namespace RegressionEngines {
         /**
          * Create a report using the keys from the metadata we have.
          */
-        readonly createReport: (keys: ReadonlyArray<string>) => ReportStr
+        readonly createReport: (...keys: ReadonlyArray<string>) => ReportStr
 
     }
 
@@ -163,7 +163,7 @@ export namespace RegressionEngines {
 
                 const accuracy = Percentages.calculate(nrPass, nrTests);
 
-                function createReport(keys: ReadonlyArray<string>): ReportStr {
+                function createReport(...keys: ReadonlyArray<string>): ReportStr {
 
 
                     const nrColumns =

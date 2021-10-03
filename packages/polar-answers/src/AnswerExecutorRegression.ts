@@ -12,6 +12,8 @@ import getUID = AnswerTests.getUID;
 import IRegressionTestError = RegressionEngines.IRegressionTestResultError;
 import IRegressionTestResultPass = RegressionEngines.IRegressionTestResultPass;
 import IRegressionTestResultError = RegressionEngines.IRegressionTestResultError;
+import {IDStr} from "polar-shared/src/util/Strings";
+import {Files} from "polar-shared/src/util/Files";
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -480,7 +482,7 @@ async function doRegression(opts: ExecutorOpts) {
 
     // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
     // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.
-    engine.xregister("Which are the visa exempt countries for entry in Venezuela?",
+    engine.xregister("Venezuela visa exemption #1",
         executor.create("Which are the visa exempt countries for entry in Venezuela?", [
             'All European Union citizens',
             'Andorra',
@@ -488,17 +490,36 @@ async function doRegression(opts: ExecutorOpts) {
             // and ~60 more...
     ]));
 
-    engine.register("How long is the Visa exemption for Venezuela for holders of passports from Turkey?",
+    engine.register("Venezuela visa exemption #2",
         executor.create("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", [
             '30 days'
     ]));
 
-    await engine.exec();
+    const result = await engine.exec();
+    const report = result.createReport('cost', 'question', 'answer');
+
+    async function writeReportToConsole() {
+        console.log(report);
+    }
+
+    async function writeReportToFile() {
+        const path = `regression-report-${opts.id}.txt`;
+        await Files.writeFileAsync(path, report);
+    }
+
+    await writeReportToConsole();
+    await writeReportToFile();
 
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model'>> {
+export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records'>> {
+
+    /**
+     * A unique ID for this executor so that we can keep track of the config
+     * options by name.
+     */
+    readonly id: IDStr;
 
 }
 
@@ -666,6 +687,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
 }
 
+
 async function main() {
 
     // force the cache usage
@@ -679,12 +701,25 @@ async function main() {
 
     const options: ReadonlyArray<ExecutorOpts> = [
         {
+            id: 'v1',
             search_model: 'ada',
             model: 'ada',
             rerank_elasticsearch: false,
             rerank_elasticsearch_size: 10000,
             rerank_elasticsearch_model: 'ada',
+            rerank_truncate_short_head: false,
+            prune_contiguous_records: false,
         },
+        {
+            id: 'v2',
+            model: 'curie',
+            search_model: 'curie',
+            rerank_elasticsearch: true,
+            rerank_elasticsearch_size: 10000,
+            rerank_elasticsearch_model: 'ada',
+            rerank_truncate_short_head: true,
+            prune_contiguous_records: true,
+        }
     ]
 
     for (const opts of options) {
