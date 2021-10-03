@@ -9,13 +9,12 @@ import {
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
-import IRegressionTestResult = RegressionEngines.IRegressionTestResultPass;
 import IRegressionTestError = RegressionEngines.IRegressionTestResultError;
 import IRegressionTestResultPass = RegressionEngines.IRegressionTestResultPass;
 import IRegressionTestResultError = RegressionEngines.IRegressionTestResultError;
 
-// TODO: CACHE THE OPENAI REQUEST/RESPONSE PAIRS if we already have a response
-// for the request.  No need to execute it twice.
+// TODO: implement a filter function witin the regression engine to ust run ONE
+// test to enable us to quickly add new tests
 
 // TODO: compute the costs based on tokens
 
@@ -46,110 +45,7 @@ async function doRegression(opts: ExecutorOpts) {
 
     engine.xregister("covid 3", executor.create("What neutralized the prototype B virus?", ""));
 
-    engine.xregister("bigtable 1", executor.create("Is Bigtable relational?", "No."));
 
-    engine.xregister("bigtable single-row transactions", executor.create("Does Bigtable support single-row transactions?", "Yes."));
-
-    engine.xregister("bigtable general transactions", executor.create("Does Bigtable support general transactions?", "No."));
-
-    engine.xregister("TODO: bigtable type of transactions", executor.create("What types of transactions does bigtable support?", ""));
-    //
-    // engine.register("bigtable unknown 1", async function () {
-    //
-    //     const answer = await executor.executeQuestion("Is Bigtable a foobar?");
-    //
-    //     assert.equal(answer, "__UNKNOWN__")
-    //
-    // });
-    //
-    // engine.register("bigtable store logs ", async function () {
-    //
-    //     // The shingle system is extracting this like (from page 3):
-    //     //
-    //     //     {
-    //     //       document: 1,
-    //     //       object: 'search_result',
-    //     //       score: 329.959,
-    //     //       text: 'Bigtable uses the distributed Google File\n' +
-    //     //         'System (GFS) [17] to store log and data  les.  A Bigtable\n' +
-    //     //         'cluster typically operates in a shared pool of machines\n' +
-    //     //         'that run a wide variety of other distributed applications,\n' +
-    //     //         'and Bigtable processes often share the same machines\n' +
-    //     //         'with processes from other applications.  Bigtable de-\n' +
-    //     //         'pends on a  cluster management system for scheduling\n' +
-    //     //         'jobs, managing resources on shared machines, dealing\n' +
-    //     //         'with machine failures, and monitoring machine status.  The Google SSTable  le format is used internally to\n' +
-    //     //         'store Bigtable data. '
-    //     //     }
-    //
-    //     // 'Bigtable uses the distributed Google File System (GFS) to store log and data  les.'
-    //
-    //     await executor.assertQuestionAndAnswer("How does Bigtable store log and data files?", [
-    //         "Google File System (GFS)",
-    //         "GFS.",
-    //         "In GFS.",
-    //         "It uses the Google File System.",
-    //         // TODO: this is a correct answer because the indexer is broken.
-    //         'Bigtable uses the distributed Google File System (GFS) to store log and data  les.'
-    //     ])
-    //
-    // })
-    //
-    //
-    // engine.register("bigtable cluster mgmt system ", async function () {
-    //
-    //     // When a master is started by the cluster management system, it needs
-    //     // to discover the current tablet assignments before it can change
-    //     // them. The master executes the following steps at startup. (1) The
-    //     // master grabs a unique master lock in Chubby, which prevents con-
-    //     // current master instantiations.
-    //
-    //     // TODO: this is wrong because it's a four point system and we should probably extract them all OR have
-    //     // them enumerated:
-    //     //
-    //     // When a master is started by the cluster management system, it needs
-    //     // to discover the current tablet assign- ments before it can change
-    //     // them. The master executes the following steps at startup. (1) The
-    //     // master grabs a unique master lock in Chubby, which prevents con-
-    //     // current master instantiations. (2) The master scans the servers
-    //     // directory in Chubby to find the live servers. (3) The master
-    //     // communicates with every live tablet server to discover what tablets
-    //     // are already assigned to each server. (4) The master scans the
-    //     // METADATA table to learn the set of tablets. Whenever this scan
-    //     // encounters a tablet that is not already assigned, the master adds the
-    //     // tablet to the set of unassigned tablets, which makes the tablet
-    //     // eligible for tablet assignment.
-    //
-    //     await executor.assertQuestionAndAnswer("What does the master need to do when it is started by the cluster management system?", [
-    //         "Discover the current tablet assignments.",
-    //         "It needs to discover the current tablet assignments before it can change them.",
-    //         "The master needs to discover the current tablet assignments before it can change them.",
-    //         "The master scans the METADATA table to learn the set of tablets. Whenever this scan encounters a tablet that is not already assigned, the master adds the tablet to the set of unassigned tablets, which makes the tablet eligible for tablet assignment."
-    //     ])
-    //
-    // })
-    //
-    // engine.register("bigtable GA 1", async function () {
-    //
-    //     // NOTE this test might be overfit because we provide it as an example to the OpenAI client
-    //
-    //     await executor.assertQuestionAndAnswer("What is Google Analytics?", [
-    //         "Google Analytics is a service that helps webmasters analyze traf c patterns at their web sites.",
-    //         "Google Analytics is a service that helps webmasters analyze traffic patterns at their web sites."
-    //     ])
-    //
-    // })
-    //
-    // engine.register("bigtable GA 2", async function () {
-    //
-    //     // NOTE this test might be overfit because we provide it as an example to the OpenAI client
-    //
-    //     await executor.assertQuestionAndAnswer("What does Google Analytics provide?", [
-    //         "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."
-    //     ])
-    //
-    // })
-    //
     // engine.register("astronomy #1", async function () {
     //
     //     await executor.assertQuestionAndAnswer("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
@@ -534,7 +430,8 @@ async function doRegression(opts: ExecutorOpts) {
             "A prominent pattern or group of stars, typically having a popular name but smaller than a constellation.",
             "Some people use the term asterism to denote an especially noticeable star pattern within a constellation",
             "An asterism is a pattern of stars that is not a constellation.",
-            "Asterisms are patterns of stars that are not constellations."
+            "Asterisms are patterns of stars that are not constellations.",
+            "An asterism is a kind of star pattern that is visible in the sky."
     ]));
 
     engine.register("astronomy Chapter 2 #6", executor.create("Give at least one of Aristotle's arguments why he considered the earth to be round", [
@@ -549,7 +446,6 @@ async function doRegression(opts: ExecutorOpts) {
             "The zodiacal constellations are the constellations that lie along the ecliptic.",
             "The zodiacal constellations are the constellations that the Sun, Moon, and planets appear to move through in the course of a year."
     ]));
-
 
     // Chapter 3
     engine.register("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", [
@@ -578,124 +474,106 @@ async function doRegression(opts: ExecutorOpts) {
             "Mercury"
     ]));
 
-    // engine.register("astronomy Chapter 3 #7", async function() {
-    //     await executor.assertQuestionAndAnswer("What is angular momentum?", [
-    //         "a measure of the rotation of a body as it revolves around some fixed point",
-    //         "The angular momentum of an object is defined as the product of its mass, its velocity, and its distance from the fixed point around which it revolves.",
-    //         "Angular momentum is a measure of the rotation of a body as it revolves around some fixed point."
-    //     ]);
-    // })
-    //
-    // // Chapter 4
-    // engine.register("astronomy Chapter 4 #1", async function() {
-    //     await executor.assertQuestionAndAnswer("Why does longitude have no meaning at the North and South Poles?", [
-    //         "All longitude lines meet at the pole",
-    //         "All longitude lines meet at the poles; therefore, they have no defined longitude.",
-    //         "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #2", async function() {
-    //     await executor.assertQuestionAndAnswer("What are the main advantage and disadvantage of apparent solar time?", [
-    //         "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
-    //         "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
-    //         "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #3", async function() {
-    //     await executor.assertQuestionAndAnswer("What's the rotation period of Earth?", [
-    //         "One day",
-    //         "1 day",
-    //         "A single day",
-    //         "1.00 day"
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #4", async function() {
-    //     await executor.assertQuestionAndAnswer("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", [
-    //         "Because the period required by the moon to complete its cycle of phases is 29.5306 days",
-    //         "Because it's not a whole number",
-    //         "Because the Moon’s cycle of phases is not commensurable with the day, month, or year."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #5", async function() {
-    //     await executor.assertQuestionAndAnswer("What is the phase of the Moon during a total solar eclipse?", [
-    //         "new moon",
-    //         "when the moon passes directly between the sun and Earth",
-    //         "A solar eclipse can only take place at the phase of new moon"
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #6", async function() {
-    //     await executor.assertQuestionAndAnswer("Why is the leap year necessary?", [
-    //         "to help synchronize the calendar year with the solar year",
-    //         "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days.",
-    //         "The leap year is necessary because the year is not exactly 365.25 days."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #7", async function() {
-    //     await executor.assertQuestionAndAnswer("Why the year 1800 was not a leap year?", [
-    //         "a century year cannot be a leap year unless it is divisible by 400",
-    //         "because a century year cannot be a leap year unless it is divisible by 400",
-    //         "Only century years divisible by 400 would be leap years",
-    //         "Because it was not divisible by 4.",
-    //         "It was not a leap year because it was not divisible by 400."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #8", async function() {
-    //     await executor.assertQuestionAndAnswer("Why don’t lunar eclipses happen during every full moon?", [
-    //         "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
-    //         "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
-    //         "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse",
-    //         "Because the Moon is not always opposite the Sun.",
-    //         "Because the Moon’s orbit is tilted with respect to the ecliptic plane."
-    //     ]);
-    // })
-    // engine.register("astronomy Chapter 4 #9", async function() {
-    //     await executor.assertQuestionAndAnswer("Why some places have very small tides while in other places huge tides?", [
-    //         "the presence of land masses stopping the flow of water",
-    //         "the friction in the oceans and between oceans and the ocean floors",
-    //         "the rotation of Earth",
-    //         "the wind",
-    //         "the variable depth of the ocean."
-    //     ]);
-    // })
-    // engine.register("Who founded the Elmer Candy Corporation?", async function () {
-    //     await executor.assertQuestionAndAnswer("Who founded the Elmer Candy Corporation?", [
-    //         "Christopher Henry Miller"
-    //     ]);
-    // })
-    //
-    // engine.register("When did the Elmer brothers came up with cornmeal based cheese curl?", async function () {
-    //     await executor.assertQuestionAndAnswer("When did the Elmer brothers came up with cornmeal based cheese curl?", [
-    //         "In 1936."
-    //     ]);
-    // })
-    //
-    // engine.register('When was the CheeWees trademark registered?', async () => {
-    //     await executor.assertQuestionAndAnswer("When was the CheeWees trademark registered?", [
-    //         "__UNKNOWN__"
-    //     ]);
-    // })
-    // engine.register('president of Elmer Candy Corporation', async () => {
-    //     await executor.assertQuestionAndAnswer("president of Elmer Candy Corporation", [
-    //         "Robert Nelson"
-    //     ]);
-    // })
-    //
-    // engine.register("Which are the visa exempt countries for entry in Venezuela?", async function () {
-    //     // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
-    //     // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.
-    //     await executor.assertQuestionAndAnswer("Which are the visa exempt countries for entry in Venezuela?", [
-    //         'All European Union citizens',
-    //         'Andorra',
-    //         'Antigua and Barbuda'
-    //         // and ~60 more...
-    //     ]);
-    // })
-    //
-    // engine.register("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", async function () {
-    //     await executor.assertQuestionAndAnswer("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", [
-    //         '30 days'
-    //     ]);
-    // })
+    engine.register("astronomy Chapter 3 #7", executor.create("What is angular momentum?", [
+            "a measure of the rotation of a body as it revolves around some fixed point",
+            "The angular momentum of an object is defined as the product of its mass, its velocity, and its distance from the fixed point around which it revolves.",
+            "Angular momentum is a measure of the rotation of a body as it revolves around some fixed point."
+    ]));
+
+    // Chapter 4
+    engine.register("astronomy Chapter 4 #1", executor.create("Why does longitude have no meaning at the North and South Poles?", [
+            "All longitude lines meet at the pole",
+            "All longitude lines meet at the poles; therefore, they have no defined longitude.",
+            "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
+    ]));
+
+    engine.register("astronomy Chapter 4 #2", executor.create("What are the main advantage and disadvantage of apparent solar time?", [
+            "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
+            "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
+            "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
+    ]));
+
+    engine.register("astronomy Chapter 4 #3", executor.create("What's the rotation period of Earth?", [
+            "One day",
+            "1 day",
+            "A single day",
+            "1.00 day"
+    ]));
+
+    engine.register("astronomy Chapter 4 #4", executor.create("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", [
+            "Because the period required by the moon to complete its cycle of phases is 29.5306 days",
+            "Because it's not a whole number",
+            "Because the Moon’s cycle of phases is not commensurable with the day, month, or year."
+    ]));
+
+    engine.register("astronomy Chapter 4 #5", executor.create("What is the phase of the Moon during a total solar eclipse?", [
+            "new moon",
+            "when the moon passes directly between the sun and Earth",
+            "A solar eclipse can only take place at the phase of new moon"
+    ]));
+
+    engine.register("astronomy Chapter 4 #6", executor.create("Why is the leap year necessary?", [
+            "to help synchronize the calendar year with the solar year",
+            "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days.",
+            "The leap year is necessary because the year is not exactly 365.25 days."
+    ]));
+
+    engine.register("astronomy Chapter 4 #7", executor.create("Why the year 1800 was not a leap year?", [
+            "a century year cannot be a leap year unless it is divisible by 400",
+            "because a century year cannot be a leap year unless it is divisible by 400",
+            "Only century years divisible by 400 would be leap years",
+            "Because it was not divisible by 4.",
+            "It was not a leap year because it was not divisible by 400."
+    ]));
+
+    engine.register("astronomy Chapter 4 #8", executor.create("Why don’t lunar eclipses happen during every full moon?", [
+            "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
+            "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
+            "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse",
+            "Because the Moon is not always opposite the Sun.",
+            "Because the Moon’s orbit is tilted with respect to the ecliptic plane."
+    ]));
+
+    engine.register("astronomy Chapter 4 #9", executor.create("Why some places have very small tides while in other places huge tides?", [
+            "the presence of land masses stopping the flow of water",
+            "the friction in the oceans and between oceans and the ocean floors",
+            "the rotation of Earth",
+            "the wind",
+            "the variable depth of the ocean."
+    ]));
+
+    engine.register("Who founded the Elmer Candy Corporation?", executor.create("Who founded the Elmer Candy Corporation?", [
+            "Christopher Henry Miller"
+    ]));
+
+    engine.register("When did the Elmer brothers came up with cornmeal based cheese curl?",
+        executor.create("When did the Elmer brothers came up with cornmeal based cheese curl?", [
+            "In 1936."
+    ]));
+
+    engine.register('When was the CheeWees trademark registered?',
+        executor.create("When was the CheeWees trademark registered?", [
+            "__UNKNOWN__"
+    ]));
+
+    engine.register('president of Elmer Candy Corporation', executor.create("president of Elmer Candy Corporation", [
+            "Robert Nelson"
+    ]));
+
+    // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
+    // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.
+    engine.xregister("Which are the visa exempt countries for entry in Venezuela?",
+        executor.create("Which are the visa exempt countries for entry in Venezuela?", [
+            'All European Union citizens',
+            'Andorra',
+            'Antigua and Barbuda'
+            // and ~60 more...
+    ]));
+
+    engine.register("How long is the Visa exemption for Venezuela for holders of passports from Turkey?",
+        executor.create("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", [
+            '30 days'
+    ]));
 
     await engine.exec();
 
