@@ -3,6 +3,8 @@ import {TestOnlyWrapper} from "./wrappers/TestOnlyWrapper";
 import {FirestoreBasedAsyncCacheDelegate} from "./delegates/FirestoreBasedAsyncCacheDelegate";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {GoogleCloudStorageBasedAsyncCacheDelegate} from "./delegates/GoogleCloudStorageBasedAsyncCacheDelegate";
+import {AggregateAsyncCacheDelegate} from "./delegates/AggregateAsyncCacheDelegate";
+import {AsyncCacheDelegate} from "./AsyncCacheDelegate";
 
 export namespace AsyncCaches {
 
@@ -12,11 +14,15 @@ export namespace AsyncCaches {
         readonly put: (key: K, value: V) => Promise<void>
     }
 
+    export type CacheDelegateName = 'disk' | 'firestore' | 'google-cloud-storage';
+
+    export type AggregateCacheDelegateNameTuple = Readonly<[CacheDelegateName, CacheDelegateName]>;
+
     export function create<K, V>(nspace: IDStr,
-                                 delegateName: 'disk' | 'firestore' | 'google-cloud-storage',
+                                 delegateName: CacheDelegateName | AggregateCacheDelegateNameTuple,
                                  wrapperName?: 'test-only'): IAsyncCache<K, V> {
 
-        function createDelegate() {
+        function createDirectDelegateByName(delegateName: CacheDelegateName): AsyncCacheDelegate<K, V> {
 
             switch(delegateName) {
 
@@ -30,6 +36,25 @@ export namespace AsyncCaches {
                     return FirestoreBasedAsyncCacheDelegate.create<K, V>(nspace);
 
             }
+
+        }
+
+        function createAggregateDelegate(names: AggregateCacheDelegateNameTuple): AsyncCacheDelegate<K, V> {
+
+            const primary = createDirectDelegateByName(names[0]);
+            const secondary = createDirectDelegateByName(names[1]);
+
+            return AggregateAsyncCacheDelegate.create<K, V>(nspace, primary, secondary);
+
+        }
+
+        function createDelegate(): AsyncCacheDelegate<K, V> {
+
+            if (typeof delegateName === 'string') {
+                return createDirectDelegateByName(delegateName)
+            }
+
+            return createAggregateDelegate(delegateName);
 
         }
 

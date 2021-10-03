@@ -14,7 +14,7 @@ export namespace ESRequestsCache {
     }
 
     export function create() {
-        return AsyncCaches.create<IESRequestCacheKey, Res>('answers-es-requests', 'google-cloud-storage', 'test-only');
+        return AsyncCaches.create<IESRequestCacheKey, Res>('answers-es-requests', ['disk', 'google-cloud-storage'], 'test-only');
     }
 
 }
