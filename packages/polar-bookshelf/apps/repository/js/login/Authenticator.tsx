@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
@@ -26,6 +26,8 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
+
+import { useState } from 'react'
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -344,8 +346,6 @@ const EmailTokenAuthButton = () => {
                 <>
                     {active && (
                         <>
-                            <Divider className={classes.sendLinkDivider}/>
-
                             {pending && (
                                 <ProgressActive/>
                             )}
@@ -476,16 +476,12 @@ const EmailTokenAuthButton = () => {
     );
 };
 
-// end comp 1
-
 const SignInWithExistingAccount = () => {
 
     const classes = useStyles();
     const history = useHistory();
 
     return (
-        
-
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -503,12 +499,28 @@ const OrCreateNewAccount = () => {
             <Button>or create new account</Button>
         </div>
     );
+}
 
+const LauncherView = () => {
+
+    const classes = useStyles();
+    const history = useHistory();
+
+    return (
+        <DeviceRouters.Phone>
+            <>
+            
+            </>
+            
+        </DeviceRouters.Phone>
+    );
 }
 
 const Main = React.memo(function Main(props: IProps) {
 
     const classes = useStyles();
+
+    const [Login, setLogin] = React.useState("LandingPage");
 
     return (
 
@@ -542,8 +554,6 @@ const Main = React.memo(function Main(props: IProps) {
                         flexDirection: 'column'
                     }}>
 
-                    {/*<GoogleAuthButton/>*/}
-
                     <EmailTokenAuthButton/>
 
                     {/*<EmailAuthButton/>*/}
@@ -569,46 +579,39 @@ const Main = React.memo(function Main(props: IProps) {
             </div>
         </DeviceRouters.NotPhone>
 
-        <DeviceRouters.Phone>
-            <div style={{display: 'block', height:"100vh"}}>
-                <div style={{textAlign: 'center', marginTop: '100px'}}>
-                    <div className={classes.logo}>
-                        <PolarSVGIcon width={125} height={125}/>
-                    </div>
+            <DeviceRouters.Phone>
+                <>
+                    {Login === "LandingPage" && <div id='main' style={{height:"100vh"}}>
+                            <div style={{textAlign: 'center', marginTop: '100px'}}>
+                                <div className={classes.logo}>
+                                    <PolarSVGIcon width={125} height={125}/>
+                                </div>
 
-                    <div>
-                        <p className={classes.legal}>
-                            Welcome to Polar
-                        </p>
-                    </div>
-                </div>
+                                <div>
+                                    <p className={classes.legal}>
+                                        Welcome to Polar
+                                    </p>
+                                </div>
+                            </div>
 
-                <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+                            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                    <EmailTokenAuthButton />
+                                <Button onClick={() => setLogin("login")} variant="contained" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px'}}>
+                                    LOG IN
+                                </Button>
 
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
-                    )}
+                                <Button onClick={() => setLogin("signup")} variant="outlined" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px', borderColor: 'white', color: 'white', textDecorationColor: 'white'}}>
+                                    SIGN UP
+                                </Button>
+                            </div>
+                        </div>}
 
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-
-                    <div style={{flexGrow: 1}} />
-
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </DeviceRouters.Phone>
+                    {Login === "signup" && <div> <EmailTokenAuthButton /> </div>}
+                    
+                    {Login === "login" && <div> <EmailTokenAuthButton /> </div>}
+                </>
+            </DeviceRouters.Phone>
         </>
-
     );
 });
 
