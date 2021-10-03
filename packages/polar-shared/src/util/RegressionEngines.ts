@@ -3,6 +3,7 @@ import {Strings} from "./Strings";
 import {ErrorType} from "./Errors";
 import {StringBuffer} from "./StringBuffer";
 import {TextGrid} from "polar-bookshelf/web/js/util/TextGrid";
+import {ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
 
 /**
  * A regression framework for running tests that return boolean and we can then
@@ -165,7 +166,6 @@ export namespace RegressionEngines {
 
                 function createReport(...keys: ReadonlyArray<string>): ReportStr {
 
-
                     const nrColumns =
                         // we need two core columns for the name and the status
                         2 +
@@ -190,6 +190,7 @@ export namespace RegressionEngines {
 
                     const buff = new StringBuffer();
 
+                    buff.append("Report generated on: " + ISODateTimeStrings.create())
                     buff.append(textGrid.format());
 
                     buff.append(`=======================\n`);

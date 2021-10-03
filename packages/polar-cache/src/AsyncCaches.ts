@@ -2,6 +2,7 @@ import {DiskBasedAsyncCacheDelegate} from "./delegates/DiskBasedAsyncCacheDelega
 import {TestOnlyWrapper} from "./wrappers/TestOnlyWrapper";
 import {FirestoreBasedAsyncCacheDelegate} from "./delegates/FirestoreBasedAsyncCacheDelegate";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {GoogleCloudStorageBasedAsyncCacheDelegate} from "./delegates/GoogleCloudStorageBasedAsyncCacheDelegate";
 
 export namespace AsyncCaches {
 
@@ -12,14 +13,19 @@ export namespace AsyncCaches {
     }
 
     export function create<K, V>(nspace: IDStr,
-                                 delegateName: 'disk' | 'firestore',
+                                 delegateName: 'disk' | 'firestore' | 'google-cloud-storage',
                                  wrapperName?: 'test-only'): IAsyncCache<K, V> {
 
         function createDelegate() {
 
             switch(delegateName) {
+
+                case "google-cloud-storage":
+                    return GoogleCloudStorageBasedAsyncCacheDelegate.create<K, V>(nspace);
+
                 case "disk":
                     return DiskBasedAsyncCacheDelegate.create<K, V>(nspace);
+
                 case "firestore":
                     return FirestoreBasedAsyncCacheDelegate.create<K, V>(nspace);
 

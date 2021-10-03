@@ -14,6 +14,7 @@ import IRegressionTestResultPass = RegressionEngines.IRegressionTestResultPass;
 import IRegressionTestResultError = RegressionEngines.IRegressionTestResultError;
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Files} from "polar-shared/src/util/Files";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -568,7 +569,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             const metadata = {
                 question,
-                cost: answer_response.cost_estimation.cost
+                cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
             };
 
             function isError(value: any): value is IAnswerExecutorError {
