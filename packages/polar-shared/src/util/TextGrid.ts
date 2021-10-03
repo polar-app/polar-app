@@ -1,7 +1,7 @@
-import {Numbers} from "polar-shared/src/util/Numbers";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Reducers} from "polar-shared/src/util/Reducers";
-import { Strings } from "polar-shared/src/util/Strings";
+import {Numbers} from "src/util/Numbers";
+import {arrayStream} from "src/util/ArrayStreams";
+import {Reducers} from "src/util/Reducers";
+import { Strings } from "src/util/Strings";
 
 export namespace TextGrid {
 

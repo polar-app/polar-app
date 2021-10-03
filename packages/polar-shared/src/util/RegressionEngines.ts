@@ -2,7 +2,7 @@ import {Percentages} from "./Percentages";
 import {Strings} from "./Strings";
 import {ErrorType} from "./Errors";
 import {StringBuffer} from "./StringBuffer";
-import {TextGrid} from "polar-bookshelf/web/js/util/TextGrid";
+import {TextGrid} from "./TextGrid";
 import {ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
 
 /**
