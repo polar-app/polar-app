@@ -531,7 +531,7 @@ async function doRegression(opts: ExecutorOpts) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records'>> {
+export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records' | 'filter_question'>> {
 
     /**
      * A unique ID for this executor so that we can keep track of the config
@@ -727,6 +727,7 @@ async function main() {
             rerank_elasticsearch_model: 'ada',
             rerank_truncate_short_head: false,
             prune_contiguous_records: false,
+            filter_question: 'part-of-speech'
         },
         {
             id: 'v2',
@@ -737,6 +738,7 @@ async function main() {
             rerank_elasticsearch_model: 'ada',
             rerank_truncate_short_head: true,
             prune_contiguous_records: true,
+            filter_question: 'part-of-speech'
         }
     ]
 
