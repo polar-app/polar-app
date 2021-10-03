@@ -17,7 +17,7 @@ export namespace DiskBasedAsyncCacheDelegate {
             const dir = FilePaths.join(DIR, nspace);
 
             if (! await Files.existsAsync(dir)) {
-                await Files.mkdirAsync(dir);
+                await Files.createDirAsync(dir);
             }
 
             return FilePaths.join(dir, `${hash}.data`);
