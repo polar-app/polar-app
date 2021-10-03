@@ -2,18 +2,19 @@ import {IOpenAIAnswersResponse, IOpenAIAnswersResponseWithPrompt} from "polar-an
 import {OpenAIRequests} from "./OpenAIRequests";
 import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {OpenAICostEstimator} from "./OpenAICostEstimator";
-import {IAnswersCostEstimation} from "polar-answers-api/src/ICostEstimation";
+import {IAnswersCostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 
 export namespace OpenAIAnswersClient {
 
-    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & IAnswersCostEstimation> {
+    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & ICostEstimationHolder<IAnswersCostEstimation>> {
 
         const url = 'https://api.openai.com/v1/answers';
 
         const res = await OpenAIRequests.exec<IOpenAIAnswersRequest, IOpenAIAnswersResponse>(url, request);
 
-        const cost = OpenAICostEstimator.costOfAnswers(request, res as IOpenAIAnswersResponseWithPrompt);
-        return {...res, ...cost};
+        // eslint-disable-next-line camelcase
+        const cost_estimation = OpenAICostEstimator.costOfAnswers(request, res as IOpenAIAnswersResponseWithPrompt);
+        return {...res, cost_estimation};
 
     }
 

@@ -486,10 +486,10 @@ export namespace AnswerExecutor {
 
             // eslint-disable-next-line camelcase
             const openai_answer_api_cost_estimation: IAnswersCostEstimation = {
-                cost: openai_answers_response.cost,
-                tokens: openai_answers_response.tokens,
-                search: openai_answers_response.search,
-                completion: openai_answers_response.completion,
+                cost: openai_answers_response.cost_estimation.cost,
+                tokens: openai_answers_response.cost_estimation.tokens,
+                search: openai_answers_response.cost_estimation.search,
+                completion: openai_answers_response.cost_estimation.completion,
             }
 
             const cost = openai_rerank_cost_estimation.cost + openai_answer_api_cost_estimation.cost;

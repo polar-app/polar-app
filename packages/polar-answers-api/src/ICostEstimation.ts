@@ -18,3 +18,12 @@ export interface IAnswersCostEstimation extends ICostEstimation {
     readonly search: ICostEstimationWithModel,
     readonly completion: ICostEstimationWithModel;
 }
+
+/**
+ * Holds the cost estimation in a cost_estimation variable.  This is not part of the OpenAI spec but we want
+ * to return these results in our clients.
+ */
+export interface ICostEstimationHolder<C extends ICostEstimation> {
+    // eslint-disable-next-line camelcase
+    readonly cost_estimation: C;
+}
