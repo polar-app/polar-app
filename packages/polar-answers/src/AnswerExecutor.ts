@@ -37,7 +37,14 @@ const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
  */
 const SHORT_HEAD_MIN_DOCS = 50;
 
+/**
+ * The max number of docs to return from the short head computation. Without
+ * this we could exceed the 200 max per answers call.
+ */
+const SHORT_HEAD_MAX_DOCUMENTS = 50;
+
 const SHORT_HEAD_ANGLE = 45;
+
 
 export namespace AnswerExecutor {
 
@@ -340,7 +347,7 @@ export namespace AnswerExecutor {
 
                             if (head) {
                                 console.log("Short head truncated to N entries: " + head.length)
-                                return head.length;
+                                return Math.min(head.length, SHORT_HEAD_MAX_DOCUMENTS);
                             } else {
                                 console.warn("No short head computed");
                             }
