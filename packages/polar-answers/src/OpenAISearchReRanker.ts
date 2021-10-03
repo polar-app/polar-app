@@ -48,7 +48,7 @@ export namespace OpenAISearchReRanker {
                     return {record, score};
                 });
 
-                return {records: reranked, cost: response.cost, tokens: response.tokens};
+                return {records: reranked, cost: response.cost_estimation.cost, tokens: response.cost_estimation.tokens};
 
             }
 
