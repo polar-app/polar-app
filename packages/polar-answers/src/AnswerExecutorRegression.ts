@@ -499,7 +499,7 @@ async function doRegression(opts: ExecutorOpts) {
 
     const engine = createRegressionEngine(opts);
 
-    // engine.limit(10)
+    // engine.limit(10) // FIXME
     const result = await engine.exec();
 
     const summarizer = (results: ReadonlyArray<IRegressionTestResultExecuted<any, unknown>>) => {
@@ -509,7 +509,8 @@ async function doRegression(opts: ExecutorOpts) {
                      .reduce(Reducers.SUM);
 
         return {
-            cost: Numbers.toFixedFloat(cost, 2)
+            cost: Numbers.toFixedFloat(cost, 2),
+            cost_max: Numbers.toFixedFloat(cost_max, 2)
         };
 
     }
@@ -739,7 +740,19 @@ async function main() {
             rerank_truncate_short_head: true,
             prune_contiguous_records: true,
             filter_question: 'part-of-speech'
+        },
+        {
+            id: 'v3',
+            model: 'curie',
+            search_model: 'curie',
+            rerank_elasticsearch: true,
+            rerank_elasticsearch_size: 10000,
+            rerank_elasticsearch_model: 'ada',
+            rerank_truncate_short_head: true,
+            prune_contiguous_records: true,
+            filter_question: 'part-of-speech-noun'
         }
+
     ]
 
     for (const opts of options) {
