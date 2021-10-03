@@ -15,6 +15,8 @@ import IRegressionTestResultError = RegressionEngines.IRegressionTestResultError
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Files} from "polar-shared/src/util/Files";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import { Reducers } from 'polar-shared/src/util/Reducers';
+import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultExecuted;
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -497,9 +499,19 @@ async function doRegression(opts: ExecutorOpts) {
 
     const engine = createRegressionEngine(opts);
 
-    // engine.limit(10) // FIXME
     const result = await engine.exec();
-    const report = result.createReport('cost', 'question', 'answer');
+
+    const summarizer = (results: ReadonlyArray<IRegressionTestResultExecuted<any, unknown>>) => {
+
+        const count
+            = results.map(current => (current.metadata || {}).count as number || 0)
+                     .reduce(Reducers.SUM);
+
+        return {count};
+
+    }
+
+    const report = result.createReport(['cost', 'question', 'answer'], summarizer);
 
     async function writeReportToConsole() {
         console.log(report);

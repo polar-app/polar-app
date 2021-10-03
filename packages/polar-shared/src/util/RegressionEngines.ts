@@ -60,7 +60,19 @@ export namespace RegressionEngines {
      */
     export type ReportStr = string;
 
-    export interface RegressionExecResult {
+    export type IRegressionTestResultExecuted<R extends ResultType, E>
+        = (IRegressionTestResultPass<R> & IRegressionTestName) |
+        (IRegressionTestResultError<E> & IRegressionTestName) |
+        (IRegressionTestResultError<ErrorType> & IRegressionTestName);
+
+    export type RegressionSummary = Readonly<{[key: string]: number}>
+
+    /**
+     * A summarizer to the report function to include counts of features in the regression metadtaa.
+     */
+    export type RegressionSummarizer<R extends ResultType, E> = (results: ReadonlyArray<IRegressionTestResultExecuted<R, E>>) => RegressionSummary;
+
+    export interface RegressionExecResult<R extends ResultType, E> {
         readonly nrPass: number;
         readonly nrFail: number;
         readonly accuracy: number;
@@ -68,7 +80,7 @@ export namespace RegressionEngines {
         /**
          * Create a report using the keys from the metadata we have.
          */
-        readonly createReport: (...keys: ReadonlyArray<string>) => ReportStr
+        readonly createReport: (keys: ReadonlyArray<string>, summarizer?: RegressionSummarizer<R, E>) => ReportStr
 
     }
 
@@ -92,7 +104,7 @@ export namespace RegressionEngines {
         /**
          * Execute the regression engine with all registered tests.
          */
-        readonly exec: () => Promise<RegressionExecResult>;
+        readonly exec: () => Promise<RegressionExecResult<R, E>>;
 
     }
 
@@ -124,16 +136,11 @@ export namespace RegressionEngines {
 
         async function exec() {
 
-            type IRegressionTestResultExecuted
-                = (IRegressionTestResultPass<R> & IRegressionTestName) |
-                  (IRegressionTestResultError<E> & IRegressionTestName) |
-                  (IRegressionTestResultError<ErrorType> & IRegressionTestName);
-
-            async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted>> {
+            async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted<R, E>>> {
 
                 console.log("=== Running regression tests...");
 
-                const results: IRegressionTestResultExecuted[] = [];
+                const results: IRegressionTestResultExecuted<R, E>[] = [];
 
                 for (const testEntry of regressions) {
 
@@ -165,7 +172,7 @@ export namespace RegressionEngines {
 
             }
 
-            function doReport(results: ReadonlyArray<IRegressionTestResultExecuted>): RegressionExecResult {
+            function doReport(results: ReadonlyArray<IRegressionTestResultExecuted<R, E>>): RegressionExecResult<R, E> {
 
                 const nrPass = results.filter(current => current.status === 'pass').length;
                 const nrFail = results.filter(current => current.status === 'fail').length;
@@ -173,39 +180,64 @@ export namespace RegressionEngines {
 
                 const accuracy = Percentages.calculate(nrPass, nrTests);
 
-                function createReport(...keys: ReadonlyArray<string>): ReportStr {
+                function createReport(keys: ReadonlyArray<string>, summarizer?: RegressionSummarizer<R, E>): ReportStr {
 
-                    const nrColumns =
-                        // we need two core columns for the name and the status
-                        2 +
-                        // we also need all the metadata columns
-                        keys.length;
+                    function createResultGrid() {
 
-                    const textGrid = TextGrid.create(nrColumns);
+                        const nrColumns =
+                            // we need two core columns for the name and the status
+                            2 +
+                            // we also need all the metadata columns
+                            keys.length;
 
-                    textGrid.headers('test name', 'status', ...keys);
+                        const textGrid = TextGrid.create(nrColumns);
 
-                    for(const result of results) {
+                        textGrid.headers('test name', 'status', ...keys);
 
-                        const row: ReadonlyArray<string | number | boolean> = [
-                            result.testName,
-                            result.status,
-                            ...keys.map(key => (result.metadata || {})[key] || '')
-                        ]
+                        for(const result of results) {
 
-                        textGrid.row(...row);
+                            const row: ReadonlyArray<string | number | boolean> = [
+                                result.testName,
+                                result.status,
+                                ...keys.map(key => (result.metadata || {})[key] || '')
+                            ]
+
+                            textGrid.row(...row);
+
+                        }
+
+                        return textGrid.format();
+                    }
+
+                    function createSummaryGrid() {
+
+                        const textGrid = TextGrid.create(2);
+
+                        textGrid.headers('name', 'value');
+
+                        textGrid.row('pass', nrPass);
+                        textGrid.row('fail', nrFail);
+                        textGrid.row('accuracy', accuracy);
+
+                        const summary = summarizer ? summarizer(results) : {};
+
+                        for (const key of Object.keys(summary)) {
+                            textGrid.row(key, summary[key]);
+                        }
+
+                        return textGrid.format();
 
                     }
 
                     const buff = new StringBuffer();
 
                     buff.append("Report generated on: " + ISODateTimeStrings.create())
-                    buff.append(textGrid.format());
 
                     buff.append(`=======================\n`);
-                    buff.append(`pass:        ${nrPass}\n`);
-                    buff.append(`fail:        ${nrFail}\n`);
-                    buff.append(`accuracy:    ${accuracy}\n`);
+                    buff.append(createResultGrid());
+
+                    buff.append(`=======================\n`);
+                    buff.append(createSummaryGrid());
 
                     return buff.toString();
 

@@ -6,7 +6,16 @@ import {IAnswersCostEstimation, ICostEstimationHolder} from "polar-answers-api/s
 
 export namespace OpenAIAnswersClient {
 
+    /**
+     * The max documents we're allowed to send to OpenAI in one pass.
+     */
+    export const MAX_DOCUMENTS = 200;
+
     export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & ICostEstimationHolder<IAnswersCostEstimation>> {
+
+        if (request.documents.length > MAX_DOCUMENTS) {
+            throw new Error(`Too many documents exceeds ${MAX_DOCUMENTS}: ${request.documents.length}`);
+        }
 
         const url = 'https://api.openai.com/v1/answers';
 
