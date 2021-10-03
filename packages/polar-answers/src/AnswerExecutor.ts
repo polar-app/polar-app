@@ -447,33 +447,6 @@ export namespace AnswerExecutor {
 
         const primaryAnswer = Arrays.first(openai_answers_response.answers);
 
-        if (primaryAnswer === NO_ANSWER_CODE) {
-
-            return {
-                error: true,
-                code: 'no-answer'
-            }
-
-        }
-
-        function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
-            return {
-                document: doc.document,
-                text: doc.text,
-                object: doc.object,
-                score: doc.score,
-                record: records[doc.document]
-            }
-        }
-
-        const id = Hashcodes.createRandomID();
-
-        const timings: IAnswerExecutorTimings = {
-            elasticsearch: computedDocuments.elasticsearch_duration,
-            openai_rerank: computedDocuments.openai_reranked_duration,
-            openai_answer: openai_answer_duration
-        }
-
         function computeCostEstimation(): IAnswerExecutorCostEstimation {
 
             const NULL_COSTS = {
@@ -505,6 +478,36 @@ export namespace AnswerExecutor {
 
         // eslint-disable-next-line camelcase
         const cost_estimation = computeCostEstimation();
+
+        if (primaryAnswer === NO_ANSWER_CODE) {
+
+            // TODO: timings here are important too.
+
+            return {
+                error: true,
+                code: 'no-answer',
+                cost_estimation
+            }
+
+        }
+
+        function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
+            return {
+                document: doc.document,
+                text: doc.text,
+                object: doc.object,
+                score: doc.score,
+                record: records[doc.document]
+            }
+        }
+
+        const id = Hashcodes.createRandomID();
+
+        const timings: IAnswerExecutorTimings = {
+            elasticsearch: computedDocuments.elasticsearch_duration,
+            openai_rerank: computedDocuments.openai_reranked_duration,
+            openai_answer: openai_answer_duration
+        }
 
         async function doTrace(): Promise<IAnswerExecutorTrace> {
 

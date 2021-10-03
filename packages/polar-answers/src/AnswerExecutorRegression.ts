@@ -545,7 +545,10 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             }
 
-            const metadata = {};
+            const metadata = {
+                question,
+                cost: answer_response.cost_estimation.cost
+            };
 
             function isError(value: any): value is IAnswerExecutorError {
                 return value.error === true;
@@ -579,7 +582,10 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                     status,
                     actual: answer,
                     expected: expectedAnswer,
-                    metadata
+                    metadata: {
+                        answer,
+                        ...metadata
+                    }
                 };
 
             } else {

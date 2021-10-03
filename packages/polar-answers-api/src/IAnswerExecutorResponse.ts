@@ -2,7 +2,7 @@ import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
-import {IAnswersCostEstimation, ICostEstimation} from "./ICostEstimation";
+import {IAnswersCostEstimation, ICostEstimation, ICostEstimationHolder} from "./ICostEstimation";
 
 export interface IAnswerExecutorTimings {
 
@@ -54,7 +54,7 @@ export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 
 }
 
-export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
+export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
     /**
      * Unique ID for this response which can be used when flagging results for good/bad
      */
@@ -66,17 +66,14 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
 
     readonly timings: IAnswerExecutorTimings;
 
-    // eslint-disable-next-line camelcase
-    readonly cost_estimation: IAnswerExecutorCostEstimation;
-
 }
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;
 
-export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'> {
+export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'>, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
     readonly message: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IAnswerExecutorErrorNoAnswer extends IRPCError<'no-answer'> {
+export interface IAnswerExecutorErrorNoAnswer extends IRPCError<'no-answer'>, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
 }
