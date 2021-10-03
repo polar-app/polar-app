@@ -7,18 +7,14 @@ export namespace OpenAIAnswersClient {
 
     import ICostEstimation = OpenAICostEstimator.ICostEstimation;
 
-    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse | IOpenAIAnswersResponse & ICostEstimation> {
+    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & ICostEstimation> {
 
         const url = 'https://api.openai.com/v1/answers';
 
         const res = await OpenAIRequests.exec<IOpenAIAnswersRequest, IOpenAIAnswersResponse>(url, request);
 
-        if (request.return_prompt) {
-            const cost = OpenAICostEstimator.costOfAnswers(request, res as IOpenAIAnswersResponseWithPrompt);
-            return {...res, ...cost};
-        } else {
-            return res;
-        }
+        const cost = OpenAICostEstimator.costOfAnswers(request, res as IOpenAIAnswersResponseWithPrompt);
+        return {...res, ...cost};
 
     }
 
