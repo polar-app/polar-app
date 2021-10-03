@@ -43,12 +43,11 @@ async function doRegression(opts: ExecutorOpts) {
 
     engine.xregister("bigtable 1", executor.create("Is Bigtable relational?", "No."));
 
-    engine.xregister("bigtable single-row transactions", executor.create("Does Bigtable support single-row transactions?", "Yes.");
+    engine.xregister("bigtable single-row transactions", executor.create("Does Bigtable support single-row transactions?", "Yes."));
 
+    engine.xregister("bigtable general transactions", executor.create("Does Bigtable support general transactions?", "No."));
 
-    engine.xregister("bigtable general transactions", executor.create("Does Bigtable support general transactions?", "No.");
-
-    engine.xregister("TODO: bigtable type of transactions", executor.create("What types of transactions does bigtable support?", "");
+    engine.xregister("TODO: bigtable type of transactions", executor.create("What types of transactions does bigtable support?", ""));
     //
     // engine.register("bigtable unknown 1", async function () {
     //

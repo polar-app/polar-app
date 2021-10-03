@@ -1,6 +1,7 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {OpenAIRequests} from "./OpenAIRequests";
 import {OpenAICostEstimator} from "./OpenAICostEstimator";
+import { ICostEstimation } from "polar-answers-api/src/ICostEstimation";
 
 /**
  * Create search
@@ -24,8 +25,6 @@ import {OpenAICostEstimator} from "./OpenAICostEstimator";
  *
  */
 export namespace OpenAISearchClient {
-
-    import ICostEstimation = OpenAICostEstimator.ICostEstimation;
 
     export interface IOpenAISearchRequest {
 

@@ -4,6 +4,7 @@ import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {UserIDStr} from "polar-shared/src/util/Strings";
 import {FilterQuestionType, IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
+    IAnswerExecutorCostEstimation,
     IAnswerExecutorError,
     IAnswerExecutorResponse,
     IAnswerExecutorTimings,
@@ -26,6 +27,7 @@ import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
+import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -138,11 +140,15 @@ export namespace AnswerExecutor {
         }
 
         interface ESDocumentResultsWithoutRerank extends ESDocumentResultsBase {
+
             // eslint-disable-next-line camelcase
             readonly openai_reranked_records: undefined;
 
             // eslint-disable-next-line camelcase
             readonly openai_reranked_duration: undefined;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_cost_estimation: undefined;
 
         }
 
@@ -153,6 +159,9 @@ export namespace AnswerExecutor {
 
             // eslint-disable-next-line camelcase
             readonly openai_reranked_duration: number;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_cost_estimation: ICostEstimation;
 
         }
 
@@ -308,9 +317,9 @@ export namespace AnswerExecutor {
                 // eslint-disable-next-line camelcase
                 const [openai_reranked_records_with_score, openai_reranked_duration] =
                     await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                        request.question,
-                        elasticsearch_records,
-                        hit => hit.text));
+                                                                        request.question,
+                                                                        elasticsearch_records,
+                                                                        hit => hit.text));
 
                 // eslint-disable-next-line camelcase
                 const openai_reranked_records
@@ -363,6 +372,10 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
+                    openai_reranked_cost_estimation: {
+                        cost: openai_reranked_records_with_score.cost,
+                        tokens: openai_reranked_records_with_score.tokens,
+                    },
                     records,
                     elasticsearch_pruned
                 };
@@ -383,6 +396,7 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records: undefined,
                     openai_reranked_duration: undefined,
+                    openai_reranked_cost_estimation: undefined,
                     records,
                     elasticsearch_pruned
                 };
@@ -460,6 +474,38 @@ export namespace AnswerExecutor {
             openai_answer: openai_answer_duration
         }
 
+        function computeCostEstimation(): IAnswerExecutorCostEstimation {
+
+            const NULL_COSTS = {
+                cost: 0,
+                tokens: 0
+            }
+
+            // eslint-disable-next-line camelcase
+            const openai_rerank_cost_estimation: ICostEstimation = computedDocuments.openai_reranked_cost_estimation || NULL_COSTS;
+
+            // eslint-disable-next-line camelcase
+            const openai_answer_api_cost_estimation: IAnswersCostEstimation = {
+                cost: openai_answers_response.cost,
+                tokens: openai_answers_response.tokens,
+                search: openai_answers_response.search,
+                completion: openai_answers_response.completion,
+            }
+
+            const cost = openai_rerank_cost_estimation.cost + openai_answer_api_cost_estimation.cost;
+            const tokens = openai_rerank_cost_estimation.tokens + openai_answer_api_cost_estimation.tokens;
+
+            return {
+                cost, tokens,
+                openai_rerank_cost_estimation,
+                openai_answer_api_cost_estimation
+            };
+
+        }
+
+        // eslint-disable-next-line camelcase
+        const cost_estimation = computeCostEstimation();
+
         async function doTrace(): Promise<IAnswerExecutorTrace> {
 
             const firestore = FirestoreAdmin.getInstance();
@@ -500,7 +546,8 @@ export namespace AnswerExecutor {
             answers: openai_answers_response.answers,
             model,
             search_model,
-            timings
+            timings,
+            cost_estimation
         }
 
     }

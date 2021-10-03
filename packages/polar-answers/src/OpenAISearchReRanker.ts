@@ -2,8 +2,8 @@ import {AIModel} from "polar-answers-api/src/AIModel";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {OpenAISearchClient} from "./OpenAISearchClient";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {OpenAICostEstimator} from "./OpenAICostEstimator";
 import { Reducers } from "polar-shared/src/util/Reducers";
+import {ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 
 /**
  * There is a limit to the number of docs we can request at once.
@@ -15,8 +15,6 @@ const MAX_DOCS_PER_REQUEST = 200;
  * re-rank them, then sort the results by rank.
  */
 export namespace OpenAISearchReRanker {
-
-    import ICostEstimation = OpenAICostEstimator.ICostEstimation;
 
     export interface IRerankedResults<R> extends ICostEstimation {
         readonly records: ReadonlyArray<IRecordWithScore<R>>

@@ -2,6 +2,7 @@ import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
+import {IAnswersCostEstimation, ICostEstimation} from "./ICostEstimation";
 
 export interface IAnswerExecutorTimings {
 
@@ -25,6 +26,25 @@ export interface IAnswerExecutorTimings {
 
 }
 
+/**
+ * Total costs for the answer executor.
+ */
+export interface IAnswerExecutorCostEstimation extends ICostEstimation {
+
+    /**
+     * Cost estimation when re-rank is enabled.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_rerank_cost_estimation?: ICostEstimation;
+
+    /**
+     * Cost estimation for using the answer API to compute the response.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_answer_api_cost_estimation: IAnswersCostEstimation;
+
+}
+
 export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 
     /**
@@ -40,9 +60,15 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
      */
     readonly id: string;
     readonly question: string;
+
     // eslint-disable-next-line camelcase
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+
     readonly timings: IAnswerExecutorTimings;
+
+    // eslint-disable-next-line camelcase
+    readonly cost_estimation: IAnswerExecutorCostEstimation;
+
 }
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;

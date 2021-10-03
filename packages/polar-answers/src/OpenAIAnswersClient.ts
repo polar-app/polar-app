@@ -2,12 +2,11 @@ import {IOpenAIAnswersResponse, IOpenAIAnswersResponseWithPrompt} from "polar-an
 import {OpenAIRequests} from "./OpenAIRequests";
 import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {OpenAICostEstimator} from "./OpenAICostEstimator";
+import {IAnswersCostEstimation} from "polar-answers-api/src/ICostEstimation";
 
 export namespace OpenAIAnswersClient {
 
-    import ICostEstimation = OpenAICostEstimator.ICostEstimation;
-
-    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & ICostEstimation> {
+    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse & IAnswersCostEstimation> {
 
         const url = 'https://api.openai.com/v1/answers';
 
