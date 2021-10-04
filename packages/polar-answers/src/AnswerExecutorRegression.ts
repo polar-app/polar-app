@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {IAnswerExecutorError, IAnswerExecutorResponse} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {
     RegressionEngines
 } from "polar-shared/src/util/RegressionEngines";
@@ -17,6 +17,7 @@ import {Files} from "polar-shared/src/util/Files";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import { Reducers } from 'polar-shared/src/util/Reducers';
 import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultExecuted;
+import {AsyncCaches} from "polar-cache/src/AsyncCaches";
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -42,7 +43,6 @@ function createRegressionEngine(opts: ExecutorOpts) {
     engine.xregister("covid 2", executor.create("What do two doses of SARS-CoV-2 vaccination induce?", ""));
 
     engine.xregister("covid 3", executor.create("What neutralized the prototype B virus?", ""));
-
 
     engine.register("astronomy #1",
         executor.create("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
@@ -564,8 +564,29 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             const uid = await getUID(forEmail);
 
+            // create a delegate that runs the requests to the AnswerExecutor directly
             // eslint-disable-next-line camelcase
-            const answer_response = await AnswerExecutor.exec({
+            const answer_executor_delegate = async () => await AnswerExecutor.exec({
+                uid,
+                question,
+                ...opts
+            });
+
+            // now create an executor that uses the cache which uses the answer_executor_delegate
+            // NOTE/IMPORTANT: if we change the answer-executor algorithm we can purge the cache
+            // by just using a new namespace  Technically this would be using a *new* cache and
+            // just not caring about the old data.
+
+            // eslint-disable-next-line camelcase
+            const answer_executor_with_cache
+                = AsyncCaches.wrapper<AnswerExecutor.IAnswerExecutorRequestWithUID,
+                                      IAnswerExecutorResponse |  IAnswerExecutorError>('answer-executor',
+                                                                                       ['disk', 'google-cloud-storage'],
+                                                                                       'test-only')
+                             .create(answer_executor_delegate);
+
+            // eslint-disable-next-line camelcase
+            const answer_response = await answer_executor_with_cache({
                 uid,
                 question,
                 ...opts

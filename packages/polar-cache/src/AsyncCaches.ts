@@ -10,6 +10,7 @@ export namespace AsyncCaches {
 
     export interface IAsyncCache<K, V> {
         readonly containsKey: (key: K) => Promise<boolean>
+        // TODO: get should not return undefined as the caller should call containsKey first.
         readonly get: (key: K) => Promise<V | undefined>
         readonly put: (key: K, value: V) => Promise<void>
     }
@@ -66,6 +67,41 @@ export namespace AsyncCaches {
             default:
                 return delegate;
         }
+
+    }
+
+    export type AsyncRequestResponseProviderFunction<K, V> = (input: K) => Promise<V>;
+
+    export type WrapperFactory<K, V> = (delegate: AsyncRequestResponseProviderFunction<K, V>) => AsyncRequestResponseProviderFunction<K, V>;
+
+    export interface IAsyncCacheWrapper<K, V> {
+        readonly create: WrapperFactory<K, V>;
+    }
+
+    export function wrapper<K, V>(nspace: IDStr,
+                                  delegateName: CacheDelegateName | AggregateCacheDelegateNameTuple,
+                                  wrapperName?: 'test-only'): IAsyncCacheWrapper<K, V> {
+
+        const cache = AsyncCaches.create<K, V>(nspace, delegateName, wrapperName);
+
+        const create: WrapperFactory<K, V> = (delegate) => {
+
+            return async (input: K): Promise<V> => {
+
+                if (await cache.containsKey(input)) {
+                     const output = await cache.get(input);
+                     return output!;
+                }
+
+                const output = await delegate(input);
+                await cache.put(input, output);
+                return output;
+
+            }
+
+        }
+
+        return {create};
 
     }
 
