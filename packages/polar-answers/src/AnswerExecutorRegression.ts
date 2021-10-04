@@ -839,7 +839,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                     }
 
                     if (regressionExpectations.fail.map(canonicalize).includes(canonicalize(answer))) {
-                        return 'pass';
+                        return 'fail';
                     }
 
                     return 'unknown';
