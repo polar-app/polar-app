@@ -31,7 +31,7 @@ export namespace TextGrid {
         function row(...cols: ReadonlyArray<TextData>) {
 
             if (cols.length !== nrColumns) {
-                throw new Error("Wrong number of columns")
+                throw new Error(`Attempted to write row with ${cols.length} columns when we only have ${nrColumns} header columns: ${_headers} vs ${cols}`);
             }
 
             _row.push(cols);

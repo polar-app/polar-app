@@ -207,19 +207,19 @@ export namespace RegressionEngines {
 
                     function createResultGrid() {
 
-                        const nrColumns =
-                            // we need two core columns for the name and the status
-                            2 +
-                            // we also need all the metadata columns
-                            keys.length;
+                        const headers = ['test name', 'status', 'confirmed', ...keys];
 
-                        const textGrid = TextGrid.create(nrColumns);
+                        const textGrid = TextGrid.create(headers.length);
 
-                        textGrid.headers('test name', 'status', 'confirmed', ...keys);
+                        textGrid.headers(...headers);
 
                         function sortResults(results: ReadonlyArray<IRegressionTestResultExecuted<R, E>>): ReadonlyArray<IRegressionTestResultExecuted<R, E>> {
 
-                            function comparator(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
+                            function comparatorByName(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
+                                return a.testName.localeCompare(b.testName);
+                            }
+
+                            function comparatorByStatus(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
 
                                 function toStatusScore(status: ResultStatus) {
 
@@ -234,27 +234,40 @@ export namespace RegressionEngines {
 
                                 }
 
-                                const diff = toStatusScore(a.status) - toStatusScore(b.status);
-
-                                if (diff !== 0) {
-                                    return diff;
-                                }
-
-                                return a.testName.localeCompare(b.testName);
+                                return toStatusScore(a.status) - toStatusScore(b.status);
 
                             }
 
-                            return [...results].sort(comparator);
+
+                            function comparatorByConfirmed(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
+
+                                function toConfirmedScore(confirmed: boolean) {
+                                    return confirmed ? 1 : 0;
+                                }
+
+                                return toConfirmedScore(a.confirmed) - toConfirmedScore(b.confirmed);
+
+                            }
+
+                            return [...results].sort(comparatorByName)
+                                               .sort(comparatorByStatus)
+                                               .sort(comparatorByConfirmed);
 
                         }
 
                         for(const result of sortResults(results)) {
 
+                            // eslint-disable-next-line camelcase
+                            const metadata_fields =
+                                keys.map(key => (result.metadata || {})[key] || '')
+                                    .map(current => current.toString())
+
                             const row: ReadonlyArray<string | number | boolean> = [
                                 result.testName,
                                 result.status,
                                 result.confirmed,
-                                ...keys.map(key => (result.metadata || {})[key] || '')
+                                // eslint-disable-next-line camelcase
+                                ...metadata_fields
                             ]
 
                             textGrid.row(...row);

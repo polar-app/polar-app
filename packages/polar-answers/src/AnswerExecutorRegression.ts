@@ -18,6 +18,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import { Reducers } from 'polar-shared/src/util/Reducers';
 import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultExecuted;
 import {AsyncCaches} from "polar-cache/src/AsyncCaches";
+import IConfirmationMap = RegressionEngines.IConfirmationMap;
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -32,7 +33,7 @@ import {AsyncCaches} from "polar-cache/src/AsyncCaches";
 
 function createRegressionEngine(opts: ExecutorOpts) {
 
-    const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>();
+    const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>(opts.confirmations);
 
     // TODO: we need a name of confirmed/failing tests by ID based on the opts here...
     // when confirmed as failing the supervisor of the regression knows they don't
@@ -552,7 +553,7 @@ async function doRegression(opts: ExecutorOpts) {
     }
 
     async function writeReportToFile() {
-        const path = `regression-report-${opts.id}.txt`;
+        const path = `regression-report-${opts.request.id}.txt`;
         await Files.writeFileAsync(path, report);
     }
 
@@ -561,14 +562,22 @@ async function doRegression(opts: ExecutorOpts) {
 
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ExecutorOpts extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records' | 'filter_question'>> {
+export interface IRegressionAnswerExecutorRequest extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records' | 'filter_question'>> {
 
     /**
      * A unique ID for this executor so that we can keep track of the config
      * options by name.
      */
     readonly id: IDStr;
+
+}
+
+
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ExecutorOpts {
+    readonly request: IRegressionAnswerExecutorRequest;
+    readonly confirmations: IConfirmationMap;
 
 }
 
@@ -593,7 +602,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
             const answer_executor_delegate = async () => await AnswerExecutor.exec({
                 uid,
                 question,
-                ...opts
+                ...opts.request
             });
 
             // now create an executor that uses the cache which uses the answer_executor_delegate
@@ -613,7 +622,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
             const answer_response = await answer_executor_with_cache({
                 uid,
                 question,
-                ...opts
+                ...opts.request
             });
 
             /**
@@ -771,37 +780,52 @@ async function main() {
 
     const options: ReadonlyArray<ExecutorOpts> = [
         {
-            id: 'v1',
-            search_model: 'ada',
-            model: 'ada',
-            rerank_elasticsearch: false,
-            rerank_elasticsearch_size: 10000,
-            rerank_elasticsearch_model: 'ada',
-            rerank_truncate_short_head: false,
-            prune_contiguous_records: false,
-            filter_question: 'part-of-speech'
+            request: {
+                id: 'v1',
+                search_model: 'ada',
+                model: 'ada',
+                rerank_elasticsearch: false,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: false,
+                prune_contiguous_records: false,
+                filter_question: 'part-of-speech',
+            },
+            confirmations: {
+                "astronomy #1": 'fail',
+                "astronomy Chapter 2 #1": 'fail'
+            }
         },
         {
-            id: 'v2',
-            model: 'curie',
-            search_model: 'curie',
-            rerank_elasticsearch: true,
-            rerank_elasticsearch_size: 10000,
-            rerank_elasticsearch_model: 'ada',
-            rerank_truncate_short_head: true,
-            prune_contiguous_records: true,
-            filter_question: 'part-of-speech'
+            request: {
+                id: 'v2',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech',
+            },
+            confirmations: {
+            }
         },
         {
-            id: 'v3',
-            model: 'curie',
-            search_model: 'curie',
-            rerank_elasticsearch: true,
-            rerank_elasticsearch_size: 10000,
-            rerank_elasticsearch_model: 'ada',
-            rerank_truncate_short_head: true,
-            prune_contiguous_records: true,
-            filter_question: 'part-of-speech-noun'
+            request: {
+                id: 'v3',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+            },
+            confirmations: {
+            }
+
         }
 
     ]
