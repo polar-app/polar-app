@@ -19,7 +19,7 @@ export namespace TextGrid {
 
         let _headers: string[] = [];
 
-        let padd = 1;
+        let col_padding = 2;
 
         /**
          * Provide optional headers.
@@ -62,7 +62,7 @@ export namespace TextGrid {
                     .map(columnWidth)
 
             function formatToColumnWidth(data: ReadonlyArray<TextData>) {
-                const sep = Strings.generate(padd, ' ')
+                const sep = Strings.generate(col_padding, ' ')
                 return data.map((current, idx) => Strings.rpad(current.toString(), ' ', widths[idx])).join(sep)
             }
 

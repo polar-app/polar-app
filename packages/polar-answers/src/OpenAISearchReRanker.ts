@@ -4,6 +4,7 @@ import {OpenAISearchClient} from "./OpenAISearchClient";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { Reducers } from "polar-shared/src/util/Reducers";
 import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
+import {FunctionTimers} from "polar-shared/src/util/FunctionTimers";
 
 /**
  * There is a limit to the number of docs we can request at once.
@@ -60,27 +61,47 @@ export namespace OpenAISearchReRanker {
 
         })
 
-        const responses = await Promise.all(requests.map(current => current()));
+        async function executeRequests() {
+            const [result, duration] = await FunctionTimers.execAsync(() => Promise.all(requests.map(current => current())));
+            console.log("Duration for requests: " + duration);
+            return result;
+        }
 
-        const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM);
-        const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM);
+        const responses = await executeRequests();
 
-        const reranked =
-            arrayStream(responses)
-                .map(current => current.records)
-                .flatMap(current => current)
-                // now sort descending by score
-                .sort((a, b) => b.score - a.score)
-                .collect();
+        function computeResult() {
 
-        console.log("Rerank cost: ", {cost, tokens, model});
+            const [result, duration] = FunctionTimers.exec(() => {
 
-        return {
-            cost_estimation: {
-                cost, tokens
-            },
-            records: reranked
-        };
+                const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM);
+                const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM);
+
+                const reranked =
+                    arrayStream(responses)
+                        .map(current => current.records)
+                        .flatMap(current => current)
+                        // now sort descending by score
+                        .sort((a, b) => b.score - a.score)
+                        .collect();
+
+                console.log("Rerank cost: ", {cost, tokens, model});
+
+                return {
+                    cost_estimation: {
+                        cost, tokens
+                    },
+                    records: reranked
+                };
+
+            })
+
+            console.log("Duration for result (metadata and sorted records): " + duration);
+
+            return result;
+
+        }
+
+        return computeResult();
 
     }
 

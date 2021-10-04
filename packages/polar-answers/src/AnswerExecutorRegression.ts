@@ -108,7 +108,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
     engine.register("US history chap 1 #7",
         executor.create("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
             "Muslims and Jews",
-            "Jews and Muslims"
+            "Jews and Muslims",
+            "The Spanish forced the Jews and Muslims to either convert or leave."
         ]));
 
     engine.register("US history chap 1 #8",
@@ -507,6 +508,11 @@ async function doRegression(opts: ExecutorOpts) {
         const cost
             = results.map(current => (current.metadata || {}).cost as number || 0)
                      .reduce(Reducers.SUM);
+
+        // eslint-disable-next-line camelcase
+        const cost_max
+            = results.map(current => (current.metadata || {}).cost as number || 0)
+            .reduce(Reducers.MAX);
 
         return {
             cost: Numbers.toFixedFloat(cost, 2),
