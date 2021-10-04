@@ -9,6 +9,7 @@ import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
 import {modifierPredicate} from "../../keyboard_shortcuts/KeyboardShortcuts";
 import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {BlockPredicates} from "../store/BlockPredicates";
 
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
 
@@ -73,9 +74,14 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
+        const block = blocksTreeStore.getBlock(blockID)!;
+
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
 
-            if (! isMultilineNavEnabled || CursorPositions.isCursorAtSide(contentEditableElem, 'top')) {
+            if (! isMultilineNavEnabled ||
+                ! BlockPredicates.isEditableBlock(block) ||
+                CursorPositions.isCursorAtSide(contentEditableElem, 'top')) {
+
                 abortEvent(event);
                 blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
             }
@@ -103,9 +109,14 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
+        const block = blocksTreeStore.getBlock(blockID)!;
+
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
 
-            if (! isMultilineNavEnabled || CursorPositions.isCursorAtSide(contentEditableElem, 'bottom')) {
+            if (! isMultilineNavEnabled ||
+                ! BlockPredicates.isEditableBlock(block) ||
+                CursorPositions.isCursorAtSide(contentEditableElem, 'bottom')) {
+
                 abortEvent(event);
                 blocksTreeStore.navNext({ shiftKey: event.shiftKey });
             }

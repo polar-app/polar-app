@@ -264,25 +264,38 @@ export namespace CursorPositions {
             return false;
         }
 
+        const getCursorRect = (range: Range): DOMRect => {
+            const rangeRect = range.getBoundingClientRect();
+
+            const didFail = Object.values(rangeRect.toJSON()).every(val => val === 0);
+
+            if (! didFail) {
+                return rangeRect;
+            }
+
+            const span = document.createElement('span');
+            span.innerHTML = '&#xFEFF;';
+
+            range.insertNode(span);
+            const spanRect = span.getBoundingClientRect();
+
+            span.parentElement?.removeChild(span);
+            return spanRect;
+        };
+
         const range = selection.getRangeAt(0);
+
+        const cursorRect = getCursorRect(range);
 
         const styles = window.getComputedStyle(elem);
 
         const lineHeight = (+styles.lineHeight.slice(0, -2)) || 12;
         const threshold = lineHeight / 2;
 
-        const span = document.createElement('span');
-        span.innerHTML = '&nbsp;';
-
-        range.insertNode(span);
-        const spanRect = span.getBoundingClientRect();
-
-        span.parentElement?.removeChild(span);
-
         elem.normalize();
 
         return side === 'top'
-            ? Math.abs(spanRect.top - elemRect.top) < threshold
-            : Math.abs(spanRect.bottom - elemRect.bottom) < threshold;
+            ? Math.abs(cursorRect.top - elemRect.top) < threshold
+            : Math.abs(cursorRect.bottom - elemRect.bottom) < threshold;
     }
 }
