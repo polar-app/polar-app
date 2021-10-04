@@ -1,14 +1,13 @@
-import {lambdaWrapper} from "../../shared/lambdaWrapper";
-import {APIGatewayProxyHandler} from "aws-lambda";
+import {FuncWithAuth, lambdaWrapper} from "../../shared/lambdaWrapper";
 
-const lambda: APIGatewayProxyHandler = async (event) => {
+const originalHandler: FuncWithAuth = (idUser, request) => {
     return {
-        statusCode: 200,
-        body: JSON.stringify({
-            success: true,
-            message: "Hello, world!",
-        })
+        success: true,
+        idUser,
+        request,
     }
 };
 
-export const handler = lambdaWrapper(lambda);
+export const handler = lambdaWrapper(originalHandler, {
+    authRequired: true,
+});

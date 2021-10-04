@@ -1,6 +1,6 @@
 import {IResource, LambdaIntegration} from "@aws-cdk/aws-apigateway";
 import {NodejsFunction} from "@aws-cdk/aws-lambda-nodejs";
-import {Construct} from "@aws-cdk/core";
+import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
 
 export class RPCSample extends Construct {
@@ -12,6 +12,7 @@ export class RPCSample extends Construct {
 
         const lambda = new NodejsFunction(this, 'NodejsFunction', {
             entry: path.resolve(__dirname, 'RPCSample.lambda.ts'),
+            timeout: Duration.seconds(30),
         });
         props.rootResource.addMethod('POST', new LambdaIntegration(lambda));
     }

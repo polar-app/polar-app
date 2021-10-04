@@ -1,5 +1,5 @@
 import {Construct} from "@aws-cdk/core";
-import {RestApi, RestApiProps} from "@aws-cdk/aws-apigateway";
+import {Cors, RestApi, RestApiProps} from "@aws-cdk/aws-apigateway";
 
 export class ApiGateway extends RestApi {
 
@@ -9,8 +9,8 @@ export class ApiGateway extends RestApi {
             // Automatically create an OPTIONS method for every resource
             defaultCorsPreflightOptions: {
                 allowHeaders: ['*'],
-                allowMethods: ['*'],
-                allowOrigins: ['*'],
+                allowMethods: Cors.ALL_METHODS,
+                allowOrigins: Cors.ALL_ORIGINS,
                 disableCache: true,
                 allowCredentials: true,
             },

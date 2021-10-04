@@ -237,7 +237,9 @@ function CDKDemo() {
     const [rpcResult, setRpcResult] = React.useState<any | undefined>(undefined);
 
     React.useEffect(() => {
-        JSONRPC.exec('rpc-sample', {})
+        JSONRPC.exec('rpc-sample', {
+            email: 'example@example.com',
+        })
             .then(result => {
                 setRpcResult(result);
             })
@@ -247,12 +249,11 @@ function CDKDemo() {
     return <>
         <div style={{
             flex: '100%',
-            textAlign: 'center',
         }}>
             <p>Result from AWS API Gateway call:</p>
-            <div>
-                {JSON.stringify(rpcResult)}
-            </div>
+            <pre>
+                {JSON.stringify(rpcResult, null, 2)}
+            </pre>
         </div>
     </>;
 }
@@ -294,8 +295,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  minHeight: 0,
                                  flexDirection: 'column',
                                  flexGrow: 1,
-                                 height: Devices.isDesktop() ? '100%':`calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
-                                }}>
+                                 height: Devices.isDesktop() ? '100%' : `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
+                             }}>
 
                             <UseLocationChangeStoreProvider>
                                 <BrowserRouter>
