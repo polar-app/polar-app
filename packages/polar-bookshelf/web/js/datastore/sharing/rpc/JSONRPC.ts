@@ -2,6 +2,8 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {UserRequest} from '../db/UserRequest';
 import {CloudFunctions} from '../../firebase/CloudFunctions';
 
+const AwsApiGatewayURL = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod';
+
 export class JSONRPC {
 
     /**
@@ -63,6 +65,11 @@ export class JSONRPC {
         return this._awsLambdaFunctions.includes(functionName);
     }
 
+    /**
+     * Execute the request at AWS Lambda
+     * @param props
+     * @private
+     */
     private static async executeApiGatewayRequest<R, V>(props: {
         // Path within the AWS API Gateway
         path: string;
@@ -73,9 +80,7 @@ export class JSONRPC {
         // Firebase token of the current user
         idToken: string,
     }) {
-        const endpoint = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod';
-
-        const url = `${endpoint}/${props.path}`;
+        const url = `${AwsApiGatewayURL}/${props.path}`;
 
         const response = await fetch(url, {
             method: 'POST',
