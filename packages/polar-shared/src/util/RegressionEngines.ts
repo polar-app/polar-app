@@ -119,6 +119,11 @@ export namespace RegressionEngines {
 
     export interface ICreateOpts {
         readonly confirmations?: IConfirmationMap;
+
+        /**
+         * The configuration for this regression used for documentation in the report.
+         */
+        readonly config?: any;
     }
 
     /**
@@ -300,6 +305,12 @@ export namespace RegressionEngines {
 
                     const now = ISODateTimeStrings.create();
                     buff.append(`Report generated on: ${now}\n`)
+
+                    if (opts.config) {
+                        buff.append(`======================= config: \n`);
+                        buff.append(JSON.stringify(opts.config, null, '  '));
+                        buff.append("\n");
+                    }
 
                     buff.append(`======================= results: \n`);
                     buff.append(createResultGrid());

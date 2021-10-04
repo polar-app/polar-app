@@ -15,7 +15,7 @@ export namespace TextGrid {
 
     export function create(nrColumns: number) {
 
-        let _row: ReadonlyArray<TextData>[] = [];
+        let _rows: ReadonlyArray<TextData>[] = [];
 
         let _headers: string[] = [];
 
@@ -34,7 +34,7 @@ export namespace TextGrid {
                 throw new Error(`Attempted to write row with ${cols.length} columns when we only have ${nrColumns} header columns: ${_headers} vs ${cols}`);
             }
 
-            _row.push(cols);
+            _rows.push(cols);
 
         }
 
@@ -45,12 +45,12 @@ export namespace TextGrid {
 
             // compute the column widths
 
-            if (_row.length === 0) {
+            if (_rows.length === 0) {
                 return ""
             }
 
             function columnWidth(col: number) {
-                return arrayStream(_row)
+                return arrayStream([_headers, ..._rows])
                     .map(current => current[col].toString().length)
                     .collect()
                     .reduce(Reducers.MAX);
@@ -78,7 +78,7 @@ export namespace TextGrid {
 
             }
 
-            buff += _row.map(row => formatToColumnWidth(row)).join("\n")
+            buff += _rows.map(row => formatToColumnWidth(row)).join("\n")
 
             return buff;
 

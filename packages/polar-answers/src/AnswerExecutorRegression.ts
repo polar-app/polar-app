@@ -38,7 +38,8 @@ import IConfirmationMap = RegressionEngines.IConfirmationMap;
 function createRegressionEngine(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>({
-        confirmations: opts.confirmations
+        confirmations: opts.confirmations,
+        config: opts.request
     });
 
     // TODO: we need a name of confirmed/failing tests by ID based on the opts here...
