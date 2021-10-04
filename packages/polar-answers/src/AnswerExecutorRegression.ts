@@ -183,13 +183,18 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]));
 
     engine.register("US history chap 2 #4",
-        executor.create("Why did the authors of probanzas de méritos choose to write in the way that they did?", [
-            "To convince the Spanish crown to fund more voyages",
-            "They wanted to win royal favor.",
-            "They wanted to win royal patronage.",
-            "They wanted to win royal patronage.",
-            "They chose to write in the way that they did because they wanted to show the reader the importance of the work that they were doing."
-        ]));
+        executor.create("Why did the authors of probanzas de méritos choose to write in the way that they did?", {
+            pass: [
+                "To convince the Spanish crown to fund more voyages",
+                "They wanted to win royal favor.",
+                "They wanted to win royal patronage.",
+                "They wanted to win royal patronage.",
+                "They chose to write in the way that they did because they wanted to show the reader the importance of the work that they were doing."
+            ],
+            fail: [
+                "The authors of probanzas de méritos chose to write in the way that they did because they believed that the best way to achieve literary success was to write in the way that they did."
+            ]
+        }));
 
 
     engine.xregister("US history chap 2 #5",
@@ -207,12 +212,18 @@ function createRegressionEngine(opts: ExecutorOpts) {
         // to achieve a lasting peace with the Catholic nations of Spain and France
 
         // TODO: i think this would benefit from query expansion.
-        executor.create("What was the chief goal of the Puritans?", [
-            "To eliminate any traces of Catholicism from the church of England.",
-            "The eliminatation of Catholicism",
-            "To purify the Church of England of Roman Catholic practices",
-            "To reform the Church of England."
-        ]));
+        executor.create("What was the chief goal of the Puritans?", {
+            pass: [
+                "To eliminate any traces of Catholicism from the church of England.",
+                "The eliminatation of Catholicism",
+                "To purify the Church of England of Roman Catholic practices",
+                "To reform the Church of England.",
+            ],
+            fail: [
+                // I think this is wrong... it had to do with the church of england
+                "To spread the Christian gospel to the Indians."
+            ]
+        }));
 
     engine.register("US history chap 2 #8",
         // TODO: parser- the PDF is not parsing the document out properly
@@ -229,7 +240,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             ],
             fail: [
                 "England was not a major power in the Atlantic World in the early sixteenth century.  It was not until the late sixteenth century that England became a major power in the Atlantic World.  The English Crown was not interested in colonizing the New World until the late sixteenth century.  The English Crown was not interested in colonizing the New World until the late sixteenth century.",
-                "England was a weak imperial power in the early seventeenth century.  It had only a few infant colonies in the Americas in the early 1600s.  The English never found treasure equal to that of the Aztec city of Tenochtitlán, and England did not quickly grow rich from its small American outposts.  The English colonies also differed from each other; Barbados and Virginia had a decidedly commercial orientation from the start, while the Puritan colonies of New England were intensely religious at their inception.  All English settlements in America, however, marked the increasingly important role of England in the Atlantic World."
+                "England was a weak imperial power in the early seventeenth century.  It had only a few infant colonies in the Americas in the early 1600s.  The English never found treasure equal to that of the Aztec city of Tenochtitlán, and England did not quickly grow rich from its small American outposts.  The English colonies also differed from each other; Barbados and Virginia had a decidedly commercial orientation from the start, while the Puritan colonies of New England were intensely religious at their inception.  All English settlements in America, however, marked the increasingly important role of England in the Atlantic World.",
+                "England was in a period of  economic decline, and the English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown was in a period of  financial crisis.  The English Crown"
             ]
         }));
 
@@ -239,7 +251,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "To create trading posts for the fur trade",
             "establishing a colony with French subjects",
             "To establish commercially viable colonial outposts.",
-            "To establish a foothold in the Americas through trade and commerce."
+            "To establish a foothold in the Americas through trade and commerce.",
+            "To establish commercial and political control over the New World."
         ]));
 
     engine.register("US history chap 2 #11",
@@ -283,79 +296,119 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]));
 
     engine.register("US history chap 3 #2",
-        executor.create("Why did the Spanish build Castillo de San Marcos?", [
-            "To defend against imperial challengers",
-            "To protect the local Timucua.",
-            "To defend St. Augustine against challengers.",
-            "To better defend St. Augustine against challengers."
-        ]));
+        executor.create("Why did the Spanish build Castillo de San Marcos?", {
+            pass: [
+                "To defend against imperial challengers",
+                "To protect the local Timucua.",
+                "To defend St. Augustine against challengers.",
+                "To better defend St. Augustine against challengers."
+            ],
+            fail: [
+                "The Spanish wanted to defend their new colony from the English.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish wanted to defend their new colony from the English.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish wanted to defend their new colony from the English.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish wanted to defend their new colony from the English.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish had been building forts in the Caribbean for centuries, but the English had been building forts in the Caribbean for centuries.  The Spanish"
+            ]
+        }));
 
 
     engine.register("US history chap 3 #3",
-        executor.create("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", [
-            "Through revolt",
-            "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish.",
-            "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area."
-        ]));
+        executor.create("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", {
+            pass: [
+                "Through revolt",
+                "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish.",
+                "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area."
+            ],
+            fail: [
+                "The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert"
+            ]
+        }));
 
     engine.register("US history chap 3 #4",
-        executor.create("What was patroonship?", [
-            "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
-            "A system of granting tracts of land in New Netherland",
-            "A patroonship was a large tract of land in the colony of New Netherland, which was granted by the Dutch West India Company to a patroon, or patron, in exchange for settling a specified number of colonists there.",
-            "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company.",
-            "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
-            "Patroonship was a system of land distribution in the colony of New Netherland.",
-            "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company.",
-            "Patroonship was a system of land ownership in the Dutch colony of New Netherland."
-        ]));
+        executor.create("What was patroonship?", {
+            pass: [
+                "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
+                "A system of granting tracts of land in New Netherland",
+                "A patroonship was a large tract of land in the colony of New Netherland, which was granted by the Dutch West India Company to a patroon, or patron, in exchange for settling a specified number of colonists there.",
+                "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company.",
+                "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
+                "Patroonship was a system of land distribution in the colony of New Netherland.",
+                "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company.",
+                "Patroonship was a system of land ownership in the Dutch colony of New Netherland."
+            ],
+            fail: [
+                "The Dutch West India Company granted patroonships to large estates in the Hudson River Valley.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in"
+            ]
+        }));
 
     engine.register("US history chap 3 #5",
-        executor.create("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
-            "Jesuits",
-            "The Jesuits."
-        ]));
+        executor.create("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", {
+            pass: [
+                "Jesuits",
+                "The Jesuits."
+            ],
+            fail: [
+                "The Society of Jesus."
+            ]
+        }));
 
     engine.register("US history chap 3 #7",
-        executor.create("What was the most lucrative product of the Chesapeake colonies?", [
-            "tobacco",
-            "Tobacco.",
-            "The tabacco trade"
-        ]));
+        executor.create("What was the most lucrative product of the Chesapeake colonies?", {
+            pass: [
+                "tobacco",
+                "Tobacco.",
+                "The tabacco trade"
+            ],
+            fail: [
+                "Tobacco.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the Chesapeake colonies.  The tobacco industry was the most lucrative of all the industries in the"
+            ]
+        }));
 
     engine.register("US history chap 3 #8",
-        executor.create("What was the primary cause of Bacon’s Rebellion ?", [
-            "former indentured servants wanted more opportunities to expand their territory",
-            "Former indentured servants wanted more opportunities to expand their territory.",
-            "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
-            "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
-            "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
-            "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
-            "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River.",
-            "The primary cause of Bacon’s Rebellion was the governor’s policy of encouraging the settlement of the colony by Englishmen."
-        ]));
+        executor.create("What was the primary cause of Bacon’s Rebellion ?", {
+            pass: [
+                "former indentured servants wanted more opportunities to expand their territory",
+                "Former indentured servants wanted more opportunities to expand their territory.",
+                "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
+                "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
+                "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
+                "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
+                "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River.",
+                "The primary cause of Bacon’s Rebellion was the governor’s policy of encouraging the settlement of the colony by Englishmen."
+            ],
+            fail: [
+                "Berkeley’s refusal to let the people go out against the Indians.  The  source of the rebellion was Berkeley’s refusal to let the people go out against the Indians.  The  source of the rebellion was Berkeley’s refusal to let the people go out against the Indians.  36  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go out against the Indians.  Berkeley’s refusal to let the people go"
+            ]
+        }));
 
     engine.register("US history chap 3 #9",
-        executor.create("The founders of the Plymouth colony were?", [
-            "Puritans",
-            "Puritans ",
-            "Puritans.",
-            "Pilgrims",
-            "The Pilgrims.",
-            "Separatists."
-        ]));
+        executor.create("The founders of the Plymouth colony were?", {
+            pass: [
+                "Puritans",
+                "Puritans ",
+                "Puritans.",
+                "Pilgrims",
+                "The Pilgrims.",
+                "Separatists."
+            ],
+            fail: [
+                "_____________"
+            ]
+        }));
 
     engine.register("US history chap 3 #12",
-        executor.create("What was the Middle Passage?", [
-            "The transatlantic journey that enslaved Africans made to America",
-            "The Middle Passage was the transatlantic journey that enslaved Africans made to America.",
-            "the journey slaves took from Africa to the Americas",
-            "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade",
-            "The Middle Passage was the leg of the triangle trade that connected Africa and the Americas.",
-            "The Middle Passage was the name given to the transportation of enslaved Africans across the Atlantic Ocean to the Americas.",
-            "The Middle Passage was the voyage across the Atlantic from Africa to the Americas.",
-            "The Middle Passage was a hellish experience. The growing slave trade with Europeans had a profound impact on the people of West Africa, giving prominence to local chieftains and merchants who traded enslaved people for European textiles, alcohol, guns, tobacco, and food."
-        ]));
+        executor.create("What was the Middle Passage?", {
+            pass: [
+                "The transatlantic journey that enslaved Africans made to America",
+                "The Middle Passage was the transatlantic journey that enslaved Africans made to America.",
+                "the journey slaves took from Africa to the Americas",
+                "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade",
+                "The Middle Passage was the leg of the triangle trade that connected Africa and the Americas.",
+                "The Middle Passage was the name given to the transportation of enslaved Africans across the Atlantic Ocean to the Americas.",
+                "The Middle Passage was the voyage across the Atlantic from Africa to the Americas.",
+                "The Middle Passage was a hellish experience. The growing slave trade with Europeans had a profound impact on the people of West Africa, giving prominence to local chieftains and merchants who traded enslaved people for European textiles, alcohol, guns, tobacco, and food."
+            ],
+            fail: [
+                "The Middle Passage was a part of the Indian Ocean trade network."
+            ]
+        }));
 
     engine.register("US history chap 3 #14",
         executor.create("How did European muskets change life for native peoples in the Americas?", {
@@ -367,7 +420,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
             ],
             fail: [
-                "They changed life for native peoples in the Americas."
+                "They changed life for native peoples in the Americas.",
+                "The muskets were introduced to the American Indians by Europeans.  The muskets were made of metal, and the muskets were used to kill animals.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people.  The muskets were also used to kill people."
             ]
         }));
 
