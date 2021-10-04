@@ -86,18 +86,28 @@ function createRegressionEngine(opts: ExecutorOpts) {
 
 
     engine.register("US history chap 1 #1",
-        executor.create("Which native peoples built homes in cliff dwellings that still exist?", [
-            "Anasazi",
-            "The Anasazi.",
-            "The Anasazi, whose name means “ancient enemy” or “ancient ones.”"
-        ]));
+        executor.create("Which native peoples built homes in cliff dwellings that still exist?", {
+            pass: [
+                "Anasazi",
+                "The Anasazi.",
+                "The Anasazi, whose name means “ancient enemy” or “ancient ones.”"
+            ],
+            fail: [
+                "The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist.  The cliff dwellers of the Puebloans built their homes in cliff dwellings that still exist"
+            ]
+        }));
 
     engine.register("US history chap 1 #2",
-        executor.create("Which culture developed the first writing system in the Western Hemisphere?", [
-            "Olmec",
-            "The Olmec.",
-            "The Olmec developed the first writing system in the Western Hemisphere."
-        ]));
+        executor.create("Which culture developed the first writing system in the Western Hemisphere?", {
+            pass: [
+                "Olmec",
+                "The Olmec.",
+                "The Olmec developed the first writing system in the Western Hemisphere."
+            ],
+            fail: [
+                "The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of"
+            ]
+        }));
 
 
     engine.register("US history chap 1 #3", executor.create("Which culture developed a road system rivaling that of the Romans?", [
@@ -118,7 +128,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures."
             ],
             fail: [
-                "The major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America were:"
+                "The major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America were:",
+                "The Aztecs and Incas were the first to develop complex societies.  The Maya were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Maya were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to develop complex societies.  The Native peoples of North America were the first to develop complex societies.  The Aztecs and Incas were the first to"
             ]
         }));
 
@@ -136,11 +147,16 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]));
 
     engine.register("US history chap 1 #7",
-        executor.create("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
-            "Muslims and Jews",
-            "Jews and Muslims",
-            "The Spanish forced the Jews and Muslims to either convert or leave."
-        ]));
+        executor.create("In 1492, the Spanish forced what two religious groups to either convert or leave.", {
+            pass: [
+                "Muslims and Jews",
+                "Jews and Muslims",
+                "The Spanish forced the Jews and Muslims to either convert or leave."
+            ],
+            fail: [
+                "The Spanish were not the first to impose religious conversion on the natives.  The Aztecs had been forced to convert to Christianity by the Spanish in the 1520s.  The Spanish had also forced the Aztecs to convert to Catholicism by the 1530s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1540s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1550s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1560s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1570s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1580s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1590s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1600s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1700s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1800s.  The Spanish had also forced the Aztecs to convert to Christianity by the 1900s"
+            ]
+        }));
 
     engine.register("US history chap 1 #8",
         executor.create("How did European feudal society operate?", [
@@ -169,18 +185,27 @@ function createRegressionEngine(opts: ExecutorOpts) {
 
     engine.register("US history chap 2 #2",
         // TODO: this might be wrong. It's also answering England which is arguably true.
-        executor.create("Which country established the first colonies in the Americas?", [
-            "Spain",
-            "England",
-            "The Spanish were among the first Europeans to explore the New World and the first to settle in what is now the United State"
-        ]));
+        executor.create("Which country established the first colonies in the Americas?", {
+            pass: [
+                "Spain",
+                "England",
+                "The Spanish were among the first Europeans to explore the New World and the first to settle in what is now the United State"
+            ],
+            fail: [
+                "The United States."
+            ]
+        }));
 
     engine.register("US history chap 2 #3",
-        executor.create("Where did Christopher Columbus first land?", [
-            "The Bahamas",
-            "The Bahamas.",
-            "In the Bahamas."
-        ]));
+        executor.create("Where did Christopher Columbus first land?", {
+            pass: [
+                "The Bahamas",
+                "The Bahamas.",
+                "In the Bahamas."
+            ], fail: [
+                "Columbus landed in the Bahamas.  ---"
+            ]
+        }));
 
     engine.register("US history chap 2 #4",
         executor.create("Why did the authors of probanzas de méritos choose to write in the way that they did?", {
@@ -277,23 +302,33 @@ function createRegressionEngine(opts: ExecutorOpts) {
         // TODO: we don't even see this data in the index results.  This is
         // a bug I think.  There's no reaso this shouldn't show up.
 
-        executor.create("How could Spaniards obtain encomiendas?", [
-            "By serving the Spanish crown",
-            "By conquering territory in the name of the Spanish Crown",
-            "by serving the Spanish crown",
-            "They could obtain encomiendas by serving in the Spanish army."
-        ]));
+        executor.create("How could Spaniards obtain encomiendas?", {
+            pass: [
+                "By serving the Spanish crown",
+                "By conquering territory in the name of the Spanish Crown",
+                "by serving the Spanish crown",
+                "They could obtain encomiendas by serving in the Spanish army."
+            ],
+            fail: [
+                "The encomienda system was a legal right granted to conquistadors who could prove their service to the crown.  The encomienda system was a legal right granted to conquistadors who could prove their service to the crown."
+            ]
+        }));
 
     engine.register("US history chap 2 #13",
-        executor.create("Why did diseases like smallpox affect Native Americans so badly?", [
-            "Native Americans had no immunity to European diseases",
-            "The immunity system of native americans was not ready for European diseases",
-            "Native Americans were less robust than Europeans.",
-            "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
-            "They had no immunity to diseases from across the Atlantic.",
-            "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
-            "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
-        ]));
+        executor.create("Why did diseases like smallpox affect Native Americans so badly?", {
+            pass: [
+                "Native Americans had no immunity to European diseases",
+                "The immunity system of native americans was not ready for European diseases",
+                "Native Americans were less robust than Europeans.",
+                "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
+                "They had no immunity to diseases from across the Atlantic.",
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
+            ],
+            fail: [
+                "Smallpox was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of"
+            ]
+        }));
 
     engine.register("US history chap 3 #2",
         executor.create("Why did the Spanish build Castillo de San Marcos?", {
@@ -449,11 +484,16 @@ function createRegressionEngine(opts: ExecutorOpts) {
             ]
         }));
 
-    engine.register("astronomy Chapter 2 #3", executor.create("The Sun was once thought to be a planet. Explain why.", [
-        "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
-        "It was so because of the geocentric model, it was thought that the sun was just an object like other planets orbiting the earth",
-        "The Sun is much closer to Earth than are the nearest stars, yet it is not possible to measure accurately the diurnal parallax of the Sun relative to the stars by measuring its position relative to background objects in the sky directly."
-    ]));
+    engine.register("astronomy Chapter 2 #3", executor.create("The Sun was once thought to be a planet. Explain why.", {
+        pass: [
+            "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
+            "It was so because of the geocentric model, it was thought that the sun was just an object like other planets orbiting the earth",
+            "The Sun is much closer to Earth than are the nearest stars, yet it is not possible to measure accurately the diurnal parallax of the Sun relative to the stars by measuring its position relative to background objects in the sky directly."
+        ],
+        fail: [
+            "The Sun was once thought to be a planet."
+        ]
+    }));
 
     engine.register("astronomy Chapter 2 #4", executor.create("How far is the nearest galaxy from the sun?", {
         pass: [
@@ -501,7 +541,7 @@ function createRegressionEngine(opts: ExecutorOpts) {
     }));
 
     // Chapter 3
-    engine.register("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", {
+    engine.xregister("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", {
         pass: [
             "the speed with which each planet moves along its ellipse",
             "Kepler’s second law deals with the speed with which each planet moves along its ellipse, also known as its orbital speed.",
@@ -514,18 +554,27 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]
     }));
 
-    engine.register("astronomy Chapter 3 #2", executor.create("What's Newton's first law?", [
-        "Every object will continue to be in a state of rest or move at a constant speed in a straight line unless it is compelled to change by an outside force.",
-        "Unless it is compelled to change by an outside force, every object will continue to be in a state of rest or move at a constant speed",
-        "An object in motion tends to remain in motion.",
-        "An object at rest will remain at rest unless acted upon by an unbalanced force.",
-        "The law of inertia."
-    ]));
+    engine.register("astronomy Chapter 3 #2", executor.create("What's Newton's first law?", {
+        pass: [
+            "Every object will continue to be in a state of rest or move at a constant speed in a straight line unless it is compelled to change by an outside force.",
+            "Unless it is compelled to change by an outside force, every object will continue to be in a state of rest or move at a constant speed",
+            "An object in motion tends to remain in motion.",
+            "An object at rest will remain at rest unless acted upon by an unbalanced force.",
+            "The law of inertia."
+        ], fail: [
+            "Newton’s first law is a restatement of one of Galileo’s discoveries, called the conservation of momentum.  The law states that in the absence of any outside influence, there is a measure of a body’s motion, called its momentum, that remains unchanged.  You may have heard the term momentum used in everyday expressions, such as “This bill in Congress has a lot of momentum; it’s going to be hard to stop.”  Newton’s first law is sometimes called the law of inertia, where inertia is the tendency of objects (and legislatures) to keep doing what they are already doing.  In other words, a stationary object stays put, and a moving object keeps moving unless some force intervenes.  Let’s define the precise meaning of momentum—it depends on three factors: (1) speed—how fast a body moves (zero if it is stationary), (2) the direction of its motion, and (3) its mass—a measure of the amount of matter in a body, which we will discuss later.  Scientists use the term velocity to describe the speed and direction of motion.  How does Newton’s first law of"
+        ]
+    }));
 
-    engine.register("astronomy Chapter 3 #3", executor.create("Which major planet has the largest semimajor axis?", [
-        "Jupiter",
-        "Jupiter, The Solar System's Largest Planet"
-    ]));
+    engine.register("astronomy Chapter 3 #3", executor.create("Which major planet has the largest semimajor axis?", {
+        pass: [
+            "Jupiter",
+            "Jupiter, The Solar System's Largest Planet"
+        ],
+        fail: [
+            "Mercury."
+        ]
+    }));
 
     engine.register("astronomy Chapter 3 #4", executor.create("Which major planet has the largest average orbital speed around the Sun?", [
         "Mercury",
@@ -536,11 +585,16 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "Mercury"
     ]));
 
-    engine.register("astronomy Chapter 3 #7", executor.create("What is angular momentum?", [
-        "a measure of the rotation of a body as it revolves around some fixed point",
-        "The angular momentum of an object is defined as the product of its mass, its velocity, and its distance from the fixed point around which it revolves.",
-        "Angular momentum is a measure of the rotation of a body as it revolves around some fixed point."
-    ]));
+    engine.register("astronomy Chapter 3 #7", executor.create("What is angular momentum?", {
+        pass: [
+            "a measure of the rotation of a body as it revolves around some fixed point",
+            "The angular momentum of an object is defined as the product of its mass, its velocity, and its distance from the fixed point around which it revolves.",
+            "Angular momentum is a measure of the rotation of a body as it revolves around some fixed point."
+        ],
+        fail: [
+            "Angular momentum is the product of mass, velocity, and distance.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object is constant.  Angular momentum is conserved when the motion of an object"
+        ]
+    }));
 
     // Chapter 4
     engine.register("astronomy Chapter 4 #1", executor.create("Why does longitude have no meaning at the North and South Poles?", {
@@ -550,7 +604,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
         ],
         fail: [
-            "Because the Sun is always above the horizon at the North Pole, and the Sun is always below the horizon at the South Pole."
+            "Because the Sun is always above the horizon at the North Pole, and the Sun is always below the horizon at the South Pole.",
+            "Because the North Pole is at the North Pole.",
+
         ]
     }));
 
@@ -561,30 +617,46 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
         ],
         fail: [
-            "The main advantage of apparent solar time is that it is easy to use.  It is based on the position of the Sun in the sky, and it is easy to tell what time it is by looking at the Sun.  The main disadvantage of apparent solar time is that it is not very accurate.  The length of an apparent solar day varies slightly during the year.  The length of a mean solar day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is"
+            "The main advantage of apparent solar time is that it is easy to use.  It is based on the position of the Sun in the sky, and it is easy to tell what time it is by looking at the Sun.  The main disadvantage of apparent solar time is that it is not very accurate.  The length of an apparent solar day varies slightly during the year.  The length of a mean solar day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is",
+            "The advantage of apparent solar time is that it is easy to use.  It is convenient to use because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky.  It is convenient because it is based on the position of the Sun in the sky."
         ]
     }));
 
-    engine.register("astronomy Chapter 4 #3", executor.create("What's the rotation period of Earth?", [
-        "One day",
-        "1 day",
-        "A single day",
-        "1.00 day"
-    ]));
+    engine.register("astronomy Chapter 4 #3", executor.create("What's the rotation period of Earth?", {
+        pass: [
+            "One day",
+            "1 day",
+            "A single day",
+            "1.00 day"
+        ],
+        fail: [
+            "1.00 × 1.00 = 1.00."
+        ]
+    }));
 
-    engine.register("astronomy Chapter 4 #4", executor.create("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", [
-        "Because the period required by the moon to complete its cycle of phases is 29.5306 days",
-        "Because it's not a whole number",
-        "Because the Moon’s cycle of phases is not commensurable with the day, month, or year.",
-        "Because the Moon’s period of rotation is the same as its period of revolution, the Moon’s phases are not commensurable with the solar year."
-    ]));
+    engine.register("astronomy Chapter 4 #4", executor.create("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", {
+        pass: [
+            "Because the period required by the moon to complete its cycle of phases is 29.5306 days",
+            "Because it's not a whole number",
+            "Because the Moon’s cycle of phases is not commensurable with the day, month, or year.",
+            "Because the Moon’s period of rotation is the same as its period of revolution, the Moon’s phases are not commensurable with the solar year."
+        ],
+        fail: [
+            "The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not commensurable.  The Moon’s cycle of phases is not"
+        ]
+    }));
 
-    engine.register("astronomy Chapter 4 #5", executor.create("What is the phase of the Moon during a total solar eclipse?", [
-        "new moon",
-        "when the moon passes directly between the sun and Earth",
-        "A solar eclipse can only take place at the phase of new moon",
-        "The Moon blocks the Sun during new moon phase as seen from some parts of Earth and casts a shadow on our planet."
-    ]));
+    engine.register("astronomy Chapter 4 #5", executor.create("What is the phase of the Moon during a total solar eclipse?", {
+        pass: [
+            "new moon",
+            "A solar eclipse can only take place at the phase of new moon",
+            "The Moon blocks the Sun during new moon phase as seen from some parts of Earth and casts a shadow on our planet."
+        ],
+        fail: [
+            "when the moon passes directly between the sun and Earth",
+            "The Moon is in the shadow of Earth during a total solar eclipse."
+        ]
+    }));
 
     engine.register("astronomy Chapter 4 #6", executor.create("Why is the leap year necessary?", {
         pass: [
@@ -593,27 +665,38 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "The leap year is necessary because the year is not exactly 365.25 days."
         ],
         fail: [
-            "The Gregorian calendar was adopted in 1582, and the year 1800 was not a leap year."
+            "The Gregorian calendar was adopted in 1582, and the year 1800 was not a leap year.",
+            "The leap year is necessary because the Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar"
         ]
     }));
 
-    engine.register("astronomy Chapter 4 #7", executor.create("Why the year 1800 was not a leap year?", [
-        "a century year cannot be a leap year unless it is divisible by 400",
-        "because a century year cannot be a leap year unless it is divisible by 400",
-        "Only century years divisible by 400 would be leap years",
-        "Because it was not divisible by 4.",
-        "It was not a leap year because it was not divisible by 400."
+    engine.register("astronomy Chapter 4 #7", executor.create("Why the year 1800 was not a leap year?", {
+        pass: [
+            "a century year cannot be a leap year unless it is divisible by 400",
+            "because a century year cannot be a leap year unless it is divisible by 400",
+            "Only century years divisible by 400 would be leap years",
+            "Because it was not divisible by 4.",
+            "It was not a leap year because it was not divisible by 400."
 
-    ]));
+        ],
+        fail: [
+            "The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year"
+        ]
+    }));
 
-    engine.register("astronomy Chapter 4 #8", executor.create("Why don’t lunar eclipses happen during every full moon?", [
-        "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
-        "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
-        "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse",
-        "Because the Moon is not always opposite the Sun.",
-        "Because the Moon’s orbit is tilted with respect to the ecliptic plane.",
-        "Because the Moon’s orbit is tilted relative to the plane of Earth’s orbit about the Sun by about 5°.  As a result, during most months, the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse.  But when the two paths cross (twice a year), it is then “eclipse season” and eclipses are possible."
-    ]));
+    engine.register("astronomy Chapter 4 #8", executor.create("Why don’t lunar eclipses happen during every full moon?", {
+        pass: [
+            "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
+            "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
+            "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse",
+            "Because the Moon is not always opposite the Sun.",
+            "Because the Moon’s orbit is tilted with respect to the ecliptic plane.",
+            "Because the Moon’s orbit is tilted relative to the plane of Earth’s orbit about the Sun by about 5°.  As a result, during most months, the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse.  But when the two paths cross (twice a year), it is then “eclipse season” and eclipses are possible."
+        ],
+        fail: [
+            "The Moon is not a perfect sphere.  It is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere.  The Moon is not a perfect sphere because it is not a perfect sphere.  It is a sphere because it is a sphere."
+        ]
+    }));
 
     engine.register("astronomy Chapter 4 #9", executor.create("Why some places have very small tides while in other places huge tides?", {
         pass: [
@@ -621,7 +704,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "the friction in the oceans and between oceans and the ocean floors",
             "the rotation of Earth",
             "the wind",
-            "the variable depth of the ocean."
+            "the variable depth of the ocean.",
+            "The Sun and the Moon are aligned in a way that causes the Sun to pull on Earth and the Moon to pull on Earth.  The Sun’s and Moon’s pulls reinforce each other and so are greater than usual.  The “simple” theory of tides, described in the preceding paragraphs, would be sufficient if Earth rotated very slowly and were completely surrounded by very deep oceans.  However, the presence of land masses stopping the flow of water, the friction in the oceans and between oceans and the ocean floors, the rotation of Earth, the wind, the variable depth of the ocean, and other factors all complicate the picture.  This is why, in the real world, some places have very small tides while in other places huge tides become tourist attractions.  If you have been in such places, you may know that “tide tables” need to be computed and published for each location; one set of tide predictions doesn’t work for the whole planet.  In this introductory chapter, we won’t delve further into these complexities."
         ],
         fail: [
             "The tides are caused by the Moon’s gravitational pull on the oceans.  The Moon’s pull is strongest at the points where the Moon is closest to Earth.  The Moon’s pull is weakest at the points where the Moon is farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where"
