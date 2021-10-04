@@ -64,7 +64,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
             ],
             fail: [
-                "Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet"
+                "Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet",
+                "The similarities are that they are all rocky planets with a thin atmosphere.  The differences are that Mars has a much thicker atmosphere, and the Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere.  The Moon has a much thinner atmosphere"
             ]
         }));
 
@@ -87,13 +88,15 @@ function createRegressionEngine(opts: ExecutorOpts) {
     engine.register("US history chap 1 #1",
         executor.create("Which native peoples built homes in cliff dwellings that still exist?", [
             "Anasazi",
-            "The Anasazi."
+            "The Anasazi.",
+            "The Anasazi, whose name means “ancient enemy” or “ancient ones.”"
         ]));
 
     engine.register("US history chap 1 #2",
         executor.create("Which culture developed the first writing system in the Western Hemisphere?", [
             "Olmec",
-            "The Olmec."
+            "The Olmec.",
+            "The Olmec developed the first writing system in the Western Hemisphere."
         ]));
 
 
@@ -104,15 +107,20 @@ function createRegressionEngine(opts: ExecutorOpts) {
 
 
     engine.register("US history chap 1 #4",
-        executor.create("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
-            "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
-            "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.",
-            "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival.",
-            "The Native peoples of North America were not as advanced as the Aztec, Inca, and Maya.",
-            "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies.",
-            "The Native peoples of North America were not as large in population size or as organized in social structure.",
-            "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures."
-        ]));
+        executor.create("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", {
+            pass: [
+                "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
+                "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.",
+                "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival.",
+                "The Native peoples of North America were not as advanced as the Aztec, Inca, and Maya.",
+                "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies.",
+                "The Native peoples of North America were not as large in population size or as organized in social structure.",
+                "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures."
+            ],
+            fail: [
+                "The major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America were:"
+            ]
+        }));
 
     engine.register("US history chap 1 #5",
         executor.create("What was the series of attempts by Christian armies to retake the Holy Lands from Muslims was known as?", [
@@ -143,7 +151,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "Feudal society was a mutually supportive system.",
             // TODO: parser issue
             "The lords owned the land; knights gave military service to a lord and carried out his justice; serfs worked the land in return for the protection offered by the",
-            "Europe’s feudal society was a mutually supportive system."
+            "Europe’s feudal society was a mutually supportive system.",
+            "The lords owned the land; knights gave military service to a lord and carried out his justice; serfs worked the land in return for the protection offered by the lord."
         ]));
 
     engine.register("US history chap 1 #9",
@@ -211,12 +220,18 @@ function createRegressionEngine(opts: ExecutorOpts) {
         // One hack is to replace two spaces with a single but the PDF text
         // extraction just doesn't work.
 
-        executor.create("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", [
-            "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
-            "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
-            "England lacked the financial resources for such endeavors.",
-            "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
-        ]));
+        executor.create("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", {
+            pass: [
+                "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
+                "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
+                "England lacked the financial resources for such endeavors.",
+                "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
+            ],
+            fail: [
+                "England was not a major power in the Atlantic World in the early sixteenth century.  It was not until the late sixteenth century that England became a major power in the Atlantic World.  The English Crown was not interested in colonizing the New World until the late sixteenth century.  The English Crown was not interested in colonizing the New World until the late sixteenth century.",
+                "England was a weak imperial power in the early seventeenth century.  It had only a few infant colonies in the Americas in the early 1600s.  The English never found treasure equal to that of the Aztec city of Tenochtitlán, and England did not quickly grow rich from its small American outposts.  The English colonies also differed from each other; Barbados and Virginia had a decidedly commercial orientation from the start, while the Puritan colonies of New England were intensely religious at their inception.  All English settlements in America, however, marked the increasingly important role of England in the Atlantic World."
+            ]
+        }));
 
     engine.register("US history chap 2 #9",
         executor.create("What was the main goal of the French in colonizing the Americas?", [
@@ -263,7 +278,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "Native Americans were less robust than Europeans.",
             "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
             "They had no immunity to diseases from across the Atlantic.",
-            "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
+            "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
+            "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
         ]));
 
     engine.register("US history chap 3 #2",
@@ -405,11 +421,17 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "An asterism is a pattern of stars that is not part of a constellation."
     ]));
 
-    engine.register("astronomy Chapter 2 #6", executor.create("Give at least one of Aristotle's arguments why he considered the earth to be round", [
-        "First is the fact that as the Moon enters or emerges from Earth’s shadow during an eclipse of the Moon, the shape of the shadow seen on the Moon is always round",
-        "Travelers who go south a significant distance are able to observe stars that are not visible farther north",
-        "Aristotle reasoned that the Sun has to be farther away from Earth than is the Moon because occasionally the Moon passed exactly between Earth and the Sun and hid the Sun temporarily from view.  We call this a solar eclipse.",
-    ]));
+    engine.register("astronomy Chapter 2 #6", executor.create("Give at least one of Aristotle's arguments why he considered the earth to be round", {
+        pass: [
+            "First is the fact that as the Moon enters or emerges from Earth’s shadow during an eclipse of the Moon, the shape of the shadow seen on the Moon is always round",
+            "Travelers who go south a significant distance are able to observe stars that are not visible farther north",
+            "Aristotle reasoned that the Sun has to be farther away from Earth than is the Moon because occasionally the Moon passed exactly between Earth and the Sun and hid the Sun temporarily from view.  We call this a solar eclipse.",
+        ],
+        fail: [
+            // TODO: this one is VERY close and if we changed the token count and removed the redundant sentences it would be way better.
+            "Aristotle cited convincing arguments that Earth must be round.  First is the fact that as the Moon enters or emerges from Earth’s shadow during an eclipse of the Moon, the shape of the shadow seen on the Moon is always round (Figure 2.9).  Only a spherical object always produces a round shadow.  If Earth were a disk, for example, there would be some occasions when the sunlight would strike it edge-on and its shadow on the Moon would be a line. The more distant an object, the more nearly parallel the rays of light coming from it.  Of course, the Sun is not infinitely far away, but given its distance of 150 million kilometers, light rays striking Earth from a point on the Sun diverge from one another by an angle far too small to be observed with the unaided eye.  As a consequence, if people all over Earth who could see the Sun were to point at it, their fingers would appear to be at different distances from the Sun.  As a second argument, Aristotle explained that travelers who go south a significant distance are able to observe stars that are not visible farther north.  15.  How did Aristotle deduce that the Sun is farther away from Earth than the"
+        ]
+    }));
 
     engine.register("astronomy Chapter 2 #7", executor.create("How are the zodiacal constellations different from the other constellations?",  {
         pass: [
@@ -419,17 +441,24 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "The zodiacal constellations are the constellations that the Sun, Moon, and planets appear to move through in the course of a year."
         ],
         fail: [
-            "The zodiacal constellations are different from the other constellations in that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constell"
+            "The zodiacal constellations are different from the other constellations in that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constell",
+            "The zodiacal constellations are different from the other constellations because they are not in the same place in the sky.  The other constellations are in the same place in the sky as the Sun.  The zodiacal constellations are in the same place in the sky as the Sun, but they are not in the same place in the sky as the other constellations.  The zodiacal constellations are in the same place in the sky as the Sun, but they are not in the same place in the sky as the other constellations.  The zodiacal constellations are in the same place in the sky as the Sun, but they are not in the same place in the sky as the other constellations.  The zodiacal constellations are in the same place in the sky as the Sun, but they are not in the same place in the sky as the other constellations.  The zodiacal constellations are in the same place in the sky as the Sun, but they are not in the same place in the sky as the other constellations.  The zodiacal constellations are in the same place in the"
         ]
     }));
 
     // Chapter 3
-    engine.register("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", [
-        "the speed with which each planet moves along its ellipse",
-        "Kepler’s second law deals with the speed with which each planet moves along its ellipse, also known as its orbital speed.",
-        // "48 kilometers per second."
-        // "48 km/s"
-    ]));
+    engine.register("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", {
+        pass: [
+            "the speed with which each planet moves along its ellipse",
+            "Kepler’s second law deals with the speed with which each planet moves along its ellipse, also known as its orbital speed.",
+            // "48 kilometers per second."
+            // "48 km/s"
+        ],
+        fail: [
+            // this might sort of be right
+            "48 kilometers per second."
+        ]
+    }));
 
     engine.register("astronomy Chapter 3 #2", executor.create("What's Newton's first law?", [
         "Every object will continue to be in a state of rest or move at a constant speed in a straight line unless it is compelled to change by an outside force.",
@@ -460,17 +489,27 @@ function createRegressionEngine(opts: ExecutorOpts) {
     ]));
 
     // Chapter 4
-    engine.register("astronomy Chapter 4 #1", executor.create("Why does longitude have no meaning at the North and South Poles?", [
-        "All longitude lines meet at the pole",
-        "All longitude lines meet at the poles; therefore, they have no defined longitude.",
-        "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
-    ]));
+    engine.register("astronomy Chapter 4 #1", executor.create("Why does longitude have no meaning at the North and South Poles?", {
+        pass: [
+            "All longitude lines meet at the pole",
+            "All longitude lines meet at the poles; therefore, they have no defined longitude.",
+            "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
+        ],
+        fail: [
+            "Because the Sun is always above the horizon at the North Pole, and the Sun is always below the horizon at the South Pole."
+        ]
+    }));
 
-    engine.register("astronomy Chapter 4 #2", executor.create("What are the main advantage and disadvantage of apparent solar time?", [
-        "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
-        "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
-        "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
-    ]));
+    engine.register("astronomy Chapter 4 #2", executor.create("What are the main advantage and disadvantage of apparent solar time?", {
+        pass: [
+            "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
+            "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
+            "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
+        ],
+        fail: [
+            "The main advantage of apparent solar time is that it is easy to use.  It is based on the position of the Sun in the sky, and it is easy to tell what time it is by looking at the Sun.  The main disadvantage of apparent solar time is that it is not very accurate.  The length of an apparent solar day varies slightly during the year.  The length of a mean solar day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is"
+        ]
+    }));
 
     engine.register("astronomy Chapter 4 #3", executor.create("What's the rotation period of Earth?", [
         "One day",
@@ -493,11 +532,16 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "The Moon blocks the Sun during new moon phase as seen from some parts of Earth and casts a shadow on our planet."
     ]));
 
-    engine.register("astronomy Chapter 4 #6", executor.create("Why is the leap year necessary?", [
-        "to help synchronize the calendar year with the solar year",
-        "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days.",
-        "The leap year is necessary because the year is not exactly 365.25 days."
-    ]));
+    engine.register("astronomy Chapter 4 #6", executor.create("Why is the leap year necessary?", {
+        pass: [
+            "to help synchronize the calendar year with the solar year",
+            "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days.",
+            "The leap year is necessary because the year is not exactly 365.25 days."
+        ],
+        fail: [
+            "The Gregorian calendar was adopted in 1582, and the year 1800 was not a leap year."
+        ]
+    }));
 
     engine.register("astronomy Chapter 4 #7", executor.create("Why the year 1800 was not a leap year?", [
         "a century year cannot be a leap year unless it is divisible by 400",
@@ -517,13 +561,18 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "Because the Moon’s orbit is tilted relative to the plane of Earth’s orbit about the Sun by about 5°.  As a result, during most months, the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse.  But when the two paths cross (twice a year), it is then “eclipse season” and eclipses are possible."
     ]));
 
-    engine.register("astronomy Chapter 4 #9", executor.create("Why some places have very small tides while in other places huge tides?", [
-        "the presence of land masses stopping the flow of water",
-        "the friction in the oceans and between oceans and the ocean floors",
-        "the rotation of Earth",
-        "the wind",
-        "the variable depth of the ocean."
-    ]));
+    engine.register("astronomy Chapter 4 #9", executor.create("Why some places have very small tides while in other places huge tides?", {
+        pass: [
+            "the presence of land masses stopping the flow of water",
+            "the friction in the oceans and between oceans and the ocean floors",
+            "the rotation of Earth",
+            "the wind",
+            "the variable depth of the ocean."
+        ],
+        fail: [
+            "The tides are caused by the Moon’s gravitational pull on the oceans.  The Moon’s pull is strongest at the points where the Moon is closest to Earth.  The Moon’s pull is weakest at the points where the Moon is farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where the Moon is at its closest to Earth.  The Moon’s pull is weakest at the points where the Moon is at its farthest from Earth.  The Moon’s pull is strongest at the points where"
+        ]
+    }));
 
     engine.xregister("Who founded the Elmer Candy Corporation?", executor.create("Who founded the Elmer Candy Corporation?", [
         "Christopher Henry Miller"

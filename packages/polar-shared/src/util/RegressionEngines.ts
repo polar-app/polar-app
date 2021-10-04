@@ -185,6 +185,7 @@ export namespace RegressionEngines {
             function doReport(results: ReadonlyArray<IRegressionTestResultExecuted<R, E>>): RegressionExecResult<R, E> {
 
                 const nrPass = results.filter(current => current.status === 'pass').length;
+                const nrUnknown = results.filter(current => current.status === 'unknown').length;
                 const nrFail = results.filter(current => current.status === 'fail').length;
                 const nrTests = results.length;
 
@@ -261,6 +262,7 @@ export namespace RegressionEngines {
                         textGrid.headers('name', 'value');
 
                         textGrid.row('pass', nrPass);
+                        textGrid.row('unknown', nrUnknown);
                         textGrid.row('fail', nrFail);
                         textGrid.row('accuracy', accuracy);
 

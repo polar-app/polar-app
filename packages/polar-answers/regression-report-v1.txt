@@ -1,4 +1,4 @@
-Report generated on: 2021-10-04T21:31:53.997Z
+Report generated on: 2021-10-04T22:21:08.085Z
 ======================= config: 
 {
   "id": "v1",
@@ -69,6 +69,7 @@ US history chap 2 #1    pass     0.0231  Which country initiated the era of Atla
 name      value
 --------  -----
 pass      14   
+unknown   36   
 fail      1    
 accuracy  27.45
 cost      1.3  
