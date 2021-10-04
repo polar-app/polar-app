@@ -151,6 +151,24 @@ jobs:
       - global_modules_setup
       - build_setup
 
+  # @ Build fastlane for deployment
+  fastlane:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: build fastlane for ci
+    steps:
+      - checkout
+      - run:
+          name: isolate
+          command: |
+            mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
+            mv /home/circleci/project/.npmrc ~/
+            rm -rf /home/circleci/project
+            cd /home/circleci/polar-mobile-app
+            yarn install
+
   # @ Run Karma Test Suite
   karma:
     parameters:
