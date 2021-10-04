@@ -4,7 +4,7 @@ import {CloudFunctions} from '../../firebase/CloudFunctions';
 
 export class JSONRPC {
 
-    public static async exec<R, V>(func: string, request: R): Promise<V> {
+    public static async exec<R, V>(func: string, request: R, requestInit?: RequestInit): Promise<V> {
 
         const app = FirebaseBrowser.init();
 
@@ -26,11 +26,13 @@ export class JSONRPC {
         const url = `${endpoint}/${func}`;
 
         const response = await fetch(url, {
+            ...requestInit,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userRequest)});
+            body: JSON.stringify(userRequest)
+        });
 
         if (response.status !== 200) {
             throw new JSONRPCError(response, "Unable to handle RPC: " + func);
