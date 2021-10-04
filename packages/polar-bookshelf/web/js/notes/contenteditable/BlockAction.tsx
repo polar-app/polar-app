@@ -41,11 +41,11 @@ export interface IActionTypeWithBlockTag {
     readonly target: string;
 }
 
-export interface IActionOpWithBlockLink {
+export interface IActionOpWithBlockTag extends IActionTypeWithBlockTag {
     readonly undoContent: MarkdownStr;
 }
 
-export type ActionOp = IActionOpWithBlockLink | IActionTypeWithBlockTag;
+export type ActionOp = IActionOpWithBlockLink | IActionOpWithBlockTag;
 
 export type ActionType = IActionTypeWithBlockLink | IActionTypeWithBlockTag;
 
@@ -73,8 +73,6 @@ interface IProps {
      * Execute the action
      */
     readonly onAction: ActionHandler;
-
-    readonly actionType: ActionType['type'];
 
     readonly computeActionInputText: (str: string) => string;
 
@@ -115,8 +113,12 @@ function useActionExecutor(id: BlockIDStr) {
                 const a = document.createElement('a');
                 a.setAttribute('contenteditable', 'false');
                 a.setAttribute('href', '#' + actionOp.target);
-                const prefix = type === 'tag' ? '#' : '';
-                a.appendChild(document.createTextNode(prefix + actionOp.target.trim()));
+                a.appendChild(document.createTextNode(actionOp.target.trim()));
+
+                if (type === 'tag') {
+                    a.classList.add('note-tag');
+                }
+
                 const textNode = document.createTextNode('');
                 coveringRange.insertNode(textNode);
                 coveringRange.insertNode(a);
@@ -177,7 +179,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
     const theme = useTheme();
 
-    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, actionType, disabled} = props;
+    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, disabled} = props;
 
     const computeActionInputTextRef = useRefWithUpdates(props.computeActionInputText);
 
@@ -335,15 +337,16 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         const undoContent = initialMarkdownContentRef.current!;
 
+        const actionType = onAction(prompt);
+
         actionExecutor(from, to, {
-            type: actionType,
-            target: prompt,
+            ...actionType,
             undoContent
         });
 
         doReset();
 
-    }, [actionType, actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
+    }, [actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
 
     const doCompleteOrReset = React.useCallback(() => {
 

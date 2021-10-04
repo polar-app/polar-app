@@ -1365,9 +1365,10 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
-                                     targetName: BlockNameStr,
+                                     rawTargetName: BlockNameStr,
                                      content: MarkdownStr) {
 
+        const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
@@ -1396,6 +1397,7 @@ export class BlocksStore implements IBlocksStore {
                 data: targetName,
                 links: [],
             });
+
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
@@ -1403,7 +1405,7 @@ export class BlocksStore implements IBlocksStore {
             });
 
             sourceBlock.withMutation(() => {
-                sourceBlock.content.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.content.addLink({id: targetBlockID, text: rawTargetName});
                 ;
                 sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
             });
@@ -1411,6 +1413,7 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([sourceBlock]);
 
             const cursorPos = this.cursorOffsetCapture();
+
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }

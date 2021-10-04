@@ -14,9 +14,7 @@ import {URLStr, UserIDStr} from 'polar-shared/src/util/Strings';
 import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
 import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
 import {FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
-import {DownloadURLs} from '../../datastore/FirebaseDatastore';
 import {IDocumentContent} from 'polar-blocks/src/blocks/content/IDocumentContent';
 import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
 import {useBlocksStoreContext} from '../store/BlockStoreContextProvider';
@@ -24,6 +22,7 @@ import {useRepoDocMetaManager} from '../../../../apps/repository/js/persistence_
 import {RepoDocInfoDataObjectIndex} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -133,7 +132,9 @@ export namespace DocumentDataUpdater {
             const docInfoDoc = docInfoCollection.doc(identifier);
 
             // Tags are stored in a different way in blocks so we need to sync them manually.
-            const tags = (new DocumentContent(block.content)).getTagsMap();
+            const tags: Record<string, Tag> = arrayStream((new DocumentContent(block.content)).getTags())
+                .map(({ label }) => ({ label, id: label }))
+                .toMap(({ label }) => label);
 
             const docInfo: IDocInfo = { ...block.content.docInfo, tags, lastUpdated: ISODateTimeStrings.create() };
 
