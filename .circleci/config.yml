@@ -255,12 +255,12 @@ jobs:
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
-            LOG=$(git log --pretty=format:"• %s" --no-merges $NEW_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq)
+            LOG=$(git log --pretty=format:"• %s\\n" --no-merges $LATEST_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq | tr '\r\n' ' ' )
             ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
-            echo 'export DATE=$(date +"%a %b %d %Y")' >> $BASH_ENV
-            echo 'export TAG=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)' >> $BASH_ENV
-            echo 'export CHANGELOG=$(git log --pretty=format:"• %s" --no-merges $NEW_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq)' >> $BASH_ENV
-            source $BASH_ENV
+            TEMP_DATE=$(date +"%a %b %d %Y")
+            echo "export DATE=\"$TEMP_DATE\"" >> $BASH_ENV
+            echo "export TAG=\"$LATEST_VERSION\"" >> $BASH_ENV
+            echo "export CHANGELOG=\"$LOG\"" >> $BASH_ENV
       - run:
           name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
@@ -283,7 +283,6 @@ jobs:
             cd /home/circleci/polar-hooks
             rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
             time firebase deploy --only functions
-            source $BASH_ENV
       - slack/notify:
           custom: |
             {
@@ -296,11 +295,14 @@ jobs:
                   }
                 },
                 {
+                  "type": "divider"
+                },
+                {
                   "type": "section",
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*TAG:*\n • $TAG"
+                      "text": "*Tag:*\n • $TAG"
                     },
                     {
                       "type": "mrkdwn",
@@ -309,11 +311,17 @@ jobs:
                   ]
                 },
                 {
+                  "type": "divider"
+                },
+                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Log:*\n ```$CHANGELOG```"
+                    "text": "*Changelog:*\n $CHANGELOG"
                   }
+                },
+                {
+                  "type": "divider"
                 },
                 {
                   "type": "actions",
@@ -325,10 +333,8 @@ jobs:
                         "text": "View on Github",
                         "emoji": true
                       },
-                      "value": "click_me_123",
                       "style": "primary",
-                      "url": "https://github.com/polar-app/polar-app/releases/tag/$TAG",
-                      "action_id": "button-action"
+                      "url": "https://github.com/polar-app/polar-app/releases/tag/$TAG"
                     }
                   ]
                 }

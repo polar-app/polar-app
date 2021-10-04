@@ -18,10 +18,6 @@ The main advantages of learning with Polar are the opportunity to read more effi
     
 Yes, Polar is free for anyone to use. For certain features that boost learning efficiency even more, such as automatic flashcards using AI, there are <a href="https://getpolarized.io/pricing/" target="_blank">premium plans</a>.
     
-### How do I import my existing reading?
-    
-If you have a large number of PDF files that you would like to import, you can select ```File | Import``` and import multiple files or entire folders in one go. This process is fairly quick and takes about 1 minute per 100-200MB.
-    
 ### Where is my data kept?
     
 Your data is <a href="https://getpolarized.io/docs/cloud-sync.html" target="_blank">encrypted and kept securely</a> in the cloud. This means that all your files will be stored completely securely, no one will have access to them. Your data is stored with privacy first in mind.

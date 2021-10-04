@@ -1,5 +1,5 @@
 {
-  "name": "polar-private-beta",
+  "name": "polar-private-beta-api",
   "version": "0.0.0",
   "description": "Provides support importing users in our private beta.",
   "main": "index.js",
@@ -28,10 +28,7 @@
     "polar-test": "0.0.0"
   },
   "dependencies": {
-    "polar-shared": "0.0.0",
-    "polar-firebase": "0.0.0",
-    "polar-firebase-admin": "0.0.0",
-    "polar-private-beta-api": "0.0.0"
+    "polar-shared": "0.0.0"
   },
   "files": [
     "**/*.js",

@@ -22,6 +22,7 @@ import {
     IDocViewerContextMenuOrigin
 } from "../../../doc/src/DocViewerMenu";
 import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
+import { Devices } from 'polar-shared/src/util/Devices';
 
 const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComponentProps<RepoDocInfo>) {
 
@@ -99,7 +100,9 @@ export const DocRepoTable2 = deepMemo(() => {
 
                 <TableContainer ref={setRoot}
                                 style={{
-                                    flexGrow: 1
+                                    flexGrow: 1,
+                                    // height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
+                                    height: '100%'
                                 }}>
                     <Table
                         stickyHeader
