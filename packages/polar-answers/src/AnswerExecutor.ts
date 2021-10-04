@@ -239,17 +239,24 @@ export namespace AnswerExecutor {
 
             const queryText = await computeQueryTextFromQuestion();
 
+            function createElasticsearchQuery(): IElasticsearchQuery {
+                return {
+                    "query": {
+                        "query_string": {
+                            "query": queryText,
+                            "default_field": "text"
+                        }
+                    },
+                    "sort": [
+                        request.elasticsearch_sort_order || '_score'
+                    ],
+                    size
+                };
+            }
+
             // TODO: trace the query
             // eslint-disable-next-line camelcase
-            const elasticsearch_query: IElasticsearchQuery = {
-                "query": {
-                    "query_string": {
-                        "query": queryText,
-                        "default_field": "text"
-                    }
-                },
-                size
-            };
+            const elasticsearch_query = createElasticsearchQuery();
 
             // TODO: trace the requestURL
             // eslint-disable-next-line camelcase
@@ -439,7 +446,7 @@ export namespace AnswerExecutor {
             question,
             examples_context: EXAMPLES_CONTEXT,
             examples: EXAMPLES,
-            max_tokens: MAX_TOKENS,
+            max_tokens: request.max_tokens || MAX_TOKENS,
             stop: STOP,
             documents,
             n: N,

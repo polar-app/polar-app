@@ -2,6 +2,11 @@ import {AIModel} from "./AIModel";
 
 export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
 
+/**
+ * _score is desc, anything else defaults to asc.
+ */
+export type ElasticsearchSortOrder = "_score" | "idx";
+
 export interface IAnswerExecutorRequest {
 
     readonly question: string;
@@ -53,6 +58,12 @@ export interface IAnswerExecutorRequest {
      */
     // eslint-disable-next-line camelcase
     readonly prune_contiguous_records?: boolean;
+
+    // eslint-disable-next-line camelcase
+    readonly elasticsearch_sort_order?: ElasticsearchSortOrder;
+
+    // eslint-disable-next-line camelcase
+    readonly max_tokens?: number;
 
 }
 

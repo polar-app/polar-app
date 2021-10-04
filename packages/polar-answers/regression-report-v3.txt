@@ -1,4 +1,4 @@
-Report generated on: 2021-10-04T22:57:32.457Z
+Report generated on: 2021-10-04T23:45:15.322Z
 ======================= config: 
 {
   "id": "v3",
@@ -65,11 +65,12 @@ US history chap 3 #7    pass     0.2482  What was the most lucrative product of 
 US history chap 3 #8    pass     0.1989  What was the primary cause of Bacon’s Rebellion ?                                                                            The primary cause of Bacon’s Rebellion was the governor’s policy of encouraging the settlement of the colony by Englishmen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 US history chap 3 #9    pass     0.1301  The founders of the Plymouth colony were?                                                                                    The Pilgrims.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 ======================= summary: 
-name      value
---------  -----
-pass      36   
-unknown   1    
-fail      13   
-accuracy  72   
-cost      15.05
-cost_max  1.35 
+name       value
+---------  -----
+pass       36   
+unknown    1    
+fail       13   
+accuracy   72   
+cost       15.05
+cost_max   1.35 
+cost_mean  0.3  

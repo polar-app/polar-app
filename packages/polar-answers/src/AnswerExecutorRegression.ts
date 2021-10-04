@@ -766,9 +766,15 @@ async function doRegression(opts: ExecutorOpts) {
             = results.map(current => (current.metadata || {}).cost as number || 0)
             .reduce(Reducers.MAX);
 
+        // eslint-disable-next-line camelcase
+        const cost_mean
+            = results.map(current => (current.metadata || {}).cost as number || 0)
+            .reduce(Reducers.MEAN);
+
         return {
             cost: Numbers.toFixedFloat(cost, 2),
-            cost_max: Numbers.toFixedFloat(cost_max, 2)
+            cost_max: Numbers.toFixedFloat(cost_max, 2),
+            cost_mean: Numbers.toFixedFloat(cost_mean, 2)
         };
 
     }
@@ -789,7 +795,16 @@ async function doRegression(opts: ExecutorOpts) {
 
 }
 
-export interface IRegressionAnswerExecutorRequest extends Required<Pick<IAnswerExecutorRequest, 'search_model' | 'model' | 'rerank_elasticsearch' | 'rerank_elasticsearch_size' | 'rerank_elasticsearch_model' | 'rerank_truncate_short_head' | 'prune_contiguous_records' | 'filter_question'>> {
+export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRequest, 'search_model' |
+                                                                                       'model' |
+                                                                                       'rerank_elasticsearch' |
+                                                                                       'rerank_elasticsearch_size' |
+                                                                                       'rerank_elasticsearch_model' |
+                                                                                       'rerank_truncate_short_head' |
+                                                                                       'prune_contiguous_records' |
+                                                                                       'filter_question' |
+                                                                                       'max_tokens' |
+                                                                                       'elasticsearch_sort_order'> {
 
     /**
      * A unique ID for this executor so that we can keep track of the config
@@ -1032,32 +1047,32 @@ async function main() {
     // - models
 
     const options: ReadonlyArray<ExecutorOpts> = [
-        {
-            request: {
-                id: 'v1',
-                search_model: 'ada',
-                model: 'ada',
-                rerank_elasticsearch: false,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: false,
-                prune_contiguous_records: false,
-                filter_question: 'part-of-speech',
-            }
-        },
-        {
-            request: {
-                id: 'v2',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech',
-            }
-        },
+        // {
+        //     request: {
+        //         id: 'v1',
+        //         search_model: 'ada',
+        //         model: 'ada',
+        //         rerank_elasticsearch: false,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: false,
+        //         prune_contiguous_records: false,
+        //         filter_question: 'part-of-speech',
+        //     }
+        // },
+        // {
+        //     request: {
+        //         id: 'v2',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech',
+        //     }
+        // },
         {
             request: {
                 id: 'v3',
@@ -1069,8 +1084,24 @@ async function main() {
                 rerank_truncate_short_head: true,
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
-            }
+            },
+        },
+        {
+            request: {
+                id: 'v4',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 200,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125
+            },
         }
+
 
     ]
 
