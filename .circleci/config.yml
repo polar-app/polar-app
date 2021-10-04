@@ -388,6 +388,10 @@ workflows:
               only:
                 - master
 
+      ## ^ Build mobile apps
+      - fastlane:
+          executor: large
+
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
