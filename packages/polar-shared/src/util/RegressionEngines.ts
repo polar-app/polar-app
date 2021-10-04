@@ -13,7 +13,14 @@ export namespace RegressionEngines {
 
     export type ResultType = string | number | boolean;
 
-    export type ResultStatus = 'pass' | 'fail';
+    /**
+     * pass: When we have a known good result we pass.
+     *
+     * fail: When we have a known good failure we fail.
+     *
+     * unknown: The answer is neither pass nor fail and needs to be classified.
+     */
+    export type ResultStatus = 'pass' | 'fail' | 'unknown';
 
     export interface IRegressionTestResultPass<R extends ResultType> {
 
@@ -28,11 +35,6 @@ export namespace RegressionEngines {
         readonly actual: R;
 
         /**
-         * The expected value.
-         */
-        readonly expected: R | ReadonlyArray<R>;
-
-        /**
          * Metadata for this result.
          */
         readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
@@ -43,10 +45,6 @@ export namespace RegressionEngines {
         readonly status: 'fail';
         readonly err: E;
         readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
-    }
-
-    export interface IRegressionWithConfirmation {
-        readonly confirmed: boolean;
     }
 
     export interface IRegressionTestName {
@@ -65,9 +63,9 @@ export namespace RegressionEngines {
     export type ReportStr = string;
 
     export type IRegressionTestResultExecuted<R extends ResultType, E>
-        = (IRegressionTestResultPass<R> & IRegressionTestName & IRegressionWithConfirmation) |
-        (IRegressionTestResultError<E> & IRegressionTestName & IRegressionWithConfirmation) |
-        (IRegressionTestResultError<ErrorType> & IRegressionTestName & IRegressionWithConfirmation);
+        = (IRegressionTestResultPass<R> & IRegressionTestName) |
+        (IRegressionTestResultError<E> & IRegressionTestName) |
+        (IRegressionTestResultError<ErrorType> & IRegressionTestName);
 
     export type RegressionSummary = Readonly<{[key: string]: number}>
 
@@ -87,11 +85,6 @@ export namespace RegressionEngines {
         readonly createReport: (keys: ReadonlyArray<string>, summarizer?: RegressionSummarizer<R, E>) => ReportStr
 
     }
-
-    /**
-     * Confirm that the status of the test is the status we expect.
-     */
-    export type IConfirmationMap = Readonly<{[testName: string]: ResultStatus}>;
 
     export interface IRegressionEngine<R extends ResultType, E> {
 
@@ -118,7 +111,6 @@ export namespace RegressionEngines {
     }
 
     export interface ICreateOpts {
-        readonly confirmations?: IConfirmationMap;
 
         /**
          * The configuration for this regression used for documentation in the report.
@@ -152,8 +144,6 @@ export namespace RegressionEngines {
             regressions = regressions.slice(0, max);
         }
 
-        const confirmations = opts.confirmations || {}
-
         async function exec() {
 
             async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted<R, E>>> {
@@ -166,17 +156,12 @@ export namespace RegressionEngines {
 
                     console.log("=== Running regression test: " + testEntry.testName);
 
-                    function computeConfirmed(status: ResultStatus): boolean {
-                        return confirmations[testEntry.testName] === status;
-                    }
-
                     try {
 
                         const testResult = await testEntry.test();
 
                         results.push({
                             testName: testEntry.testName,
-                            confirmed: computeConfirmed(testResult.status),
                             ...testResult
                         });
 
@@ -185,7 +170,6 @@ export namespace RegressionEngines {
                         results.push({
                             testName: testEntry.testName,
                             status: 'fail',
-                            confirmed: computeConfirmed('fail'),
                             err: e
                         });
                     }
@@ -210,7 +194,7 @@ export namespace RegressionEngines {
 
                     function createResultGrid() {
 
-                        const headers = ['test name', 'status', 'confirmed', ...keys];
+                        const headers = ['test name', 'status', ...keys];
 
                         const textGrid = TextGrid.create(headers.length);
 
@@ -228,10 +212,12 @@ export namespace RegressionEngines {
 
                                     switch(status) {
 
-                                        case "fail":
+                                        case "unknown":
                                             return 0;
-                                        case "pass":
+                                        case "fail":
                                             return 1;
+                                        case "pass":
+                                            return 2;
 
                                     }
 
@@ -241,20 +227,8 @@ export namespace RegressionEngines {
 
                             }
 
-
-                            function comparatorByConfirmed(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
-
-                                function toConfirmedScore(confirmed: boolean) {
-                                    return confirmed ? 1 : 0;
-                                }
-
-                                return toConfirmedScore(a.confirmed) - toConfirmedScore(b.confirmed);
-
-                            }
-
                             return [...results]
                                 .sort(comparatorByName)
-                                .sort(comparatorByConfirmed)
                                 .sort(comparatorByStatus)
 
                         }
@@ -269,7 +243,6 @@ export namespace RegressionEngines {
                             const row: ReadonlyArray<string | number | boolean> = [
                                 result.testName,
                                 result.status,
-                                result.confirmed,
                                 // eslint-disable-next-line camelcase
                                 ...metadata_fields
                             ]

@@ -18,7 +18,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import { Reducers } from 'polar-shared/src/util/Reducers';
 import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultExecuted;
 import {AsyncCaches} from "polar-cache/src/AsyncCaches";
-import IConfirmationMap = RegressionEngines.IConfirmationMap;
+import ResultStatus = RegressionEngines.ResultStatus;
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -38,7 +38,6 @@ import IConfirmationMap = RegressionEngines.IConfirmationMap;
 function createRegressionEngine(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>({
-        confirmations: opts.confirmations,
         config: opts.request
     });
 
@@ -583,12 +582,18 @@ export interface IRegressionAnswerExecutorRequest extends Required<Pick<IAnswerE
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ExecutorOpts {
     readonly request: IRegressionAnswerExecutorRequest;
-    readonly confirmations: IConfirmationMap;
+}
+
+export interface IRegressionExpectations {
+
+    readonly accepted: ReadonlyArray<string>;
+
+    readonly rejected: ReadonlyArray<string>;
 
 }
 
 interface IExecutor {
-    readonly create: (question: string, expectedAnswer: string | ReadonlyArray<string>) => () => Promise<IRegressionTestResultPass<string> | IRegressionTestResultError<'failed' | 'no-answer'>>;
+    readonly create: (question: string, expectedAnswer: string | ReadonlyArray<string> | IRegressionExpectations) => () => Promise<IRegressionTestResultPass<string> | IRegressionTestResultError<'failed' | 'no-answer'>>;
     readonly executeQuestion: (question: string, forEmail?: string) => Promise<string>;
     readonly assertQuestionAndAnswer: (question: string, expectedAnswer: string | ReadonlyArray<string>) => Promise<void>;
 }
@@ -596,7 +601,7 @@ interface IExecutor {
 function createExecutor(opts: ExecutorOpts) : IExecutor {
 
     function create(question: string,
-                    expectedAnswer: string | ReadonlyArray<string>,
+                    expectations: string | ReadonlyArray<string> | IRegressionExpectations,
                     forEmail = 'burton@inputneuron.io'): () => Promise<IRegressionTestResultPass<string> | IRegressionTestResultError<'failed' | 'no-answer'>> {
 
         return async () => {
@@ -664,30 +669,50 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
                 const answer = answer_response.answers[0];
 
-                function hasPassed(): boolean {
+                function computeStatus(): ResultStatus {
 
-                    if (typeof expectedAnswer === 'string') {
+                    function toRegressionExpectations(): IRegressionExpectations {
 
-                        if (canonicalize(answer) === canonicalize(expectedAnswer)) {
-                            return true;
+                        if (typeof expectations === 'string') {
+
+                            return {
+                                accepted: [expectations],
+                                rejected: []
+                            }
+
+                        } else if (Array.isArray(expectations)) {
+
+                            return {
+                                accepted: [...expectations],
+                                rejected: []
+                            }
+                        } else if (typeof expectations === 'object') {
+                            return expectations as any;
                         }
 
-                    } else {
-                        if (expectedAnswer.map(canonicalize).includes(canonicalize(answer))) {
-                            return true;
-                        }
+                        throw new Error();
+
                     }
 
-                    return false;
+                    const regressionExpectations = toRegressionExpectations();
+
+                    if (regressionExpectations.accepted.map(canonicalize).includes(canonicalize(answer))) {
+                        return 'pass';
+                    }
+
+                    if (regressionExpectations.rejected.map(canonicalize).includes(canonicalize(answer))) {
+                        return 'pass';
+                    }
+
+                    return 'unknown';
 
                 }
 
-                const status = hasPassed() ? 'pass' : 'fail';
+                const status = computeStatus();
 
                 return {
                     status,
                     actual: answer,
-                    expected: expectedAnswer,
                     metadata: {
                         answer,
                         ...metadata
@@ -796,10 +821,6 @@ async function main() {
                 rerank_truncate_short_head: false,
                 prune_contiguous_records: false,
                 filter_question: 'part-of-speech',
-            },
-            confirmations: {
-                "astronomy #1": 'fail',
-                "astronomy Chapter 2 #1": 'fail'
             }
         },
         {
@@ -813,8 +834,6 @@ async function main() {
                 rerank_truncate_short_head: true,
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech',
-            },
-            confirmations: {
             }
         },
         {
@@ -828,10 +847,7 @@ async function main() {
                 rerank_truncate_short_head: true,
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
-            },
-            confirmations: {
             }
-
         }
 
     ]
