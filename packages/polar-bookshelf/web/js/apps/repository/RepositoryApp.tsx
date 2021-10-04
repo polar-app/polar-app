@@ -6,8 +6,7 @@ import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import WhatsNewScreen
-    from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
+import WhatsNewScreen from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
 import {StatsScreen} from '../../../../apps/repository/js/stats/StatsScreen';
 import {PricingScreen} from '../../../../apps/repository/js/premium/PricingScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
@@ -67,7 +66,7 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
-import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
+import {CDKDemo} from "./CDKDemo";
 
 interface IProps {
     readonly app: App;
@@ -232,31 +231,6 @@ const useStyles = makeStyles(() =>
         },
     }),
 );
-
-function CDKDemo() {
-    const [rpcResult, setRpcResult] = React.useState<any | undefined>(undefined);
-
-    React.useEffect(() => {
-        JSONRPC.exec('rpc-sample', {
-            email: 'example@example.com',
-        })
-            .then(result => {
-                setRpcResult(result);
-            })
-            .catch(reason => console.error(reason));
-    }, []);
-
-    return <>
-        <div style={{
-            flex: '100%',
-        }}>
-            <p>Result from AWS API Gateway call:</p>
-            <pre>
-                {JSON.stringify(rpcResult, null, 2)}
-            </pre>
-        </div>
-    </>;
-}
 
 export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     const classes = useStyles();
