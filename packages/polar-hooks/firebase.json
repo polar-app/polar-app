@@ -74,6 +74,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/login-with-custom-token",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/sign-in",
         "destination": "/apps/repository/index.html"
       },

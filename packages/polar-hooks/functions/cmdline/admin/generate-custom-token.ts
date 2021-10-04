@@ -27,6 +27,8 @@ async function exec() {
     // console.log('Use the following link to login: ')
     // console.log(link);
 
+    // https://app.getpolarized.io/login-with-custom-token?token=xxxxxxxxxxxxxxxx
+
 }
 
 exec().catch(err => console.error(err));
