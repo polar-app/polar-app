@@ -1,10 +1,8 @@
 import {Percentages} from "./Percentages";
-import {Strings} from "./Strings";
 import {ErrorType} from "./Errors";
 import {StringBuffer} from "./StringBuffer";
 import {TextGrid} from "./TextGrid";
 import {ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
-import {Tags} from "../tags/Tags";
 
 /**
  * A regression framework for running tests that return boolean and we can then
@@ -249,9 +247,10 @@ export namespace RegressionEngines {
 
                             }
 
-                            return [...results].sort(comparatorByName)
-                                               .sort(comparatorByStatus)
-                                               .sort(comparatorByConfirmed);
+                            return [...results]
+                                .sort(comparatorByName)
+                                .sort(comparatorByConfirmed)
+                                .sort(comparatorByStatus)
 
                         }
 

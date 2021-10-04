@@ -31,9 +31,15 @@ import IConfirmationMap = RegressionEngines.IConfirmationMap;
 // TODO: run the query in the cluster via the cloud function so we can record
 // timings as latency is going to be an issue.
 
+// TODO: maybe refactor this as accepted answers and rejected answers... IE that they are not confirmed as passing
+// or failing by answer key.  This way we could also have pass, fail, unknown. unknown is only specified if it is
+// neither in accepted or rejected.
+
 function createRegressionEngine(opts: ExecutorOpts) {
 
-    const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>(opts.confirmations);
+    const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>({
+        confirmations: opts.confirmations
+    });
 
     // TODO: we need a name of confirmed/failing tests by ID based on the opts here...
     // when confirmed as failing the supervisor of the regression knows they don't
@@ -525,7 +531,6 @@ async function doRegression(opts: ExecutorOpts) {
 
     const engine = createRegressionEngine(opts);
 
-    // engine.limit(10) // FIXME
     const result = await engine.exec();
 
     const summarizer = (results: ReadonlyArray<IRegressionTestResultExecuted<any, unknown>>) => {
