@@ -4,6 +4,7 @@ import {ErrorType} from "./Errors";
 import {StringBuffer} from "./StringBuffer";
 import {TextGrid} from "./TextGrid";
 import {ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
+import {Tags} from "../tags/Tags";
 
 /**
  * A regression framework for running tests that return boolean and we can then
@@ -14,12 +15,14 @@ export namespace RegressionEngines {
 
     export type ResultType = string | number | boolean;
 
+    export type ResultStatus = 'pass' | 'fail';
+
     export interface IRegressionTestResultPass<R extends ResultType> {
 
         /**
          * The status of this regression result ... pass or fail.
          */
-        readonly status: 'pass' | 'fail';
+        readonly status: ResultStatus;
 
         /**
          * The actual value.
@@ -42,7 +45,10 @@ export namespace RegressionEngines {
         readonly status: 'fail';
         readonly err: E;
         readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
+    }
 
+    export interface IRegressionWithConfirmation {
+        readonly confirmed: boolean;
     }
 
     export interface IRegressionTestName {
@@ -61,9 +67,9 @@ export namespace RegressionEngines {
     export type ReportStr = string;
 
     export type IRegressionTestResultExecuted<R extends ResultType, E>
-        = (IRegressionTestResultPass<R> & IRegressionTestName) |
-        (IRegressionTestResultError<E> & IRegressionTestName) |
-        (IRegressionTestResultError<ErrorType> & IRegressionTestName);
+        = (IRegressionTestResultPass<R> & IRegressionTestName & IRegressionWithConfirmation) |
+        (IRegressionTestResultError<E> & IRegressionTestName & IRegressionWithConfirmation) |
+        (IRegressionTestResultError<ErrorType> & IRegressionTestName & IRegressionWithConfirmation);
 
     export type RegressionSummary = Readonly<{[key: string]: number}>
 
@@ -83,6 +89,11 @@ export namespace RegressionEngines {
         readonly createReport: (keys: ReadonlyArray<string>, summarizer?: RegressionSummarizer<R, E>) => ReportStr
 
     }
+
+    /**
+     * Confirm that the status of the test is the status we expect.
+     */
+    export type IConfirmationMap = Readonly<{[testName: string]: ResultStatus}>;
 
     export interface IRegressionEngine<R extends ResultType, E> {
 
@@ -108,12 +119,16 @@ export namespace RegressionEngines {
 
     }
 
+    export interface ICreateOpts {
+        readonly confirmations?: IConfirmationMap;
+    }
+
     /**
      * Specify the error type using E which should probably be ErrorType but
      * could also be a code.  Normally, both ErrorType and a list of codes is
      * probably best.
      */
-    export function create<R extends ResultType, E>(): IRegressionEngine<R, E> {
+    export function create<R extends ResultType, E>(opts: ICreateOpts = {}): IRegressionEngine<R, E> {
 
         interface IRegressionTestEntry {
             readonly testName: string;
@@ -134,6 +149,8 @@ export namespace RegressionEngines {
             regressions = regressions.slice(0, max);
         }
 
+        const confirmations = opts.confirmations || {}
+
         async function exec() {
 
             async function doTests(): Promise<ReadonlyArray<IRegressionTestResultExecuted<R, E>>> {
@@ -146,12 +163,17 @@ export namespace RegressionEngines {
 
                     console.log("=== Running regression test: " + testEntry.testName);
 
+                    function computeConfirmed(status: ResultStatus): boolean {
+                        return confirmations[testEntry.testName] === status;
+                    }
+
                     try {
 
                         const testResult = await testEntry.test();
 
                         results.push({
                             testName: testEntry.testName,
+                            confirmed: computeConfirmed(testResult.status),
                             ...testResult
                         });
 
@@ -160,6 +182,7 @@ export namespace RegressionEngines {
                         results.push({
                             testName: testEntry.testName,
                             status: 'fail',
+                            confirmed: computeConfirmed('fail'),
                             err: e
                         });
                     }
@@ -192,13 +215,45 @@ export namespace RegressionEngines {
 
                         const textGrid = TextGrid.create(nrColumns);
 
-                        textGrid.headers('test name', 'status', ...keys);
+                        textGrid.headers('test name', 'status', 'confirmed', ...keys);
 
-                        for(const result of results) {
+                        function sortResults(results: ReadonlyArray<IRegressionTestResultExecuted<R, E>>): ReadonlyArray<IRegressionTestResultExecuted<R, E>> {
+
+                            function comparator(a: IRegressionTestResultExecuted<R, E>, b: IRegressionTestResultExecuted<R, E>) {
+
+                                function toStatusScore(status: ResultStatus) {
+
+                                    switch(status) {
+
+                                        case "fail":
+                                            return 0;
+                                        case "pass":
+                                            return 1;
+
+                                    }
+
+                                }
+
+                                const diff = toStatusScore(a.status) - toStatusScore(b.status);
+
+                                if (diff !== 0) {
+                                    return diff;
+                                }
+
+                                return a.testName.localeCompare(b.testName);
+
+                            }
+
+                            return [...results].sort(comparator);
+
+                        }
+
+                        for(const result of sortResults(results)) {
 
                             const row: ReadonlyArray<string | number | boolean> = [
                                 result.testName,
                                 result.status,
+                                result.confirmed,
                                 ...keys.map(key => (result.metadata || {})[key] || '')
                             ]
 
@@ -234,11 +289,12 @@ export namespace RegressionEngines {
                     const now = ISODateTimeStrings.create();
                     buff.append(`Report generated on: ${now}\n`)
 
-                    buff.append(`=======================\n`);
+                    buff.append(`======================= results: \n`);
                     buff.append(createResultGrid());
-
-                    buff.append(`=======================\n`);
+                    buff.append("\n");
+                    buff.append(`======================= summary: \n`);
                     buff.append(createSummaryGrid());
+                    buff.append("\n");
 
                     return buff.toString();
 
