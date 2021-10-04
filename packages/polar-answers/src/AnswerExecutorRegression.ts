@@ -55,23 +55,33 @@ function createRegressionEngine(opts: ExecutorOpts) {
     engine.xregister("covid 3", executor.create("What neutralized the prototype B virus?", ""));
 
     engine.register("astronomy #1",
-        executor.create("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
-            "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
-            "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
-            // TODO: this one is wrong but it might be a bug in the indexer not the executor.
-            "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a",
-            "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
-        ]));
+        executor.create("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", {
+            pass: [
+                "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
+                "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
+                // TODO: this one is wrong but it might be a bug in the indexer not the executor.
+                "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a",
+                "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
+            ],
+            fail: [
+                "Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet"
+            ]
+        }));
 
     engine.register("astronomy #2",
-        executor.create("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
-            "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
-            "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
-            "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
-            "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
-            "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell",
-            "The mountains on Mars and Venus are much higher than those on Earth and the Moon."
-        ]));
+        executor.create("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", {
+            pass: [
+                "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
+                "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
+                "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
+                "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
+                "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell",
+                "The mountains on Mars and Venus are much higher than those on Earth and the Moon."
+            ],
+            fail: [
+                "Mars and Venus are similar because they are both rocky, differentiated objects.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a"
+            ]
+        }));
 
 
     engine.register("US history chap 1 #1",
@@ -332,27 +342,42 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]));
 
     engine.register("US history chap 3 #14",
-        executor.create("How did European muskets change life for native peoples in the Americas?", [
-            "Tribes with ties to Europeans had a distinct advantage in wars",
-            "Guns changed the balance of power among different groups and tribes",
-            "Muskets made combat more deadly",
-            "They made warfare more lethal and changed traditional patterns of authority among tribes.",
-            "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
-        ]));
+        executor.create("How did European muskets change life for native peoples in the Americas?", {
+            pass: [
+                "Tribes with ties to Europeans had a distinct advantage in wars",
+                "Guns changed the balance of power among different groups and tribes",
+                "Muskets made combat more deadly",
+                "They made warfare more lethal and changed traditional patterns of authority among tribes.",
+                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
+            ],
+            fail: [
+                "They changed life for native peoples in the Americas."
+            ]
+        }));
 
     // // Chapter 2
     engine.register("astronomy Chapter 2 #1",
-        executor.create("What fraction of the sky can be seen from the North Pole?", [
-            "Approximately 50% like anywhere else on the planet.",
-            "Only half the sky can be seen from the North Pole.",
-            "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
-        ]));
+        executor.create("What fraction of the sky can be seen from the North Pole?", {
+            pass: [
+                "Approximately 50% like anywhere else on the planet.",
+                "Only half the sky can be seen from the North Pole.",
+                "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
+            ],
+            fail: [
+                "____"
+            ]
+        }));
     engine.register("astronomy Chapter 2 #2",
-        executor.create("How quickly we can learn about events in the universe?", [
-            "As soon as the light from that universe reaches us",
-            "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light",
-            "If a star is 100 light-years away, the light we see from it tonight left that star 100 years ago and is just now arriving in our neighborhood.  The soonest we can learn about any changes in that star is 100 years after the fact.  For a star 500 light-years away, the light we detect tonight left 500 years ago and is carrying 500-year- old news."
-        ]));
+        executor.create("How quickly we can learn about events in the universe?", {
+            pass: [
+                "As soon as the light from that universe reaches us",
+                "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light",
+                "If a star is 100 light-years away, the light we see from it tonight left that star 100 years ago and is just now arriving in our neighborhood.  The soonest we can learn about any changes in that star is 100 years after the fact.  For a star 500 light-years away, the light we detect tonight left 500 years ago and is carrying 500-year- old news."
+            ],
+            fail: [
+                "The speed of light is a natural unit of distance for astronomers.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum"
+            ]
+        }));
 
     engine.register("astronomy Chapter 2 #3", executor.create("The Sun was once thought to be a planet. Explain why.", [
         "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
@@ -360,11 +385,16 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "The Sun is much closer to Earth than are the nearest stars, yet it is not possible to measure accurately the diurnal parallax of the Sun relative to the stars by measuring its position relative to background objects in the sky directly."
     ]));
 
-    engine.register("astronomy Chapter 2 #4", executor.create("How far is the nearest galaxy from the sun?", [
-        "75,000 light-years from the Sun",
-        "75,000 light-years",
-        "75,000 light-years from the Sun in the direction of the constellation Sagittarius"
-    ]));
+    engine.register("astronomy Chapter 2 #4", executor.create("How far is the nearest galaxy from the sun?", {
+        pass: [
+            "75,000 light-years from the Sun",
+            "75,000 light-years",
+            "75,000 light-years from the Sun in the direction of the constellation Sagittarius"
+        ],
+        fail: [
+            "____"
+        ]
+    }));
 
     engine.register("astronomy Chapter 2 #5", executor.create("What is an asterism?", [
         "A prominent pattern or group of stars, typically having a popular name but smaller than a constellation.",
@@ -381,12 +411,17 @@ function createRegressionEngine(opts: ExecutorOpts) {
         "Aristotle reasoned that the Sun has to be farther away from Earth than is the Moon because occasionally the Moon passed exactly between Earth and the Sun and hid the Sun temporarily from view.  We call this a solar eclipse.",
     ]));
 
-    engine.register("astronomy Chapter 2 #7", executor.create("How are the zodiacal constellations different from the other constellations?", [
-        "Zodiac constellations are the constellations which give the zodiac signs to people. Constellations are groups of stars that form a specific pattern and are recognized by mythological figures and have names attributed to them.",
-        "Zodiac constellations are those through which the Sun appears to travel during the year",
-        "The zodiacal constellations are the constellations that lie along the ecliptic.",
-        "The zodiacal constellations are the constellations that the Sun, Moon, and planets appear to move through in the course of a year."
-    ]));
+    engine.register("astronomy Chapter 2 #7", executor.create("How are the zodiacal constellations different from the other constellations?",  {
+        pass: [
+            "Zodiac constellations are the constellations which give the zodiac signs to people. Constellations are groups of stars that form a specific pattern and are recognized by mythological figures and have names attributed to them.",
+            "Zodiac constellations are those through which the Sun appears to travel during the year",
+            "The zodiacal constellations are the constellations that lie along the ecliptic.",
+            "The zodiacal constellations are the constellations that the Sun, Moon, and planets appear to move through in the course of a year."
+        ],
+        fail: [
+            "The zodiacal constellations are different from the other constellations in that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constellations are arranged in a way that they are not all in the same place.  The constell"
+        ]
+    }));
 
     // Chapter 3
     engine.register("astronomy Chapter 3 #1", executor.create("What is the orbital speed?", [
@@ -586,9 +621,9 @@ export interface ExecutorOpts {
 
 export interface IRegressionExpectations {
 
-    readonly accepted: ReadonlyArray<string>;
+    readonly pass: ReadonlyArray<string>;
 
-    readonly rejected: ReadonlyArray<string>;
+    readonly fail: ReadonlyArray<string>;
 
 }
 
@@ -676,15 +711,15 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                         if (typeof expectations === 'string') {
 
                             return {
-                                accepted: [expectations],
-                                rejected: []
+                                pass: [expectations],
+                                fail: []
                             }
 
                         } else if (Array.isArray(expectations)) {
 
                             return {
-                                accepted: [...expectations],
-                                rejected: []
+                                pass: [...expectations],
+                                fail: []
                             }
                         } else if (typeof expectations === 'object') {
                             return expectations as any;
@@ -696,11 +731,11 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
                     const regressionExpectations = toRegressionExpectations();
 
-                    if (regressionExpectations.accepted.map(canonicalize).includes(canonicalize(answer))) {
+                    if (regressionExpectations.pass.map(canonicalize).includes(canonicalize(answer))) {
                         return 'pass';
                     }
 
-                    if (regressionExpectations.rejected.map(canonicalize).includes(canonicalize(answer))) {
+                    if (regressionExpectations.fail.map(canonicalize).includes(canonicalize(answer))) {
                         return 'pass';
                     }
 
