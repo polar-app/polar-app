@@ -68,9 +68,18 @@ export namespace DOMBlocks {
                 : node.previousSibling;
 
         if (! sibling) {
-            if (node.parentElement) {
+            /**
+             * Here we're checking that the parent does not have a "NoteRoot" class because
+             * each note that is shown on screen is wrapped within a div with a class "NoteRoot"
+             * so we don't want to jump to blocks that are shown somewhere else in the app.
+             * For example in the doc reader we're using persistent routes (which are always rendered but
+             * hidden when their pathname doesn't match), in that case this would prevent jumping to a block
+             * that's hidden.
+             */
+            if (node.parentElement && ! node.parentElement.classList.contains("NoteRoot")) {
                 return findSiblingBlock(node.parentElement, delta);
             }
+
             return null;
         }
 
