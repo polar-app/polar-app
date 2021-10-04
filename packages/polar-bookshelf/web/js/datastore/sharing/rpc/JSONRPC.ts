@@ -8,7 +8,7 @@ export class JSONRPC {
      * Define the list of paths that should be forwarded to the CDK deployed
      * API Gateway instead of to Google Cloud Functions
      */
-    private static cdkPaths = [
+    private static _awsLambdaFunctions = [
         'rpc-sample'
     ];
 
@@ -24,7 +24,9 @@ export class JSONRPC {
 
         const idToken = await user.getIdToken();
 
-        if (this.cdkPaths.includes(funcOrApiPath)) {
+        // Proxy the request to AWS Lambda instead of Firebase functions,
+        // if the function name is defined in the array
+        if (this.isAwsLambdaFunction(funcOrApiPath)) {
             return <V>await this.executeApiGatewayRequest<R, V>({
                 path: funcOrApiPath,
                 request,
@@ -57,6 +59,10 @@ export class JSONRPC {
 
     }
 
+    private static isAwsLambdaFunction(functionName: string) {
+        return this._awsLambdaFunctions.includes(functionName);
+    }
+
     private static async executeApiGatewayRequest<R, V>(props: {
         // Path within the AWS API Gateway
         path: string;
@@ -75,13 +81,14 @@ export class JSONRPC {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': props.idToken,
+                Authorization: props.idToken,
             },
             body: JSON.stringify(props.request)
         });
 
         if (response.status !== 200) {
-            throw new JSONRPCError(response, "Unable to handle RPC to AWS endpoint: " + props.path);
+            console.error(response);
+            throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${props.path}`);
         }
 
         return <V>await response.json();
