@@ -24,6 +24,8 @@ export interface IAnswerExecutorTimings {
     // eslint-disable-next-line camelcase
     readonly openai_answer: number;
 
+    // TODO: add support for the GCL cleanup latencies.
+
 }
 
 /**

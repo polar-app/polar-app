@@ -3,11 +3,11 @@ import {AsyncCacheDelegate} from "../AsyncCacheDelegate";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Lazy} from "polar-shared/src/util/Lazy";
-import {Datastores} from "polar-hooks-functions/impl/datastore/Datastores";
 import {File} from '@google-cloud/storage';
 import { Streams } from "polar-shared/src/util/Streams";
+import {GoogleCloudStorageConfig} from "polar-firebase-admin/src/GoogleCloudStorageConfig";
 
-const storageConfig = Lazy.create(() => Datastores.createStorage());
+const storageConfig = Lazy.create(() => GoogleCloudStorageConfig.create());
 const storage = Lazy.create(() => storageConfig().storage);
 
 export namespace GoogleCloudStorageBasedAsyncCacheDelegate {
