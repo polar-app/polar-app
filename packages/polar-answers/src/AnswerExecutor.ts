@@ -28,6 +28,7 @@ import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
 import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 import {AnswerExecutors} from "./AnswerExecutors";
+import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -553,11 +554,23 @@ export namespace AnswerExecutor {
 
         await doTrace();
 
+        async function createAnswers(): Promise<ReadonlyArray<string>> {
+
+            if (request.openai_completion_cleanup_enabled) {
+                const promises = openai_answers_response.answers.map(current => OpenAICompletionCleanup.clean(current));
+                return (await Promise.all(promises)).map(current => current.text);
+            }
+
+            return openai_answers_response.answers;
+        }
+
+        const answers = await createAnswers();
+
         return {
             id,
             question,
             selected_documents: openai_answers_response.selected_documents.map(convertToSelectedDocumentWithRecord),
-            answers: openai_answers_response.answers,
+            answers,
             model,
             search_model,
             timings,
