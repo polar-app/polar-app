@@ -21,13 +21,13 @@
     "chai": "4.2.0",
     "mocha": "=9.1.1",
     "polar-eslint": "0.0.0",
-    "polar-firebase-admin": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-test": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
+    "polar-firebase-admin": "0.0.0",
     "@google-cloud/language": "=4.2.5",
     "gpt-3-encoder": "^1.1.3",
     "polar-answers-api": "0.0.0",
@@ -35,7 +35,8 @@
     "polar-firebase": "0.0.0",
     "polar-google-cloud-language": "0.0.0",
     "polar-pdf": "0.0.0",
-    "polar-shared": "0.0.0"
+    "polar-shared": "0.0.0",
+    "polar-cache": "0.0.0"
   },
   "files": [
     "**/*.js",

@@ -4,22 +4,9 @@ import {IOpenAIAnswersResponseWithPrompt} from "polar-answers-api/src/IOpenAIAns
 import {OpenAITokenEncoder} from "./OpenAITokenEncoder";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { Reducers } from "polar-shared/src/util/Reducers";
+import {IAnswersCostEstimation, ICostEstimationWithModel} from "polar-answers-api/src/ICostEstimation";
 
 export namespace OpenAICostEstimator {
-
-    /**
-     * US dollar cost as a floating point of dollars and cents.
-     */
-    export type USD = number;
-
-    export interface ICostEstimation {
-        readonly tokens: number;
-        readonly cost: USD;
-    }
-
-    export interface ICostEstimationWithModel extends ICostEstimation {
-        readonly model: AIModel;
-    }
 
     /**
      * Given an OpenAI model name, return how much will a single "token" will cost
@@ -101,11 +88,6 @@ export namespace OpenAICostEstimator {
 
         return {model, tokens, cost}
 
-    }
-
-    export interface IAnswersCostEstimation extends ICostEstimation {
-        readonly search: ICostEstimationWithModel,
-        readonly completion: ICostEstimationWithModel;
     }
 
     export function costOfAnswers(request: IOpenAIAnswersRequest,

@@ -1,6 +1,7 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {OpenAIRequests} from "./OpenAIRequests";
 import {OpenAICostEstimator} from "./OpenAICostEstimator";
+import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 
 /**
  * Create search
@@ -24,7 +25,6 @@ import {OpenAICostEstimator} from "./OpenAICostEstimator";
  *
  */
 export namespace OpenAISearchClient {
-
 
     export interface IOpenAISearchRequest {
 
@@ -73,10 +73,15 @@ export namespace OpenAISearchClient {
 
     }
 
-    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse> {
+    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse & ICostEstimationHolder<ICostEstimation>> {
 
         const url = `https://api.openai.com/v1/engines/${model}/search`;
-        return OpenAIRequests.exec(url, request);
+        const response = await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);
+
+        // eslint-disable-next-line camelcase
+        const cost_estimation = OpenAICostEstimator.costOfSearch({model, query: request.query, documents: request.documents});
+
+        return {...response, cost_estimation};
 
     }
 

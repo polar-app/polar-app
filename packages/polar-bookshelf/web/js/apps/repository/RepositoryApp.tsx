@@ -83,6 +83,7 @@ interface IUseRouteContainerStylesProps {
     sidenavWidth: number;
 }
 
+export const BOTTOM_NAV_HEIGHT = 58;
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
@@ -268,8 +269,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  minWidth: 0,
                                  minHeight: 0,
                                  flexDirection: 'column',
-                                 flexGrow: 1
-                             }}>
+                                 flexGrow: 1,
+                                 height: Devices.isDesktop() ? '100%':`calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
+                                }}>
 
                             <UseLocationChangeStoreProvider>
                                 <BrowserRouter>
