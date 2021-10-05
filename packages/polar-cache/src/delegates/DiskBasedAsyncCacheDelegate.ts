@@ -6,7 +6,7 @@ import {Files} from "polar-shared/src/util/Files";
 
 export namespace DiskBasedAsyncCacheDelegate {
 
-    const DIR = FilePaths.join(FilePaths.tmpdir(), 'polar-cache');
+    const BASE_DIR = FilePaths.join(FilePaths.tmpdir(), 'polar-cache');
 
     export function create<K, V>(nspace: IDStr): AsyncCacheDelegate<K, V> {
 
@@ -14,7 +14,11 @@ export namespace DiskBasedAsyncCacheDelegate {
 
             const hash = Hashcodes.create(key);
 
-            const dir = FilePaths.join(DIR, nspace);
+            const dir = FilePaths.join(BASE_DIR, nspace);
+
+            if (! await Files.existsAsync(BASE_DIR)) {
+                await Files.createDirAsync(BASE_DIR);
+            }
 
             if (! await Files.existsAsync(dir)) {
                 await Files.createDirAsync(dir);
