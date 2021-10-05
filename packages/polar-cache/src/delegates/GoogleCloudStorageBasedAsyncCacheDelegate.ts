@@ -2,15 +2,15 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {AsyncCacheDelegate} from "../AsyncCacheDelegate";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Lazy} from "polar-shared/src/util/Lazy";
 import {File} from '@google-cloud/storage';
-import { Streams } from "polar-shared/src/util/Streams";
+import {Streams} from "polar-shared/src/util/Streams";
 import {GoogleCloudStorageConfig} from "polar-firebase-admin/src/GoogleCloudStorageConfig";
 
-const storageConfig = Lazy.create(() => GoogleCloudStorageConfig.create());
-const storage = Lazy.create(() => storageConfig().storage);
 
 export namespace GoogleCloudStorageBasedAsyncCacheDelegate {
+
+    const storageConfig = GoogleCloudStorageConfig.create();
+    const {storage} = storageConfig;
 
     export function create<K, V>(nspace: IDStr): AsyncCacheDelegate<K, V> {
 
@@ -25,9 +25,9 @@ export namespace GoogleCloudStorageBasedAsyncCacheDelegate {
 
             const id = computeID(key);
             const storagePath = `polar-cache/${nspace}/${id}.json`;
-            const project = storageConfig().config.project;
+            const project = storageConfig.config.project;
             const bucketName = `gs://${project}.appspot.com`;
-            const bucket = storage().bucket(bucketName);
+            const bucket = storage.bucket(bucketName);
             return new File(bucket, storagePath);
 
         }
