@@ -28,6 +28,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
 import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
+import {AnswerExecutors} from "./AnswerExecutors";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -50,10 +51,7 @@ export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
     import PartOfSpeechTag = GCLAnalyzeSyntax.PartOfSpeechTag;
-
-    export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
-        readonly uid: UserIDStr;
-    }
+    import IAnswerExecutorRequestWithUID = AnswerExecutors.IAnswerExecutorRequestWithUID;
 
     export const EXAMPLES_CONTEXT: string =
         [

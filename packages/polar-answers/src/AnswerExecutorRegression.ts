@@ -1073,26 +1073,41 @@ async function main() {
         //         filter_question: 'part-of-speech',
         //     }
         // },
+        // {
+        //     request: {
+        //         id: 'v3',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //     },
+        // },
+        // {
+        //     request: {
+        //         id: 'v4',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 200,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125
+        //     },
+        // },
         {
             request: {
-                id: 'v3',
+                id: 'v5',
                 model: 'curie',
                 search_model: 'curie',
                 rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-            },
-        },
-        {
-            request: {
-                id: 'v4',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 200,
+                rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
                 rerank_truncate_short_head: true,
                 prune_contiguous_records: true,
@@ -1101,6 +1116,7 @@ async function main() {
                 max_tokens: 125
             },
         }
+
 
 
     ]
