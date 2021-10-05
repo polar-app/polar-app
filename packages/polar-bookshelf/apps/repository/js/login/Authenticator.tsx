@@ -522,9 +522,7 @@ const Main = React.memo(function Main(props: IProps) {
 
             <div className="text-center">
 
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
-                </div>
+
 
 
                 {props.mode === 'create-account' && (
@@ -571,38 +569,53 @@ const Main = React.memo(function Main(props: IProps) {
             </div>
         </DeviceRouters.NotPhone>
 
-        <DeviceRouters.Phone>
-            <>
-            {Login === "LandingPage" && <div id='main' style={{height:"100vh"}}>
-                            <div style={{textAlign: 'center', marginTop: '100px'}}>
-                                <div className={classes.logo}>
-                                    <PolarSVGIcon width={125} height={125}/>
-                                </div>
+            <DeviceRouters.Phone>
+            <div style={{height:"100vh"}}>
 
-                                <div>
-                                    <p className={classes.legal}>
-                                        Welcome to Polar
-                                    </p>
-                                </div>
-                            </div>
+            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+            <div className="text-center">
 
-                                <Button onClick={() => setLogin("login")} variant="contained" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px'}}>
-                                    LOG IN
-                                </Button>
+                <div className={classes.logo}>
+                    <PolarSVGIcon width={125} height={125}/>
+                </div>
 
-                                <Button onClick={() => setLogin("signup")} variant="outlined" color="primary" endIcon={<ArrowForwardOutlined />} style={{width: '95vw', margin: '10px', borderColor: 'white', color: 'white', textDecorationColor: 'white'}}>
-                                    SIGN UP
-                                </Button>
-                            </div>
-                        </div>}
+                {props.mode === 'create-account' && (
+                    <h2 className={classes.intro}>
+                        Create your Polar Account
+                    </h2>
+                )}
 
-                    {Login === "signup" && <div> <EmailTokenAuthButton /> </div>}
-                    
-                    {Login === "login" && <div> <EmailTokenAuthButton /> </div>}
-            </>
-        </DeviceRouters.Phone>
+                {props.mode === 'sign-in' && (
+                    <h2 className={classes.intro}>
+                        Sign In to Polar
+                    </h2>
+                )}
+            </div>
+
+            
+
+                <EmailTokenAuthButton/>
+
+                {props.mode === 'create-account' && (
+                    <SignInWithExistingAccount/>
+                )}
+
+                {props.mode === 'sign-in' && (
+                    <OrCreateNewAccount/>
+                )}
+
+                <div style={{flexGrow: 1}}/>
+
+                <div>
+                    <p style={{fontSize: '10px'}} className={classes.legal}>
+                        You acknowledge that you will read, and agree to
+                        our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+            </DeviceRouters.Phone>
         </>
 
     );
