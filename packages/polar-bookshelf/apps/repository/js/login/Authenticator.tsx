@@ -27,7 +27,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
 
-const useStyles = makeStyles((theme) =>
+export const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {
