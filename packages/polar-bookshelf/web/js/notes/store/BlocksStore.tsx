@@ -509,7 +509,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
 
-            if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
+            if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
