@@ -9,7 +9,13 @@ async function exec() {
 
     const auth = firebase.auth();
 
-    const email = 'babstar99@gmail.com';
+    // gets the first command line argument
+    const email = process.argv.slice(2)[0];
+
+    if (! email) {
+        throw new Error("This command requires an email as argument to generate a valid token");
+    }
+
     const user = await auth.getUserByEmail(email);
 
     if (! user) {
@@ -20,15 +26,9 @@ async function exec() {
 
     console.log("custom token: " +  customToken);
 
-    // const link = await auth.generateSignInWithEmailLink('burton@inputneuron.io', {
-    //     url: 'https://app.getpolarized.io',
-    // })
-    //
-    // console.log('Use the following link to login: ')
-    // console.log(link);
-
-    // https://app.getpolarized.io/login-with-custom-token?token=xxxxxxxxxxxxxxxx
-
+    console.log("Use the following link to login:");
+    
+    console.log("https://app.getpolarized.io/login-with-custom-token?token=" + customToken);
 }
 
 exec().catch(err => console.error(err));
