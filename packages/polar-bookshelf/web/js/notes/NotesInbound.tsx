@@ -3,22 +3,18 @@ import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import {Block} from "./Block";
 import {observer} from "mobx-react-lite"
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
+import {NoteBreadcrumbLinks} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {UL} from './UL';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import {createStyles, makeStyles} from '@material-ui/core';
-import {BlockTextContentUtils} from './NoteUtils';
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
 }
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
-
     const {id} = props;
     const blocksTreeStore = useBlocksTreeStore();
     const pathToNote = blocksTreeStore.pathToBlock(id).filter(BlockPredicates.isTextBlock);
@@ -26,12 +22,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
     return (
         <Box mb={1}>
             <div style={{display: 'flex'}}>
-                <Breadcrumbs>
-                    {pathToNote.map(current => <NoteBreadcrumbLink key={current.id}
-                                                                   id={current.id}
-                                                                   content={BlockTextContentUtils.getTextContentMarkdown(current.content)}/>)}
-
-                </Breadcrumbs>
+                <NoteBreadcrumbLinks blocks={pathToNote} />
             </div>
 
             <div style={{
@@ -52,15 +43,6 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        expandToggle: {
-            color: theme.palette.text.hint,
-            marginRight: 8,
-        },
-    }),
-);
-
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
     const blocksTreeStore = useBlocksTreeStore();
     const [expanded, setExpanded] = React.useState(true);
@@ -68,6 +50,7 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     const onToggleExpand = React.useCallback(() => setExpanded(expanded => !expanded), []);
 
     const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
+
     const inbound = React.useMemo(() => {
         const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isEditableBlock);
         return blocks.sort((a, b) => (new Date(b.created)).getTime() - (new Date(a.created).getTime()));
