@@ -70,7 +70,7 @@ export interface IAnswerExecutorRequest {
      * sure the completions don't have errors due to currie.
      */
     // eslint-disable-next-line camelcase
-    readonly openai_completion_cleanup_enabled: boolean;
+    readonly openai_completion_cleanup_enabled?: boolean;
 
 }
 
