@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
@@ -26,8 +26,6 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
-
-import { useState } from 'react'
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -346,6 +344,8 @@ const EmailTokenAuthButton = () => {
                 <>
                     {active && (
                         <>
+                            <Divider className={classes.sendLinkDivider}/>
+
                             {pending && (
                                 <ProgressActive/>
                             )}
@@ -476,12 +476,16 @@ const EmailTokenAuthButton = () => {
     );
 };
 
+// end comp 1
+
 const SignInWithExistingAccount = () => {
 
     const classes = useStyles();
     const history = useHistory();
 
     return (
+        
+
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -499,21 +503,7 @@ const OrCreateNewAccount = () => {
             <Button>or create new account</Button>
         </div>
     );
-}
 
-const LauncherView = () => {
-
-    const classes = useStyles();
-    const history = useHistory();
-
-    return (
-        <DeviceRouters.Phone>
-            <>
-            
-            </>
-            
-        </DeviceRouters.Phone>
-    );
 }
 
 const Main = React.memo(function Main(props: IProps) {
@@ -554,6 +544,8 @@ const Main = React.memo(function Main(props: IProps) {
                         flexDirection: 'column'
                     }}>
 
+                    {/*<GoogleAuthButton/>*/}
+
                     <EmailTokenAuthButton/>
 
                     {/*<EmailAuthButton/>*/}
@@ -579,9 +571,9 @@ const Main = React.memo(function Main(props: IProps) {
             </div>
         </DeviceRouters.NotPhone>
 
-            <DeviceRouters.Phone>
-                <>
-                    {Login === "LandingPage" && <div id='main' style={{height:"100vh"}}>
+        <DeviceRouters.Phone>
+            <>
+            {Login === "LandingPage" && <div id='main' style={{height:"100vh"}}>
                             <div style={{textAlign: 'center', marginTop: '100px'}}>
                                 <div className={classes.logo}>
                                     <PolarSVGIcon width={125} height={125}/>
@@ -609,9 +601,10 @@ const Main = React.memo(function Main(props: IProps) {
                     {Login === "signup" && <div> <EmailTokenAuthButton /> </div>}
                     
                     {Login === "login" && <div> <EmailTokenAuthButton /> </div>}
-                </>
-            </DeviceRouters.Phone>
+            </>
+        </DeviceRouters.Phone>
         </>
+
     );
 });
 
