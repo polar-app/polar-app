@@ -1,7 +1,7 @@
 import {Construct} from "@aws-cdk/core";
 import {RestApi} from "@aws-cdk/aws-apigateway";
 import {Billing} from "./Billing/Billing";
-import {RPCSample} from "./RPCSample/RPCSample";
+import {RPC} from "./RPC/RPC";
 
 export class ApiGatewayRoutes extends Construct {
 
@@ -18,11 +18,11 @@ export class ApiGatewayRoutes extends Construct {
                 .resourceForPath('billing'),
         })
 
-        new RPCSample(this, 'RPCSample', {
+        new RPC(this, 'RPC', {
             rootResource: props
                 .apiGateway
                 .root
-                .resourceForPath('rpc-sample'),
+                .resourceForPath('rpc'),
         });
 
     }

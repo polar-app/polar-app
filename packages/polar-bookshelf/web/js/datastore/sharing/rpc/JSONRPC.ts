@@ -11,7 +11,8 @@ export class JSONRPC {
      * API Gateway instead of to Google Cloud Functions
      */
     private static _awsLambdaFunctions = [
-        'rpc-sample'
+        'test',
+        'private-beta/register',
     ];
 
     public static async exec<R, V>(funcOrApiPath: string, request: R): Promise<V> {
@@ -81,7 +82,7 @@ export class JSONRPC {
         // Firebase token of the current user
         idToken: string,
     }) {
-        const url = `${AwsApiGatewayURL}/${props.path}`;
+        const url = `${AwsApiGatewayURL}/rpc/${props.path}`;
 
         const response = await fetch(url, {
             method: 'POST',

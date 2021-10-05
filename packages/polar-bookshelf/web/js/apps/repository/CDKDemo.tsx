@@ -3,6 +3,7 @@ import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface RpcDemoRequest {
     email: string,
+    tag?: string,
 }
 
 interface RpcDemoResponse {
@@ -15,13 +16,20 @@ export function CDKDemo() {
     React.useEffect(() => {
         const request: RpcDemoRequest = {
             email: 'example@example.com',
+            tag: "initial_signup",
         };
 
-        JSONRPC.exec<RpcDemoRequest, RpcDemoResponse>('rpc-sample', request)
+        JSONRPC.exec<RpcDemoRequest, RpcDemoResponse>('test', request)
             .then(result => {
                 setResult(result);
             })
             .catch(reason => console.error(reason));
+
+        // JSONRPC.exec<RpcDemoRequest, RpcDemoResponse>('private-beta/register', request)
+        //     .then(result => {
+        //         setResult(result);
+        //     })
+        //     .catch(reason => console.error(reason));
     }, []);
 
     return <>

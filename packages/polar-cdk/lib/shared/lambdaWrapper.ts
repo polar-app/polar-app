@@ -9,10 +9,8 @@ export interface LambdaWrapperOpts {
     authRequired: boolean,
 }
 
-export type IRequest = unknown;
-
-export type FuncWithAuth = (idUser: IDUser, request: IRequest) => unknown;
-export type FuncWithoutAuth = (request: IRequest) => unknown;
+export type FuncWithAuth<REQ, RES> = (idUser: IDUser, request: REQ) => Promise<RES>;
+export type FuncWithoutAuth<REQ, RES> = (request: REQ) => Promise<RES>;
 
 type Middleware = (original: APIGatewayProxyResult) => APIGatewayProxyResult;
 
@@ -31,23 +29,24 @@ export const cors: Middleware = (response): APIGatewayProxyResult => {
     }
 };
 
-export const lambdaWrapper = (implementation: FuncWithAuth | FuncWithoutAuth, opts?: LambdaWrapperOpts): APIGatewayProxyHandler => {
+export const lambdaWrapper = <REQ, RES>(implementation: FuncWithAuth<REQ, RES> | FuncWithoutAuth<REQ, RES>, opts?: LambdaWrapperOpts): APIGatewayProxyHandler => {
     return async (event, context, callback) => {
         console.log('event', event);
 
         try {
             const request = JSON.parse(event.body || '{}');
+            const authRequired = opts?.authRequired === undefined ? true : opts.authRequired as boolean;
 
-            if (opts?.authRequired) {
+            if (authRequired) {
                 const idUser = await IDUsers.fromIDToken(event.headers['Authorization']);
-                const originalImplementation = (implementation as FuncWithAuth);
+                const originalImplementation = (implementation as FuncWithAuth<REQ, RES>);
 
                 return cors({
                     statusCode: 200,
                     body: JSON.stringify(await originalImplementation(idUser, request)),
                 })
             } else {
-                const originalImplementation = (implementation as FuncWithoutAuth);
+                const originalImplementation = (implementation as FuncWithoutAuth<REQ, RES>);
                 return cors({
                     statusCode: 200,
                     body: JSON.stringify(await originalImplementation(request)),
@@ -55,6 +54,7 @@ export const lambdaWrapper = (implementation: FuncWithAuth | FuncWithoutAuth, op
             }
         } catch (e) {
             // @TODO send the error to Sentry
+            console.error("Internal server error", e);
             return cors({
                 statusCode: 500,
                 body: JSON.stringify({
