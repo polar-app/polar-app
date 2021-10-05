@@ -86,6 +86,7 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell",
                 "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
                 "The mountains on Mars and Venus are very different from those on Earth and the Moon.", // TODO WEAK!!!
+
             ],
             fail: [
                 "Mars and Venus are similar because they are both rocky, differentiated objects.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a"
@@ -275,7 +276,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
                 "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
                 "England lacked the financial resources for such endeavors.",
-                "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
+                "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s.",
+                "England was too busy fighting with France and Spain."
             ],
             fail: [
                 "England was not a major power in the Atlantic World in the early sixteenth century.  It was not until the late sixteenth century that England became a major power in the Atlantic World.  The English Crown was not interested in colonizing the New World until the late sixteenth century.  The English Crown was not interested in colonizing the New World until the late sixteenth century.",
@@ -321,7 +323,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "By serving the Spanish crown",
                 "By conquering territory in the name of the Spanish Crown",
                 "by serving the Spanish crown",
-                "They could obtain encomiendas by serving in the Spanish army."
+                "They could obtain encomiendas by serving in the Spanish army.",
+                "They could prove their service to the crown."
             ],
             fail: [
                 "The encomienda system was a legal right granted to conquistadors who could prove their service to the crown.  The encomienda system was a legal right granted to conquistadors who could prove their service to the crown."
@@ -337,7 +340,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
                 "They had no immunity to diseases from across the Atlantic.",
                 "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
-                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin."
             ],
             fail: [
                 "Smallpox was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of"
@@ -363,7 +367,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             pass: [
                 "Through revolt",
                 "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish.",
-                "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area."
+                "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area.",
+                "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish in 1680."
             ],
             fail: [
                 "The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert"
@@ -380,7 +385,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
                 "Patroonship was a system of land distribution in the colony of New Netherland.",
                 "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company.",
-                "Patroonship was a system of land ownership in the Dutch colony of New Netherland."
+                "Patroonship was a system of land ownership in the Dutch colony of New Netherland.",
+                "It was a large tract of land and the right to govern the tenants there."
             ],
             fail: [
                 "The Dutch West India Company granted patroonships to large estates in the Hudson River Valley.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in"
@@ -466,7 +472,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "Guns changed the balance of power among different groups and tribes",
                 "Muskets made combat more deadly",
                 "They made warfare more lethal and changed traditional patterns of authority among tribes.",
-                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
+                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes.",
+                "They were used to kill many people."
             ],
             fail: [
                 "They changed life for native peoples in the Americas.",
@@ -483,7 +490,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
             ],
             fail: [
-                "____"
+                "____",
+                "2/3."
             ]
         }));
     engine.register("astronomy Chapter 2 #2",
@@ -580,7 +588,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "Unless it is compelled to change by an outside force, every object will continue to be in a state of rest or move at a constant speed",
             "An object in motion tends to remain in motion.",
             "An object at rest will remain at rest unless acted upon by an unbalanced force.",
-            "The law of inertia."
+            "The law of inertia.",
+            "Newton's first law is a restatement of one of Galileo's discoveries, called the conservation of momentum.",
+            "It's a restatement of one of Galileo's discoveries, called the conservation of momentum."
         ], fail: [
             "Newton’s first law is a restatement of one of Galileo’s discoveries, called the conservation of momentum.  The law states that in the absence of any outside influence, there is a measure of a body’s motion, called its momentum, that remains unchanged.  You may have heard the term momentum used in everyday expressions, such as “This bill in Congress has a lot of momentum; it’s going to be hard to stop.”  Newton’s first law is sometimes called the law of inertia, where inertia is the tendency of objects (and legislatures) to keep doing what they are already doing.  In other words, a stationary object stays put, and a moving object keeps moving unless some force intervenes.  Let’s define the precise meaning of momentum—it depends on three factors: (1) speed—how fast a body moves (zero if it is stationary), (2) the direction of its motion, and (3) its mass—a measure of the amount of matter in a body, which we will discuss later.  Scientists use the term velocity to describe the speed and direction of motion.  How does Newton’s first law of"
         ]
@@ -632,7 +642,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "All longitude lines meet at the pole",
             "All longitude lines meet at the poles; therefore, they have no defined longitude.",
             "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous.",
-            "It has no meaning because the North and South Poles are the points on Earth's surface farthest from the center of Earth."
+            "It has no meaning because the North and South Poles are the points on Earth's surface farthest from the center of Earth.",
+            "Because the celestial poles are at the north and south points on the horizon, they are not overhead or on the horizon."
         ],
         fail: [
             "Because the Sun is always above the horizon at the North Pole, and the Sun is always below the horizon at the South Pole.",
@@ -646,7 +657,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
             "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
             "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use.",
-            "The main advantage is that it is easy to measure. The main disadvantage is that it is not accurate."
+            "The main advantage is that it is easy to measure. The main disadvantage is that it is not accurate.",
+            "The main advantage is that it is easy to remember. The main disadvantage is that it is not accurate."
         ],
         fail: [
             "The main advantage of apparent solar time is that it is easy to use.  It is based on the position of the Sun in the sky, and it is easy to tell what time it is by looking at the Sun.  The main disadvantage of apparent solar time is that it is not very accurate.  The length of an apparent solar day varies slightly during the year.  The length of a mean solar day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is",
@@ -660,6 +672,7 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "1 day",
             "A single day",
             "1.00 day",
+            "24 hours."
         ],
         fail: [
             "1.00 × 1.00 = 1.00.",
