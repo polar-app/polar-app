@@ -27,10 +27,12 @@ export class JSONRPC {
 
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userRequest)});
+            body: JSON.stringify(userRequest)
+        });
 
         if (response.status !== 200) {
             throw new JSONRPCError(response, "Unable to handle RPC: " + func);
