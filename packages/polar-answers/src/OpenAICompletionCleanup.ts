@@ -1,3 +1,6 @@
+import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
+import {Tuples} from "polar-shared/src/util/Tuples";
+
 /**
  * Sometimes OpenAI, with lower cost models, can generate both truncated and
  * redundant completions.
@@ -22,9 +25,6 @@
  * a retrograde orbit.  It is the only planet that has a retrograde orbit
  *
  */
-import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
-import {Tuples} from "polar-shared/src/util/Tuples";
-
 export namespace OpenAICompletionCleanup {
 
     export interface ISentenceRemoval {
@@ -53,7 +53,7 @@ export namespace OpenAICompletionCleanup {
         // the sentences that have been emitted so that we don't do any duplicate emits.
         const emitted: { [sentence: string]: boolean } = {};
 
-        let modified: boolean = false;
+        let modified = false;
 
         // the sentences we want to emit.
         const emits: string[] = [];
