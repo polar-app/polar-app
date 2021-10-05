@@ -2,7 +2,11 @@ import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {IAnswerExecutorError, IAnswerExecutorResponse} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {
+    IAnswerExecutorError,
+    IAnswerExecutorErrorNoAnswer,
+    IAnswerExecutorResponse
+} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {
     RegressionEngines
 } from "polar-shared/src/util/RegressionEngines";
@@ -19,6 +23,7 @@ import { Reducers } from 'polar-shared/src/util/Reducers';
 import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultExecuted;
 import {AsyncCaches} from "polar-cache/src/AsyncCaches";
 import ResultStatus = RegressionEngines.ResultStatus;
+import {AnswerExecutors} from "./AnswerExecutors";
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -860,7 +865,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             // eslint-disable-next-line camelcase
             const answer_executor_with_cache
-                = AsyncCaches.wrapper<AnswerExecutor.IAnswerExecutorRequestWithUID,
+                = AsyncCaches.wrapper<AnswerExecutors.IAnswerExecutorRequestWithUID,
                                       IAnswerExecutorResponse |  IAnswerExecutorError>('answer-executor',
                                                                                        ['disk', 'google-cloud-storage'],
                                                                                        'test-only')
@@ -895,8 +900,11 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             const metadata = {
                 question,
-                cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
             };
+
+            function isErrorNoAnswer(error: IAnswerExecutorError): error is IAnswerExecutorErrorNoAnswer {
+                return error.error && error.code === 'no-answer';
+            }
 
             function isError(value: any): value is IAnswerExecutorError {
                 return value.error === true;
@@ -952,16 +960,32 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                     actual: answer,
                     metadata: {
                         answer,
-                        ...metadata
+                        ...metadata,
+                        cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
                     }
                 };
 
             } else {
+
+                if (isErrorNoAnswer(answer_response)) {
+
+                    return <IRegressionTestError<'failed' | 'no-answer'>> {
+                        status: 'fail',
+                        err: answer_response.code,
+                        metadata: {
+                            ...metadata,
+                            cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
+                        }
+                    };
+
+                }
+
                 return <IRegressionTestError<'failed' | 'no-answer'>> {
                     status: 'fail',
                     err: answer_response.code,
                     metadata
                 };
+
             }
 
         }
