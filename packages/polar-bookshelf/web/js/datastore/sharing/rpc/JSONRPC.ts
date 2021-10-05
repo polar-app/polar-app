@@ -4,7 +4,7 @@ import {CloudFunctions} from '../../firebase/CloudFunctions';
 
 export class JSONRPC {
 
-    public static async exec<R, V>(func: string, request: R, requestInit?: RequestInit): Promise<V> {
+    public static async exec<R, V>(func: string, request: R): Promise<V> {
 
         const app = FirebaseBrowser.init();
 
@@ -26,8 +26,8 @@ export class JSONRPC {
         const url = `${endpoint}/${func}`;
 
         const response = await fetch(url, {
-            ...requestInit,
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

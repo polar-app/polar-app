@@ -12,9 +12,7 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
 
         async function doAsync() {
 
-            await JSONRPC.exec("CreateSnapshotFunction", {}, {
-                credentials: 'include'
-            });
+            await JSONRPC.exec("CreateSnapshotFunction", {});
 
             dialogManager.snackbar({
                 type: 'success',
