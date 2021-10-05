@@ -209,6 +209,133 @@ describe('BlocksStore', function() {
         assertJSON(store, {
             "_expanded": {},
             "_hasSnapshot": false,
+            "relatedTagsManager": {
+                "docTagsIndex": {
+                    "102": {
+                        "tagRefs": {
+                            "World War II": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "107": {
+                        "tagRefs": {
+                            "Germany": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "108": {
+                        "tagRefs": {
+                            "Russia": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "109": {
+                        "tagRefs": {
+                            "Canada": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "112": {
+                        "tagRefs": {
+                            "Winston Churchill": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "113": {
+                        "tagRefs": {
+                            "Image parent": {
+                                "refs": 1
+                            }
+                        }
+                    },
+                    "2020document": {
+                        "tagRefs": {
+                            "Potato document": {
+                                "refs": 1
+                            }
+                        }
+                    }
+                },
+                "tagDocsIndex": {
+                    "Canada": {
+                        "docs": {
+                            "109": true
+                        },
+                        "tag": "Canada"
+                    },
+                    "Germany": {
+                        "docs": {
+                            "107": true
+                        },
+                        "tag": "Germany"
+                    },
+                    "Image parent": {
+                        "docs": {
+                            "113": true
+                        },
+                        "tag": "Image parent"
+                    },
+                    "Potato document": {
+                        "docs": {
+                            "2020document": true
+                        },
+                        "tag": "Potato document"
+                    },
+                    "Russia": {
+                        "docs": {
+                            "108": true
+                        },
+                        "tag": "Russia"
+                    },
+                    "Winston Churchill": {
+                        "docs": {
+                            "112": true
+                        },
+                        "tag": "Winston Churchill"
+                    },
+                    "World War II": {
+                        "docs": {
+                            "102": true
+                        },
+                        "tag": "World War II"
+                    }
+                },
+                "tagsIndex": {
+                    "102": {
+                        "id": "102",
+                        "label": "World War II"
+                    },
+                    "107": {
+                        "id": "107",
+                        "label": "Germany"
+                    },
+                    "108": {
+                        "id": "108",
+                        "label": "Russia"
+                    },
+                    "109": {
+                        "id": "109",
+                        "label": "Canada"
+                    },
+                    "112": {
+                        "id": "112",
+                        "label": "Winston Churchill"
+                    },
+                    "113": {
+                        "id": "113",
+                        "label": "Image parent"
+                    },
+                    "2020document": {
+                        "id": "2020document",
+                        "label": "Potato document"
+                    }
+                }
+            },
             "_index": {
                 "102": {
                     "_content": {
@@ -2672,6 +2799,70 @@ describe('BlocksStore', function() {
                 assertBlockType('markdown', level3Child);
                 assert.equal(level3Child.content.data, "potato");
             });
+        });
+    });
+
+    describe('relatedTagsManager', () => {
+        it('should update the relatedTagsManager index properly when blocks with tags are created', () => {
+            const store = createStore();
+
+            const content = new NameContent({
+                type: 'name',
+                data: 'Microsoft',
+                links: [{ id: '102', text: 'World War II' }, { id: '108', text: '#Russia' }, { id: '108', text: '#Russia' }],
+            });
+
+            store.createNewNamedBlock({ content, newBlockID: '999' });
+
+            const relatedTags = store.relatedTagsManager.compute(['Microsoft']);
+            assert.deepEqual(relatedTags, [{ tag: 'Russia', hits: 2 }]);
+        });
+
+        it('should update the relatedTagsManager index properly when blocks with tags are updated/deleted', () => {
+            const store = createStore();
+
+            const content = new NameContent({
+                type: 'name',
+                data: 'Microsoft',
+                links: [{ id: '102', text: 'World War II' }, { id: '108', text: '#Russia' }],
+            });
+
+            const newNamedBlockID = store.createNewNamedBlock({ content });
+
+            const markdownContent1 = new MarkdownContent({
+                type: 'markdown',
+                data: 'hello',
+                links: [{ id: '102', text: 'World War II' }, { id: '108', text: '#Korea' }],
+            });
+
+            store.createNewBlock(newNamedBlockID, { content: markdownContent1 });
+
+            const markdownContent2 = new MarkdownContent({
+                type: 'markdown',
+                data: 'hello',
+                links: [{ id: '102', text: 'World War II' }, { id: '108', text: '#Korea' }],
+            });
+
+            const { id: markdownBlock2ID } = store.createNewBlock(newNamedBlockID, { content: markdownContent2 });
+
+            const updatedMarkdownContent = {
+                ...markdownContent2.toJSON(),
+                links: [
+                    ...markdownContent2.toJSON().links,
+                    { id: '102', text: '#Russia' },
+                    { id: '108', text: '#Korea' },
+                    { id: '108', text: '#Korea' },
+                ],
+            };
+
+            store.setBlockContent(markdownBlock2ID, updatedMarkdownContent);
+
+            const relatedTags = store.relatedTagsManager.compute(['Microsoft']);
+
+            assert.deepEqual(relatedTags, [
+                { tag: 'Korea', hits: 4 },
+                { tag: 'Russia', hits: 2 },
+            ]);
         });
     });
 });

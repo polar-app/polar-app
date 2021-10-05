@@ -43,6 +43,7 @@ import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
 import {BlockTextContentUtils} from "../NoteUtils";
+import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -342,6 +343,8 @@ export class BlocksStore implements IBlocksStore {
      */
     private _activeBlocksIndex: ActiveBlocksIndex = {};
 
+    public relatedTagsManager: RelatedTagsManager = new RelatedTagsManager();
+
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
                 readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
@@ -504,12 +507,14 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[name] = block.id;
             }
 
-            if (block.content.type === "document") {
+            if (BlockPredicates.isDocumentBlock(block)) {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-
-            if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
+            /**
+             * Update links indices
+             */
+            if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
@@ -519,7 +524,33 @@ export class BlocksStore implements IBlocksStore {
                 this._reverse.add(link.id, block.id);
             }
 
+            /**
+             * Update tags indices
+             *
+             * Here we store the change in tags for a specific block in the relatedTagsManager
+             * 1. First we deregister the tags of the existing block (before it was updated)
+             * 2. We register the tags of the new block (the updated block)
+             */
+            if (! existingBlock || block.content.hasTagsMutated(existingBlock.content)) {
+                if (existingBlock) {
+                    this.relatedTagsManager.update(block.root, 'delete', existingBlock.content.getTags());
+                }
+                
+                this.relatedTagsManager.update(block.root, 'set', block.content.getTags());
 
+                if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
+                    if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
+                        const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
+                        const tag = { id: existingBlock.id, label: oldName };
+                        this.relatedTagsManager.update(block.root, 'delete', [tag]);
+                    }
+
+                    const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
+                    const tag = { id: block.id, label: newName };
+                    this.relatedTagsManager.update(block.root, 'set', [tag]);
+
+                }
+            }
         }
 
         this._active = opts.newActive ? opts.newActive : this._active;
