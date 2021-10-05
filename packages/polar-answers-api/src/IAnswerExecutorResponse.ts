@@ -72,7 +72,7 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse, ICostEs
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;
 
-export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'>, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
+export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'> {
     readonly message: string;
 }
 
