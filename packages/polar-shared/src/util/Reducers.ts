@@ -1,3 +1,5 @@
+import {Numbers} from "./Numbers";
+
 export class Reducers {
 
     public static SUM =
@@ -9,6 +11,10 @@ export class Reducers {
     public static MAX =
         (accumulator: number, currentValue: number) => currentValue > accumulator ? currentValue : accumulator
 
+    public static MEAN =
+        <T> (previousValue: T, currentValue: T, currentIndex: number, array: number[]) => {
+            return Numbers.mean(...array)
+        };
 
     /**
      * Return the first entry in the reducer.  A default value to reduce can be
