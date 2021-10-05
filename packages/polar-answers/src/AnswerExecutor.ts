@@ -1,8 +1,7 @@
 import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
-import {UserIDStr} from "polar-shared/src/util/Strings";
-import {FilterQuestionType, IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
     IAnswerExecutorCostEstimation,
     IAnswerExecutorError,

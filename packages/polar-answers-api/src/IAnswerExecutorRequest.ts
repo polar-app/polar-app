@@ -65,6 +65,13 @@ export interface IAnswerExecutorRequest {
     // eslint-disable-next-line camelcase
     readonly max_tokens?: number;
 
+    /**
+     * When true, enable the OpenAICompletionCleanup code so that we can make
+     * sure the completions don't have errors due to currie.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_completion_cleanup_enabled: boolean;
+
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
