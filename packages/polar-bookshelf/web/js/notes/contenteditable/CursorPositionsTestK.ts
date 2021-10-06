@@ -21,6 +21,7 @@ describe('CursorPositions', () => {
             const span = document.querySelector<HTMLSpanElement>("span");
             Asserts.assertPresent(span);
             ContentEditables.setCaretPosition(span, 'start');
+
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, 5);
@@ -82,6 +83,68 @@ describe('CursorPositions', () => {
 
             const pos = CursorPositions.computeCurrentOffset(document.body);
             assert.equal(pos, 15);
+        });
+    });
+
+    describe('isCursorAtSide', () => {
+        beforeEach(() => {
+            document.body.setAttribute("contenteditable", "true");
+        });
+
+        it('should return false if the cursor is not on the top or bottom edges', () => {
+            document.body.innerHTML = `hello</br>world</br>foo`;
+            CursorPositions.jumpToPosition(document.body, 7); // Put it within 'world'
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), false);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), false);
+        });
+
+        it('should work when checking whether the cursor is in the first line (top)', () => {
+            document.body.innerHTML = `hello</br>world</br>foo`;
+            CursorPositions.jumpToPosition(document.body, 3); // Put it within 'hello'
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), false);
+        });
+
+        it('should work when checking whether the cursor is in the last line (bottom)', () => {
+            document.body.innerHTML = `hello</br>world</br>foo`;
+            CursorPositions.jumpToPosition(document.body, 11); // Put it within 'foo'
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), false);
+        });
+
+        it('should work with one liners', () => {
+            document.body.innerHTML = `world`;
+            CursorPositions.jumpToPosition(document.body, 3); // Put it within 'world'
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), true);
+        });
+
+        it('should work with nested contentEditable=false elements', () => {
+            document.body.innerHTML = `world<br/><span contenteditable="false">a wiki link</span>`;
+            CursorPositions.jumpToPosition(document.body, 'end'); // Put it within 'a wiki link'
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), false);
+        });
+
+        it('should work when the cursor is at the first character (in a multi-line string)', () => {
+            document.body.innerHTML = `hello</br>world</br>foo`;
+            CursorPositions.jumpToPosition(document.body, 0);
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), false);
+        });
+
+        it('should work when the cursor is at the last character (in a multi-line string)', () => {
+            document.body.innerHTML = `hello</br>world</br>foo`;
+            CursorPositions.jumpToPosition(document.body, 'end');
+
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'bottom'), true);
+            assert.equal(CursorPositions.isCursorAtSide(document.body, 'top'), false);
         });
     });
 });

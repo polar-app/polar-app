@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) =>
             fontWeight: 'bold',
             fontSize: 24,
             letterSpacing: 0.5,
+            lineHeight: 1.66,
         },
     }),
 );
@@ -195,7 +196,7 @@ export const BlockInner = observer((props: IProps) => {
                              // background: dropActive ? 'red' : 'inherit'
                          }}>
 
-                        {!(noExpand && noBullet) && (
+                        {! (noExpand && noBullet) && (
                             <div style={{
                                      display: 'flex',
                                      alignItems: 'center',
@@ -209,29 +210,20 @@ export const BlockInner = observer((props: IProps) => {
                                     <BlockExpandToggleButton id={id}/>
                                 )}
 
-                                {!noBullet && <BlockBulletButton target={id}/>}
+                                {! noBullet && <BlockBulletButton target={id}/>}
 
                             </div>
                         )}
 
-                        {withHeader && isRoot
-                            ? (
-                                <BlockEditor
-                                    parent={parent}
-                                    id={id}
-                                    className={classes.titleBlock}
-                                />
-                            ) : (
-                                <BlockEditor
-                                    parent={parent}
-                                    id={id}
-                                />
-                            )
-                        }
+                        <BlockEditor
+                            parent={parent}
+                            id={id}
+                            className={withHeader && isRoot ? classes.titleBlock : ""}
+                        />
                     </div>
 
                     {withHeader && isRoot &&
-                        <Divider style={{ margin: '16px 0' }} />
+                        <Divider style={{ margin: '4px 0 8px 0' }} />
                     }
 
                     {(expanded || (isRoot && noExpand)) && (

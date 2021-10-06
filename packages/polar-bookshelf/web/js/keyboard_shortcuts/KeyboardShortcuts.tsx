@@ -15,7 +15,7 @@ export const isModifier = (key: string): key is Modifier => ['shift', 'alt', 'co
 
 export type Modifier = 'ctrl' | 'alt' | 'shift' | 'command';
 
-export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent) => {
+export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent | React.KeyboardEvent) => {
     const unpressed: Modifier[] = (['ctrl', 'alt', 'shift', 'command'] as Modifier[])
         .filter(mod => pressed.indexOf(mod) === -1);
 
