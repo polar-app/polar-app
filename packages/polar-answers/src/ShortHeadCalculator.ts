@@ -3,6 +3,8 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asin
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin
 
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+
 export namespace ShortHeadCalculator {
 
     /**
@@ -185,18 +187,30 @@ export namespace ShortHeadCalculator {
         // eslint-disable-next-line camelcase
         readonly min_docs: number;
 
+        /**
+         * The max number of docs to return no matter what the short head is computed as.
+         */
+        // eslint-disable-next-line camelcase
+        readonly max_docs: number;
+
     }
 
+    export const DEFAULT_COMPUTE_OPTS: IComputeOpts = {
+        target_angle: 20,
+        min_docs: 25,
+        max_docs: Number.POSITIVE_INFINITY
+    };
+
     // eslint-disable-next-line camelcase
-    export function compute(vector: Vector, opts: IComputeOpts = {target_angle: 20, min_docs: 25}): Vector | undefined {
+    export function compute(vector: Vector, opts: IComputeOpts = DEFAULT_COMPUTE_OPTS): Vector | undefined {
 
         const normalized = ShortHeadCalculator.normalizeXY(vector);
-        return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle);
+        return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle, opts.max_docs);
 
     }
 
     // eslint-disable-next-line camelcase
-    export function computeShortHead(normalizedPoints: NormalizedPoints, target_angle = 20) {
+    export function computeShortHead(normalizedPoints: NormalizedPoints, target_angle = 20, max_docs: number) {
 
         /**
          * Factor to determine what % of total nodes is used as a buffer to
@@ -240,7 +254,9 @@ export namespace ShortHeadCalculator {
             return undefined;
         }
 
-        return normalizedPoints.slice(0, term).map(current => current.y.original);
+        return arrayStream(normalizedPoints.slice(0, term).map(current => current.y.original))
+            .head(max_docs)
+            .collect()
 
     }
 

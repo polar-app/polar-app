@@ -353,15 +353,16 @@ export namespace AnswerExecutor {
 
                             const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), {
                                 target_angle: SHORT_HEAD_ANGLE,
-                                min_docs: SHORT_HEAD_MIN_DOCS
+                                min_docs: SHORT_HEAD_MIN_DOCS,
+                                max_docs: SHORT_HEAD_MAX_DOCUMENTS,
                             });
 
                             if (head) {
-                                console.log("Short head truncated to N entries: " + head.length)
-                                return Math.min(head.length, SHORT_HEAD_MAX_DOCUMENTS);
+                                return head.length;
                             } else {
                                 console.warn("No short head computed");
                             }
+
                         }
 
                         // eslint-disable-next-line camelcase
