@@ -2,6 +2,7 @@ import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {ESQueryStringQueryBuilder} from "./ESQueryStringQueryBuilder";
+import {TermJoinerType} from "polar-answers-api/src/TermJoinerType";
 
 /**
  * Takes a text query and rewrites it using POS or other filters.
@@ -15,8 +16,6 @@ export namespace QuestionFilters {
     export type QueryTermStr = string;
 
     export type TermJoiner = (terms: ReadonlyArray<QueryTermStr>) => ESQueryStringQuery;
-
-    export type TermJoinerType = 'none' | 'AND';
 
     export function createJoiner(type: TermJoinerType): TermJoiner {
         switch (type) {
