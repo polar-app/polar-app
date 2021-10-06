@@ -43,7 +43,8 @@ import {AnswerExecutors} from "./AnswerExecutors";
 function createRegressionEngine(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>({
-        config: opts.request
+        config: opts.request,
+        description: opts.description
     });
 
     // TODO: we need a name of confirmed/failing tests by ID based on the opts here...
@@ -62,11 +63,13 @@ function createRegressionEngine(opts: ExecutorOpts) {
     engine.register("astronomy #1",
         executor.create("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", {
             pass: [
+                "Mars is the most distant planet from the Sun. It is also the smallest planet in the solar system. It is the only planet that has a retrograde orbit.",
                 "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
                 "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
                 // TODO: this one is wrong but it might be a bug in the indexer not the executor.
                 "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a",
-                "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates."
+                "Mars is similar to the Moon in that it has no atmosphere and is heavily cratered.  It is different from the Moon in that it has a much larger iron core and a much smaller fraction of silicates.  Mars is also different from Mercury in that it has a much larger iron core and a much smaller fraction of silicates.",
+                "Mars is the most distant planet from the Sun. It is also the smallest planet in the solar system. It is the only planet that has a retrograde orbit."
             ],
             fail: [
                 "Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet.  Mars is a terrestrial planet, and Mercury is a terrestrial planet",
@@ -82,7 +85,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
                 "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
                 "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell",
-                "The mountains on Mars and Venus are much higher than those on Earth and the Moon."
+                "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
+                "The mountains on Mars and Venus are very different from those on Earth and the Moon.", // TODO WEAK!!!
+
             ],
             fail: [
                 "Mars and Venus are similar because they are both rocky, differentiated objects.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a moon of Jupiter.  Mars is a terrestrial planet, while Venus is a"
@@ -110,15 +115,20 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "The Olmec developed the first writing system in the Western Hemisphere."
             ],
             fail: [
-                "The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of"
+                "The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of Europe.  The Solutrean  culture of",
             ]
         }));
 
 
-    engine.register("US history chap 1 #3", executor.create("Which culture developed a road system rivaling that of the Romans?", [
-        "Inca",
-        "The Inca."
-    ]));
+    engine.register("US history chap 1 #3", executor.create("Which culture developed a road system rivaling that of the Romans?", {
+        pass: [
+            "Inca",
+            "The Inca."
+        ],
+        fail: [
+            "The Mississippian culture."
+        ]
+    }));
 
 
     engine.register("US history chap 1 #4",
@@ -219,10 +229,11 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "They wanted to win royal favor.",
                 "They wanted to win royal patronage.",
                 "They wanted to win royal patronage.",
-                "They chose to write in the way that they did because they wanted to show the reader the importance of the work that they were doing."
             ],
             fail: [
-                "The authors of probanzas de méritos chose to write in the way that they did because they believed that the best way to achieve literary success was to write in the way that they did."
+                "The authors of probanzas de méritos chose to write in the way that they did because they believed that the best way to achieve literary success was to write in the way that they did.",
+                "They chose to write in the way that they did because they wanted to show that they were good Christians and that they were good citizens.",
+                "They chose to write in the way that they did because they wanted to show the reader the importance of the work that they were doing."
             ]
         }));
 
@@ -266,7 +277,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
                 "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland.",
                 "England lacked the financial resources for such endeavors.",
-                "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s."
+                "England was embroiled in a civil war and experienced a period of republicanism in the 1640s and 1650s.",
+                "England was too busy fighting with France and Spain."
             ],
             fail: [
                 "England was not a major power in the Atlantic World in the early sixteenth century.  It was not until the late sixteenth century that England became a major power in the Atlantic World.  The English Crown was not interested in colonizing the New World until the late sixteenth century.  The English Crown was not interested in colonizing the New World until the late sixteenth century.",
@@ -312,7 +324,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "By serving the Spanish crown",
                 "By conquering territory in the name of the Spanish Crown",
                 "by serving the Spanish crown",
-                "They could obtain encomiendas by serving in the Spanish army."
+                "They could obtain encomiendas by serving in the Spanish army.",
+                "They could prove their service to the crown."
             ],
             fail: [
                 "The encomienda system was a legal right granted to conquistadors who could prove their service to the crown.  The encomienda system was a legal right granted to conquistadors who could prove their service to the crown."
@@ -328,7 +341,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "They had no immunity to diseases from across the Atlantic, to which they had never been exposed.",
                 "They had no immunity to diseases from across the Atlantic.",
                 "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated are Eurasian in origin except llamas, Eurasians and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
-                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not."
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin except llamas, Europeans, and Africans had spent thousands of years both suffering from and building up resistance to epidemics while Native Americans had not.",
+                "Because almost all diseases that affect humans are mutated strains of diseases affecting domestic animals, and all of the large animal species that can be domesticated were Eurasian in origin."
             ],
             fail: [
                 "Smallpox was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of years.  It was a disease that had been around for thousands of"
@@ -354,7 +368,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             pass: [
                 "Through revolt",
                 "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish.",
-                "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area."
+                "They attempted to maintain their autonomy in the face of Spanish settlement by attempting to fold Christian traditions into their own practices. However, Spanish priests insisted that natives discard their old ways entirely and angered the Pueblo by focusing on the young, drawing them away from their parents. This deep insult, combined with an extended period of drought and increased attacks by local Apache and Navajo in the 1670s—troubles that the Pueblo came to believe were linked to the Spanish presence—moved the Pueblo to push the Spanish and their religion from the area.",
+                "They attempted to maintain their autonomy in the face of Spanish settlement by launching a coordinated rebellion against the Spanish in 1680."
             ],
             fail: [
                 "The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Pueblo Revolt of 1680 was a failure.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert the Pueblo to Catholicism.  The Spanish, who had been the dominant power in the region for centuries, were unable to convert"
@@ -371,7 +386,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company.",
                 "Patroonship was a system of land distribution in the colony of New Netherland.",
                 "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or patron, by the Dutch West India Company.",
-                "Patroonship was a system of land ownership in the Dutch colony of New Netherland."
+                "Patroonship was a system of land ownership in the Dutch colony of New Netherland.",
+                "It was a large tract of land and the right to govern the tenants there."
             ],
             fail: [
                 "The Dutch West India Company granted patroonships to large estates in the Hudson River Valley.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in the colony.  The patroonships were granted to Dutch merchants who invested heavily in"
@@ -457,7 +473,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "Guns changed the balance of power among different groups and tribes",
                 "Muskets made combat more deadly",
                 "They made warfare more lethal and changed traditional patterns of authority among tribes.",
-                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
+                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes.",
+                "They were used to kill many people."
             ],
             fail: [
                 "They changed life for native peoples in the Americas.",
@@ -474,7 +491,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
                 "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
             ],
             fail: [
-                "____"
+                "____",
+                "2/3."
             ]
         }));
     engine.register("astronomy Chapter 2 #2",
@@ -482,18 +500,22 @@ function createRegressionEngine(opts: ExecutorOpts) {
             pass: [
                 "As soon as the light from that universe reaches us",
                 "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light",
-                "If a star is 100 light-years away, the light we see from it tonight left that star 100 years ago and is just now arriving in our neighborhood.  The soonest we can learn about any changes in that star is 100 years after the fact.  For a star 500 light-years away, the light we detect tonight left 500 years ago and is carrying 500-year- old news."
+                "If a star is 100 light-years away, the light we see from it tonight left that star 100 years ago and is just now arriving in our neighborhood.  The soonest we can learn about any changes in that star is 100 years after the fact.  For a star 500 light-years away, the light we detect tonight left 500 years ago and is carrying 500-year- old news.",
+                "If a star is 100 light-years away, the light we see from it tonight left that star 100 years ago and is just now arriving in our neighborhood."
             ],
             fail: [
                 "The speed of light is a natural unit of distance for astronomers.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum.  The speed of light is the speed of light in a vacuum"
             ]
         }));
 
+    // TODO: I think this is definitely wrong and we're going to need to revisit
+    // this. It's getting the answers wrong due to the Q/A sections of the book
     engine.register("astronomy Chapter 2 #3", executor.create("The Sun was once thought to be a planet. Explain why.", {
         pass: [
             "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
             "It was so because of the geocentric model, it was thought that the sun was just an object like other planets orbiting the earth",
-            "The Sun is much closer to Earth than are the nearest stars, yet it is not possible to measure accurately the diurnal parallax of the Sun relative to the stars by measuring its position relative to background objects in the sky directly."
+            "The Sun is much closer to Earth than are the nearest stars, yet it is not possible to measure accurately the diurnal parallax of the Sun relative to the stars by measuring its position relative to background objects in the sky directly.",
+            "The Sun was once thought to be a planet because it was thought to be the center of the solar system."
         ],
         fail: [
             "The Sun was once thought to be a planet."
@@ -525,6 +547,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "First is the fact that as the Moon enters or emerges from Earth’s shadow during an eclipse of the Moon, the shape of the shadow seen on the Moon is always round",
             "Travelers who go south a significant distance are able to observe stars that are not visible farther north",
             "Aristotle reasoned that the Sun has to be farther away from Earth than is the Moon because occasionally the Moon passed exactly between Earth and the Sun and hid the Sun temporarily from view.  We call this a solar eclipse.",
+            "He said that the earth is round because the shadow of the earth on the moon during a lunar eclipse is always round.",
+            "Aristotle's arguments were based on the fact that the shadow of the moon on the earth is round."
         ],
         fail: [
             // TODO: this one is VERY close and if we changed the token count and removed the redundant sentences it would be way better.
@@ -565,7 +589,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "Unless it is compelled to change by an outside force, every object will continue to be in a state of rest or move at a constant speed",
             "An object in motion tends to remain in motion.",
             "An object at rest will remain at rest unless acted upon by an unbalanced force.",
-            "The law of inertia."
+            "The law of inertia.",
+            "Newton's first law is a restatement of one of Galileo's discoveries, called the conservation of momentum.",
+            "It's a restatement of one of Galileo's discoveries, called the conservation of momentum."
         ], fail: [
             "Newton’s first law is a restatement of one of Galileo’s discoveries, called the conservation of momentum.  The law states that in the absence of any outside influence, there is a measure of a body’s motion, called its momentum, that remains unchanged.  You may have heard the term momentum used in everyday expressions, such as “This bill in Congress has a lot of momentum; it’s going to be hard to stop.”  Newton’s first law is sometimes called the law of inertia, where inertia is the tendency of objects (and legislatures) to keep doing what they are already doing.  In other words, a stationary object stays put, and a moving object keeps moving unless some force intervenes.  Let’s define the precise meaning of momentum—it depends on three factors: (1) speed—how fast a body moves (zero if it is stationary), (2) the direction of its motion, and (3) its mass—a measure of the amount of matter in a body, which we will discuss later.  Scientists use the term velocity to describe the speed and direction of motion.  How does Newton’s first law of"
         ]
@@ -581,14 +607,24 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ]
     }));
 
-    engine.register("astronomy Chapter 3 #4", executor.create("Which major planet has the largest average orbital speed around the Sun?", [
-        "Mercury",
-        "Mercury."
-    ]));
+    engine.register("astronomy Chapter 3 #4", executor.create("Which major planet has the largest average orbital speed around the Sun?", {
+        pass: [
+            "Mercury",
+            "Mercury."
+        ],
+        fail: [
+            "Jupiter"
+        ]
+    }));
 
-    engine.register("astronomy Chapter 3 #6", executor.create("Which major planet has the largest eccentricity?", [
-        "Mercury"
-    ]));
+    engine.register("astronomy Chapter 3 #6", executor.create("Which major planet has the largest eccentricity?", {
+        pass: [
+            "Mercury"
+        ],
+        fail: [
+            "Jupiter"
+        ]
+    }));
 
     engine.register("astronomy Chapter 3 #7", executor.create("What is angular momentum?", {
         pass: [
@@ -606,7 +642,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
         pass: [
             "All longitude lines meet at the pole",
             "All longitude lines meet at the poles; therefore, they have no defined longitude.",
-            "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous."
+            "Because the North and South Poles are the points on Earth where the directions north, south, east, and west are ambiguous.",
+            "It has no meaning because the North and South Poles are the points on Earth's surface farthest from the center of Earth.",
+            "Because the celestial poles are at the north and south points on the horizon, they are not overhead or on the horizon."
         ],
         fail: [
             "Because the Sun is always above the horizon at the North Pole, and the Sun is always below the horizon at the South Pole.",
@@ -619,7 +657,9 @@ function createRegressionEngine(opts: ExecutorOpts) {
         pass: [
             "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time.",
             "The main advantage is that it is simple. The main disadvantage is that it is not very convenient to use.",
-            "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use."
+            "The main advantage is that it is based on the actual position of the Sun in the sky.  The main disadvantage is that it is not very convenient to use.",
+            "The main advantage is that it is easy to measure. The main disadvantage is that it is not accurate.",
+            "The main advantage is that it is easy to remember. The main disadvantage is that it is not accurate."
         ],
         fail: [
             "The main advantage of apparent solar time is that it is easy to use.  It is based on the position of the Sun in the sky, and it is easy to tell what time it is by looking at the Sun.  The main disadvantage of apparent solar time is that it is not very accurate.  The length of an apparent solar day varies slightly during the year.  The length of a mean solar day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is defined by the positions of the stars in the sky.  The length of a sidereal day is constant.  The length of a sidereal day is",
@@ -632,10 +672,12 @@ function createRegressionEngine(opts: ExecutorOpts) {
             "One day",
             "1 day",
             "A single day",
-            "1.00 day"
+            "1.00 day",
+            "24 hours."
         ],
         fail: [
-            "1.00 × 1.00 = 1.00."
+            "1.00 × 1.00 = 1.00.",
+            "1 year."
         ]
     }));
 
@@ -655,7 +697,8 @@ function createRegressionEngine(opts: ExecutorOpts) {
         pass: [
             "new moon",
             "A solar eclipse can only take place at the phase of new moon",
-            "The Moon blocks the Sun during new moon phase as seen from some parts of Earth and casts a shadow on our planet."
+            "The Moon blocks the Sun during new moon phase as seen from some parts of Earth and casts a shadow on our planet.",
+            "It is in the new moon phase."
         ],
         fail: [
             "when the moon passes directly between the sun and Earth",
@@ -671,26 +714,29 @@ function createRegressionEngine(opts: ExecutorOpts) {
         ],
         fail: [
             "The Gregorian calendar was adopted in 1582, and the year 1800 was not a leap year.",
-            "The leap year is necessary because the Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar"
+            "The leap year is necessary because the Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar is based on the Moon’s period from full phase to full phase.  The Moon’s period from full phase to full phase is 365.25 days.  The Gregorian calendar",
+            "Because years divisible by four are normally considered to be leap years."
         ]
     }));
 
+    // This is a REALLY hard one and I think it's getting fucked up by the context of the QA answers in the book.
     engine.register("astronomy Chapter 4 #7", executor.create("Why the year 1800 was not a leap year?", {
         pass: [
             "a century year cannot be a leap year unless it is divisible by 400",
             "because a century year cannot be a leap year unless it is divisible by 400",
             "Only century years divisible by 400 would be leap years",
             "Because it was not divisible by 4.",
-            "It was not a leap year because it was not divisible by 400."
-
+            "It was not a leap year because it was not divisible by 400.",
         ],
         fail: [
+            "Because years divisible by four are normally considered to be leap years.",
             "The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year.  The Gregorian calendar was not designed to be a leap year"
         ]
     }));
 
     engine.register("astronomy Chapter 4 #8", executor.create("Why don’t lunar eclipses happen during every full moon?", {
         pass: [
+            "Because Earth’s shadow misses the Moon most months.",
             "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
             "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
             "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse",
@@ -808,7 +854,9 @@ export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRe
                                                                                        'rerank_truncate_short_head' |
                                                                                        'prune_contiguous_records' |
                                                                                        'filter_question' |
+                                                                                       'filter_question_joiner' |
                                                                                        'max_tokens' |
+                                                                                       'openai_completion_cleanup_enabled' |
                                                                                        'elasticsearch_sort_order'> {
 
     /**
@@ -823,6 +871,12 @@ export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRe
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ExecutorOpts {
+
+    /**
+     * High level description of what these options enable/disable
+     */
+    readonly description?: string;
+
     readonly request: IRegressionAnswerExecutorRequest;
 }
 
@@ -852,11 +906,14 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             // create a delegate that runs the requests to the AnswerExecutor directly
             // eslint-disable-next-line camelcase
-            const answer_executor_delegate = async () => await AnswerExecutor.exec({
-                uid,
-                question,
-                ...opts.request
-            });
+            const answer_executor_delegate = async () => {
+                const {response} = await AnswerExecutor.exec({
+                    uid,
+                    question,
+                    ...opts.request
+                });
+                return response;
+            };
 
             // now create an executor that uses the cache which uses the answer_executor_delegate
             // NOTE/IMPORTANT: if we change the answer-executor algorithm we can purge the cache
@@ -996,7 +1053,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
         const uid = await getUID(forEmail);
 
-        const response = await AnswerExecutor.exec({
+        const {response} = await AnswerExecutor.exec({
             uid,
             question,
             ...opts
@@ -1071,60 +1128,60 @@ async function main() {
     // - models
 
     const options: ReadonlyArray<ExecutorOpts> = [
-        // {
-        //     request: {
-        //         id: 'v1',
-        //         search_model: 'ada',
-        //         model: 'ada',
-        //         rerank_elasticsearch: false,
-        //         rerank_elasticsearch_size: 10000,
-        //         rerank_elasticsearch_model: 'ada',
-        //         rerank_truncate_short_head: false,
-        //         prune_contiguous_records: false,
-        //         filter_question: 'part-of-speech',
-        //     }
-        // },
-        // {
-        //     request: {
-        //         id: 'v2',
-        //         model: 'curie',
-        //         search_model: 'curie',
-        //         rerank_elasticsearch: true,
-        //         rerank_elasticsearch_size: 10000,
-        //         rerank_elasticsearch_model: 'ada',
-        //         rerank_truncate_short_head: true,
-        //         prune_contiguous_records: true,
-        //         filter_question: 'part-of-speech',
-        //     }
-        // },
-        // {
-        //     request: {
-        //         id: 'v3',
-        //         model: 'curie',
-        //         search_model: 'curie',
-        //         rerank_elasticsearch: true,
-        //         rerank_elasticsearch_size: 10000,
-        //         rerank_elasticsearch_model: 'ada',
-        //         rerank_truncate_short_head: true,
-        //         prune_contiguous_records: true,
-        //         filter_question: 'part-of-speech-noun',
-        //     },
-        // },
-        // {
-        //     request: {
-        //         id: 'v4',
-        //         model: 'curie',
-        //         search_model: 'curie',
-        //         rerank_elasticsearch: true,
-        //         rerank_elasticsearch_size: 200,
-        //         rerank_elasticsearch_model: 'ada',
-        //         rerank_truncate_short_head: true,
-        //         prune_contiguous_records: true,
-        //         filter_question: 'part-of-speech-noun',
-        //         elasticsearch_sort_order: 'idx',
-        //         max_tokens: 125
-        //     },
-        // },
+        {
+            request: {
+                id: 'v1',
+                search_model: 'ada',
+                model: 'ada',
+                rerank_elasticsearch: false,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: false,
+                prune_contiguous_records: false,
+                filter_question: 'part-of-speech',
+            }
+        },
+        {
+            request: {
+                id: 'v2',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech',
+            }
+        },
+        {
+            request: {
+                id: 'v3',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 10000,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+            },
+        },
+        {
+            request: {
+                id: 'v4',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 200,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125
+            },
+        },
         {
             request: {
                 id: 'v5',
@@ -1139,9 +1196,66 @@ async function main() {
                 elasticsearch_sort_order: 'idx',
                 max_tokens: 125
             },
-        }
+        },
+        {
+            description: "v5 but we add openai_completion_cleanup_enabled: true",
+            request: {
+                id: 'v6',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 500,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125,
+                openai_completion_cleanup_enabled: true
+            },
+        },
+        {
+            description: "v6 but with DaVinci to see if we get better answer text",
+            request: {
+                id: 'v7',
+                model: 'davinci',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 500,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125,
+                openai_completion_cleanup_enabled: true
+            },
 
+        },
+        {
+            description: "Basically the V6 model BUT we use the new result joiner to compute an ES AND query which cuts down on data sent to OpenAI.",
+            request: {
+                id: 'v8',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 500,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                filter_question_joiner: 'AND',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125,
+                openai_completion_cleanup_enabled: true
+            },
+        },
 
+        // TODO: another optimization would be, that when we use the composite
+        // models, to verify we do NOT send the same shingle IDs each more than
+        // once ... we should probably try the AND model, then the OR model,
+        // with the idx's removed/deduplicated.  Each strategy should do
+        // rerank_elasticsearch just with different results.
 
     ]
 

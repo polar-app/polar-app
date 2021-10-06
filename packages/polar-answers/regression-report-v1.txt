@@ -1,4 +1,4 @@
-Report generated on: 2021-10-04T22:57:16.792Z
+Report generated on: 2021-10-06T15:46:07.001Z
 ======================= config: 
 {
   "id": "v1",
@@ -65,11 +65,12 @@ US history chap 1 #9    pass     0.0362  Which city became a leading center for 
 US history chap 2 #1    pass     0.0231  Which country initiated the era of Atlantic exploration?                                                                     Portugal.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 US history chap 2 #9    pass     0.0267  What was the main goal of the French in colonizing the Americas?                                                             To establish commercial and political control over the New World.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 ======================= summary: 
-name      value
---------  -----
-pass      10   
-unknown   1    
-fail      39   
-accuracy  20   
-cost      1.28 
-cost_max  0.05 
+name       value
+---------  -----
+pass       10   
+unknown    1    
+fail       39   
+accuracy   20   
+cost       1.28 
+cost_max   0.05 
+cost_mean  0.03 

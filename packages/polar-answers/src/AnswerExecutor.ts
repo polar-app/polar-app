@@ -14,7 +14,6 @@ import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
-import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -22,12 +21,13 @@ import {IAnswerExecutorTrace, IAnswerExecutorTraceMinimal} from "polar-answers-a
 import {AnswerExecutorTraceCollection} from "polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
-import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
 import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 import {AnswerExecutors} from "./AnswerExecutors";
+import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
+import {QuestionFilters} from "./QuestionFilters";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -45,11 +45,9 @@ const SHORT_HEAD_MAX_DOCUMENTS = 50;
 
 const SHORT_HEAD_ANGLE = 45;
 
-
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import PartOfSpeechTag = GCLAnalyzeSyntax.PartOfSpeechTag;
     import IAnswerExecutorRequestWithUID = AnswerExecutors.IAnswerExecutorRequestWithUID;
 
     export const EXAMPLES_CONTEXT: string =
@@ -109,7 +107,28 @@ export namespace AnswerExecutor {
 
     }
 
-    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
+    export interface IAnswerExecutionSuccess {
+
+        readonly response: IAnswerExecutorResponse;
+
+        readonly trace: IAnswerExecutorTrace;
+
+        /**
+         * The prompt generated/used by the OpenAI answers API.
+         */
+        readonly prompt: string;
+
+    }
+
+    export interface IAnswerExecutionFailure {
+
+        readonly response: IAnswerExecutorError;
+
+    }
+
+    export type IAnswerExecution = IAnswerExecutionSuccess | IAnswerExecutionFailure;
+
+    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecution> {
 
         const {question, uid} = request;
 
@@ -200,37 +219,19 @@ export namespace AnswerExecutor {
 
             async function computeQueryTextFromQuestion() {
 
+                // TODO/FIXME we are NOT controlling our inputs here and it
+                // would be possible for someone to push down a regex or other
+                // issues and we need to fix this by using a real term query.
+
                 // eslint-disable-next-line camelcase
                 const filter_question = request.filter_question || DEFAULT_FILTER_QUESTION;
 
-                function filterUsingStopwords() {
-                    const words = request.question.split(/[ \t]+/);
-                    const stopwords = Stopwords.words('en');
-                    return Stopwords.removeStopwords(words, stopwords).join(" ");
-                }
-
-                async function filterUsingPoS(pos: ReadonlyArray<PartOfSpeechTag>) {
-                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, pos);
-                    return analysis.map(current => current.content).join(" ");
-                }
-
                 // eslint-disable-next-line camelcase
-                switch (filter_question) {
+                const filter_question_joiner = request.filter_question_joiner || 'none';
 
-                    case "stopwords":
-                        return filterUsingStopwords();
-
-                    case "part-of-speech-noun":
-                        return await filterUsingPoS(['NOUN']);
-
-                    case "part-of-speech":
-                    case "part-of-speech-noun-adj":
-                        return await filterUsingPoS(['NOUN', 'ADJ']);
-
-                    case "none":
-                        return request.question;
-
-                }
+                return await QuestionFilters.filter(request.question,
+                                                    filter_question,
+                                                    filter_question_joiner);
 
             }
 
@@ -495,9 +496,11 @@ export namespace AnswerExecutor {
             // TODO: timings here are important too.
 
             return {
-                error: true,
-                code: 'no-answer',
-                cost_estimation
+                response: {
+                    error: true,
+                    code: 'no-answer',
+                    cost_estimation
+                }
             }
 
         }
@@ -551,17 +554,35 @@ export namespace AnswerExecutor {
 
         }
 
-        await doTrace();
+        const trace = await doTrace();
 
-        return {
+        async function createAnswers(): Promise<ReadonlyArray<string>> {
+
+            if (request.openai_completion_cleanup_enabled) {
+                const promises = openai_answers_response.answers.map(current => OpenAICompletionCleanup.clean(current));
+                return (await Promise.all(promises)).map(current => current.text);
+            }
+
+            return openai_answers_response.answers;
+        }
+
+        const answers = await createAnswers();
+
+        const response: IAnswerExecutorResponse = {
             id,
             question,
             selected_documents: openai_answers_response.selected_documents.map(convertToSelectedDocumentWithRecord),
-            answers: openai_answers_response.answers,
+            answers,
             model,
             search_model,
             timings,
             cost_estimation
+        };
+
+        return {
+            response,
+            trace,
+            prompt: openai_answers_response.prompt || ''
         }
 
     }

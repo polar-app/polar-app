@@ -23,7 +23,12 @@ export namespace OpenAIAnswersClient {
 
         // eslint-disable-next-line camelcase
         const cost_estimation = OpenAICostEstimator.costOfAnswers(request, res as IOpenAIAnswersResponseWithPrompt);
-        return {...res, cost_estimation};
+
+        return {
+            ...res,
+            cost_estimation,
+            prompt: res.prompt
+        };
 
     }
 
