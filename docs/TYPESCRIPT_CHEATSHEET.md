@@ -1,3 +1,57 @@
+# Readonly and ReadonlyArray
+
+Never use mutable values in an API. 
+
+If you return string[] in a function that data can be changed by other callers and 
+yield unexpected behavior.
+
+Instead use Readonly and ReadonlyArray.
+
+For example
+
+```typescript
+function computeNames(): ReadonlyArray<string> {
+    return [
+        "John", 
+        "Michael"
+    ]
+}
+```
+
+This prevents someone from mutating data underneath you.
+
+## Dictionaries
+
+To create immutable dictionaries you can define them like:
+
+```typescript
+
+const myDict = Readonly<{[key: string]: string}>;
+
+```
+
+## interfaces
+
+To define readonly properties in interfaces:
+
+```typescript
+
+interface Address {
+    readonly street: string;
+    readonly zip: number;
+}
+```
+
+The fields themselves here can't be changed on the address without a compile error.
+
+## Caveats
+
+Readonly is ONLY supported by the compiler.  They are not enforced by the VM.  If someone
+casts your code to 'any' they can mutate your values.  
+
+Just don't ever do that.  Instead, perform a deep copy of datastructures and
+mutate your copy.
+
 # Running with Scissors... unknown, any, types
 
 You should almost NEVER use "unknown" or "any" in public APIs or functions.
