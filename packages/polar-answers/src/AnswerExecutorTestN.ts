@@ -36,7 +36,7 @@ describe("Answer Executor", function () {
             console.log("answer: ", Arrays.first(response.answers))
 
             console.log("response: " + JSON.stringify(response, null, '  '));
-            console.log("prompt: " + prompt);
+            console.log("prompt: " + response.prompt);
 
             return response.answers[0];
 
