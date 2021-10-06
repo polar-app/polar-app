@@ -31,29 +31,35 @@ const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {
-            marginTop: theme.spacing(2),
+            marginTop: theme.spacing(8),
+            marginBottom: theme.spacing(15),
         },
         button: {
             flexGrow: 1,
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
-            fontSize: '1.5em',
+            fontSize: '1.2em',
+            fontFamily: 'arial'
         },
         intro: {
-            color: theme.palette.text.secondary,
-            fontSize: '2.2em'
+            fontSize: '2.2em',
+            fontFamily: 'Arial',
+            marginTop: theme.spacing(0.5),
+            fontWeight: 'lighter',
+            color: "#F3F3F2 !important"
+            
         },
 
         divider: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            marginRight: theme.spacing(3)
         },
 
         sendLinkDivider: {
             margin: theme.spacing(1),
-            marginBottom: theme.spacing(3),
+            marginBottom: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
         },
@@ -107,10 +113,12 @@ const useStyles = makeStyles((theme) =>
         linkDecoration: {
             color: '#6754D6 !important', 
             textDecoration: 'underline !important'
-        }, 
-        a: {
-            color: theme.palette.text.secondary,
-            textDecoration: 'underline'
+        },
+        POLARHeading: {
+            color: "#F3F3F2 !important",
+            fontFamily: 'Arial, sans-serif',
+            fontWeight: 'lighter',
+            textAlign: 'center'
         }
     }),
 );
@@ -344,8 +352,6 @@ const EmailTokenAuthButton = () => {
                 <>
                     {active && (
                         <>
-                            <Divider className={classes.sendLinkDivider}/>
-
                             {pending && (
                                 <ProgressActive/>
                             )}
@@ -390,7 +396,7 @@ const EmailTokenAuthButton = () => {
                                         className={classes.email}
                                         onChange={event => emailRef.current = event.target.value}
                                         onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                        placeholder="email@"
+                                        placeholder="Enter your email address"
                                         variant="outlined" 
                                         style={{width: '95vw', textAlign: 'center', margin: '10px'}}/>
                             )}
@@ -456,7 +462,7 @@ const EmailTokenAuthButton = () => {
                                             className={classes.email}
                                             onChange={event => emailRef.current = event.target.value}
                                             onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                            placeholder="email@"
+                                            placeholder="Enter Your email Address"
                                             variant="outlined" />
                             )}
 
@@ -572,28 +578,33 @@ const Main = React.memo(function Main(props: IProps) {
             <DeviceRouters.Phone>
             <div style={{height:"100vh"}}>
 
-            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+                <div className="text-center">
 
-            <div className="text-center">
+                    <h1 className={classes.POLARHeading}>
+                        POLAR
+                    </h1>
 
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
+                    <div className={classes.logo}>
+                        <PolarSVGIcon width={125} height={125}/>
+                    </div>
+
+                    <Divider className={classes.sendLinkDivider}/>
+
+                    {props.mode === 'create-account' && (
+                    <h2 className={classes.intro}>
+                        Create Account
+                    </h2>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <h2 className={classes.intro}>
+                            Sign In
+                        </h2>
+                    )}
+
                 </div>
 
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create your Polar Account
-                    </h2>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In to Polar
-                    </h2>
-                )}
-            </div>
-
-            
+            <div style={{display: 'block', bottom: '20px'}}>
 
                 <EmailTokenAuthButton/>
 
