@@ -3,6 +3,7 @@ import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {useUploadHandler} from "../UploadHandler";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -169,6 +170,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
         async function extractHTML() {
             const htmlItem = getPasteItem(pasteItems, 'html');
+
             if (htmlItem) {
                 const getHTMLString = (): Promise<string> => new Promise((resolve) => (
                     htmlItem.dataTransferItem.getAsString(resolve)
@@ -176,10 +178,14 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 const html = await getHTMLString();
                 const blocks = await HTMLToBlocks.parse(html);
 
-                // If there's only one block and it has no children then we just wanna paste the content in the currently active block.
                 const block = blocks[0];
+
+                /**
+                 * If there's only one block and it has no children then
+                 * we just wanna paste the content in the currently active block.
+                 */
                 if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
-                    onPasteHTML(block.content.data);
+                    onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
                 } else {
                     onPasteBlocks(blocks);
                 }
@@ -188,14 +194,22 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
         async function extractPolarBlocks() {
             const blocksStructureItem = getPasteItem(pasteItems, 'polarblocks');
+
             if (blocksStructureItem) {
                 const getJSONString = (): Promise<string> => new Promise((resolve) => (
                     blocksStructureItem.dataTransferItem.getAsString(resolve)
                 ));
+
                 try {
-                    const json = JSON.parse(await getJSONString());
+                    const blocks = JSON.parse(await getJSONString());
+                    const block = blocks[0];
+
                     // TODO: Might need to validate the structure here.
-                    onPasteBlocks(json);
+                    if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
+                        onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
+                    } else {
+                        onPasteBlocks(blocks);
+                    }
 
                 } catch (e) {
                     console.error('Error: failed to parse application/polarblocks+json', e);

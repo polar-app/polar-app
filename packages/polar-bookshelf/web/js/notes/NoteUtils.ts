@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr, IBlockContent, IBlockContentMap} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContent, IBlockContentMap, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
@@ -283,7 +283,7 @@ export namespace BlockTextContentUtils {
      *
      * @param content An editable text content instance @see TextContent
      */
-    export function getTextContentMarkdown(content: TextContent): string {
+    export function getTextContentMarkdown(content: ITextContent): string {
         switch (content.type) {
             case 'date':
             case 'name':
