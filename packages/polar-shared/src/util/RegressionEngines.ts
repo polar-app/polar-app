@@ -113,6 +113,12 @@ export namespace RegressionEngines {
     export interface ICreateOpts {
 
         /**
+         * Just a high level description of this regression which, along with
+         * the config, explain what this regression enables.
+         */
+        readonly description?: string;
+
+        /**
          * The configuration for this regression used for documentation in the report.
          */
         readonly config?: any;
@@ -280,6 +286,11 @@ export namespace RegressionEngines {
 
                     const now = ISODateTimeStrings.create();
                     buff.append(`Report generated on: ${now}\n`)
+
+                    if (opts.description) {
+                        buff.append(opts.description);
+                        buff.append("\n");
+                    }
 
                     if (opts.config) {
                         buff.append(`======================= config: \n`);

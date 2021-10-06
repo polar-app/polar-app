@@ -73,8 +73,8 @@ export namespace OpenAISearchReRanker {
 
             const [result, duration] = FunctionTimers.exec(() => {
 
-                const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM);
-                const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM);
+                const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM, 0);
+                const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM, 0);
 
                 const reranked =
                     arrayStream(responses)

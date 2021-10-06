@@ -43,7 +43,8 @@ import {AnswerExecutors} from "./AnswerExecutors";
 function createRegressionEngine(opts: ExecutorOpts) {
 
     const engine = RegressionEngines.create<string, 'failed' | 'no-answer'>({
-        config: opts.request
+        config: opts.request,
+        description: opts.description
     });
 
     // TODO: we need a name of confirmed/failing tests by ID based on the opts here...
@@ -853,6 +854,7 @@ export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRe
                                                                                        'rerank_truncate_short_head' |
                                                                                        'prune_contiguous_records' |
                                                                                        'filter_question' |
+                                                                                       'filter_question_joiner' |
                                                                                        'max_tokens' |
                                                                                        'openai_completion_cleanup_enabled' |
                                                                                        'elasticsearch_sort_order'> {
@@ -869,6 +871,12 @@ export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRe
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ExecutorOpts {
+
+    /**
+     * High level description of what these options enable/disable
+     */
+    readonly description?: string;
+
     readonly request: IRegressionAnswerExecutorRequest;
 }
 
@@ -1187,6 +1195,7 @@ async function main() {
             },
         },
         {
+            description: "v5 but we add openai_completion_cleanup_enabled: true",
             request: {
                 id: 'v6',
                 model: 'curie',
@@ -1201,9 +1210,9 @@ async function main() {
                 max_tokens: 125,
                 openai_completion_cleanup_enabled: true
             },
-
         },
         {
+            description: "v6 but with DaVinci to see if we get better answer text",
             request: {
                 id: 'v7',
                 model: 'davinci',
@@ -1219,7 +1228,26 @@ async function main() {
                 openai_completion_cleanup_enabled: true
             },
 
-        }
+        },
+        {
+            description: "Basically the V6 model BUT we use the new result joiner to compute an ES AND query which cuts down on data sent to OpenAI.",
+            request: {
+                id: 'v8',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 500,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: true,
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                filter_question_joiner: 'AND',
+                elasticsearch_sort_order: 'idx',
+                max_tokens: 125,
+                openai_completion_cleanup_enabled: true
+            },
+        },
+
 
     ]
 
