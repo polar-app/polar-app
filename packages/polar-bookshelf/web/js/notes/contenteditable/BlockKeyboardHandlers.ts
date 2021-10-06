@@ -7,7 +7,6 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
-import {modifierPredicate} from "../../keyboard_shortcuts/KeyboardShortcuts";
 import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {BlockPredicates} from "../store/BlockPredicates";
 
@@ -51,6 +50,26 @@ type KeydownHandlerOpts = {
 };
 
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
+
+type Modifier = 'ctrl' | 'alt' | 'shift';
+
+const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
+    const unpressed: Modifier[] = (['ctrl', 'alt', 'shift'] as Modifier[])
+        .filter(mod => pressed.indexOf(mod) === -1);
+
+    const checkModifier = (modifier: Modifier) => {
+        switch (modifier) {
+            case 'ctrl':
+                return event.ctrlKey || event.metaKey;
+            case 'alt':
+                return event.altKey;
+            case 'shift':
+                return event.shiftKey;
+        }
+    };
+
+    return pressed.every(checkModifier) && unpressed.every(mod => ! checkModifier(mod));
+};
 
 const HANDLERS: Record<string, KeydownHandler | undefined> = {
     ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID, isMultilineNavEnabled }) => {
