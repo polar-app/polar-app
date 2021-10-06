@@ -33,7 +33,10 @@ const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
 /**
- * The minimum docs needed to run the short head computation.
+ * The minimum docs needed to run the short head computation.  We need some
+ * setting here as a short head computation on a short vector isn't going to be
+ * very reliable and further the costs of just executing across all the
+ * documents is fairly reasonable.
  */
 const SHORT_HEAD_MIN_DOCS = 50;
 
@@ -344,11 +347,14 @@ export namespace AnswerExecutor {
 
                     function computeLimit() {
 
-                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > SHORT_HEAD_MIN_DOCS) {
+                        if (request.rerank_truncate_short_head) {
 
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
 
-                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), SHORT_HEAD_ANGLE);
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), {
+                                target_angle: SHORT_HEAD_ANGLE,
+                                min_docs: SHORT_HEAD_MIN_DOCS
+                            });
 
                             if (head) {
                                 console.log("Short head truncated to N entries: " + head.length)

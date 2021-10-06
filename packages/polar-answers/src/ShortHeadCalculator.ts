@@ -168,11 +168,30 @@ export namespace ShortHeadCalculator {
 
     }
 
+    export interface IComputeOpts {
+
+        /**
+         * The target angle to truncate results.
+         */
+        // eslint-disable-next-line camelcase
+        readonly target_angle: number;
+
+        /**
+         * The minimum docs needed to run the short head computation.  We need some
+         * setting here as a short head computation on a short vector isn't going to be
+         * very reliable and further the costs of just executing across all the
+         * documents is fairly reasonable.
+         */
+        // eslint-disable-next-line camelcase
+        readonly min_docs: number;
+
+    }
+
     // eslint-disable-next-line camelcase
-    export function compute(vector: Vector, target_angle = 20) {
+    export function compute(vector: Vector, opts: IComputeOpts = {target_angle: 20, min_docs: 25}): Vector | undefined {
 
         const normalized = ShortHeadCalculator.normalizeXY(vector);
-        return ShortHeadCalculator.computeShortHead(normalized, target_angle);
+        return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle);
 
     }
 
