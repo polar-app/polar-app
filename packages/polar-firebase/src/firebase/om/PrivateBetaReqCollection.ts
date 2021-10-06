@@ -6,6 +6,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace PrivateBetaReqCollection {
 
+    /**
+     * Firestore collection where users in the waiting list are stored
+     */
     const COLLECTION_NAME: CollectionNameStr = "private_beta_req";
 
     export interface IPrivateBetaReqInit {
