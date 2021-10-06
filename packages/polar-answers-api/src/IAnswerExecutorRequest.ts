@@ -1,6 +1,5 @@
 import {AIModel} from "./AIModel";
-import {QuestionFilters} from "polar-answers/src/QuestionFilters";
-import TermJoinerType = QuestionFilters.TermJoinerType;
+import {TermJoinerType} from "./TermJoinerType";
 
 export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
 
