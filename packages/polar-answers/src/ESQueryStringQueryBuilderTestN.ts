@@ -5,20 +5,20 @@ describe("ESQueryStringQueryBuilder", function() {
 
     it("empty array", () => {
 
-        assert.equal(ESQueryStringQueryBuilder.build([]), "");
+        assert.equal(ESQueryStringQueryBuilder.buildAND([]), "");
 
     });
 
     it("single term", () => {
 
-        assert.equal(ESQueryStringQueryBuilder.build(["hello"]), "(hello)");
+        assert.equal(ESQueryStringQueryBuilder.buildAND(["hello"]), "(hello)");
 
     });
 
 
     it("two terms", () => {
 
-        assert.equal(ESQueryStringQueryBuilder.build(["hello", "world"]), "(hello) AND (world)");
+        assert.equal(ESQueryStringQueryBuilder.buildAND(["hello", "world"]), "(hello) AND (world)");
 
     });
 

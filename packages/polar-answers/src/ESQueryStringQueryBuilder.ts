@@ -3,7 +3,7 @@
  */
 export namespace ESQueryStringQueryBuilder {
 
-    export function build(terms: ReadonlyArray<string>): string {
+    export function buildAND(terms: ReadonlyArray<string>): string {
 
         if (terms.length === 0) {
             return ""
