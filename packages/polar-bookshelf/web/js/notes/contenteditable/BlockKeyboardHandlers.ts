@@ -18,7 +18,10 @@ const hasEditorSelection = (): boolean => {
 
     if (selection) {
         const range = selection.getRangeAt(0);
-        return range.cloneContents().textContent !== '';
+        const contents = range.cloneContents();
+
+        return contents.childElementCount !== 0
+            || contents.textContent !== '';
     } else {
         return false;
     }
@@ -72,7 +75,37 @@ const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
 };
 
 const HANDLERS: Record<string, KeydownHandler | undefined> = {
-    ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID, isMultilineNavEnabled }) => {
+    a: ({ contentEditableElem, event, blocksTreeStore, blockID, readonly }) => {
+        if (! modifierPredicate(['ctrl'], event) && readonly) {
+            abortEvent(event);
+        }
+
+        if (! modifierPredicate(['ctrl'], event)) {
+            return;
+        }
+
+        const selectionAtStart = ContentEditables.selectionAtStart(contentEditableElem);
+        const selectionAtEnd = ContentEditables.selectionAtEnd(contentEditableElem);
+
+        if (hasEditorSelection() && (selectionAtStart || selectionAtEnd)
+            || (selectionAtStart && selectionAtEnd)) {
+
+            abortEvent(event);
+            blocksTreeStore.setSelectionRange(blockID, blockID);
+            CursorPositions.clearSelection();
+        } else if (blocksTreeStore.hasSelected()) {
+            abortEvent(event);
+            const rootBlock = blocksTreeStore.getBlock(blocksTreeStore.root);
+            if (rootBlock && ! blocksTreeStore.selected[rootBlock.id]) {
+                const items = rootBlock.itemsAsArray;
+
+                if (items.length > 0) {
+                    blocksTreeStore.setSelectionRange(items[0], items[items.length - 1]);
+                }
+            }
+        }
+    },
+    arrowup: ({ contentEditableElem, blocksTreeStore, event, blockID, isMultilineNavEnabled }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.collapse(blockID);
             abortEvent(event);
@@ -107,7 +140,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore, isMultilineNavEnabled }) => {
+    arrowdown: ({ event, blockID, contentEditableElem, blocksTreeStore, isMultilineNavEnabled }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.expand(blockID);
             abortEvent(event);
@@ -142,7 +175,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    ArrowLeft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
+    arrowleft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
 
         if (! hasEditorSelection() && modifierPredicate(['shift', 'alt'], event)) {
 
@@ -160,7 +193,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    ArrowRight: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
+    arrowright: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
 
         if (! hasEditorSelection() && modifierPredicate(['shift', 'alt'], event)) {
 
@@ -179,7 +212,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
     },
-    Tab: ({ event, blockID, blocksTreeStore }) => {
+    tab: ({ event, blockID, blocksTreeStore }) => {
 
         const {parent} = blocksTreeStore.getBlock(blockID)!;
         if (parent !== undefined) {
@@ -194,7 +227,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    Enter: ({ event, blockID, blocksTreeStore, contentEditableElem, isMultilineNavEnabled }) => {
+    enter: ({ event, blockID, blocksTreeStore, contentEditableElem, isMultilineNavEnabled }) => {
         if (isMultilineNavEnabled && modifierPredicate(['shift'], event)) {
             return;
         }
@@ -221,7 +254,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Backspace: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
+    backspace: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -259,7 +292,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Delete: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
+    delete: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -289,11 +322,11 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    PageUp: ({ blocksTreeStore, event }) => {
+    pageup: ({ blocksTreeStore, event }) => {
         abortEvent(event);
         navNBlocks(blocksTreeStore, 'prev', event.shiftKey);
     },
-    PageDown: ({ blocksTreeStore, event }) => {
+    pagedown: ({ blocksTreeStore, event }) => {
         abortEvent(event);
         navNBlocks(blocksTreeStore, 'next', event.shiftKey);
     },
@@ -328,7 +361,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             return;
         }
 
-        const handler = HANDLERS[event.key];
+        const handler = HANDLERS[event.key.toLowerCase()];
         if (handler) {
             handler({
                 contentEditableElem: elem,
@@ -342,6 +375,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
         } else if (readonly && ! hasModifiers(event, false)) {
             abortEvent(event);
         }
+
         if (blocksTreeStore.hasSelected() && ! hasModifiers(event, false)) {
             abortEvent(event);
         }

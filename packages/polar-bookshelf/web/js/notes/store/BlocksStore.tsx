@@ -843,13 +843,7 @@ export class BlocksStore implements IBlocksStore {
                 this._selected[this._active?.id] = true;
                 this._selectedAnchor = this._active?.id;
 
-                function clearSelection() {
-                    const sel = window.getSelection()!;
-                    sel.getRangeAt(0).collapse(true);
-                }
-
-                // TODO: this probably shouldn't be here - in the store.
-                clearSelection();
+                CursorPositions.clearSelection();
 
                 return true;
             }

@@ -43,6 +43,14 @@ export namespace CursorPositions {
         }
     }
 
+    export function clearSelection() {
+        const selection = window.getSelection();
+
+        if (selection && selection.rangeCount > 0) {
+            selection.getRangeAt(0).collapse(true);
+        }
+    }
+
     /*
      * This is used to focus stuff that isn't focusable contentEditable=false elements for example.
      *
@@ -264,28 +272,9 @@ export namespace CursorPositions {
             return false;
         }
 
-        const getCursorRect = (range: Range): DOMRect => {
-            const rangeRect = range.getBoundingClientRect();
-
-            const didFail = Object.values(rangeRect.toJSON()).every(val => val === 0);
-
-            if (! didFail) {
-                return rangeRect;
-            }
-
-            const span = document.createElement('span');
-            span.innerHTML = '&#xFEFF;';
-
-            range.insertNode(span);
-            const spanRect = span.getBoundingClientRect();
-
-            span.parentElement?.removeChild(span);
-            return spanRect;
-        };
-
         const range = selection.getRangeAt(0);
 
-        const cursorRect = getCursorRect(range);
+        const cursorRect = ContentEditables.getRangeBoundingClientRect(range);
 
         const styles = window.getComputedStyle(elem);
 
