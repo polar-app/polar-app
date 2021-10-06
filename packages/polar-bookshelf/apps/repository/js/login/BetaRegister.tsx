@@ -7,9 +7,13 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import {useStyles} from "./Authenticator";
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
 export const BetaRegister = React.memo(function BetaRegister(props: {}) {
     const classes = useStyles();
+
+    const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
+    const emailRef = React.useRef("");
 
     return <div style={{
         display: 'flex',
@@ -41,30 +45,47 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <TextField autoFocus={true}
-                                   className={classes.email}
-                            // onChange={event => emailRef.current = event.target.value}
-                            // onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="email@"
-                                   variant="outlined"/>
+                        {isRegistered && <h2 className={classes.intro}>
+                            Thank you for registering!
+                        </h2>}
 
-                        <Divider className={classes.divider}/>
+                        {!isRegistered && <>
+                            <TextField autoFocus={true}
+                                       className={classes.email}
+                                       onChange={event => emailRef.current = event.target.value}
+                                       placeholder="email@"
+                                       variant="outlined"/>
 
-                        <Button variant="contained"
-                                color="primary"
-                                className={classes.button}
-                                onClick={() => {
-                                    // FIXME: call the cloud function
-                                }}>
-                            Join
-                        </Button>
+                            <Divider className={classes.divider}/>
+
+                            <Button variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={() => {
+                                        // FIXME: call the cloud function
+                                        const request = {
+                                            email: emailRef.current.trim(),
+                                            tag: "initial_signup",
+                                        };
+                                        JSONRPC.exec<unknown, any>('private-beta/register', request)
+                                            .then((result: any) => {
+                                                console.log(result);
+                                                setIsRegistered(true);
+                                            }).catch((reason: any) => console.error(reason));
+                                    }}>
+                                Join
+                            </Button>
+                        </>}
+
+
                     </div>
 
                     <div>
                         <p className={classes.legal}>
                             You acknowledge that you will read, and agree to
                             our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of
-                            Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy
+                            Service</a> and <a className={classes.linkDecoration}
+                                               href="https://getpolarized.io/privacy-policy">Privacy
                             Policy</a>.
                         </p>
                     </div>
