@@ -573,7 +573,7 @@ function useEPubZoom() {
                 const items: HTMLImageElement[] = Array.prototype.slice.call(images)
 
                 items.forEach((item) => {
-                    item.setAttribute('style', 'max-width: none !important')
+                    item.setAttribute('style', 'max-width: 100% !important; display: block')
                     const newWidth = item.clientWidth * Number(scale.value)
                     const newHeight = item.clientHeight * Number(scale.value)
                     item.style.width = `${newWidth}px`

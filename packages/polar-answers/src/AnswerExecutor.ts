@@ -1,9 +1,9 @@
 import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
-import {UserIDStr} from "polar-shared/src/util/Strings";
-import {FilterQuestionType, IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
+    IAnswerExecutorCostEstimation,
     IAnswerExecutorError,
     IAnswerExecutorResponse,
     IAnswerExecutorTimings,
@@ -14,29 +14,41 @@ import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
-import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {IAnswerExecutorTrace, IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {AnswerExecutorTraceCollection} from "polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
-import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
+import {ShortHeadCalculator} from "./ShortHeadCalculator";
+import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
+import {AnswerExecutors} from "./AnswerExecutors";
+import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
+import {QuestionFilters} from "./QuestionFilters";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
+/**
+ * The minimum docs needed to run the short head computation.
+ */
+const SHORT_HEAD_MIN_DOCS = 50;
+
+/**
+ * The max number of docs to return from the short head computation. Without
+ * this we could exceed the 200 max per answers call.
+ */
+const SHORT_HEAD_MAX_DOCUMENTS = 50;
+
+const SHORT_HEAD_ANGLE = 45;
+
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import PartOfSpeechTag = GCLAnalyzeSyntax.PartOfSpeechTag;
-
-    export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
-        readonly uid: UserIDStr;
-    }
+    import IAnswerExecutorRequestWithUID = AnswerExecutors.IAnswerExecutorRequestWithUID;
 
     export const EXAMPLES_CONTEXT: string =
         [
@@ -95,7 +107,28 @@ export namespace AnswerExecutor {
 
     }
 
-    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
+    export interface IAnswerExecutionSuccess {
+
+        readonly response: IAnswerExecutorResponse;
+
+        readonly trace: IAnswerExecutorTrace;
+
+        /**
+         * The prompt generated/used by the OpenAI answers API.
+         */
+        readonly prompt: string;
+
+    }
+
+    export interface IAnswerExecutionFailure {
+
+        readonly response: IAnswerExecutorError;
+
+    }
+
+    export type IAnswerExecution = IAnswerExecutionSuccess | IAnswerExecutionFailure;
+
+    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecution> {
 
         const {question, uid} = request;
 
@@ -130,11 +163,15 @@ export namespace AnswerExecutor {
         }
 
         interface ESDocumentResultsWithoutRerank extends ESDocumentResultsBase {
+
             // eslint-disable-next-line camelcase
             readonly openai_reranked_records: undefined;
 
             // eslint-disable-next-line camelcase
             readonly openai_reranked_duration: undefined;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_cost_estimation: undefined;
 
         }
 
@@ -145,6 +182,9 @@ export namespace AnswerExecutor {
 
             // eslint-disable-next-line camelcase
             readonly openai_reranked_duration: number;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_cost_estimation: ICostEstimation;
 
         }
 
@@ -179,53 +219,42 @@ export namespace AnswerExecutor {
 
             async function computeQueryTextFromQuestion() {
 
+                // TODO/FIXME we are NOT controlling our inputs here and it
+                // would be possible for someone to push down a regex or other
+                // issues and we need to fix this by using a real term query.
+
                 // eslint-disable-next-line camelcase
                 const filter_question = request.filter_question || DEFAULT_FILTER_QUESTION;
 
-                function filterUsingStopwords() {
-                    const words = request.question.split(/[ \t]+/);
-                    const stopwords = Stopwords.words('en');
-                    return Stopwords.removeStopwords(words, stopwords).join(" ");
-                }
-
-                async function filterUsingPoS(pos: ReadonlyArray<PartOfSpeechTag>) {
-                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, pos);
-                    return analysis.map(current => current.content).join(" ");
-                }
-
                 // eslint-disable-next-line camelcase
-                switch (filter_question) {
+                const filter_question_joiner = request.filter_question_joiner || 'none';
 
-                    case "stopwords":
-                        return filterUsingStopwords();
-
-                    case "part-of-speech-noun":
-                        return await filterUsingPoS(['NOUN']);
-
-                    case "part-of-speech":
-                    case "part-of-speech-noun-adj":
-                        return await filterUsingPoS(['NOUN', 'ADJ']);
-
-                    case "none":
-                        return request.question;
-
-                }
+                return await QuestionFilters.filter(request.question,
+                                                    filter_question,
+                                                    filter_question_joiner);
 
             }
 
             const queryText = await computeQueryTextFromQuestion();
 
+            function createElasticsearchQuery(): IElasticsearchQuery {
+                return {
+                    "query": {
+                        "query_string": {
+                            "query": queryText,
+                            "default_field": "text"
+                        }
+                    },
+                    "sort": [
+                        request.elasticsearch_sort_order || '_score'
+                    ],
+                    size
+                };
+            }
+
             // TODO: trace the query
             // eslint-disable-next-line camelcase
-            const elasticsearch_query: IElasticsearchQuery = {
-                "query": {
-                    "query_string": {
-                        "query": queryText,
-                        "default_field": "text"
-                    }
-                },
-                size
-            };
+            const elasticsearch_query = createElasticsearchQuery();
 
             // TODO: trace the requestURL
             // eslint-disable-next-line camelcase
@@ -290,25 +319,61 @@ export namespace AnswerExecutor {
 
                 console.log("Re-ranking N ES results via OpenAI: " + elasticsearch_records.length)
 
+                // TODO: technically if we have < 200 documents, the re-rank
+                // isn't really needed and would in fact cost us more money
+                // because we re-rank again with currie.
+
                 // TODO: trace the latency of the rerank too..
 
                 // TODO: trace the ranked
                 // eslint-disable-next-line camelcase
                 const [openai_reranked_records_with_score, openai_reranked_duration] =
                     await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                        request.question,
-                        elasticsearch_records,
-                        hit => hit.text));
+                                                                        request.question,
+                                                                        elasticsearch_records,
+                                                                        hit => hit.text));
 
                 // eslint-disable-next-line camelcase
-                const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
-                    .map(current => current.record)
-                    .collect();
+                const openai_reranked_records
+                    = arrayStream(openai_reranked_records_with_score.records)
+                        .map(current => current.record)
+                        .collect();
 
                 // eslint-disable-next-line camelcase
-                const records = arrayStream(openai_reranked_records)
-                    .head(documents_limit)
-                    .collect();
+                function computeRecords() {
+
+                    function computeLimit() {
+
+                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > SHORT_HEAD_MIN_DOCS) {
+
+                            console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
+
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), SHORT_HEAD_ANGLE);
+
+                            if (head) {
+                                console.log("Short head truncated to N entries: " + head.length)
+                                return Math.min(head.length, SHORT_HEAD_MAX_DOCUMENTS);
+                            } else {
+                                console.warn("No short head computed");
+                            }
+                        }
+
+                        // eslint-disable-next-line camelcase
+                        return documents_limit;
+
+                    }
+
+                    const limit = computeLimit();
+
+                    // eslint-disable-next-line camelcase
+                    return arrayStream(openai_reranked_records)
+                        .head(limit)
+                        .collect();
+
+                }
+
+                // eslint-disable-next-line camelcase
+                const records = computeRecords();
 
                 return <ESDocumentResultsWithRerank> {
                     elasticsearch_query,
@@ -319,6 +384,10 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
+                    openai_reranked_cost_estimation: {
+                        cost: openai_reranked_records_with_score.cost_estimation.cost,
+                        tokens: openai_reranked_records_with_score.cost_estimation.tokens,
+                    },
                     records,
                     elasticsearch_pruned
                 };
@@ -339,6 +408,7 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records: undefined,
                     openai_reranked_duration: undefined,
+                    openai_reranked_cost_estimation: undefined,
                     records,
                     elasticsearch_pruned
                 };
@@ -374,7 +444,7 @@ export namespace AnswerExecutor {
             question,
             examples_context: EXAMPLES_CONTEXT,
             examples: EXAMPLES,
-            max_tokens: MAX_TOKENS,
+            max_tokens: request.max_tokens || MAX_TOKENS,
             stop: STOP,
             documents,
             n: N,
@@ -389,11 +459,48 @@ export namespace AnswerExecutor {
 
         const primaryAnswer = Arrays.first(openai_answers_response.answers);
 
-        if (primaryAnswer === NO_ANSWER_CODE) {
+        function computeCostEstimation(): IAnswerExecutorCostEstimation {
+
+            const NULL_COSTS = {
+                cost: 0,
+                tokens: 0
+            }
+
+            // eslint-disable-next-line camelcase
+            const openai_rerank_cost_estimation: ICostEstimation = computedDocuments.openai_reranked_cost_estimation || NULL_COSTS;
+
+            // eslint-disable-next-line camelcase
+            const openai_answer_api_cost_estimation: IAnswersCostEstimation = {
+                cost: openai_answers_response.cost_estimation.cost,
+                tokens: openai_answers_response.cost_estimation.tokens,
+                search: openai_answers_response.cost_estimation.search,
+                completion: openai_answers_response.cost_estimation.completion,
+            }
+
+            const cost = openai_rerank_cost_estimation.cost + openai_answer_api_cost_estimation.cost;
+            const tokens = openai_rerank_cost_estimation.tokens + openai_answer_api_cost_estimation.tokens;
 
             return {
-                error: true,
-                code: 'no-answer'
+                cost, tokens,
+                openai_rerank_cost_estimation,
+                openai_answer_api_cost_estimation
+            };
+
+        }
+
+        // eslint-disable-next-line camelcase
+        const cost_estimation = computeCostEstimation();
+
+        if (primaryAnswer === NO_ANSWER_CODE) {
+
+            // TODO: timings here are important too.
+
+            return {
+                response: {
+                    error: true,
+                    code: 'no-answer',
+                    cost_estimation
+                }
             }
 
         }
@@ -416,7 +523,7 @@ export namespace AnswerExecutor {
             openai_answer: openai_answer_duration
         }
 
-        async function doTrace() {
+        async function doTrace(): Promise<IAnswerExecutorTrace> {
 
             const firestore = FirestoreAdmin.getInstance();
 
@@ -440,18 +547,42 @@ export namespace AnswerExecutor {
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);
+
+            console.log("Stored trace data in firestore: ", JSON.stringify(trace, null, "  "));
+
+            return trace;
+
         }
 
-        await doTrace();
+        const trace = await doTrace();
 
-        return {
+        async function createAnswers(): Promise<ReadonlyArray<string>> {
+
+            if (request.openai_completion_cleanup_enabled) {
+                const promises = openai_answers_response.answers.map(current => OpenAICompletionCleanup.clean(current));
+                return (await Promise.all(promises)).map(current => current.text);
+            }
+
+            return openai_answers_response.answers;
+        }
+
+        const answers = await createAnswers();
+
+        const response: IAnswerExecutorResponse = {
             id,
             question,
             selected_documents: openai_answers_response.selected_documents.map(convertToSelectedDocumentWithRecord),
-            answers: openai_answers_response.answers,
+            answers,
             model,
             search_model,
-            timings
+            timings,
+            cost_estimation
+        };
+
+        return {
+            response,
+            trace,
+            prompt: openai_answers_response.prompt || ''
         }
 
     }

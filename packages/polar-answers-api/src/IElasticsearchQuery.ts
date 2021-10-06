@@ -9,8 +9,10 @@ export interface IElasticsearchQueryStringQuery {
     readonly query_string: IElasticsearchQueryStringQueryFields;
 }
 
+export type IElasticsearchSort = ["_score"] | ["idx"];
 
 export interface IElasticsearchQuery {
     readonly query: IElasticsearchQueryStringQuery;
     readonly size: number;
+    readonly sort: IElasticsearchSort;
 }

@@ -119,10 +119,7 @@ function useActionExecutor(id: BlockIDStr) {
                     a.classList.add('note-tag');
                 }
 
-                const textNode = document.createTextNode('');
-                coveringRange.insertNode(textNode);
                 coveringRange.insertNode(a);
-                ContentEditables.setCaretPosition(textNode, 'end');
             };
 
             updateSelection();

@@ -12,17 +12,31 @@ import {BlockTextContentUtils} from "./NoteUtils";
 export const useNoteWikiLinkCreator = () => {
     const blocksStore = useBlocksStore();
 
-    return React.useCallback((id: BlockIDStr, linkText: string): string | null => {
+    /**
+     * This function is used to get the real anchor of a link by using its label
+     *
+     * It does the following
+     * 1. It looks through the `links` property of the block that has the requested link and extracts it by using its text
+     * 2. It gets the ID of the block that the link points to and fetches the block
+     * 3. If the fetched block is a named block then we return the name (since it can be used as an anchor in urls)
+     * 4. Otherwise it just returns the id of the fetched block (e.g. markdown & image blocks)
+     * 5. Edge case: If the block was not found in the links array of the owning block, then the original link text is returned.
+     * 
+     * @param id The id of the block that owns the link.
+     * @param linkText The link's text label.
+     *
+     */
+    return React.useCallback((id: BlockIDStr, linkText: string): string => {
         const block = blocksStore.getBlock(id);
 
         if (! block || block.content.type !== "markdown") {
-            return null;
+            return linkText;
         }
         
         const link = block.content.links.find(({ text }) => text === linkText);
 
         if (! link) {
-            return null;
+            return linkText;
         }
 
         const targetBlock = blocksStore.getBlock(link.id);
@@ -31,7 +45,7 @@ export const useNoteWikiLinkCreator = () => {
             return BlockTextContentUtils.getTextContentMarkdown(targetBlock.content);
         }
 
-        return null;
+        return link.id;
     }, [blocksStore]);
 };
 
@@ -45,6 +59,39 @@ interface ILinkNavigationEvent {
     readonly target: EventTarget | null;
 }
 
+export const getNoteAnchorFromHref = (href: string): string | null => {
+    // e.g. href="#identifier"
+    if (href.startsWith('#')) {
+        return Arrays.last(href.split('#')) as string;
+    }
+
+    const notesPathname = RoutePathnames.NOTE("");
+
+    // e.g. href="/notes/identifier"
+    if (href.startsWith(notesPathname)) {
+        return href.slice(notesPathname.length);
+    }
+
+    // A full URL
+    if (href.startsWith('http:') || href.startsWith('https:')) {
+        const url = new URL(href);
+        
+        if (! url.pathname.startsWith(notesPathname)) {
+            return null;
+        }
+
+        // e.g. href="https://app.getpolarized.io/notes/note#identifier" (Hashes are prioritized)
+        if (url.hash.length > 0) {
+            return url.hash.slice(1);
+        }
+
+        // e.g. href="https://app.getpolarized.io/notes/identifier"
+        return href.slice(notesPathname.length);
+    }
+
+    return null;
+};
+
 function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
     const linkLoaderRef = useLinkLoaderRef();
@@ -56,44 +103,31 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         const {target, abortEvent} = event;
 
-        if (target instanceof HTMLAnchorElement) {
-
-            const href = target.getAttribute('href');
-
-            if (href !== null) {
-
-                if (href.startsWith('#')) {
-
-                    const anchor = Arrays.last(href.split("#"));
-
-                    if (anchor) {
-                        const link = noteWikiLinkCreator(id, anchor);
-                        if (link) {
-                            noteLinkLoader(link);
-                        } else {
-                            noteLinkLoader(anchor);
-                        }
-                        abortEvent();
-                        return true;
-                    }
-
-                } else {
-                    if (href.startsWith(RoutePathnames.NOTE(""))) {
-                        history.push(href);
-                    } else {
-                        const linkLoader = linkLoaderRef.current;
-                        linkLoader(href, {newWindow: true, focus: true});
-                    }
-                    abortEvent();
-                    return true;
-
-                }
-
-            }
-
+        if (! (target instanceof HTMLAnchorElement)) {
+            return false;
         }
 
-        return false;
+
+        const href = target.getAttribute('href');
+
+        if (href === null || href === '#' || href === '') {
+            return false;
+        }
+
+        const anchor = getNoteAnchorFromHref(href);
+
+        if (anchor) {
+            const link = noteWikiLinkCreator(id, anchor);
+            noteLinkLoader(link);
+
+            abortEvent();
+            return true;
+        } else {
+            linkLoaderRef.current(href, {newWindow: true, focus: true});
+            abortEvent();
+            return true;
+
+        }
 
     }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, history, id]);
 

@@ -43,6 +43,14 @@ export namespace CursorPositions {
         }
     }
 
+    export function clearSelection() {
+        const selection = window.getSelection();
+
+        if (selection && selection.rangeCount > 0) {
+            selection.getRangeAt(0).collapse(true);
+        }
+    }
+
     /*
      * This is used to focus stuff that isn't focusable contentEditable=false elements for example.
      *
@@ -196,34 +204,35 @@ export namespace CursorPositions {
 
         const selection = document.getSelection();
 
-        if (selection && selection.rangeCount) {
-            const range = selection.getRangeAt(0);
-            const positionInTextNode = toTextNode(range.startContainer, range.startOffset);
+        if (! selection || ! selection.rangeCount) {
+            return 0;
+        }
 
-            if (positionInTextNode) {
-                const {node, offset} = positionInTextNode;
+        const range = selection.getRangeAt(0);
+        const positionInTextNode = toTextNode(range.startContainer, range.startOffset);
 
-                // NOTE: this is O(N) but N is almost always insanely small.
-                for (let idx = 0; idx < lookup.length; ++idx) {
+        if (! positionInTextNode) {
+            return 0;
+        }
 
-                    const curr = lookup[idx];
+        const {node, offset} = positionInTextNode;
 
-                    if (node === curr.node) {
+        // NOTE: this is O(N) but N is almost always insanely small.
+        for (let idx = 0; idx < lookup.length; ++idx) {
 
-                        if (offset === curr.offset) {
-                            return idx;
-                        }
+            const curr = lookup[idx];
 
-                    }
+            if (node === curr.node) {
 
+                if (offset === curr.offset) {
+                    return idx;
                 }
-            } else {
-                return 0;
+
             }
+
         }
 
         return 'end';
-
     }
 
     /**
@@ -252,5 +261,30 @@ export namespace CursorPositions {
         const div = document.createElement('div');
         div.innerHTML = html;
         return (div.innerText || div.textContent || '').length;
+    }
+
+    export function isCursorAtSide(elem: HTMLElement, side: 'top' | 'bottom'): boolean {
+        const elemRect = elem.getBoundingClientRect();
+        const selection = window.getSelection();
+
+    
+        if (! selection || ! selection.rangeCount) {
+            return false;
+        }
+
+        const range = selection.getRangeAt(0);
+
+        const cursorRect = ContentEditables.getRangeBoundingClientRect(range);
+
+        const styles = window.getComputedStyle(elem);
+
+        const lineHeight = (+styles.lineHeight.slice(0, -2)) || 12;
+        const threshold = lineHeight / 2;
+
+        elem.normalize();
+
+        return side === 'top'
+            ? Math.abs(cursorRect.top - elemRect.top) < threshold
+            : Math.abs(cursorRect.bottom - elemRect.bottom) < threshold;
     }
 }

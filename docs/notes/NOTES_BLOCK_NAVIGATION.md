@@ -15,6 +15,7 @@ This page contains information on how the navigation between separate blocks is 
     1. [V1 (Relying on `BlocksStore.active`](#v1-relying-on-blocksstoreactive)
     2. [V2 (Using the DOM and `BlocksStore.active`)](#v2-using-the-dom-and-blocksstoreactive)
     3. [V3 (Relying on the DOM)](#v3-relying-on-the-dom)
+4. [Navigation Boundaries](#navigation-boundaries)
 5. [Selections](#selections)
 
 
@@ -27,6 +28,7 @@ The `BlockEditor` React component listens to changes to this property and focuse
 However 
 
 ## Keeping track of the active block
+
 As mentioned in [overview](#overview). The way we keep track of the active block is by using a **mobx observable property** in `BlocksStore` to which `BlockEditor` components (which render blocks) listen to for changes, and focuses the rendered block accordingly if the id matches.
 
 The `active` property has the following structure
@@ -83,6 +85,23 @@ Instead of updating `BlocksStore.active` and letting mobx notify the associated 
 One question one may have is that why do we still update `BlocksStore.active`. it's because selections still use this (refer to the [Selections](#selections) section for more info)
 
 **Note:** If we try to navigate down/up and there're no more blocks, we just send the cursor to the start/end of the current block (depending on the direction of the navigation).
+
+
+## Navigation Boundaries
+
+Usually, jumping to the nearest sibling block when performing navigation between blocks is fine. and that's what we thought at first.
+
+But then we introduced a new annotation sidebar in the doc viewer that shows a notes view, and that's where one issue came up.
+
+Let's say for example you have a document open, and you go to notes and start using the arrow keys to navigate, you reach the first block that's on your screen, press arrow up again, what would happen in this case is that
+your caret would disappear.
+
+The reason why this happens is that in Polar, we're using persistent routes to render some parts of the application, which unlike normal `react-router` routes do not unmount their children from the DOM but instead
+they set `display: none` on the entire thing, and you can see why this is causing an issue, it's because we're navigating to blocks that are technically are not there but they're still in the DOM.
+
+One simple solution we did is that we added a class "NoteRoot" to our root note container, and changed the code that performs block navigation to stop when it reaches a DOM element that has that specific class.
+
+Currently, you'll find this within the component `<NoteProviders />` which is used everywhere when rendering a view of a specific note.
 
 ## Selections
 

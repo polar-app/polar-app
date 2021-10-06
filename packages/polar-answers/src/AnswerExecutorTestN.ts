@@ -13,14 +13,19 @@ describe("Answer Executor", function () {
 
         const uid = await getUID(forEmail);
 
-        const response = await AnswerExecutor.exec({
+        const answerExecution = await AnswerExecutor.exec({
             uid,
             question,
-            model: 'ada',
-            search_model: 'ada',
+            model: 'curie',
+            search_model: 'curie',
             documents_limit: 1,
-            // rerank_elasticsearch: true,
+            rerank_elasticsearch: true,
+            rerank_elasticsearch_model: 'ada',
+            rerank_truncate_short_head: true,
+            prune_contiguous_records: true,
         });
+
+        const {response} = answerExecution;
 
         function isError(value: any): value is IAnswerExecutorError {
             return value.error === true;
@@ -31,6 +36,7 @@ describe("Answer Executor", function () {
             console.log("answer: ", Arrays.first(response.answers))
 
             console.log("response: " + JSON.stringify(response, null, '  '));
+            console.log("prompt: " + response.prompt);
 
             return response.answers[0];
 
@@ -39,7 +45,6 @@ describe("Answer Executor", function () {
         }
 
     }
-
 
     // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
     it("What is a Planet?", async function () {
