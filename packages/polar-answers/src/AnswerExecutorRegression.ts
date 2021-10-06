@@ -906,11 +906,14 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             // create a delegate that runs the requests to the AnswerExecutor directly
             // eslint-disable-next-line camelcase
-            const answer_executor_delegate = async () => await AnswerExecutor.exec({
-                uid,
-                question,
-                ...opts.request
-            });
+            const answer_executor_delegate = async () => {
+                const {response} = await AnswerExecutor.exec({
+                    uid,
+                    question,
+                    ...opts.request
+                });
+                return response;
+            };
 
             // now create an executor that uses the cache which uses the answer_executor_delegate
             // NOTE/IMPORTANT: if we change the answer-executor algorithm we can purge the cache
@@ -1050,7 +1053,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
         const uid = await getUID(forEmail);
 
-        const response = await AnswerExecutor.exec({
+        const {response} = await AnswerExecutor.exec({
             uid,
             question,
             ...opts
@@ -1248,6 +1251,11 @@ async function main() {
             },
         },
 
+        // TODO: another optimization would be, that when we use the composite
+        // models, to verify we do NOT send the same shingle IDs each more than
+        // once ... we should probably try the AND model, then the OR model,
+        // with the idx's removed/deduplicated.  Each strategy should do
+        // rerank_elasticsearch just with different results.
 
     ]
 

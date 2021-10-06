@@ -13,7 +13,7 @@ describe("Answer Executor", function () {
 
         const uid = await getUID(forEmail);
 
-        const response = await AnswerExecutor.exec({
+        const answerExecution = await AnswerExecutor.exec({
             uid,
             question,
             model: 'curie',
@@ -25,6 +25,8 @@ describe("Answer Executor", function () {
             prune_contiguous_records: true,
         });
 
+        const {response} = answerExecution;
+
         function isError(value: any): value is IAnswerExecutorError {
             return value.error === true;
         }
@@ -34,6 +36,7 @@ describe("Answer Executor", function () {
             console.log("answer: ", Arrays.first(response.answers))
 
             console.log("response: " + JSON.stringify(response, null, '  '));
+            console.log("prompt: " + prompt);
 
             return response.answers[0];
 
