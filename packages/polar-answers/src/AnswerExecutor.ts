@@ -29,6 +29,7 @@ import {ShortHeadCalculator} from "./ShortHeadCalculator";
 import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 import {AnswerExecutors} from "./AnswerExecutors";
 import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
+import {QuestionFilters} from "./QuestionFilters";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -45,7 +46,6 @@ const SHORT_HEAD_MIN_DOCS = 50;
 const SHORT_HEAD_MAX_DOCUMENTS = 50;
 
 const SHORT_HEAD_ANGLE = 45;
-
 
 export namespace AnswerExecutor {
 
@@ -201,37 +201,19 @@ export namespace AnswerExecutor {
 
             async function computeQueryTextFromQuestion() {
 
+                // TODO/FIXME we are NOT controlling our inputs here and it
+                // would be possible for someone to push down a regex or other
+                // issues and we need to fix this by using a real term query.
+
                 // eslint-disable-next-line camelcase
                 const filter_question = request.filter_question || DEFAULT_FILTER_QUESTION;
 
-                function filterUsingStopwords() {
-                    const words = request.question.split(/[ \t]+/);
-                    const stopwords = Stopwords.words('en');
-                    return Stopwords.removeStopwords(words, stopwords).join(" ");
-                }
-
-                async function filterUsingPoS(pos: ReadonlyArray<PartOfSpeechTag>) {
-                    const analysis = await GCLAnalyzeSyntax.extractPOS(request.question, pos);
-                    return analysis.map(current => current.content).join(" ");
-                }
-
                 // eslint-disable-next-line camelcase
-                switch (filter_question) {
+                const filter_question_joiner = request.filter_question_joiner || 'none';
 
-                    case "stopwords":
-                        return filterUsingStopwords();
-
-                    case "part-of-speech-noun":
-                        return await filterUsingPoS(['NOUN']);
-
-                    case "part-of-speech":
-                    case "part-of-speech-noun-adj":
-                        return await filterUsingPoS(['NOUN', 'ADJ']);
-
-                    case "none":
-                        return request.question;
-
-                }
+                return await QuestionFilters.filter(request.question,
+                                                    filter_question,
+                                                    filter_question_joiner);
 
             }
 

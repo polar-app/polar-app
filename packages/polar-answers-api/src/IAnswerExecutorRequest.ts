@@ -1,4 +1,6 @@
 import {AIModel} from "./AIModel";
+import {QuestionFilters} from "polar-answers/src/QuestionFilters";
+import TermJoinerType = QuestionFilters.TermJoinerType;
 
 export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
 
@@ -29,6 +31,11 @@ export interface IAnswerExecutorRequest {
     // eslint-disable-next-line camelcase
     readonly filter_question?: FilterQuestionType;
 
+    /**
+     * Parses the terms BUT we then converts them to AND queries.
+     */
+    // eslint-disable-next-line camelcase
+    readonly filter_question_joiner?: TermJoinerType;
     /**
      * Re-rank the results against the OpenAI search endpoint.
      */

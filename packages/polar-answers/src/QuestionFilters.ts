@@ -32,7 +32,9 @@ export namespace QuestionFilters {
 
     export async function filter(question: string,
                                  filter: FilterQuestionType,
-                                 termJoiner: TermJoiner): Promise<ESQueryStringQuery> {
+                                 termJoinerType: TermJoinerType): Promise<ESQueryStringQuery> {
+
+        const termJoiner = createJoiner(termJoinerType);
 
         function filterUsingStopwords() {
             const words = question.split(/[ \t]+/);
