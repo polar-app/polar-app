@@ -6,6 +6,9 @@ import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./DOMBlocks";
+import {CursorPositions} from "./CursorPositions";
+import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {BlockPredicates} from "../store/BlockPredicates";
 
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
 
@@ -43,7 +46,9 @@ type KeydownHandlerOpts = {
     blocksTreeStore: BlocksTreeStore;
     blockID: BlockIDStr;
     readonly: boolean;
+    isMultilineNavEnabled: boolean;
 };
+
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
 type Modifier = 'ctrl' | 'alt' | 'shift';
@@ -67,7 +72,7 @@ const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
 };
 
 const HANDLERS: Record<string, KeydownHandler | undefined> = {
-    ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID }) => {
+    ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID, isMultilineNavEnabled }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.collapse(blockID);
             abortEvent(event);
@@ -88,12 +93,21 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
+        const block = blocksTreeStore.getBlock(blockID)!;
+
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
-            abortEvent(event);
-            blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
+
+            if (! isMultilineNavEnabled ||
+                ! BlockPredicates.isEditableBlock(block) ||
+                CursorPositions.isCursorAtSide(contentEditableElem, 'top')) {
+
+                abortEvent(event);
+                blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
+            }
+
         }
     },
-    ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
+    ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore, isMultilineNavEnabled }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.expand(blockID);
             abortEvent(event);
@@ -114,9 +128,18 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
+        const block = blocksTreeStore.getBlock(blockID)!;
+
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
-            abortEvent(event);
-            blocksTreeStore.navNext({ shiftKey: event.shiftKey });
+
+            if (! isMultilineNavEnabled ||
+                ! BlockPredicates.isEditableBlock(block) ||
+                CursorPositions.isCursorAtSide(contentEditableElem, 'bottom')) {
+
+                abortEvent(event);
+                blocksTreeStore.navNext({ shiftKey: event.shiftKey });
+            }
+
         }
     },
     ArrowLeft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
@@ -171,12 +194,18 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    Enter: ({ event, blockID, blocksTreeStore, contentEditableElem }) => {
+    Enter: ({ event, blockID, blocksTreeStore, contentEditableElem, isMultilineNavEnabled }) => {
+        if (isMultilineNavEnabled && modifierPredicate(['shift'], event)) {
+            return;
+        }
+
         abortEvent(event);
+
         if (blocksTreeStore.hasSelected()) {
             blocksTreeStore.clearSelected("keydownHandler: Enter");
             return;
         }
+
         if (blocksTreeStore.requiredAutoUnIndent(blockID)) {
             blocksTreeStore.unIndentBlock(blockID);
         } else {
@@ -286,6 +315,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
     const { contentEditableRef, blockID, onKeyDown, readonly = false } = opts;
     const blocksTreeStore = useBlocksTreeStore();
     const platform = React.useMemo(() => Platforms.get(), []);
+    const isMultilineNavEnabled = useFeatureToggle('notes-multiline-nav');
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
         if (! (event.target instanceof HTMLElement)) {
@@ -306,7 +336,8 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 event,
                 blocksTreeStore,
                 blockID,
-                readonly
+                readonly,
+                isMultilineNavEnabled,
             });
         } else if (readonly && ! hasModifiers(event, false)) {
             abortEvent(event);
@@ -319,7 +350,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksTreeStore, readonly]);
+    }, [onKeyDown, blockID, platform, blocksTreeStore, readonly, isMultilineNavEnabled]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;
