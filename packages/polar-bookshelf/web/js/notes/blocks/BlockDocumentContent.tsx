@@ -1,5 +1,6 @@
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {Tag} from "polar-shared/src/tags/Tags";
 import React from "react";
 import {DocInfos} from "../../metadata/DocInfos";
 import {BlockEditorGenericProps} from "../BlockEditor";
@@ -20,20 +21,16 @@ const useStyles = makeStyles(() =>
 
 interface IProps extends BlockEditorGenericProps {
     docInfo: IDocInfo;
+    tags: ReadonlyArray<Tag>;
 }
 
 
 export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentContent(props) {
-    const { className, style, docInfo } = props;
+    const { className, style, docInfo, tags } = props;
     const classes = useStyles();
     const title = React.useMemo(() => DocInfos.bestTitle(docInfo), [docInfo]);
-    const tags = React.useMemo(() => {
-        const tags = Object.values(docInfo.tags || {});
-        if (tags.length === 0) {
-            return "No tags.";
-        }
-        return tags.map(tag => tag.label).join(', ');
-    }, [docInfo.tags]);
+
+    const tagsText = React.useMemo(() => tags.map(({ label }) => label).join(', '), [tags]);
 
     return (
         <div className={className}
@@ -41,7 +38,7 @@ export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentCont
             {title}
             <div className={classes.infoSection}>
                 <div><b>Reading progress</b> {docInfo.progress}%</div>
-                <div><b>Tags</b> {tags}</div>
+                <div><b>Tags</b> {tagsText}</div>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ export namespace WikiLinksToMarkdown {
      * @param markdown
      */
     export function unescape(markdown: string) {
-        return markdown.replace(/\[([^\]\[]+)\]\(#([^\]\[]+)\)/g, (_, args) => `[[${args}]]`);
+        return markdown.replace(/\[([^\]\[]+)\]\(#([^\]\[\)\(]+)\)/g, (_, args) => `[[${args}]]`);
     }
 
 }

@@ -88,23 +88,41 @@ export class RelatedTagsManager {
                 return {tag: tagLabel, docs: {}};
             });
 
+            const docTags = Dictionaries.computeIfAbsent(this.docTagsIndex, docID, (): DocTags => {
+                return { tagRefs: {} };
+            });
+
+            const docTagsTagHits = Dictionaries.computeIfAbsent(docTags.tagRefs, tagLabel, (): RefsRecord => {
+                return { refs: 0 };
+            });
+
             switch (mutationType) {
 
                 case 'set':
                     tagDocs.docs[docID] = true;
+                    docTagsTagHits.refs += 1;
                     break;
 
                 case 'delete':
                     delete tagDocs.docs[docID];
+
+                    if (Dictionaries.size(tagDocs.docs) === 0) {
+                        delete this.tagDocsIndex[tagLabel];
+                    }
+
+                    docTagsTagHits.refs = Math.max(0, docTagsTagHits.refs - 1);
+
+                    if (docTagsTagHits.refs === 0) {
+                        delete docTags.tagRefs[tagLabel];
+                    }
+
+                    if (Dictionaries.size(docTags.tagRefs) === 0) {
+                        delete this.docTagsIndex[docID];
+                    }
+
                     break;
 
             }
-
-            const docMeta = Dictionaries.computeIfAbsent(this.docTagsIndex, docID, (): DocTags => {
-                return {tags: []};
-            });
-
-            docMeta.tags.push(tagLabel);
 
         }
 
@@ -137,15 +155,15 @@ export class RelatedTagsManager {
 
                 const indexedDocMeta = this.docTagsIndex[relatedDocID];
 
-                const relatedTags = indexedDocMeta.tags;
+                const relatedTags = indexedDocMeta.tagRefs;
 
-                for (const relatedTag of relatedTags) {
+                for (const [relatedTag, { refs }] of Object.entries(relatedTags)) {
 
                     const tagHitMeta = Dictionaries.computeIfAbsent(tagHits, relatedTag, () => {
                         return {tag: relatedTag, hits: 0};
                     });
 
-                    ++tagHitMeta.hits;
+                    tagHitMeta.hits += refs;
 
                 }
 
@@ -222,8 +240,12 @@ export interface TagDocs {
     readonly docs: DocIDSetMap;
 }
 
+type RefsRecord = { refs: number };
+
+export type TagRefsRecord = {[tag: string]: RefsRecord };
+
 export interface DocTags {
-    tags: string[];
+    tagRefs: TagRefsRecord;
 }
 
 export interface TagHit {
