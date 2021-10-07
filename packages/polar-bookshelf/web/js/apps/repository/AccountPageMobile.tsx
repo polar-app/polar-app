@@ -12,7 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {PlanUsage} from "../../../../web/js/apps/repository/accounting/PlanUsage";
 
-import { PreferencesBar } from '../../../../apps/repository/js/doc_repo/PreferencesBar';
+import { PreferencesBar } from '../../../../apps/repository/js/doc_repo/HeaderBar';
 import { IconByPlan } from '../../../../apps/repository/js/account_overview/PlanIcon';
 
 import {useHistory} from 'react-router-dom';
@@ -89,7 +89,9 @@ interface IPrefButton{
     readonly icon: any;
     readonly goToUrl: React.MouseEventHandler;
 }
-
+/**
+ * The user details row: avatar, name and email and the user's plan
+ */
 export const UserDetailsRow = React.memo(function UserDetailsRow(){
     
     const classes = useStyles();
@@ -117,7 +119,11 @@ export const PlanDetailsContainer = React.memo(function PlanDetailsContainer(){
             <PlanUsage variant={'body2'}/>
         </div>
     );
-})
+});
+/**
+ * a component that we should reuse, 
+ * responsible for showing a button/menu items and exapnds/collapses on click
+ */
 export const Collapsible = React.memo(function Collapsible() {
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
@@ -149,7 +155,9 @@ export const Collapsible = React.memo(function Collapsible() {
         </>
     );
 });
-
+/**
+ * a unit component from the preference buttons section 
+ */
 export const PreferencesButton = React.memo(function PreferencesesButtons(props: IPrefButton) {
     const classes = useStyles();
 
@@ -163,6 +171,10 @@ export const PreferencesButton = React.memo(function PreferencesesButtons(props:
     );
 });
 
+/**
+ * Includes: Settings page, Pricing page, Redirecting information (collapsible) 
+ * and Logout option 
+ */
 export const PreferencesButtons = React.memo(function PreferencesesButtons() {
     const classes = useStyles();
     const history = useHistory();
@@ -197,12 +209,14 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
     );
 });
 
-
+/**
+ * The content of the account page
+ */
 export const AccountPageMobile = React.memo(function AccountPageMobile() {
     const classes = useStyles();
     return(
         <>
-            <PreferencesBar/>
+            <HeaderBar title={'Preferences'}/>
             <div className={classes.mainContainer}>
                 <UserDetailsRow/>
                 <PlanDetailsContainer/>   

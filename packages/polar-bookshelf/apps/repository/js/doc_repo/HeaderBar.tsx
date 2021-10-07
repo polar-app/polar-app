@@ -19,8 +19,13 @@ const useStyles = makeStyles((theme) =>
         }
     })
 );
-
-export const PreferencesBar = React.memo(function PreferencesBar() {
+interface IProps{
+    readonly title: string;
+}
+/**
+ * A header that will showcase a back button with a title
+ */
+export const HeaderBar = React.memo(function HeaderBar(props: IProps) {
     
     const classes = useStyles();
     const history = useHistory();
@@ -31,7 +36,7 @@ export const PreferencesBar = React.memo(function PreferencesBar() {
                 <IconButton onClick={()=>history.goBack()}>
                     <ArrowBackIcon/>
                 </IconButton>
-                <span className={classes.title}>Preferences</span>   
+                <span className={classes.title}>{props.title}</span>   
             </div>
         </>
     );
