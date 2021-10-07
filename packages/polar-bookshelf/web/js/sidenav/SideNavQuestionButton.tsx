@@ -115,7 +115,7 @@ export namespace MenuItems {
         return (
             <SideNavQuestionMenuItem text="Feature Requests"
                                      ref={ref}
-                                     secondary="Request features and report bugs to help improve Polar."
+                                     secondary="Request features and report bugs"
                                      icon={AllInboxIcon}
                                      onClick={handleClick}/>
         );
