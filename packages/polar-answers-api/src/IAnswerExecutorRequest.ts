@@ -69,6 +69,9 @@ export interface IAnswerExecutorRequest {
     readonly elasticsearch_sort_order?: ElasticsearchSortOrder;
 
     // eslint-disable-next-line camelcase
+    readonly elasticsearch_truncate_short_head?: boolean;
+
+    // eslint-disable-next-line camelcase
     readonly max_tokens?: number;
 
     /**
