@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) =>
         details:{
             display: 'flex',
             flexDirection: 'column',
-            padding: '0 20px'
+            padding: '0 15px'
         },
         name:{
             color: '#FFFFFF',
@@ -132,7 +132,7 @@ export const Collapsible = React.memo(function Collapsible() {
         <>
             <div className={classes.collapsableRow} onClick={() => setOpen(!open)}>
                 <div className={classes.IconAndTitle}>
-                    <HelpIcon style={{alignSelf: 'center'}}></HelpIcon>
+                    <HelpIcon style={{alignSelf: 'center',marginLeft: '-5px'}}></HelpIcon>
                     <span style={{alignSelf: 'center', marginLeft: '15px'}}>Help</span>
                 </div>
                 <IconButton
@@ -192,18 +192,18 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
             <PreferencesButton  
                     title={'Settings'} 
                     goToUrl={() => history.push(RoutePathnames.SETTINGS_MOBILE)}
-                    icon={<SettingsIcon style={{alignSelf: 'center'}} />}    />
+                    icon={<SettingsIcon style={{alignSelf: 'center', marginLeft: '-5px'}} />}    />
             <PreferencesButton  
                 title={'Upgrade Plan'} 
                 goToUrl={() => history.push(RoutePathnames.PLAN_MOBILE)}
-                icon={<MonetizationOnIcon style={{alignSelf: 'center'}} />}   />
+                icon={<MonetizationOnIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
    
             <Collapsible/>
 
             <PreferencesButton  
                     title={'Log out'} 
                     goToUrl={ () => handleLogout()}
-                    icon={<ExitToAppIcon style={{alignSelf: 'center'}} />}   />
+                    icon={<ExitToAppIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
             
         </>
     );
