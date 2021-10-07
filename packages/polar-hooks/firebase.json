@@ -74,6 +74,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/beta-register",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/login-with-custom-token",
         "destination": "/apps/repository/index.html"
       },
