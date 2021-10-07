@@ -43,8 +43,8 @@ export class GroupGetFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const GroupGetFunction = ExpressFunctions.createHook('GroupGetFunction', (req, res) => {
-    return UserRequests.execute(req, res, GroupGetFunctions.exec);
+export const GroupGetFunction = ExpressFunctions.createHookAsync('GroupGetFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupGetFunctions.exec);
 });
 
 export interface GroupGetRequest extends GroupIDRequest {
