@@ -4,9 +4,9 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {observer} from "mobx-react-lite"
-import {useBlockContextMenu} from "./Block";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {useBlockContextMenu} from "./BlockContextMenu";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

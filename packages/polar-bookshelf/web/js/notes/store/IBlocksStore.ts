@@ -25,6 +25,7 @@ import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 
 /**
  * deleteBlocks
@@ -46,6 +47,7 @@ export interface IBlocksStore {
     indexByName: BlocksIndexByName;
     indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
+    relatedTagsManager: RelatedTagsManager;
 
     hasSnapshot: boolean;
 

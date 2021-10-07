@@ -57,7 +57,7 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
                  display: 'inline-block',
                  backgroundColor,
                  width: 20,
-                 height: 20,
+                 height: 28, // This has to match the line-height of the text contents of the block
                  cursor: 'pointer',
                  userSelect: 'none',
                  ...props.style,

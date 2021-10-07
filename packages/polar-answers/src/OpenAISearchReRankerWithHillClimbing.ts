@@ -1,20 +1,20 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
-import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
 
 export namespace OpenAISearchReRankerWithHillClimbing {
-
-    // Math.sin()
-
-
-
-    import IRecordWithScore = OpenAISearchReRanker.IRecordWithScore;
 
     export async function exec<V>(models: ReadonlyArray<AIModel>,
                                   query: string,
                                   records: ReadonlyArray<V>,
                                   toText: (value: V) => string) {
 
-        //  Promise<ReadonlyArray<IRecordWithScore<V>>>
+        // case "ada":
+        //     return 0.0008 / 1000;
+        // case "babbage":
+        //     return 0.0012 / 1000;
+        // case "curie":
+        //     return 0.0060 / 1000;
+        // case "davinci":
+        //     return 0.0600 / 1000;
 
         const modelQueue = [...models];
 

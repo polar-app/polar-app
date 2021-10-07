@@ -162,7 +162,7 @@ describe('BlocksStore (Karma)', () => {
                 // Check the position of the cursor
                 const elem105 = DOMBlocks.getBlockElement(store.active.id);
                 Asserts.assertPresent(elem105);
-                assert.equal(CursorPositions.computeCurrentOffset(elem105), 'end');
+                assert.equal(CursorPositions.computeCurrentOffset(elem105), 34);
 
                 store.expand('105');
                 HTMLBlockUtils.popuplateHTML(store);
@@ -175,7 +175,7 @@ describe('BlocksStore (Karma)', () => {
                 // Check the position of the cursor
                 const elem106 = DOMBlocks.getBlockElement(store.active.id);
                 Asserts.assertPresent(elem106);
-                assert.equal(CursorPositions.computeCurrentOffset(elem106), 'end');
+                assert.equal(CursorPositions.computeCurrentOffset(elem106), 69);
             });
         });
     });

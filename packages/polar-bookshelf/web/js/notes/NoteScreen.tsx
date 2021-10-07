@@ -33,16 +33,18 @@ export const NoteProviders: React.FC = ({ children }) => {
     const classes = useStyles();
 
     return (
-        <ActionMenuStoreProvider>
-            <NoteSelectionHandler style={{ height: '100%' }}>
-                <NoteStyle>
-                    <MUIBrowserLinkStyle className={classes.noteOuter}>
-                        {children}
-                        <ActionMenuPopup />
-                    </MUIBrowserLinkStyle>
-                </NoteStyle>
-            </NoteSelectionHandler>
-        </ActionMenuStoreProvider>
+        <div className="NoteRoot" style={{ height: '100%' }}>
+            <ActionMenuStoreProvider>
+                <NoteSelectionHandler style={{ height: '100%' }}>
+                    <NoteStyle>
+                        <MUIBrowserLinkStyle className={classes.noteOuter}>
+                            {children}
+                            <ActionMenuPopup />
+                        </MUIBrowserLinkStyle>
+                    </NoteStyle>
+                </NoteSelectionHandler>
+            </ActionMenuStoreProvider>
+        </div>
     );
 };
 

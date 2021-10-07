@@ -89,7 +89,13 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
             return false;
         }
 
-        const range = window.getSelection()!.getRangeAt(0);
+        const selection = window.getSelection();
+
+        if (! selection || selection.rangeCount === 0) {
+            return false;
+        }
+
+        const range = selection.getRangeAt(0);
 
         if (range.collapsed) {
 

@@ -196,7 +196,7 @@ export const useAnnotationBlockManager = () => {
                 type: AnnotationContentType.FLASHCARD,
                 docID: highlightBlock.content.docID,
                 pageNum: highlightBlock.content.pageNum,
-                links: highlightBlock.content.links,
+                links: highlightBlock.content.tagLinks,
                 value: getFlashcard(),
             });
 

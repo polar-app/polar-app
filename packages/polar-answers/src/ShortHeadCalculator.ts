@@ -2,6 +2,7 @@
 // https://www.mathsisfun.com/algebra/trig-finding-angle-right-triangle.html
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asin
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin
+
 export namespace ShortHeadCalculator {
 
     /**
@@ -88,23 +89,58 @@ export namespace ShortHeadCalculator {
             return [];
         }
 
+        function shiftToPositive(vector: Vector): NormalizedVector {
+
+            const min = Math.min(...vector);
+
+            function toNormalizedValue(original: number, adj: number): INormalizedValue {
+                return {
+                    value: original + adj,
+                    original,
+                }
+            }
+
+            if (min < 1.0) {
+                const adj = 1.0 - Math.abs(min);
+                return vector.map(current => toNormalizedValue(current, adj));
+            }
+
+            return vector.map(current => toNormalizedValue(current, 0));
+
+        }
+
         // technically we can just read the last vector but this is a bit less
         // error prone but still not necessary.  We might even want to analyze the
         // vector ahead of time to make sure it's sorted by this is O(N) but that's
         // still computationally cheap so we will probably end up doing it anyway.
 
-        const min = Math.min(...vector);
+        function scaleToBase(vector: NormalizedVector) {
 
-        const norm = 1.0 / min;
+            const min = Math.min(...vector.map(current => current.value));
 
-        function toNormalizedValue(original: number) {
-            return {
-                value: original * norm,
-                original,
+            const norm = 1.0 / min;
+
+            function toNormalizedValue(normalizedValue: INormalizedValue) {
+                return {
+                    value: normalizedValue.value * norm,
+                    original: normalizedValue.original,
+                }
             }
+
+            return vector.map(toNormalizedValue);
+
         }
 
-        return vector.map(toNormalizedValue);
+        return scaleToBase(shiftToPositive(vector));
+
+        // return scaleToBase(vector.map(current => {
+        //     return {
+        //         value: current,
+        //         original: current
+        //     }
+        // }));
+
+        // return shiftToPositive(vector);
 
     }
 
@@ -132,7 +168,16 @@ export namespace ShortHeadCalculator {
 
     }
 
-    export function computeShortHead(normalizedPoints: NormalizedPoints) {
+    // eslint-disable-next-line camelcase
+    export function compute(vector: Vector, target_angle = 20) {
+
+        const normalized = ShortHeadCalculator.normalizeXY(vector);
+        return ShortHeadCalculator.computeShortHead(normalized, target_angle);
+
+    }
+
+    // eslint-disable-next-line camelcase
+    export function computeShortHead(normalizedPoints: NormalizedPoints, target_angle = 20) {
 
         /**
          * Factor to determine what % of total nodes is used as a buffer to
@@ -140,24 +185,27 @@ export namespace ShortHeadCalculator {
          */
         const fact = 0.1;
 
-        const buff = Math.max(normalizedPoints.length * fact, 5);
+        const buff = Math.floor(Math.max(normalizedPoints.length * fact, 5));
 
         if (normalizedPoints.length <= buff) {
             return undefined;
         }
-
-        // eslint-disable-next-line camelcase
-        const min_angle = 20;
 
         function computeTermination(): number | undefined {
 
             for(let i = 0; normalizedPoints.length - buff; ++i) {
                 const p0 = normalizedPoints[i];
                 const p1 = normalizedPoints[i + buff];
+
+                if (! p1) {
+                    console.warn(`No point p1 at ${i} for buff ${buff}`);
+                    break;
+                }
+
                 const angle = calcAngleBetweenPoints(p0, p1).angle
 
                 // eslint-disable-next-line camelcase
-                if (angle < min_angle) {
+                if (angle < target_angle) {
                     return i;
                 }
 
