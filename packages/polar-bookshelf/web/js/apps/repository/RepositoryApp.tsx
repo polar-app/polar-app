@@ -67,6 +67,7 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
+import { AccountPageMobile } from './AccountPageMobile';
 
 interface IProps {
     readonly app: App;
@@ -332,6 +333,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path="/migration/phz">
                     <PHZMigrationScreen/>
+                </Route>
+
+                <Route exact path="/account">
+                    <AccountPageMobile/>
                 </Route>
 
                 <AuthRequired>

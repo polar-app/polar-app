@@ -29,23 +29,6 @@ const LogoutButton = (props: LogoutButtonProps) => {
     </Button>;
 
 };
-//
-// const InviteUsersButton = () => {
-//
-//     return <Link to={{pathname: '/invite'}}>
-//         <Button id="cloud-sync-invite-users"
-//                 color="secondary"
-//                 outline
-//                 size="md">
-//
-//             <i className="fas fa-user-plus mr-1"/>
-//
-//             Invite Users
-//
-//         </Button>
-//     </Link>;
-//
-// };
 
 const ViewPlansAndPricingButton = () => {
 
@@ -153,7 +136,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                 <div className="mt-2 pb-2 border-top text-center">
 
                     <div className="mt-4 mb-4">
-                        <PlanUsage/>
+                        <PlanUsage variant='h6'/>
                     </div>
 
                     <div className="mt-2 mb-4">

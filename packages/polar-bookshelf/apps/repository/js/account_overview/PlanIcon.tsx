@@ -3,11 +3,22 @@ import {Billing} from "polar-accounts/src/Billing";
 import {RGBs} from "polar-shared/src/util/Colors";
 import CheckIcon from '@material-ui/icons/Check';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {Plans} from "polar-accounts/src/Plans";
+
 import V2PlanLevel = Billing.V2PlanLevel;
 
 interface IProps {
     readonly level: V2PlanLevel;
     readonly active: boolean;
+}
+
+interface IUserPlanProps {
+
+    /**
+     * The current user's plan.
+     */
+    readonly subscription: Billing.Subscription | undefined;
+    readonly className: string;
 }
 
 class Colors {
@@ -17,24 +28,32 @@ class Colors {
     public static GOLD = RGBs.create(252, 194, 0);
 }
 
+export const IconByPlan = deepMemo(function IconByPlan(props: IUserPlanProps) {
+
+    const v2Plan = Plans.toV2(props.subscription?.plan).toString();
+    const border = '2px solid #FFFFFF';
+
+    return(
+        <div className={props.className} 
+                style={{
+                    width: '50px',
+                    height: '50px',
+                    display: 'flex',
+                    boxSizing: 'border-box',
+                    borderRadius: '35px',
+                    color: '#FFFFFF',
+                    textTransform: 'capitalize',
+                    border
+            }}>
+            <div className="m-auto"
+            style={{color: '#FFFFFF', opacity: '54%'}}>
+                {'free'}
+            </div>
+        </div>
+    );
+});
+
 export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
-
-    // const computeColor = () => {
-    //     switch (this.props.plan) {
-    //         case "free":
-    //             return Colors.FREE;
-    //         case "bronze":
-    //             return Colors.BRONZE;
-    //         case "silver":
-    //             return Colors.SILVER;
-    //         case "gold":
-    //             return Colors.GOLD;
-    //     }
-    // };
-    //
-    // const color = computeColor();
-
-    // const border = '2px solid ' + color.toCSS();
 
     const border = '2px solid black';
 
@@ -61,7 +80,6 @@ export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
                      boxSizing: 'border-box',
                      borderRadius: '35px',
                      border,
-                     // color: color.toCSS()
                  }}>
 
                 <div className="m-auto">
@@ -71,7 +89,7 @@ export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
             </div>
 
             <div className="ml-auto mr-auto text-md">
-                {props.level}
+                <span style={{textTransform: 'capitalize'}}>{props.level}</span>
             </div>
 
         </div>
