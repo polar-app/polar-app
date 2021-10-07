@@ -55,14 +55,14 @@ describe('CursorPositions', () => {
             assert.equal(pos, document.body.textContent!.length - 1);
         });
 
-        it('should work with empty nodes and return "end"', () => {
+        it('should work with empty nodes', () => {
             document.body.innerHTML = `types<span contenteditable="false"></span> `;
             const span = document.querySelector<HTMLSpanElement>('span');
             Asserts.assertPresent(span);
             ContentEditables.setCaretPosition(span, 'start');
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
-            assert.equal(pos, 'end');
+            assert.equal(pos, 6);
         });
     });
 

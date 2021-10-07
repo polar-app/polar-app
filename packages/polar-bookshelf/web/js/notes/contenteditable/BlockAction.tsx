@@ -11,6 +11,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
+import {TAG_IDENTIFIER} from '../content/HasLinks';
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -111,8 +112,11 @@ function useActionExecutor(id: BlockIDStr) {
                 coveringRange.deleteContents();
 
                 const a = document.createElement('a');
+                const trimmedTarget = actionOp.target.startsWith(TAG_IDENTIFIER)
+                    ? actionOp.target.slice(1)
+                    : actionOp.target;
                 a.setAttribute('contenteditable', 'false');
-                a.setAttribute('href', '#' + actionOp.target);
+                a.setAttribute('href', '#' + trimmedTarget);
                 a.appendChild(document.createTextNode(actionOp.target.trim()));
 
                 if (type === 'tag') {
