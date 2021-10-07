@@ -26,36 +26,44 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
+import { PointerType } from 'polar-dom-text-search/src/IPointer';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {
-            marginTop: theme.spacing(2),
+            marginTop: theme.spacing(10),
+            marginBottom: theme.spacing(10)
         },
         button: {
             flexGrow: 1,
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
-            fontSize: '1.5em',
+            fontSize: '1.0em',
+            padding: '8px'
         },
         intro: {
-            color: theme.palette.text.secondary,
-            fontSize: '2.2em'
+            color: '#F3F3F2',
+            fontSize: '2.0em',
+            fontWeight: 'lighter',
+            fontFamily: 'arial, sans-serif',
+            marginTop: theme.spacing(1),
+            marginBottom: theme.spacing(1)
         },
 
         divider: {
-            margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
+            marginBottom: theme.spacing(1),
+            marginTop: theme.spacing(1)
         },
 
         sendLinkDivider: {
             margin: theme.spacing(1),
             marginBottom: theme.spacing(3),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            marginLeft: theme.spacing(1),
+            marginRight: theme.spacing(1),
         },
 
         alert: {
@@ -109,9 +117,22 @@ const useStyles = makeStyles((theme) =>
             textDecoration: 'underline !important'
         }, 
         a: {
-            color: theme.palette.text.secondary,
-            textDecoration: 'underline'
-        }
+            color: '#F3F3F2 !important',
+            textDecoration: 'underline !important',
+            textAlign: 'center',
+            cursor: 'pointer',
+            marginTop: '15px'
+        },
+        HeaderTitle: {
+            textAlign: 'center',
+            fontFamily: 'arial, sans-serif',
+            fontWeight: 'lighter'
+        },
+        VerticalBorder: {
+            borderLeft: '2px solid #6754D6 !important',
+            padding: '2px',
+            height: '45px'
+          }
     }),
 );
 
@@ -137,7 +158,6 @@ const AuthButton = (props: IAuthButtonProps) => {
                         color="primary"
                         className={classes.button}
                         onClick={props.onClick}
-                        startIcon={props.startIcon}
                         style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
                     {hint} with {props.strategy}
@@ -344,8 +364,6 @@ const EmailTokenAuthButton = () => {
                 <>
                     {active && (
                         <>
-                            <Divider className={classes.sendLinkDivider}/>
-
                             {pending && (
                                 <ProgressActive/>
                             )}
@@ -390,9 +408,18 @@ const EmailTokenAuthButton = () => {
                                         className={classes.email}
                                         onChange={event => emailRef.current = event.target.value}
                                         onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                        placeholder="email@"
+                                        placeholder="Enter your email address"
                                         variant="outlined" 
-                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}}/>
+                                        style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <>
+                                                <EmailIcon style={{margin: '8px'}}/> 
+                                                <div className={classes.VerticalBorder} style={{margin: '10px'}}></div>
+                                                </>
+                                            )
+                                          }}
+                                          />
                             )}
                         </>
                     )}
@@ -456,8 +483,10 @@ const EmailTokenAuthButton = () => {
                                             className={classes.email}
                                             onChange={event => emailRef.current = event.target.value}
                                             onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                            placeholder="email@"
-                                            variant="outlined" />
+                                            placeholder="Enter your email address"
+                                            variant="outlined" 
+                                            
+                                            />
                             )}
 
                         </>
@@ -486,8 +515,9 @@ const SignInWithExistingAccount = () => {
     return (
         
 
-        <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
-            <Button>or sign-in with existing account</Button>
+        <div className={classes.a} onClick={() => history.push('/sign-in')}>
+            <a>OR SIGN-IN WITH NEW ACCOUNT</a>
+                
         </div>
     );
 
@@ -499,8 +529,8 @@ const OrCreateNewAccount = () => {
     const history = useHistory();
 
     return (
-        <div className={classes.alternate} onClick={() => history.push('/create-account')}>
-            <Button>or create new account</Button>
+        <div className={classes.a} onClick={() => history.push('/create-account')}>
+            <a>OR CREATE NEW ACCOUNT</a>
         </div>
     );
 
@@ -572,47 +602,53 @@ const Main = React.memo(function Main(props: IProps) {
             <DeviceRouters.Phone>
             <div style={{height:"100vh"}}>
 
-            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+                <h1 className={classes.HeaderTitle}>
+                    POLAR
+                </h1>
 
-            <div className="text-center">
+                <div className="text-center">
 
                 <div className={classes.logo}>
                     <PolarSVGIcon width={125} height={125}/>
                 </div>
 
+                <Divider className={classes.sendLinkDivider}/>
+
                 {props.mode === 'create-account' && (
                     <h2 className={classes.intro}>
-                        Create your Polar Account
+                        Create Account
                     </h2>
                 )}
 
                 {props.mode === 'sign-in' && (
                     <h2 className={classes.intro}>
-                        Sign In to Polar
+                        Sign In
                     </h2>
                 )}
+
+                    <EmailTokenAuthButton/>
+
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <OrCreateNewAccount/>
+                    )}
+
+                    <div style={{flexGrow: 1}}/>
+
+                    <div>
+                        <p style={{fontSize: '10px'}} className={classes.legal}>
+                            You acknowledge that you will read, and agree to
+                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                        </p>
+                    </div>
             </div>
 
-            
+            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
 
-                <EmailTokenAuthButton/>
-
-                {props.mode === 'create-account' && (
-                    <SignInWithExistingAccount/>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <OrCreateNewAccount/>
-                )}
-
-                <div style={{flexGrow: 1}}/>
-
-                <div>
-                    <p style={{fontSize: '10px'}} className={classes.legal}>
-                        You acknowledge that you will read, and agree to
-                        our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                    </p>
-                </div>
+                
             </div>
         </div>
             </DeviceRouters.Phone>
