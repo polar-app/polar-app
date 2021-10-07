@@ -1,6 +1,8 @@
 import {lambdaWrapper} from "../../../../shared/lambdaWrapper";
 import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {ComputeNextUserPriority} from "polar-private-beta/src/ComputeNextUserPriority";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 
 function canAcceptBatch(idUser: IDUser) {
     const allowedEmails = [
@@ -10,10 +12,15 @@ function canAcceptBatch(idUser: IDUser) {
     return allowedEmails.includes(idUser.user.email as string);
 }
 
+const MAX_BATCH_SIZE = 1;
+
 export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) => {
     if (!canAcceptBatch(idUser)) {
         throw new Error('Not authorized');
     }
+
+    const auth = FirebaseAdmin.app().auth();
+    const result = [];
 
     const batch = await ComputeNextUserPriority.compute({
         tagPriorities: {
@@ -23,7 +30,22 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
         },
     });
 
+    // Take the first N number of users from the queue
+    const chunk = batch.slice(0, MAX_BATCH_SIZE);
+
+    for (let waitingUser of chunk) {
+        const email = waitingUser.email;
+        const password = Hashcodes.createRandomID();
+
+        const user = await auth.createUser({email, password});
+
+        result.push({
+            user,
+            isNewUser: true
+        });
+    }
+
     return {
-        batch,
+        result,
     }
 });
