@@ -106,9 +106,15 @@ namespace CopyUtils {
             if (anchor) {
                 link.href = `${window.location.origin}${RoutePathnames.NOTE(anchor)}`;
             } else {
+                const parentElem = link.parentElement;
+
+                if (! parentElem) {
+                    return;
+                }
+
                 const textNode = document.createTextNode(link.textContent || '');
-                elem.insertBefore(textNode, link);
-                elem.removeChild(link);
+                parentElem.insertBefore(textNode, link);
+                parentElem.removeChild(link);
             }
         };
 
