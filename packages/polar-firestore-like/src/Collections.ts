@@ -10,7 +10,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {TDocumentChangeType} from "./IDocumentChange";
-import {TOrderByDirection} from "./IQuery";
+import {IQuery, TOrderByDirection} from "./IQuery";
 
 import {TWhereFilterOp} from "./ICollectionReference";
 
@@ -191,19 +191,22 @@ export namespace Collections {
         // TODO: should work without any clauses and just list all the records
         // which is fine for small collections
 
-        const clause = clauses[0];
-        const [field, op, value] = clause;
-
-        Clauses.assertPresent(clause);
-
-        let query = firestore
+        let query: IQuery<SM> = firestore
             .collection(collection)
-            .where(field, op, value);
 
-        for (const clause of clauses.slice(1)) {
+        if (clauses.length > 0) {
+
+            const clause = clauses[0];
             const [field, op, value] = clause;
-            Clauses.assertPresent(clause);
+
             query = query.where(field, op, value);
+
+            for (const clause of clauses.slice(1)) {
+                const [field, op, value] = clause;
+                Clauses.assertPresent(clause);
+                query = query.where(field, op, value);
+            }
+
         }
 
         for (const orderBy of opts.orderBy || []) {
