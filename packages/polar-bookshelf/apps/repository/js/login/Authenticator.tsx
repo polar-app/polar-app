@@ -405,21 +405,21 @@ const EmailTokenAuthButton = () => {
 
                             {! triggered && (
                                 <TextField autoFocus={true}
-                                        className={classes.email}
-                                        onChange={event => emailRef.current = event.target.value}
-                                        onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                        placeholder="Enter your email address"
-                                        variant="outlined" 
-                                        style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <>
-                                                <EmailIcon style={{margin: '8px'}}/> 
-                                                <div className={classes.VerticalBorder} style={{margin: '10px'}}></div>
-                                                </>
-                                            )
-                                          }}
-                                          />
+                                    className={classes.email}
+                                    onChange={event => emailRef.current = event.target.value}
+                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                    placeholder="Enter your email address"
+                                    variant="outlined" 
+                                    style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
+                                    InputProps={{
+                                    startAdornment: (
+                                        <>
+                                            <EmailIcon style={{margin: '8px'}}/> 
+                                            <div className={classes.VerticalBorder} style={{margin: '10px'}}></div>
+                                        </>
+                                        )
+                                    }}
+                                />
                             )}
                         </>
                     )}
@@ -431,7 +431,6 @@ const EmailTokenAuthButton = () => {
                                     startIcon={<EmailIcon />}
                                     />
                     )}
-
                 </>
             </DeviceRouters.Phone>
 
@@ -480,15 +479,13 @@ const EmailTokenAuthButton = () => {
 
                             {! triggered && (
                                 <TextField autoFocus={true}
-                                            className={classes.email}
-                                            onChange={event => emailRef.current = event.target.value}
-                                            onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                            placeholder="Enter your email address"
-                                            variant="outlined" 
-                                            
-                                            />
+                                    className={classes.email}
+                                    onChange={event => emailRef.current = event.target.value}
+                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                    placeholder="Enter your email address"
+                                    variant="outlined"    
+                                />
                             )}
-
                         </>
                     )}
 
@@ -505,99 +502,77 @@ const EmailTokenAuthButton = () => {
     );
 };
 
-// end comp 1
-
 const SignInWithExistingAccount = () => {
 
     const classes = useStyles();
     const history = useHistory();
 
     return (
-        
-
         <div className={classes.a} onClick={() => history.push('/sign-in')}>
             <a>OR SIGN-IN WITH NEW ACCOUNT</a>
-                
         </div>
     );
-
 }
 
 const OrCreateNewAccount = () => {
-
     const classes = useStyles();
     const history = useHistory();
-
     return (
         <div className={classes.a} onClick={() => history.push('/create-account')}>
             <a>OR CREATE NEW ACCOUNT</a>
         </div>
     );
-
 }
 
 const Main = React.memo(function Main(props: IProps) {
-
     const classes = useStyles();
-
     const [Login, setLogin] = React.useState("LandingPage");
     const [isKeyboardVisible, setKeyboardVisible] = React.useState();
 
-
     return (
-
         <>
             <DeviceRouters.NotPhone>
             <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                <div id="firebaseui-auth-container" style={{display: 'none'}}/>
+                    <div className="text-center">
+                        <div className={classes.logo}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </div>
 
-            <div id="firebaseui-auth-container" style={{display: 'none'}}/>
+                        {props.mode === 'create-account' && (
+                        <h2 className={classes.intro}>
+                            Create your Polar Account
+                        </h2>
+                        )}
 
-            <div className="text-center">
+                        {props.mode === 'sign-in' && (
+                            <h2 className={classes.intro}>
+                                Sign In to Polar
+                            </h2>
+                        )}
 
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                            }}>
 
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
+                            <EmailTokenAuthButton/>
+                        </div>
+                    </div>
+                    <Divider className={classes.divider}/>
+
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <OrCreateNewAccount/>
+                    )}
+                    <div style={{flexGrow: 1}}>
                 </div>
-
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create your Polar Account
-                    </h2>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In to Polar
-                    </h2>
-                )}
-
-                <div style={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-
-                    <EmailTokenAuthButton/>
-
-                </div>
-
-            </div>
-
-            <Divider className={classes.divider}/>
-
-            {props.mode === 'create-account' && (
-                <SignInWithExistingAccount/>
-            )}
-
-            {props.mode === 'sign-in' && (
-                <OrCreateNewAccount/>
-            )}
-
-            <div style={{flexGrow: 1}}>
-
-            </div>
                 <Links/>
             </div>
-        </DeviceRouters.NotPhone>
+            </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
             <div style={{height:"100vh"}}>
@@ -644,16 +619,10 @@ const Main = React.memo(function Main(props: IProps) {
                             our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
                         </p>
                     </div>
+                </div>
             </div>
-
-            <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
-
-                
-            </div>
-        </div>
             </DeviceRouters.Phone>
         </>
-
     );
 });
 
@@ -709,27 +678,23 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                                     <Pending/>
                                 )}
 
-
                                 {authStatus === 'needs-auth' && (
                                 <Main {...props}/>
                                 )}
-
                             </>
-
                         </Paper>
-
                     </div>
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
                     <>
-                    {authStatus === undefined && (
-                        <Pending/>
-                    )}
+                        {authStatus === undefined && (
+                            <Pending/>
+                        )}
 
-                    {authStatus === 'needs-auth' && (
-                    <Main {...props}/>
-                    )}
+                        {authStatus === 'needs-auth' && (
+                        <Main {...props}/>
+                        )}
                     </>
             </DeviceRouters.Phone>
                 
