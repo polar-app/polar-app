@@ -857,6 +857,7 @@ export interface IRegressionAnswerExecutorRequest extends Pick<IAnswerExecutorRe
                                                                                        'filter_question_joiner' |
                                                                                        'max_tokens' |
                                                                                        'openai_completion_cleanup_enabled' |
+                                                                                       'elasticsearch_truncate_short_head' |
                                                                                        'elasticsearch_sort_order'> {
 
     /**
@@ -1274,6 +1275,33 @@ async function main() {
                 filter_question: 'part-of-speech-noun',
                 filter_question_joiner: 'AND',
                 elasticsearch_sort_order: 'idx',
+                max_tokens: 125,
+                openai_completion_cleanup_enabled: true
+            },
+        },
+        {
+            description: "Basically the V6 model BUT I truncate the short head on Elasticsearch results and use OR and rely on the score to filter out garbage.",
+            request: {
+                id: 'v9',
+                model: 'curie',
+                search_model: 'curie',
+                rerank_elasticsearch: true,
+                rerank_elasticsearch_size: 500,
+                rerank_elasticsearch_model: 'ada',
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
+                prune_contiguous_records: true,
+                filter_question: 'part-of-speech-noun',
+                filter_question_joiner: 'OR',
+                elasticsearch_sort_order: 'idx',
+                elasticsearch_truncate_short_head: {
+                    target_angle: 30,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 max_tokens: 125,
                 openai_completion_cleanup_enabled: true
             },

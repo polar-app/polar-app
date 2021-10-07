@@ -32,22 +32,6 @@ import {QuestionFilters} from "./QuestionFilters";
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
-/**
- * The minimum docs needed to run the short head computation.  We need some
- * setting here as a short head computation on a short vector isn't going to be
- * very reliable and further the costs of just executing across all the
- * documents is fairly reasonable.
- */
-const SHORT_HEAD_MIN_DOCS = 50;
-
-/**
- * The max number of docs to return from the short head computation. Without
- * this we could exceed the 200 max per answers call.
- */
-const SHORT_HEAD_MAX_DOCUMENTS = 50;
-
-const SHORT_HEAD_ANGLE = 45;
-
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
@@ -283,10 +267,31 @@ export namespace AnswerExecutor {
                 const [esResponse, elasticsearch_duration]
                     = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
 
-                // if (request.elasticsearch_truncate_short_head)
+
+                function computeElasticsearchRecords() {
+
+                    function computeLimit(): number {
+
+                        if (request.elasticsearch_truncate_short_head) {
+                            console.log("Computing short head on Elasticsearch results: ", request.elasticsearch_truncate_short_head);
+                            const head = ShortHeadCalculator.compute(esResponse.hits.hits.map(current => current._score), request.elasticsearch_truncate_short_head);
+                            return head.length;
+                        }
+
+                        return esResponse.hits.hits.length;
+
+                    }
+
+                    const limit = computeLimit();
+
+                    return arrayStream(esResponse.hits.hits.map(current => current._source))
+                               .head(limit)
+                               .collect()
+
+                }
 
                 // eslint-disable-next-line camelcase
-                const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+                const elasticsearch_records = computeElasticsearchRecords();
 
                 return {
                     elasticsearch_records,

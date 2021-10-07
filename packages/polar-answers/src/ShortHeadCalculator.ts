@@ -202,7 +202,7 @@ export namespace ShortHeadCalculator {
     };
 
     // eslint-disable-next-line camelcase
-    export function compute(vector: Vector, opts: IComputeOpts = DEFAULT_COMPUTE_OPTS): Vector | undefined {
+    export function compute(vector: Vector, opts: IComputeOpts = DEFAULT_COMPUTE_OPTS): Vector {
 
         const normalized = ShortHeadCalculator.normalizeXY(vector);
         return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle, opts.max_docs);
@@ -220,8 +220,12 @@ export namespace ShortHeadCalculator {
 
         const buff = Math.floor(Math.max(normalizedPoints.length * fact, 5));
 
+        function toOriginalVector() {
+            return normalizedPoints.map(current => current.y.original);
+        }
+
         if (normalizedPoints.length <= buff) {
-            return undefined;
+            return toOriginalVector();
         }
 
         function computeTermination(): number | undefined {
@@ -251,7 +255,7 @@ export namespace ShortHeadCalculator {
         const term = computeTermination();
 
         if (term === undefined) {
-            return undefined;
+            return toOriginalVector();
         }
 
         return arrayStream(normalizedPoints.slice(0, term).map(current => current.y.original))

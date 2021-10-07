@@ -153,7 +153,11 @@ describe("ShortHeadCalculator", () => {
         });
 
         it("test data from elasticsearch1", () => {
-            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_ELASTICSEARCH1, 30);
+            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_ELASTICSEARCH1, {
+                target_angle: 30,
+                min_docs: 50,
+                max_docs: 50,
+            });
 
             assert.equal(TEST_DATA_FROM_ELASTICSEARCH1.length, 1277);
             assert.equal(head!.length, 144);
@@ -162,7 +166,11 @@ describe("ShortHeadCalculator", () => {
 
 
         it("test data from openai", () => {
-            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_OPENAI_SEARCH, 45);
+            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_OPENAI_SEARCH, {
+                target_angle: 45,
+                min_docs: 50,
+                max_docs: 50,
+            });
             assertJSON(head, [
                 226.001,
                 194.994,
@@ -225,7 +233,11 @@ describe("ShortHeadCalculator", () => {
         });
 
         it("test data from openai without negative values", () => {
-            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_OPENAI_SEARCH.filter(current => current > 0.0), 45);
+            const head = ShortHeadCalculator.compute(TEST_DATA_FROM_OPENAI_SEARCH.filter(current => current > 0.0), {
+                target_angle: 45,
+                min_docs: 50,
+                max_docs: 50,
+            });
             assertJSON(head, [
                 226.001,
                 194.994,
@@ -282,7 +294,7 @@ describe("ShortHeadCalculator", () => {
 
         xit("test data", () => {
             const normalized = ShortHeadCalculator.normalizeXY(TEST_DATA_FROM_PAGERANK);
-            const shortHead = ShortHeadCalculator.computeShortHead(normalized);
+            const shortHead = ShortHeadCalculator.computeShortHead(normalized, 45, 50);
             assertJSON(shortHead, [
                 0.019072,
                 0.013236,
