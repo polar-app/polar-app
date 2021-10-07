@@ -11,6 +11,7 @@ export namespace ESRequests {
 
     export interface IElasticResponse<T> {
         readonly _source: T;
+        readonly _score: number;
     }
 
     export interface IElasticSearchHitsTotal {

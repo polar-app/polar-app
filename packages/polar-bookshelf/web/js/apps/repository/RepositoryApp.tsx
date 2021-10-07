@@ -66,6 +66,7 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
+import { AccountPageMobile } from './AccountPageMobile';
 import {BetaRegister} from "../../../../apps/repository/js/login/BetaRegister";
 import {CDKDemo} from "./CDKDemo";
 
@@ -367,8 +368,20 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" exact path={RoutePathnames.SETTINGS_MOBILE}>
+                                    <SettingsScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" exact path={RoutePathnames.PLAN_MOBILE}>
+                                    <PricingScreen/>
+                                </PersistentRoute>
+
                                 <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
                                     <AddFilesMobileScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" path={RoutePathnames.ACCOUNT_MOBILE}>
+                                    <AccountPageMobile/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}

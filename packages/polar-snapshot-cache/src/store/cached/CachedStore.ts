@@ -612,7 +612,28 @@ export namespace CachedStore {
             return {
                 id: _collection.id,
                 doc,
-                where
+                where,
+                get: (options?: IGetOptions): Promise<IQuerySnapshot<ISnapshotMetadata>> => {
+                    throw new Error("not implemented");
+                },
+                limit: (count: number): IQuery<ISnapshotMetadata> => {
+                    throw new Error("not implemented");
+                },
+                offset: (offset: number) => {
+                    throw new Error("not implemented");
+                },
+                onSnapshot: () => {
+                    throw new Error("not implemented");
+                },
+                orderBy: () => {
+                    throw new Error("not implemented");
+                },
+                startAt: () => {
+                    throw new Error("not implemented");
+                },
+                startAfter: () => {
+                    throw new Error("not implemented");
+                }
             }
 
         }
