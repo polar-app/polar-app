@@ -21,15 +21,14 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors({ origin: true }));
 
-        app.use(cors({ origin: true }), (req, res, next) => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        app.use(cors({ origin: true }), async (req, res, next) => {
 
-            async function doAsync() {
+            try {
                 await delegate(req, res, next);
-            }
-
-            doAsync().catch(err => {
+            } catch (err) {
                 this.handleError(functionName, req, res, err);
-            })
+            }
 
         });
 
@@ -84,8 +83,8 @@ export class ExpressFunctions {
 
     public static createRPCHook<R, V>(functionName: string, handler: (idUser: IDUser, request: R) => Promise<V>): ExpressRequestFunction {
 
-        return this.createHook(functionName, (req: express.Request, res: express.Response) => {
-            UserRequests.execute<R, V>(req, res, (idUser, request) => handler(idUser, request));
+        return this.createHookAsync(functionName, async (req: express.Request, res: express.Response) => {
+            await UserRequests.executeAsync<R, V>(req, res, async (idUser, request) => await handler(idUser, request))
         });
 
     }

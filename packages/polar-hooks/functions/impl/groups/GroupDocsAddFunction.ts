@@ -35,8 +35,8 @@ export class GroupDocsAddFunctions {
 
 /**
  */
-export const GroupDocsAddFunction = ExpressFunctions.createHook('GroupDocsAddFunction', (req, res) => {
-    UserRequests.execute(req, res, GroupDocsAddFunctions.exec);
+export const GroupDocsAddFunction = ExpressFunctions.createHookAsync('GroupDocsAddFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupDocsAddFunctions.exec);
 });
 
 export interface GroupDocAddRequest {
