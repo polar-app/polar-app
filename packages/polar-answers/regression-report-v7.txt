@@ -1,4 +1,4 @@
-Report generated on: 2021-10-06T15:47:04.724Z
+Report generated on: 2021-10-07T21:44:25.382Z
 v6 but with DaVinci to see if we get better answer text
 ======================= config: 
 {

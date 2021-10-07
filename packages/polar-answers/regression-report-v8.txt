@@ -1,4 +1,4 @@
-Report generated on: 2021-10-06T15:50:34.664Z
+Report generated on: 2021-10-07T21:44:33.340Z
 Basically the V6 model BUT we use the new result joiner to compute an ES AND query which cuts down on data sent to OpenAI.
 ======================= config: 
 {

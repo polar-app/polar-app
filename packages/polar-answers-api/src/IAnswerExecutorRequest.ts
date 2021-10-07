@@ -83,7 +83,7 @@ export interface IAnswerExecutorRequest {
      * When true we truncate the re-ranked results to JUST the short head.
      */
     // eslint-disable-next-line camelcase
-    readonly rerank_truncate_short_head?: IShortHeadOptions;
+    readonly rerank_truncate_short_head?: boolean;
 
     /**
      * When true, we prune the elasticsearch results of contiguous records.

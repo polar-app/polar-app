@@ -275,7 +275,9 @@ export namespace AnswerExecutor {
                         if (request.elasticsearch_truncate_short_head) {
                             console.log("Computing short head on Elasticsearch results: ", request.elasticsearch_truncate_short_head);
                             const head = ShortHeadCalculator.compute(esResponse.hits.hits.map(current => current._score), request.elasticsearch_truncate_short_head);
-                            return head.length;
+                            if (head) {
+                                return head.length;
+                            }
                         }
 
                         return esResponse.hits.hits.length;
@@ -358,8 +360,11 @@ export namespace AnswerExecutor {
 
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
 
-                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score),
-                                                                     request.rerank_truncate_short_head);
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score),{
+                                target_angle: 45,
+                                min_docs: 50,
+                                max_docs: 50
+                            });
 
                             if (head) {
                                 return head.length;
