@@ -105,8 +105,8 @@ export class GroupProvisionFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const GroupProvisionFunction = ExpressFunctions.createHook('GroupProvisionFunction', (req, res) => {
-    return UserRequests.execute(req, res, GroupProvisionFunctions.exec);
+export const GroupProvisionFunction = ExpressFunctions.createHookAsync('GroupProvisionFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupProvisionFunctions.exec);
 });
 
 export interface GroupProvisionRequest extends GroupInit {

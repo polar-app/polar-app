@@ -5,7 +5,7 @@ import {ProfileUpdates} from './ProfileUpdates';
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const ProfileUpdateFunction = ExpressFunctions.createHook('ProfileUpdateFunction', (req, res) => {
-    return UserRequests.execute(req, res, ProfileUpdates.exec);
+export const ProfileUpdateFunction = ExpressFunctions.createHookAsync('ProfileUpdateFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, ProfileUpdates.exec);
 });
 
