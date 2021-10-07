@@ -232,7 +232,7 @@ export namespace CursorPositions {
 
         }
 
-        return 'end';
+        return lookup.length;
     }
 
     /**
