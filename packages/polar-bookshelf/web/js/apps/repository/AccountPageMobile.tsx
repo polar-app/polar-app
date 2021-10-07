@@ -12,7 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {PlanUsage} from "../../../../web/js/apps/repository/accounting/PlanUsage";
 
-import { PreferencesBar } from '../../../../apps/repository/js/doc_repo/HeaderBar';
+import { HeaderBar } from '../../../../apps/repository/js/doc_repo/HeaderBar';
 import { IconByPlan } from '../../../../apps/repository/js/account_overview/PlanIcon';
 
 import {useHistory} from 'react-router-dom';
