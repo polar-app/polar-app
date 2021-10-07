@@ -11,6 +11,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
+import {TAG_IDENTIFIER} from '../content/HasLinks';
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -41,11 +42,11 @@ export interface IActionTypeWithBlockTag {
     readonly target: string;
 }
 
-export interface IActionOpWithBlockLink {
+export interface IActionOpWithBlockTag extends IActionTypeWithBlockTag {
     readonly undoContent: MarkdownStr;
 }
 
-export type ActionOp = IActionOpWithBlockLink | IActionTypeWithBlockTag;
+export type ActionOp = IActionOpWithBlockLink | IActionOpWithBlockTag;
 
 export type ActionType = IActionTypeWithBlockLink | IActionTypeWithBlockTag;
 
@@ -73,8 +74,6 @@ interface IProps {
      * Execute the action
      */
     readonly onAction: ActionHandler;
-
-    readonly actionType: ActionType['type'];
 
     readonly computeActionInputText: (str: string) => string;
 
@@ -113,14 +112,18 @@ function useActionExecutor(id: BlockIDStr) {
                 coveringRange.deleteContents();
 
                 const a = document.createElement('a');
+                const trimmedTarget = actionOp.target.startsWith(TAG_IDENTIFIER)
+                    ? actionOp.target.slice(1)
+                    : actionOp.target;
                 a.setAttribute('contenteditable', 'false');
-                a.setAttribute('href', '#' + actionOp.target);
-                const prefix = type === 'tag' ? '#' : '';
-                a.appendChild(document.createTextNode(prefix + actionOp.target.trim()));
-                const textNode = document.createTextNode('');
-                coveringRange.insertNode(textNode);
+                a.setAttribute('href', '#' + trimmedTarget);
+                a.appendChild(document.createTextNode(actionOp.target.trim()));
+
+                if (type === 'tag') {
+                    a.classList.add('note-tag');
+                }
+
                 coveringRange.insertNode(a);
-                ContentEditables.setCaretPosition(textNode, 'end');
             };
 
             updateSelection();
@@ -177,7 +180,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
     const theme = useTheme();
 
-    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, actionType, disabled} = props;
+    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, disabled} = props;
 
     const computeActionInputTextRef = useRefWithUpdates(props.computeActionInputText);
 
@@ -335,15 +338,16 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         const undoContent = initialMarkdownContentRef.current!;
 
+        const actionType = onAction(prompt);
+
         actionExecutor(from, to, {
-            type: actionType,
-            target: prompt,
+            ...actionType,
             undoContent
         });
 
         doReset();
 
-    }, [actionType, actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
+    }, [actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
 
     const doCompleteOrReset = React.useCallback(() => {
 

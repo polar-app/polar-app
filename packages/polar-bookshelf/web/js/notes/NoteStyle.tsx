@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             fontSize: '14px',
-            lineHeight: '1.5rem',
+            lineHeight: '2',
             // '& a[href^="#"]::before': {
             //     content: "'[['",
             //     color: theme.palette.text.disabled,

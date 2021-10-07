@@ -33,10 +33,17 @@ describe('WikiLinksToMarkdown', function() {
         assert.equal(WikiLinksToMarkdown.unescape(input), expected);
     });
 
-    it("random test case", function () {
+    it("random test case 1", function () {
         const input = "]Nice [Hello World](#Hello World) Foo ]][";
 
         const expected = "]Nice [[Hello World]] Foo ]][";
+        assert.equal(WikiLinksToMarkdown.unescape(input), expected);
+    });
+
+    it("random test case 2", function () {
+        const input = ")Nice [Hello World](#Hello World) Foo ))(";
+
+        const expected = ")Nice [[Hello World]] Foo ))(";
         assert.equal(WikiLinksToMarkdown.unescape(input), expected);
     });
 });

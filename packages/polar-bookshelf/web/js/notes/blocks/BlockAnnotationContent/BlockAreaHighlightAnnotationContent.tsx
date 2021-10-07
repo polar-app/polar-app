@@ -35,6 +35,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         if (! highlight.image) {
             return undefined;
         }
+
         const resolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
         return Images.toImg(resolver, highlight.image);
     }, [persistenceLayerProvider, highlight.image]);

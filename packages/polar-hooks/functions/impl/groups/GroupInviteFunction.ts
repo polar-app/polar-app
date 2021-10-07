@@ -46,8 +46,8 @@ export class GroupInviteFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const GroupInviteFunction = ExpressFunctions.createHook('GroupInviteFunction', (req, res) => {
-    return UserRequests.execute(req, res, GroupInviteFunctions.exec);
+export const GroupInviteFunction = ExpressFunctions.createHookAsync('GroupInviteFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupInviteFunctions.exec);
 });
 
 export interface GroupInviteRequest extends GroupIDRef {

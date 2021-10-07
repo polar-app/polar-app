@@ -1,12 +1,17 @@
 import {ESCredentials} from "./ESCredentials";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {ESSecrets} from "./ESSecrets";
-import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
+import {ESRequestsCache} from "./ESRequestsCache";
 
 export namespace ESRequests {
 
+    const cache = ESRequestsCache.create();
+
+    import IESRequestCacheKey = ESRequestsCache.IESRequestCacheKey;
+
     export interface IElasticResponse<T> {
         readonly _source: T;
+        readonly _score: number;
     }
 
     export interface IElasticSearchHitsTotal {
@@ -26,7 +31,7 @@ export namespace ESRequests {
         readonly hits: IElasticSearchHits<T>;
     }
 
-    export async function doPut(url: string, body: object) {
+    export async function doPut(url: string, body: any) {
 
         ESSecrets.init();
 
@@ -51,17 +56,27 @@ export namespace ESRequests {
 
     }
 
-    export async function doPost(url: string, body: Record<string, unknown> | string | IElasticsearchQuery) {
+    async function doRequest(url: string, method: 'PUT' | 'GET' | 'POST', body: Record<string, unknown> | undefined) {
 
         ESSecrets.init();
 
         const credentials = ESCredentials.get();
 
         const authorization = Buffer.from(`${credentials.user}:${credentials.pass}`).toString('base64');
+
+        const cacheKey: IESRequestCacheKey = {
+            url,
+            body: body || {},
+            method: 'PUT'
+        }
+
+        if (await cache.containsKey(cacheKey)) {
+            return cache.get(cacheKey);
+        }
 
         const response = await Fetches.fetch(`${credentials.endpoint}${url}`, {
             method: 'POST',
-            body: typeof body === 'string' ? body : JSON.stringify(body),
+            body: body ? JSON.stringify(body) : undefined,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${authorization}`
@@ -69,34 +84,26 @@ export namespace ESRequests {
         });
 
         if (response.ok) {
-            return await response.json();
+
+            const result = await response.json()
+
+            await cache.put(cacheKey, result);
+
+            return result;
+
         }
 
-        throw new Error(`POST to ${url} failed: ${response.status}: ${response.statusText}`);
+        throw new Error(`${method} to ${url} failed: ${response.status}: ${response.statusText}`);
 
     }
+
+    export async function doPost(url: string, body: any) {
+        return await doRequest(url, 'POST', body);
+    }
+
+
     export async function doGet(url: string): Promise<any> {
-
-        ESSecrets.init();
-
-        const credentials = ESCredentials.get();
-
-        const authorization = Buffer.from(`${credentials.user}:${credentials.pass}`).toString('base64');
-
-        const response = await Fetches.fetch(`${credentials.endpoint}${url}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${authorization}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-
-        throw new Error(`Invalid response: ${response.status}: ${response.statusText}`);
-
+        return await doRequest(url, 'GET', undefined);
     }
 
 }

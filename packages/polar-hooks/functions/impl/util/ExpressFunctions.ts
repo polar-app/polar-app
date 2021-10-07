@@ -7,6 +7,21 @@ import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
 import {SentryReporters} from "../reporters/SentryReporter";
 
+const CORS_OPTIONS: cors.CorsOptions = {
+    origin: [
+        "https://getpolarized.io",
+        "https://app.getpolarized.io",
+        "http://localhost:8050",
+        "https://localhost:8050",
+        "http://127.0.0.1:8050",
+        "https://127.0.0.1:8050"
+    ],
+    credentials: true,
+    methods: [
+        'GET', 'PUT', 'POST'
+    ]
+}
+
 export class ExpressFunctions {
 
     public static createApp() {
@@ -19,17 +34,16 @@ export class ExpressFunctions {
 
         // https://expressjs.com/en/resources/middleware/cors.html#configuring-cors
         app.use(bodyParser.json());
-        app.use(cors({ origin: true }));
+        app.use(cors(CORS_OPTIONS));
 
-        app.use(cors({ origin: true }), (req, res, next) => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        app.use(cors(CORS_OPTIONS), async (req, res, next) => {
 
-            async function doAsync() {
+            try {
                 await delegate(req, res, next);
-            }
-
-            doAsync().catch(err => {
+            } catch (err) {
                 this.handleError(functionName, req, res, err);
-            })
+            }
 
         });
 
@@ -43,9 +57,9 @@ export class ExpressFunctions {
         const app = this.createApp();
 
         app.use(bodyParser.json());
-        app.use(cors({ origin: true }));
+        app.use(cors(CORS_OPTIONS));
 
-        app.use(cors({ origin: true }), (req, res, next) => {
+        app.use(cors(CORS_OPTIONS), (req, res, next) => {
 
             try {
                 delegate(req, res, next);
@@ -84,8 +98,8 @@ export class ExpressFunctions {
 
     public static createRPCHook<R, V>(functionName: string, handler: (idUser: IDUser, request: R) => Promise<V>): ExpressRequestFunction {
 
-        return this.createHook(functionName, (req: express.Request, res: express.Response) => {
-            UserRequests.execute<R, V>(req, res, (idUser, request) => handler(idUser, request));
+        return this.createHookAsync(functionName, async (req: express.Request, res: express.Response) => {
+            await UserRequests.executeAsync<R, V>(req, res, async (idUser, request) => await handler(idUser, request))
         });
 
     }

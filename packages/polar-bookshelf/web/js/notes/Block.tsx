@@ -2,9 +2,6 @@ import React from "react";
 import {BlockEditor} from "./BlockEditor";
 import {BlockItems} from "./BlockItems";
 import {BlockBulletButton} from "./BlockBulletButton";
-import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
-import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
-import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {BlockExpandToggleButton} from "./BlockExpandToggleButton";
 import {observer} from "mobx-react-lite"
@@ -18,6 +15,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {Divider} from "@material-ui/core";
 import {useDragDropHandler} from "./DropHandler";
 import {Interstitial} from "./Interstitial";
+import {BlockContextMenu, useBlockContextMenu} from "./BlockContextMenu";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,6 +26,7 @@ const useStyles = makeStyles((theme) =>
             fontWeight: 'bold',
             fontSize: 24,
             letterSpacing: 0.5,
+            lineHeight: 1.66,
         },
     }),
 );
@@ -40,12 +39,6 @@ interface IProps {
     readonly noBullet?: boolean;
 }
 
-export interface IBlockContextMenuOrigin {
-
-}
-
-export const [BlockContextMenu, useBlockContextMenu]
-    = createContextMenu<IDocViewerContextMenuOrigin>(BlockContextMenuItems, {name: 'notes'});
 
 export const BlockInner = observer((props: IProps) => {
     const blocksTreeStore = useBlocksTreeStore();
@@ -164,7 +157,6 @@ export const BlockInner = observer((props: IProps) => {
 
     }, [undoQueue]);
 
-
     const topInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'top'), [interstitials]);
     const bottomInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'bottom'), [interstitials]);
 
@@ -195,7 +187,7 @@ export const BlockInner = observer((props: IProps) => {
                              // background: dropActive ? 'red' : 'inherit'
                          }}>
 
-                        {!(noExpand && noBullet) && (
+                        {! (noExpand && noBullet) && (
                             <div style={{
                                      display: 'flex',
                                      alignItems: 'center',
@@ -209,29 +201,20 @@ export const BlockInner = observer((props: IProps) => {
                                     <BlockExpandToggleButton id={id}/>
                                 )}
 
-                                {!noBullet && <BlockBulletButton target={id}/>}
+                                {! noBullet && <BlockBulletButton target={id}/>}
 
                             </div>
                         )}
 
-                        {withHeader && isRoot
-                            ? (
-                                <BlockEditor
-                                    parent={parent}
-                                    id={id}
-                                    className={classes.titleBlock}
-                                />
-                            ) : (
-                                <BlockEditor
-                                    parent={parent}
-                                    id={id}
-                                />
-                            )
-                        }
+                        <BlockEditor
+                            parent={parent}
+                            id={id}
+                            className={withHeader && isRoot ? classes.titleBlock : ""}
+                        />
                     </div>
 
                     {withHeader && isRoot &&
-                        <Divider style={{ margin: '16px 0' }} />
+                        <Divider style={{ margin: '4px 0 8px 0' }} />
                     }
 
                     {(expanded || (isRoot && noExpand)) && (
