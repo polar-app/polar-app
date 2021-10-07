@@ -10,7 +10,14 @@ export class ApiGateway extends RestApi {
             defaultCorsPreflightOptions: {
                 allowHeaders: ['*'],
                 allowMethods: Cors.ALL_METHODS,
-                allowOrigins: Cors.ALL_ORIGINS,
+                allowOrigins: [
+                    "https://getpolarized.io",
+                    "https://app.getpolarized.io",
+                    "http://localhost:8050",
+                    "https://localhost:8050",
+                    "http://127.0.0.1:8050",
+                    "https://127.0.0.1:8050",
+                ],
                 disableCache: true,
                 allowCredentials: true,
             },

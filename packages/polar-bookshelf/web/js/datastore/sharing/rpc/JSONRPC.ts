@@ -13,6 +13,7 @@ export class JSONRPC {
     private static _awsLambdaFunctions = [
         'test',
         'private-beta/register',
+        'private-beta/accept-batch',
     ];
 
     public static async exec<R, V>(funcOrApiPath: string, request: R): Promise<V> {

@@ -13,6 +13,7 @@ import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import Subscription = Billing.Subscription;
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
+import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -115,6 +116,14 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         logoutAction();
     }
 
+    function canAcceptBeta(email: EmailStr | undefined) {
+        const canAccept: string[] = [
+            'dzhuneyt@getpolarized.io',
+            'jonathan@getpolarized.io',
+        ];
+        return email && canAccept.includes(email);
+    }
+
     return (
 
         <div style={{padding: '10px 20px'}} ref={ref}>
@@ -161,6 +170,18 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                     </div>
 
                     <ViewPlansAndPricingButton/>
+
+                    {canAcceptBeta(props.userInfo.email) && <div>
+                        <br/>
+                        <Button color="secondary"
+                                variant="contained"
+                                size="large"
+                                onClick={() => {
+                                    JSONRPC.exec('private-beta/accept-batch', {}).then(value => {
+                                        console.log(value);
+                                    });
+                                }}>Accept next waiting users batch</Button>
+                    </div>}
 
                 </div>
 
