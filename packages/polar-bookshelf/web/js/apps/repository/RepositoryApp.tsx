@@ -335,10 +335,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                     <PHZMigrationScreen/>
                 </Route>
 
-                <Route exact path="/account">
-                    <AccountPageMobile/>
-                </Route>
-
                 <AuthRequired>
                     <DataProviders>
                         <div className={classes.root}>
@@ -363,8 +359,20 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" exact path={RoutePathnames.SETTINGS_MOBILE}>
+                                    <SettingsScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" exact path={RoutePathnames.PLAN_MOBILE}>
+                                    <PricingScreen/>
+                                </PersistentRoute>
+
                                 <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
                                     <AddFilesMobileScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" path={RoutePathnames.ACCOUNT_MOBILE}>
+                                    <AccountPageMobile/>
                                 </PersistentRoute>
 
                                 <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}

@@ -31,7 +31,7 @@ function useReportFeedback() {
 
 }
 
-namespace MenuItems {
+export namespace MenuItems {
 
     export const Chat = React.forwardRef<HTMLLIElement, {}>((props, ref) => {
 
@@ -45,7 +45,7 @@ namespace MenuItems {
             <SideNavQuestionMenuItem icon={FADiscordIcon}
                                      ref={ref}
                                      text="Chat with Polar Community"
-                                     secondary="Talk to the founders of Polar directly and other community members."
+                                     secondary="Talk to the founders of Polar directly"
                                      onClick={onClick}/>
         );
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserAvatar } from '../../../../web/js/ui/cloud_auth/UserAvatar';
-import { createStyles, makeStyles, IconButton,Box, Collapse, SvgIconTypeMap} from '@material-ui/core';
+import { createStyles, makeStyles, IconButton,Box, Collapse} from '@material-ui/core';
 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -16,7 +16,14 @@ import { PreferencesBar } from '../../../../apps/repository/js/doc_repo/Preferen
 import { IconByPlan } from '../../../../apps/repository/js/account_overview/PlanIcon';
 
 import {useHistory} from 'react-router-dom';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
+import { useLogoutAction } from '../../../../web/js/ui/cloud_auth/AccountControl';
+import { usePopperController } from '../../../../web/js/mui/menu/MUIPopper';
+import { RoutePathnames } from './RoutePathnames';
+
+const Chat = MenuItems.Chat;
+const Documentation = MenuItems.Documentation;
+const RequestFeatures = MenuItems.RequestFeatures;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -25,6 +32,10 @@ const useStyles = makeStyles((theme) =>
             width: '100%',
             height:'13%',
             alignItems: 'center'
+        },
+        mainContainer:{
+            height: 'auto',
+            overflow: 'auto'
         },
         avatar:{
             marginLeft: '10px',
@@ -61,8 +72,7 @@ const useStyles = makeStyles((theme) =>
             width:'100%',
             borderTop: '1px solid grey',
             borderBottom: '1px solid grey',
-            padding: '10px',
-            paddingRight: '20px'
+            padding: '10px 20px'
         },
         IconAndTitle:{
             display: 'flex',
@@ -129,13 +139,10 @@ export const Collapsible = React.memo(function Collapsible() {
             </div>
             <div>
                 <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Box style={{margin: 1, background: '#444444'}}>
-                        <div>
-                            <HelpIcon/>    
-                        </div> 
-                        <div>
-                            chat with comunity
-                        </div> 
+                    <Box style={{margin: 1, background: '#444444'}}>                              
+                        <Chat/>
+                        <Documentation/>
+                        <RequestFeatures/>
                     </Box>
                 </Collapse>
             </div>
@@ -160,22 +167,30 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
     const classes = useStyles();
     const history = useHistory();
 
+    const logoutAction = useLogoutAction();
+    const popperController = usePopperController();
+
+    function handleLogout() {
+        popperController.dismiss();
+        logoutAction();
+    }
+
     return(
         <>
             <PreferencesButton  
                     title={'Settings'} 
-                    goToUrl={() => history.push('settings')}
+                    goToUrl={() => history.push(RoutePathnames.SETTINGS_MOBILE)}
                     icon={<SettingsIcon style={{alignSelf: 'center'}} />}    />
             <PreferencesButton  
                 title={'Upgrade Plan'} 
-                goToUrl={() => history.push('plans')}
+                goToUrl={() => history.push(RoutePathnames.PLAN_MOBILE)}
                 icon={<MonetizationOnIcon style={{alignSelf: 'center'}} />}   />
    
             <Collapsible/>
 
             <PreferencesButton  
                     title={'Log out'} 
-                    goToUrl={() => history.push('plans')}
+                    goToUrl={ () => handleLogout()}
                     icon={<ExitToAppIcon style={{alignSelf: 'center'}} />}   />
             
         </>
@@ -184,12 +199,15 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
 
 
 export const AccountPageMobile = React.memo(function AccountPageMobile() {
+    const classes = useStyles();
     return(
         <>
             <PreferencesBar/>
-            <UserDetailsRow/>
-            <PlanDetailsContainer/>   
-            <PreferencesButtons/>
+            <div className={classes.mainContainer}>
+                <UserDetailsRow/>
+                <PlanDetailsContainer/>   
+                <PreferencesButtons/>
+            </div>
         </>
     );
 });

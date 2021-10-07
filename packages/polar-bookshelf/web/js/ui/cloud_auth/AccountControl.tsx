@@ -69,7 +69,7 @@ interface IProps {
 
 }
 
-function useLogoutAction(): Callback {
+export function useLogoutAction(): Callback {
 
     const dialogs = useDialogManager();
 
