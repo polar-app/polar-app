@@ -526,8 +526,17 @@ const OrCreateNewAccount = () => {
 
 const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
-    const [Login, setLogin] = React.useState("LandingPage");
-    const [isKeyboardVisible, setKeyboardVisible] = React.useState();
+    const [Login, setLogin] = React.useState("LandingPage"); 
+
+    const keyboardVisibleToggle = () => {
+        const [isKeyboardVisible, setKeyboardVisible] = React.useState();
+
+        if(window.innerWidth <= 400){
+              this.setKeyboardVisible({isKeyboardVisible: true})
+        }else{
+            this.setKeyboardVisible({isKeyboardVisible: false})
+        }
+    }
 
     return (
         <>
