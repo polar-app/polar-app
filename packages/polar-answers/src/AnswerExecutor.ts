@@ -312,6 +312,7 @@ export namespace AnswerExecutor {
                     await executeElasticsearchWithPrune() :
                     await executeElasticsearch();
 
+
             // TODO: do this in the indexer, not the executor? this way we can
             // same some CPU time during execution.
 
