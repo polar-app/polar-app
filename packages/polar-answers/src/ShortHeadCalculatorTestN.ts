@@ -89,6 +89,8 @@ describe("ShortHeadCalculator", () => {
 
     describe("compute", () => {
 
+
+
         xit("test data from pagerank", () => {
             const head = ShortHeadCalculator.compute(TEST_DATA_FROM_PAGERANK);
             assertJSON(head, [
@@ -152,11 +154,26 @@ describe("ShortHeadCalculator", () => {
             ]);
         });
 
+        it("test with linear data", () => {
+            const vector = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+
+            assert.equal(vector.length, 45);
+            const head = ShortHeadCalculator.compute(vector, {
+                target_angle: 30,
+                min_docs: 50,
+                max_docs: 50,
+            });
+
+            assert.isUndefined(head);
+
+        });
+
+
         it("test data from elasticsearch1", () => {
             const head = ShortHeadCalculator.compute(TEST_DATA_FROM_ELASTICSEARCH1, {
                 target_angle: 30,
                 min_docs: 50,
-                max_docs: 50,
+                max_docs: 200,
             });
 
             assert.equal(TEST_DATA_FROM_ELASTICSEARCH1.length, 1277);
@@ -169,8 +186,11 @@ describe("ShortHeadCalculator", () => {
             const head = ShortHeadCalculator.compute(TEST_DATA_FROM_OPENAI_SEARCH, {
                 target_angle: 45,
                 min_docs: 50,
-                max_docs: 50,
+                max_docs: 200,
             });
+
+            assert.equal(head!.length, 57);
+
             assertJSON(head, [
                 226.001,
                 194.994,

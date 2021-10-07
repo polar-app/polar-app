@@ -358,7 +358,10 @@ export namespace AnswerExecutor {
 
                         if (request.rerank_truncate_short_head) {
 
-                            console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
+                            // TODO: include truncate before and after in the trace and include this in the regression
+                            // report
+
+                            console.log("Re-ranking N results with short head: " + openai_reranked_records_with_score.records.length);
 
                             const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score),{
                                 target_angle: 45,

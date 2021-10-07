@@ -204,6 +204,8 @@ export namespace ShortHeadCalculator {
     // eslint-disable-next-line camelcase
     export function compute(vector: Vector, opts: IComputeOpts = DEFAULT_COMPUTE_OPTS): Vector | undefined{
 
+        // TODO: we're not using min_docs
+
         const normalized = ShortHeadCalculator.normalizeXY(vector);
         return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle, opts.max_docs);
 
@@ -226,7 +228,13 @@ export namespace ShortHeadCalculator {
 
         function computeTermination(): number | undefined {
 
-            for(let i = 0; normalizedPoints.length - buff; ++i) {
+            /**
+             * True when we have at LEAST some head part so that we don't
+             * compute an short head on a linear graph.
+             */
+            let hasHead = false;
+
+            for(let i = 0; i < normalizedPoints.length - buff; ++i) {
                 const p0 = normalizedPoints[i];
                 const p1 = normalizedPoints[i + buff];
 
@@ -239,7 +247,13 @@ export namespace ShortHeadCalculator {
 
                 // eslint-disable-next-line camelcase
                 if (angle < target_angle) {
-                    return i;
+
+                    if (hasHead) {
+                        return i;
+                    }
+
+                } else {
+                    hasHead = true;
                 }
 
             }

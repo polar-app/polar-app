@@ -924,7 +924,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
             // eslint-disable-next-line camelcase
             const answer_executor_with_cache
                 = AsyncCaches.wrapper<AnswerExecutors.IAnswerExecutorRequestWithUID,
-                                      IAnswerExecutorResponse |  IAnswerExecutorError>('answer-executor',
+                                      IAnswerExecutorResponse |  IAnswerExecutorError>('answer-executor2',
                                                                                        ['disk', 'google-cloud-storage'],
                                                                                        'test-only')
                              .create(answer_executor_delegate);
@@ -1129,128 +1129,128 @@ async function main() {
     // - models
 
     const options: ReadonlyArray<ExecutorOpts> = [
-        {
-            request: {
-                id: 'v1',
-                search_model: 'ada',
-                model: 'ada',
-                rerank_elasticsearch: false,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: false,
-                prune_contiguous_records: false,
-                filter_question: 'part-of-speech',
-            }
-        },
-        {
-            request: {
-                id: 'v2',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech',
-            }
-        },
-        {
-            request: {
-                id: 'v3',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 10000,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-            },
-        },
-        {
-            request: {
-                id: 'v4',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 200,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-                elasticsearch_sort_order: 'idx',
-                max_tokens: 125
-            },
-        },
-        {
-            request: {
-                id: 'v5',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 500,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-                elasticsearch_sort_order: 'idx',
-                max_tokens: 125
-            },
-        },
-        {
-            description: "v5 but we add openai_completion_cleanup_enabled: true",
-            request: {
-                id: 'v6',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 500,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-                elasticsearch_sort_order: 'idx',
-                max_tokens: 125,
-                openai_completion_cleanup_enabled: true
-            },
-        },
-        {
-            description: "v6 but with DaVinci to see if we get better answer text",
-            request: {
-                id: 'v7',
-                model: 'davinci',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 500,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-                elasticsearch_sort_order: 'idx',
-                max_tokens: 125,
-                openai_completion_cleanup_enabled: true
-            },
-
-        },
-        {
-            description: "Basically the V6 model BUT we use the new result joiner to compute an ES AND query which cuts down on data sent to OpenAI.",
-            request: {
-                id: 'v8',
-                model: 'curie',
-                search_model: 'curie',
-                rerank_elasticsearch: true,
-                rerank_elasticsearch_size: 500,
-                rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
-                prune_contiguous_records: true,
-                filter_question: 'part-of-speech-noun',
-                filter_question_joiner: 'AND',
-                elasticsearch_sort_order: 'idx',
-                max_tokens: 125,
-                openai_completion_cleanup_enabled: true
-            },
-        },
+        // {
+        //     request: {
+        //         id: 'v1',
+        //         search_model: 'ada',
+        //         model: 'ada',
+        //         rerank_elasticsearch: false,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: false,
+        //         prune_contiguous_records: false,
+        //         filter_question: 'part-of-speech',
+        //     }
+        // },
+        // {
+        //     request: {
+        //         id: 'v2',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech',
+        //     }
+        // },
+        // {
+        //     request: {
+        //         id: 'v3',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 10000,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //     },
+        // },
+        // {
+        //     request: {
+        //         id: 'v4',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 200,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125
+        //     },
+        // },
+        // {
+        //     request: {
+        //         id: 'v5',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 500,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125
+        //     },
+        // },
+        // {
+        //     description: "v5 but we add openai_completion_cleanup_enabled: true",
+        //     request: {
+        //         id: 'v6',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 500,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125,
+        //         openai_completion_cleanup_enabled: true
+        //     },
+        // },
+        // {
+        //     description: "v6 but with DaVinci to see if we get better answer text",
+        //     request: {
+        //         id: 'v7',
+        //         model: 'davinci',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 500,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125,
+        //         openai_completion_cleanup_enabled: true
+        //     },
+        //
+        // },
+        // {
+        //     description: "Basically the V6 model BUT we use the new result joiner to compute an ES AND query which cuts down on data sent to OpenAI.",
+        //     request: {
+        //         id: 'v8',
+        //         model: 'curie',
+        //         search_model: 'curie',
+        //         rerank_elasticsearch: true,
+        //         rerank_elasticsearch_size: 500,
+        //         rerank_elasticsearch_model: 'ada',
+        //         rerank_truncate_short_head: true,
+        //         prune_contiguous_records: true,
+        //         filter_question: 'part-of-speech-noun',
+        //         filter_question_joiner: 'AND',
+        //         elasticsearch_sort_order: 'idx',
+        //         max_tokens: 125,
+        //         openai_completion_cleanup_enabled: true
+        //     },
+        // },
         {
             description: "Basically the V6 model BUT I truncate the short head on Elasticsearch results and use OR and rely on the score to filter out garbage.",
             request: {
@@ -1260,11 +1260,7 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: {
-                    target_angle: 45,
-                    min_docs: 50,
-                    max_docs: 50
-                },
+                rerank_truncate_short_head: true,
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 filter_question_joiner: 'OR',
