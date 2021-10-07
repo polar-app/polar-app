@@ -19,7 +19,21 @@ export class Sendgrid {
      *
      */
     public static async send(msg: MailDataRequired): Promise<[ClientResponse, {}]> {
-        return MailService.send(msg);
+
+        return MailService.send({
+            ...msg,
+            trackingSettings: {
+                clickTracking: {
+                    enable: false
+                },
+                openTracking: {
+                    enable: false
+                },
+                subscriptionTracking: {
+                    enable: false
+                }
+            }});
+
     }
 
 }
