@@ -1136,7 +1136,7 @@ async function main() {
                 rerank_elasticsearch: false,
                 rerank_elasticsearch_size: 10000,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: false,
+                rerank_truncate_short_head: undefined,
                 prune_contiguous_records: false,
                 filter_question: 'part-of-speech',
             }
@@ -1149,7 +1149,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 10000,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech',
             }
@@ -1162,7 +1166,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 10000,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
             },
@@ -1175,7 +1183,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 200,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 elasticsearch_sort_order: 'idx',
@@ -1190,7 +1202,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 elasticsearch_sort_order: 'idx',
@@ -1206,7 +1222,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 elasticsearch_sort_order: 'idx',
@@ -1223,7 +1243,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 elasticsearch_sort_order: 'idx',
@@ -1241,7 +1265,11 @@ async function main() {
                 rerank_elasticsearch: true,
                 rerank_elasticsearch_size: 500,
                 rerank_elasticsearch_model: 'ada',
-                rerank_truncate_short_head: true,
+                rerank_truncate_short_head: {
+                    target_angle: 45,
+                    min_docs: 50,
+                    max_docs: 50
+                },
                 prune_contiguous_records: true,
                 filter_question: 'part-of-speech-noun',
                 filter_question_joiner: 'AND',

@@ -283,6 +283,8 @@ export namespace AnswerExecutor {
                 const [esResponse, elasticsearch_duration]
                     = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
 
+                // if (request.elasticsearch_truncate_short_head)
+
                 // eslint-disable-next-line camelcase
                 const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
 
@@ -314,7 +316,6 @@ export namespace AnswerExecutor {
                 request.prune_contiguous_records ?
                     await executeElasticsearchWithPrune() :
                     await executeElasticsearch();
-
 
             // TODO: do this in the indexer, not the executor? this way we can
             // same some CPU time during execution.
@@ -352,11 +353,8 @@ export namespace AnswerExecutor {
 
                             console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
 
-                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), {
-                                target_angle: SHORT_HEAD_ANGLE,
-                                min_docs: SHORT_HEAD_MIN_DOCS,
-                                max_docs: SHORT_HEAD_MAX_DOCUMENTS,
-                            });
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score),
+                                                                     request.rerank_truncate_short_head);
 
                             if (head) {
                                 return head.length;

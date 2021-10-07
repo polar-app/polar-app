@@ -8,6 +8,22 @@ export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part
  */
 export type ElasticsearchSortOrder = "_score" | "idx";
 
+/**
+ * Options for short had calculation.
+ */
+export interface IShortHeadOptions {
+
+    // eslint-disable-next-line camelcase
+    readonly target_angle: number,
+
+    // eslint-disable-next-line camelcase
+    readonly min_docs: number,
+
+    // eslint-disable-next-line camelcase
+    readonly max_docs: number,
+
+}
+
 export interface IAnswerExecutorRequest {
 
     readonly question: string;
@@ -57,7 +73,7 @@ export interface IAnswerExecutorRequest {
      * When true we truncate the re-ranked results to JUST the short head.
      */
     // eslint-disable-next-line camelcase
-    readonly rerank_truncate_short_head?: boolean;
+    readonly rerank_truncate_short_head?: IShortHeadOptions;
 
     /**
      * When true, we prune the elasticsearch results of contiguous records.
@@ -69,7 +85,7 @@ export interface IAnswerExecutorRequest {
     readonly elasticsearch_sort_order?: ElasticsearchSortOrder;
 
     // eslint-disable-next-line camelcase
-    readonly elasticsearch_truncate_short_head?: boolean;
+    readonly elasticsearch_truncate_short_head?: IShortHeadOptions;
 
     // eslint-disable-next-line camelcase
     readonly max_tokens?: number;
