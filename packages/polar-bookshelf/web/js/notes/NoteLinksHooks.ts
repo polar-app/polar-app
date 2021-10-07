@@ -9,7 +9,8 @@ import {useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
 
-export const useNoteWikiLinkCreator = () => {
+
+export const useNoteWikiLinkIdentifierCreator = () => {
     const blocksStore = useBlocksStore();
 
     /**
@@ -33,7 +34,11 @@ export const useNoteWikiLinkCreator = () => {
             return linkText;
         }
         
-        const link = block.content.links.find(({ text }) => text === linkText);
+        const link = block.content.links.find(({ text }) => {
+            return text.startsWith('#')
+                ? text.slice(1) === linkText
+                : text === linkText
+        });
 
         if (! link) {
             return linkText;
@@ -60,15 +65,17 @@ interface ILinkNavigationEvent {
 }
 
 export const getNoteAnchorFromHref = (href: string): string | null => {
+
     // e.g. href="#identifier"
     if (href.startsWith('#')) {
         return Arrays.last(href.split('#')) as string;
     }
 
-    const notesPathname = RoutePathnames.NOTE("");
+    const notePathname = RoutePathnames.NOTE("");
+    const notesPathname = RoutePathnames.NOTES;
 
     // e.g. href="/notes/identifier"
-    if (href.startsWith(notesPathname)) {
+    if (href.startsWith(notePathname)) {
         return href.slice(notesPathname.length);
     }
 
@@ -76,17 +83,17 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
     if (href.startsWith('http:') || href.startsWith('https:')) {
         const url = new URL(href);
         
-        if (! url.pathname.startsWith(notesPathname)) {
+        if (url.pathname.startsWith(notePathname)) {
             return null;
         }
 
-        // e.g. href="https://app.getpolarized.io/notes/note#identifier" (Hashes are prioritized)
-        if (url.hash.length > 0) {
+        // e.g. href="https://app.getpolarized.io/notes#identifier"
+        if (url.pathname.startsWith(notesPathname) && url.hash.length > 0) {
             return url.hash.slice(1);
         }
 
         // e.g. href="https://app.getpolarized.io/notes/identifier"
-        return href.slice(notesPathname.length);
+        return href.slice(notePathname.length);
     }
 
     return null;
@@ -96,7 +103,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
-    const noteWikiLinkCreator = useNoteWikiLinkCreator();
+    const noteWikiLinkCreator = useNoteWikiLinkIdentifierCreator();
     const history = useHistory();
 
     return React.useCallback((event: ILinkNavigationEvent): boolean => {
