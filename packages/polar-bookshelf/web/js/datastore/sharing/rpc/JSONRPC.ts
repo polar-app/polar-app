@@ -22,21 +22,21 @@ export class JSONRPC {
 
         const user = await FirebaseBrowser.currentUserAsync();
 
-        if (!user) {
-            throw new Error("User not authenticated");
-        }
-
-        const idToken = await user.getIdToken();
-
         // Proxy the request to AWS Lambda instead of Firebase functions,
         // if the function name is defined in the array
         if (this.isAwsLambdaFunction(funcOrApiPath)) {
             return <V>await this.executeApiGatewayRequest<R, V>({
                 path: funcOrApiPath,
                 request,
-                idToken,
+                idToken: user ? await user.getIdToken() : undefined,
             });
         }
+
+        if (!user) {
+            throw new Error("User not authenticated");
+        }
+
+        const idToken = await user.getIdToken();
 
         const userRequest: UserRequest<R> = {
             idToken,
@@ -81,16 +81,20 @@ export class JSONRPC {
         request: R;
 
         // Firebase token of the current user
-        idToken: string,
+        idToken?: string,
     }) {
         const url = `${AwsApiGatewayURL}/rpc/${props.path}`;
 
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        if (props.idToken) {
+            headers.append('Authorization', props.idToken);
+        }
+
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: props.idToken,
-            },
+            headers,
             body: JSON.stringify(props.request)
         });
 
