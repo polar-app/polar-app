@@ -250,6 +250,7 @@ jobs:
             TEMP_VERSION='0.0.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
             sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
             lerna exec -- sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" package.json
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
