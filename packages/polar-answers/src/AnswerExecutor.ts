@@ -32,19 +32,6 @@ import {QuestionFilters} from "./QuestionFilters";
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
 
-/**
- * The minimum docs needed to run the short head computation.
- */
-const SHORT_HEAD_MIN_DOCS = 50;
-
-/**
- * The max number of docs to return from the short head computation. Without
- * this we could exceed the 200 max per answers call.
- */
-const SHORT_HEAD_MAX_DOCUMENTS = 50;
-
-const SHORT_HEAD_ANGLE = 45;
-
 export namespace AnswerExecutor {
 
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
@@ -123,6 +110,7 @@ export namespace AnswerExecutor {
     export interface IAnswerExecutionFailure {
 
         readonly response: IAnswerExecutorError;
+        readonly trace: IAnswerExecutorTrace;
 
     }
 
@@ -263,6 +251,9 @@ export namespace AnswerExecutor {
             interface IElasticsearchResults {
 
                 // eslint-disable-next-line camelcase
+                readonly elasticsearch_hits: number;
+
+                // eslint-disable-next-line camelcase
                 readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
 
                 // eslint-disable-next-line camelcase
@@ -280,13 +271,38 @@ export namespace AnswerExecutor {
                 const [esResponse, elasticsearch_duration]
                     = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
 
+                function computeElasticsearchRecords() {
+
+                    function computeLimit(): number {
+
+                        if (request.elasticsearch_truncate_short_head) {
+                            console.log("Computing short head on Elasticsearch results: ", request.elasticsearch_truncate_short_head);
+                            const head = ShortHeadCalculator.compute(esResponse.hits.hits.map(current => current._score), request.elasticsearch_truncate_short_head);
+                            if (head) {
+                                return head.length;
+                            }
+                        }
+
+                        return esResponse.hits.hits.length;
+
+                    }
+
+                    const limit = computeLimit();
+
+                    return arrayStream(esResponse.hits.hits.map(current => current._source))
+                               .head(limit)
+                               .collect()
+
+                }
+
                 // eslint-disable-next-line camelcase
-                const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
+                const elasticsearch_records = computeElasticsearchRecords();
 
                 return {
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_pruned: undefined
+                    elasticsearch_pruned: undefined,
+                    elasticsearch_hits: esResponse.hits.total.value
                 };
 
             }
@@ -294,24 +310,24 @@ export namespace AnswerExecutor {
             async function executeElasticsearchWithPrune(): Promise<IElasticsearchResults> {
 
                 // eslint-disable-next-line camelcase
-                const {elasticsearch_records, elasticsearch_duration} = await executeElasticsearch();
+                const {elasticsearch_records, elasticsearch_duration, elasticsearch_hits} = await executeElasticsearch();
 
                 const recordPruned = AnswerDigestRecordPruner.prune(elasticsearch_records);
 
                 return {
                     elasticsearch_records: recordPruned,
                     elasticsearch_duration,
-                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length
+                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length,
+                    elasticsearch_hits
                 }
 
             }
 
             // eslint-disable-next-line camelcase
-            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned} =
+            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned, elasticsearch_hits} =
                 request.prune_contiguous_records ?
                     await executeElasticsearchWithPrune() :
                     await executeElasticsearch();
-
 
             // TODO: do this in the indexer, not the executor? this way we can
             // same some CPU time during execution.
@@ -345,18 +361,25 @@ export namespace AnswerExecutor {
 
                     function computeLimit() {
 
-                        if (request.rerank_truncate_short_head && openai_reranked_records_with_score.records.length > SHORT_HEAD_MIN_DOCS) {
+                        if (request.rerank_truncate_short_head) {
 
-                            console.log("Re-ranking N results with short head..." + openai_reranked_records_with_score.records.length);
+                            // TODO: include truncate before and after in the trace and include this in the regression
+                            // report
 
-                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score), SHORT_HEAD_ANGLE);
+                            console.log("Re-ranking N results with short head: " + openai_reranked_records_with_score.records.length);
+
+                            const head = ShortHeadCalculator.compute(openai_reranked_records_with_score.records.map(current => current.score),{
+                                target_angle: 45,
+                                min_docs: 50,
+                                max_docs: 50
+                            });
 
                             if (head) {
-                                console.log("Short head truncated to N entries: " + head.length)
-                                return Math.min(head.length, SHORT_HEAD_MAX_DOCUMENTS);
+                                return head.length;
                             } else {
                                 console.warn("No short head computed");
                             }
+
                         }
 
                         // eslint-disable-next-line camelcase
@@ -380,7 +403,7 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_hits,
                     elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records,
@@ -404,7 +427,7 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_hits,
                     elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records: undefined,
@@ -492,19 +515,6 @@ export namespace AnswerExecutor {
         // eslint-disable-next-line camelcase
         const cost_estimation = computeCostEstimation();
 
-        if (primaryAnswer === NO_ANSWER_CODE) {
-
-            // TODO: timings here are important too.
-
-            return {
-                response: {
-                    error: true,
-                    code: 'no-answer',
-                    cost_estimation
-                }
-            }
-
-        }
 
         function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
             return {
@@ -556,6 +566,19 @@ export namespace AnswerExecutor {
         }
 
         const trace = await doTrace();
+
+        if (primaryAnswer === NO_ANSWER_CODE) {
+
+            return {
+                trace,
+                response: {
+                    error: true,
+                    code: 'no-answer',
+                    cost_estimation
+                }
+            }
+
+        }
 
         async function createAnswers(): Promise<ReadonlyArray<string>> {
 

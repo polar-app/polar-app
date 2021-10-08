@@ -26,6 +26,9 @@ export namespace QuestionFilters {
             case "AND":
                 return (terms) => ESQueryStringQueryBuilder.buildAND(terms);
 
+            case "OR":
+                return (terms) => ESQueryStringQueryBuilder.buildOR(terms);
+
         }
     }
 
