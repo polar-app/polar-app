@@ -362,6 +362,7 @@ const EmailTokenAuthButton = () => {
         <>
             <DeviceRouters.Phone>
                 <>
+                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     {active && (
                         <>
                             {pending && (
@@ -415,7 +416,6 @@ const EmailTokenAuthButton = () => {
                                     startAdornment: (
                                         <>
                                             <EmailIcon style={{margin: '8px'}}/> 
-                                            <div className={classes.VerticalBorder} style={{margin: '10px'}}></div>
                                         </>
                                         )
                                     }}
@@ -431,6 +431,8 @@ const EmailTokenAuthButton = () => {
                                     startIcon={<EmailIcon />}
                                     />
                     )}
+                </div>
+                    
                 </>
             </DeviceRouters.Phone>
 
