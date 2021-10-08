@@ -58,7 +58,7 @@ export namespace CursorPositions {
      */
     export function focusEnd(node: Node): void {
         const range = new Range();
-        const textNode = document.createTextNode("");
+        const textNode = document.createTextNode('');
         node.parentNode!.insertBefore(textNode, node.nextSibling);
         range.setStartAfter(textNode);
         range.setEndAfter(textNode);
@@ -221,10 +221,11 @@ export namespace CursorPositions {
         for (let idx = 0; idx < lookup.length; ++idx) {
 
             const curr = lookup[idx];
+            const next = lookup[idx + 1];
 
             if (node === curr.node) {
 
-                if (offset === curr.offset) {
+                if (offset === curr.offset || next && next.node !== curr.node) {
                     return idx;
                 }
 
@@ -232,7 +233,7 @@ export namespace CursorPositions {
 
         }
 
-        return 'end';
+        return lookup.length;
     }
 
     /**

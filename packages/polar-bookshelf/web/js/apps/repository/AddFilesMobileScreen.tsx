@@ -46,7 +46,7 @@ const useStyles = makeStyles<Theme>((theme) =>
  * A new screen that opens only for mobile when adding new files, notes, folders..
  */
 
-export const AddFilesMobileScreen = () => {
+export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
     const classes = useStyles();
     const addFileImporter = useAddFileImporter();
     const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);
@@ -81,4 +81,4 @@ export const AddFilesMobileScreen = () => {
             </div>
         </>
     );
-}
+});

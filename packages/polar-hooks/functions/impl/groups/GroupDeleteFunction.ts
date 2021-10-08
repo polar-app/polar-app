@@ -23,6 +23,6 @@ export class GroupDeleteFunctions {
 /**
  * Deletes a group but only if the user is admin on the group.
  */
-export const GroupDeleteFunction = ExpressFunctions.createHook('GroupDeleteFunction', (req, res) => {
-    return UserRequests.execute(req, res, GroupDeleteFunctions.exec);
+export const GroupDeleteFunction = ExpressFunctions.createHookAsync('GroupDeleteFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupDeleteFunctions.exec);
 });

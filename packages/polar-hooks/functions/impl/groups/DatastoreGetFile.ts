@@ -17,7 +17,7 @@ const storage = Lazy.create(() => storageConfig().storage);
  * Handles fetching a a secure and temporary URL for downloading a file using
  * the the signed URL system in Firebase.
  */
-export const DatastoreGetFile = functions.https.onRequest((req, res) => {
+export const DatastoreGetFile = functions.https.onRequest(async (req, res) => {
 
     const doHandle = async () => {
 
@@ -48,11 +48,12 @@ export const DatastoreGetFile = functions.https.onRequest((req, res) => {
 
     };
 
-    doHandle()
-        .catch(err => {
-            console.error("Unable to handle request: ", err);
-            res.sendStatus(500);
-        });
+    try {
+        await doHandle()
+    } catch(err) {
+        console.error("Unable to handle request: ", err);
+        res.sendStatus(500);
+    };
 
 });
 

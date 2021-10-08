@@ -22,6 +22,8 @@ export namespace RegressionEngines {
      */
     export type ResultStatus = 'pass' | 'fail' | 'unknown';
 
+    export type RegressionMetadata =  Readonly<{[key: string]: string | number | boolean | undefined | null}>;
+
     export interface IRegressionTestResultPass<R extends ResultType> {
 
         /**
@@ -37,14 +39,14 @@ export namespace RegressionEngines {
         /**
          * Metadata for this result.
          */
-        readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
+        readonly metadata?: RegressionMetadata;
 
     }
 
     export interface IRegressionTestResultError<E> {
         readonly status: 'fail';
         readonly err: E;
-        readonly metadata?: Readonly<{[key: string]: string | number | boolean}>;
+        readonly metadata?: RegressionMetadata;
     }
 
     export interface IRegressionTestName {
@@ -267,6 +269,7 @@ export namespace RegressionEngines {
 
                         textGrid.headers('name', 'value');
 
+                        textGrid.row('total regressions', results.length);
                         textGrid.row('pass', nrPass);
                         textGrid.row('unknown', nrUnknown);
                         textGrid.row('fail', nrFail);

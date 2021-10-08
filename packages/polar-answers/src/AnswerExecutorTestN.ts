@@ -4,6 +4,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("Answer Executor", function () {
 
@@ -52,6 +53,31 @@ describe("Answer Executor", function () {
         const answer = await executeQuestion("What is a Planet?");
         assert.isDefined(answer);
 
+    });
+
+    it("default request", () => {
+        assertJSON(AnswerExecutor.computeRequestWithDefaults({uid: '101', question: "What is the meaning of life?"}), {
+            "documents_limit": 200,
+            "elasticsearch_sort_order": "idx",
+            "elasticsearch_truncate_short_head": {
+                "max_docs": 50,
+                "min_docs": 50,
+                "target_angle": 30
+            },
+            "filter_question": "part-of-speech-noun",
+            "filter_question_joiner": "OR",
+            "max_tokens": 125,
+            "model": "curie",
+            "openai_completion_cleanup_enabled": true,
+            "prune_contiguous_records": true,
+            "question": "What is the meaning of life?",
+            "rerank_elasticsearch": true,
+            "rerank_elasticsearch_model": "ada",
+            "rerank_elasticsearch_size": 500,
+            "rerank_truncate_short_head": true,
+            "search_model": "curie",
+            "uid": "101"
+        })
     });
 
 })

@@ -8,6 +8,32 @@ export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part
  */
 export type ElasticsearchSortOrder = "_score" | "idx";
 
+/**
+ * Options for short had calculation.
+ */
+export interface IShortHeadOptions {
+
+    // eslint-disable-next-line camelcase
+    readonly target_angle: number,
+
+    /**
+     * The minimum docs needed to run the short head computation.  We need some
+     * setting here as a short head computation on a short vector isn't going to be
+     * very reliable and further the costs of just executing across all the
+     * documents is fairly reasonable.
+     */
+    // eslint-disable-next-line camelcase
+    readonly min_docs: number,
+
+    /**
+     * The max number of docs to return from the short head computation. Without
+     * this we could exceed the 200 max per answers call.
+     */
+    // eslint-disable-next-line camelcase
+    readonly max_docs: number,
+
+}
+
 export interface IAnswerExecutorRequest {
 
     readonly question: string;
@@ -67,6 +93,9 @@ export interface IAnswerExecutorRequest {
 
     // eslint-disable-next-line camelcase
     readonly elasticsearch_sort_order?: ElasticsearchSortOrder;
+
+    // eslint-disable-next-line camelcase
+    readonly elasticsearch_truncate_short_head?: IShortHeadOptions;
 
     // eslint-disable-next-line camelcase
     readonly max_tokens?: number;

@@ -29,8 +29,8 @@ export class GroupLeaveFunctions {
 /**
  * Leaves a group...
  */
-export const GroupLeaveFunction = ExpressFunctions.createHook('GroupLeaveFunction', (req, res) => {
-    return UserRequests.execute(req, res, GroupLeaveFunctions.exec);
+export const GroupLeaveFunction = ExpressFunctions.createHookAsync('GroupLeaveFunction', async (req, res) => {
+    return await UserRequests.executeAsync(req, res, GroupLeaveFunctions.exec);
 });
 
 export interface GroupLeaveRequest {

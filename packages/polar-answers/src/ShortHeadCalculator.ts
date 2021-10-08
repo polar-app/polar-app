@@ -3,6 +3,8 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asin
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin
 
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+
 export namespace ShortHeadCalculator {
 
     /**
@@ -168,16 +170,49 @@ export namespace ShortHeadCalculator {
 
     }
 
+    export interface IComputeOpts {
+
+        /**
+         * The target angle to truncate results.
+         */
+        // eslint-disable-next-line camelcase
+        readonly target_angle: number;
+
+        /**
+         * The minimum docs needed to run the short head computation.  We need some
+         * setting here as a short head computation on a short vector isn't going to be
+         * very reliable and further the costs of just executing across all the
+         * documents is fairly reasonable.
+         */
+        // eslint-disable-next-line camelcase
+        readonly min_docs: number;
+
+        /**
+         * The max number of docs to return no matter what the short head is computed as.
+         */
+        // eslint-disable-next-line camelcase
+        readonly max_docs: number;
+
+    }
+
+    export const DEFAULT_COMPUTE_OPTS: IComputeOpts = {
+        target_angle: 20,
+        min_docs: 25,
+        max_docs: Number.POSITIVE_INFINITY
+    };
+
     // eslint-disable-next-line camelcase
-    export function compute(vector: Vector, target_angle = 20) {
+    export function compute(vector: Vector, opts: IComputeOpts = DEFAULT_COMPUTE_OPTS): Vector | undefined{
+
+        // TODO: we're not using min_docs
 
         const normalized = ShortHeadCalculator.normalizeXY(vector);
-        return ShortHeadCalculator.computeShortHead(normalized, target_angle);
+        return ShortHeadCalculator.computeShortHead(normalized, opts.target_angle, opts.max_docs);
 
     }
 
     // eslint-disable-next-line camelcase
-    export function computeShortHead(normalizedPoints: NormalizedPoints, target_angle = 20) {
+    export function computeShortHead(normalizedPoints: NormalizedPoints, target_angle = 20, max_docs: number) {
 
         /**
          * Factor to determine what % of total nodes is used as a buffer to
@@ -193,7 +228,13 @@ export namespace ShortHeadCalculator {
 
         function computeTermination(): number | undefined {
 
-            for(let i = 0; normalizedPoints.length - buff; ++i) {
+            /**
+             * True when we have at LEAST some head part so that we don't
+             * compute an short head on a linear graph.
+             */
+            let hasHead = false;
+
+            for(let i = 0; i < normalizedPoints.length - buff; ++i) {
                 const p0 = normalizedPoints[i];
                 const p1 = normalizedPoints[i + buff];
 
@@ -206,7 +247,13 @@ export namespace ShortHeadCalculator {
 
                 // eslint-disable-next-line camelcase
                 if (angle < target_angle) {
-                    return i;
+
+                    if (hasHead) {
+                        return i;
+                    }
+
+                } else {
+                    hasHead = true;
                 }
 
             }
@@ -221,7 +268,9 @@ export namespace ShortHeadCalculator {
             return undefined;
         }
 
-        return normalizedPoints.slice(0, term).map(current => current.y.original);
+        return arrayStream(normalizedPoints.slice(0, term).map(current => current.y.original))
+            .head(max_docs)
+            .collect()
 
     }
 

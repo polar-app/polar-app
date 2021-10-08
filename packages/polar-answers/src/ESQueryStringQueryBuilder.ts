@@ -3,15 +3,24 @@
  */
 export namespace ESQueryStringQueryBuilder {
 
-    export function buildAND(terms: ReadonlyArray<string>): string {
+    function build(terms: ReadonlyArray<string>, sep: string): string {
 
         if (terms.length === 0) {
             return ""
         }
 
         return terms.map(term => `(${term})`)
-                    .join(" AND ");
+            .join(sep);
 
+    }
+
+
+    export function buildAND(terms: ReadonlyArray<string>): string {
+        return build(terms, " AND ");
+    }
+
+    export function buildOR(terms: ReadonlyArray<string>): string {
+        return build(terms, " OR ");
     }
 
 }

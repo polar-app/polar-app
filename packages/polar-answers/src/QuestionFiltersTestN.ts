@@ -11,4 +11,11 @@ describe("QuestionFilters", function() {
 
     });
 
+    it("wrong lang?", async () => {
+
+        const query = await QuestionFilters.filter("Which country initiated the era of Atlantic exploration?", 'part-of-speech-noun', 'AND');
+
+
+    });
+
 });
