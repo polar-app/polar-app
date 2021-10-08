@@ -206,10 +206,10 @@ export namespace ContentEditables {
             return false;
         }
 
-        const rangeBCR = range.getBoundingClientRect();
-        const sourceRangeBCR = coveringRange.getBoundingClientRect();
+        const rangeBCR = getRangeBoundingClientRect(range);
+        const sourceRangeBCR = getRangeBoundingClientRect(coveringRange);
 
-        return rangeBCR.left === sourceRangeBCR.left
+        return rangeBCR.left === sourceRangeBCR.left;
 
     }
 
@@ -294,5 +294,29 @@ export namespace ContentEditables {
         }
 
         return isContentEditable(node.parentElement);
+    }
+
+    /**
+     * This gets the boundingClientRect of a selection range
+     * the reason this function exists is because sometimes calling getBoundingClientRect returns empty values,
+     * so as a work around we insert an empty span within the range and get the boundingClientRect of that instead
+     */
+    export function getRangeBoundingClientRect(range: Range) {
+        const rangeRect = range.getBoundingClientRect();
+
+        const didFail = Object.values(rangeRect.toJSON()).every(val => val === 0);
+
+        if (! didFail) {
+            return rangeRect;
+        }
+
+        const span = document.createElement('span');
+        span.innerHTML = '&#xFEFF;';
+
+        range.insertNode(span);
+        const spanRect = span.getBoundingClientRect();
+
+        span.parentElement?.removeChild(span);
+        return spanRect;
     }
 }

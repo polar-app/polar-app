@@ -30,6 +30,7 @@ import { PointerType } from 'polar-dom-text-search/src/IPointer';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
+
         logo: {
             marginTop: theme.spacing(10),
             marginBottom: theme.spacing(10)

@@ -2,6 +2,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {ActionMenuItemsProvider, createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {useBlocksTreeStore} from "../BlocksTree";
+import {TAG_IDENTIFIER} from "../content/HasLinks";
 import {BlockTextContentUtils, useNamedBlocks} from "../NoteUtils";
 import {BlockPredicates} from "../store/BlockPredicates";
 import {BlockAction} from "./BlockAction";
@@ -27,7 +28,6 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                      wrapEnd=" ]]"
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
-                     actionType="block-link"
                      disabled={disabled}
                      onAction={(id) => ({
                         type: "block-link",
@@ -42,21 +42,20 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
     const { children, id, noteActionsProvider, disabled } = props;
 
     const computeLinkActionInputText = React.useCallback((str: string): string => {
-        return str.replace(/^#/, '');
+        return str.replace(new RegExp(`^${TAG_IDENTIFIER}`), '');
     }, []);
 
     return (
         <BlockAction id={id}
-                     trigger="#"
-                     wrapStart="#"
+                     trigger={TAG_IDENTIFIER}
+                     wrapStart={TAG_IDENTIFIER}
                      wrapEnd=""
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
-                     actionType="block-tag"
                      disabled={disabled}
                      onAction={(id) => ({
                         type: "block-tag",
-                        target: id
+                        target: `${TAG_IDENTIFIER}${id}`
                     })}>
             {children}
         </BlockAction>

@@ -20,6 +20,8 @@ export class DefaultRewrites {
                     "/whats-new",
                     "/logout",
                     "/login",
+                    "/beta-register",
+                    "/login-with-custom-token",
                     "/sign-in",
                     "/create-account",
                     "/feature-requests",

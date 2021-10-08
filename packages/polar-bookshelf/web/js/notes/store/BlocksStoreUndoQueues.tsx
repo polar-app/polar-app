@@ -193,7 +193,8 @@ export namespace BlocksStoreUndoQueues {
 
         const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
 
-            const newMutationNumber = (blocksStore.getBlock(mutation.id)?.mutation || -1) + 1;
+            const blockMutation = blocksStore.getBlock(mutation.id)?.mutation;
+            const newMutationNumber = blockMutation === undefined ? 0 : blockMutation + 1;
 
             switch (mutationType) {
 

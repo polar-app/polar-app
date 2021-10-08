@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import { Devices } from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) =>
 
         },
         icon: {
-            fontSize: '2.5rem',
+            fontSize: Devices.isDesktop()?'2.5rem': '1.5rem',
             color: theme.palette.text.secondary
         }
 
@@ -82,14 +83,14 @@ export const SideNavQuestionMenuItem = React.forwardRef<HTMLLIElement, IProps>((
 
             <ListItemText primary={
                               <span style={{
-                                       fontSize: '1.3rem'
+                                       fontSize: Devices.isDesktop()? '1.3rem': '1rem'
                                    }}>
                                   {props.text}
                               </span>
                           }
                           secondary={
                               <span style={{
-                                       fontSize: '1.1rem'
+                                       fontSize: Devices.isDesktop()? '1.1rem': '0.8rem'
                                    }}>
                                   {props.secondary}
                               </span>
