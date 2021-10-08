@@ -11,7 +11,7 @@
     "dist-win": "npx webpack && ./build/dist-win.sh",
     "verify-electron-version": "./scripts/verify-electron-version",
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "mocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
@@ -44,23 +44,17 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "cache-loader": "4.1.0",
     "electron": "=12.0.2",
     "electron-builder": "=22.10.5",
     "electron-notarize": "1.0.0",
     "electron-updater": "=4.3.8",
-    "fork-ts-checker-webpack-plugin": "=6.2.0",
     "mocha": "=9.1.1",
     "null-loader": "=4.0.1",
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-webpack": "0.0.0",
-    "source-map-support": "=0.5.19",
-    "thread-loader": "=3.0.1",
-    "ts-loader": "=8.0.18",
-    "webpack": "=5.26.3",
-    "webpack-cli": "=4.5.0"
+    "source-map-support": "=0.5.19"
   },
   "dependencies": {
     "polar-bookshelf": "0.0.0",

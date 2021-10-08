@@ -40,7 +40,7 @@ interface IProps {
     readonly size?: 'small' | 'medium' | 'large' | 'xlarge';
     readonly style?: React.CSSProperties;
     readonly className?: string;
-
+    readonly onClick?: () => void;
 }
 
 export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
@@ -65,7 +65,8 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
         return (
             <Avatar src={props.photoURL}
                     className={className}
-                    style={props.style}>
+                    style={props.style}
+                    onClick={props?.onClick}> 
             </Avatar>
         );
 

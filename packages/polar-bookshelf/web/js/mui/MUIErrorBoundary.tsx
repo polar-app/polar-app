@@ -78,9 +78,8 @@ export const MUIErrorBoundaryMessage = (props: MUIErrorBoundaryMessageProps) => 
                 </p>
 
                 <p>
-                    The good news is that we've sent this error to the genius
-                    programmers that work on Polar and we should have a fix
-                    soon!
+                    The good news is that we've sent this error the engineering team at Polar and we should have a fix
+                    out soon.
                 </p>
 
             </Box>

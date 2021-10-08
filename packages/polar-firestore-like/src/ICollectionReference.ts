@@ -22,7 +22,7 @@ export interface IWhereClause {
     readonly value: TWhereValue;
 }
 
-export interface ICollectionReference<SM> {
+export interface ICollectionReference<SM> extends IQuery<SM> {
 
     /** The collection's identifier. */
     readonly id: string;
@@ -39,6 +39,7 @@ export interface ICollectionReference<SM> {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ICollectionReferenceClient extends ICollectionReference<ISnapshotMetadata> {
 
 }

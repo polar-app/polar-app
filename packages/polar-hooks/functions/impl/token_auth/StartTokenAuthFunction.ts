@@ -7,6 +7,7 @@ import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChalle
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
+import {Challenges} from "polar-shared/src/util/Challenges";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -31,12 +32,6 @@ interface IChallenge {
     readonly challenge: string;
 }
 
-interface IChallengeWithParts {
-    readonly p0: string;
-    readonly p1: string;
-    readonly challenge: string;
-}
-
 export async function createOrFetchChallenge(email: EmailStr): Promise<IChallenge> {
 
     const firestore = FirestoreAdmin.getInstance();
@@ -46,20 +41,8 @@ export async function createOrFetchChallenge(email: EmailStr): Promise<IChalleng
         return {challenge: fixed.challenge};
     }
 
-    return createChallenge();
+    return Challenges.create();
 
-}
-
-export function createChallenge(): IChallengeWithParts {
-
-    const n0 = Math.floor(Math.random() * 999);
-    const n1 = Math.floor(Math.random() * 999);
-
-    const p0 = Strings.lpad(n0, '0', 3);
-    const p1 = Strings.lpad(n1, '0', 3);
-
-    const challenge = p0 + p1;
-    return {challenge, p0, p1};
 }
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {

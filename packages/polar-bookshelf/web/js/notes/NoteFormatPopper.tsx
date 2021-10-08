@@ -9,6 +9,7 @@ import {createStyles, makeStyles} from '@material-ui/core';
 import {reaction} from 'mobx';
 import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockPredicates} from './store/BlockPredicates';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -68,6 +69,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const block = blocksTreeStore.getBlock(props.id);
     const selected = blocksTreeStore.selected;
+    const isBlockEditable = !! (block && BlockPredicates.isEditableBlock(block));
 
     const handleSetMode = React.useCallback((mode: BarMode) => {
         const container = containerRef.current;
@@ -87,7 +89,13 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
             return false;
         }
 
-        const range = window.getSelection()!.getRangeAt(0);
+        const selection = window.getSelection();
+
+        if (! selection || selection.rangeCount === 0) {
+            return false;
+        }
+
+        const range = selection.getRangeAt(0);
 
         if (range.collapsed) {
 
@@ -116,7 +124,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         setPosition(undefined);
         setFakeRangePosition(undefined);
 
-    }, [])
+    }, []);
 
     const clearPopupForKeyboard = React.useCallback(() => {
 
@@ -124,7 +132,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup])
 
-    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(block?.content.type, clearPopupForKeyboard);
+    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(isBlockEditable, clearPopupForKeyboard);
 
     const clearPopupTimeout = React.useCallback(() => {
 
@@ -197,7 +205,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup, selected, blocksTreeStore]);
 
-    const noteFormatHandlers = useNoteFormatHandlers(block?.content.type, props.onUpdated);
+    const noteFormatHandlers = useNoteFormatHandlers(isBlockEditable, props.onUpdated);
 
     const onLink = React.useCallback((url: URLStr) => {
         restore();
@@ -218,7 +226,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
                     {props.children}
                 </div>
 
-                {block?.content.type === 'markdown' && position && (
+                {isBlockEditable && position && (
                     <ClickAwayListener onClickAway={clearPopup}>
                         <div className={classes.popper}
                              style={{

@@ -1,6 +1,12 @@
 import {AIModel} from "./AIModel";
+import {TermJoinerType} from "./TermJoinerType";
 
 export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
+
+/**
+ * _score is desc, anything else defaults to asc.
+ */
+export type ElasticsearchSortOrder = "_score" | "idx";
 
 export interface IAnswerExecutorRequest {
 
@@ -25,6 +31,11 @@ export interface IAnswerExecutorRequest {
     readonly filter_question?: FilterQuestionType;
 
     /**
+     * Parses the terms BUT we then converts them to AND queries.
+     */
+    // eslint-disable-next-line camelcase
+    readonly filter_question_joiner?: TermJoinerType;
+    /**
      * Re-rank the results against the OpenAI search endpoint.
      */
     // eslint-disable-next-line camelcase
@@ -41,6 +52,31 @@ export interface IAnswerExecutorRequest {
      */
     // eslint-disable-next-line camelcase
     readonly rerank_elasticsearch_model?: AIModel;
+
+    /**
+     * When true we truncate the re-ranked results to JUST the short head.
+     */
+    // eslint-disable-next-line camelcase
+    readonly rerank_truncate_short_head?: boolean;
+
+    /**
+     * When true, we prune the elasticsearch results of contiguous records.
+     */
+    // eslint-disable-next-line camelcase
+    readonly prune_contiguous_records?: boolean;
+
+    // eslint-disable-next-line camelcase
+    readonly elasticsearch_sort_order?: ElasticsearchSortOrder;
+
+    // eslint-disable-next-line camelcase
+    readonly max_tokens?: number;
+
+    /**
+     * When true, enable the OpenAICompletionCleanup code so that we can make
+     * sure the completions don't have errors due to currie.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_completion_cleanup_enabled?: boolean;
 
 }
 

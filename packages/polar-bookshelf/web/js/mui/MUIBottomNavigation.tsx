@@ -1,5 +1,6 @@
 import { BottomNavigationAction } from '@material-ui/core';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
+import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
 
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -34,16 +35,16 @@ export const MUIBottomNavigation = ()  => {
     }
 
     return (
-        <BottomNavigation value={location.pathname}
-                          onChange={(event, newValue) => changeRoute(newValue)}                          
-                          showLabels
-                          className={classes.root}>
-
-            <BottomNavigationAction label="Home" value={RoutePathnames.HOME} icon={<HomeIcon/>} />
-            {/* <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} /> */}
-            <BottomNavigationAction label="Add" value={RoutePathnames.ADD_MOBILE} icon={<AddIcon />} />
-            <BottomNavigationAction label="Switch" value={RoutePathnames.SWITCH} icon={<ViewCarouselIcon />} />
-
-        </BottomNavigation>
+        <Paper style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex:3 }} elevation={3}>
+            <BottomNavigation value={location.pathname}
+                            onChange={(event, newValue) => changeRoute(newValue)}                          
+                            showLabels
+                            className={classes.root}>
+                <BottomNavigationAction label="Home" value='/' icon={<HomeIcon/>} />
+                {/* <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} /> */}
+                <BottomNavigationAction label="Add" value={RoutePathnames.ADD_MOBILE} icon={<AddIcon />} />
+                <BottomNavigationAction label="Switch" value={RoutePathnames.SWITCH} icon={<ViewCarouselIcon />} />
+            </BottomNavigation>
+        </Paper>
     );
 }

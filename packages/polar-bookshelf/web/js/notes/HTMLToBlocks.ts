@@ -204,8 +204,10 @@ export namespace HTMLToBlocks {
                 current += (node.textContent || '').replace(/\s\s+/g, ' ');
             }
         }
+
         flush(true);
-        return blocks;
+
+        return mergeBlockStructures(blocks);
     };
 
     export async function parse(html: string): Promise<ReadonlyArray<IBlockContentStructure>>  {

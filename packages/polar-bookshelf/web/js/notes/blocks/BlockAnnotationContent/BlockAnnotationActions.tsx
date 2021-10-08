@@ -13,7 +13,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockPredicates} from "../../store/BlockPredicates";
-import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
@@ -22,8 +22,15 @@ import {useBlockTagEditorDialog} from "../../NoteUtils";
 export const useStyles = makeStyles(() =>
     createStyles({
         root: {
+            display: 'flex',
+        },
+        contentWrapper: {
+            flex: '1',
+        },
+        actionsWrapper: {
+            width: 30,
+            flex: '0 0 30px',
             position: 'relative',
-            paddingRight: 30,
         },
         actionsOuter: {
             position: 'absolute',
@@ -58,8 +65,13 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
             onMouseEnter={handleShow}
             onMouseLeave={handleHide}
         >
-            {hovered && <div className={classes.actionsOuter}>{actions}</div>}
-            {children}
+            
+            <div className={classes.contentWrapper}>
+                {children}
+            </div>
+            <div className={classes.actionsWrapper}>
+                {hovered && <div className={classes.actionsOuter}>{actions}</div>}
+            </div>
         </div>
     );
 };
@@ -233,7 +245,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
 
     const editTags = React.useCallback(() => {
-        blockTagEditorDialog(id);
+        blockTagEditorDialog([id]);
     }, [blockTagEditorDialog]);
 
     return React.useMemo(() => {

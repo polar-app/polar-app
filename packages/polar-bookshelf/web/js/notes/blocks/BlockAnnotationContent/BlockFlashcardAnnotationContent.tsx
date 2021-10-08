@@ -9,7 +9,7 @@ import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import CachedIcon from '@material-ui/icons/Cached';
 import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";

@@ -12,7 +12,9 @@ export namespace AnswerExecutorImpl {
 
         try {
 
-            return await AnswerExecutor.exec({...request, uid: idUser.uid})
+            const {response} = await AnswerExecutor.exec({...request, uid: idUser.uid})
+
+            return response;
 
         } catch (e) {
             SentryReporters.reportError("Failed to execute: ", e);

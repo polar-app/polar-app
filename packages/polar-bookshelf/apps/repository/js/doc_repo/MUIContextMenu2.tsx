@@ -337,6 +337,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             open={true}
             style={{padding:0}}
             onClose={handleCloseFromHook}
+            onClick={handleClose}
             BackdropProps={backdrops}
             onContextMenu={handleContextMenu}
             anchorReference="anchorPosition"

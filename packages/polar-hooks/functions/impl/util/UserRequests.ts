@@ -6,13 +6,12 @@ import express from 'express';
 
 export class UserRequests {
 
-    public static execute<R, V>(req: express.Request,
-                                res: express.Response,
-                                handler: (idUser: IDUser,
-                                          request: R,
-                                          req: express.Request,
-                                          res: express.Response) => Promise<V>): void {
-
+    public static async executeAsync<R, V>(req: express.Request,
+                                           res: express.Response,
+                                           handler: (idUser: IDUser,
+                                                     request: R,
+                                                     req: express.Request,
+                                                     res: express.Response) => Promise<V>): Promise<void> {
 
         const doHandle = async () => {
 
@@ -44,9 +43,11 @@ export class UserRequests {
 
         };
 
-        doHandle().catch(err => {
-            ExpressFunctions.sendError(res, err);
-        });
+        try {
+            await doHandle();
+        } catch (err) {
+            ExpressFunctions.sendError(res, err as Error);
+        }
 
     }
 

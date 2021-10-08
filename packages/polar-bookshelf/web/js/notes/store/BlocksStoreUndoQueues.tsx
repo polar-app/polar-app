@@ -2,11 +2,16 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlocksStore, IActiveBlock} from "./BlocksStore";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {IWithMutationOpts} from "./Block";
+import {Block, IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {IBlocksStore} from "./IBlocksStore";
+import {BlockPredicates} from "./BlockPredicates";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {DocumentContent} from "../content/DocumentContent";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -105,19 +110,23 @@ export namespace BlocksStoreUndoQueues {
      * parent
      */
     export function createUndoCapture(blocksStore: BlocksStore,
-                                      identifiers: ReadonlyArray<BlockIDStr>,
-                                      blocksPersistenceWriter: BlocksPersistenceWriter): BlocksStoreUndoQueues.IUndoCapture {
+                                      identifiers: ReadonlyArray<BlockIDStr>, blocksPersistenceWriter: BlocksPersistenceWriter): BlocksStoreUndoQueues.IUndoCapture {
 
         if (identifiers.length === 0) {
             throw new Error("Not given any identifiers");
         }
 
-        identifiers = expandToParentAndChildren(blocksStore, identifiers);
+        const sideAffectedIdentifiers = getAffectedDocumentBlocksIdentifiers(blocksStore, identifiers);
+
+        identifiers = [
+            ...expandToParentAndChildren(blocksStore, identifiers),
+            ...sideAffectedIdentifiers,
+        ];
 
         if (identifiers.length === 0) {
             throw new Error("Expansion failed to identify additional identifiers");
         }
-
+        
         /**
          * Computes only the blocks that are applicable to this operation.  We
          * have to know all the block IDs that would be involved with this
@@ -125,7 +134,7 @@ export namespace BlocksStoreUndoQueues {
          */
         const computeApplicableBlocks = (blocks: ReadonlyArray<IBlock>) => {
             return blocks.filter(block => identifiers.includes(block.id));
-        }
+        ;}
 
         const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
         const oldActive: IActiveBlock | undefined = blocksStore.cursorOffsetCapture();
@@ -135,10 +144,17 @@ export namespace BlocksStoreUndoQueues {
 
         const capture = () => {
 
+            const beforeSideEffectsSnapshot = blocksStore.createSnapshot(identifiers);
+            const beforeSideEffectsAfterBlocks = computeApplicableBlocks(beforeSideEffectsSnapshot);
+            const beforeSideEffectsMutations = computeMutatedBlocks(beforeBlocks, beforeSideEffectsAfterBlocks);
+
+            performDocumentSideEffects(blocksStore, sideAffectedIdentifiers, beforeSideEffectsMutations);
+
             const snapshot = blocksStore.createSnapshot(identifiers);
 
             afterBlocks = computeApplicableBlocks(snapshot);
             newActive = blocksStore.cursorOffsetCapture();
+
         };
 
         const undo = () => {
@@ -177,7 +193,8 @@ export namespace BlocksStoreUndoQueues {
 
         const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
 
-            const newMutationNumber = (blocksStore.getBlock(mutation.id)?.mutation || -1) + 1;
+            const blockMutation = blocksStore.getBlock(mutation.id)?.mutation;
+            const newMutationNumber = blockMutation === undefined ? 0 : blockMutation + 1;
 
             switch (mutationType) {
 
@@ -566,6 +583,197 @@ export namespace BlocksStoreUndoQueues {
     }
 
     /**
+     * Get the ids of the side affected blocks when given a set of blocks.
+     *
+     * Updating some types of blocks should also update the 'updated' field of their root block.
+     * Here we get the ids of the side affected blocks.
+     *
+     * eg: Updating a nested child of a document block should also update the 'updated' timestamp
+     * of that document block.
+     */
+    export function getAffectedDocumentBlocksIdentifiers(blocksStore: IBlocksStore,
+                                                         identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
+        
+        const getDocumentRootID = (block: Block): BlockIDStr | null => {
+            const rootBlock = blocksStore.getBlock(block.root);
+
+            if (
+                rootBlock
+                && block.id !== block.root
+                && BlockPredicates.isDocumentBlock(rootBlock)
+            ) {
+                return rootBlock.id;
+            }
+
+            return null;
+        };
+
+        return arrayStream(blocksStore.idsToBlocks(identifiers))
+            .map(getDocumentRootID)
+            .filterPresent()
+            .unique(x => x)
+            .collect();
+    }
+
+    /**
+     * Update the 'updated' field & annotation counters for a specific set of blocks.
+     *
+     * @see getAffectedDocumentBlocksIdentifiers for more info
+     */
+    export function performDocumentSideEffects(blocksStore: IBlocksStore,
+                                               identifiers: ReadonlyArray<BlockIDStr>,
+                                               mutations: ReadonlyArray<IBlocksStoreMutation>): void {
+
+        /**
+         * This function goes through all the mutations and computes a delta (number of blocks removed/added)
+         * for each document block that is involved with this mutation.
+         *
+         * They're stored in the following way 
+         * ```
+         * {
+         *     'block-id': {
+         *         'other': 0,
+         *         'text-highlight': 0,
+         *         'area-highlight': 0,
+         *         'flashcard': 0,
+         *     }
+         * }
+         * ```
+         * The numbers represent the change of the counter (the delta) depending on whether
+         * a child gets added or removed.
+         *
+         * Note: Blocks are only counted if their root block is of type 'document'
+         */
+        const computeDeltas = () => {
+            const deltaMap = new Map<BlockIDStr, Record<AnnotationContentType | 'other', number>>();
+            const idsSet = new Set(identifiers);
+
+            mutations.forEach((mutation) => {
+                const getMutatedBlock = () => {
+                    switch (mutation.type) {
+                        case 'added':
+                            return mutation.added;
+                        case 'removed':
+                            return mutation.removed;
+                        default:
+                            return null;
+                    }
+                };
+
+                const getDeltaRecordForID = (id: BlockIDStr) => {
+                    const data = deltaMap.get(id);
+
+                    if (data) {
+                        return data;
+                    }
+
+                    const newData: Record<AnnotationContentType | 'other', number> = {
+                        [AnnotationContentType.FLASHCARD]: 0,
+                        [AnnotationContentType.AREA_HIGHLIGHT]: 0,
+                        [AnnotationContentType.TEXT_HIGHLIGHT]: 0,
+                        'other': 0,
+                    };
+
+                    deltaMap.set(id, newData);
+
+                    return newData;
+                };
+
+                const getDeltaType = (block: IBlock) => {
+                    switch (block.content.type) {
+                        case AnnotationContentType.TEXT_HIGHLIGHT:
+                        case AnnotationContentType.AREA_HIGHLIGHT:
+                        case AnnotationContentType.FLASHCARD:
+                            return block.content.type;
+                        default:
+                            return 'other';
+                    }
+                };
+
+                const block = getMutatedBlock();
+
+                if (! block || ! idsSet.has(block.root) && block.content.type !== 'document') {
+                    return;
+                }
+
+                const ownerDocumentID = block.root;
+
+                const record = getDeltaRecordForID(ownerDocumentID);
+
+                const deltaType = getDeltaType(block);
+
+                const getDelta = () => mutation.type === 'added' ? 1 : mutation.type === 'removed' ? -1 : 0;
+                
+                deltaMap.set(ownerDocumentID, { ...record, [deltaType]: record[deltaType] + getDelta() });
+            }, 0);
+
+            return deltaMap;
+        };
+
+        const deltaMap = computeDeltas();
+
+        /**
+         * Reflect the change in counters on the root document block.
+         *
+         * @see computeDeltas for more info
+         */
+        const update = (block: Block<DocumentContent>) => {
+            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
+
+            const getNewContent = (): IDocumentContent | null => {
+                const deltaRecord = deltaMap.get(block.id);
+                const content = block.content.toJSON();
+                let updated = false;
+
+                if (! deltaRecord) {
+                    return null;
+                }
+
+
+                type IDocInfoCounter = 'nrFlashcards' | 'nrTextHighlights' | 'nrAreaHighlights' | 'nrComments';
+
+                const updateCounter = (deltaKey: AnnotationContentType | 'other', counterKey: IDocInfoCounter) => {
+                    const delta = deltaRecord[deltaKey];
+
+                    if (delta !== 0) {
+                        content.docInfo[counterKey] = Math.max((content.docInfo[counterKey] || 0) + delta, 0);
+                        updated = true;
+                    }
+                };
+
+                updateCounter(AnnotationContentType.FLASHCARD, 'nrFlashcards');
+                updateCounter(AnnotationContentType.TEXT_HIGHLIGHT, 'nrTextHighlights');
+                updateCounter(AnnotationContentType.AREA_HIGHLIGHT, 'nrAreaHighlights');
+                updateCounter('other', 'nrComments');
+
+                if (! updated) {
+                    return null;
+                }
+
+                const deltaTotal = Object.values(deltaRecord).reduce((a, b) => a + b, 0);
+
+                content.docInfo.nrAnnotations = Math.max((content.docInfo.nrAnnotations || 0) + deltaTotal, 0);
+
+                return content;
+            };
+
+            block.withMutation(() => {
+                const updatedContent = getNewContent();
+
+                if (updatedContent) {
+                    block.setContent(updatedContent);
+                }
+
+            }, opts);
+
+            blocksStore.doPut([block]);
+        };
+
+        blocksStore.idsToBlocks(identifiers).filter(BlockPredicates.isDocumentBlock).forEach(update);
+
+    }
+
+    /**
      * Compute just the mutated blocks so that we can figure out which ones need
      * to be patched.
      */
@@ -589,7 +797,7 @@ export namespace BlocksStoreUndoQueues {
             const toUpdated = (beforeBlock: IBlock): IBlocksStoreMutationUpdated | undefined => {
 
                 const afterBlock = afterBlockIndex[beforeBlock.id];
-                if ( afterBlock) {
+                if (afterBlock) {
                     if (afterBlock.mutation !== beforeBlock.mutation || afterBlock.updated !== beforeBlock.updated) {
                         return {
                             id: beforeBlock.id,

@@ -29,7 +29,7 @@ import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
 import {RoutePathnames} from '../apps/repository/RoutePathnames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
-import {DeviceRouter} from '../ui/DeviceRouter';
+import {DeviceRouter, DeviceRouters} from '../ui/DeviceRouter';
 import {FeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 export const SIDENAV_WIDTH = 56;
@@ -311,45 +311,44 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-            <SideNavInitializer />
+        <SideNavInitializer />
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
-                <ZenModeActiveContainer>
+                {Devices.isDesktop() && <ZenModeActiveContainer>
                     <div className={classes.root} style={{ height: '100%' }}>
 
-                        <PolarButton/>
+                                <PolarButton/>
 
-                        <SideNavDividerTop/>
+                                <SideNavDividerTop/>
 
-                        <HomeButton/>
-                        <AnnotationsButton/>
+                                <HomeButton/>
+                                <AnnotationsButton/>
 
-                        <FeatureToggle featureName="notes-enabled">
-                            <NotesButton/>
-                        </FeatureToggle>
+                                <FeatureToggle featureName="notes-enabled">
+                                    <NotesButton/>
+                                </FeatureToggle>
 
-                        <DeviceRouter desktop={<StatsButton/>} />
+                                <DeviceRouter desktop={<StatsButton/>} />
 
-                        {tabs.length > 0 && (
-                            <SideNavDivider/>
-                        )}
+                                {tabs.length > 0 && (
+                                    <SideNavDivider/>
+                                )}
 
-                        <VerticalDynamicScroller className={classes.buttons}>
-                            {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
-                        </VerticalDynamicScroller>
+                                <VerticalDynamicScroller className={classes.buttons}>
+                                    {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                                </VerticalDynamicScroller>
 
-                        <div style={{marginBottom: '5px'}}>
-                            <SideNavDivider/>
-                            <DeviceRouter desktop={<SyncButton/>}/>
-                            <AccountButton/>
+                                <div style={{marginBottom: '5px'}}>
+                                    <SideNavDivider/>
+                                    <DeviceRouter desktop={<SyncButton/>}/>
+                                    <AccountButton/>
 
-                            <SideNavQuestionButton/>
-                            <SettingsButton/>
-                        </div>
-
+                                    <SideNavQuestionButton/>
+                                    <SettingsButton/>
+                                </div>
                     </div>
-                </ZenModeActiveContainer>
+                </ZenModeActiveContainer>}
                 <Divider orientation="vertical" />
                 <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>
@@ -363,7 +362,7 @@ const useSideCarStyles = makeStyles<Theme, IUseSideCarStylesProps>(() =>
         root({ sidenavWidth }) {
             return {
                 height: '100%',
-                width: `calc(${sidenavWidth}px - ${SIDENAV_WIDTH}px)`,
+                width: Devices.isDesktop() ? `calc(${sidenavWidth}px - ${SIDENAV_WIDTH}px)`: `${sidenavWidth}px`,
             };
         },
     })

@@ -43,6 +43,7 @@ import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
 import {BlockTextContentUtils} from "../NoteUtils";
+import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -342,6 +343,8 @@ export class BlocksStore implements IBlocksStore {
      */
     private _activeBlocksIndex: ActiveBlocksIndex = {};
 
+    public relatedTagsManager: RelatedTagsManager = new RelatedTagsManager();
+
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
                 readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
@@ -504,24 +507,50 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[name] = block.id;
             }
 
-            if (block.content.type === "document") {
+            if (BlockPredicates.isDocumentBlock(block)) {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-            if (BlockPredicates.canHaveLinks(block)) {
-
-                if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
-                    for (const link of existingBlock.content.links) {
-                        this._reverse.remove(link.id, block.id);
-                    }
+            /**
+             * Update links indices
+             */
+            if (existingBlock) {
+                for (const link of existingBlock.content.links) {
+                    this._reverse.remove(link.id, block.id);
                 }
-
-                for (const link of block.content.links) {
-                    this._reverse.add(link.id, block.id);
-                }
-
             }
 
+            for (const link of block.content.links) {
+                this._reverse.add(link.id, block.id);
+            }
+
+            /**
+             * Update tags indices
+             *
+             * Here we store the change in tags for a specific block in the relatedTagsManager
+             * 1. First we deregister the tags of the existing block (before it was updated)
+             * 2. We register the tags of the new block (the updated block)
+             */
+            if (! existingBlock || block.content.hasTagsMutated(existingBlock.content)) {
+                if (existingBlock) {
+                    this.relatedTagsManager.update(block.root, 'delete', existingBlock.content.getTags());
+                }
+                
+                this.relatedTagsManager.update(block.root, 'set', block.content.getTags());
+
+                if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
+                    if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
+                        const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
+                        const tag = { id: existingBlock.id, label: oldName };
+                        this.relatedTagsManager.update(block.root, 'delete', [tag]);
+                    }
+
+                    const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
+                    const tag = { id: block.id, label: newName };
+                    this.relatedTagsManager.update(block.root, 'set', [tag]);
+
+                }
+            }
         }
 
         this._active = opts.newActive ? opts.newActive : this._active;
@@ -845,13 +874,7 @@ export class BlocksStore implements IBlocksStore {
                 this._selected[this._active?.id] = true;
                 this._selectedAnchor = this._active?.id;
 
-                function clearSelection() {
-                    const sel = window.getSelection()!;
-                    sel.getRangeAt(0).collapse(true);
-                }
-
-                // TODO: this probably shouldn't be here - in the store.
-                clearSelection();
+                CursorPositions.clearSelection();
 
                 return true;
             }
@@ -1325,7 +1348,12 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[newName.toLowerCase()] = id;
 
                 block.withMutation(() => {
-                    block.setContent(new NameContent({ type: 'name', data: newName, links: block.content.toJSON().links }));
+                    const content = new NameContent({
+                        ...block.content.toJSON(),
+                        data: newName,
+                    });
+
+                    block.setContent(content);
                 });
 
                 this.doPut([block]);
@@ -1362,9 +1390,10 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
-                                     targetName: BlockNameStr,
+                                     rawTargetName: BlockNameStr,
                                      content: MarkdownStr) {
 
+        const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
@@ -1393,6 +1422,7 @@ export class BlocksStore implements IBlocksStore {
                 data: targetName,
                 links: [],
             });
+
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
@@ -1400,7 +1430,7 @@ export class BlocksStore implements IBlocksStore {
             });
 
             sourceBlock.withMutation(() => {
-                sourceBlock.content.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.content.addLink({id: targetBlockID, text: rawTargetName});
                 ;
                 sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
             });
@@ -1408,6 +1438,7 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([sourceBlock]);
 
             const cursorPos = this.cursorOffsetCapture();
+
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }

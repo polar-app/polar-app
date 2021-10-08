@@ -25,8 +25,9 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
+import Themes from 'epubjs/types/themes';
 
-const useStyles = makeStyles((theme) =>
+export const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) =>
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
-            fontSize: '1.5em'
+            fontSize: '1.5em',
         },
         intro: {
             color: theme.palette.text.secondary,
@@ -102,8 +103,15 @@ const useStyles = makeStyles((theme) =>
             height: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
+        },
+        linkDecoration: {
+            color: '#6754D6 !important',
+            textDecoration: 'underline !important'
+        },
+        a: {
+            color: theme.palette.text.secondary,
+            textDecoration: 'underline'
         }
-
     }),
 );
 
@@ -111,6 +119,7 @@ interface IAuthButtonProps {
     readonly startIcon: React.ReactNode;
     readonly onClick: () => void;
     readonly strategy: string;
+    readonly style?: React.CSSProperties;
 }
 
 const AuthButton = (props: IAuthButtonProps) => {
@@ -123,64 +132,45 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     return (
         <>
-            <Button variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={props.onClick}
-                    startIcon={props.startIcon}
-                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
+            <DeviceRouters.Phone>
+                <Button variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={props.onClick}
+                        startIcon={props.startIcon}
+                        style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
-                {hint} with {props.strategy}
+                    {hint} with {props.strategy}
+                </Button>
+            </DeviceRouters.Phone>
 
-            </Button>
+            <DeviceRouters.NotPhone>
+                <Button variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={props.onClick}
+                        startIcon={props.startIcon}>
 
+                    {hint} with {props.strategy}
+                </Button>
+            </DeviceRouters.NotPhone>
         </>
     );
 }
 
-const GoogleAuthButton = () => {
+// new Links component
+const Links = () => {
 
     const classes = useStyles();
-    const [error, setError] = React.useState<string | undefined>();
 
-    const triggerAuth = useTriggerFirebaseGoogleAuth();
-
-    const doTriggerAuth = React.useCallback(async () => {
-
-        Analytics.event2("auth:GoogleAuthButtonTriggered")
-
-        setError(undefined);
-
-        try {
-            await triggerAuth();
-        } catch (err) {
-            setError((err as any).message || 'error')
-        }
-
-    }, [triggerAuth]);
-
-    const handleTriggerAuth = React.useCallback(async () => {
-
-        Analytics.event2("auth:GoogleAuthActivated")
-
-        doTriggerAuth()
-            .catch(err => console.log("Unable to handle auth: ", err));
-
-    }, [doTriggerAuth]);
+    const mode = React.useContext(AuthenticatorModeContext);
 
     return (
         <>
-            {error && (
-                <Alert severity="error"
-                       className={classes.alert}>
-                    {error}
-                </Alert>
-            )}
-
-            <AuthButton onClick={handleTriggerAuth}
-                        strategy="Google"
-                        startIcon={<FAGoogleIcon />}/>
-
+            <p className={classes.legal}>
+                You acknowledge that you will read, and agree to
+                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+            </p>
         </>
     );
 }
@@ -207,6 +197,7 @@ const ProgressActive = () => {
     );
 }
 
+// Function to keep
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
@@ -247,7 +238,7 @@ const EmailTokenAuthButton = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: (err as any).message || undefined
+                message: (err as any).message
             });
         }
 
@@ -291,7 +282,7 @@ const EmailTokenAuthButton = () => {
         } catch(err) {
             setAlert({
                 type: 'error',
-                message: (err as any).message || 'error'
+                message: (err as any).message
             });
         }
 
@@ -349,165 +340,143 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-            {active && (
+            <DeviceRouters.Phone>
                 <>
-                    <Divider className={classes.sendLinkDivider}/>
-
-                    {pending && (
-                        <ProgressActive/>
-                    )}
-
-                    {! pending && (
-                        <ProgressInactive/>
-                    )}
-
-                    {alert && (
-                        <Alert severity={alert.type}
-                               className={classes.alert}>
-                            {alert.message}
-                        </Alert>
-                    )}
-
-                    {triggered && (
+                    {active && (
                         <>
+                            <Divider className={classes.sendLinkDivider}/>
 
-                            <TextField autoFocus={true}
-                                       className={classes.email}
-                                       onChange={event => challengeRef.current = event.target.value}
-                                       onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                       placeholder="Enter your Code Here"
-                                       variant="outlined" 
-                                       style={{width: '95vw', margin: '10px', textAlign: 'center'}}/>
+                            {pending && (
+                                <ProgressActive/>
+                            )}
 
-                            <div className={classes.alternate}>
-                                <Button onClick={handleEmailProvided}>Resend Email</Button>
-                            </div>
-                            <Button variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    onClick={handleClick}
-                                    style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
-                                Verify Code
-                            </Button>
+                            {! pending && (
+                                <ProgressInactive/>
+                            )}
+
+                            {alert && (
+                                <Alert severity={alert.type}
+                                       className={classes.alert}>
+                                    {alert.message}
+                                </Alert>
+                            )}
+
+                            {triggered && (
+                                <>
+                                    <TextField autoFocus={true}
+                                               className={classes.email}
+                                               onChange={event => challengeRef.current = event.target.value}
+                                               onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                               placeholder="Enter your Code Here"
+                                               variant="outlined"
+                                               style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
+
+                                    <div className={classes.alternate}>
+                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
+                                    </div>
+
+                                    <Button variant="contained"
+                                            color="primary"
+                                            className={classes.button}
+                                            onClick={handleClick}
+                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} >
+                                        Verify Code
+                                    </Button>
+                                </>
+                            )}
+
+                            {! triggered && (
+                                <TextField autoFocus={true}
+                                           className={classes.email}
+                                           onChange={event => emailRef.current = event.target.value}
+                                           onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                           placeholder="email@"
+                                           variant="outlined"
+                                           style={{width: '95vw', textAlign: 'center', margin: '10px'}}/>
+                            )}
                         </>
                     )}
 
-                    {! triggered && (
-                        <TextField autoFocus={true}
-                                   className={classes.email}
-                                   onChange={event => emailRef.current = event.target.value}
-                                   onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                   placeholder="email@"
-                                   variant="outlined" 
-                                   style={{width: '95vw', margin: '10px', textAlign: 'center'}} />
+                    {!triggered && (
+
+                        <AuthButton onClick={handleClick}
+                                    strategy="Email"
+                                    startIcon={<EmailIcon />}
+                        />
                     )}
 
                 </>
-            )}
+            </DeviceRouters.Phone>
 
-            {!triggered && (
-
-                <AuthButton onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                            />
-            )}
-
-            <Divider className={classes.sendLinkDivider}/>
-        </>
-    );
-};
-
-const EmailAuthButton = () => {
-
-    const classes = useStyles();
-
-    const [error, setError] = React.useState<string | undefined>();
-
-    const [active, setActive] = React.useState(false);
-    const [triggered, setTriggered] = React.useState(false);
-
-    const triggerFirebaseEmailAuth = useTriggerFirebaseEmailAuth();
-
-    const emailRef = React.useRef("");
-
-    const doTriggerAuth = React.useCallback(async (email: string) => {
-
-        setError(undefined);
-
-        try {
-            localStorage.setItem('emailForSignIn', email);
-            await triggerFirebaseEmailAuth(email);
-            setTriggered(true);
-        } catch(err) {
-            setError((err as any).message);
-        }
-
-    }, [triggerFirebaseEmailAuth]);
-
-    const handleAuth = React.useCallback(() => {
-
-        doTriggerAuth(emailRef.current)
-            .catch(err => console.log("Unable to handle auth: ", err));
-
-    }, [doTriggerAuth])
-
-    const handleKeyPress = React.useCallback((event: React.KeyboardEvent<any>) => {
-
-        if (event.key === 'Enter') {
-            handleAuth();
-        }
-
-    }, [handleAuth]);
-
-    const handleClick = React.useCallback(() => {
-
-        if (active) {
-
-            if (emailRef.current.trim() !== '') {
-                handleAuth();
-            }
-
-        } else {
-            setActive(true)
-        }
-
-    }, [active, handleAuth])
-
-    return (
-        <>
-            {active && (
+            <DeviceRouters.NotPhone>
                 <>
-                    <Divider className={classes.sendLinkDivider}/>
+                    {active && (
+                        <>
+                            <Divider className={classes.sendLinkDivider}/>
 
-                    {error && (
-                        <Alert severity="error"
-                               className={classes.alert}>
-                            {error}
-                        </Alert>
+                            {pending && (
+                                <ProgressActive/>
+                            )}
+
+                            {! pending && (
+                                <ProgressInactive/>
+                            )}
+
+                            {alert && (
+                                <Alert severity={alert.type}
+                                       className={classes.alert}>
+                                    {alert.message}
+                                </Alert>
+                            )}
+
+                            {triggered && (
+                                <>
+
+                                    <TextField autoFocus={true}
+                                               className={classes.email}
+                                               onChange={event => challengeRef.current = event.target.value}
+                                               onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                               placeholder="Enter your Code Here"
+                                               variant="outlined" />
+
+                                    <div className={classes.alternate}>
+                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
+                                    </div>
+                                    <Button variant="contained"
+                                            color="primary"
+                                            className={classes.button}
+                                            onClick={handleClick}>
+                                        Verify Code
+                                    </Button>
+                                </>
+                            )}
+
+                            {! triggered && (
+                                <TextField autoFocus={true}
+                                           className={classes.email}
+                                           onChange={event => emailRef.current = event.target.value}
+                                           onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                           placeholder="email@"
+                                           variant="outlined" />
+                            )}
+
+                        </>
                     )}
 
-                    {triggered && (
-                        <Alert severity="success"
-                               className={classes.alert}>Check your email for a link to login to your new Polar account!</Alert>
-                    )}
+                    {!triggered && (
 
-                    <TextField autoFocus={true}
-                               className={classes.email}
-                               onChange={event => emailRef.current = event.target.value}
-                               onKeyPress={handleKeyPress}
-                               placeholder="Enter your email address... "
-                               variant="outlined" />
+                        <AuthButton onClick={handleClick}
+                                    strategy="Email"
+                                    startIcon={<EmailIcon />}
+                        />
+                    )}
                 </>
-            )}
-
-            <AuthButton onClick={handleClick}
-                        strategy="Email"
-                        startIcon={<EmailIcon />}/>
-
+            </DeviceRouters.NotPhone>
         </>
     );
 };
+
+// end comp 1
 
 const SignInWithExistingAccount = () => {
 
@@ -515,7 +484,8 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
-        
+
+
         <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
             <Button>or sign-in with existing account</Button>
         </div>
@@ -544,85 +514,45 @@ const Main = React.memo(function Main(props: IProps) {
 
         <>
             <DeviceRouters.NotPhone>
-            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
 
-            <div id="firebaseui-auth-container" style={{display: 'none'}}/>
+                    <div id="firebaseui-auth-container" style={{display: 'none'}}/>
 
-            <div className="text-center">
+                    <div className="text-center">
 
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
-                </div>
+                        <div className={classes.logo}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </div>
 
 
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create your Polar Account
-                    </h2>
-                )}
+                        {props.mode === 'create-account' && (
+                            <h2 className={classes.intro}>
+                                Create your Polar Account
+                            </h2>
+                        )}
 
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In to Polar
-                    </h2>
-                )}
+                        {props.mode === 'sign-in' && (
+                            <h2 className={classes.intro}>
+                                Sign In to Polar
+                            </h2>
+                        )}
 
-                <div style={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
 
-                    {/*<GoogleAuthButton/>*/}
+                            {/*<GoogleAuthButton/>*/}
 
-                    <EmailTokenAuthButton/>
+                            <EmailTokenAuthButton/>
 
-                    {/*<EmailAuthButton/>*/}
+                            {/*<EmailAuthButton/>*/}
 
-                </div>
+                        </div>
 
-            </div>
-
-            <Divider className={classes.divider}/>
-
-            {props.mode === 'create-account' && (
-                <SignInWithExistingAccount/>
-            )}
-
-            {props.mode === 'sign-in' && (
-                <OrCreateNewAccount/>
-            )}
-
-            <div style={{flexGrow: 1}}>
-
-            </div>
-
-            <div>
-                <p className={classes.legal}>
-                    You acknowledge that you will read, and agree to
-                    our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                </p>
-            </div>
-
-            </div>
-        </DeviceRouters.NotPhone>
-
-        <DeviceRouters.Phone>
-            <div style={{height:"100vh"}}>
-                <div style={{textAlign: 'center', marginTop: '100px'}}>
-                    <div className={classes.logo}>
-                        <PolarSVGIcon width={125} height={125}/>
                     </div>
 
-                    <div>
-                        <p className={classes.legal}>
-                            Welcome to Polar
-                        </p>
-                    </div>
-                </div>
-
-                <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
-
-                    <EmailTokenAuthButton/>
+                    <Divider className={classes.divider}/>
 
                     {props.mode === 'create-account' && (
                         <SignInWithExistingAccount/>
@@ -635,17 +565,48 @@ const Main = React.memo(function Main(props: IProps) {
                     <div style={{flexGrow: 1}}>
 
                     </div>
+                    <Links/>
+                </div>
+            </DeviceRouters.NotPhone>
 
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/terms/">Terms of Service</a> and <a style={{color: '#757ce8', textDecoration: 'underline'}} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
+            <DeviceRouters.Phone>
+                <div style={{display: 'block', height:"100vh"}}>
+                    <div style={{textAlign: 'center', marginTop: '100px'}}>
+                        <div className={classes.logo}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </div>
+
+                        <div>
+                            <p className={classes.legal}>
+                                Welcome to Polar
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
+
+                        <EmailTokenAuthButton />
+
+                        {props.mode === 'create-account' && (
+                            <SignInWithExistingAccount/>
+                        )}
+
+                        {props.mode === 'sign-in' && (
+                            <OrCreateNewAccount/>
+                        )}
+
+                        <div style={{flexGrow: 1}} />
+
+                        <div>
+                            <p style={{fontSize: '10px'}} className={classes.legal}>
+                                You acknowledge that you will read, and agree to
+                                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </DeviceRouters.Phone>
+            </DeviceRouters.Phone>
         </>
 
     );
@@ -654,12 +615,12 @@ const Main = React.memo(function Main(props: IProps) {
 const Pending = () => {
     return (
         <div style={{
-                 flexGrow: 1,
-                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'center',
-                 alignItems: 'center'
-            }}>
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
             <CircularProgress style={{width: '150px', height: '150px'}}/>
         </div>
     )
@@ -680,22 +641,22 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
             <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                            display: 'flex',
-                            width: '100%',
-                            height: '100%'
-                        }}>
+                <DeviceRouters.NotPhone>
+                    <div style={{
+                        display: 'flex',
+                        width: '100%',
+                        height: '100%'
+                    }}>
 
                         <Paper style={{
-                                margin: 'auto',
-                                maxWidth: '450px',
-                                minHeight: '500px',
-                                maxHeight: '800px',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
+                            margin: 'auto',
+                            maxWidth: '450px',
+                            minHeight: '500px',
+                            maxHeight: '800px',
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
 
                             <>
 
@@ -705,7 +666,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
 
                                 {authStatus === 'needs-auth' && (
-                                <Main {...props}/>
+                                    <Main {...props}/>
                                 )}
 
                             </>
@@ -713,20 +674,20 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         </Paper>
 
                     </div>
-            </DeviceRouters.NotPhone>
+                </DeviceRouters.NotPhone>
 
-            <DeviceRouters.Phone>
+                <DeviceRouters.Phone>
                     <>
-                    {authStatus === undefined && (
-                        <Pending/>
-                    )}
+                        {authStatus === undefined && (
+                            <Pending/>
+                        )}
 
-                    {authStatus === 'needs-auth' && (
-                    <Main {...props}/>
-                    )}
+                        {authStatus === 'needs-auth' && (
+                            <Main {...props}/>
+                        )}
                     </>
-            </DeviceRouters.Phone>
-                
+                </DeviceRouters.Phone>
+
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>

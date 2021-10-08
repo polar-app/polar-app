@@ -23,12 +23,37 @@
 # Resources Access
 
 - you reading this means we have configured both github / company email access
+- If you need access to AWS or GCP message Kevin on slack
+- For Designers and Front-end Engineers our Designs are all in [Figma](https://www.figma.com/file/KwjTPO5nzYRGV2I1Laxjlf/Polar-new-designs?node-id=743%3A21467) Focus on handover
+
+# Must Read!
+
+- everything inside the `#announcement-internal` slack channel
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
+# Workflow
+
+## Tools needed
+
 - Firstly install the [Zenhub Extension](https://www.zenhub.com/extension) to see our issues board from inside github
 - Download, Install [Slack](https://slack.com) & Join with your company email
 - Login to [circleci](https://circleci.com) with github & allow access to see the pipeline status
-- If you need access to AWS or GCP message Kevin on slack
-- For Designers and Front-end Engineers our Designs are all in [Figma](https://www.figma.com/file/KwjTPO5nzYRGV2I1Laxjlf/Polar-new-designs?node-id=743%3A21467) Focus on handover
+- Setup your [Calendly](https://calendly.com)
+- Download [Loom](https://loom.com) both extension & desktop app
 - For Front-end engineers install the [React Developer Extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) for much easier debugging
+
+## Cycle
+
+- Start your day by typing in your stand-up in the `#standups-team` slack channel
+  - what you worked on yesterday
+  - what you're working on today
+  - Blockers if you're blocked on anything
+  - only mention people when they need to see something in your standup, otherwise avoid it
+  - don't be afraid to go into depth of what you're working on, rather we encourage it
+- Always get someone to review your work, don't merge something on your own unless you have explicit permission to do so
+- Update and link PRs to github issues
+- **IMPORTANT!!** Always use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) Syntax, if you're using vscode download the conventional commits extension
+- You don't need to schedule a meeting for every question you have, a simple text message will do most of the time, if you need to go into detail and show something use & attach the link to the issue, otherwise schedule a call through the other party's calendly
 
 # Stack
 
@@ -93,3 +118,10 @@ Some users report a bug with npm that causes it to tail to garbage collect open 
 ```bash
 sudo launchctl limit maxfiles 1000000 1000000
 ```
+
+# Key Developer Documentation
+
+- [React Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/REACT_CHEATSHEET.md)
+- [Material UI Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/MUI_CHEATSHEET.md)
+- [Pull Request Management](https://github.com/polar-app/polar-app/blob/master/docs/PULL_REQUEST_MANAGEMENT.md)
+- [React Router Cheatsheet](https://github.com/polar-app/polar-app/blob/master/docs/REACT_ROUTER_HISTORY.md)

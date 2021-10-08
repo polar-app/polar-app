@@ -13,12 +13,13 @@ import {NameContent} from "./content/NameContent";
 import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {useLinkNavigationClickHandler, BlockTextContentUtils} from "./NoteUtils";
+import {useLinkNavigationClickHandler} from "./NoteLinksHooks";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {BlockTextContentUtils} from "./NoteUtils";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -75,7 +76,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
 
         if (content.type === 'name') {
             handleRename(content, data);
-        } else if (content.type !== AnnotationContentType.FLASHCARD) {
+        } else if (! block.readonly && content.type !== AnnotationContentType.FLASHCARD) {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksTreeStore.setBlockContent(block.id, newContent);
         }
@@ -181,10 +182,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     if (block.content.type === "document") {
 
         const { docInfo } = block.content;
+        const tags = block.content.getTags();
 
         return (
             <BlockDocumentContent
                 id={id}
+                tags={tags}
                 parent={parent}
                 className={className}
                 style={style}

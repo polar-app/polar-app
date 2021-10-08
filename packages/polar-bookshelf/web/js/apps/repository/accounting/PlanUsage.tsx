@@ -8,6 +8,8 @@ import {BorderLinearProgress} from "../../../mui/BorderLinearProgress";
 import { Numbers } from 'polar-shared/src/util/Numbers';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { Variant } from '@material-ui/core/styles/createTypography';
+import { Devices } from 'polar-shared/src/util/Devices';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -17,29 +19,31 @@ const useStyles = makeStyles((theme) =>
             flexDirection: 'column'
         },
         labelValue: {
-            fontSize: '2.5em',
+            fontSize:'1em',
             flexGrow: 1,
-            textAlign: 'left'
+            textAlign: 'left',
+            padding: Devices.isDesktop() ? 0 : '0.3em 0'
         },
         labelValueDesc: {
             color: theme.palette.text.hint,
+            fontSize: '1em',
             textAlign: 'left'
         },
 
         labelLimit: {
-            fontSize: '2.5em',
-            color: theme.palette.text.hint,
-            textAlign: 'right'
+            fontSize: '1em',
+            textAlign: 'right',
+            padding: Devices.isDesktop() ? 0 : '0.3em 0'
         },
 
         labelLimitDesc: {
             color: theme.palette.text.hint,
+            fontSize: '1em',
             textAlign: 'right'
         },
 
         progress: {
-            marginTop: '2px',
-            marginBottom: '2px',
+            margin: '6px 0',
             height: '0.7em',
         },
 
@@ -86,14 +90,14 @@ const UsageGauge = React.memo(function UsageGauge(props: UsageGaugeProps) {
                         {usageStr}
                     </div>
                     <div className={classes.labelValueDesc}>
-                        USED
+                        Used
                     </div>
                 </div>
 
                 <div className={classes.labelBox}>
                     <div className={classes.labelLimit}>{limitStr}</div>
                     <div className={classes.labelLimitDesc}>
-                        LIMIT
+                        Limit
                     </div>
                 </div>
 
@@ -108,58 +112,21 @@ const UsageGauge = React.memo(function UsageGauge(props: UsageGaugeProps) {
     );
 
 });
-//
-// const PlanUsageForStorage = React.memo(function PlanUsageForStorage() {
-//
-//     const classes = useStyles();
-//
-//     const accountingUsage = useAccountingUsage();
-//
-//     const usageStr = Bytes.format(accountingUsage.storage.value);
-//     const limitStr = Bytes.format(accountingUsage.storage.limit!);
-//
-//     return (
-//         <div style={{display: 'flex', flexDirection: 'column'}}>
-//
-//             <div style={{display: 'flex'}}>
-//
-//                 <div className={classes.labelBox}
-//                      style={{flexGrow: 1}}>
-//                     <div className={classes.labelValue}>
-//                         {usageStr}
-//                     </div>
-//                     <div className={classes.labelValueDesc}>
-//                         USED
-//                     </div>
-//                 </div>
-//
-//                 <div className={classes.labelBox}>
-//                     <div className={classes.labelLimit}>{limitStr}</div>
-//                     <div className={classes.labelLimitDesc}>
-//                         LIMIT
-//                     </div>
-//                 </div>
-//
-//             </div>
-//
-//             <BorderLinearProgress className={classes.progress}
-//                                   color="primary"
-//                                   variant="determinate"
-//                                   value={accountingUsage.storage.usage || 0}/>
-//
-//         </div>
-//     );
-//
-// });
 
-export const PlanUsage = () => {
+interface PlanUsageSizeProps {
+
+    readonly variant?: Variant;
+
+}
+
+export const PlanUsage = React.memo(function PlanUsage(props: PlanUsageSizeProps) {
 
     const accountingUsage = useAccountingUsage();
 
     return (
         <>
 
-            <Typography align="left" variant="h6" color="textSecondary">
+            <Typography align="left" variant={props.variant || "h6"} color="textPrimary">
                 Storage
             </Typography>
 
@@ -170,7 +137,7 @@ export const PlanUsage = () => {
 
             <Box mt={1}>
 
-                <Typography align="left" variant="h6" color="textSecondary">
+                <Typography align="left" variant={props.variant || "h6"} color="textPrimary">
                     Web captures
                 </Typography>
 
@@ -184,4 +151,4 @@ export const PlanUsage = () => {
         </>
     );
 
-};
+});

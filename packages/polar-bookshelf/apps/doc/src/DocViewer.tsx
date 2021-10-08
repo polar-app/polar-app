@@ -45,8 +45,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
@@ -57,8 +56,6 @@ import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
 import {AnnotationBlockMigrator} from "./AnnotationBlockMigrator";
 
 
@@ -377,10 +374,13 @@ const useDocumentBlockMigrator = () => {
 
             const links = AnnotationBlockMigrator.tagsToLinks(blocksStore, tags);
 
+            const docInfo = { ...docMeta.docInfo };
+            delete docInfo.tags;
+
             return blocksStore.createNewNamedBlock({
                 content: new DocumentContent({
                     type: "document",
-                    docInfo: docMeta.docInfo,
+                    docInfo,
                     links,
                 })
             });

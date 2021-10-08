@@ -37,6 +37,7 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
 ];
 
 export const DOC_BUTTON_COLUMN_WIDTH = '130px';
+export const CONTEXT_MENU_ICON_WIDTH = '84px';
 
 export const COLUMN_MAP: ColumnDescriptorMap =
     arrayStream(COLUMNS)

@@ -1,6 +1,10 @@
 import {IHasLinksContent} from "polar-blocks/src/blocks/content/IHasLinksContent";
 import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {observable, computed, makeObservable} from "mobx";
+import {Tag} from "polar-shared/src/tags/Tags";
+import deepEqual from "deep-equal";
+
+export const TAG_IDENTIFIER = '#';
 
 export class HasLinks implements IHasLinksContent {
     @observable private _links: ReadonlyArray<IBlockLink>;
@@ -13,6 +17,27 @@ export class HasLinks implements IHasLinksContent {
 
     @computed get links() {
         return this._links;
+    }
+
+    @computed get wikiLinks() {
+        return this._links.filter(({ text }) => ! text.startsWith(TAG_IDENTIFIER));
+    }
+
+    @computed get tagLinks() {
+        return this._links.filter(({ text }) => text.startsWith(TAG_IDENTIFIER));
+    }
+
+    public hasTagsMutated(content: HasLinks): boolean {
+        return ! deepEqual(content.tagLinks, this.tagLinks);
+    }
+
+    public getTags(): Tag[] {
+        const toTag = ({ text, id }: IBlockLink): Tag => {
+            const label = text.slice(1);
+            return { label, id };
+        };
+
+        return this.tagLinks.map(toTag);
     }
 
     public updateLinks(links: ReadonlyArray<IBlockLink>): void {

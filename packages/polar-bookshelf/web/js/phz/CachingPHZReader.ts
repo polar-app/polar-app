@@ -5,6 +5,9 @@ import {CompressedReader} from 'polar-content-capture/src/phz/CompressedReader';
 
 const log = Logger.create();
 
+/**
+ * @Deprecated This is from Polar 1.0
+ */
 export class CachingPHZReader implements CompressedReader {
 
     public path: string;
