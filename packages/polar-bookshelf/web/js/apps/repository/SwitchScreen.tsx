@@ -6,6 +6,8 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { useSideNavStore } from '../../../../web/js/sidenav/SideNavStore';
 import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import { useHistory } from 'react-router-dom';
+import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
+import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -33,7 +35,11 @@ const useStyles = makeStyles<Theme>((theme) =>
 interface TableHeaderProps {
     readonly nonEmpty?: boolean;
 }
-
+/**
+ * 
+ * @param props a blooean variable to determine if there was any recently opened documents or not
+ * @returns returns the approprite header title
+ */
 const TableHeader = (props: TableHeaderProps) => {
     const classes = useStyles();
 
@@ -51,22 +57,37 @@ const TableHeader = (props: TableHeaderProps) => {
         </TableHead>
     );
 }
-
+/**
+ * 
+ * @returns 
+ */
 export const SwitchScreen = () => {
     
     const classes = useStyles();
     const history = useHistory();
 
-    const {tabs} = useSideNavStore(['tabs']);
+    // const {tabs} = useSideNavStore(['tabs']);
 
-    const getRecentDocs = React.useCallback(() => {
+    // const getRecentDocs = React.useCallback(() => {
 
-        return arrayStream(tabs).sort((a,b) => a.lastActivated.localeCompare(b.lastActivated)).reverse().collect();
+    //     return arrayStream(tabs).sort((a,b) => a.lastActivated.localeCompare(b.lastActivated)).reverse().collect();
 
-    }, [tabs]);
+    // }, [tabs]);
 
-    const orderedTabsByRecency = getRecentDocs();
+    const {data} = useDocRepoStore(['data']);
 
+    function useDocInfos(){
+
+        const docs = data.map(current => current.docInfo);
+        return docs.sort((a: any, b: any)=>{
+            return a.lastUpdated && b.lastUpdated && a.lastUpdated.localeCompare(b.lastUpdated);
+        })
+    };
+
+    const orderedTabsByRecency = useDocInfos();
+    // const docs = useDocInfos();
+    console.log(orderedTabsByRecency);
+    
     return (
         <>
             <DocRepoTableToolbar/>
@@ -83,13 +104,13 @@ export const SwitchScreen = () => {
                     {orderedTabsByRecency.length > 0 ? 
                         <>
                             <TableHeader nonEmpty/>
-                            {orderedTabsByRecency.map( column =>
+                            {/* {orderedTabsByRecency.map( column =>
                                 <TableRow onClick={()=>history.push(column.url)}>
                                     <TableCell key={column.id} className={classes.th}>
                                         {column.title}
                                     </TableCell>
                                 </TableRow>
-                            )}
+                            )} */}
                         </>
                         :
                         <TableHeader/>

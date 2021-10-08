@@ -81,8 +81,6 @@ const Delegate = React.memo(function Delegate(props: IProps) {
 }, isEqual);
 
 export const DocRepoTableRow = React.memo((props: IProps) => (
-    // <MUIHoverStoreProvider initialValue={false}>
     <Delegate {...props}/>
-    // </MUIHoverStoreProvider>
 ));
 
