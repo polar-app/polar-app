@@ -99,6 +99,9 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         logoutAction();
     }
 
+    /**
+     * Return true if the provided email can accept users into the beta
+     */
     function canAcceptBeta(email: EmailStr | undefined) {
         const canAccept: string[] = [
             'dzhuneyt@getpolarized.io',
