@@ -244,6 +244,10 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                 </Typography>
             </Box>
         );
+    } else {
+        console.log("Got answer: ", JSON.stringify(props.answerResponse, null, '  '));
+        console.log("With timings: ", props.answerResponse.timings);
+        console.log("With cost estimation: ", props.answerResponse.cost_estimation);
     }
 
     return (
@@ -415,19 +419,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 const request: IAnswerExecutorRequest = {
                     question,
-                    model: coreAnswerExecutorRequest?.model || 'curie',
-                    search_model: coreAnswerExecutorRequest?.search_model || 'curie',
-                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
-                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
-                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
-                    filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
+                    // model: coreAnswerExecutorRequest?.model || 'curie',
+                    // search_model: coreAnswerExecutorRequest?.search_model || 'curie',
+                    // rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
+                    // rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
+                    // rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
+                    // filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
                 };
 
                 console.log("Executing request: ", JSON.stringify(request, null, '  '));
 
                 const answer = await answerExecutorClient(request);
-
-                console.log("Got answer: ", JSON.stringify(answer, null, '  '));
 
                 setAnswerResponse(answer);
 
