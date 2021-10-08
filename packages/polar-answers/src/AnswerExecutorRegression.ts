@@ -831,7 +831,7 @@ async function doRegression(opts: ExecutorOpts) {
 
     }
 
-    const report = result.createReport(['cost', 'elasticsearch_hits', 'question', 'answer'], summarizer);
+    const report = result.createReport(['cost', 'elasticsearch_hits', 'elasticsearch_pruned', 'question', 'answer'], summarizer);
 
     async function writeReportToConsole() {
         console.log(report);
@@ -957,6 +957,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
             const metadata = {
                 question,
                 elasticsearch_hits: answer_execution.trace.elasticsearch_hits,
+                elasticsearch_pruned: answer_execution.trace.elasticsearch_pruned,
             };
 
             function isErrorNoAnswer(error: IAnswerExecutorError): error is IAnswerExecutorErrorNoAnswer {
@@ -1143,6 +1144,7 @@ async function main() {
         //     }
         // },
         // {
+        //     disabled: true,
         //     request: {
         //         id: 'v2',
         //         model: 'curie',
@@ -1156,6 +1158,7 @@ async function main() {
         //     }
         // },
         // {
+        //     disabled: true,
         //     request: {
         //         id: 'v3',
         //         model: 'curie',
@@ -1272,6 +1275,12 @@ async function main() {
                 },
                 max_tokens: 125,
                 openai_completion_cleanup_enabled: true
+            },
+        },
+        {
+            description: "Just our default engine defaults regressed.",
+            request: {
+                id: 'defaults',
             },
         },
 

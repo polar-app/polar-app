@@ -60,9 +60,9 @@ export namespace AnswerExecutor {
 
     export const MAX_TOKENS = 250;
 
-    export const SEARCH_MODEL = 'ada';
+    export const SEARCH_MODEL = 'curie';
 
-    export const MODEL = 'ada';
+    export const MODEL = 'curie';
 
     export const TEMPERATURE = 0;
 
@@ -116,8 +116,34 @@ export namespace AnswerExecutor {
 
     export type IAnswerExecution = IAnswerExecutionSuccess | IAnswerExecutionFailure;
 
-    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecution> {
+    export function computeRequestWithDefaults(req: IAnswerExecutorRequestWithUID): Required<IAnswerExecutorRequestWithUID> {
+        return {
+            uid: req.uid,
+            question: req.question,
+            search_model: req.search_model || 'curie',
+            model: req.model || 'curie',
+            documents_limit: req.documents_limit || 200,
+            filter_question: req.filter_question || 'part-of-speech-noun',
+            filter_question_joiner: req.filter_question_joiner || 'OR',
+            rerank_elasticsearch: req.rerank_elasticsearch || true,
+            rerank_elasticsearch_size: req.rerank_elasticsearch_size || 500,
+            rerank_elasticsearch_model: req.rerank_elasticsearch_model || 'ada',
+            rerank_truncate_short_head: req.rerank_truncate_short_head || true,
+            prune_contiguous_records: req.prune_contiguous_records || true,
+            elasticsearch_sort_order: req.elasticsearch_sort_order || 'idx',
+            elasticsearch_truncate_short_head: req.elasticsearch_truncate_short_head || {
+                target_angle: 30,
+                min_docs: 50,
+                max_docs: 50
+            },
+            max_tokens: req.max_tokens || 125,
+            openai_completion_cleanup_enabled: req.openai_completion_cleanup_enabled || true
+        }
+    }
 
+    export async function exec(req: IAnswerExecutorRequestWithUID): Promise<IAnswerExecution> {
+
+        const request = computeRequestWithDefaults(req);
         const {question, uid} = request;
 
         interface ESDocumentResultsBase {

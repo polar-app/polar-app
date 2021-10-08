@@ -1,25 +1,8 @@
-Report generated on: 2021-10-08T17:07:14.114Z
-Basically the V6 model BUT I truncate the short head on Elasticsearch results and use OR and rely on the score to filter out garbage.
+Report generated on: 2021-10-08T17:11:49.945Z
+Just our default engine defaults regressed.
 ======================= config: 
 {
-  "id": "v9",
-  "model": "curie",
-  "search_model": "curie",
-  "rerank_elasticsearch": true,
-  "rerank_elasticsearch_size": 500,
-  "rerank_elasticsearch_model": "ada",
-  "rerank_truncate_short_head": true,
-  "prune_contiguous_records": true,
-  "filter_question": "part-of-speech-noun",
-  "filter_question_joiner": "OR",
-  "elasticsearch_sort_order": "idx",
-  "elasticsearch_truncate_short_head": {
-    "target_angle": 30,
-    "min_docs": 50,
-    "max_docs": 50
-  },
-  "max_tokens": 125,
-  "openai_completion_cleanup_enabled": true
+  "id": "defaults"
 }
 ======================= results: 
 test name               status   cost    elasticsearch_hits  elasticsearch_pruned  question                                                                                                                     answer                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
