@@ -8,6 +8,8 @@ import {AddFileHooks} from "./upload/AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import { useHistory } from 'react-router-dom';
+import { MUIBottomNavigation } from '../../../../web/js/mui/MUIBottomNavigation';
+import { BOTTOM_NAV_HEIGHT } from './RepositoryApp';
 
 
 const useStyles = makeStyles<Theme>((theme) =>
@@ -15,7 +17,7 @@ const useStyles = makeStyles<Theme>((theme) =>
         root:{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
+            height: `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`,
             justifyContent: 'center',
             padding: '0 1em '
         },
@@ -79,6 +81,7 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
                         onChange={handleUpload}
                         type="file"/>
             </div>
+            <MUIBottomNavigation/>
         </>
     );
 });

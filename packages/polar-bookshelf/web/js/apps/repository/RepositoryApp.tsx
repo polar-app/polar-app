@@ -272,7 +272,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  minHeight: 0,
                                  flexDirection: 'column',
                                  flexGrow: 1,
-                                 height: Devices.isDesktop() ? '100%' : `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
+                                //  height: Devices.isDesktop() ? '100%' : `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
+                                 height: '100%'
                              }}>
 
                             <UseLocationChangeStoreProvider>
@@ -348,9 +349,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <Initializers/>
 
                             <SideNav/>
-                            <DeviceRouters.NotDesktop>
+                            {/* <DeviceRouters.NotDesktop>
                                 <MUIBottomNavigation/>
-                            </DeviceRouters.NotDesktop>
+                            </DeviceRouters.NotDesktop> */}
                             <Intercom/>
 
                             <RouteContainer>

@@ -2,9 +2,6 @@ import React from "react";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from "../FixedNav";
 import {DocRepoTable2} from "./DocRepoTable2";
-import {Route, Switch} from "react-router";
-import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
@@ -12,6 +9,8 @@ import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import { MUIBottomNavigation } from "../../../../web/js/mui/MUIBottomNavigation";
+import { BOTTOM_NAV_HEIGHT } from "../../../../web/js/apps/repository/RepositoryApp";
 
 namespace main {
 
@@ -30,12 +29,13 @@ const onClose = () => window.history.back();
 namespace devices {
 
     export const PhoneAndTablet = React.memo(() => (
-        <>
+        <div style={{height: `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`}}>
             <SideCar>
                 <main.Folders/>
             </SideCar>
             <main.Documents/>
-        </>
+            <MUIBottomNavigation />
+        </div>
     ));
 
     export const Desktop = React.memo(function Desktop() {

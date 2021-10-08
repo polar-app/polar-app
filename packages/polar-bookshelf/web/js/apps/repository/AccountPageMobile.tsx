@@ -20,6 +20,8 @@ import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
 import { useLogoutAction } from '../../../../web/js/ui/cloud_auth/AccountControl';
 import { usePopperController } from '../../../../web/js/mui/menu/MUIPopper';
 import { RoutePathnames } from './RoutePathnames';
+import { MUIBottomNavigation } from '../../../../web/js/mui/MUIBottomNavigation';
+import { BOTTOM_NAV_HEIGHT } from './RepositoryApp';
 
 const Chat = MenuItems.Chat;
 const Documentation = MenuItems.Documentation;
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) =>
             alignItems: 'center'
         },
         mainContainer:{
-            height: 'auto',
+            height: `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`,
             overflow: 'auto'
         },
         avatar:{
@@ -222,6 +224,7 @@ export const AccountPageMobile = React.memo(function AccountPageMobile() {
                 <PlanDetailsContainer/>   
                 <PreferencesButtons/>
             </div>
+            <MUIBottomNavigation/>
         </>
     );
 });

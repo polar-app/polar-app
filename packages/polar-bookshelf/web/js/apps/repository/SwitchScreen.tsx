@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import {createStyles, makeStyles, Table, TableHead, TableRow, TableCell, Theme} from '@material-ui/core';
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-import { useSideNavStore } from '../../../../web/js/sidenav/SideNavStore';
 import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import { useHistory } from 'react-router-dom';
 import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
-import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
+
+import moment from 'moment';
+import { MUIBottomNavigation } from '../../../../web/js/mui/MUIBottomNavigation';
+import { BOTTOM_NAV_HEIGHT } from './RepositoryApp';
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -65,29 +66,16 @@ export const SwitchScreen = () => {
     
     const classes = useStyles();
     const history = useHistory();
-
-    // const {tabs} = useSideNavStore(['tabs']);
-
-    // const getRecentDocs = React.useCallback(() => {
-
-    //     return arrayStream(tabs).sort((a,b) => a.lastActivated.localeCompare(b.lastActivated)).reverse().collect();
-
-    // }, [tabs]);
-
+    
     const {data} = useDocRepoStore(['data']);
-
     function useDocInfos(){
-
         const docs = data.map(current => current.docInfo);
         return docs.sort((a: any, b: any)=>{
-            return a.lastUpdated && b.lastUpdated && a.lastUpdated.localeCompare(b.lastUpdated);
+            return a.lastUpdated && b.lastUpdated && moment(a.lastUpdated).diff(b.lastUpdated, 'milliseconds');
         })
     };
-
     const orderedTabsByRecency = useDocInfos();
-    // const docs = useDocInfos();
-    console.log(orderedTabsByRecency);
-    
+
     return (
         <>
             <DocRepoTableToolbar/>
@@ -95,7 +83,8 @@ export const SwitchScreen = () => {
                     style={{
                         minWidth: 0,
                         maxWidth: '100%',
-                        tableLayout: 'fixed'
+                        tableLayout: 'fixed',
+                        height: `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
                     }}
                     aria-labelledby="tableTitle"
                     size={'medium'}
@@ -104,18 +93,19 @@ export const SwitchScreen = () => {
                     {orderedTabsByRecency.length > 0 ? 
                         <>
                             <TableHeader nonEmpty/>
-                            {/* {orderedTabsByRecency.map( column =>
-                                <TableRow onClick={()=>history.push(column.url)}>
-                                    <TableCell key={column.id} className={classes.th}>
+                            {orderedTabsByRecency.map( column =>
+                                <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
+                                    <TableCell key={column.uuid} className={classes.th}>
                                         {column.title}
                                     </TableCell>
                                 </TableRow>
-                            )} */}
+                            )}
                         </>
                         :
                         <TableHeader/>
                     }
-            </Table>                
+            </Table>          
+            <MUIBottomNavigation/>
         </>
     );
 }

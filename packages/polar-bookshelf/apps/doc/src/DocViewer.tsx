@@ -206,7 +206,8 @@ namespace Device {
                          display: 'flex',
                          flexDirection: 'column',
                          flexGrow: 1,
-                         minHeight: 0
+                         minHeight: 0,
+                         zIndex: 50
                      }}>
 
                     <HandheldToolbar toggleRightDrawer={() => setOpen(!open)}/>
