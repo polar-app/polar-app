@@ -6,7 +6,7 @@ import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {UserRecord} from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {createUser} from "polar-firebase/src/auth/createUser";
+import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -107,7 +107,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
             const password = Hashcodes.createRandomID();
 
-            const user = await createUser(email, password);
+            const user = await FirebaseUserCreator.create(email, password);
 
             return {
                 user,

@@ -2,7 +2,7 @@ import {lambdaWrapper} from "../../../../shared/lambdaWrapper";
 import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {ComputeNextUserPriority} from "polar-private-beta/src/ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {createUser} from "polar-firebase/src/auth/createUser";
+import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
 
 /**
  * Define a list of users that can invoke this cloud function
@@ -49,7 +49,7 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
         const email = waitingUser.email;
         const password = Hashcodes.createRandomID();
 
-        const user = await createUser(email, password);
+        const user = await FirebaseUserCreator.create(email, password);
 
         accepted.push(user);
     }
