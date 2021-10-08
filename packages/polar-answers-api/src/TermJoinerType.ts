@@ -1,1 +1,1 @@
-export type TermJoinerType = 'none' | 'AND';
+export type TermJoinerType = 'none' | 'AND' | 'OR';

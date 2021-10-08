@@ -9,8 +9,8 @@ export namespace SentenceShingler {
     }
 
     function computeShinglesFromSentences(sentences: ReadonlyArray<string>,
-                                          width: number = 4,
-                                          jump: number = 2): ReadonlyArray<ISentenceShingle> {
+                                          width = 4,
+                                          jump = 2): ReadonlyArray<ISentenceShingle> {
 
         const result = [];
 
