@@ -20,14 +20,9 @@ export namespace GCLSentenceSplitter {
         // TODO: don't call analyzeSentiment - we just need to split and don't
         // care about sentiment at all.
 
-        const [result] = await client.analyzeSentiment({document});
-        const sentiment = result.documentSentiment;
+        const [result] = await client.analyzeSyntax({document});
 
-        if (sentiment) {
-            return (result.sentences || []).map(current => current.text?.content || '');
-        }
-
-        return [];
+        return (result.sentences || []).map(current => current.text?.content || '');
 
     }
 

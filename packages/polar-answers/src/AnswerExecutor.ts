@@ -110,6 +110,7 @@ export namespace AnswerExecutor {
     export interface IAnswerExecutionFailure {
 
         readonly response: IAnswerExecutorError;
+        readonly trace: IAnswerExecutorTrace;
 
     }
 
@@ -250,6 +251,9 @@ export namespace AnswerExecutor {
             interface IElasticsearchResults {
 
                 // eslint-disable-next-line camelcase
+                readonly elasticsearch_hits: number;
+
+                // eslint-disable-next-line camelcase
                 readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
 
                 // eslint-disable-next-line camelcase
@@ -266,7 +270,6 @@ export namespace AnswerExecutor {
                 // eslint-disable-next-line camelcase
                 const [esResponse, elasticsearch_duration]
                     = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
-
 
                 function computeElasticsearchRecords() {
 
@@ -298,7 +301,8 @@ export namespace AnswerExecutor {
                 return {
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_pruned: undefined
+                    elasticsearch_pruned: undefined,
+                    elasticsearch_hits: esResponse.hits.total.value
                 };
 
             }
@@ -306,20 +310,21 @@ export namespace AnswerExecutor {
             async function executeElasticsearchWithPrune(): Promise<IElasticsearchResults> {
 
                 // eslint-disable-next-line camelcase
-                const {elasticsearch_records, elasticsearch_duration} = await executeElasticsearch();
+                const {elasticsearch_records, elasticsearch_duration, elasticsearch_hits} = await executeElasticsearch();
 
                 const recordPruned = AnswerDigestRecordPruner.prune(elasticsearch_records);
 
                 return {
                     elasticsearch_records: recordPruned,
                     elasticsearch_duration,
-                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length
+                    elasticsearch_pruned: elasticsearch_records.length - recordPruned.length,
+                    elasticsearch_hits
                 }
 
             }
 
             // eslint-disable-next-line camelcase
-            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned} =
+            const {elasticsearch_records, elasticsearch_duration, elasticsearch_pruned, elasticsearch_hits} =
                 request.prune_contiguous_records ?
                     await executeElasticsearchWithPrune() :
                     await executeElasticsearch();
@@ -398,7 +403,7 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_hits,
                     elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records,
@@ -422,7 +427,7 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
-                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_hits,
                     elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records: undefined,
@@ -510,19 +515,6 @@ export namespace AnswerExecutor {
         // eslint-disable-next-line camelcase
         const cost_estimation = computeCostEstimation();
 
-        if (primaryAnswer === NO_ANSWER_CODE) {
-
-            // TODO: timings here are important too.
-
-            return {
-                response: {
-                    error: true,
-                    code: 'no-answer',
-                    cost_estimation
-                }
-            }
-
-        }
 
         function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
             return {
@@ -574,6 +566,19 @@ export namespace AnswerExecutor {
         }
 
         const trace = await doTrace();
+
+        if (primaryAnswer === NO_ANSWER_CODE) {
+
+            return {
+                trace,
+                response: {
+                    error: true,
+                    code: 'no-answer',
+                    cost_estimation
+                }
+            }
+
+        }
 
         async function createAnswers(): Promise<ReadonlyArray<string>> {
 

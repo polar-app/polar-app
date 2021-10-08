@@ -24,6 +24,7 @@ import IRegressionTestResultExecuted = RegressionEngines.IRegressionTestResultEx
 import {AsyncCaches} from "polar-cache/src/AsyncCaches";
 import ResultStatus = RegressionEngines.ResultStatus;
 import {AnswerExecutors} from "./AnswerExecutors";
+import IAnswerExecution = AnswerExecutor.IAnswerExecution;
 
 // TODO: implement a filter function witin the regression engine to ust run ONE
 // test to enable us to quickly add new tests
@@ -830,7 +831,7 @@ async function doRegression(opts: ExecutorOpts) {
 
     }
 
-    const report = result.createReport(['cost', 'question', 'answer'], summarizer);
+    const report = result.createReport(['cost', 'elasticsearch_hits', 'question', 'answer'], summarizer);
 
     async function writeReportToConsole() {
         console.log(report);
@@ -907,13 +908,8 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             // create a delegate that runs the requests to the AnswerExecutor directly
             // eslint-disable-next-line camelcase
-            const answer_executor_delegate = async () => {
-                const {response} = await AnswerExecutor.exec({
-                    uid,
-                    question,
-                    ...opts.request
-                });
-                return response;
+            const answer_executor_delegate = async (request: AnswerExecutors.IAnswerExecutorRequestWithUID) => {
+                return await AnswerExecutor.exec(request);
             };
 
             // now create an executor that uses the cache which uses the answer_executor_delegate
@@ -923,18 +919,20 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             // eslint-disable-next-line camelcase
             const answer_executor_with_cache
-                = AsyncCaches.wrapper<AnswerExecutors.IAnswerExecutorRequestWithUID,
-                                      IAnswerExecutorResponse |  IAnswerExecutorError>('answer-executor2',
-                                                                                       ['disk', 'google-cloud-storage'],
-                                                                                       'test-only')
+                = AsyncCaches.wrapper<AnswerExecutors.IAnswerExecutorRequestWithUID, IAnswerExecution>('answer-executor3',
+                                                                                                       ['disk', 'google-cloud-storage'],
+                                                                                                       'test-only')
                              .create(answer_executor_delegate);
 
             // eslint-disable-next-line camelcase
-            const answer_response = await answer_executor_with_cache({
+            const answer_execution = await answer_executor_with_cache({
                 uid,
                 question,
                 ...opts.request
             });
+
+            // eslint-disable-next-line camelcase
+            const answer_response = answer_execution.response;
 
             /**
              * Convert to lower case and remove any whitespace and potential
@@ -958,6 +956,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
 
             const metadata = {
                 question,
+                elasticsearch_hits: answer_execution.trace.elasticsearch_hits,
             };
 
             function isErrorNoAnswer(error: IAnswerExecutorError): error is IAnswerExecutorErrorNoAnswer {
@@ -1019,7 +1018,8 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                     metadata: {
                         answer,
                         ...metadata,
-                        cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
+                        cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4),
+                        // elasticsearch_pruned
                     }
                 };
 
