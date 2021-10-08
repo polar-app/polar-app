@@ -1277,6 +1277,12 @@ async function main() {
                 openai_completion_cleanup_enabled: true
             },
         },
+        {
+            description: "Just our default engine defaults regressed.",
+            request: {
+                id: 'defaults',
+            },
+        },
 
         // TODO: another optimization would be, that when we use the composite
         // models, to verify we do NOT send the same shingle IDs each more than
