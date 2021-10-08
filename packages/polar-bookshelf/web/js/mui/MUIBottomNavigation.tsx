@@ -43,7 +43,7 @@ export const MUIBottomNavigation = ()  => {
                 <BottomNavigationAction label="Home" value='/' icon={<HomeIcon/>} />
                 {/* <BottomNavigationAction label="Search" value='#search' icon={<SearchIcon />} /> */}
                 <BottomNavigationAction label="Add" value={RoutePathnames.ADD_MOBILE} icon={<AddIcon />} />
-                <BottomNavigationAction label="Switch" value={RoutePathnames.SWITCH} icon={<ViewCarouselIcon />} />
+                <BottomNavigationAction label="Recent" value={RoutePathnames.SWITCH} icon={<ViewCarouselIcon />} />
             </BottomNavigation>
         </Paper>
     );

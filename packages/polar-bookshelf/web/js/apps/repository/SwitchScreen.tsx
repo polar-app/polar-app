@@ -49,9 +49,9 @@ const TableHeader = (props: TableHeaderProps) => {
             <TableRow>
                 <TableCell>
                     { props.nonEmpty ? 
-                        <span className={classes.headerFont}>Recently opened documents:</span>
+                        <span className={classes.headerFont}>Recently Updated Documents:</span>
                         :
-                        <span className={classes.headerFont}>No files opened recently</span>
+                        <span className={classes.headerFont}>No recent files</span>
                     }
                 </TableCell>
             </TableRow>
