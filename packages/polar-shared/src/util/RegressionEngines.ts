@@ -267,6 +267,7 @@ export namespace RegressionEngines {
 
                         textGrid.headers('name', 'value');
 
+                        textGrid.row('total regressions', results.length);
                         textGrid.row('pass', nrPass);
                         textGrid.row('unknown', nrUnknown);
                         textGrid.row('fail', nrFail);

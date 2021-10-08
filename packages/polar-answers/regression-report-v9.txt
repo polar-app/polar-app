@@ -1,4 +1,4 @@
-Report generated on: 2021-10-08T16:07:28.617Z
+Report generated on: 2021-10-08T16:12:59.984Z
 Basically the V6 model BUT I truncate the short head on Elasticsearch results and use OR and rely on the score to filter out garbage.
 ======================= config: 
 {
@@ -75,12 +75,13 @@ US history chap 3 #4    pass     0.0088  4                   What was patroonshi
 US history chap 3 #5    pass     0.1235  1886                Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?               The Jesuits.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 US history chap 3 #7    pass     0.1089  1583                What was the most lucrative product of the Chesapeake colonies?                                                              Tobacco.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 ======================= summary: 
-name       value
----------  -----
-pass       29   
-unknown    15   
-fail       6    
-accuracy   58   
-cost       4.91 
-cost_max   0.26 
-cost_mean  0.1  
+name               value 
+-----------------  ------
+total regressions  50    
+pass               29    
+unknown            15    
+fail               6     
+accuracy           58    
+cost               4.91  
+cost_max           0.26  
+cost_mean          0.0982

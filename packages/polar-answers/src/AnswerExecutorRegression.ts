@@ -826,7 +826,7 @@ async function doRegression(opts: ExecutorOpts) {
         return {
             cost: Numbers.toFixedFloat(cost, 2),
             cost_max: Numbers.toFixedFloat(cost_max, 2),
-            cost_mean: Numbers.toFixedFloat(cost_mean, 2)
+            cost_mean: Numbers.toFixedFloat(cost_mean, 4)
         };
 
     }
