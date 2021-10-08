@@ -2,7 +2,7 @@ import {lambdaWrapper} from "../../../../shared/lambdaWrapper";
 import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {ComputeNextUserPriority} from "polar-private-beta/src/ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {createUser} from "polar-firebase/src/auth/createUser";
 
 /**
  * Define a list of users that can invoke this cloud function
@@ -27,7 +27,6 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
         throw new Error('Not authorized');
     }
 
-    const auth = FirebaseAdmin.app().auth();
     const accepted = [];
 
     /**
@@ -50,7 +49,7 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
         const email = waitingUser.email;
         const password = Hashcodes.createRandomID();
 
-        const user = await auth.createUser({email, password});
+        const user = await createUser(email, password);
 
         accepted.push(user);
     }
