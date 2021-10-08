@@ -386,7 +386,7 @@ const EmailTokenAuthButton = () => {
                                             onChange={event => challengeRef.current = event.target.value}
                                             onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                             placeholder="Enter your Code Here"
-                                            variant="outlined" 
+                                            variant="outlined"
                                             style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
 
                                     <div className={classes.alternate}>
@@ -509,7 +509,9 @@ const SignInWithExistingAccount = () => {
 
     return (
         <div className={classes.a} onClick={() => history.push('/sign-in')}>
-            <a>OR SIGN-IN WITH NEW ACCOUNT</a>
+            <Button variant="text">
+                OR SIGN-IN WITH NEW ACCOUNT
+            </Button>
         </div>
     );
 }
@@ -519,7 +521,9 @@ const OrCreateNewAccount = () => {
     const history = useHistory();
     return (
         <div className={classes.a} onClick={() => history.push('/create-account')}>
-            <a>OR CREATE NEW ACCOUNT</a>
+            <Button>
+                OR CREATE NEW ACCOUNT
+            </Button>
         </div>
     );
 }
