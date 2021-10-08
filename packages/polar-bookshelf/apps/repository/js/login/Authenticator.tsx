@@ -46,8 +46,6 @@ export const useStyles = makeStyles((theme) =>
         intro: {
             color: '#F3F3F2',
             fontSize: '2.0em',
-            fontWeight: 'lighter',
-            fontFamily: 'arial, sans-serif',
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(1)
         },
@@ -125,8 +123,6 @@ export const useStyles = makeStyles((theme) =>
         },
         HeaderTitle: {
             textAlign: 'center',
-            fontFamily: 'arial, sans-serif',
-            fontWeight: 'lighter'
         },
         VerticalBorder: {
             borderLeft: '2px solid #6754D6 !important',
