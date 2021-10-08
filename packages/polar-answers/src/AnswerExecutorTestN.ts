@@ -4,7 +4,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("Answer Executor", function () {
 
