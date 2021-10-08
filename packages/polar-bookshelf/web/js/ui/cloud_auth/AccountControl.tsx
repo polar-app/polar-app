@@ -10,10 +10,10 @@ import {memoForwardRefDiv} from "../../react/ReactUtils";
 import {useLogoutCallback} from "../../accounts/AccountHooks";
 import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
-import Subscription = Billing.Subscription;
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
-import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
+import {AcceptBatch} from "./AcceptBatch";
+import Subscription = Billing.Subscription;
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -89,6 +89,7 @@ export function useLogoutAction(): Callback {
 
 }
 
+
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
     const logoutAction = useLogoutAction();
@@ -157,18 +158,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
 
                     <ViewPlansAndPricingButton/>
 
-                    {canAcceptBeta(props.userInfo.email) && <div>
-                        <br/>
-                        <Button color="secondary"
-                                variant="contained"
-                                size="large"
-                                onClick={() => {
-                                    JSONRPC.exec('private-beta/accept-batch', {}).then(value => {
-                                        console.log(value);
-                                    });
-                                }}>Accept next waiting users batch</Button>
-                    </div>}
-
+                    {canAcceptBeta(props.userInfo.email) && <AcceptBatch/>}
                 </div>
 
                 <div className="text-right">

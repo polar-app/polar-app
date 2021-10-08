@@ -28,7 +28,7 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
     }
 
     const auth = FirebaseAdmin.app().auth();
-    const result = [];
+    const accepted = [];
 
     /**
      * Retrieve a prioritized list of waiting users
@@ -52,13 +52,10 @@ export const handler = lambdaWrapper<unknown, unknown>(async (idUser, request) =
 
         const user = await auth.createUser({email, password});
 
-        result.push({
-            user,
-            isNewUser: true
-        });
+        accepted.push(user);
     }
 
     return {
-        result,
+        accepted,
     }
 });
