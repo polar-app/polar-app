@@ -28,7 +28,7 @@ import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
 import { PointerType } from 'polar-dom-text-search/src/IPointer';
 
-const useStyles = makeStyles((theme) =>
+export const useStyles = makeStyles((theme) =>
     createStyles({
 
         logo: {
