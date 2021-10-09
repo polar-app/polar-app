@@ -585,7 +585,7 @@ export namespace AnswerExecutor {
 
         const trace = await doTrace();
 
-        if (primaryAnswer === NO_ANSWER_CODE) {
+        if (primaryAnswer === NO_ANSWER_CODE || primaryAnswer?.trim() === '') {
 
             return {
                 trace,
