@@ -22,9 +22,9 @@ const MAX_DOCS_PER_REQUEST = 200;
  */
 export namespace OpenAISearchReRanker {
 
-    import IOpenAISearchResponseWithCostEstimation = OpenAISearchClient.IOpenAISearchResponseWithCostEstimation;
+    import IOpenAISearchResponse = OpenAISearchClient.IOpenAISearchResponse;
 
-    export interface IRerankedResults<R> extends ICostEstimationHolder<ICostEstimation> {
+    export interface IRerankedResults<R> {
         readonly records: ReadonlyArray<IRecordWithScore<R>>
     }
     export interface IRecordWithScore<R> {
@@ -51,9 +51,9 @@ export namespace OpenAISearchReRanker {
 
                     const documents = batch.map(current => toText(current));
 
-                    async function doAsync(): Promise<[IOpenAISearchResponseWithCostEstimation, ReadonlyArray<V>]> {
+                    async function doAsync(): Promise<[IOpenAISearchResponse, ReadonlyArray<V>]> {
 
-                        // console.log("re-ranker batch  started: " + ISODateTimeStrings.create());
+                        console.log("re-ranker batch  started: " + ISODateTimeStrings.create());
 
                         const before = Date.now();
                         const response = await OpenAISearchClient.exec(model, {
@@ -63,8 +63,8 @@ export namespace OpenAISearchReRanker {
                         const after = Date.now();
                         const duration = after - before;
 
-                        // console.log("re-ranker batch completed: " + ISODateTimeStrings.create());
-                        // console.log("re-ranker batch duration: " + duration);
+                        console.log("re-ranker batch completed: " + ISODateTimeStrings.create());
+                        console.log("re-ranker batch duration: " + duration);
 
                         return [response, batch]
 
@@ -80,7 +80,7 @@ export namespace OpenAISearchReRanker {
 
         function createResponseConverter(batch: ReadonlyArray<V>) {
 
-            return (response: IOpenAISearchResponseWithCostEstimation): IRerankedResults<V> => {
+            return (response: IOpenAISearchResponse): IRerankedResults<V> => {
 
                 const reranked = response.data.map((current): IRecordWithScore<V> => {
                     const record = batch[current.document];
@@ -90,10 +90,6 @@ export namespace OpenAISearchReRanker {
 
                 return {
                     records: reranked,
-                    cost_estimation: {
-                        cost: response.cost_estimation.cost,
-                        tokens: response.cost_estimation.tokens
-                    }
                 };
 
             }
@@ -124,8 +120,8 @@ export namespace OpenAISearchReRanker {
 
             const [result, duration] = FunctionTimers.exec(() => {
 
-                const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM, 0);
-                const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM, 0);
+                // const cost = responses.map(current => current.cost_estimation.cost).reduce(Reducers.SUM, 0);
+                // const tokens = responses.map(current => current.cost_estimation.tokens).reduce(Reducers.SUM, 0);
 
                 const reranked =
                     arrayStream(responses)
@@ -135,12 +131,7 @@ export namespace OpenAISearchReRanker {
                         .sort((a, b) => b.score - a.score)
                         .collect();
 
-                console.log("Rerank cost: ", {cost, tokens, model});
-
                 return {
-                    cost_estimation: {
-                        cost, tokens
-                    },
                     records: reranked
                 };
 
