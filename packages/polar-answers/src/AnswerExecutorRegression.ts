@@ -1019,7 +1019,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                     metadata: {
                         answer,
                         ...metadata,
-                        cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4),
+                        // FIXME: cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4),
                         // elasticsearch_pruned
                     }
                 };
@@ -1033,7 +1033,7 @@ function createExecutor(opts: ExecutorOpts) : IExecutor {
                         err: answer_response.code,
                         metadata: {
                             ...metadata,
-                            cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
+                            // FIXME: cost: Numbers.toFixedFloat(answer_response.cost_estimation.cost, 4)
                         }
                     };
 

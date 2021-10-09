@@ -13,6 +13,7 @@ export namespace OpenAIRequestsCache {
     }
 
     export function create() {
+        // return AsyncCaches.create<IOpenAIRequestCacheKey, Res>('answers-openai-requests', ['disk', 'google-cloud-storage'], 'cache-disabled');
         return AsyncCaches.create<IOpenAIRequestCacheKey, Res>('answers-openai-requests', ['disk', 'google-cloud-storage'], 'test-only');
     }
 
