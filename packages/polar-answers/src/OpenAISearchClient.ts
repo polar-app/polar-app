@@ -73,7 +73,9 @@ export namespace OpenAISearchClient {
 
     }
 
-    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse & ICostEstimationHolder<ICostEstimation>> {
+    export type IOpenAISearchResponseWithCostEstimation = IOpenAISearchResponse & ICostEstimationHolder<ICostEstimation>;
+
+    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponseWithCostEstimation> {
 
         const url = `https://api.openai.com/v1/engines/${model}/search`;
         const response = await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);

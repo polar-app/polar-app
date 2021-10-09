@@ -5,6 +5,11 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { Reducers } from "polar-shared/src/util/Reducers";
 import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 import {FunctionTimers} from "polar-shared/src/util/FunctionTimers";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+
+// TODO: Sending 20 docs at a time is MUCH faster than 200 at a time.  This was
+// tested on my local laptop so this might just be an issue with bandwidth but
+// we should definitely test within the cluster.
 
 /**
  * There is a limit to the number of docs we can request at once.
@@ -16,6 +21,8 @@ const MAX_DOCS_PER_REQUEST = 200;
  * re-rank them, then sort the results by rank.
  */
 export namespace OpenAISearchReRanker {
+
+    import IOpenAISearchResponseWithCostEstimation = OpenAISearchClient.IOpenAISearchResponseWithCostEstimation;
 
     export interface IRerankedResults<R> extends ICostEstimationHolder<ICostEstimation> {
         readonly records: ReadonlyArray<IRecordWithScore<R>>
@@ -30,18 +37,50 @@ export namespace OpenAISearchReRanker {
                                   records: ReadonlyArray<V>,
                                   toText: (value: V) => string): Promise<IRerankedResults<V>> {
 
-        const batches = Arrays.createBatches(records, MAX_DOCS_PER_REQUEST);
+        function createRequests() {
 
-        const requests = batches.map((batch) => {
+            function createBatches() {
+                return Arrays.createBatches(records, MAX_DOCS_PER_REQUEST);
+            }
 
-            return async (): Promise<IRerankedResults<V>> => {
+            const batches = createBatches();
 
-                const documents = batch.map(current => toText(current));
+            return batches.map((batch) => {
 
-                const response = await OpenAISearchClient.exec(model, {
-                    documents,
-                    query
-                });
+                return () => {
+
+                    const documents = batch.map(current => toText(current));
+
+                    async function doAsync(): Promise<[IOpenAISearchResponseWithCostEstimation, ReadonlyArray<V>]> {
+
+                        // console.log("re-ranker batch  started: " + ISODateTimeStrings.create());
+
+                        const before = Date.now();
+                        const response = await OpenAISearchClient.exec(model, {
+                            documents,
+                            query
+                        });
+                        const after = Date.now();
+                        const duration = after - before;
+
+                        // console.log("re-ranker batch completed: " + ISODateTimeStrings.create());
+                        // console.log("re-ranker batch duration: " + duration);
+
+                        return [response, batch]
+
+                    }
+
+                    return doAsync();
+
+                }
+
+            })
+
+        }
+
+        function createResponseConverter(batch: ReadonlyArray<V>) {
+
+            return (response: IOpenAISearchResponseWithCostEstimation): IRerankedResults<V> => {
 
                 const reranked = response.data.map((current): IRecordWithScore<V> => {
                     const record = batch[current.document];
@@ -59,10 +98,22 @@ export namespace OpenAISearchReRanker {
 
             }
 
-        })
+        }
 
         async function executeRequests() {
-            const [result, duration] = await FunctionTimers.execAsync(() => Promise.all(requests.map(current => current())));
+
+            const requests = createRequests().map(current => current())
+
+            const [responses, duration] = await FunctionTimers.execAsync(async () => {
+                return await Promise.all(requests);
+            });
+
+            const result = responses.map((current) => {
+                const [response, batch] = current;
+                const converter = createResponseConverter(batch);
+                return converter(response)
+            })
+
             console.log("Duration for requests: " + duration);
             return result;
         }
