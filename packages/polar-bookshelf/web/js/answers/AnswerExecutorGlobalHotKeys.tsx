@@ -247,7 +247,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
     } else {
         console.log("Got answer: ", JSON.stringify(props.answerResponse, null, '  '));
         console.log("With timings: ", props.answerResponse.timings);
-        console.log("With cost estimation: ", props.answerResponse.cost_estimation);
+        // console.log("With cost estimation: ", props.answerResponse.cost_estimation);
     }
 
     return (
