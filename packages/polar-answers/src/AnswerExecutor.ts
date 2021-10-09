@@ -585,7 +585,12 @@ export namespace AnswerExecutor {
 
         const trace = await doTrace();
 
-        if (primaryAnswer === NO_ANSWER_CODE || primaryAnswer?.trim() === '') {
+        // determine when we have 'no answer' including if a stop is returned
+        // (no idea why OpenAI does this) or we are given an empty answer or if
+        // we have the real NO_ANSWER_CODE
+        if (primaryAnswer === NO_ANSWER_CODE ||
+            primaryAnswer?.trim() === '' ||
+            STOP.includes(primaryAnswer || '')) {
 
             return {
                 trace,
