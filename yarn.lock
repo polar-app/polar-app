@@ -7,6 +7,25 @@
   resolved "https://verdaccio.getpolarized.io/7zip-bin/-/7zip-bin-5.0.3.tgz#bc5b5532ecafd923a61f2fb097e3b108c0106a3f"
   integrity sha512-GLyWIFBbGvpKPGo55JyRZAo4lVbnBiD52cKlw/0Vt+wnmKvWJkpZvsjVoaIolyBXDeAQKSicRtqFNPem9w0WYA==
 
+"@adobe/pdfservices-node-sdk@=2.1.0":
+  version "2.1.0"
+  resolved "https://verdaccio.getpolarized.io/@adobe%2fpdfservices-node-sdk/-/pdfservices-node-sdk-2.1.0.tgz#40d8302b13d8740ffda1c7d1faa85e306c29ea48"
+  integrity sha512-9g6D3Ts/HJXktogLyYN9QxzpB1KhpAnTPDlRX+sohCVz2IhMSskAhxGQtu9Pa1zxv+J1Vh68rm0Wr3d8tUVCBA==
+  dependencies:
+    adm-zip "0.4.16"
+    form-data "3.0.0"
+    formidable "1.2.2"
+    jsonwebtoken "8.5.1"
+    lodash-core "4.17.11"
+    log4js "4.5.1"
+    move-file "1.2.0"
+    object-mapper "5.0.0"
+    streamifier "0.1.1"
+    temp-dir "2.0.0"
+    url-template "2.0.8"
+    uuid "3.3.2"
+    validate "4.5.1"
+
 "@amplitude/identify@^1.8.0":
   version "1.8.4"
   resolved "https://verdaccio.getpolarized.io/@amplitude%2fidentify/-/identify-1.8.4.tgz#50d87af2856422c258ddcb410f7f7b5af18f9fc6"
@@ -5702,6 +5721,11 @@ adler-32@~1.2.0:
     exit-on-epipe "~1.0.1"
     printj "~1.1.0"
 
+adm-zip@0.4.16:
+  version "0.4.16"
+  resolved "https://verdaccio.getpolarized.io/adm-zip/-/adm-zip-0.4.16.tgz#cf4c508fdffab02c269cbc7f471a875f05570365"
+  integrity sha512-TFi4HBKSGfIKsK5YCkKaaFG2m4PEDyViZmEwof3MTIgzimHLto6muaHVpbrljdIvIrFZzEq/p4nafOeLcYegrg==
+
 after@0.8.2:
   version "0.8.2"
   resolved "https://verdaccio.getpolarized.io/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
@@ -8260,6 +8284,11 @@ component-inherit@0.0.3:
   resolved "https://verdaccio.getpolarized.io/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
   integrity sha1-ZF/ErfWLcrZJ1crmUTVhnbJv8UM=
 
+component-type@1.2.1:
+  version "1.2.1"
+  resolved "https://verdaccio.getpolarized.io/component-type/-/component-type-1.2.1.tgz#8a47901700238e4fc32269771230226f24b415a9"
+  integrity sha1-ikeQFwAjjk/DIml3EjAibyS0Fak=
+
 compress-commons@^4.1.0:
   version "4.1.1"
   resolved "https://verdaccio.getpolarized.io/compress-commons/-/compress-commons-4.1.1.tgz#df2a09a7ed17447642bad10a85cc9a19e5c42a7d"
@@ -8612,6 +8641,17 @@ cosmiconfig@^6.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
     yaml "^1.7.2"
+
+cp-file@^6.1.0:
+  version "6.2.0"
+  resolved "https://verdaccio.getpolarized.io/cp-file/-/cp-file-6.2.0.tgz#40d5ea4a1def2a9acdd07ba5c0b0246ef73dc10d"
+  integrity sha512-fmvV4caBnofhPe8kOcitBwSn2f39QLjnAnGq3gO9dfd75mUytzKNZB1hde6QHunW2Rt+OwuBOMc3i1tNElbszA==
+  dependencies:
+    graceful-fs "^4.1.2"
+    make-dir "^2.0.0"
+    nested-error-stacks "^2.0.0"
+    pify "^4.0.1"
+    safe-buffer "^5.0.1"
 
 crc-32@^1.2.0, crc-32@~1.2.0:
   version "1.2.0"
@@ -10132,6 +10172,11 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://verdaccio.getpolarized.io/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
+
+eivindfjeldstad-dot@0.0.1:
+  version "0.0.1"
+  resolved "https://verdaccio.getpolarized.io/eivindfjeldstad-dot/-/eivindfjeldstad-dot-0.0.1.tgz#22fc976bfaf306e0839a31db8e8213480fafb893"
+  integrity sha1-IvyXa/rzBuCDmjHbjoITSA+vuJM=
 
 ejs@^2.6.1:
   version "2.7.4"
@@ -11953,6 +11998,15 @@ fork-ts-checker-webpack-plugin@=6.3.3:
     semver "^7.3.2"
     tapable "^1.0.0"
 
+form-data@3.0.0:
+  version "3.0.0"
+  resolved "https://verdaccio.getpolarized.io/form-data/-/form-data-3.0.0.tgz#31b7e39c85f1355b7139ee0c647cf0de7f83c682"
+  integrity sha512-CKMFDglpbMi6PyN+brwB9Q/GOw0eAnsrEZDgcsH5Krhz5Od/haKHAX0NmQfha2zPPz0JpWzA7GJHGSnvCRLWsg==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
+
 form-data@4.0.0:
   version "4.0.0"
   resolved "https://verdaccio.getpolarized.io/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
@@ -11989,7 +12043,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formidable@^1.1.1:
+formidable@1.2.2, formidable@^1.1.1:
   version "1.2.2"
   resolved "https://verdaccio.getpolarized.io/formidable/-/formidable-1.2.2.tgz#bf69aea2972982675f00865342b982986f6b8dd9"
   integrity sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==
@@ -15752,7 +15806,7 @@ jsonschema@^1.4.0:
   resolved "https://verdaccio.getpolarized.io/jsonschema/-/jsonschema-1.4.0.tgz#1afa34c4bc22190d8e42271ec17ac8b3404f87b2"
   integrity sha512-/YgW6pRMr6M7C+4o8kS+B/2myEpHCrxO4PEWnqJNBFMjn7EWXqlQ4tGwL6xTHeRplwuZmcAncdvfOad1nT2yMw==
 
-jsonwebtoken@^8.5.1:
+jsonwebtoken@8.5.1, jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://verdaccio.getpolarized.io/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
   integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
@@ -16398,6 +16452,11 @@ lock@^1.0.0:
   resolved "https://verdaccio.getpolarized.io/lock/-/lock-1.1.0.tgz#53157499d1653b136ca66451071fca615703fa55"
   integrity sha1-UxV0mdFlOxNspmRRBx/KYVcD+lU=
 
+lodash-core@4.17.11:
+  version "4.17.11"
+  resolved "https://verdaccio.getpolarized.io/lodash-core/-/lodash-core-4.17.11.tgz#2db8726a7be6cde758096b94c4af681a450fa799"
+  integrity sha512-8ilprNE67U1REh0wQHL0z37qXdsxuFXjvxehg79Mh/MQgNJ+C1muXtysSKpt9sCxXZUSiwifEC82Vtzf2GSSKQ==
+
 lodash._isnative@~2.4.1:
   version "2.4.1"
   resolved "https://verdaccio.getpolarized.io/lodash._isnative/-/lodash._isnative-2.4.1.tgz#3ea6404b784a7be836c7b57580e1cdf79b14832c"
@@ -16728,7 +16787,7 @@ log-update@^4.0.0:
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
 
-log4js@^4.0.0:
+log4js@4.5.1, log4js@^4.0.0:
   version "4.5.1"
   resolved "https://verdaccio.getpolarized.io/log4js/-/log4js-4.5.1.tgz#e543625e97d9e6f3e6e7c9fc196dd6ab2cae30b5"
   integrity sha512-EEEgFcE9bLgaYUKuozyFfytQM2wDHtXn4tAN41pkaxpNjAykv11GVdeI4tHtmPWW4Xrgh9R/2d7XYghDVjbKKw==
@@ -17764,6 +17823,15 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
+move-file@1.2.0:
+  version "1.2.0"
+  resolved "https://verdaccio.getpolarized.io/move-file/-/move-file-1.2.0.tgz#789f92d276c62511d214b1b285aa16e015c2f2fc"
+  integrity sha512-USHrRmxzGowUWAGBbJPdFjHzEqtxDU03pLHY0Rfqgtnq+q8FOIs8wvkkf+Udmg77SJKs47y9sI0jJvQeYsmiCA==
+  dependencies:
+    cp-file "^6.1.0"
+    make-dir "^3.0.0"
+    path-exists "^3.0.0"
+
 mozjpeg@^7.0.0:
   version "7.1.0"
   resolved "https://verdaccio.getpolarized.io/mozjpeg/-/mozjpeg-7.1.0.tgz#23f202f3e48e98f02ed84f415358d4cbfab66c19"
@@ -17894,6 +17962,11 @@ neo-async@^2.5.0, neo-async@^2.6.1, neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://verdaccio.getpolarized.io/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+nested-error-stacks@^2.0.0:
+  version "2.1.0"
+  resolved "https://verdaccio.getpolarized.io/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
+  integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
 nested-property@1.0.1:
   version "1.0.1"
@@ -18376,6 +18449,13 @@ object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
   resolved "https://verdaccio.getpolarized.io/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
+
+object-mapper@5.0.0:
+  version "5.0.0"
+  resolved "https://verdaccio.getpolarized.io/object-mapper/-/object-mapper-5.0.0.tgz#0035fd2ecbbfaf617b41a2bf8c0fa51221035a5b"
+  integrity sha1-ADX9Lsu/r2F7QaK/jA+lEiEDWls=
+  dependencies:
+    minimatch "^3.0.4"
 
 object-path@^0.11.4:
   version "0.11.5"
@@ -22763,6 +22843,11 @@ stream-to-array@=2.3.0:
   dependencies:
     any-promise "^1.1.0"
 
+streamifier@0.1.1:
+  version "0.1.1"
+  resolved "https://verdaccio.getpolarized.io/streamifier/-/streamifier-0.1.1.tgz#97e98d8fa4d105d62a2691d1dc07e820db8dfc4f"
+  integrity sha1-l+mNj6TRBdYqJpHR3AfoINuN/E8=
+
 streamroller@^1.0.6:
   version "1.0.6"
   resolved "https://verdaccio.getpolarized.io/streamroller/-/streamroller-1.0.6.tgz#8167d8496ed9f19f05ee4b158d9611321b8cacd9"
@@ -23413,15 +23498,15 @@ teeny-request@^7.0.0:
     stream-events "^1.0.5"
     uuid "^8.0.0"
 
+temp-dir@2.0.0, temp-dir@^2.0.0:
+  version "2.0.0"
+  resolved "https://verdaccio.getpolarized.io/temp-dir/-/temp-dir-2.0.0.tgz#bde92b05bdfeb1516e804c9c00ad45177f31321e"
+  integrity sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==
+
 temp-dir@^1.0.0:
   version "1.0.0"
   resolved "https://verdaccio.getpolarized.io/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
   integrity sha1-CnwOom06Oa+n4OvqnB/AvE2qAR0=
-
-temp-dir@^2.0.0:
-  version "2.0.0"
-  resolved "https://verdaccio.getpolarized.io/temp-dir/-/temp-dir-2.0.0.tgz#bde92b05bdfeb1516e804c9c00ad45177f31321e"
-  integrity sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==
 
 temp-file@^3.3.7:
   version "3.4.0"
@@ -24142,6 +24227,11 @@ type@^2.0.0:
   resolved "https://verdaccio.getpolarized.io/type/-/type-2.5.0.tgz#0a2e78c2e77907b252abe5f298c1b01c63f0db3d"
   integrity sha512-180WMDQaIMm3+7hGXWf12GtdniDEy7nYcyFMKJn/eZz/6tSLXrUN9V0wKSbMjej0I1WHWbpREDEKHtqPQa9NNw==
 
+typecast@0.0.1:
+  version "0.0.1"
+  resolved "https://verdaccio.getpolarized.io/typecast/-/typecast-0.0.1.tgz#fffb75dcb6bdf1def8e293b6b6e893d6c1ed19de"
+  integrity sha1-//t13La98d744pO2tuiT1sHtGd4=
+
 typed-web-workers@=2.1.1:
   version "2.1.1"
   resolved "https://verdaccio.getpolarized.io/typed-web-workers/-/typed-web-workers-2.1.1.tgz#1a2e5879647809e5f1c072990ff9b29d6f509845"
@@ -24666,6 +24756,11 @@ url-parse@^1.1.8, url-parse@^1.4.3, url-parse@^1.5.1:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+url-template@2.0.8:
+  version "2.0.8"
+  resolved "https://verdaccio.getpolarized.io/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
+  integrity sha1-/FZaPMy/93MMd19WQflVV5FDnyE=
+
 url-to-options@^1.0.1:
   version "1.0.1"
   resolved "https://verdaccio.getpolarized.io/url-to-options/-/url-to-options-1.0.1.tgz#1505a03a289a48cbd7a434efbaeec5055f5633a9"
@@ -24818,6 +24913,15 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validate@4.5.1:
+  version "4.5.1"
+  resolved "https://verdaccio.getpolarized.io/validate/-/validate-4.5.1.tgz#ba36b8450b4bad4ccf52d666ba80abb2c01cace2"
+  integrity sha512-ZdfYYgJDVrx4oxamyW0ynIoW8jIAoAeb8/pSu9XF+WCZueGogUMU7cGYHVUiWAJDc7RO3QR/EBhhkP46Wn9Hng==
+  dependencies:
+    component-type "1.2.1"
+    eivindfjeldstad-dot "0.0.1"
+    typecast "0.0.1"
 
 value-equal@^1.0.1:
   version "1.0.1"
