@@ -17,11 +17,17 @@ export namespace SentenceShingler {
         for(let offset = 0; offset < sentences.length; offset = offset + jump) {
             const end = offset + width;
             const slice = sentences.slice(offset, end);
-            const shingle: ISentenceShingle = {
-                text: slice.join("  ")
+
+            if (slice.length === width) {
+
+                const shingle: ISentenceShingle = {
+                    text: slice.join("  ")
+                }
+
+                result.push(shingle);
+
             }
 
-            result.push(shingle);
         }
 
         return result;
