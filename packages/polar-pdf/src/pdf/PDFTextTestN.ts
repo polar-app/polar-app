@@ -3,6 +3,7 @@ import {assert} from 'chai';
 import {assertJSON} from "polar-test/src/test/Assertions";
 import IPDFTextContent = PDFText.IPDFTextContent;
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 // TODO:
 //
@@ -26,17 +27,19 @@ import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
 describe('PDFText', function() {
 
+    const dumpTextContent = async (pdfTextContent: IPDFTextContent) => {
+        const {extract, pageNum} = pdfTextContent;
+
+        const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
+
+        console.log("pdfTextContent: ", JSON.stringify(pdfTextContent, null, '  '))
+
+        console.log("pageNum: ", pageNum);
+        console.log("content: \n", content)
+
+    };
+
     it("basic read", async function () {
-
-        const dumpTextContent = async (pdfTextContent: IPDFTextContent) => {
-            const {extract, pageNum} = pdfTextContent;
-
-            const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
-
-            console.log("pageNum: ", pageNum);
-            console.log("content: \n", content)
-
-        };
 
         // TODO: still missing characters like:
 
@@ -74,6 +77,17 @@ describe('PDFText', function() {
         // here.
 
         await PDFText.getText('../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
+
+    });
+
+    it("Dump of Astronomy Content p293", async () => {
+
+        const targetPage = 291
+
+        await PDFText.getText('/Users/burton/astronomy.pdf', dumpTextContent, {
+            skipPages: Numbers.range(1, targetPage),
+            maxPages: targetPage + 2
+        });
 
     });
 

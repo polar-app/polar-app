@@ -5,6 +5,7 @@ import {ESShingleWriter} from "./ESShingleWriter";
 import {IAnswerIndexerRequest} from "polar-answers-api/src/IAnswerIndexerRequest";
 import {AnswerIndexStatusCollection} from "polar-firebase/src/firebase/om/AnswerIndexStatusCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {PDFShingleParser} from "./PDFShingleParser";
 
 export namespace AnswerIndexer {
 
@@ -33,26 +34,15 @@ export namespace AnswerIndexer {
         // the text on the next page is the continuation of the text on
         // the current page.
 
-        await PDFText.getText(opts.url, async pdfTextContent => {
+        await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
 
-                const {extract, pageNum} = pdfTextContent;
+            const {shingles, pageNum} = event;
 
-                console.log("Indexing text on page: " + pageNum)
+            for(const shingle of shingles) {
+                await writer.write({docID, pageNum, shingle});
+            }
 
-                const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
-
-                // now build the sentence shingles over this...
-
-                const shingles = await SentenceShingler.computeShinglesFromContent(content);
-
-                for(const shingle of shingles) {
-                    await writer.write({docID, pageNum, shingle});
-                }
-
-            },
-            {
-                skipPages: opts.skipPages
-            });
+        });
 
         await writer.sync();
 
