@@ -80,7 +80,7 @@ describe('PDFText', function() {
 
     });
 
-    it("Dump of Astronomy Content p293", async () => {
+    xit("Dump of Astronomy Content p293", async () => {
 
         const targetPage = 291
 
