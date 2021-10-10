@@ -8,6 +8,8 @@ import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
  */
 export namespace PDFShingleParser {
 
+    import IPDFTextContent = PDFText.IPDFTextContent;
+
     export interface IParseOpts {
         readonly url: URLStr;
         readonly skipPages?: ReadonlyArray<PageNumber>;
@@ -24,26 +26,39 @@ export namespace PDFShingleParser {
 
     export async function parse(opts: IParseOpts, callback: OnShinglesCallback) {
 
-        await PDFText.getText(opts.url, async pdfTextContent => {
+        // TODO major bug / feature error here.  Text across pages isn't
+        // assembled properly.  We're also not really able to tell if the text
+        // on the next page is the continuation of the text on the current page.
 
-                const {extract, pageNum} = pdfTextContent;
+        // TODO: one solution would be to just concat all the text together and
+        // parse everything in memory or stream it but we have to break the
+        // pages up into blocks properly and we would also need to have SOME way
+        // to highlight text that is across pages.
 
-                const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
+        // TODO: maybe one solution here would be to index/emit JUST blocks and
+        // then there would only be a special case across page boundaries.
 
-                const shingles = await SentenceShingler.computeShinglesFromContent(content);
+        const pdfTextCallback = async (pdfTextContent: IPDFTextContent) => {
 
-                // eslint-disable-next-line node/no-callback-literal
-                await callback({
-                    content,
-                    pageNum,
-                    shingles
-                });
+            const {extract, pageNum} = pdfTextContent;
 
-            },
-            {
-                skipPages: opts.skipPages,
-                maxPages: opts.maxPages
+            const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
+
+            const shingles = await SentenceShingler.computeShinglesFromContent(content);
+
+            // eslint-disable-next-line node/no-callback-literal
+            await callback({
+                content,
+                pageNum,
+                shingles
             });
+
+        }
+
+        await PDFText.getText(opts.url, pdfTextCallback, {
+            skipPages: opts.skipPages,
+            maxPages: opts.maxPages
+        });
 
     }
 }

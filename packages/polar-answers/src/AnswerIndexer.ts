@@ -29,11 +29,6 @@ export namespace AnswerIndexer {
             type: 'doc'
         });
 
-        // TODO major bug / feature error here.  Text across pages isn't
-        // assembled properly.  We're also not really able to tell if
-        // the text on the next page is the continuation of the text on
-        // the current page.
-
         await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
 
             const {shingles, pageNum} = event;
