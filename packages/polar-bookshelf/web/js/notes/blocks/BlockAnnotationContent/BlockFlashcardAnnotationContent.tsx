@@ -17,6 +17,7 @@ import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockTextContentUtils} from "../../NoteUtils";
 import {BlockPredicates} from "../../store/BlockPredicates";
 import {BlockTagsSection} from "./BlockHighlightContentWrapper";
+import {useBlocksTreeStore} from "../../BlocksTree";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -52,7 +53,8 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
         annotation,
         actions: ['remove', 'editTags'],
     });
-    const { update, getBlock } = useAnnotationBlockManager();
+    const { getBlock } = useAnnotationBlockManager();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleChangeType = React.useCallback(() => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
@@ -90,8 +92,8 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
         };
 
         const contentJSON = block.content.toJSON();
-        update(id, getNewContent());
-    }, [update, getBlock, id, flashcard]);
+        blocksTreeStore.setBlockContent(id, getNewContent());
+    }, [blocksTreeStore, getBlock, id, flashcard]);
 
     return (
         <BlockAnnotationActionsWrapper
@@ -129,15 +131,16 @@ const FrontBackFlashcard: React.FC<IFrontBackFlashcardProps> = (props) => {
     const { flashcard, id, onKeyDown, innerRef: frontRef, created } = props;
     const { fields: { front, back } } = flashcard;
     const backRef = React.useRef<HTMLDivElement>(null);
-    const { update, getBlock } = useAnnotationBlockManager();
+    const { getBlock } = useAnnotationBlockManager();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleChange = React.useCallback((field: keyof IBlockFrontBackFlashcard['fields']) => (markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
         if (block && BlockPredicates.isFrontBackFlashcardBlock(block)) {
             const content = BlockTextContentUtils.updateFlashcardContentMarkdown(block.content, field, markdown);
-            update(id, content);
+            blocksTreeStore.setBlockContent(id, content);
         }
-    }, [id, getBlock, update]);
+    }, [id, getBlock, blocksTreeStore]);
 
     return (
         <>
@@ -174,15 +177,16 @@ interface IClozeFlashcardProps extends BlockEditorGenericProps {
 const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
     const { flashcard, id, created } = props;
     const { fields: { text } } = flashcard;
-    const { update, getBlock } = useAnnotationBlockManager();
+    const { getBlock } = useAnnotationBlockManager();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
         if (block && BlockPredicates.isClozeFlashcardBlock(block)) {
             const content = BlockTextContentUtils.updateFlashcardContentMarkdown(block.content, 'text', markdown);
-            update(id, content);
+            blocksTreeStore.setBlockContent(id, content);
         }
-    }, [id, update, getBlock]);
+    }, [id, getBlock, blocksTreeStore]);
 
     return (
         <div className="flashcard-wrapper-item">

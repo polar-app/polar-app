@@ -18,6 +18,7 @@ import {
     Interstitial,
     IDropPosition,
     BlocksIndexByDocumentID,
+    IInsertBlocksContentStructureOpts,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -26,6 +27,8 @@ import {IBlockContentStructure} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
+import {IAnnotationHighlightContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  * deleteBlocks
@@ -115,7 +118,8 @@ export interface IBlocksStore {
                                                                targetName: BlockNameStr,
                                                                content: MarkdownStr): void;
 
-    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr>;
+    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
+                                    opts?: IInsertBlocksContentStructureOpts): ReadonlyArray<BlockIDStr>;
     createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure>;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
@@ -137,6 +141,7 @@ export interface IBlocksStore {
     getNamedBlocks(): ReadonlyArray<string>;
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
+    setHighlightAnnotationBlockContent(id: BlockIDStr, content: IAnnotationHighlightContent, docMeta: IDocMeta): void;
 
     moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void
 

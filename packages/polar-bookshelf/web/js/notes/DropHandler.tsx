@@ -122,7 +122,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
 
             if (targetBlock) {
                 const {target, asChild} = targetBlock;
-                blocksTreeStore.createNewBlock(target, { content: getBlockContent(upload), asChild });
+                blocksTreeStore.createNewBlock(target, { content: getBlockContent(upload), unshift: asChild });
             }
         };
 

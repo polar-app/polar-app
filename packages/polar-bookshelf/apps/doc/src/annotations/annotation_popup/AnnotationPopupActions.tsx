@@ -17,7 +17,7 @@ import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {Block} from "../../../../../web/js/notes/store/Block";
-import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
+import { useBlocksStore } from "../../../../../web/js/notes/store/BlocksStore";
 
 export type IDocMetaAnnotationProps = {
     annotation: IDocAnnotation,
@@ -41,10 +41,10 @@ const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
         const annotationMutations = useAnnotationMutationsContext();
         const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
 
-        const handleChange = (color: ColorStr) => {
+        const handleChange = React.useCallback((color: ColorStr) => {
             handleColor({ color });
             clear();
-        };
+        }, [handleColor]);
 
         return (
             <ColorMenu
@@ -58,15 +58,16 @@ const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
 
     const BlockAnnotation: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
 
-        const {update} = useAnnotationBlockManager();
-        const handleChange = (color: ColorStr) => {
+        const blocksStore = useBlocksStore();
+        const handleChange = React.useCallback((color: ColorStr) => {
             const annotationJSON = annotation.content.toJSON();
-            update(annotation.id, {
+
+            blocksStore.setBlockContent(annotation.id, {
                 ...annotationJSON,
                 value: { ...annotationJSON.value, color }
             });
             clear();
-        };
+        }, [blocksStore, annotation]);
 
         return (
             <ColorMenu
