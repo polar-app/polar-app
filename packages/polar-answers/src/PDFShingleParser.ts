@@ -24,6 +24,13 @@ export namespace PDFShingleParser {
 
     export type OnShinglesCallback = (event: IOnShinglesEvent) => Promise<void>;
 
+    // a 2000 page PDF is about 25MB of text... if we did a contact of it ALL
+    // together it wouldn't be that difficult to index but would require more
+    // memory in the indexer.  About 4x this size 100MB and still FAR less than
+    // the 250MB required for even the minimal google cloud functions and we're
+    // allocating 2GB.  It's ALSO possible for us to still stream parse it if
+    // we want.
+
     export async function parse(opts: IParseOpts, callback: OnShinglesCallback) {
 
         // TODO major bug / feature error here.  Text across pages isn't
@@ -37,6 +44,15 @@ export namespace PDFShingleParser {
 
         // TODO: maybe one solution here would be to index/emit JUST blocks and
         // then there would only be a special case across page boundaries.
+
+        // TODO the page sep would be a space since the PDFs are probably using
+        // word breaks to join across pages but I imagine they could also be
+        // hyphens but first things first.
+
+        // TODO: if we're going to join across multiple pages then I need a way
+        // to keep track of the pageNum since they're going to change.
+
+        // TODO: I also need tests for multi-column layouts.
 
         const pdfTextCallback = async (pdfTextContent: IPDFTextContent) => {
 
