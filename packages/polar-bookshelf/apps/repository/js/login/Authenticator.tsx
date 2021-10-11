@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme) =>
             padding: '8px'
         },
         intro: {
-            color: '#F3F3F2',
+            color: theme.palette.common.white,
             fontSize: '2.0em',
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(1)
@@ -111,16 +111,9 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: '#6754D6 !important', 
+            color: theme.palette.text.secondary, 
             textDecoration: 'underline !important'
         }, 
-        a: {
-            color: '#F3F3F2 !important',
-            textDecoration: 'underline !important',
-            textAlign: 'center',
-            cursor: 'pointer',
-            marginTop: '15px'
-        },
         HeaderTitle: {
             textAlign: 'center',
         },
@@ -379,22 +372,22 @@ const EmailTokenAuthButton = () => {
                             {triggered && (
                                 <>
                                     <TextField autoFocus={true}
-                                            className={classes.email}
-                                            onChange={event => challengeRef.current = event.target.value}
-                                            onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                            placeholder="Enter your Code Here"
-                                            variant="outlined"
-                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
+                                        className={classes.email}
+                                        onChange={event => challengeRef.current = event.target.value}
+                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                        placeholder="Enter your Code Here"
+                                        variant="outlined"
+                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
 
                                     <div className={classes.alternate}>
                                         <Button onClick={handleEmailProvided}>Resend Email</Button>
                                     </div>
 
                                     <Button variant="contained"
-                                            color="primary"
-                                            className={classes.button}
-                                            onClick={handleClick}
-                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} >
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={handleClick}
+                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}}>
                                         Verify Code
                                     </Button>
                                 </>
@@ -410,9 +403,7 @@ const EmailTokenAuthButton = () => {
                                     style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
                                     InputProps={{
                                     startAdornment: (
-                                        <>
                                             <EmailIcon style={{margin: '8px'}}/> 
-                                        </>
                                         )
                                     }}
                                 />
@@ -421,14 +412,12 @@ const EmailTokenAuthButton = () => {
                     )}
 
                     {!triggered && (
-
                         <AuthButton onClick={handleClick}
-                                    strategy="Email"
-                                    startIcon={<EmailIcon />}
-                                    />
+                            strategy="Email"
+                            startIcon={<EmailIcon />}
+                        />
                     )}
                 </div>
-                    
                 </>
             </DeviceRouters.Phone>
 
@@ -457,19 +446,19 @@ const EmailTokenAuthButton = () => {
                                 <>
 
                                     <TextField autoFocus={true}
-                                                className={classes.email}
-                                                onChange={event => challengeRef.current = event.target.value}
-                                                onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                                placeholder="Enter your Code Here"
-                                                variant="outlined" />
+                                        className={classes.email}
+                                        onChange={event => challengeRef.current = event.target.value}
+                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                        placeholder="Enter your Code Here"
+                                        variant="outlined" />
 
                                     <div className={classes.alternate}>
                                         <Button onClick={handleEmailProvided}>Resend Email</Button>
                                     </div>
                                     <Button variant="contained"
-                                            color="primary"
-                                            className={classes.button}
-                                            onClick={handleClick}>
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={handleClick}>
                                         Verify Code
                                     </Button>
                                 </>
@@ -490,9 +479,9 @@ const EmailTokenAuthButton = () => {
                     {!triggered && (
 
                         <AuthButton onClick={handleClick}
-                                    strategy="Email"
-                                    startIcon={<EmailIcon />}
-                                    />
+                            strategy="Email"
+                            startIcon={<EmailIcon />}
+                        />
                     )}
                 </>
             </DeviceRouters.NotPhone>
@@ -506,9 +495,9 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
-        <div className={classes.a} onClick={() => history.push('/sign-in')}>
-            <Button variant="text">
-                OR SIGN-IN WITH NEW ACCOUNT
+        <div>
+            <Button variant="text" onClick={() => history.push('/sign-in')}>
+                or sign-in with existing account
             </Button>
         </div>
     );
@@ -518,9 +507,9 @@ const OrCreateNewAccount = () => {
     const classes = useStyles();
     const history = useHistory();
     return (
-        <div className={classes.a} onClick={() => history.push('/create-account')}>
-            <Button>
-                OR CREATE NEW ACCOUNT
+        <div>
+            <Button variant="text" onClick={() => history.push('/create-account')}>
+                or create new account
             </Button>
         </div>
     );
@@ -528,17 +517,6 @@ const OrCreateNewAccount = () => {
 
 const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
-    const [Login, setLogin] = React.useState("LandingPage"); 
-
-    const keyboardVisibleToggle = () => {
-        const [isKeyboardVisible, setKeyboardVisible] = React.useState();
-
-        if(window.innerWidth <= 400){
-              this.setKeyboardVisible({isKeyboardVisible: true})
-        }else{
-            this.setKeyboardVisible({isKeyboardVisible: false})
-        }
-    }
 
     return (
         <>
