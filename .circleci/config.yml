@@ -152,7 +152,7 @@ jobs:
       - build_setup
 
   # @ Build fastlane for deployment
-  fastlane:
+  fastlane-android:
     parameters:
       executor:
         type: executor
@@ -161,13 +161,22 @@ jobs:
     steps:
       - checkout
       - run:
-          name: isolate
+          name: isolate & yarn install
           command: |
             mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
             mv /home/circleci/project/.npmrc ~/
             rm -rf /home/circleci/project
             cd /home/circleci/polar-mobile-app
             yarn install
+      - run:
+          name: install_dependencies
+          command: |
+            gem install bundler
+            cd /home/circleci/polar-mobile-app/android
+            bundle install
+            bundle update fastlane
+            yes | sdkmanager --licenses
+            bundle exec fastlane beta
 
   # @ Run Karma Test Suite
   karma:
