@@ -52,7 +52,16 @@ export namespace PDFShingleParser {
         // TODO: if we're going to join across multiple pages then I need a way
         // to keep track of the pageNum since they're going to change.
 
-        // TODO: I also need tests for multi-column layouts.
+        // TODO: I also need tests for multi-column layouts to make sure those
+        // are extracted properly too.
+
+        // TODO: I think we NEED to extract by blocks/paragraphs though because
+        // if we don't then I CAN NOT send that much data at once to GCL or it
+        // will choke but the question is where do we terminate the parse?
+        //
+        // TODO: maybe the parser just emits a new type of record which is a
+        // 'break' not a string which is when the next section is greater than
+        // the height of the current font.
 
         const pdfTextCallback = async (pdfTextContent: IPDFTextContent) => {
 
