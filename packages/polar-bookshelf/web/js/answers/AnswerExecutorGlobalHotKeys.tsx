@@ -3,7 +3,8 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField, Typography, useTheme} from "@material-ui/core";
+import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField,
+    Tooltip, Typography, useTheme} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -113,10 +114,12 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
                                      justifyContent: 'flex-end',
                                      display: 'flex'
                                  }}>
-                                <Button size="medium"
-                                        onClick={handleViewSection}>
-                                    View Section
-                                </Button>
+                                <Tooltip title={`Open document and jump to page ${props.doc.record.pageNum} @ ${props.doc.record.idx}`}>
+                                    <Button size="medium"
+                                            onClick={handleViewSection}>
+                                        View Section
+                                    </Button>
+                                </Tooltip>
                             </div>
                         )}
 
@@ -244,6 +247,10 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                 </Typography>
             </Box>
         );
+    } else {
+        console.log("Got answer: ", JSON.stringify(props.answerResponse, null, '  '));
+        console.log("With timings: ", props.answerResponse.timings);
+        // console.log("With cost estimation: ", props.answerResponse.cost_estimation);
     }
 
     return (
@@ -415,19 +422,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 const request: IAnswerExecutorRequest = {
                     question,
-                    model: coreAnswerExecutorRequest?.model || 'curie',
-                    search_model: coreAnswerExecutorRequest?.search_model || 'curie',
-                    rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
-                    rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
-                    rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
-                    filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
+                    // model: coreAnswerExecutorRequest?.model || 'curie',
+                    // search_model: coreAnswerExecutorRequest?.search_model || 'curie',
+                    // rerank_elasticsearch: coreAnswerExecutorRequest?.rerank_elasticsearch || undefined,
+                    // rerank_elasticsearch_size: coreAnswerExecutorRequest?.rerank_elasticsearch_size || 10000,
+                    // rerank_elasticsearch_model: coreAnswerExecutorRequest?.rerank_elasticsearch_model || undefined,
+                    // filter_question: coreAnswerExecutorRequest?.filter_question || undefined,
                 };
 
                 console.log("Executing request: ", JSON.stringify(request, null, '  '));
 
                 const answer = await answerExecutorClient(request);
-
-                console.log("Got answer: ", JSON.stringify(answer, null, '  '));
 
                 setAnswerResponse(answer);
 

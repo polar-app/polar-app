@@ -3,7 +3,6 @@ import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
-    IAnswerExecutorCostEstimation,
     IAnswerExecutorError,
     IAnswerExecutorResponse,
     IAnswerExecutorTimings,
@@ -24,7 +23,6 @@ import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
-import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 import {AnswerExecutors} from "./AnswerExecutors";
 import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
 import {QuestionFilters} from "./QuestionFilters";
@@ -196,9 +194,6 @@ export namespace AnswerExecutor {
 
             // eslint-disable-next-line camelcase
             readonly openai_reranked_duration: number;
-
-            // eslint-disable-next-line camelcase
-            readonly openai_reranked_cost_estimation: ICostEstimation;
 
         }
 
@@ -434,10 +429,6 @@ export namespace AnswerExecutor {
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
-                    openai_reranked_cost_estimation: {
-                        cost: openai_reranked_records_with_score.cost_estimation.cost,
-                        tokens: openai_reranked_records_with_score.cost_estimation.tokens,
-                    },
                     records,
                     elasticsearch_pruned
                 };
@@ -508,39 +499,38 @@ export namespace AnswerExecutor {
         const [openai_answers_response, openai_answer_duration] = await executeWithDuration(OpenAIAnswersClient.exec(openai_answers_request));
 
         const primaryAnswer = Arrays.first(openai_answers_response.answers);
-
-        function computeCostEstimation(): IAnswerExecutorCostEstimation {
-
-            const NULL_COSTS = {
-                cost: 0,
-                tokens: 0
-            }
-
-            // eslint-disable-next-line camelcase
-            const openai_rerank_cost_estimation: ICostEstimation = computedDocuments.openai_reranked_cost_estimation || NULL_COSTS;
-
-            // eslint-disable-next-line camelcase
-            const openai_answer_api_cost_estimation: IAnswersCostEstimation = {
-                cost: openai_answers_response.cost_estimation.cost,
-                tokens: openai_answers_response.cost_estimation.tokens,
-                search: openai_answers_response.cost_estimation.search,
-                completion: openai_answers_response.cost_estimation.completion,
-            }
-
-            const cost = openai_rerank_cost_estimation.cost + openai_answer_api_cost_estimation.cost;
-            const tokens = openai_rerank_cost_estimation.tokens + openai_answer_api_cost_estimation.tokens;
-
-            return {
-                cost, tokens,
-                openai_rerank_cost_estimation,
-                openai_answer_api_cost_estimation
-            };
-
-        }
-
-        // eslint-disable-next-line camelcase
-        const cost_estimation = computeCostEstimation();
-
+        //
+        // function computeCostEstimation(): IAnswerExecutorCostEstimation {
+        //
+        //     const NULL_COSTS = {
+        //         cost: 0,
+        //         tokens: 0
+        //     }
+        //
+        //     // eslint-disable-next-line camelcase
+        //     const openai_rerank_cost_estimation: ICostEstimation = computedDocuments.openai_reranked_cost_estimation || NULL_COSTS;
+        //
+        //     // eslint-disable-next-line camelcase
+        //     const openai_answer_api_cost_estimation: IAnswersCostEstimation = {
+        //         cost: openai_answers_response.cost_estimation.cost,
+        //         tokens: openai_answers_response.cost_estimation.tokens,
+        //         search: openai_answers_response.cost_estimation.search,
+        //         completion: openai_answers_response.cost_estimation.completion,
+        //     }
+        //
+        //     const cost = openai_rerank_cost_estimation.cost + openai_answer_api_cost_estimation.cost;
+        //     const tokens = openai_rerank_cost_estimation.tokens + openai_answer_api_cost_estimation.tokens;
+        //
+        //     return {
+        //         cost, tokens,
+        //         openai_rerank_cost_estimation,
+        //         openai_answer_api_cost_estimation
+        //     };
+        //
+        // }
+        //
+        // // eslint-disable-next-line camelcase
+        // const cost_estimation = computeCostEstimation();
 
         function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
             return {
@@ -599,8 +589,7 @@ export namespace AnswerExecutor {
                 trace,
                 response: {
                     error: true,
-                    code: 'no-answer',
-                    cost_estimation
+                    code: 'no-answer'
                 }
             }
 
@@ -625,8 +614,7 @@ export namespace AnswerExecutor {
             answers,
             model,
             search_model,
-            timings,
-            cost_estimation
+            timings
         };
 
         return {

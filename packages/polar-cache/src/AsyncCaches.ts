@@ -5,6 +5,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {GoogleCloudStorageBasedAsyncCacheDelegate} from "./delegates/GoogleCloudStorageBasedAsyncCacheDelegate";
 import {AggregateAsyncCacheDelegate} from "./delegates/AggregateAsyncCacheDelegate";
 import {AsyncCacheDelegate} from "./AsyncCacheDelegate";
+import {CacheDisabledWrapper} from "./wrappers/CacheDisabledWrapper";
 
 export namespace AsyncCaches {
 
@@ -21,7 +22,7 @@ export namespace AsyncCaches {
 
     export function create<K, V>(nspace: IDStr,
                                  delegateName: CacheDelegateName | AggregateCacheDelegateNameTuple,
-                                 wrapperName?: 'test-only'): IAsyncCache<K, V> {
+                                 wrapperName?: 'test-only' | 'cache-disabled'): IAsyncCache<K, V> {
 
         function createDirectDelegateByName(delegateName: CacheDelegateName): AsyncCacheDelegate<K, V> {
 
@@ -64,6 +65,8 @@ export namespace AsyncCaches {
         switch (wrapperName) {
             case 'test-only':
                 return TestOnlyWrapper.create(delegate);
+            case 'cache-disabled':
+                return CacheDisabledWrapper.create(delegate);
             default:
                 return delegate;
         }

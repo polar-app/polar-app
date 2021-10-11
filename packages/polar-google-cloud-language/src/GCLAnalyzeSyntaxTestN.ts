@@ -185,6 +185,23 @@ describe("GCLAnalyzeSyntax", function() {
 
     });
 
+    it("with hyphen", async () => {
+
+        // TODO would be 26MB for one letter in the google ngram corpus, there
+        // are 26 letter entries and 10 numbers. so this would yield about 1GB
+        // of data that we would have to index and this would just be for one
+        // language
+
+        const text = "Bigtable has achieved\n" +
+            "several goals: wide applicability,  scalability,  high per-\n" +
+            "formance, and high availability."
+
+        const analysis = await GCLAnalyzeSyntax.analyzeSyntax(text);
+        console.log(JSON.stringify(analysis, null, '  '));
+
+
+    });
+
     it("extractPOS", async function() {
 
         const analysis = await GCLAnalyzeSyntax.extractPOS("Barack Obama was a US President", ['NOUN']);

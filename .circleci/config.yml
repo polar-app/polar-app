@@ -250,13 +250,13 @@ jobs:
             TEMP_VERSION='0.0.0'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
             sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
             lerna exec -- sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" package.json
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
-            LOG=$(git log --pretty=format:"• %s\\n" --no-merges $LATEST_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq | tr '\r\n' ' ' )
-            if [ -z "$LOG" ]; then LOG="• Minor Fixes for Release"; fi; 
+            LOG=$(git log --pretty=format:"• %s\\n" --no-merges $LATEST_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq | tr '\r\n' ' ' ) || LOG="• fix: Minor Fixes for Release" 
             ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
             TEMP_DATE=$(date +"%a %b %d %Y")
             echo "export DATE=\"$TEMP_DATE\"" >> $BASH_ENV
@@ -402,56 +402,56 @@ workflows:
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
-      - cypress/run:
-          name: cypress-desktop-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
-          attach-workspace: true
-          store_artifacts: true
+      # - cypress/run:
+      #     name: cypress-desktop-chrome
+      #     executor: ff-chrome
+      #     requires:
+      #       - build-polar-app
+      #     working_directory: /root/project/packages/polar-bookshelf
+      #     start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
+      #     wait-on: "http://localhost:8050"
+      #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
+      #     attach-workspace: true
+      #     store_artifacts: true
 
-      # @ Run Cypress tests for firefox-desktop (1080p)
-      - cypress/run:
-          name: cypress-desktop-firefox
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
+      # # @ Run Cypress tests for firefox-desktop (1080p)
+      # - cypress/run:
+      #     name: cypress-desktop-firefox
+      #     executor: ff-chrome
+      #     requires:
+      #       - build-polar-app
+      #     working_directory: /root/project/packages/polar-bookshelf
+      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     wait-on: "http://localhost:8050"
+      #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
+      #     attach-workspace: true
+      #     store_artifacts: true
 
-      # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
-      - cypress/run:
-          name: cypress-phone-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
+      # # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
+      # - cypress/run:
+      #     name: cypress-phone-chrome
+      #     executor: ff-chrome
+      #     requires:
+      #       - build-polar-app
+      #     working_directory: /root/project/packages/polar-bookshelf
+      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     wait-on: "http://localhost:8050"
+      #     command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
+      #     attach-workspace: true
+      #     store_artifacts: true
 
-      # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
-      - cypress/run:
-          name: cypress-tablet-chrome
-          executor: ff-chrome
-          requires:
-            - build-polar-app
-          working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
-          wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
-          attach-workspace: true
-          store_artifacts: true
+      # # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
+      # - cypress/run:
+      #     name: cypress-tablet-chrome
+      #     executor: ff-chrome
+      #     requires:
+      #       - build-polar-app
+      #     working_directory: /root/project/packages/polar-bookshelf
+      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     wait-on: "http://localhost:8050"
+      #     command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
+      #     attach-workspace: true
+      #     store_artifacts: true
 
       # @ Deploy Approved Polar app build
       - deploy-polar-app:
@@ -463,10 +463,10 @@ workflows:
             - approve-deploy
             - mocha
             - karma
-            - cypress-desktop-firefox
-            - cypress-desktop-chrome
-            - cypress-tablet-chrome
-            - cypress-phone-chrome
+            # - cypress-desktop-firefox
+            # - cypress-desktop-chrome
+            # - cypress-tablet-chrome
+            # - cypress-phone-chrome
           filters:
             branches:
               only:
