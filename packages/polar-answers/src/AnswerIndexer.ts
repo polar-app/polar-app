@@ -12,6 +12,7 @@ export namespace AnswerIndexer {
 
     import IAnswerIndexerStatusPendingV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusPendingV3;
     import IAnswerIndexerStatusDoneV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusDoneV3;
+    import IAnswerIndexerStatusFailedV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusFailedV3;
 
     export interface IndexOpts extends IAnswerIndexerRequest {
         readonly uid: UserIDStr;
@@ -61,26 +62,56 @@ export namespace AnswerIndexer {
 
         }
 
+        async function writeIndexStatusFailed(message: string | undefined) {
+
+            const duration = Math.floor(Math.abs(Date.now() - ISODateTimeStrings.parse(started).getTime()))
+
+            const record: IAnswerIndexerStatusFailedV3 = {
+                id: docID,
+                uid,
+                status: 'failed',
+                ver: 'v3',
+                type: 'doc',
+                started,
+                completed: ISODateTimeStrings.create(),
+                duration,
+                message
+            }
+
+            await AnswerIndexStatusCollection.set(firestore, record);
+
+        }
 
         await writeIndexStatusPending();
 
-        await writer.init();
+        try {
 
-        await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
+            await writer.init();
 
-            const {shingles, pageNum, progress} = event;
+            await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
 
-            for(const shingle of shingles) {
-                await writer.write({pageNum, shingle});
-            }
+                const {shingles, pageNum, progress} = event;
 
-        });
+                for(const shingle of shingles) {
+                    await writer.write({pageNum, shingle});
+                }
 
-        await writer.sync();
+            });
 
-        await writeIndexStatusDone();
+            await writer.sync();
+
+            await writeIndexStatusDone();
+
+        } catch(e) {
+
+            console.error("Could not index data: ", e);
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const message = (e as any).message || undefined;
+            await writeIndexStatusFailed(message);
+
+        }
 
     }
 
 }
-

@@ -60,7 +60,23 @@ export namespace AnswerIndexStatusCollection {
 
     }
 
-    export type IAnswerIndexerStatus = IAnswerIndexerStatusLegacy | IAnswerIndexerStatusPendingV3 | IAnswerIndexerStatusDoneV3;
+    export interface IAnswerIndexerStatusFailedV3 {
+
+        readonly id: IDStr;
+        readonly uid: UserIDStr;
+        readonly status: 'failed';
+        readonly ver: 'v3';
+        readonly type: 'doc';
+        readonly started: ISODateTimeString;
+        readonly completed: ISODateTimeString;
+        // The index duration, in seconds.
+        readonly duration: number;
+        readonly message: string | undefined;
+
+    }
+
+
+    export type IAnswerIndexerStatus = IAnswerIndexerStatusLegacy | IAnswerIndexerStatusPendingV3 | IAnswerIndexerStatusDoneV3 | IAnswerIndexerStatusFailedV3;
 
     export interface IAnswerIndexerUpdate extends Pick<IAnswerIndexerStatus, 'id'> {
         readonly status: 'done';
