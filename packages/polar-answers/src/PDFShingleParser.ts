@@ -2,6 +2,7 @@ import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
+import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 
 /**
  * Parse a PDF into shingles and trigger a callback for each batch.
@@ -20,6 +21,7 @@ export namespace PDFShingleParser {
         readonly content: string;
         readonly shingles: ReadonlyArray<SentenceShingler.ISentenceShingle>;
         readonly pageNum: number;
+        readonly progress: Progress;
     }
 
     export type OnShinglesCallback = (event: IOnShinglesEvent) => Promise<void>;
@@ -65,7 +67,7 @@ export namespace PDFShingleParser {
 
         const pdfTextCallback = async (pdfTextContent: IPDFTextContent) => {
 
-            const {extract, pageNum} = pdfTextContent;
+            const {extract, pageNum, progress} = pdfTextContent;
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
@@ -75,7 +77,8 @@ export namespace PDFShingleParser {
             await callback({
                 content,
                 pageNum,
-                shingles
+                shingles,
+                progress
             });
 
         }

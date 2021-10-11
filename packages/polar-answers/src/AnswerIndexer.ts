@@ -31,7 +31,7 @@ export namespace AnswerIndexer {
 
         await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
 
-            const {shingles, pageNum} = event;
+            const {shingles, pageNum, progress} = event;
 
             for(const shingle of shingles) {
                 await writer.write({pageNum, shingle});
