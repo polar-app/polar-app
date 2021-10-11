@@ -2347,7 +2347,7 @@ export class BlocksStore implements IBlocksStore {
         const parentID = blocks[0].parent;
 
         if (!parentID) {
-            return console.log("moveBlock: can\'t move blocks with no parents");
+            return console.error("moveBlock: can\'t move blocks with no parents");
         }
 
         const parent = this._index[parentID];
@@ -2355,6 +2355,10 @@ export class BlocksStore implements IBlocksStore {
 
         if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
             throw new Error("Only sibling blocks can be moved");
+        }
+
+        if (parent.content.type === 'document') {
+            return console.error("moveBlock: Annotation blocks cannot be moved");
         }
 
         const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>
