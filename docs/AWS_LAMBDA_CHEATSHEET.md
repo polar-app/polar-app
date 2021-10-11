@@ -42,10 +42,7 @@ cloud function that don't include the user's Firebase token will be rejected wit
 ```typescript
 const request: IRequest = {};
 
-JSONRPC
-    .exec<IRequest, IResponse>('notes/create', request)
-    .then((result: IResponse) => {
-        // Do something with the result
-    })
-    .catch(reason => console.error(reason));
+const result: IResponse = await JSONRPC.exec<IRequest, IResponse>('notes/create', request);
+
+// Do something with the result
 ```
