@@ -173,8 +173,13 @@ jobs:
           command: |
             gem install bundler
             cd /home/circleci/polar-mobile-app/android
+            touch google-play-service-account.json
+            echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
             bundle install
             bundle update fastlane
+            echo -e "\n\n\n VALIDATING KEY \n\n\n"
+            bundle exec fastlane run validate_play_store_json_key
+            echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
             bundle exec fastlane beta
 
   # @ Run Karma Test Suite
