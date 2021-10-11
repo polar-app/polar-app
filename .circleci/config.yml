@@ -403,7 +403,7 @@ workflows:
 
       ## ^ Build mobile apps
       - fastlane:
-          executor: large
+          executor: android
 
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
