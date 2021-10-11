@@ -1,6 +1,4 @@
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import {PDFText} from "polar-pdf/src/pdf/PDFText";
-import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
 import {IAnswerIndexerRequest} from "polar-answers-api/src/IAnswerIndexerRequest";
 import {AnswerIndexStatusCollection} from "polar-firebase/src/firebase/om/AnswerIndexStatusCollection";
@@ -25,7 +23,7 @@ export namespace AnswerIndexer {
             id: docID,
             uid,
             status: 'pending',
-            ver: 'v1',
+            ver: 'v2',
             type: 'doc'
         });
 
