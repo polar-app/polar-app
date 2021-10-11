@@ -402,7 +402,7 @@ workflows:
                 - master
 
       ## ^ Build mobile apps
-      - fastlane:
+      - fastlane-android:
           executor: android
 
       ## ^ Commonality Between Sub-Workflows
