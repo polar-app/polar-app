@@ -1,12 +1,17 @@
-# How selected color is computed
 
-https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
+# MUI High Level Philosophy.
 
-```typescript jsx
-fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
-```
+Generally speaking you should just be using high level MUI components.
 
-# Styles 
+If you're messing around too much with CSS properties you're doing it wrong.
+
+# Key MUI Components to Review
+
+ - Button
+ - List
+ - Divider 
+
+# Styles
 
 ```typescript jsx
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -56,4 +61,14 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+```
+
+# MUI idiosyncrasies
+
+## How selected color is computed
+
+https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
+
+```typescript jsx
+fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
 ```
