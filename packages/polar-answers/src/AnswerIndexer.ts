@@ -15,7 +15,7 @@ export namespace AnswerIndexer {
 
         const {uid, docID} = opts;
 
-        const writer = ESShingleWriter.create({uid});
+        const writer = ESShingleWriter.create({uid, docID});
 
         const firestore = FirestoreAdmin.getInstance();
 
@@ -27,12 +27,14 @@ export namespace AnswerIndexer {
             type: 'doc'
         });
 
+        await writer.init();
+
         await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
 
             const {shingles, pageNum} = event;
 
             for(const shingle of shingles) {
-                await writer.write({docID, pageNum, shingle});
+                await writer.write({pageNum, shingle});
             }
 
         });

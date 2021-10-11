@@ -16,3 +16,7 @@ export interface IElasticsearchQuery {
     readonly size: number;
     readonly sort: IElasticsearchSort;
 }
+
+export interface IElasticsearchDeleteByQuery {
+    readonly query: IElasticsearchQueryStringQuery;
+}
