@@ -47,7 +47,9 @@ export namespace ESShingleWriter {
             }
         }
 
+        console.log("Purging existing data by query for idx...")
         await ESRequests.doPost(url, deleteByQuery);
+        console.log("Purging existing data by query for idx...done")
 
     }
 
