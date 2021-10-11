@@ -41,9 +41,11 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
-import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
+import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
 import {BlockTextContentUtils} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {BlockHighlights} from "../BlockHighlights";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -133,8 +135,9 @@ export interface ISplitBlock {
 export interface INewBlockOpts {
     readonly split?: ISplitBlock;
     readonly content?: IBlockContent;
-    readonly asChild?: boolean;
+    readonly unshift?: boolean;
     readonly newBlockID?: BlockIDStr;
+    readonly newChildPos?: INewChildPosition;
 }
 
 export interface DeleteBlockRequest {
@@ -166,6 +169,7 @@ export interface NavOpts {
 
 export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
+    ref?: BlockIDStr;
 }
 
 export type InterstitialTypes = 'image';
@@ -502,6 +506,11 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
+            if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
+                const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
+                delete this._indexByName[name];
+            }
+
             if (BlockPredicates.isNamedBlock(block)) {
                 const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
@@ -565,7 +574,7 @@ export class BlocksStore implements IBlocksStore {
         blocks: ReadonlyArray<IBlockContentStructure>,
         opts: IInsertBlocksContentStructureOpts = {},
     ): ReadonlyArray<BlockIDStr> {
-        const refID = this.active?.id;
+        const refID = opts.ref || this.active?.id;
 
         if (! refID) {
             console.error('Don\'t know where to insert the new blocks');
@@ -587,7 +596,7 @@ export class BlocksStore implements IBlocksStore {
                     .reverse()
                     .forEach(({ children, content }) => {
                         const newBlockID = ids[i++];
-                        const newBlock = this.doCreateNewBlock(ref, { asChild: isParent, content, newBlockID });
+                        const newBlock = this.doCreateNewBlock(ref, { unshift: isParent, content, newBlockID });
                         if (newBlock) {
                             storeBlocks(children, newBlock.id, true);
                         }
@@ -838,10 +847,12 @@ export class BlocksStore implements IBlocksStore {
             DoDOMNav();
             return true;
         }
+        
+        const rootBlock = this._index[root];
 
         const items = this.computeLinearTree(root, {
             expanded: true,
-            includeInitial: true,
+            includeInitial: rootBlock.content.type === 'document' ? false : true,
             root: autoExpandRoot ? root : undefined,
         });
 
@@ -875,7 +886,6 @@ export class BlocksStore implements IBlocksStore {
                 this._selectedAnchor = this._active?.id;
 
                 CursorPositions.clearSelection();
-
                 return true;
             }
 
@@ -1344,9 +1354,6 @@ export class BlocksStore implements IBlocksStore {
 
             if (block) {
 
-                delete this._indexByName[block.content.data.toLowerCase()];
-                this._indexByName[newName.toLowerCase()] = id;
-
                 block.withMutation(() => {
                     const content = new NameContent({
                         ...block.content.toJSON(),
@@ -1382,11 +1389,51 @@ export class BlocksStore implements IBlocksStore {
 
             }
 
-
-        }
+        };
 
         return this.doUndoPush('setBlockContent', [id], redo);
 
+    }
+
+    @action public setHighlightAnnotationBlockContent(id: BlockIDStr, content: AnnotationHighlightContent, docMeta: IDocMeta) {
+
+        const redo = () => {
+            const block = this.getBlockForMutation(id);
+
+            if (! block || ! BlockPredicates.isAnnotationHighlightBlock(block)) {
+                return console.error('The highlight block to be updated was not found');
+            }
+
+            const parent = block.parent ? this.getBlockForMutation(block.parent) : null;
+
+            if (! parent) {
+                return console.error('The highlight block to be updated does not have a parrent');
+            }
+
+            const items = this
+                .idsToBlocks(parent.itemsAsArray)
+                .filter(BlockPredicates.isAnnotationHighlightBlock);
+
+            const siblings = items
+                .map(({ content, id }) => ({ content, id }))
+                .filter(({ id }) => id !== block.id);
+
+            const position = BlockHighlights.calculateHighlightBlockPosition(siblings, { id, content }, docMeta);
+
+            block.withMutation(() => {
+                block.setContent(content);
+            });
+
+            parent.withMutation(() => {
+                parent.removeItem(block.id);
+                parent.addItem(block.id, position);
+            });
+
+            this.doPut([block, parent]);
+
+        };
+
+        return this.doUndoPush('setHighlightAnnotationBlockContent', [id], redo);
     }
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
@@ -1580,7 +1627,7 @@ export class BlocksStore implements IBlocksStore {
             // Block has no parent (in the case of a root block), or a block that has children
             // with suffix of an empty string, and annotation blocks
             if (
-                opts.asChild
+                opts.unshift
                 || ! block.parent
                 || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))
                 || BlockPredicates.isAnnotationBlock(block)
@@ -1638,7 +1685,7 @@ export class BlocksStore implements IBlocksStore {
         const links = getLinks();
         const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-        const newBlockPosition = computeNewBlockPosition();
+        const newBlockPosition: INewBlockPosition = opts.newChildPos ? { ...opts.newChildPos, parentBlock: currentBlock, type: 'relative' } : computeNewBlockPosition();
 
         const {parentBlock} = newBlockPosition;
 
@@ -2300,7 +2347,7 @@ export class BlocksStore implements IBlocksStore {
         const parentID = blocks[0].parent;
 
         if (!parentID) {
-            return console.log("moveBlock: can\'t move blocks with no parents");
+            return console.error("moveBlock: can\'t move blocks with no parents");
         }
 
         const parent = this._index[parentID];
@@ -2308,6 +2355,10 @@ export class BlocksStore implements IBlocksStore {
 
         if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
             throw new Error("Only sibling blocks can be moved");
+        }
+
+        if (parent.content.type === 'document') {
+            return console.error("moveBlock: Annotation blocks cannot be moved");
         }
 
         const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>

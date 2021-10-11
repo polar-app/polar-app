@@ -30,7 +30,7 @@ export const useNoteWikiLinkIdentifierCreator = () => {
     return React.useCallback((id: BlockIDStr, linkText: string): string => {
         const block = blocksStore.getBlock(id);
 
-        if (! block || block.content.type !== "markdown") {
+        if (! block) {
             return linkText;
         }
         

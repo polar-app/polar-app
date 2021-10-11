@@ -1,7 +1,7 @@
 import React from "react";
-import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContentBase, AnnotationContentTypeMap, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
+import {AnnotationContentTypeMap, AnnotationHighlightContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -18,6 +18,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {BlockHighlights} from "./BlockHighlights";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -31,11 +32,6 @@ type IUseHighlightBlocks<T extends IHighlightContentType> = {
      * The type of the highlights we want to fetch @see IHighlightContentType
      */
     type?: T;
-
-    /**
-     * Whether to sort the highlights based on their position in their owner document.
-     */
-    sort?: boolean;
 };
 
 const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
@@ -50,18 +46,17 @@ const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
  * @return {ReadonlyArray<Block<AnnotationContentTypeMap[T]>>}
  */
 export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>): ReadonlyArray<Block<AnnotationContentTypeMap[T]>> => {
-    const { docID, type, sort = false } = opts;
+    const { docID, type } = opts;
     const [highlights, setHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
-    const { docMeta } = useDocViewerStore(['docMeta']);
     const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
-        if (! docID || ! docMeta) {
+        if (! docID) {
             return;
         }
 
         const updateHighlights = () => {
-            const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docID]);
+            const documentBlock = getBlockForDocument(blocksStore, docID);
 
             if (! documentBlock) {
                 return;
@@ -71,16 +66,11 @@ export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHi
                 .idsToBlocks(documentBlock.itemsAsArray)
                 .filter(isHighlightBlockOfType(type))
 
-            if (sort) {
-                const sortedBlocks = BlockHighlights.sortByPositionInDocument(docMeta, blocks);
-                setHighlights(sortedBlocks);
-            } else {
-                setHighlights(blocks);
-            }
+            setHighlights(blocks);
         };
 
         return autorun(updateHighlights);
-    }, [docID, blocksStore, type, docMeta, sort]);
+    }, [docID, blocksStore, type]);
 
     return highlights;
 };
@@ -105,6 +95,7 @@ export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: DocI
 
 export const useAnnotationBlockManager = () => {
     const blocksStore = useBlocksStore();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     const doMutation = React.useCallback(<T>(fingerprint: string, handler: (block: Block<DocumentContent>) => T): T | undefined => {
         const block = getBlockForDocument(blocksStore, fingerprint);
@@ -133,26 +124,41 @@ export const useAnnotationBlockManager = () => {
         return block as Block<AnnotationContentTypeMap[T]>;
     }, [blocksStore]);
 
-    const create = React.useCallback((fingerprint: DocIDStr, annotation: IAnnotationContent): BlockIDStr | undefined => {
-        const annotationJSON = annotation instanceof AnnotationContentBase
-            ? annotation.toJSON()
-            : annotation;
+    const create = React.useCallback((fingerprint: DocIDStr, content: AnnotationHighlightContent): BlockIDStr | undefined => {
 
-        const createdBlock = doMutation(fingerprint, (block) =>
-            blocksStore.createNewBlock(block.id, { content: annotationJSON })
-        );
+        if (! docMeta) {
+            console.error('Annotation block cannot be created due to docMeta not being available');
+            return;
+        }
+
+        const createdBlock = doMutation(fingerprint, (block) => {
+            const annotations = blocksStore
+                .idsToBlocks(block.itemsAsArray)
+                .filter(BlockPredicates.isAnnotationHighlightBlock);
+
+            const position = BlockHighlights.calculateHighlightBlockPosition(annotations, { id: Hashcodes.createRandomID(), content }, docMeta);
+
+            if (position === 'unshift') {
+                return blocksStore.createNewBlock(block.id, { content: content, unshift: true });
+            }
+
+            return blocksStore.createNewBlock(block.id, { content: content, newChildPos: position });
+        });
 
         return createdBlock ? createdBlock.id : undefined;
-    }, [blocksStore, doMutation]);
+    }, [blocksStore, doMutation, docMeta]);
 
-    const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
 
-        const annotationJSON = annotation instanceof AnnotationContentBase
-            ? annotation.toJSON()
-            : annotation;
+    // IMPORTANT: this function is only meant to be used within the doc reader, because it requires docMeta
+    const updateHighlight = React.useCallback((id: BlockIDStr, annotation: AnnotationHighlightContent) => {
+        if (! docMeta) {
+            console.error('Annotation block cannot be updated due to docMeta not being available');
+            return;
+        }
 
-        blocksStore.setBlockContent(id, annotationJSON);
-    }, [blocksStore]);
+        blocksStore.setHighlightAnnotationBlockContent(id, annotation, docMeta);
+
+    }, [blocksStore, docMeta]);
 
     const remove = React.useCallback((id: BlockIDStr) => {
         const block = getBlock(id);
@@ -200,11 +206,11 @@ export const useAnnotationBlockManager = () => {
                 value: getFlashcard(),
             });
 
-            blocksStore.createNewBlock(highlightBlock.id, { asChild: true, content });
+            blocksStore.createNewBlock(highlightBlock.id, { unshift: true, content });
         }
     }, [blocksStore, getBlock]);
 
-    return { create, update, remove, getBlock, createFlashcard };
+    return { create, updateHighlight, remove, getBlock, createFlashcard };
 };
 
 type IBlockAreaHighlightOpts = {
@@ -253,7 +259,7 @@ type IUpdateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
 };
 
 export const useBlockAreaHighlight = () => {
-    const {create: createAnnotationBlock, getBlock, update: updateAnnotationBlock} = useAnnotationBlockManager();
+    const {create: createAnnotationBlock, getBlock, updateHighlight} = useAnnotationBlockManager();
     const cloudStorage = useFirebaseCloudStorage();
     const blocksStore = useBlocksStore();
 
@@ -324,7 +330,7 @@ export const useBlockAreaHighlight = () => {
             const contentJSON = block.content.toJSON();
             const { rects, order, position } = content.value;
 
-            updateAnnotationBlock(blockID, {
+            const newContent = new AreaHighlightAnnotationContent({
                 ...contentJSON,
                 value: {
                     ...contentJSON.value,
@@ -341,13 +347,15 @@ export const useBlockAreaHighlight = () => {
                 },
             });
 
+            updateHighlight(blockID, newContent);
+
             return blockID;
         }
 
         return undefined;
     }, [
         createAnnotationBlock,
-        updateAnnotationBlock,
+        updateHighlight,
         getBlock,
         cloudStorage,
         blocksStore

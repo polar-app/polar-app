@@ -1668,9 +1668,9 @@ describe('BlocksStore', function() {
 
             const parentNextSibling = store.createNewBlock('111');
             Asserts.assertPresent(parentNextSibling);
-            const level1Block = store.createNewBlock('111', {asChild: true});
+            const level1Block = store.createNewBlock('111', {unshift: true});
             assertPresent(level1Block);
-            const level2Block = store.createNewBlock(level1Block.id, {asChild: true});
+            const level2Block = store.createNewBlock(level1Block.id, {unshift: true});
             assertPresent(level2Block);
 
             assertJSON(store.canMergeNext(root, level2Block.id), {
@@ -1883,12 +1883,12 @@ describe('BlocksStore', function() {
 
         it('should handle merging 2 blocks that have children', () => {
             const store = createStore()
-            const createdBlock1 = store.createNewBlock('104', {asChild: true});
+            const createdBlock1 = store.createNewBlock('104', {unshift: true});
             assertPresent(createdBlock1);
 
-            const createdBlock2 = store.createNewBlock('106', {asChild: true});
+            const createdBlock2 = store.createNewBlock('106', {unshift: true});
             assertPresent(createdBlock2);
-            const createdBlock3 = store.createNewBlock(createdBlock2.id, {asChild: true});
+            const createdBlock3 = store.createNewBlock(createdBlock2.id, {unshift: true});
             assertPresent(createdBlock3);
             /*
              *   104----------------------------|-- We're merging these 2
@@ -2608,7 +2608,7 @@ describe('BlocksStore', function() {
 
             assertTextBlock(originalBlock.content);
 
-            const createdBlock = store.createNewBlock(id, {asChild: true});
+            const createdBlock = store.createNewBlock(id, {unshift: true});
             assertPresent(createdBlock);
 
             originalBlock = store.getBlockForMutation(id);
@@ -2632,7 +2632,7 @@ describe('BlocksStore', function() {
             const id = '105';
             // collapse the parent node to make sure it gets expanded when the child is created
             store.collapse(id);
-            const createdBlock = store.createNewBlock(id, {asChild: true});
+            const createdBlock = store.createNewBlock(id, {unshift: true});
             assertPresent(createdBlock);
             assert.equal(store.isExpanded(id), true);
         });

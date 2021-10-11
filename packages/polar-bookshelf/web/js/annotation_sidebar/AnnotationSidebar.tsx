@@ -35,7 +35,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
 
     const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docFingerprint]);
 
-    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint, sort: true });
+    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint });
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>

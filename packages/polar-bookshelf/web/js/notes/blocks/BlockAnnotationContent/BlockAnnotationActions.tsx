@@ -194,7 +194,7 @@ type ISharedActionMap = {
 export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): React.ReactElement[] => {
     const { annotation, id, actions = ['createFlashcard',  'changeColor', 'remove', 'open'] } = opts;
     const blocksTreeStore = useBlocksTreeStore();
-    const { update, getBlock, createFlashcard } = useAnnotationBlockManager();
+    const { getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();
     const blockTagEditorDialog = useBlockTagEditorDialog();
 
@@ -218,20 +218,20 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
 
             switch (contentJSON.type) {
                 case AnnotationContentType.TEXT_HIGHLIGHT:
-                    update(id, new TextHighlightAnnotationContent({
+                    blocksTreeStore.setBlockContent(id, new TextHighlightAnnotationContent({
                         ...contentJSON,
                         value: { ...contentJSON.value, color },
                     }));
                     break;
                 case AnnotationContentType.AREA_HIGHLIGHT:
-                    update(id, new AreaHighlightAnnotationContent({
+                    blocksTreeStore.setBlockContent(id, new AreaHighlightAnnotationContent({
                         ...contentJSON,
                         value: { ...contentJSON.value, color },
                     }));
                     break;
             }
         }
-    }, [update, id, getBlock, annotation.type]);
+    }, [blocksTreeStore, id, getBlock, annotation.type]);
 
     const handleCreateFlashcard = React.useCallback(() => {
         const back = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT

@@ -56,7 +56,7 @@ export const CreateComment: React.FC<IAnnotationPopupActionProps> = (props) => {
                 data: body,
             });
             blocksStore.createNewBlock(annotation.id, {
-                asChild: true,
+                unshift: true,
                 content,
             });
             dialogs.snackbar({ message: "Comment created successfully!" });
