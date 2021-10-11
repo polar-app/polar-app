@@ -2,6 +2,7 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UserIDStr} from "../Collections";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -12,7 +13,7 @@ export namespace AnswerIndexStatusCollection {
 
     const COLLECTION_NAME = 'answer_index_status';
 
-    export interface IAnswerIndexerStatus {
+    export interface IAnswerIndexerStatusLegacy {
 
         /**
          * The ID is the same ID as of the item we're indexing.  If it's a doc
@@ -25,6 +26,41 @@ export namespace AnswerIndexStatusCollection {
         readonly type: 'doc';
 
     }
+
+    export interface IAnswerIndexerStatusPendingV3 {
+
+        /**
+         * The ID is the same ID as of the item we're indexing.  If it's a doc
+         * then it's a docID.
+         */
+        readonly id: IDStr;
+        readonly uid: UserIDStr;
+        readonly status: 'pending';
+        readonly ver: 'v3';
+        readonly type: 'doc';
+        readonly started: ISODateTimeString;
+
+    }
+
+    export interface IAnswerIndexerStatusDoneV3 {
+
+        /**
+         * The ID is the same ID as of the item we're indexing.  If it's a doc
+         * then it's a docID.
+         */
+        readonly id: IDStr;
+        readonly uid: UserIDStr;
+        readonly status: 'done';
+        readonly ver: 'v3';
+        readonly type: 'doc';
+        readonly started: ISODateTimeString;
+        readonly completed: ISODateTimeString;
+        // The index duration, in seconds.
+        readonly duration: number;
+
+    }
+
+    export type IAnswerIndexerStatus = IAnswerIndexerStatusLegacy | IAnswerIndexerStatusPendingV3 | IAnswerIndexerStatusDoneV3;
 
     export interface IAnswerIndexerUpdate extends Pick<IAnswerIndexerStatus, 'id'> {
         readonly status: 'done';

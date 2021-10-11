@@ -194,6 +194,7 @@ function useIndexForAIHandler() {
 
     const documentDownloadURLCalculator = useDocumentDownloadURLCalculator();
     const errorDialog = useErrorDialog();
+    const dialogManager = useDialogManager();
 
     return React.useCallback(() => {
 
@@ -214,12 +215,25 @@ function useIndexForAIHandler() {
 
             }
 
-            JSONRPC.exec("AnswerIndexer", {url, docID})
+            async function doAsync() {
+
+                // NOTE that the AnswerIndexer doesn't trigger a background job
+                // and will wait until complete so we have to send the message
+                // first.
+                dialogManager.snackbar({
+                    message: "Indexing document for AI.  This might take a few minutes."
+                })
+
+                await JSONRPC.exec("AnswerIndexer", {url, docID})
+
+            }
+
+            doAsync()
                 .catch(err => console.error("Could not index document for AI: " + url, err));
 
         }
 
-    }, [documentDownloadURLCalculator, errorDialog]);
+    }, [documentDownloadURLCalculator, errorDialog, dialogManager]);
 
 }
 
