@@ -175,7 +175,6 @@ jobs:
             cd /home/circleci/polar-mobile-app/android
             bundle install
             bundle update fastlane
-            yes | sdkmanager --licenses
             bundle exec fastlane beta
 
   # @ Run Karma Test Suite
