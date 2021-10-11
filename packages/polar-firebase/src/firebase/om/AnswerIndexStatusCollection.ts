@@ -1,7 +1,5 @@
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
-import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
-import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UserIDStr} from "../Collections";
 
@@ -23,7 +21,7 @@ export namespace AnswerIndexStatusCollection {
         readonly id: IDStr;
         readonly uid: UserIDStr;
         readonly status: 'pending' | 'done';
-        readonly ver: 'v1';
+        readonly ver: 'v1' | 'v2';
         readonly type: 'doc';
 
     }

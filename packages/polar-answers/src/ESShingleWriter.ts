@@ -6,6 +6,7 @@ import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ShingleID} from "polar-answers-api/src/ShingleID";
 import {Batcher} from "polar-shared/src/util/Batcher";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IElasticsearchDeleteByQuery} from "polar-answers-api/src/IElasticsearchQuery";
 
 export namespace ESShingleWriter {
 
@@ -13,10 +14,10 @@ export namespace ESShingleWriter {
 
     export interface ICreateOpts {
         readonly uid: UserIDStr;
+        readonly docID: IDStr,
     }
 
     export interface IWriteOpts {
-        readonly docID: IDStr,
         readonly pageNum: number;
         readonly shingle: ISentenceShingle;
     }
@@ -24,9 +25,31 @@ export namespace ESShingleWriter {
 
     export interface IESShingleWriter {
 
+        readonly init: () => Promise<void>;
+
         readonly write: (opts: IWriteOpts) => Promise<void>
         // noop
         readonly sync: () => Promise<void>;
+
+    }
+
+    async function purgeExisting(indexName: string, docID: IDStr) {
+
+        const url = `/${indexName}/_delete_by_query`
+
+        const deleteByQuery: IElasticsearchDeleteByQuery = {
+            query: {
+                query_string: {
+                    query: `docID: ${docID}`,
+                    default_field: 'docID'
+                },
+
+            }
+        }
+
+        console.log("Purging existing data by query for idx...")
+        await ESRequests.doPost(url, deleteByQuery);
+        console.log("Purging existing data by query for idx...done")
 
     }
 
@@ -34,15 +57,17 @@ export namespace ESShingleWriter {
 
         let idx = 0;
 
-        // TODO write this to support bulk indexing with a sync() method
-
-        // curl -X DELETE "localhost:9200/my-index-000001?pretty"
-
         const indexName = ESAnswersIndexNames.createForUserDocs(opts.uid)
+
+        const {docID} = opts;
+
+        async function init() {
+            await purgeExisting(indexName, docID);
+        }
 
         async function write(opts: IWriteOpts) {
 
-            const {docID, shingle, pageNum} = opts;
+            const {shingle, pageNum} = opts;
 
             const id: ShingleID = `${docID}:${idx}`;
 
@@ -69,13 +94,14 @@ export namespace ESShingleWriter {
 
         console.log("Created ESShingleWriter for " + indexName);
 
-        return {write, sync};
+        return {init, write, sync};
 
     }
 
     export interface ICreateBatcherOpts {
         readonly uid: UserIDStr;
         readonly type: 'pdf';
+        readonly docID: IDStr,
     }
 
     /**
@@ -89,7 +115,7 @@ export namespace ESShingleWriter {
 
         const indexName = ESAnswersIndexNames.createForUserDocs(opts.uid)
 
-        const {type} = opts;
+        const {type, docID} = opts;
 
         async function handleBatch(records: ReadonlyArray<IAnswerDigestRecord>) {
 
@@ -145,7 +171,6 @@ export namespace ESShingleWriter {
         const batcher = Batcher.create<IAnswerDigestRecord>(handleBatch)
 
         function createID(opts: IWriteOpts) {
-            const {docID} = opts;
             const id: ShingleID = `${docID}:${idx}`;
             return id;
         }
@@ -154,7 +179,7 @@ export namespace ESShingleWriter {
 
             const id = createID(opts);
 
-            const {docID, shingle, pageNum} = opts;
+            const {shingle, pageNum} = opts;
 
             const record = {
                 id,

@@ -3,7 +3,6 @@ import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
-    IAnswerExecutorCostEstimation,
     IAnswerExecutorError,
     IAnswerExecutorResponse,
     IAnswerExecutorTimings,
@@ -24,7 +23,6 @@ import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AnswerDigestRecordPruner} from "./AnswerDigestRecordPruner";
 import {ShortHeadCalculator} from "./ShortHeadCalculator";
-import {IAnswersCostEstimation, ICostEstimation} from "polar-answers-api/src/ICostEstimation";
 import {AnswerExecutors} from "./AnswerExecutors";
 import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
 import {QuestionFilters} from "./QuestionFilters";
