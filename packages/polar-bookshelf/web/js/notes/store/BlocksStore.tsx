@@ -502,6 +502,11 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
+            if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
+                const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
+                delete this._indexByName[name];
+            }
+
             if (BlockPredicates.isNamedBlock(block)) {
                 const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
@@ -1343,9 +1348,6 @@ export class BlocksStore implements IBlocksStore {
             const block = this.getBlockForMutation(id) as Block<NameContent>;
 
             if (block) {
-
-                delete this._indexByName[block.content.data.toLowerCase()];
-                this._indexByName[newName.toLowerCase()] = id;
 
                 block.withMutation(() => {
                     const content = new NameContent({
