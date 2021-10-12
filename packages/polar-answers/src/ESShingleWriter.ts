@@ -35,7 +35,7 @@ export namespace ESShingleWriter {
 
     async function purgeExisting(indexName: string, docID: IDStr) {
 
-        const url = `/${indexName}/_delete_by_query`
+        const url = `/${indexName}*/_delete_by_query?allow_no_indices=true`
 
         const deleteByQuery: IElasticsearchDeleteByQuery = {
             query: {

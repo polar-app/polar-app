@@ -4,7 +4,7 @@ import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import equal from "deep-equal";
-import {BlockPredicates, EditableContent, TextContent} from "./store/BlockPredicates";
+import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {Block} from "./store/Block";
@@ -65,7 +65,7 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
                 return root.itemsAsArray[0];
             }
 
-            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
+            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { unshift: true }).id;
         };
 
         blocksStore.setActiveWithPosition(getFirstChildID(), 'start');
