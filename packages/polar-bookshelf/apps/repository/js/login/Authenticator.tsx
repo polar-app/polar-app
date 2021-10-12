@@ -27,27 +27,17 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import Themes from 'epubjs/types/themes';
 import { PointerType } from 'polar-dom-text-search/src/IPointer';
+import { Box } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
 
-        logo: {
-            marginTop: theme.spacing(10),
-            marginBottom: theme.spacing(10)
-        },
         button: {
             flexGrow: 1,
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
-            fontSize: '1.0em',
             padding: '8px'
-        },
-        intro: {
-            color: theme.palette.common.white,
-            fontSize: '2.0em',
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1)
         },
 
         divider: {
@@ -113,15 +103,7 @@ export const useStyles = makeStyles((theme) =>
         linkDecoration: {
             color: theme.palette.text.secondary, 
             textDecoration: 'underline !important'
-        }, 
-        HeaderTitle: {
-            textAlign: 'center',
-        },
-        VerticalBorder: {
-            borderLeft: '2px solid #6754D6 !important',
-            padding: '2px',
-            height: '45px'
-          }
+        }
     }),
 );
 
@@ -495,7 +477,7 @@ const SignInWithExistingAccount = () => {
     const history = useHistory();
 
     return (
-        <div>
+        <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/sign-in')}>
                 or sign-in with existing account
             </Button>
@@ -507,7 +489,7 @@ const OrCreateNewAccount = () => {
     const classes = useStyles();
     const history = useHistory();
     return (
-        <div>
+        <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/create-account')}>
                 or create new account
             </Button>
@@ -524,21 +506,23 @@ const Main = React.memo(function Main(props: IProps) {
             <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
                 <div id="firebaseui-auth-container" style={{display: 'none'}}/>
                     <div className="text-center">
-                        <div className={classes.logo}>
+                        <Box margin={10}>
                             <PolarSVGIcon width={125} height={125}/>
-                        </div>
+                        </Box>
 
-                        {props.mode === 'create-account' && (
-                        <h2 className={classes.intro}>
-                            Create your Polar Account
-                        </h2>
-                        )}
-
-                        {props.mode === 'sign-in' && (
-                            <h2 className={classes.intro}>
-                                Sign In to Polar
+                        <Box marginTop={1}>
+                            {props.mode === 'create-account' && (
+                            <h2>
+                                Create your Polar Account
                             </h2>
-                        )}
+                            )}
+
+                            {props.mode === 'sign-in' && (
+                                <h2>
+                                    Sign In to Polar
+                                </h2>
+                            )}
+                        </Box>
 
                         <div style={{
                             display: 'flex',
@@ -566,29 +550,33 @@ const Main = React.memo(function Main(props: IProps) {
             <DeviceRouters.Phone>
             <div style={{height:"100vh"}}>
 
-                <h1 className={classes.HeaderTitle}>
-                    POLAR
-                </h1>
+                <Box marginTop={1}>
+                    <h1 style={{textAlign: 'center'}}>
+                        POLAR
+                    </h1>
+                </Box>
 
                 <div className="text-center">
 
-                <div className={classes.logo}>
+                <Box margin={10}>
                     <PolarSVGIcon width={125} height={125}/>
-                </div>
+                </Box>
 
                 <Divider className={classes.sendLinkDivider}/>
 
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create Account
-                    </h2>
-                )}
+                <Box marginTop={1}>
+                    {props.mode === 'create-account' && (
+                        <h2>
+                            Create Account
+                        </h2>
+                    )}
 
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In
-                    </h2>
-                )}
+                    {props.mode === 'sign-in' && (
+                        <h2>
+                            Sign In
+                        </h2>
+                    )}   
+                </Box>
 
                     <EmailTokenAuthButton/>
 
@@ -601,7 +589,6 @@ const Main = React.memo(function Main(props: IProps) {
                     )}
 
                     <div style={{flexGrow: 1}}/>
-
                     <div>
                         <p style={{fontSize: '10px'}} className={classes.legal}>
                             You acknowledge that you will read, and agree to
@@ -662,7 +649,6 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                             }}>
 
                             <>
-
                                 {authStatus === undefined && (
                                     <Pending/>
                                 )}
