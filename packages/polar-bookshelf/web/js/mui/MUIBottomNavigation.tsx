@@ -40,6 +40,7 @@ const BOTTOM_NAV_LOCATIONS: ReadonlyArray<IBottomNavLocation> = [
         href: RoutePathnames.ADD_MOBILE,
         icon: <AddIcon/>
     },
+    // at least buttons are required so for now add settings
     {
         id: 'settings',
         label: 'Settings',
@@ -96,7 +97,10 @@ export const MUIBottomNavigation = ()  => {
                                             value={current.href}
                                             icon={current.icon}
                                             style={{
-                                                backgroundColor: value === current.href ? theme.palette.primary.main : theme.palette.background.paper
+                                                // this is necessary for a workaround for MUI where items would shine
+                                                // through the currently active action.
+                                                backgroundColor: value === current.href ? theme.palette.primary.main :
+                                                                                          theme.palette.background.paper
                                             }}
                     />
                 ))}
