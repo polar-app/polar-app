@@ -30,9 +30,6 @@ describe("GCLSentenceSplitter", function() {
 
         const result = await GCLSentenceSplitter.split(content);
 
-        // FIXME: if we just remove sentence fragments that don't have subject,
-        // object, verb then I think this would be way way way better.
-
         assertJSON(result, [
             "7.",
             "Which term describes German soldiers hired by Great Britain to put down the American rebellion?",
@@ -43,6 +40,22 @@ describe("GCLSentenceSplitter", function() {
             "10.",
             "Which American general is responsible for improving the American military position in the South?",
             "A. John Burgoyne B. Nathanael Greene C. Wilhelm Frederick von Steuben D. Charles Cornwallis 11.",
+            "Describe the British southern strategy and its results."
+        ]);
+
+    });
+
+    it("sentence fragments filtered", async () => {
+
+        const content = "7. Which term describes German soldiers hired by Great Britain to put down the American rebellion? A. Patriots B. Royalists C. Hessians D. Loyalists 8. Describe the British strategy in the early years of the war and explain whether or not it succeeded. 9. How did George Washington’s military tactics help him to achieve success? 10. Which American general is responsible for improving the American military position in the South? A. John Burgoyne B. Nathanael Greene C. Wilhelm Frederick von Steuben D. Charles Cornwallis 11. Describe the British southern strategy and its results."
+
+        const result = await GCLSentenceSplitter.split(content, {filterCompleteSentences: true});
+
+        assertJSON(result, [
+            "Which term describes German soldiers hired by Great Britain to put down the American rebellion?",
+            "Describe the British strategy in the early years of the war and explain whether or not it succeeded.",
+            "How did George Washington’s military tactics help him to achieve success?",
+            "Which American general is responsible for improving the American military position in the South?",
             "Describe the British southern strategy and its results."
         ]);
 
