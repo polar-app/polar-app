@@ -89,11 +89,12 @@ export namespace Accounts {
             email,
             lastModified,
             interval,
-            customer
+            customer,
         };
 
         if (expiresAt) {
-            account.expiresAt = expiresAt;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (account as any).expiresAt = expiresAt;
         }
 
         await Accounts.write(account);

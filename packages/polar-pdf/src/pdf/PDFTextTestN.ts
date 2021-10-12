@@ -111,6 +111,10 @@ describe('PDFText', function() {
 
         await PDFText.getText('../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', textCapture.onPDFTextContent, {maxPages: 1});
 
+        // FIXME: 9. How did George Washington’s military tactics help him to achieve success? 10. Which American general is responsible for improving the American military position in the South?
+
+        // these are impartial sentences... require four partial sentences.
+
         assert.equal(textCapture.toString(), "Bigtable: A Distributed Storage System for Structured Data\n" +
             "Fay Chang, Jeffrey Dean, Sanjay Ghemawat, Wilson C. Hsieh, Deborah A. Wallach\n" +
             "Mike Burrows, Tushar Chandra, Andrew Fikes, Robert E. Gruber\n" +
@@ -187,6 +191,14 @@ describe('PDFText', function() {
             "is an uninterpreted array of bytes.\n" +
             "(row:string, column:string, time:int64) ! string\n" +
             "To appear in OSDI 2006 1")
+
+    });
+
+    xit("Plus One", async () => {
+
+        const textCapture = createTextCapture();
+
+        await PDFText.getText('/Users/burton/plusone.pdf', textCapture.onPDFTextContent, {maxPages: 1});
 
     });
 
