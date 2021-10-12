@@ -3,6 +3,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
 import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {UserPersonas} from "polar-hooks-functions/impl/personas/UserPersonas";
+import {Sendgrid} from "polar-hooks-functions/impl/Sendgrid";
 
 export namespace BatchAcceptor {
     import IUserRecord = UserPersonas.IUserRecord;
@@ -30,6 +31,18 @@ export namespace BatchAcceptor {
             'jonathan@getpolarized.io',
         ];
         return allowedEmails.includes(idUser.user.email as string);
+    }
+
+    async function sendWelcomeEmail(email: string) {
+        const message = {
+            to: email,
+            from: 'noreply@getpolarized.io',
+            subject: `Your Polar account has been set up. Welcome!`,
+            html: `<p>You can now begin using Polar:</p>
+                   <p><b><a href="https://getpolarized.io">Login to Polar</a></b></p>
+                   <p style="font-size: smaller; color: #c6c6c6;">Polar - Read. Learn. Never Forget.</p>`
+        };
+        await Sendgrid.send(message);
     }
 
     export const exec = async (idUser: IDUser, request: IBatchAcceptorRequest): Promise<IBatchAcceptorResponse> => {
@@ -60,6 +73,8 @@ export namespace BatchAcceptor {
             const password = Hashcodes.createRandomID();
 
             const user = await FirebaseUserCreator.create(email, password);
+
+            await sendWelcomeEmail(email);
 
             accepted.push(user);
         }
