@@ -15,6 +15,7 @@ export namespace PDFShingleParser {
         readonly url: URLStr;
         readonly skipPages?: ReadonlyArray<PageNumber>;
         readonly maxPages?: number;
+        readonly filterCompleteSentences?: boolean;
     }
 
     export interface IOnShinglesEvent {
@@ -32,6 +33,7 @@ export namespace PDFShingleParser {
     // the 250MB required for even the minimal google cloud functions and we're
     // allocating 2GB.  It's ALSO possible for us to still stream parse it if
     // we want.
+
 
     export async function parse(opts: IParseOpts, callback: OnShinglesCallback) {
 
@@ -71,7 +73,7 @@ export namespace PDFShingleParser {
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
-            const shingles = await SentenceShingler.computeShinglesFromContent(content);
+            const shingles = await SentenceShingler.computeShinglesFromContent(content, {filterCompleteSentences: opts.filterCompleteSentences});
 
             // eslint-disable-next-line node/no-callback-literal
             await callback({

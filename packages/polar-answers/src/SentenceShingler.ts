@@ -8,9 +8,9 @@ export namespace SentenceShingler {
         readonly text: string;
     }
 
-    function computeShinglesFromSentences(sentences: ReadonlyArray<string>,
-                                          width = 4,
-                                          jump = 2): ReadonlyArray<ISentenceShingle> {
+    export function _computeShinglesFromSentences(sentences: ReadonlyArray<string>,
+                                                  width = 4,
+                                                  jump = 2): ReadonlyArray<ISentenceShingle> {
 
         const result: ISentenceShingle[] = [];
 
@@ -49,11 +49,15 @@ export namespace SentenceShingler {
 
     }
 
-    export async function computeShinglesFromContent(content: TextStr) {
+    interface IComputeOpts {
+        readonly filterCompleteSentences?: boolean;
+    }
 
-        const sentences = await GCLSentenceSplitter.split(content);
+    export async function computeShinglesFromContent(content: TextStr, opts: IComputeOpts = {}) {
 
-        return computeShinglesFromSentences(sentences);
+        const sentences = await GCLSentenceSplitter.split(content, opts);
+
+        return _computeShinglesFromSentences(sentences);
 
     }
 
