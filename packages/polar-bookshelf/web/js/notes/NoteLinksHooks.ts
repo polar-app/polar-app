@@ -8,6 +8,7 @@ import {RoutePathnames} from "../apps/repository/RoutePathnames";
 import {useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
+import {AppSites} from "../apps/repository/auth_handler/AppSites";
 
 
 export const useNoteWikiLinkIdentifierCreator = () => {
@@ -83,7 +84,7 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
     if (href.startsWith('http:') || href.startsWith('https:')) {
         const url = new URL(href);
         
-        if (url.pathname.startsWith(notePathname)) {
+        if (! AppSites.isApp(href) || ! url.pathname.startsWith(notePathname)) {
             return null;
         }
 
