@@ -10,6 +10,8 @@ import {UserAvatar} from '../../../../web/js/ui/cloud_auth/UserAvatar';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useHistory} from 'react-router-dom';
 import { RoutePathnames } from '../../../../web/js/apps/repository/RoutePathnames';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 export interface IProps {
 
     /**
@@ -28,26 +30,20 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
 
     const {setFilters} = callbacks;
 
-    const Right = () => {
-
-        if (props.right) {
-            return props.right;
-        } else {
-            return <div/>;
-        }
-
-    };
-
     return (
         <>
             <DeviceRouters.NotDesktop>
-                <div style={{display: 'flex',  width: '100%', alignItems: 'center'}}>
 
+                <>
                     <span>My workspace</span>
 
-                    <UserAvatar onClick={()=>history.push(RoutePathnames.ACCOUNT_MOBILE)} style={{marginLeft: 'auto'}} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
+                    <UserAvatar onClick={()=>history.push(RoutePathnames.ACCOUNT_MOBILE)}
+                                style={{marginLeft: 'auto'}}
+                                photoURL={userInfoContext?.userInfo?.photoURL}
+                                displayName={userInfoContext?.userInfo?.displayName}/>
 
-                </div>
+                </>
+
             </DeviceRouters.NotDesktop>
             <DeviceRouters.Desktop>
                 <MUIButtonBar>
