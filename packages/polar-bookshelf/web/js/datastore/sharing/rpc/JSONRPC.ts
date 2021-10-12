@@ -16,36 +16,53 @@ export class JSONRPC {
         'private-beta/accept-batch',
     ];
 
-    public static async exec<R, V>(funcOrApiPath: string, request: R): Promise<V> {
+    public static async exec<R, V>(path: string, request: R): Promise<V> {
 
-        const app = FirebaseBrowser.init();
+        FirebaseBrowser.init();
 
         const user = await FirebaseBrowser.currentUserAsync();
+        const idToken = user ? await user.getIdToken() : undefined;
 
-        // Proxy the request to AWS Lambda instead of Firebase functions,
-        // if the function name is defined in the array
-        if (this.isAwsLambdaFunction(funcOrApiPath)) {
-            return <V>await this.executeApiGatewayRequest<R, V>({
-                path: funcOrApiPath,
+        if (this.isAwsLambdaFunction(path)) {
+            // Proxy the function call to AWS Lambda
+            return <V>await this.execWithAWS<R, V>({
+                path,
                 request,
-                idToken: user ? await user.getIdToken() : undefined,
+                idToken,
             });
         }
 
-        if (!user) {
+        // Execute the Firebase cloud function
+        return await this.execWithFirebase<R, V>({
+            path,
+            request,
+            idToken
+        });
+
+    }
+
+    private static async execWithFirebase<R, V>(opts: {
+        // Path within the AWS API Gateway
+        path: string;
+
+        // The request payload
+        request: R;
+
+        // Firebase token of the current user
+        idToken?: string,
+    }) {
+        if (!opts.idToken) {
             throw new Error("User not authenticated");
         }
 
-        const idToken = await user.getIdToken();
-
         const userRequest: UserRequest<R> = {
-            idToken,
-            request,
+            idToken: opts.idToken,
+            request: opts.request,
         };
 
         const endpoint = CloudFunctions.createEndpoint();
 
-        const url = `${endpoint}/${funcOrApiPath}`;
+        const url = `${endpoint}/${opts.path}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -57,11 +74,10 @@ export class JSONRPC {
         });
 
         if (response.status !== 200) {
-            throw new JSONRPCError(response, "Unable to handle RPC: " + funcOrApiPath);
+            throw new JSONRPCError(response, "Unable to handle RPC: " + opts.path);
         }
 
         return <V>await response.json();
-
     }
 
     private static isAwsLambdaFunction(functionName: string) {
@@ -70,10 +86,10 @@ export class JSONRPC {
 
     /**
      * Execute the request at AWS Lambda
-     * @param props
+     * @param opts
      * @private
      */
-    private static async executeApiGatewayRequest<R, V>(props: {
+    private static async execWithAWS<R, V>(opts: {
         // Path within the AWS API Gateway
         path: string;
 
@@ -83,24 +99,24 @@ export class JSONRPC {
         // Firebase token of the current user
         idToken?: string,
     }) {
-        const url = `${AwsApiGatewayURL}/rpc/${props.path}`;
+        const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
 
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
-        if (props.idToken) {
-            headers.append('Authorization', props.idToken);
+        if (opts.idToken) {
+            headers.append('Authorization', opts.idToken);
         }
 
         const response = await fetch(url, {
             method: 'POST',
             headers,
-            body: JSON.stringify(props.request)
+            body: JSON.stringify(opts.request)
         });
 
         if (response.status !== 200) {
             console.error(response);
-            throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${props.path}`);
+            throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${opts.path}`);
         }
 
         return <V>await response.json();
