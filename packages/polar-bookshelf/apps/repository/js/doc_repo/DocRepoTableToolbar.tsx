@@ -14,6 +14,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {Devices} from "polar-shared/src/util/Devices";
+import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -60,8 +61,9 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
         <Paper square className={classes.root}>
 
             <SidenavTrigger/> 
-
-            <ChromeExtensionInstallBar/>
+            <DeviceRouters.Desktop>
+                <ChromeExtensionInstallBar/>
+            </DeviceRouters.Desktop>
             
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }

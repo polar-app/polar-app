@@ -69,6 +69,7 @@ import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import { AccountPageMobile } from './AccountPageMobile';
 import {BetaRegister} from "../../../../apps/repository/js/login/BetaRegister";
 import {CDKDemo} from "./CDKDemo";
+import { SettingsPageMobile } from './SettingsPageMobile';
 
 interface IProps {
     readonly app: App;
@@ -369,7 +370,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 </PersistentRoute>
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.SETTINGS_MOBILE}>
-                                    <SettingsScreen/>
+                                    <SettingsPageMobile/>
                                 </PersistentRoute>
 
                                 <PersistentRoute strategy="display" exact path={RoutePathnames.PLAN_MOBILE}>

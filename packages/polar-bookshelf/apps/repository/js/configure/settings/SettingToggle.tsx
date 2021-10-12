@@ -3,6 +3,16 @@ import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+import { mergeClasses } from "@material-ui/core/node_modules/@material-ui/styles";
+import {createStyles, makeStyles} from "@material-ui/core";
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        margins:{
+            margin: '30px 16px'
+        }
+    }),
+);
 
 export interface PrefsWriter {
 
@@ -23,6 +33,7 @@ interface IProps {
     readonly defaultValue?: boolean;
     readonly icon?: JSX.Element;
     readonly beta?: boolean;
+    readonly className?: string;
 
     /**
      * Optional callback to listen to settings.
@@ -33,6 +44,7 @@ interface IProps {
 export const SettingToggle = (props: IProps) => {
 
     const log = useLogger();
+    const classes = useStyles();
 
     const {prefs, name, defaultValue} = props;
 
@@ -61,7 +73,7 @@ export const SettingToggle = (props: IProps) => {
     };
 
     return (
-        <div style={{ margin: '30px 16px' }}>
+        <div className={classes.margins}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
                 <MUIIconText style={{ flex: 1 }} icon={props.icon}>

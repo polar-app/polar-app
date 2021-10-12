@@ -45,7 +45,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
 
                     <span>My workspace</span>
 
-                    <UserAvatar onClick={()=>history.push(RoutePathnames.ACCOUNT_MOBILE)} style={{marginLeft: 'auto'}} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
+                    <UserAvatar onClick={()=>history.push(RoutePathnames.ACCOUNT_MOBILE)} size='medium' style={{marginLeft: 'auto'}} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
 
                 </div>
             </DeviceRouters.NotDesktop>
