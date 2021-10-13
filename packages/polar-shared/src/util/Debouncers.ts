@@ -62,6 +62,35 @@ export namespace Debouncers {
 
     }
 
+    export type InlineDebouncer = () => boolean;
+
+    /**
+     * Creates an inline debouncer that is just returns true if we should
+     * execute. Note that if you're expected to execute you MUST execute because
+     * the inline debouncer itself doesn't keep track of your execution.
+     *
+     * This is more convenient sometimes when working with async functions
+     * or something that needs to be flushed, cancelled, etc.
+     */
+    export function inline(timeout = 500): InlineDebouncer {
+
+        let executed: number | undefined;
+
+        return (): boolean => {
+
+            const now = Date.now();
+
+            if (executed === undefined || now - executed > timeout) {
+                executed = now;
+                return true;
+            }
+
+            return false;
+
+        }
+
+    }
+
 }
 
 

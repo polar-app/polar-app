@@ -105,7 +105,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    arrowup: ({ contentEditableElem, blocksTreeStore, event, blockID, isMultilineNavEnabled }) => {
+    arrowup: ({ contentEditableElem, blocksTreeStore, event, blockID }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.collapse(blockID);
             abortEvent(event);
@@ -126,21 +126,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
-        const block = blocksTreeStore.getBlock(blockID)!;
-
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
-
-            if (! isMultilineNavEnabled ||
-                ! BlockPredicates.isEditableBlock(block) ||
-                CursorPositions.isCursorAtSide(contentEditableElem, 'top')) {
-
-                abortEvent(event);
-                blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
-            }
-
+            abortEvent(event);
+            blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
         }
     },
-    arrowdown: ({ event, blockID, contentEditableElem, blocksTreeStore, isMultilineNavEnabled }) => {
+    arrowdown: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
         if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.expand(blockID);
             abortEvent(event);
@@ -161,18 +152,9 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
-        const block = blocksTreeStore.getBlock(blockID)!;
-
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
-
-            if (! isMultilineNavEnabled ||
-                ! BlockPredicates.isEditableBlock(block) ||
-                CursorPositions.isCursorAtSide(contentEditableElem, 'bottom')) {
-
-                abortEvent(event);
-                blocksTreeStore.navNext({ shiftKey: event.shiftKey });
-            }
-
+            abortEvent(event);
+            blocksTreeStore.navNext({ shiftKey: event.shiftKey });
         }
     },
     arrowleft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {

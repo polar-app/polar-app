@@ -55,7 +55,8 @@ export interface IAreaHighlightAnnotationContent extends IAnnotationContentBase<
 export interface IFlashcardAnnotationContent<T extends IBlockFlashcard = IBlockFlashcard> extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, T> {
 
 }
+export type IAnnotationHighlightContent = ITextHighlightAnnotationContent
+                                          | IAreaHighlightAnnotationContent;
 
-export type IAnnotationContent = ITextHighlightAnnotationContent
-                                 | IAreaHighlightAnnotationContent
-                                 | IFlashcardAnnotationContent;
+
+export type IAnnotationContent = IAnnotationHighlightContent | IFlashcardAnnotationContent;

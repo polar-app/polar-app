@@ -4,6 +4,11 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
+import {assertJSON} from "polar-test/src/test/Assertions";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {FunctionTimers} from "polar-shared/src/util/FunctionTimers";
+import { Numbers } from 'polar-shared/src/util/Numbers';
+import { Fetches } from 'polar-shared/src/util/Fetch';
 
 describe("Answer Executor", function () {
 
@@ -54,6 +59,74 @@ describe("Answer Executor", function () {
 
     });
 
+    /**
+     * Test to see how long it takes for the fetch API to perform parallel
+     * requests and if it CAN perform parallel requests.  This is used to help
+     * debug the rerank parallel fetch issue.
+     */
+    xit("test raw parallel HTTP ", async () => {
+
+        function createRequests() {
+
+            const batches = Numbers.range(1, 10);
+
+            return batches.map((batch) => {
+
+                return async () => {
+
+
+                    console.log("request started at: " + ISODateTimeStrings.create());
+
+                    const before = Date.now();
+                    await Fetches.fetch('http://httpbin.org/delay/10');
+                    console.log("request completed at: " + ISODateTimeStrings.create());
+                    const after = Date.now();
+
+                    const duration = after - before;
+
+                    console.log("request duration was: " + duration);
+
+                }
+
+            })
+
+        }
+
+
+        async function executeRequests() {
+            const [result, duration] = await FunctionTimers.execAsync(() => Promise.all(createRequests().map(current => current())));
+            console.log("Duration for requests: " + duration);
+            return result;
+        }
+
+        await executeRequests();
+
+    });
+
+    it("default request", () => {
+        assertJSON(AnswerExecutor.computeRequestWithDefaults({uid: '101', question: "What is the meaning of life?"}), {
+            "documents_limit": 200,
+            "elasticsearch_sort_order": "idx",
+            "elasticsearch_truncate_short_head": {
+                "max_docs": 50,
+                "min_docs": 50,
+                "target_angle": 30
+            },
+            "filter_question": "part-of-speech-noun",
+            "filter_question_joiner": "OR",
+            "max_tokens": 125,
+            "model": "curie",
+            "openai_completion_cleanup_enabled": true,
+            "prune_contiguous_records": true,
+            "question": "What is the meaning of life?",
+            "rerank_elasticsearch": true,
+            "rerank_elasticsearch_model": "ada",
+            "rerank_elasticsearch_size": 500,
+            "rerank_truncate_short_head": true,
+            "search_model": "curie",
+            "uid": "101"
+        })
+    });
 })
 
 

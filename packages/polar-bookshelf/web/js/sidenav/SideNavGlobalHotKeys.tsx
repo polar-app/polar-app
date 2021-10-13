@@ -1,6 +1,6 @@
 import React from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import { RoutePathnames } from '../apps/repository/RoutePathnames';
+import { RoutePathNames } from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
@@ -50,15 +50,15 @@ export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const pages = React.useMemo(() => {
         const pages = [
-            { path: RoutePathnames.HOME, exact: true }, // Doc Repo
-            { path: RoutePathnames.ANNOTATIONS, exact: false }, // Annotation repo
-            { path: RoutePathnames.STATISTICS, exact: false }, // Statistics
+            { path: RoutePathNames.HOME, exact: true }, // Doc Repo
+            { path: RoutePathNames.ANNOTATIONS, exact: false }, // Annotation repo
+            { path: RoutePathNames.STATISTICS, exact: false }, // Statistics
             ...tabs.map(tab => ({ path: tab.url, exact: false })), // Open tabs
-            { path: RoutePathnames.SETTINGS, exact: false }, // Settings
+            { path: RoutePathNames.SETTINGS, exact: false }, // Settings
         ];
 
         if (notesEnabled) {
-            pages.splice(2, 0, { path: RoutePathnames.NOTES, exact: false });
+            pages.splice(2, 0, { path: RoutePathNames.NOTES, exact: false });
         }
         return pages;
     }, [tabs, notesEnabled]);

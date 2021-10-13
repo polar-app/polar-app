@@ -3,7 +3,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React from "react";
 import {useHistory} from "react-router";
-import {RoutePathnames} from "../../apps/repository/RoutePathnames";
+import {RoutePathNames} from "../../apps/repository/RoutePathNames";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {NameContent} from "../content/NameContent";
 import {useBlocksStore} from "../store/BlocksStore";
@@ -25,11 +25,11 @@ export const CreateNote = () => {
                     links: [],
                 });
                 const id = blocksStore.createNewNamedBlock({ content });
-                history.push(RoutePathnames.NOTE(id));
+                history.push(RoutePathNames.NOTE(id));
             }
         });
     }, [dialogs, history, blocksStore]);
-    
+
     return (
         <Button id="add-content-dropdown"
                 color="primary"

@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import {useStyles} from "./Authenticator";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import { Box } from '@material-ui/core';
 
 export const BetaRegister = React.memo(function BetaRegister(props: {}) {
     const classes = useStyles();
@@ -33,11 +34,11 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
 
             <>
                 <div className="text-center">
-                    <div className={classes.logo}>
+                    <Box margin={10}>
                         <PolarSVGIcon width={125} height={125}/>
-                    </div>
+                    </Box>
 
-                    <h2 className={classes.intro}>
+                    <h2>
                         Join the waiting list
                     </h2>
 
@@ -45,7 +46,7 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        {isRegistered && <h2 className={classes.intro}>
+                        {isRegistered && <h2>
                             Thank you for registering!
                         </h2>}
 

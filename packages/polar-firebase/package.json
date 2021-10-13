@@ -33,6 +33,7 @@
     "polar-blocks": "0.0.0",
     "polar-firestore-like": "0.0.0",
     "polar-shared": "0.0.0",
-    "polar-spaced-repetition-api": "0.0.0"
+    "polar-spaced-repetition-api": "0.0.0",
+    "polar-firebase-admin": "0.0.0"
   }
 }

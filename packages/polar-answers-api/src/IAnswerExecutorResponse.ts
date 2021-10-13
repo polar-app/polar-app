@@ -56,7 +56,21 @@ export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 
 }
 
-export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
+export interface IAnswerEntity {
+
+    /**
+     * Whether this entity was referenced in the question of the anser
+     */
+    readonly type: 'question' | 'answer';
+
+    /**
+     * The text of this entity.
+     */
+    readonly text: string;
+
+}
+
+export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     /**
      * Unique ID for this response which can be used when flagging results for good/bad
      */
@@ -65,6 +79,8 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse, ICostEs
 
     // eslint-disable-next-line camelcase
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+
+    readonly entities: ReadonlyArray<IAnswerEntity>;
 
     readonly timings: IAnswerExecutorTimings;
 
@@ -77,5 +93,5 @@ export interface IAnswerExecutorErrorFailed extends IRPCError<'failed'> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IAnswerExecutorErrorNoAnswer extends IRPCError<'no-answer'>, ICostEstimationHolder<IAnswerExecutorCostEstimation> {
+export interface IAnswerExecutorErrorNoAnswer extends IRPCError<'no-answer'> {
 }

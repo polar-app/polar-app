@@ -53,6 +53,6 @@ export interface IAccount extends IAccountInit {
     /**
      * When does this subscription expire
      */
-    expiresAt?: ISODateTimeString;
+    readonly expiresAt?: ISODateTimeString;
 
 }

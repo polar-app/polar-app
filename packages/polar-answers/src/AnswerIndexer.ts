@@ -1,12 +1,18 @@
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import {PDFText} from "polar-pdf/src/pdf/PDFText";
-import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
 import {IAnswerIndexerRequest} from "polar-answers-api/src/IAnswerIndexerRequest";
-import {AnswerIndexStatusCollection} from "polar-firebase/src/firebase/om/AnswerIndexStatusCollection";
+import {
+    AnswerIndexStatusCollection,
+} from "polar-firebase/src/firebase/om/AnswerIndexStatusCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {PDFShingleParser} from "./PDFShingleParser";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export namespace AnswerIndexer {
+
+    import IAnswerIndexerStatusPendingV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusPendingV3;
+    import IAnswerIndexerStatusDoneV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusDoneV3;
+    import IAnswerIndexerStatusFailedV3 = AnswerIndexStatusCollection.IAnswerIndexerStatusFailedV3;
 
     export interface IndexOpts extends IAnswerIndexerRequest {
         readonly uid: UserIDStr;
@@ -16,49 +22,96 @@ export namespace AnswerIndexer {
 
         const {uid, docID} = opts;
 
-        const writer = ESShingleWriter.create({uid});
+        const writer = ESShingleWriter.create({uid, docID});
 
         const firestore = FirestoreAdmin.getInstance();
 
-        await AnswerIndexStatusCollection.set(firestore, {
-            id: docID,
-            uid,
-            status: 'pending',
-            ver: 'v1',
-            type: 'doc'
-        });
+        const started = ISODateTimeStrings.create();
 
-        // const writer = ESShingleWriter.createBatcher({uid, type: 'pdf'});
+        async function writeIndexStatusPending() {
 
-        await PDFText.getText(opts.url, async pdfTextContent => {
+            const record: IAnswerIndexerStatusPendingV3 = {
+                id: docID,
+                uid,
+                status: 'pending',
+                ver: 'v3',
+                type: 'doc',
+                started
+            }
 
-                const {extract, pageNum} = pdfTextContent;
+            await AnswerIndexStatusCollection.set(firestore, record);
 
-                console.log("Indexing text on page: " + pageNum)
+        }
 
-                const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
+        async function writeIndexStatusDone() {
 
-                // now build the sentence shingles over this...
+            const duration = Math.floor(Math.abs(Date.now() - ISODateTimeStrings.parse(started).getTime()))
 
-                const shingles = await SentenceShingler.computeShinglesFromContent(content);
+            const record: IAnswerIndexerStatusDoneV3 = {
+                id: docID,
+                uid,
+                status: 'done',
+                ver: 'v3',
+                type: 'doc',
+                started,
+                completed: ISODateTimeStrings.create(),
+                duration
+            }
+
+            await AnswerIndexStatusCollection.set(firestore, record);
+
+        }
+
+        async function writeIndexStatusFailed(message: string | undefined) {
+
+            const duration = Math.floor(Math.abs(Date.now() - ISODateTimeStrings.parse(started).getTime()))
+
+            const record: IAnswerIndexerStatusFailedV3 = {
+                id: docID,
+                uid,
+                status: 'failed',
+                ver: 'v3',
+                type: 'doc',
+                started,
+                completed: ISODateTimeStrings.create(),
+                duration,
+                message
+            }
+
+            await AnswerIndexStatusCollection.set(firestore, record);
+
+        }
+
+        await writeIndexStatusPending();
+
+        try {
+
+            await writer.init();
+
+            await PDFShingleParser.parse({url: opts.url, skipPages: opts.skipPages}, async event => {
+
+                const {shingles, pageNum, progress} = event;
 
                 for(const shingle of shingles) {
-                    await writer.write({docID, pageNum, shingle});
+                    await writer.write({pageNum, shingle});
                 }
 
-            },
-            {
-                skipPages: opts.skipPages
             });
 
-        await writer.sync();
+            await writer.sync();
 
-        await AnswerIndexStatusCollection.update(firestore, {
-            id: docID,
-            status: 'done',
-        });
+            await writeIndexStatusDone();
+
+        } catch(e) {
+
+            console.error("Could not index data: ", e);
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const message = (e as any).message || undefined;
+            await writeIndexStatusFailed(message);
+
+        }
 
     }
 
 }
-

@@ -73,15 +73,10 @@ export namespace OpenAISearchClient {
 
     }
 
-    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse & ICostEstimationHolder<ICostEstimation>> {
+    export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse> {
 
         const url = `https://api.openai.com/v1/engines/${model}/search`;
-        const response = await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);
-
-        // eslint-disable-next-line camelcase
-        const cost_estimation = OpenAICostEstimator.costOfSearch({model, query: request.query, documents: request.documents});
-
-        return {...response, cost_estimation};
+        return await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);
 
     }
 

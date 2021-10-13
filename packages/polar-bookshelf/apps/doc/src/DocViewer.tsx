@@ -22,7 +22,6 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
-import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
@@ -34,18 +33,18 @@ import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
 import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
-import {SidenavTrigger} from "../../../web/js/sidenav/SidenavTrigger";
+import {SidenavTriggerIconButton} from "../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../web/js/sidenav/SideNav";
 import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {useFirestore} from "../../repository/js/FirestoreProvider";
-import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
+import {BlockContent, useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {AnnotationContent, AnnotationHighlightContent} from "../../../web/js/notes/content/AnnotationContent";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
@@ -57,7 +56,19 @@ import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationBlockMigrator} from "./AnnotationBlockMigrator";
-
+import {useAnnotationBlockManager} from "../../../web/js/notes/HighlightBlocksHooks";
+import {BlockContentStructure} from "../../../web/js/notes/HTMLToBlocks";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockHighlights} from "../../../web/js/notes/BlockHighlights";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import {PagePrevButton} from "./toolbar/PagePrevButton";
+import {PageNextButton} from "./toolbar/PageNextButton";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -110,7 +121,7 @@ const DocMain = React.memo(function DocMain() {
 
     return (
         <>
-            {isVisible && 
+            {isVisible &&
                 <Helmet>
                     <title>Polar: { docMeta?.docInfo.title }</title>
                 </Helmet>
@@ -139,35 +150,49 @@ namespace Device {
 
     const HandheldToolbar = React.memo(function HandheldToolbar(props: HandheldToolbarProps) {
 
+        const {closeCurrentTab} = useSideNavCallbacks();
+
         return (
-            <MUIPaperToolbar borderBottom>
-            <div style={{
-                     display: 'flex',
-                     alignItems: 'center'
-                 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                             flexGrow: 1,
+                         }}>
 
-                <div style={{
-                         display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0,
-                         alignItems: 'center'
-                     }}
-                     className="">
+                        <div style={{
+                                 display: 'flex',
+                                 flexGrow: 1,
+                                 flexBasis: 0,
+                                 alignItems: 'center'
+                             }}
+                             className="">
 
-                    <SidenavTrigger />
-                    <DocFindButton className="mr-1"/>
-                </div>
+                            <IconButton onClick={() => closeCurrentTab()}>
+                                <ArrowBackIcon/>
+                            </IconButton>
 
+                            <DocFindButton size="medium"/>
 
-                <div style={{ alignItems: 'center', display: 'flex' }}>
-                    <AreaHighlightModeToggle />
-                    <IconButton onClick={props.toggleRightDrawer}>
-                        <MenuIcon/>
-                    </IconButton>
-                </div>
+                            <SidenavTriggerIconButton icon={<AccountTreeIcon/>}/>
 
-            </div>
-            </MUIPaperToolbar>
+                            <PagePrevButton size="medium"/>
+
+                            <PageNextButton size="medium"/>
+
+                        </div>
+
+                        <div style={{ alignItems: 'center', display: 'flex' }}>
+                            <AreaHighlightModeToggle />
+                            <IconButton onClick={props.toggleRightDrawer}>
+                                <MenuIcon/>
+                            </IconButton>
+                        </div>
+
+                    </div>
+                </Toolbar>
+            </AppBar>
         )
     });
 
@@ -347,6 +372,7 @@ const useDocumentBlockMigrator = () => {
     const dialogs = useDialogManager();
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+    const annotationBlockManager = useAnnotationBlockManager();
 
     React.useEffect(() => {
         if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
@@ -386,16 +412,20 @@ const useDocumentBlockMigrator = () => {
             });
         };
 
-        const createAnnotationBlocks = (parentID: BlockIDStr, annotations: ReadonlyArray<IDocAnnotationRef>) => {
-            annotations.forEach((annotation) => {
-                const id = migrateAnnotation(parentID, annotation);
-                if (id) {
-                    createAnnotationBlocks(id, annotation.children());
-                }
-            });
-        };
+        const generateAnnotationBlocks = (annotations: ReadonlyArray<IDocAnnotationRef>): ReadonlyArray<BlockContentStructure> =>
+            arrayStream(annotations)
+                .map((annotation) => {
+                    const content = migrateAnnotation(annotation);
 
-        const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | null => {
+                    return content ? {
+                        content: content,
+                        children: generateAnnotationBlocks(annotation.children())
+                    } : null;
+                })
+                .filterPresent()
+                .collect();
+
+        const migrateAnnotation = (annotation: IDocAnnotationRef): BlockContent | null => {
             const links = annotation.tags
                 ? AnnotationBlockMigrator.tagsToLinks(blocksStore, annotation.tags)
                 : [];
@@ -441,11 +471,7 @@ const useDocumentBlockMigrator = () => {
 
             const content = getContent();
 
-            if (! content) {
-                return null;
-            }
-
-            return blocksStore.createNewBlock(id, { content, asChild: true }).id;
+            return content;
         };
 
         const migrate = async () => {
@@ -457,7 +483,16 @@ const useDocumentBlockMigrator = () => {
                     .map(DocAnnotations.toRef);
                 const documentBlockID = createDocumentBlock();
 
-                createAnnotationBlocks(documentBlockID, annotations);
+                const contentStructure = generateAnnotationBlocks(annotations)
+                    .filter((data): data is BlockContentStructure<AnnotationHighlightContent> => (
+                        data.content.type === AnnotationContentType.AREA_HIGHLIGHT
+                        || data.content.type === AnnotationContentType.TEXT_HIGHLIGHT
+                    ))
+                    .map(data => ({ ...data, id: Hashcodes.createRandomID() }));
+
+                const sorted = BlockHighlights.sortByPositionInDocument(docMeta, contentStructure);
+
+                blocksStore.insertFromBlockContentStructure(sorted, { ref: documentBlockID });
 
                 dialogs.snackbar({
                     message: "Migrating your annotations to the new format. This may take some time!",
@@ -468,7 +503,7 @@ const useDocumentBlockMigrator = () => {
 
         migrate()
             .catch(console.error);
-    }, [docMeta, user, blocksStore, dialogs, docFileResolver, firestore, migratedRef]);
+    }, [docMeta, user, blocksStore, dialogs, docFileResolver, firestore, migratedRef, annotationBlockManager]);
 };
 
 export const DocViewer = deepMemo(function DocViewer() {

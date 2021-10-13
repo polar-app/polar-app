@@ -7,7 +7,7 @@ import {createContextMenu, IMouseEvent, MenuComponentProps} from '../../../apps/
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
 import {DOMBlocks} from './contenteditable/DOMBlocks';
 import {getNoteAnchorFromHref, useNoteWikiLinkIdentifierCreator} from './NoteLinksHooks';
-import {RoutePathnames} from '../apps/repository/RoutePathnames';
+import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useLinkLoaderRef} from '../ui/util/LinkLoaderHook';
 
 type IBlockContextMenuOriginBase = {
@@ -73,7 +73,7 @@ export const BlockContextMenuItems: React.FC<MenuComponentProps<IBlockContextMen
         }
 
         const target = createNoteWikiLinkIdentifier(origin.blockID, anchor);
-        const url = RoutePathnames.NOTE(encodeURIComponent(target));
+        const url = RoutePathNames.NOTE(encodeURIComponent(target));
 
         linkLoaderRef.current(url, {newWindow: true, focus: true});
     }, [origin, createNoteWikiLinkIdentifier]);
