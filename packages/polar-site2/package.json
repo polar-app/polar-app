@@ -46,7 +46,7 @@
     "pngquant-bin": "=6.0.0",
     "polar-bookshelf": "0.0.0",
     "polar-shared": "0.0.0",
-    "react": "=16.14.0",
+    "react": "=17.0.2",
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
     "react-reveal": "=1.2.2",

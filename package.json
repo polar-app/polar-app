@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "workspaces": [
-    "packages/!(polar-mobile-app)",
     "packages/polar-hooks/functions"
   ],
   "resolutions": {
