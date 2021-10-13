@@ -3,13 +3,17 @@ import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
-import { mergeClasses } from "@material-ui/core/node_modules/@material-ui/styles";
-import {createStyles, makeStyles} from "@material-ui/core";
+import {createStyles, makeStyles, useTheme} from "@material-ui/core";
+import { Devices } from "polar-shared/src/util/Devices";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         margins:{
-            margin: '30px 16px'
+            margin: '0px 16px'
+        },
+        paragraphMobile:{
+            margin: '0 0 1em 2.8em',
+            color:  theme.palette.text.secondary
         }
     }),
 );
@@ -33,7 +37,7 @@ interface IProps {
     readonly defaultValue?: boolean;
     readonly icon?: JSX.Element;
     readonly beta?: boolean;
-    readonly className?: string;
+    readonly className?: string | undefined;
 
     /**
      * Optional callback to listen to settings.
@@ -41,7 +45,7 @@ interface IProps {
     readonly onChange?: (value: boolean) => void;
 }
 
-export const SettingToggle = (props: IProps) => {
+export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     const log = useLogger();
     const classes = useStyles();
@@ -100,9 +104,9 @@ export const SettingToggle = (props: IProps) => {
             </div>
 
             <div>
-                <p>{props.description}</p>
-            </div>
+                <p className={Devices.isPhone()? classes.paragraphMobile: undefined}>{props.description}</p>
+            </div> 
         </div>
     );
 
-};
+});

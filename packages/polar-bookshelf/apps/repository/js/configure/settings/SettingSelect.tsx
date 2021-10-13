@@ -2,8 +2,9 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
+import {createStyles, FormControlLabel, useTheme, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+import { Devices } from "polar-shared/src/util/Devices";
 
 interface IProps {
     readonly title: string;
@@ -19,16 +20,32 @@ interface IOption {
     readonly label: string;
 }
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         radioLabelRoot: {
             margin: 0,
             justifyContent: 'space-between',
             alignItems: 'center',
         },
+        margins:{
+            margin: '0px 16px'
+        },
         radioLabel: {
             fontSize: '1rem',
         },
+        radioBackground:{
+            width: '100%',
+            background: '#444444',
+            paddingLeft: '4em'
+        },
+        paragraphMobile:{
+            margin: '0 0 1em 2.8em',
+            color:  theme.palette.text.secondary
+        },
+        fullWidth:{
+            width: '100%'
+        },
+
     }),
 );
 
@@ -57,21 +74,20 @@ export const SettingSelect = (props: IProps) => {
                        .getOrElse(props.options[0].id);
 
     return (
-        <div style={{ margin: '30px 16px' }}>
+        <div>
             <div>
 
-                <div className="mt-auto mb-auto">
+                <div className={classes.margins+" mt-auto mb-auto"}>
                     <MUIIconText icon={props.icon}>
                         <h3><b>{props.title}</b></h3>
                     </MUIIconText>
-                    <p>
+                    <p className={Devices.isPhone()? classes.paragraphMobile: undefined}>
                         {props.description}
                     </p>
                 </div>
 
-                <div className="mt-auto mb-auto">
-
-                    <RadioGroup name={name} value={value} onChange={onChange}>
+                <div>
+                    <RadioGroup className={Devices.isPhone()? classes.radioBackground : undefined} name={name} value={value} onChange={onChange}>
                         {props.options.map(current =>
                             <FormControlLabel
                                 key={current.id}
