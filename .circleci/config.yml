@@ -159,20 +159,13 @@ jobs:
     executor: << parameters.executor>>
     description: build fastlane for ci
     steps:
-      - checkout
-      - run:
-          name: isolate & yarn install
-          command: |
-            mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
-            mv /home/circleci/project/.npmrc ~/
-            rm -rf /home/circleci/project
-            cd /home/circleci/polar-mobile-app
-            yarn install
+      - attach-workspace:
+          at: ~/
       - run:
           name: install_dependencies
           command: |
             gem install bundler
-            cd /home/circleci/polar-mobile-app/android
+            cd /home/circleci/project/polar-mobile-app/android
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
             bundle install
@@ -181,16 +174,6 @@ jobs:
             bundle exec fastlane run validate_play_store_json_key
             echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
             bundle exec fastlane beta
-
-  fastlane-ios:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor >>
-    description: build fastlane for ci
-    steps:
-      - checkout
-      - run
 
   # @ Run Karma Test Suite
   karma:
@@ -415,21 +398,23 @@ workflows:
               only:
                 - master
 
-      ## ^ Build mobile apps
-      - fastlane-android:
-          executor: android
-
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
           executor: large
+
+      ## ^ Build mobile apps
+      - fastlane-android:
+          executor: android
+          requires:
+            - setting-up
 
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
       - build-chrome-extension:
           executor: large
           requires:
-            - "setting-up"
+            - setting-up
 
       ## ^ Polar App Sub-Workflow Below Here
       # @ Run Karma Tests
