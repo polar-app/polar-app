@@ -115,7 +115,7 @@ const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>
             width: '100%',
             height: '100%',
             position: 'absolute',
-            zIndex: 99999,
+            zIndex: theme.zIndex.tooltip + 100,
             background: 'rgba(0, 0, 0, 0.4)',
         },
     })

@@ -2,23 +2,37 @@ import { BottomNavigationAction } from '@material-ui/core';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
-import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from 'react-router-dom';
 import { RoutePathNames } from '../apps/repository/RoutePathNames';
 import SettingsIcon from '@material-ui/icons/Settings';
+import {useSideNavStore} from '../sidenav/SideNavStore';
+import {useRefWithUpdates} from '../hooks/ReactHooks';
 
-const useStyles = makeStyles((theme) =>
+type IUseStylesProps = {
+    show: boolean;
+};
+
+const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     createStyles({
-        root: {
+        root: ({ show }) => ({
+            transition: 'all 200ms ease-in-out',
             position: 'relative',
-            zIndex: 2,
+            width: '100%',
+            bottom: 0,
+            left: 0,
+            zIndex: theme.zIndex.tooltip + 1000,
+            ...(show
+                ? { transform: 'translateY(0)' }
+                : { transform: 'translateY(100%)', position: 'absolute' }
+            ),
             '& .Mui-selected':{
                 backgroundColor: theme.palette.primary.main,
                 color: theme.palette.primary.contrastText
             },
-        },
+        }),
     })
 );
 
@@ -53,10 +67,13 @@ const BOTTOM_NAV_LOCATIONS: ReadonlyArray<IBottomNavLocation> = [
 
 export const MUIBottomNavigation = ()  => {
 
+    const {isOpen: isSidenavOpen} = useSideNavStore(['isOpen']);
     const theme = useTheme();
-    const classes = useStyles();
+    const classes = useStyles({ show: ! isSidenavOpen });
     const history = useHistory();
     const [value, setValue] = React.useState('/');
+    const bottomNavRef = React.useRef<HTMLDivElement>(null);
+    const isSidenavOpenRef = useRefWithUpdates(isSidenavOpen);
 
     const location = useLocation();
 
@@ -72,6 +89,26 @@ export const MUIBottomNavigation = ()  => {
         setValue(location.pathname);
     }, [location])
 
+    React.useEffect(() => {
+        const elem = bottomNavRef.current;
+
+        if (! elem) {
+            return;
+        }
+
+        const onTransitioned = () => {
+            if (isSidenavOpenRef.current) {
+                elem.style.position = 'absolute';
+            } else {
+                elem.style.removeProperty('position');
+            }
+        };
+
+        elem.addEventListener('transitionend', onTransitioned);
+
+        return () => elem.removeEventListener('transitionend', onTransitioned);
+    }, [bottomNavRef]);
+
 
     if (location.pathname.startsWith('/doc/')) {
         // hack to disable when opening up docs.
@@ -79,18 +116,11 @@ export const MUIBottomNavigation = ()  => {
     }
 
     return (
-        <Paper style={{
-                   // position: 'fixed',
-                   // bottom: 0,
-                   // left: 0,
-                   // right: 0,
-                   // zIndex:3
-               }}
-               elevation={3}>
-
+        <Paper elevation={3}>
             <BottomNavigation value={value}
-                              onChange={(event, newValue) => changeRoute(newValue)}
+                              onChange={(_, newValue) => changeRoute(newValue)}
                               showLabels
+                              ref={bottomNavRef}
                               className={classes.root}>
 
                 {BOTTOM_NAV_LOCATIONS.map(current => (
