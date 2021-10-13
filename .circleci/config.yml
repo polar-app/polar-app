@@ -182,6 +182,16 @@ jobs:
             echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
             bundle exec fastlane beta
 
+  fastlane-ios:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    description: build fastlane for ci
+    steps:
+      - checkout
+      - run
+
   # @ Run Karma Test Suite
   karma:
     parameters:
