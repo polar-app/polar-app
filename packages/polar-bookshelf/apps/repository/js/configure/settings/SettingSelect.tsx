@@ -5,7 +5,6 @@ import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {createStyles, FormControlLabel, useTheme, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 import { Devices } from "polar-shared/src/util/Devices";
-import { PricingContentForDesktop } from "../../premium/PricingContentForDesktop";
 
 interface IProps {
     readonly title: string;
@@ -24,12 +23,14 @@ interface IOption {
 const useStyles = makeStyles((theme) =>
     createStyles({
         radioLabelRoot: {
-            margin: Devices.isDesktop()? '0 1.5em': 0,
+            marginLeft: Devices.isDesktop()? theme.spacing(2): 0,
+            marginRight: Devices.isDesktop()? theme.spacing(2): 0,
             justifyContent: 'space-between',
             alignItems: 'center',
         },
         margins:{
-            margin: '0px 16px'
+            marginLeft: theme.spacing(2),
+            marginRight: theme.spacing(3)
         },
         radioLabel: {
             fontSize: '1rem',
@@ -37,10 +38,10 @@ const useStyles = makeStyles((theme) =>
         radioBackground:{
             width: '100%',
             background: '#444444',
-            paddingLeft: '3.8em'
+            paddingLeft: theme.spacing(7.5)
         },
         paragraphMobile:{
-            margin: '0 0 1em 2.8em',
+            marginLeft: theme.spacing(5.5),
             color:  theme.palette.text.secondary
         },
         fullWidth:{
@@ -78,8 +79,8 @@ export const SettingSelect = (props: IProps) => {
         <div>
             <div>
 
-                <div className={classes.margins+" mt-auto mb-auto"}>
-                    <MUIIconText style={{ flex: 1, padding: '1em 0' }} icon={props.icon}>
+                <div className={classes.margins}>
+                <MUIIconText style={{ flex: 1}} className={'pt-2'}  icon={props.icon}>
                         <h3><b>{props.title}</b></h3>
                     </MUIIconText>
                     <p className={Devices.isPhone()? classes.paragraphMobile: undefined}>
