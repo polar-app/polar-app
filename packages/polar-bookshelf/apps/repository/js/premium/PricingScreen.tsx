@@ -3,12 +3,14 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {PricingStoreProvider} from './PricingStore';
 import {PricingContent} from "./PricingContent";
 import {DefaultChangePlanContextProvider} from "./actions/DefaultChangePlanContextProvider";
+import { HeaderBar } from '../doc_repo/HeaderBar';
 
 export const PricingScreen = () => {
 
     return (
         <PricingStoreProvider>
             <DefaultChangePlanContextProvider>
+                <HeaderBar title={'Pricing'}/>
                 <FixedNav id="doc-repository">
 
                     <FixedNavBody className="container-fluid">
