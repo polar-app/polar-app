@@ -19,6 +19,7 @@ import {AutoBlur} from "./AutoBlur";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import { LinearProgress } from "@material-ui/core";
+import { Devices } from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -159,7 +160,14 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
     }, [selectRow, row.id, rawContextMenuHandler]);
 
     const selectRowClickHandler = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+
+        if (Devices.isTablet() || Devices.isPhone()) {
+            callbacks.onOpen();
+            return;
+        }
+
         selectRow(row.id, event, 'click');
+
     }, [row.id, selectRow]);
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
