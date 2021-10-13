@@ -5,18 +5,34 @@ import { IDStr, UserIDStr } from 'polar-shared/src/util/Strings';
 export namespace CloudProgresCollection {
     const COLLECTION_NAME = "cloud_progress";
     
-    export interface ICloudProgress {
-        id: string;
-        progress: number;
-        started: ISODateTimeString;
-        written: ISODateTimeString;
-        uid: UserIDStr;
-        meta: meta;
+    type IProgressShared = {
+        readonly id: string;
+        readonly progress: number;
+        readonly started: ISODateTimeString;
+        readonly written: ISODateTimeString;
+        readonly uid: UserIDStr;
+        readonly meta: ICloudProgressMeta;
+        readonly duration: number;
+        type: 'started' | 'completed' | 'failed'
     };
 
-    export type ICloudProgressUpdate = Required<Pick<ICloudProgress, 'written' | 'progress'>>;
+    type IProgressCompleted = IProgressShared & {
+        completed: ISODateTimeString;
+    };
 
-    export interface meta {
+    type IProgressFailed = IProgressShared & {
+        failed: ISODateTimeString;
+        message: string;
+    }
+
+    export type ICloudProgress = IProgressCompleted | IProgressFailed;
+
+    type ICloudProgressUpdateFailed = Partial<Pick<IProgressFailed, 'written' | 'progress' | 'duration' | 'failed' | 'message'>>;
+    type ICloudProgressUpdateCompleted = Partial<Pick<IProgressCompleted, 'written' | 'progress' | 'duration' | 'completed'>>;
+
+    export type ICloudProgressUpdate = ICloudProgressUpdateCompleted | ICloudProgressUpdateFailed;
+
+    export interface ICloudProgressMeta {
         [key: string]: string | number | boolean;
     };
 
