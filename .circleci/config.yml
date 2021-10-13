@@ -165,7 +165,7 @@ jobs:
           name: install_dependencies
           command: |
             gem install bundler
-            cd /home/circleci/project/polar-mobile-app/android
+            cd /home/circleci/project/packages/polar-mobile-app/android
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
             bundle install
