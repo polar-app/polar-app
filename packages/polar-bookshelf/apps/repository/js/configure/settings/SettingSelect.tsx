@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) =>
         },
         radioBackground:{
             width: '100%',
-            background: '#444444',
+            background: theme.palette.background.paper,
             paddingLeft: theme.spacing(7.5)
         },
         paragraphMobile:{
