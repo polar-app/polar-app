@@ -26,7 +26,7 @@ import {observer} from "mobx-react-lite"
 import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
 import {Devices} from 'polar-shared/src/util/Devices';
 import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
-import {RoutePathnames} from '../apps/repository/RoutePathnames';
+import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter, DeviceRouters} from '../ui/DeviceRouter';
@@ -134,9 +134,9 @@ const HomeButton = React.memo(function HomeButton() {
 
     return (
         <ActiveTabButton title="Documents"
-                         path={RoutePathnames.HOME}
+                         path={RoutePathNames.HOME}
                          noContextMenu={true}
-                         onClick={() => history.push(RoutePathnames.HOME)}>
+                         onClick={() => history.push(RoutePathNames.HOME)}>
             <DescriptionIcon className={classes.secondaryIcon}/>
         </ActiveTabButton>
     )
@@ -148,7 +148,7 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 
     return (
         <SideNavHistoryButton title="Annotations"
-                              path={RoutePathnames.ANNOTATIONS}>
+                              path={RoutePathNames.ANNOTATIONS}>
             <NoteIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -158,12 +158,12 @@ const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
 
     const pathCanonicalizer = React.useCallback(path =>
-        path.startsWith(RoutePathnames.NOTES) ? RoutePathnames.NOTES : path, []);
+        path.startsWith(RoutePathNames.NOTES) ? RoutePathNames.NOTES : path, []);
 
     return (
         <SideNavHistoryButton title="Notes"
                               canonicalizer={pathCanonicalizer}
-                              path={RoutePathnames.NOTES}>
+                              path={RoutePathNames.NOTES}>
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     );
@@ -176,7 +176,7 @@ const StatsButton = React.memo(function StatsButton() {
 
     return (
         <SideNavHistoryButton title="Statistics"
-                              path={RoutePathnames.STATISTICS}>
+                              path={RoutePathNames.STATISTICS}>
             <TimelineIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -188,7 +188,7 @@ const AccountButton = React.memo(function AccountButton() {
 
     return (
         <SideNavHistoryButton title="Account"
-                              path={RoutePathnames.ACCOUNT}>
+                              path={RoutePathNames.ACCOUNT}>
             <AccountAvatar className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -200,7 +200,7 @@ const SettingsButton = React.memo(function SettingsButton() {
 
     return (
         <SideNavHistoryButton title="Settings"
-                              path={RoutePathnames.SETTINGS}>
+                              path={RoutePathNames.SETTINGS}>
             <SettingsIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -216,7 +216,7 @@ const PolarButton = React.memo(function PolarButton() {
 
     return (
         <div className={classes.logo}
-             onClick={() => history.push(RoutePathnames.HOME)}>
+             onClick={() => history.push(RoutePathNames.HOME)}>
             <PolarSVGIcon width={ w } height={ w } />
         </div>
     );
@@ -231,7 +231,7 @@ const SyncButton = React.memo(function SyncButton() {
 
     return (
         <ActiveTabButton title="Sync"
-                         path={RoutePathnames.ANKI_SYNC}
+                         path={RoutePathNames.ANKI_SYNC}
                          noContextMenu={true}
                          onClick={ankiSyncCallback}>
             <SyncIcon className={classes.secondaryIcon}/>

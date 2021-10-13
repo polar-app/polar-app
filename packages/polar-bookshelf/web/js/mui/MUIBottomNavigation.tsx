@@ -6,7 +6,7 @@ import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from 'react-router-dom';
-import { RoutePathnames } from '../apps/repository/RoutePathnames';
+import { RoutePathNames } from '../apps/repository/RoutePathNames';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 const useStyles = makeStyles((theme) =>
@@ -37,14 +37,14 @@ const BOTTOM_NAV_LOCATIONS: ReadonlyArray<IBottomNavLocation> = [
     {
         id: 'add',
         label: 'Add',
-        href: RoutePathnames.ADD_MOBILE,
+        href: RoutePathNames.ADD_MOBILE,
         icon: <AddIcon/>
     },
     // at least buttons are required so for now add settings
     {
         id: 'settings',
         label: 'Settings',
-        href: RoutePathnames.SETTINGS_MOBILE,
+        href: RoutePathNames.SETTINGS_MOBILE,
         icon: <SettingsIcon/>
     },
 ]

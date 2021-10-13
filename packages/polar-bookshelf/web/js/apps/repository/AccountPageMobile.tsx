@@ -19,7 +19,7 @@ import {useHistory} from 'react-router-dom';
 import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
 import { useLogoutAction } from '../../../../web/js/ui/cloud_auth/AccountControl';
 import { usePopperController } from '../../../../web/js/mui/menu/MUIPopper';
-import { RoutePathnames } from './RoutePathnames';
+import { RoutePathNames } from './RoutePathNames';
 
 const Chat = MenuItems.Chat;
 const Documentation = MenuItems.Documentation;
@@ -93,7 +93,7 @@ interface IPrefButton{
  * The user details row: avatar, name and email and the user's plan
  */
 export const UserDetailsRow = React.memo(function UserDetailsRow(){
-    
+
     const classes = useStyles();
     const userInfoContext = useUserInfoContext();
 
@@ -121,7 +121,7 @@ export const PlanDetailsContainer = React.memo(function PlanDetailsContainer(){
     );
 });
 /**
- * a component that we should reuse, 
+ * a component that we should reuse,
  * responsible for showing a button/menu items and exapnds/collapses on click
  */
 export const Collapsible = React.memo(function Collapsible() {
@@ -145,7 +145,7 @@ export const Collapsible = React.memo(function Collapsible() {
             </div>
             <div>
                 <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Box style={{margin: 1, background: '#444444'}}>                              
+                    <Box style={{margin: 1, background: '#444444'}}>
                         <Chat/>
                         <Documentation/>
                         <RequestFeatures/>
@@ -156,9 +156,9 @@ export const Collapsible = React.memo(function Collapsible() {
     );
 });
 /**
- * a unit component from the preference buttons section 
+ * a unit component from the preference buttons section
  */
-export const PreferencesButton = React.memo(function PreferencesesButtons(props: IPrefButton) {
+export const PreferencesButton = React.memo(function PreferencesButton(props: IPrefButton) {
     const classes = useStyles();
 
     return(
@@ -167,13 +167,13 @@ export const PreferencesButton = React.memo(function PreferencesesButtons(props:
                 {props.icon}
                 <span style={{alignSelf: 'center', marginLeft: '15px'}}>{props.title}</span>
             </div>
-        </div> 
+        </div>
     );
 });
 
 /**
- * Includes: Settings page, Pricing page, Redirecting information (collapsible) 
- * and Logout option 
+ * Includes: Settings page, Pricing page, Redirecting information (collapsible)
+ * and Logout option
  */
 export const PreferencesButtons = React.memo(function PreferencesesButtons() {
     const classes = useStyles();
@@ -189,22 +189,23 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
 
     return(
         <>
-            <PreferencesButton  
-                    title={'Settings'} 
-                    goToUrl={() => history.push(RoutePathnames.SETTINGS_MOBILE)}
+            <PreferencesButton
+                    title={'Settings'}
+                    goToUrl={() => history.push(RoutePathNames.SETTINGS_MOBILE)}
                     icon={<SettingsIcon style={{alignSelf: 'center', marginLeft: '-5px'}} />}    />
-            <PreferencesButton  
-                title={'Upgrade Plan'} 
-                goToUrl={() => history.push(RoutePathnames.PLAN_MOBILE)}
+
+            <PreferencesButton
+                title={'Upgrade Plan'}
+                goToUrl={() => history.push(RoutePathNames.PLAN_MOBILE)}
                 icon={<MonetizationOnIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
-   
+
             <Collapsible/>
 
-            <PreferencesButton  
-                    title={'Log out'} 
+            <PreferencesButton
+                    title={'Log out'}
                     goToUrl={ () => handleLogout()}
                     icon={<ExitToAppIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
-            
+
         </>
     );
 });
@@ -219,7 +220,7 @@ export const AccountPageMobile = React.memo(function AccountPageMobile() {
             <HeaderBar title={'Preferences'}/>
             <div className={classes.mainContainer}>
                 <UserDetailsRow/>
-                <PlanDetailsContainer/>   
+                <PlanDetailsContainer/>
                 <PreferencesButtons/>
             </div>
         </>

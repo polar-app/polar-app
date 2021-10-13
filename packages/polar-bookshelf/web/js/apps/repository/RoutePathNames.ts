@@ -34,7 +34,7 @@ const SETTINGS_MOBILE = "/settingsmobile";
 const PLAN_MOBILE = "/planmobile";
 
 
-export const RoutePathnames = {
+export const RoutePathNames = {
     HOME,
     ANNOTATIONS,
     NOTES,

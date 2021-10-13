@@ -60,7 +60,7 @@ import {DocRepoScreen2} from '../../../../apps/repository/js/doc_repo/DocRepoScr
 import {DocRepoSidebarTagStore} from '../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore';
 import {Devices} from 'polar-shared/src/util/Devices';
 import {useSideNavCallbacks, useSideNavStore} from '../../sidenav/SideNavStore';
-import {RoutePathnames} from './RoutePathnames';
+import {RoutePathNames} from './RoutePathNames';
 import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
@@ -128,16 +128,16 @@ const FeatureRequestsScreen = () => {
 };
 
 const SHARED_ROUTES = [
-    {path: RoutePathnames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen)},
-    {path: RoutePathnames.INVITE, component: withMobilePopup(InviteScreen)},
-    {path: RoutePathnames.PLANS, component: withMobilePopup(PricingScreen)},
-    {path: RoutePathnames.PREMIUM, component: withMobilePopup(PricingScreen)},
-    {path: RoutePathnames.SUPPORT, component: withMobilePopup(SupportScreen)},
-    {path: RoutePathnames.STATISTICS, component: withMobilePopup(StatsScreen)},
-    {path: RoutePathnames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings")},
-    {path: RoutePathnames.LOGS, component: withMobilePopup(LogsScreen, "Logs")},
-    {path: RoutePathnames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info")},
-    {path: RoutePathnames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen)},
+    {path: RoutePathNames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen)},
+    {path: RoutePathNames.INVITE, component: withMobilePopup(InviteScreen)},
+    {path: RoutePathNames.PLANS, component: withMobilePopup(PricingScreen)},
+    {path: RoutePathNames.PREMIUM, component: withMobilePopup(PricingScreen)},
+    {path: RoutePathNames.SUPPORT, component: withMobilePopup(SupportScreen)},
+    {path: RoutePathNames.STATISTICS, component: withMobilePopup(StatsScreen)},
+    {path: RoutePathNames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings")},
+    {path: RoutePathNames.LOGS, component: withMobilePopup(LogsScreen, "Logs")},
+    {path: RoutePathNames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info")},
+    {path: RoutePathNames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen)},
 ];
 
 const useSharedRoutesStyles = makeStyles(() =>
@@ -357,29 +357,29 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <CDKDemo/>
                                 </Route>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathnames.HOME}>
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
                                     <DocRepoSidebarTagStore>
                                         <DocRepoScreen2/>
                                     </DocRepoSidebarTagStore>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathnames.ANNOTATIONS}>
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.ANNOTATIONS}>
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathnames.SETTINGS_MOBILE}>
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.SETTINGS_MOBILE}>
                                     <SettingsScreen/>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathnames.PLAN_MOBILE}>
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
                                     <PricingScreen/>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" path={RoutePathnames.ADD_MOBILE}>
+                                <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
                                     <AddFilesMobileScreen/>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" path={RoutePathnames.ACCOUNT_MOBILE}>
+                                <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
                                     <AccountPageMobile/>
                                 </PersistentRoute>
 
@@ -389,11 +389,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 persistenceLayerManager={props.persistenceLayerManager}/>
 
                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                                    <Route exact path={RoutePathnames.ENABLE_FEATURE_TOGGLE}
+                                    <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
                                     <FeatureToggle featureName="notes-enabled">
-                                        <Route path={RoutePathnames.NOTES}
+                                        <Route path={RoutePathNames.NOTES}
                                                component={NotesScreen}/>
                                     </FeatureToggle>
 

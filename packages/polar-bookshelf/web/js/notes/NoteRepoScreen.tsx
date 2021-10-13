@@ -12,7 +12,7 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {RoutePathnames} from "../apps/repository/RoutePathnames";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {NotesToolbar} from "./NotesToolbar";
@@ -50,7 +50,7 @@ const RowActionsDropdownItems: React.FC<MenuComponentProps<{}>> = () => {
     const blocksStore = useBlocksStore();
 
     const handleOpen = React.useCallback(() => {
-        window.open(RoutePathnames.NOTE(row.title), '_blank');
+        window.open(RoutePathNames.NOTE(row.title), '_blank');
     }, [row]);
 
     const handleDelete = React.useCallback(() => {
@@ -174,7 +174,7 @@ export const NoteRepoScreen: React.FC = () => {
 
     const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
         const block = blocksStore.getBlockByTarget(id as string) as Block<NamedContent>;
-        history.push(RoutePathnames.NOTE(BlockTextContentUtils.getTextContentMarkdown(block.content)));
+        history.push(RoutePathNames.NOTE(BlockTextContentUtils.getTextContentMarkdown(block.content)));
     }, [history, blocksStore]);
 
     return (
