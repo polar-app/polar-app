@@ -29,6 +29,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {FeatureToggle} from '../persistence_layer/PrefsContext2';
 import AddIcon from '@material-ui/icons/Add';
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
@@ -327,21 +328,27 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
 
             <Divider/>
 
-            <MenuItem onClick={documentDownloadHandler}>
-                <ListItemIcon>
-                    <SaveAltIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Download Document"/>
-            </MenuItem>
+            <DeviceRouter.Desktop>
+                <>
+                    <MenuItem onClick={documentDownloadHandler}>
+                        <ListItemIcon>
+                            <SaveAltIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Download Document"/>
+                    </MenuItem>
 
-            <MenuItem onClick={jsonDownloadHandler}>
-                <ListItemIcon>
-                    <FADatabaseIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Download Document Metadata"/>
-            </MenuItem>
+                    <MenuItem onClick={jsonDownloadHandler}>
+                        <ListItemIcon>
+                            <FADatabaseIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Download Document Metadata"/>
+                    </MenuItem>
 
-            <Divider/>
+                    <Divider/>
+
+                </>
+
+            </DeviceRouter.Desktop>
 
             <MenuItem onClick={callbacks.onDeleted}>
                 <ListItemIcon>

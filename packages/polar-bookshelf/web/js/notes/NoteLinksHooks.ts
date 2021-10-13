@@ -4,7 +4,7 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
-import {RoutePathnames} from "../apps/repository/RoutePathnames";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
@@ -23,7 +23,7 @@ export const useNoteWikiLinkIdentifierCreator = () => {
      * 3. If the fetched block is a named block then we return the name (since it can be used as an anchor in urls)
      * 4. Otherwise it just returns the id of the fetched block (e.g. markdown & image blocks)
      * 5. Edge case: If the block was not found in the links array of the owning block, then the original link text is returned.
-     * 
+     *
      * @param id The id of the block that owns the link.
      * @param linkText The link's text label.
      *
@@ -34,7 +34,7 @@ export const useNoteWikiLinkIdentifierCreator = () => {
         if (! block) {
             return linkText;
         }
-        
+
         const link = block.content.links.find(({ text }) => {
             return text.startsWith('#')
                 ? text.slice(1) === linkText
@@ -72,8 +72,8 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
         return Arrays.last(href.split('#')) as string;
     }
 
-    const notePathname = RoutePathnames.NOTE("");
-    const notesPathname = RoutePathnames.NOTES;
+    const notePathname = RoutePathNames.NOTE("");
+    const notesPathname = RoutePathNames.NOTES;
 
     // e.g. href="/notes/identifier"
     if (href.startsWith(notePathname)) {
@@ -83,7 +83,7 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
     // A full URL
     if (href.startsWith('http:') || href.startsWith('https:')) {
         const url = new URL(href);
-        
+
         if (! AppSites.isApp(href) || ! url.pathname.startsWith(notePathname)) {
             return null;
         }
