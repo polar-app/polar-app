@@ -1,7 +1,6 @@
 {
   "name": "polar-mobile-app",
-  "version": "2.1.81",
-  "private": true,
+  "version": "0.0.0",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -38,9 +37,6 @@
     "polar-eslint": "0.0.0",
     "polar-typescript": "0.0.0",
     "react-test-renderer": "17.0.1"
-  },
-  "resolutions": {
-    "@types/react": "=17"
   },
   "jest": {
     "preset": "react-native",
