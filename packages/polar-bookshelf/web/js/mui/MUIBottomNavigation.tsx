@@ -12,6 +12,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
+            position: 'relative',
+            zIndex: 2,
             '& .Mui-selected':{
                 backgroundColor: theme.palette.primary.main,
                 color: theme.palette.primary.contrastText
