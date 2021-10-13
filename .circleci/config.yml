@@ -395,6 +395,21 @@ jobs:
             echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
             bundle exec fastlane beta
 
+  fastlane-ios:
+    working_directory: ~/polar-mobile-app/ios
+    macos:
+      xcode: "11.7"
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: build & install
+          command: |
+            gem install bundler && bundle update
+            bundle install
+            bundle exec fastlane beta
+
 # ~ Define Custom Executors
 executors:
   # ! Default Executor for most jobs
