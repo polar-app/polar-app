@@ -108,7 +108,7 @@ export const DailyNotesScreen: React.FC = () => {
                             </Typography>
                         </Box>
                     }
-                    {! hasMore && 
+                    {! hasMore &&
                         <Box display="flex" m={2} justifyContent="center">
                             <Typography variant="h6" className={classes.faded}>
                                 You've reached the end!
