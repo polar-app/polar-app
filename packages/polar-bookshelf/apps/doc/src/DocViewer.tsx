@@ -22,7 +22,6 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
-import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
@@ -34,7 +33,7 @@ import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
 import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
-import {SidenavTrigger} from "../../../web/js/sidenav/SidenavTrigger";
+import {SidenavTriggerIconButton} from "../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../web/js/sidenav/SideNav";
 import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
@@ -63,7 +62,11 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockHighlights} from "../../../web/js/notes/BlockHighlights";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -116,7 +119,7 @@ const DocMain = React.memo(function DocMain() {
 
     return (
         <>
-            {isVisible && 
+            {isVisible &&
                 <Helmet>
                     <title>Polar: { docMeta?.docInfo.title }</title>
                 </Helmet>
@@ -145,35 +148,45 @@ namespace Device {
 
     const HandheldToolbar = React.memo(function HandheldToolbar(props: HandheldToolbarProps) {
 
+        const {closeCurrentTab} = useSideNavCallbacks();
+
         return (
-            <MUIPaperToolbar borderBottom>
-            <div style={{
-                     display: 'flex',
-                     alignItems: 'center'
-                 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                             flexGrow: 1,
+                         }}>
 
-                <div style={{
-                         display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0,
-                         alignItems: 'center'
-                     }}
-                     className="">
+                        <div style={{
+                                 display: 'flex',
+                                 flexGrow: 1,
+                                 flexBasis: 0,
+                                 alignItems: 'center'
+                             }}
+                             className="">
 
-                    <SidenavTrigger />
-                    <DocFindButton className="mr-1"/>
-                </div>
+                            <IconButton onClick={() => closeCurrentTab()}>
+                                <ArrowBackIcon/>
+                            </IconButton>
 
+                            <DocFindButton size="medium"/>
 
-                <div style={{ alignItems: 'center', display: 'flex' }}>
-                    <AreaHighlightModeToggle />
-                    <IconButton onClick={props.toggleRightDrawer}>
-                        <MenuIcon/>
-                    </IconButton>
-                </div>
+                            <SidenavTriggerIconButton icon={<AccountTreeIcon/>}/>
 
-            </div>
-            </MUIPaperToolbar>
+                        </div>
+
+                        <div style={{ alignItems: 'center', display: 'flex' }}>
+                            <AreaHighlightModeToggle />
+                            <IconButton onClick={props.toggleRightDrawer}>
+                                <MenuIcon/>
+                            </IconButton>
+                        </div>
+
+                    </div>
+                </Toolbar>
+            </AppBar>
         )
     });
 

@@ -11,7 +11,7 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
-import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
+import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {Devices} from "polar-shared/src/util/Devices";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -58,7 +58,7 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
     return (
 
         <>
-            <SidenavTrigger/>
+            <SidenavTriggerIconButton/>
 
             <ChromeExtensionInstallBar/>
 
