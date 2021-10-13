@@ -80,7 +80,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
         <div className={classes.margins}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
-                <MUIIconText style={{ flex: 1 }} icon={props.icon}>
+                <MUIIconText style={{ flex: 1, padding: '1em 0' }} icon={props.icon}>
                     <h3 style={{ position: 'relative', display: 'inline-block' }}>
                         <b>{props.title}</b>
                         {props.beta && (

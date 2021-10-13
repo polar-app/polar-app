@@ -77,14 +77,7 @@ export const MUIBottomNavigation = ()  => {
     }
 
     return (
-        <Paper style={{
-                   // position: 'fixed',
-                   // bottom: 0,
-                   // left: 0,
-                   // right: 0,
-                   // zIndex:3
-               }}
-               elevation={3}>
+        <Paper elevation={3}>
 
             <BottomNavigation value={value}
                               onChange={(event, newValue) => changeRoute(newValue)}

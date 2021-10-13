@@ -22,8 +22,11 @@ import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
 import HeightIcon from "@material-ui/icons/Height";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
-import InfoIcon from "@material-ui/icons/Info";
+import DescriptionIcon from "@material-ui/icons/Description";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {FullWidthButton} from './FullWidthButton';
+import { Devices} from "polar-shared/src/util/Devices";
+import { DocRepoTableToolbar } from '../../doc_repo/DocRepoTableToolbar';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -72,6 +75,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
     return (
 
         <DefaultPageLayout>
+            {!Devices.isDesktop() && <DocRepoTableToolbar/>}
             <ConfigureBody>
                 <ConfigureNavbar/>
 
@@ -93,7 +97,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                    prefs={prefs}
                                    onChange={handleDarkModeToggle}
                     />
-
+                    {!Devices.isDesktop() && <Divider/>}
                     <SettingSelect title="PDF Dark Mode Handling"
                                    description="Enable custom dark mode handling for PDFs.  This allows to change how the PDF colors are displayed."
                                    name="dark-mode-pdf"
@@ -112,7 +116,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                            label: 'Use the natural colors of the PDF'
                                        }
                                    ]}/>
-
+                    {!Devices.isDesktop() && <Divider/>}
                     <SettingToggle
                         title="Automatically resume reading position"
                         description="This feature restores the document reading position using pagemarks when reopening a document."
@@ -121,26 +125,26 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                         defaultValue={true}
                         prefs={prefs}/>
 
-
+                    {!Devices.isDesktop() && <Divider/>}
                     <SettingToggle title="Fixed-width EPUBs"
                                    description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                    name="fixed-width-epub"
                                    icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}
                                    prefs={prefs}/>
-
+                    {!Devices.isDesktop() && <Divider/>}
                     {/*<SettingEntry title="Enable groups"*/}
                     {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                     {/*              name="groups"*/}
                     {/*              prefs={prefs}*/}
                     {/*              preview={true}/>*/}
-
+                    {!Devices.isDesktop() && <Divider/>}
                     <SettingToggle title="Automatic pagemarks"
                                    description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
                                    name={KnownPrefs.AUTO_PAGEMARKS}
                                    prefs={prefs}
                                    icon={<BookmarkIcon />}
                                    preview={true}/>
-
+                    {!Devices.isDesktop() && <Divider/>}
                     {/*<DeviceRouters.Desktop>*/}
                     {/*    <SettingEntry*/}
                     {/*        title="Table and phone reading"*/}
@@ -161,22 +165,23 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
 
                     <Box mt={1}>
                         <ViewDeviceInfoButton/>
+                        {!Devices.isDesktop() && <Divider/>}
                         <CancelSubscriptionButton/>
                         <ManageSubscriptionButton/>
-
                         <ExportDataButton/>
+                        {!Devices.isDesktop() && <Divider/>}
 
-
-                         <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/privacy-policy">
-                             <FullWidthButton>
-                                 Privacy Policy
-                             </FullWidthButton>
-                         </a>
-                         <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/terms">
-                             <FullWidthButton>
-                                 Terms of Service
-                             </FullWidthButton>
-                         </a>
+                        <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/privacy-policy">
+                            <FullWidthButton icon={<DescriptionIcon />}>
+                                Privacy Policy
+                            </FullWidthButton>
+                        </a>
+                        {!Devices.isDesktop() && <Divider/>}
+                        <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/terms">
+                            <FullWidthButton icon={<VerifiedUserIcon />}>
+                                Terms of Service
+                            </FullWidthButton>
+                        </a>
                     </Box>
 
                 </div>
