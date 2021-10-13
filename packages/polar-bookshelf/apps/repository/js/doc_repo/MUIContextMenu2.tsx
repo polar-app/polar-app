@@ -314,7 +314,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
 
     const backdrops = Devices.isDesktop() ? {}: { style:{ filter: 'blur(3px)' } } ;
 
-    const contextMenuAnchorPos = Devices.isDesktop() ?
+    const contextMenuAnchorPos = Devices.isDesktop() || Devices.isTablet() ?
         { top: props.mouseY, left: props.mouseX}
         :
         { top: window.innerHeight, left: 0 };
@@ -326,13 +326,14 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
                 maxWidth: "100%",
                 left: "0 !important",
             }}}));
+
     const classes = useStyles();
 
     return (
         <Menu
             transitionDuration={Devices.isDesktop() ? 0 : undefined}
             keepMounted
-            className={ !Devices.isDesktop()? classes.root : undefined }
+            className={ Devices.isPhone() ? classes.root : undefined }
             anchorEl={props.anchorEl}
             open={true}
             style={{padding:0}}
