@@ -159,7 +159,7 @@ jobs:
     executor: << parameters.executor>>
     description: build fastlane for ci
     steps:
-      - attach-workspace:
+      - attach_workspace:
           at: ~/
       - run:
           name: install_dependencies
