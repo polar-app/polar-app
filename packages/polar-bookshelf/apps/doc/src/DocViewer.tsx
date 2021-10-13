@@ -67,6 +67,8 @@ import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import {PagePrevButton} from "./toolbar/PagePrevButton";
+import {PageNextButton} from "./toolbar/PageNextButton";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -174,6 +176,10 @@ namespace Device {
                             <DocFindButton size="medium"/>
 
                             <SidenavTriggerIconButton icon={<AccountTreeIcon/>}/>
+
+                            <PagePrevButton size="medium"/>
+
+                            <PageNextButton size="medium"/>
 
                         </div>
 
