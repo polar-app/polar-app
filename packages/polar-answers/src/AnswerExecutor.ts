@@ -3,6 +3,7 @@ import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {FilterQuestionType} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
+    IAnswerEntity,
     IAnswerExecutorError,
     IAnswerExecutorResponse,
     IAnswerExecutorTimings,
@@ -26,6 +27,7 @@ import {ShortHeadCalculator} from "./ShortHeadCalculator";
 import {AnswerExecutors} from "./AnswerExecutors";
 import {OpenAICompletionCleanup} from "./OpenAICompletionCleanup";
 import {QuestionFilters} from "./QuestionFilters";
+import {GCLAnalyzeEntities} from "polar-google-cloud-language/src/GCLAnalyzeEntities";
 
 const DEFAULT_DOCUMENTS_LIMIT = 200;
 const DEFAULT_FILTER_QUESTION: FilterQuestionType = 'part-of-speech';
@@ -607,6 +609,37 @@ export namespace AnswerExecutor {
 
         const answers = await createAnswers();
 
+        async function computeEntities(): Promise<ReadonlyArray<IAnswerEntity>> {
+
+            async function doEntities(text: string | undefined, type: 'question' | 'answer'): Promise<ReadonlyArray<IAnswerEntity>> {
+
+                if (! text) {
+                    return [];
+                }
+
+                const entities = await GCLAnalyzeEntities.analyzeEntities(text);
+                return (entities.entities || []).map((current): IAnswerEntity => {
+                    return {
+                        text: current.name!,
+                        type
+                    }
+                })
+            }
+
+            const promises = [
+                doEntities(question, 'question'),
+                doEntities(primaryAnswer, 'answer')
+            ]
+
+            return arrayStream(await Promise.all(promises))
+                .flatMap(current => current)
+                .collect()
+
+        }
+
+        // TODO: these timings need to be included.
+        const entities = await computeEntities();
+
         const response: IAnswerExecutorResponse = {
             id,
             question,
@@ -614,7 +647,8 @@ export namespace AnswerExecutor {
             answers,
             model,
             search_model,
-            timings
+            timings,
+            entities
         };
 
         return {
