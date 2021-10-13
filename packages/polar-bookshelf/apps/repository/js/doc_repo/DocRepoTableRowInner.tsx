@@ -20,6 +20,7 @@ import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import { LinearProgress } from "@material-ui/core";
 import { Devices } from "polar-shared/src/util/Devices";
+import {useDocRepoColumns} from "./DocRepoTableHead";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -171,7 +172,7 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
     }, [row.id, selectRow]);
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
-    const columns = useDocRepoColumnsPrefs();
+    const columns = useDocRepoColumns();
 
     const toCell = React.useCallback((id: keyof IDocInfo) => {
 
@@ -323,7 +324,8 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
     return (
         <>
 
-            {columns.map(toCell)}
+            {columns.map(current => current.id)
+                    .map(toCell)}
 
             <DeviceRouters.Desktop>
                 <TableCell align="right"

@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         selectionIconsContainer:{
-            display: 'flex', 
+            display: 'flex',
             flexDirection:'row-reverse',
             paddingRight: '15px',
             marginLeft: 'auto'
@@ -101,14 +101,14 @@ const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() 
                 <SelectionActiveButtons className={classes.reverseRow}/>
                 :
                 <div className={classes.selectionIconsContainer}>
-                    <MUIToggleButton id="toggle-archived" 
+                    <MUIToggleButton id="toggle-archived"
                                     iconOnly
                                     tooltip="Toggle archived docs"
                                     size={'small'}
                                     icon={<ArchiveIcon/>}
                                     initialValue={filters.archived}
                                     onChange={(value: any) => setFilters({...filters, archived: value})}/>
-                    <MUIToggleButton id="toggle-flagged" 
+                    <MUIToggleButton id="toggle-flagged"
                                     iconOnly
                                     tooltip="Show only flagged docs"
                                     size={'small'}
@@ -120,22 +120,27 @@ const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() 
         </>);
 });
 
+export function useDocRepoColumns() {
+
+    const desktopColumns = useDocRepoColumnsPrefs();
+    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title'];
+    const tabletColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
+
+    const selectedColumns = Devices.isDesktop() ? desktopColumns : Devices.isPhone()? mobileColumns : tabletColumns;
+
+    return selectedColumns.map(current => COLUMN_MAP[current])
+        .filter(current => isPresent(current));
+
+}
+
 export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
 
     const classes = useStyles();
 
     const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
     const {setSort} = useDocRepoCallbacks();
-    const desktopColumns = useDocRepoColumnsPrefs();
 
-    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title'];
-
-    const tabletColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
-
-    const selectedColumns = Devices.isDesktop() ? desktopColumns : Devices.isPhone()? mobileColumns : tabletColumns;
-
-    const columns = selectedColumns.map(current => COLUMN_MAP[current])
-                                   .filter(current => isPresent(current));
+    const columns = useDocRepoColumns();
 
     const {view, selected} = useDocRepoStore(['view','selected']);
     const callbacks = useDocRepoCallbacks();
@@ -161,13 +166,13 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <MUICheckboxIconButton
                                 indeterminate={selected.length > 0 && selected.length < view.length}
                                 checked={selected.length === view.length && view.length !== 0}
-                                onChange={(_event, checked) => handleCheckbox(checked)}/>  
-                        </TableCell> 
-                    </DeviceRouters.NotDesktop>                 
+                                onChange={(_event, checked) => handleCheckbox(checked)}/>
+                        </TableCell>
+                    </DeviceRouters.NotDesktop>
                     <DeviceRouters.Desktop>
                         <Check/>
                     </DeviceRouters.Desktop>
-                    
+
                     {columns.map((column) => {
 
                         const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
