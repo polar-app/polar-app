@@ -120,7 +120,7 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     const mode = React.useContext(AuthenticatorModeContext);
 
-    const hint = mode === 'create-account' ? 'Continue' : 'Sign In'
+    const hint = mode === 'create-account' ? 'Get Started' : 'Sign In'
 
     return (
         <>
@@ -139,9 +139,7 @@ const AuthButton = (props: IAuthButtonProps) => {
                 <Button variant="contained"
                         color="primary"
                         className={classes.button}
-                        onClick={props.onClick}
-                        startIcon={props.startIcon}>
-
+                        onClick={props.onClick}>
                     {hint} with {props.strategy}
                 </Button>
             </DeviceRouters.NotPhone>
@@ -452,14 +450,18 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined"    
+                                    variant="outlined"
+                                    InputProps={{
+                                        startAdornment: (
+                                                <EmailIcon style={{margin: '8px'}}/> 
+                                            )
+                                        }}    
                                 />
                             )}
                         </>
                     )}
 
                     {!triggered && (
-
                         <AuthButton onClick={handleClick}
                             strategy="Email"
                             startIcon={<EmailIcon />}
@@ -503,36 +505,64 @@ const Main = React.memo(function Main(props: IProps) {
     return (
         <>
             <DeviceRouters.NotPhone>
-            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
                 <div id="firebaseui-auth-container" style={{display: 'none'}}/>
                     <div className="text-center">
-                        <Box margin={10}>
-                            <PolarSVGIcon width={125} height={125}/>
-                        </Box>
 
                         <Box marginTop={1}>
                             {props.mode === 'create-account' && (
-                            <h2>
-                                Create your Polar Account
-                            </h2>
+                                <>
+                                    <div>
+                                        <div style={{display: 'flex'}}>
+                                            <div style={{marginTop: '10%', marginLeft: '15%'}}>
+                                                <PolarSVGIcon width={100} height={100}/>
+                                            </div>
+
+                                            <div>
+                                                <p style={{fontSize: '56px', marginLeft: '20px'}}>POLAR</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h2>
+                                        Join The Waiting List
+                                    </h2>
+
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                        }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }}>
+                                            <EmailTokenAuthButton/>
+                                        </div>
+                                    </div>
+                                </>
                             )}
 
                             {props.mode === 'sign-in' && (
-                                <h2>
-                                    Sign In to Polar
-                                </h2>
+                                <>
+                                    <Box margin={10}>
+                                        <PolarSVGIcon width={125} height={125}/>
+                                    </Box>
+                                    <h2>
+                                        Sign In to Polar
+                                    </h2>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                        }}>
+
+                                        <EmailTokenAuthButton/>
+                                    </div>
+
+                                    <Divider className={classes.divider}/>
+                                </>
                             )}
                         </Box>
-
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column'
-                            }}>
-
-                            <EmailTokenAuthButton/>
-                        </div>
                     </div>
-                    <Divider className={classes.divider}/>
 
                     {props.mode === 'create-account' && (
                         <SignInWithExistingAccount/>
@@ -541,10 +571,9 @@ const Main = React.memo(function Main(props: IProps) {
                     {props.mode === 'sign-in' && (
                         <OrCreateNewAccount/>
                     )}
-                    <div style={{flexGrow: 1}}>
-                </div>
                 <Links/>
-            </div>
+                </div>
+                
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
