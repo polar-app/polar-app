@@ -22,7 +22,6 @@ import {
     IDocViewerContextMenuOrigin
 } from "../../../doc/src/DocViewerMenu";
 import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
-import { Devices } from 'polar-shared/src/util/Devices';
 
 const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComponentProps<RepoDocInfo>) {
 
