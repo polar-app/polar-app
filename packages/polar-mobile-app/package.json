@@ -9,9 +9,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
-    "tsc": "tsc"
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "=1.15.9",
