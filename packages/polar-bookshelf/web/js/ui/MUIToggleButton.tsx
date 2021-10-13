@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 
         buttonActive: {
-            backgroundColor: theme.palette.info.main,
+            backgroundColor: theme.palette.primary.main,
             color: theme.palette.info.contrastText,
-            "&:hover": {
-                backgroundColor: theme.palette.info.main,
+            "&:hover, &.Mui-focusVisible": {
+                backgroundColor: theme.palette.primary.main,
                 color: theme.palette.info.contrastText,
             }
         },
