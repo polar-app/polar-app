@@ -1,6 +1,6 @@
 import { assert, expect } from 'chai';
 import { FirestoreAdmin } from 'polar-firebase-admin/src/FirestoreAdmin';
-import { CloudProgresCollection } from '../om/CloudProgressCollection';
+import { CloudProgresCollection } from 'polar-firebase/src/firebase/om/CloudProgressCollection';
 import { CloudProgress } from './CloudProgress';
 
 

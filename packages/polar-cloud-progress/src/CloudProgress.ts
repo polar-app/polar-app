@@ -2,7 +2,7 @@ import { Percentage, ProgressTracker } from 'polar-shared/src/util/ProgressTrack
 import { IDStr, UserIDStr } from 'polar-shared/src/util/Strings';
 import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
 import { Debouncers } from 'polar-shared/src/util/Debouncers';
-import { CloudProgresCollection } from '../om/CloudProgressCollection';
+import { CloudProgresCollection } from 'polar-firebase/src/firebase/om/CloudProgressCollection';
 import { ISODateString, ISODateTimeString } from 'polar-shared/src/metadata/ISODateTimeStrings';
 import { IFirestore } from 'polar-firestore-like/src/IFirestore';
 
