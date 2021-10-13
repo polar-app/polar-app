@@ -360,10 +360,10 @@ jobs:
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
             rm -rf /home/circleci/project
-            cd /home/circleci/polar-mobile-app
       - run:
           name: yarn install
           command: |
+            cd /home/circleci/polar-mobile-app
             sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
             yarn install
       - persist_to_workspace:
