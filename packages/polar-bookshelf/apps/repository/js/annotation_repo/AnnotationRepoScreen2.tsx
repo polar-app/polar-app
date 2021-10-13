@@ -12,7 +12,7 @@ import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
-import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
+import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
@@ -33,7 +33,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                 alignItems: 'center'
             }}>
 
-                <SidenavTrigger />
+                <SidenavTriggerIconButton />
                 <div style={{
                     flexGrow: 1,
                     display: 'flex',
