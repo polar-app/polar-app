@@ -78,7 +78,6 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
                             </Button>
                         </>}
 
-
                     </div>
 
                     <div>
