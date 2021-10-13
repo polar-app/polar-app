@@ -124,7 +124,7 @@ export const PlanDetailsContainer = React.memo(function PlanDetailsContainer(){
  * a component that we should reuse,
  * responsible for showing a button/menu items and exapnds/collapses on click
  */
-export const Collapsible = React.memo(function Collapsible() {
+export const CollapsibleHelpSection = React.memo(function Collapsible() {
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
 
@@ -199,7 +199,7 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
                 goToUrl={() => history.push(RoutePathNames.PLAN_MOBILE)}
                 icon={<MonetizationOnIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
 
-            <Collapsible/>
+            <CollapsibleHelpSection/>
 
             <PreferencesButton
                     title={'Log out'}
