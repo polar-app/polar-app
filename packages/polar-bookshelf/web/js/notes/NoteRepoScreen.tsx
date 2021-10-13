@@ -119,6 +119,7 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
+            color: theme.palette.text.primary,
             '&.MuiDataGrid-root': {
                 fontSize: '1.167rem',
             },
@@ -180,16 +181,18 @@ export const NoteRepoScreen: React.FC = () => {
     return (
         <>
             <NotesToolbar />
-            <NotesInnerContainer>
+            {/*<NotesInnerContainer>*/}
                 <XGrid
+                    hideFooterSelectedRowCount={true}
+                    hideFooterRowCount={true}
+                    hideFooter={true}
                     className={classes.root}
                     columns={BLOCK_TABLE_COLUMNS}
                     rows={rows}
                     onRowDoubleClick={handleDoubleClick}
-                    pagination
                     checkboxSelection
                 />
-            </NotesInnerContainer>
+            {/*</NotesInnerContainer>*/}
         </>
     );
 };
