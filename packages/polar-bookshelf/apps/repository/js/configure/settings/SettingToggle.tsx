@@ -8,9 +8,6 @@ import { Devices } from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        margins:{
-            margin: '0px 16px'
-        },
         paragraphMobile:{
             marginLeft: theme.spacing(5.5),
             color:  theme.palette.text.secondary
@@ -77,7 +74,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     };
 
     return (
-        <div className={classes.margins}>
+        <div className={'ml-3 mr-3'}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
                 <MUIIconText style={{ flex: 1 }} className={'pt-1'} icon={props.icon}>
