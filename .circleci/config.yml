@@ -140,6 +140,7 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
+  # ^ Webapp Workflow Jobs
   # @ Build the application for the following steps
   setting-up:
     parameters:
@@ -150,32 +151,6 @@ jobs:
     steps:
       - global_modules_setup
       - build_setup
-
-  # @ Build fastlane for deployment
-  fastlane-android:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    description: build fastlane for ci
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: install_dependencies
-          command: |
-            rm -rf /home/circleci/project/packages/polar-mobile-app/node_modules
-            ln -s /home/circleci/project/node_modules/ /home/circleci/project/packages/polar-mobile-app/
-            gem install bundler
-            cd /home/circleci/project/packages/polar-mobile-app/android
-            touch google-play-service-account.json
-            echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
-            bundle install
-            bundle update fastlane
-            echo -e "\n\n\n VALIDATING KEY \n\n\n"
-            bundle exec fastlane run validate_play_store_json_key
-            echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
-            bundle exec fastlane beta
 
   # @ Run Karma Test Suite
   karma:
@@ -368,6 +343,62 @@ jobs:
             }
           event: pass
 
+  # ^ Mobile Workflow
+  # @ Build Setup
+  build-setup:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    description: build node Environment)
+    steps:
+      - checkout
+      - run:
+          name: isolate
+          command: |
+            mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
+            rm -rf /home/circleci/project
+            cd /home/circleci/polar-mobile-app
+      - run:
+          name: yarn install
+          command: |
+            git fetch
+            CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
+            yarn install
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - polar-mobile-app
+
+  # @ Build fastlane for deployment
+  fastlane-android:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: build fastlane for ci
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: install_dependencies
+          command: |
+            rm -rf /home/circleci/project/packages/polar-mobile-app/node_modules
+            ln -s /home/circleci/project/node_modules/ /home/circleci/project/packages/polar-mobile-app/
+            ln -s /home/circleci
+            ls -lsa /home/circleci/project/packages/polar-mobile-app/node_modules
+            gem install bundler
+            cd /home/circleci/project/packages/polar-mobile-app/android
+            touch google-play-service-account.json
+            echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
+            bundle install
+            bundle update fastlane
+            echo -e "\n\n\n VALIDATING KEY \n\n\n"
+            bundle exec fastlane run validate_play_store_json_key
+            echo -e "\n\n\n BUILDING AND DEPLOYING \n\n\n"
+            bundle exec fastlane beta
+
 # ~ Define Custom Executors
 executors:
   # ! Default Executor for most jobs
@@ -404,12 +435,6 @@ workflows:
       # @ Setup the repo for the subsquent stages
       - setting-up:
           executor: large
-
-      ## ^ Build mobile apps
-      - fastlane-android:
-          executor: android
-          requires:
-            - setting-up
 
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
@@ -506,3 +531,13 @@ workflows:
             branches:
               only:
                 - master
+
+  Mobile-Workflow:
+    jobs:
+      - build-setup:
+          executor: large
+
+      - fastlane-android:
+          executor: android
+          requires:
+            - build-setup
