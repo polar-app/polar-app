@@ -1,15 +1,17 @@
-import { BottomNavigationAction } from '@material-ui/core';
+import {BottomNavigationAction} from '@material-ui/core';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
-import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/styles";
+import {createStyles, makeStyles, Theme, useTheme} from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from 'react-router-dom';
-import { RoutePathNames } from '../apps/repository/RoutePathNames';
+import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
+import NotesIcon from '@material-ui/icons/Notes';
+import {useFeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 type IUseStylesProps = {
     show: boolean;
@@ -43,27 +45,39 @@ interface IBottomNavLocation {
     readonly icon: React.ReactNode;
 }
 
-const BOTTOM_NAV_LOCATIONS: ReadonlyArray<IBottomNavLocation> = [
-    {
-        id: 'home',
-        label: 'Home',
-        href: '/',
-        icon: <HomeIcon/>
-    },
-    {
-        id: 'add',
-        label: 'Add',
-        href: RoutePathNames.ADD_MOBILE,
-        icon: <AddIcon/>
-    },
-    // at least buttons are required so for now add settings
-    {
-        id: 'settings',
-        label: 'Settings',
-        href: RoutePathNames.SETTINGS_MOBILE,
-        icon: <SettingsIcon/>
-    },
-]
+const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
+    const notesEnabled = useFeatureToggle('notes-enabled');
+
+    return React.useMemo(() => ([
+        {
+            id: 'home',
+            label: 'Home',
+            href: '/',
+            icon: <HomeIcon/>
+        },
+        {
+            id: 'add',
+            label: 'Add',
+            href: RoutePathNames.ADD_MOBILE,
+            icon: <AddIcon/>
+        },
+        ...(notesEnabled
+            ? [{
+                id: 'notes',
+                label: 'Notes',
+                href: RoutePathNames.NOTES,
+                icon: <NotesIcon />
+            }] : []
+        ),
+        // at least buttons are required so for now add settings
+        {
+            id: 'settings',
+            label: 'Settings',
+            href: RoutePathNames.SETTINGS_MOBILE,
+            icon: <SettingsIcon/>
+        },
+    ]), []);
+};
 
 export const MUIBottomNavigation = ()  => {
 
@@ -74,6 +88,7 @@ export const MUIBottomNavigation = ()  => {
     const [value, setValue] = React.useState('/');
     const bottomNavRef = React.useRef<HTMLDivElement>(null);
     const isSidenavOpenRef = useRefWithUpdates(isSidenavOpen);
+    const bottomNavLocations = useBottomNavLocations();
 
     const location = useLocation();
 
@@ -123,7 +138,7 @@ export const MUIBottomNavigation = ()  => {
                               ref={bottomNavRef}
                               className={classes.root}>
 
-                {BOTTOM_NAV_LOCATIONS.map(current => (
+                {bottomNavLocations.map(current => (
                     <BottomNavigationAction key={current.id}
                                             label={current.label}
                                             value={current.href}
