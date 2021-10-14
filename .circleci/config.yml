@@ -409,6 +409,7 @@ jobs:
             gem install bundler
             gem update
             bundle update
+            bundle install
             pod install
             bundle exec fastlane beta
 
