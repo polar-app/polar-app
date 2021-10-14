@@ -502,18 +502,16 @@ const OrCreateNewAccount = () => {
 
 const UpdatedLogoLayout = () => {
     return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1}>
-                        <PolarSVGIcon width={100} height={100}/>
-                    </Box>
-                    <Box m={1}>
-                        <Typography variant="h2" component="div">
-                            POLAR
-                        </Typography>
-                    </Box>
-                </div>
+        <div style={{display: 'flex'}}>
+            <div style={{marginBottom: 'auto', display: 'flex', alignItems: "center", justifyContent: 'center'}}>
+                <Box m={2}>
+                    <PolarSVGIcon width={100} height={100}/>
+                </Box>
+                <Box m={1}>
+                    <Typography variant="h2" component="div">
+                        POLAR
+                    </Typography>
+                </Box>
             </div>
         </div>
     )
@@ -554,19 +552,27 @@ const Main = React.memo(function Main(props: IProps) {
                                         Join The Waiting List
                                     </h2>
 
-                                    <FlexLayoutForm/>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                        }}>
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'column'
+                                            }}>
+                                                <EmailTokenAuthButton/>
+                                            </div>
+                                    </div>
                                 </>
                             )}
 
                             {props.mode === 'sign-in' && (
                                 <>
-                                    <Box margin={10}>
-                                        <PolarSVGIcon width={125} height={125}/>
-                                    </Box>
+                                    <UpdatedLogoLayout/>
                                     <h2>
                                         Sign In to Polar
                                     </h2>
-                                    
+
                                     <FlexLayoutForm/>
                                 </>
                             )}
@@ -591,6 +597,7 @@ const Main = React.memo(function Main(props: IProps) {
                 <Box marginTop={1}>
                     {props.mode === 'create-account' && (
                         <>
+                        <div style={{float: 'inherit'}}>
                             <UpdatedLogoLayout/>
 
                             <h2>
@@ -600,29 +607,26 @@ const Main = React.memo(function Main(props: IProps) {
                             <Divider className={classes.sendLinkDivider}/>
 
                             <FlexLayoutForm/>
+                        </div>
+
                         </>
                     )}
 
                     {props.mode === 'sign-in' && (
                         <>
-                        <Box margin={10}>
-                            <PolarSVGIcon width={125} height={125}/>
-                        </Box>
-                        <h2>
-                            Sign In to Polar
-                        </h2>
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column'
-                            }}>
-                            <EmailTokenAuthButton/>
-                        </div>
+                           <UpdatedLogoLayout/>
 
-                        <Divider className={classes.divider}/>
+                            <h2>
+                                Sign in to Polar
+                            </h2>
+
+                            <Divider className={classes.sendLinkDivider}/>
+
+                            <FlexLayoutForm/>
+                        
                     </>
                     )}  
                 </Box>
-
 
                 {props.mode === 'create-account' && (
                     <SignInWithExistingAccount/>
