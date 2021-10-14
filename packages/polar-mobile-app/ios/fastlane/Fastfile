@@ -22,7 +22,6 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     match(type: "development")
-    gym(export_method: "development")
     increment_build_number(xcodeproj: "PolarReactNative.xcodeproj")
     build_app(workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
   end
