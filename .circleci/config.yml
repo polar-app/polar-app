@@ -206,6 +206,21 @@ jobs:
             export POLAR_EXTENSION_TYPE=PROD
             yarn run dist
 
+  # @ Deploy aws CDK changes
+  aws-cdk:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: cdk deploy
+          command: |
+            cd /home/circleci/project/packages/polar-cdk
+            ENV_NAME=master npx cdk deploy --all --require-approval=never
+
   # @ Build Polar-Bookshelf Webapp
   build-polar-app:
     parameters:
@@ -400,6 +415,15 @@ workflows:
           executor: large
           requires:
             - setting-up
+
+      - aws-cdk:
+          executor: large
+          requires:
+            - build-polar-app
+          filters:
+            branches:
+              only:
+                - master
 
       # @ Run Cypress tests for chrome-desktop (1080p)
       # - cypress/run:

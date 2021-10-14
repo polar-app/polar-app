@@ -2,32 +2,21 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
-import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
+import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
-import {
-    useAuthHandler,
-    useTriggerFirebaseEmailAuth,
-    useTriggerFirebaseGoogleAuth,
-    useTriggerStartTokenAuth,
-    useTriggerVerifyTokenAuth
-} from './AuthenticatorHooks';
+import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
-import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
-import Themes from 'epubjs/types/themes';
-import { PointerType } from 'polar-dom-text-search/src/IPointer';
-import { Box } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -101,7 +90,7 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: theme.palette.text.secondary, 
+            color: theme.palette.text.secondary,
             textDecoration: 'underline !important'
         }
     }),
@@ -120,7 +109,7 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     const mode = React.useContext(AuthenticatorModeContext);
 
-    const hint = mode === 'create-account' ? 'Continue' : 'Sign In'
+    const hint = mode === 'create-account' ? 'Get Started' : 'Sign In'
 
     return (
         <>
@@ -139,9 +128,7 @@ const AuthButton = (props: IAuthButtonProps) => {
                 <Button variant="contained"
                         color="primary"
                         className={classes.button}
-                        onClick={props.onClick}
-                        startIcon={props.startIcon}>
-
+                        onClick={props.onClick}>
                     {hint} with {props.strategy}
                 </Button>
             </DeviceRouters.NotPhone>
@@ -381,11 +368,11 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined" 
+                                    variant="outlined"
                                     style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
                                     InputProps={{
                                     startAdornment: (
-                                            <EmailIcon style={{margin: '8px'}}/> 
+                                            <EmailIcon style={{margin: '8px'}}/>
                                         )
                                     }}
                                 />
@@ -452,14 +439,18 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined"    
+                                    variant="outlined"
+                                    InputProps={{
+                                        startAdornment: (
+                                                <EmailIcon style={{margin: '8px'}}/>
+                                            )
+                                        }}
                                 />
                             )}
                         </>
                     )}
 
                     {!triggered && (
-
                         <AuthButton onClick={handleClick}
                             strategy="Email"
                             startIcon={<EmailIcon />}
@@ -497,104 +488,144 @@ const OrCreateNewAccount = () => {
     );
 }
 
+const UpdatedLogoLayout = () => {
+    return (
+        <div>
+            <div style={{display: 'flex'}}>
+                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
+                    <Box m={1}>
+                        <PolarSVGIcon width={100} height={100}/>
+                    </Box>
+                    <Box m={1}>
+                        <Typography variant="h2" component="div">
+                            POLAR
+                        </Typography>
+                    </Box>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const FlexLayoutForm = () => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column'
+            }}>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    <EmailTokenAuthButton/>
+                </div>
+        </div>
+    )
+}
+
 const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
 
     return (
         <>
             <DeviceRouters.NotPhone>
-            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
                 <div id="firebaseui-auth-container" style={{display: 'none'}}/>
                     <div className="text-center">
-                        <Box margin={10}>
-                            <PolarSVGIcon width={125} height={125}/>
-                        </Box>
 
                         <Box marginTop={1}>
                             {props.mode === 'create-account' && (
-                            <h2>
-                                Create your Polar Account
-                            </h2>
+                                <>
+                                    <UpdatedLogoLayout/>
+
+                                    <h2>
+                                        Join The Waiting List
+                                    </h2>
+
+                                    <FlexLayoutForm/>
+                                </>
                             )}
 
                             {props.mode === 'sign-in' && (
-                                <h2>
-                                    Sign In to Polar
-                                </h2>
+                                <>
+                                    <Box margin={10}>
+                                        <PolarSVGIcon width={125} height={125}/>
+                                    </Box>
+                                    <h2>
+                                        Sign In to Polar
+                                    </h2>
+
+                                    <FlexLayoutForm/>
+                                </>
                             )}
                         </Box>
+                    </div>
 
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <OrCreateNewAccount/>
+                    )}
+                <Links/>
+                </div>
+
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+            <div style={{height:"100vh", textAlign: 'center', flexGrow: 1}}>
+
+                <Box marginTop={1}>
+                    {props.mode === 'create-account' && (
+                        <>
+                            <UpdatedLogoLayout/>
+
+                            <h2>
+                                Join The Waiting List
+                            </h2>
+
+                            <Divider className={classes.sendLinkDivider}/>
+
+                            <FlexLayoutForm/>
+                        </>
+                    )}
+
+                    {props.mode === 'sign-in' && (
+                        <>
+                        <Box margin={10}>
+                            <PolarSVGIcon width={125} height={125}/>
+                        </Box>
+                        <h2>
+                            Sign In to Polar
+                        </h2>
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column'
                             }}>
-
                             <EmailTokenAuthButton/>
                         </div>
-                    </div>
-                    <Divider className={classes.divider}/>
 
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
+                        <Divider className={classes.divider}/>
+                    </>
                     )}
-
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-                    <div style={{flexGrow: 1}}>
-                </div>
-                <Links/>
-            </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-            <div style={{height:"100vh"}}>
-
-                <Box marginTop={1}>
-                    <h1 style={{textAlign: 'center'}}>
-                        POLAR
-                    </h1>
                 </Box>
 
-                <div className="text-center">
 
-                <Box margin={10}>
-                    <PolarSVGIcon width={125} height={125}/>
-                </Box>
+                {props.mode === 'create-account' && (
+                    <SignInWithExistingAccount/>
+                )}
 
-                <Divider className={classes.sendLinkDivider}/>
+                {props.mode === 'sign-in' && (
+                    <OrCreateNewAccount/>
+                )}
 
-                <Box marginTop={1}>
-                    {props.mode === 'create-account' && (
-                        <h2>
-                            Create Account
-                        </h2>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <h2>
-                            Sign In
-                        </h2>
-                    )}   
-                </Box>
-
-                    <EmailTokenAuthButton/>
-
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-
-                    <div style={{flexGrow: 1}}/>
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
-                    </div>
+                <div style={{flexGrow: 1}}/>
+                <div>
+                    <p style={{fontSize: '10px'}} className={classes.legal}>
+                        You acknowledge that you will read, and agree to
+                        our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                    </p>
                 </div>
             </div>
             </DeviceRouters.Phone>
@@ -672,7 +703,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         )}
                     </>
             </DeviceRouters.Phone>
-                
+
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>

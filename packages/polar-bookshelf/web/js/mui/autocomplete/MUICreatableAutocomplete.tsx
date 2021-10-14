@@ -14,7 +14,8 @@ import {Devices} from "polar-shared/src/util/Devices";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: Devices.isDesktop() ? 500 : undefined
+            // width: Devices.isDesktop() ? 500 : undefined
+            flexGrow: 1,
             // marginTop: theme.spacing(1),
         },
     }),

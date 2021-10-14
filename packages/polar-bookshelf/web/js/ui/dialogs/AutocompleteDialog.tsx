@@ -102,7 +102,7 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
 
         <MUIDialog open={state.open}
                    onClose={handleCancel}
-                   maxWidth="lg"
+                   maxWidth="md"
                    fullWidth={true}
                    aria-labelledby="form-dialog-title">
 

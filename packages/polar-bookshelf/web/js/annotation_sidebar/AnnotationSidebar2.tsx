@@ -37,7 +37,7 @@ const LoadRepositoryExplainer = () => (
     </div>
 );
 
-const NoAnnotations = memoForwardRef(() => {
+export const NoAnnotations = memoForwardRef(() => {
     return (
         <div className="p-2"
              style={{
