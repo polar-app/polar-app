@@ -142,15 +142,13 @@ export const CollapsibleHelpSection = React.memo(function Collapsible() {
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </div>
             </Button>
-            <div>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Paper>
-                        <Chat/>
-                        <Documentation/>
-                        <RequestFeatures/>
-                    </Paper>
-                </Collapse>
-            </div>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <Paper>
+                    <Chat/>
+                    <Documentation/>
+                    <RequestFeatures/>
+                </Paper>
+            </Collapse>
         </>
     );
 });
