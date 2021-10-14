@@ -25,7 +25,8 @@
   "dependencies": {
     "polar-shared": "0.0.0",
     "polar-firebase": "0.0.0",
-    "polar-firebase-admin": "0.0.0"
+    "polar-firebase-admin": "0.0.0",
+    "polar-firestore-like": "0.0.0"
   },
   "files": [
     "**/*.js",
