@@ -29,21 +29,6 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
             padding: '8px'
         },
-
-        divider: {
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-            marginBottom: theme.spacing(1),
-            marginTop: theme.spacing(1)
-        },
-
-        sendLinkDivider: {
-            margin: theme.spacing(1),
-            marginBottom: theme.spacing(3),
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(1),
-        },
-
         alert: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
@@ -349,7 +334,7 @@ const EmailTokenAuthButton = () => {
                 <>
                     {active && (
                         <>
-                            <Divider className={classes.sendLinkDivider}/>
+                            <Divider/>
 
                             {pending && (
                                 <ProgressActive/>
@@ -476,6 +461,82 @@ const FlexLayoutForm = () => {
     )
 }
 
+interface AuthContentProps {
+    readonly title: string;
+    readonly children: React.ReactNode;
+    readonly alternative: React.ReactNode;
+}
+
+/**
+ * Auth content wrapper which adds the logo, any title text.
+ */
+const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
+
+    const classes = useStyles();
+
+    return (
+        <>
+            <div className="AuthContent"
+                 style={{
+                     height:"100vh",
+                     textAlign: 'center',
+                     flexGrow: 1,
+                     display: 'flex',
+                     flexDirection: 'column'
+                 }}>
+
+                <>
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             alignItems: 'center',
+                             justifyContent: 'center'
+                         }}>
+                        <LogoAndTextSideBySide/>
+                    </div>
+
+                    <h2>
+                        {props.title}
+                    </h2>
+
+                    {props.children}
+
+                </>
+
+                {props.alternative}
+
+                <div style={{flexGrow: 1}}/>
+
+                <AuthLegalDisclaimer/>
+
+            </div>
+        </>
+    );
+});
+
+export const PrivateBetaRegisterAuthContent = () => {
+    return (
+        <AuthContent title="Join the Waiting List"
+                     alternative={<SignInWithExistingAccountButton/>}>
+            <FlexLayoutForm/>
+        </AuthContent>
+    )
+}
+
+export const SignInAuthContent = () => {
+    return (
+        <AuthContent title="Sign In to Polar"
+                     alternative={<OrCreateNewAccountButton/>}>
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column'
+                 }}>
+                <EmailTokenAuthButton/>
+            </div>
+        </AuthContent>
+    )
+}
+
 const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
 
@@ -489,40 +550,45 @@ const Main = React.memo(function Main(props: IProps) {
                      flexDirection: 'column'
                  }}>
 
-                <Box marginTop={1}>
-                    {props.mode === 'create-account' && (
-                        <>
-                            <LogoAndTextSideBySide/>
-
-                            <h2>
-                                Join The Waiting List
-                            </h2>
-
-                            <Divider className={classes.sendLinkDivider}/>
-
-                            <FlexLayoutForm/>
-                        </>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <>
-                        <Box margin={10}>
-                            <PolarSVGIcon width={125} height={125}/>
-                        </Box>
-                        <h2>
-                            Sign In to Polar
-                        </h2>
+                {props.mode === 'create-account' && (
+                    <>
                         <div style={{
-                            display: 'flex',
-                            flexDirection: 'column'
-                            }}>
-                            <EmailTokenAuthButton/>
+                                 display: 'flex',
+                                 flexGrow: 1,
+                                 alignItems: 'center'
+                             }}>
+                            <LogoAndTextSideBySide/>
                         </div>
 
-                        <Divider className={classes.divider}/>
+                        <h2>
+                            Join The Waiting List
+                        </h2>
+
+                        <Divider/>
+
+                        <FlexLayoutForm/>
                     </>
-                    )}
-                </Box>
+                )}
+
+                {props.mode === 'sign-in' && (
+                    <>
+                    <Box margin={10}>
+                        <PolarSVGIcon width={125} height={125}/>
+                    </Box>
+                    <h2>
+                        Sign In to Polar
+                    </h2>
+                    <div style={{
+                             display: 'flex',
+                             flexDirection: 'column'
+                         }}>
+                        <EmailTokenAuthButton/>
+                    </div>
+
+                    <Divider/>
+
+                </>
+                )}
 
                 {props.mode === 'create-account' && (
                     <SignInWithExistingAccountButton/>
@@ -620,14 +686,16 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         <Pending/>
                     )}
 
-                    {authStatus === 'needs-auth' && (
-                        <Main {...props}/>
+                    {authStatus === 'needs-auth' && props.mode === 'create-account' && (
+                        <PrivateBetaRegisterAuthContent/>
+                    )}
+
+                    {authStatus === 'needs-auth' && props.mode === 'sign-in' && (
+                        <SignInAuthContent/>
                     )}
 
                     <Intercom/>
-
                 </>
-
             </AdaptiveDialog>
         </AuthenticatorModeContext.Provider>
     );

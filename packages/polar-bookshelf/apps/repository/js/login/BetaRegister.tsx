@@ -56,7 +56,7 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
                                        placeholder="email@"
                                        variant="outlined"/>
 
-                            <Divider className={classes.divider}/>
+                            <Divider/>
 
                             <Button variant="contained"
                                     color="primary"
