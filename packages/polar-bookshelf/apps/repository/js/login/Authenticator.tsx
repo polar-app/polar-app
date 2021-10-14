@@ -506,7 +506,7 @@ export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: Adaptive
                                margin: 'auto',
                                maxWidth: '450px',
                                minHeight: '500px',
-                               maxHeight: '800px',
+                               maxHeight: '700px',
                                width: '100%',
                                display: 'flex',
                                flexDirection: 'column'
