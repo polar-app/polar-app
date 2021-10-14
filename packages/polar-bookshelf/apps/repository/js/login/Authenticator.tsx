@@ -17,6 +17,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
+import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -54,30 +55,6 @@ export const useStyles = makeStyles((theme) =>
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
         },
-        legal: {
-            margin: theme.spacing(1),
-            marginTop: theme.spacing(5),
-            marginBottom: theme.spacing(2),
-            color: theme.palette.text.secondary,
-            fontSize: '1.5em',
-            textAlign: 'center',
-            "& a:link": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:visited": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:hover": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:active": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-        },
         alternate: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
@@ -89,10 +66,6 @@ export const useStyles = makeStyles((theme) =>
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
         },
-        linkDecoration: {
-            color: theme.palette.text.secondary,
-            textDecoration: 'underline !important'
-        }
     }),
 );
 
@@ -135,24 +108,6 @@ const AuthButton = (props: IAuthButtonProps) => {
         </>
     );
 }
-
-// new Links component
-const Links = () => {
-
-    const classes = useStyles();
-
-    const mode = React.useContext(AuthenticatorModeContext);
-
-    return (
-        <>
-            <p className={classes.legal}>
-                You acknowledge that you will read, and agree to
-                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-            </p>
-        </>
-    );
-}
-
 
 const ProgressInactive = () => {
 
@@ -462,9 +417,8 @@ const EmailTokenAuthButton = () => {
     );
 };
 
-const SignInWithExistingAccount = () => {
+const SignInWithExistingAccountButton = () => {
 
-    const classes = useStyles();
     const history = useHistory();
 
     return (
@@ -476,8 +430,7 @@ const SignInWithExistingAccount = () => {
     );
 }
 
-const OrCreateNewAccount = () => {
-    const classes = useStyles();
+const OrCreateNewAccountButton = () => {
     const history = useHistory();
     return (
         <div style={{textAlign: 'center'}}>
@@ -488,7 +441,7 @@ const OrCreateNewAccount = () => {
     );
 }
 
-const UpdatedLogoLayout = () => {
+const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
@@ -528,58 +481,18 @@ const Main = React.memo(function Main(props: IProps) {
 
     return (
         <>
-            <DeviceRouters.NotPhone>
-                <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
-                <div id="firebaseui-auth-container" style={{display: 'none'}}/>
-                    <div className="text-center">
-
-                        <Box marginTop={1}>
-                            {props.mode === 'create-account' && (
-                                <>
-                                    <UpdatedLogoLayout/>
-
-                                    <h2>
-                                        Join The Waiting List
-                                    </h2>
-
-                                    <FlexLayoutForm/>
-                                </>
-                            )}
-
-                            {props.mode === 'sign-in' && (
-                                <>
-                                    <Box margin={10}>
-                                        <PolarSVGIcon width={125} height={125}/>
-                                    </Box>
-                                    <h2>
-                                        Sign In to Polar
-                                    </h2>
-
-                                    <FlexLayoutForm/>
-                                </>
-                            )}
-                        </Box>
-                    </div>
-
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-                <Links/>
-                </div>
-
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-            <div style={{height:"100vh", textAlign: 'center', flexGrow: 1}}>
+            <div style={{
+                     height:"100vh",
+                     textAlign: 'center',
+                     flexGrow: 1,
+                     display: 'flex',
+                     flexDirection: 'column'
+                 }}>
 
                 <Box marginTop={1}>
                     {props.mode === 'create-account' && (
                         <>
-                            <UpdatedLogoLayout/>
+                            <LogoAndTextSideBySide/>
 
                             <h2>
                                 Join The Waiting List
@@ -611,24 +524,19 @@ const Main = React.memo(function Main(props: IProps) {
                     )}
                 </Box>
 
-
                 {props.mode === 'create-account' && (
-                    <SignInWithExistingAccount/>
+                    <SignInWithExistingAccountButton/>
                 )}
 
                 {props.mode === 'sign-in' && (
-                    <OrCreateNewAccount/>
+                    <OrCreateNewAccountButton/>
                 )}
 
                 <div style={{flexGrow: 1}}/>
-                <div>
-                    <p style={{fontSize: '10px'}} className={classes.legal}>
-                        You acknowledge that you will read, and agree to
-                        our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                    </p>
-                </div>
+
+                <AuthLegalDisclaimer/>
+
             </div>
-            </DeviceRouters.Phone>
         </>
     );
 });
