@@ -34,8 +34,8 @@ export const useStyles = makeStyles((theme) =>
 
         alert: {
             margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            // marginLeft: theme.spacing(3),
+            // marginRight: theme.spacing(3),
         },
 
         alternate: {
@@ -46,8 +46,8 @@ export const useStyles = makeStyles((theme) =>
         },
         progress: {
             height: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            // marginLeft: theme.spacing(3),
+            // marginRight: theme.spacing(3),
         },
     }),
 );
@@ -86,7 +86,7 @@ const AuthButton = (props: IAuthButtonProps) => {
     );
 }
 
-const ProgressInactive = () => {
+const BackendProgressInactive = () => {
 
     const classes = useStyles();
 
@@ -97,7 +97,7 @@ const ProgressInactive = () => {
     );
 }
 
-const ProgressActive = () => {
+const BackendProgressActive = () => {
     const classes = useStyles();
 
     return (
@@ -105,6 +105,20 @@ const ProgressActive = () => {
             <LinearProgress/>
         </div>
     );
+}
+
+interface BackendProgressProps {
+    readonly pending: boolean;
+}
+
+const BackendProgress = (props: BackendProgressProps) => {
+
+    if (props.pending) {
+        return <BackendProgressActive/>;
+    }
+
+    return <BackendProgressInactive/>
+
 }
 
 const EmailTokenAuthButton = () => {
@@ -256,13 +270,8 @@ const EmailTokenAuthButton = () => {
                  }}>
                 {active && (
                     <>
-                        {pending && (
-                            <ProgressActive/>
-                        )}
 
-                        {! pending && (
-                            <ProgressInactive/>
-                        )}
+                        <BackendProgress pending={pending}/>
 
                         {alert && (
                             <Alert severity={alert.type}
@@ -335,6 +344,7 @@ const EmailTokenAuthButton = () => {
 const RegisterForBetaButton = () => {
 
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
+    const [pending, setPending] = React.useState(false);
     const emailRef = React.useRef("");
 
     const classes = useStyles();
@@ -345,13 +355,28 @@ const RegisterForBetaButton = () => {
             email: emailRef.current.trim(),
             tag: "initial_signup",
         };
-        JSONRPC.exec<unknown, any>('private-beta/register', request)
-            .then((result: any) => {
-                console.log(result);
-                setIsRegistered(true);
-            }).catch((reason: any) => console.error(reason));
 
-    }, []);
+        try {
+
+            setPending(true);
+
+            async function doAsync() {
+
+                await JSONRPC.exec<unknown, any>('private-beta/register', request);
+                setIsRegistered(true);
+
+                console.log("Registered now!");
+
+            }
+
+            doAsync()
+                .catch(err => console.error(err));
+
+        } finally {
+            setPending(false);
+        }
+
+    }, [setPending]);
 
     return (
         <>
@@ -360,6 +385,8 @@ const RegisterForBetaButton = () => {
                     Thank you for registering!
                 </h2>
             )}
+
+            <BackendProgress pending={pending}/>
 
             {!isRegistered && (
                 <div style={{
@@ -407,7 +434,7 @@ const OrCreateNewAccountButton = () => {
     return (
         <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/create-account')}>
-                or create new account
+                or register for private beta
             </Button>
         </div>
     );
