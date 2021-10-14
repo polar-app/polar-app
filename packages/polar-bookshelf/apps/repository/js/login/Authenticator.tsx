@@ -17,6 +17,7 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -71,6 +72,7 @@ const AuthButton = (props: IAuthButtonProps) => {
 
             <Button variant="contained"
                     color="primary"
+                    size="large"
                     className={classes.button}
                     onClick={props.onClick}
                     style={{
@@ -288,6 +290,7 @@ const EmailTokenAuthButton = () => {
 
                                 <Button variant="contained"
                                         color="primary"
+                                        size="large"
                                         className={classes.button}
                                         onClick={handleClick}
                                         style={{
@@ -311,7 +314,7 @@ const EmailTokenAuthButton = () => {
                                            flexGrow: 1,
                                        }}
                                        InputProps={{
-                                       startAdornment: (
+                                           startAdornment: (
                                                <EmailIcon style={{margin: '8px'}}/>
                                            )
                                        }}/>
@@ -328,6 +331,63 @@ const EmailTokenAuthButton = () => {
         </>
     );
 };
+
+const RegisterForBetaButton = () => {
+
+    const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
+    const emailRef = React.useRef("");
+
+    const classes = useStyles();
+
+    const handleClick = React.useCallback(() => {
+
+        const request = {
+            email: emailRef.current.trim(),
+            tag: "initial_signup",
+        };
+        JSONRPC.exec<unknown, any>('private-beta/register', request)
+            .then((result: any) => {
+                console.log(result);
+                setIsRegistered(true);
+            }).catch((reason: any) => console.error(reason));
+
+    }, []);
+
+    return (
+        <>
+            {isRegistered && (
+                <h2>
+                    Thank you for registering!
+                </h2>
+            )}
+
+            {!isRegistered && (
+                <div style={{
+                         display: 'flex',
+                         flexDirection: 'column'
+                     }}>
+                    <TextField autoFocus={true}
+                               className={classes.email}
+                               onChange={event => emailRef.current = event.target.value}
+                               placeholder="Enter your email address"
+                               InputProps={{
+                                   startAdornment: (
+                                       <EmailIcon style={{margin: '8px'}}/>
+                                   )}}
+                               variant="outlined"/>
+
+                    <Button variant="contained"
+                            size="large"
+                            color="primary"
+                            className={classes.button}
+                            onClick={handleClick}>
+                        Join
+                    </Button>
+                </div>
+            )}
+        </>
+    )
+}
 
 const SignInWithExistingAccountButton = () => {
 
@@ -447,7 +507,9 @@ export const PrivateBetaRegisterAuthContent = () => {
     return (
         <AuthContent title="Join the Waiting List"
                      alternative={<SignInWithExistingAccountButton/>}>
-            <FlexLayoutForm/>
+
+            <RegisterForBetaButton/>
+
         </AuthContent>
     )
 }
