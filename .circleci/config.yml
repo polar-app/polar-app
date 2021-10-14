@@ -398,7 +398,7 @@ jobs:
   fastlane-ios:
     working_directory: ~/polar-mobile-app/ios
     macos:
-      xcode: "12.5.1"
+      xcode: "13.0.0"
     shell: /bin/bash --login -o pipefail
     steps:
       - attach_workspace:
