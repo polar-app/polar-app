@@ -1,5 +1,5 @@
 import React from "react";
-import {RoutePathnames} from "../../apps/repository/RoutePathnames";
+import {RoutePathNames} from "../../apps/repository/RoutePathNames";
 import {IBlockLink} from "../../../../../polar-blocks/src/blocks/IBlock";
 import {arrayStream} from "../../../../../polar-shared/src/util/ArrayStreams";
 import {HTMLStr, MarkdownStr} from "../../../../../polar-shared/src/util/Strings";
@@ -55,11 +55,11 @@ namespace CopyUtils {
         const range = selection.getRangeAt(0);
         const fragment = range.cloneContents();
         const div = document.createElement('div');
-        const blockElem = DOMBlocks.findBlockParent(range.startContainer); 
+        const blockElem = DOMBlocks.findBlockParent(range.startContainer);
         const blockID = blockElem ? DOMBlocks.getBlockID(blockElem) : null;
 
         div.append(fragment);
-        
+
         const getPolarBlocks = (): ReadonlyArray<IBlockContentStructure> | null => {
             const block = blockID ? blocksStore.getBlock(blockID) : null;
             if (! block) {
@@ -79,7 +79,7 @@ namespace CopyUtils {
         };
 
         const polarBlocks = getPolarBlocks();
-        
+
         convertWikiLinksToFullURLs(div);
 
         const markdown = MarkdownContentConverter.toMarkdown(div.innerHTML);
@@ -104,7 +104,7 @@ namespace CopyUtils {
             const anchor = getNoteAnchorFromHref(link.href);
 
             if (anchor) {
-                link.href = `${window.location.origin}${RoutePathnames.NOTE(anchor)}`;
+                link.href = `${window.location.origin}${RoutePathNames.NOTE(anchor)}`;
             } else {
                 const parentElem = link.parentElement;
 
@@ -131,7 +131,7 @@ namespace CopyUtils {
         const wikiAnchorElements = elem.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
 
         const linksMap = arrayStream(block.content.links).toMap(({ text }) => text);
-        
+
         return arrayStream(Array.from(wikiAnchorElements))
             .map(anchorElem => linksMap[anchorElem.href.slice(1)])
             .filterPresent()

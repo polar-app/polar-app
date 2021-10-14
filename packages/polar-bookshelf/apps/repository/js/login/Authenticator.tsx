@@ -102,7 +102,7 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: theme.palette.text.secondary, 
+            color: theme.palette.text.secondary,
             textDecoration: 'underline !important'
         }
     }),
@@ -380,11 +380,11 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined" 
+                                    variant="outlined"
                                     style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
                                     InputProps={{
                                     startAdornment: (
-                                            <EmailIcon style={{margin: '8px'}}/> 
+                                            <EmailIcon style={{margin: '8px'}}/>
                                         )
                                     }}
                                 />
@@ -493,8 +493,8 @@ const OrCreateNewAccount = () => {
     const history = useHistory();
     return (
         <div style={{textAlign: 'center'}}>
-            <Button variant="text" onClick={() => history.push('/create-account')}>
-                or create new account
+            <Button variant="text" onClick={() => history.push('/private-beta')}>
+                or join the private beta
             </Button>
         </div>
     );
@@ -611,6 +611,8 @@ const Main = React.memo(function Main(props: IProps) {
                         <h2>
                             Sign In to Polar
                         </h2>
+                    )}
+                </Box>
 
                         <Divider className={classes.sendLinkDivider}/>
 
@@ -717,7 +719,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         )}
                     </>
             </DeviceRouters.Phone>
-                
+
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>

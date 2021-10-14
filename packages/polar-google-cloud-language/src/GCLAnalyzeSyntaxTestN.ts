@@ -5,6 +5,16 @@ describe("GCLAnalyzeSyntax", function() {
 
     describe("analyzeSyntax", () => {
 
+        it("extended", async () => {
+
+            const text = "Yes, he owned slaves. He owned more than two hundred."
+
+            const analysis = await GCLAnalyzeSyntax.analyzeSyntax(text);
+            console.log(JSON.stringify(analysis, null, '  '));
+
+
+        });
+
         it("highest", async function() {
             const analysis = await GCLAnalyzeSyntax.analyzeSyntax("What is the highest mountain on mars?");
             console.log(JSON.stringify(analysis, null, '  '));

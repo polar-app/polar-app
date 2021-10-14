@@ -8,12 +8,15 @@ import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
 import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
-import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
+import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {Devices} from "polar-shared/src/util/Devices";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -49,26 +52,48 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
     );
 });
 
-export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
-
-    const {selected}
-        = useDocRepoStore(['selected']);
-
-    const classes = useStyles();
+const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
+    const {selected} = useDocRepoStore(['selected']);
 
     return (
-        <Paper square className={classes.root}>
 
-            <SidenavTrigger/> 
+        <>
+            <SidenavTriggerIconButton/>
 
             <ChromeExtensionInstallBar/>
-            
+
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
             </div>
 
             <DocRepoFilterBar/>
+        </>
+    );
 
-        </Paper>
+});
+
+export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
+
+    const classes = useStyles();
+
+    return (
+        <>
+
+            <DeviceRouter.Desktop>
+                <Paper square className={classes.root}>
+                    <DocRepoTableToolbarMain/>
+                </Paper>
+            </DeviceRouter.Desktop>
+
+            <DeviceRouter.Handheld>
+                <AppBar position="static">
+                    <Toolbar>
+                        <DocRepoTableToolbarMain/>
+                    </Toolbar>
+
+                </AppBar>
+            </DeviceRouter.Handheld>
+
+        </>
     );
 }, isEqual);

@@ -11,8 +11,8 @@ import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 import Collapse from "@material-ui/core/Collapse/Collapse";
-import Checkbox from "@material-ui/core/Checkbox";
-import Box from "@material-ui/core/Box";
+import { DeviceRouter } from "../../../web/js/ui/DeviceRouter";
+import {Devices} from "polar-shared/src/util/Devices";
 
 type FindCallback = (opts: IFindOpts) => void;
 
@@ -129,7 +129,7 @@ export const DocFindBar = React.memo(function DocFindBar() {
                                                value={opts.query}
                                                autoComplete="off"
                                                style={{
-                                                   width: '20em'
+                                                   width: Devices.isDesktop() ? '20em' : undefined
                                                }}
                                                placeholder="Search..."/>
 
@@ -141,7 +141,9 @@ export const DocFindBar = React.memo(function DocFindBar() {
 
                                 <MatchNav/>
 
-                                <Matches/>
+                                <DeviceRouter.Desktop>
+                                    <Matches/>
+                                </DeviceRouter.Desktop>
 
                             </MUIButtonBar>
 
@@ -167,27 +169,3 @@ export const DocFindBar = React.memo(function DocFindBar() {
     )
 
 });
-
-interface IFeatureToggleProps {
-    readonly checked: boolean;
-    readonly title: string;
-    readonly onChanged: (checked: boolean) => void;
-}
-
-const FindFeatureToggle = React.memo(function FindFeatureToggle(props: IFeatureToggleProps) {
-    return (
-
-        <MUIButtonBar>
-            <Checkbox
-                checked={props.checked}
-                onChange={(event) => props.onChanged(event.target.checked)}
-                inputProps={{ 'aria-label': props.title }}
-            />
-
-            <Box color="text.secondary">
-                {props.title}
-            </Box>
-
-        </MUIButtonBar>
-    );
-})

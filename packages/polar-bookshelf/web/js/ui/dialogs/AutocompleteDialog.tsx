@@ -71,7 +71,7 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
     const closeDialog =  React.useCallback(() => {
         // this happens on Escape and clickaway...
         history.replace({hash: ''});
-        
+
         setState({open: false});
     },[history]);
 
@@ -103,6 +103,7 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
         <MUIDialog open={state.open}
                    onClose={handleCancel}
                    maxWidth="md"
+                   fullWidth={true}
                    aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>

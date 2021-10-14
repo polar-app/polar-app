@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {ActivityIndicator, BackHandler, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, BackHandler, Linking, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
@@ -122,7 +122,22 @@ export class InAppLiteServer extends Component<Props, State> {
                         throw Error('Switch case not implemented: ' + JSON.stringify(dataPayload));
                 }
             }}
+            onNavigationStateChange={(event) => {
+                if (InAppLiteServer.isExternalUrl(event.url)) {
+                    this.webview?.stopLoading();
+                    Linking.openURL(event.url)
+                        .then()
+                        .catch(reason => {
+                            console.error(reason);
+                            alert('Failed to open a URL in external browser');
+                        })
+                }
+            }}
         />;
+    }
+
+    private static isExternalUrl(url: string) {
+        return !url.includes('app.getpolarized.io');
     }
 
     componentWillUnmount() {

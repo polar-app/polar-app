@@ -9,6 +9,7 @@ import {useDocMetaContext} from "./DocMetaContextProvider";
 import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useLogger} from "../mui/MUILogger";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
+import {DeviceRouter} from "../ui/DeviceRouter";
 
 export const AnnotationHeader = () => {
 
@@ -34,15 +35,13 @@ export const AnnotationHeader = () => {
 
                 <div style={{display: 'flex'}}>
 
-                    <div className="mt-auto mb-auto">
-                        <ExportButton onExport={exportCallback}/>
-                    </div>
+                    <DeviceRouter.Desktop>
 
-                    <LocalStorageFeatureToggle name='groups'>
-                        {/*<GroupSharingButton doc={props.doc}*/}
-                        {/*                    datastoreCapabilities={props.datastoreCapabilities}*/}
-                        {/*                    onDone={NULL_FUNCTION}/>*/}
-                    </LocalStorageFeatureToggle>
+                        <div className="mt-auto mb-auto">
+                            <ExportButton onExport={exportCallback}/>
+                        </div>
+
+                    </DeviceRouter.Desktop>
 
                 </div>
 
