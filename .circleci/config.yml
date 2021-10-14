@@ -407,10 +407,7 @@ jobs:
           name: build & install
           command: |
             gem install bundler
-            gem update
-            bundle update
             bundle install
-            pod update
             pod install
             bundle exec fastlane beta
 
