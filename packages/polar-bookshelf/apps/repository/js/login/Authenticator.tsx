@@ -2,33 +2,21 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
-import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
-import { Typography } from '@material-ui/core';
+import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
-import {
-    useAuthHandler,
-    useTriggerFirebaseEmailAuth,
-    useTriggerFirebaseGoogleAuth,
-    useTriggerStartTokenAuth,
-    useTriggerVerifyTokenAuth
-} from './AuthenticatorHooks';
+import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
-import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
-import Themes from 'epubjs/types/themes';
-import { PointerType } from 'polar-dom-text-search/src/IPointer';
-import { Box } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -102,7 +90,7 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: theme.palette.text.secondary, 
+            color: theme.palette.text.secondary,
             textDecoration: 'underline !important'
         }
     }),
@@ -380,11 +368,11 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined" 
+                                    variant="outlined"
                                     style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
                                     InputProps={{
                                     startAdornment: (
-                                            <EmailIcon style={{margin: '8px'}}/> 
+                                            <EmailIcon style={{margin: '8px'}}/>
                                         )
                                     }}
                                 />
@@ -566,7 +554,7 @@ const Main = React.memo(function Main(props: IProps) {
                                     <h2>
                                         Sign In to Polar
                                     </h2>
-                                    
+
                                     <FlexLayoutForm/>
                                 </>
                             )}
@@ -582,7 +570,7 @@ const Main = React.memo(function Main(props: IProps) {
                     )}
                 <Links/>
                 </div>
-                
+
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
@@ -620,7 +608,7 @@ const Main = React.memo(function Main(props: IProps) {
 
                         <Divider className={classes.divider}/>
                     </>
-                    )}  
+                    )}
                 </Box>
 
 
@@ -667,57 +655,72 @@ interface IProps {
 
 const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 
+interface AdaptiveDialogProps {
+    readonly children: React.ReactNode;
+}
+
+/**
+ * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
+ */
+export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
+
+    return (
+        <>
+            <DeviceRouters.NotPhone>
+                <div style={{
+                         display: 'flex',
+                         width: '100%',
+                         height: '100%'
+                     }}>
+
+                    <Paper style={{
+                               margin: 'auto',
+                               maxWidth: '450px',
+                               minHeight: '500px',
+                               maxHeight: '800px',
+                               width: '100%',
+                               display: 'flex',
+                               flexDirection: 'column'
+                           }}>
+
+                        {props.children}
+
+                    </Paper>
+                </div>
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+                <>
+                    {props.children}
+                </>
+            </DeviceRouters.Phone>
+        </>
+    );
+
+});
+
 export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
     const authStatus = useAuthHandler();
 
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
-            <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                            display: 'flex',
-                            width: '100%',
-                            height: '100%'
-                        }}>
+            <AdaptiveDialog>
+                <>
 
-                        <Paper style={{
-                                margin: 'auto',
-                                maxWidth: '450px',
-                                minHeight: '500px',
-                                maxHeight: '800px',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
+                    {authStatus === undefined && (
+                        <Pending/>
+                    )}
 
-                            <>
-                                {authStatus === undefined && (
-                                    <Pending/>
-                                )}
-
-                                {authStatus === 'needs-auth' && (
-                                <Main {...props}/>
-                                )}
-                            </>
-                        </Paper>
-                    </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-                    <>
-                        {authStatus === undefined && (
-                            <Pending/>
-                        )}
-
-                        {authStatus === 'needs-auth' && (
+                    {authStatus === 'needs-auth' && (
                         <Main {...props}/>
-                        )}
-                    </>
-            </DeviceRouters.Phone>
-                
-                <Intercom/>
-            </>
+                    )}
+
+                    <Intercom/>
+
+                </>
+
+            </AdaptiveDialog>
         </AuthenticatorModeContext.Provider>
     );
 });
