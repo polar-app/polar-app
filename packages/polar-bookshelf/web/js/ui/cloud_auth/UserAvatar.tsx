@@ -6,7 +6,7 @@ import isEqual from "react-fast-compare";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from 'clsx';
-import { IconButton } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IProps {
+interface UserAvatarProps {
     readonly photoURL: URLStr | undefined;
     readonly displayName: string | undefined;
     readonly size?: 'small' | 'medium' | 'large' | 'xlarge';
@@ -44,7 +44,7 @@ interface IProps {
     readonly onClick?: () => void;
 }
 
-export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
+export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps) {
 
     const classes = useStyles();
 
@@ -64,9 +64,8 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
     if (props.photoURL) {
 
         return (
-            <IconButton onClick={props?.onClick} style={props.style} className={className}>
-                <Avatar src={props.photoURL}> 
-                </Avatar>
+            <IconButton onClick={props.onClick} className={className} style={props.style}>
+                <Avatar src={props.photoURL}/>
             </IconButton>
         );
 
@@ -77,7 +76,7 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
         const letter = displayName[0].toUpperCase();
 
         return (
-            <IconButton style={props.style} className={className} onClick={props?.onClick}>
+            <IconButton onClick={props.onClick} className={className} style={props.style}>
                 <Avatar>
                     {letter}
                 </Avatar>
@@ -87,7 +86,7 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
     } else {
         // else use a blank account image
         return (
-            <IconButton className={className} style={props.style} onClick={props?.onClick}>
+            <IconButton onClick={props.onClick} className={className} style={props.style}>
                 <Avatar>
                     <AccountCircleIcon/>
                 </Avatar>

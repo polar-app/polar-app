@@ -12,9 +12,6 @@ import { Devices } from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        root: {
-
-        },
         icon: {
             fontSize: Devices.isDesktop()?'2.5rem': '1.5rem',
             color: theme.palette.text.secondary
@@ -78,7 +75,7 @@ export const SideNavQuestionMenuItem = React.forwardRef<HTMLLIElement, IProps>((
 
             {Icon &&
                 <ListItemIcon>
-                    <Icon className={classes.icon}/>
+                    <Icon className={`${classes.icon} ml-1`}/>
                 </ListItemIcon>}
 
             <ListItemText primary={

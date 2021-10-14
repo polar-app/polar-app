@@ -48,15 +48,6 @@ const useStyles = makeStyles((theme) =>
             display: 'flex',
             flexDirection: 'column'
         },
-        name:{
-            color: '#FFFFF',
-            fontSize: '16px'
-        },
-        email:{
-            color: '#FFFFFF',
-            opacity: '54%',
-            fontSize:'14px'
-        },
         planRow:{
             display: 'flex',
             flexDirection: 'column',
@@ -104,8 +95,8 @@ export const UserDetailsRow = React.memo(function UserDetailsRow(){
         <div className={classes.root}>
             <UserAvatar size={'medium'} className={classes.avatar} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
             <div className={classes.details}>
-                <span className={classes.name}>{userInfoContext?.userInfo?.displayName}</span>
-                <span className={classes.email}>{userInfoContext?.userInfo?.email}</span>
+                <Box component='span' color='text.primary'>{userInfoContext?.userInfo?.displayName}</Box>
+                <Box component='span' color='text.secondary'>{userInfoContext?.userInfo?.email}</Box>
             </div>
             {userInfoContext?.userInfo?.subscription &&
                 <IconByPlan className={classes.icon} subscription={userInfoContext?.userInfo?.subscription}/>
@@ -118,9 +109,9 @@ export const PlanDetailsContainer = React.memo(function PlanDetailsContainer(){
     const classes = useStyles();
 
     return(
-        <div className={classes.planRow}>
+        <Box component='div' className={classes.planRow}>
             <PlanUsage variant={'body2'}/>
-        </div>
+        </Box>
     );
 });
 /**
@@ -135,8 +126,8 @@ export const CollapsibleHelpSection = React.memo(function Collapsible() {
         <>
             <Button className={classes.collapsableRow} onClick={() => setOpen(!open)}>
                 <div style={{display: 'flex', alignContent: 'center'}}>
-                    <HelpIcon style={{alignSelf: 'center', marginLeft: '-5px'}}/>
-                    <span className={'ml-3'}>Help</span>
+                    <HelpIcon/>
+                    <Box component='span' ml={3}>Help</Box>
                 </div>
                 <div className={classes.collapseIcon} aria-label="expand row">
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -161,7 +152,7 @@ export const PreferencesButton = React.memo(function PreferencesButton(props: IP
     return(
         <Button className={classes.collapsableRow} onClick={props.goToUrl}>
             {props.icon}
-            <span className={'ml-3'}>{props.title}</span>
+            <Box component='span' ml={3}>{props.title}</Box>
         </Button>
     );
 });
@@ -186,19 +177,19 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
             <PreferencesButton
                     title={'Settings'}
                     goToUrl={() => history.push(RoutePathNames.SETTINGS_MOBILE)}
-                    icon={<SettingsIcon style={{alignSelf: 'center', marginLeft: '-5px'}} />}    />
+                    icon={<SettingsIcon/>}    />
 
             <PreferencesButton
                 title={'Upgrade Plan'}
                 goToUrl={() => history.push(RoutePathNames.PLAN_MOBILE)}
-                icon={<MonetizationOnIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
+                icon={<MonetizationOnIcon/>}   />
 
             <CollapsibleHelpSection/>
 
             <PreferencesButton
                     title={'Log out'}
                     goToUrl={ () => handleLogout()}
-                    icon={<ExitToAppIcon style={{alignSelf: 'center',marginLeft: '-5px'}} />}   />
+                    icon={<ExitToAppIcon />}   />
 
         </>
     );

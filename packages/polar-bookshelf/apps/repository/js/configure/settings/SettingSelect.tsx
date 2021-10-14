@@ -2,7 +2,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {createStyles, FormControlLabel, useTheme, makeStyles, Radio, RadioGroup} from "@material-ui/core";
+import {createStyles, FormControlLabel, useTheme,Box, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 import { Devices } from "polar-shared/src/util/Devices";
 
@@ -28,26 +28,18 @@ const useStyles = makeStyles((theme) =>
             justifyContent: 'space-between',
             alignItems: 'center',
         },
-        margins:{
-            marginLeft: theme.spacing(2),
-            marginRight: theme.spacing(3)
-        },
         radioLabel: {
             fontSize: '1rem',
         },
-        radioBackground:{
+        radioBackgroundMobile:{
             width: '100%',
             background: theme.palette.background.paper,
-            paddingLeft: theme.spacing(7.5)
+            paddingLeft: theme.spacing(8.8)
         },
-        paragraphMobile:{
-            marginLeft: theme.spacing(5.5),
-            color:  theme.palette.text.secondary
-        },
-        fullWidth:{
-            width: '100%'
-        },
-
+        radioBackground:{
+            paddingLeft: theme.spacing(1.4),
+            paddingRight: theme.spacing(1.4)
+        }
     }),
 );
 
@@ -79,17 +71,19 @@ export const SettingSelect = (props: IProps) => {
         <div>
             <div>
 
-                <div className={classes.margins}>
-                <MUIIconText style={{ flex: 1}} className={'pt-2'}  icon={props.icon}>
-                        <h3><b>{props.title}</b></h3>
-                    </MUIIconText>
-                    <p className={Devices.isPhone()? classes.paragraphMobile: undefined}>
+                <Box mx={3}>
+                    <Box pt={2}>
+                        <MUIIconText style={{ flex: 1}} icon={props.icon}>
+                                <h3><b>{props.title}</b></h3>
+                        </MUIIconText>
+                    </Box>
+                    <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
                         {props.description}
-                    </p>
-                </div>
+                    </Box>
+                </Box>
 
                 <div>
-                    <RadioGroup className={Devices.isPhone()? classes.radioBackground : undefined} name={name} value={value} onChange={onChange}>
+                    <RadioGroup className={Devices.isPhone()? classes.radioBackgroundMobile : classes.radioBackground} name={name} value={value} onChange={onChange}>
                         {props.options.map(current =>
                             <FormControlLabel
                                 key={current.id}

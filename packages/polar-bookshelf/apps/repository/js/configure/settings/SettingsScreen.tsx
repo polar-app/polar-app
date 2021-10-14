@@ -51,10 +51,6 @@ const useStyles = makeStyles((theme) =>
                 margin: 0,
             }
         },
-        padded: {
-            marginLeft: theme.spacing(2),
-            marginRight: theme.spacing(2)
-        }
     }),
 );
 
@@ -62,8 +58,6 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
     const classes = useStyles();
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
-
-    const localStoragePrefs = useLocalStoragePrefs();
 
     const handleDarkModeToggle = (enabled: boolean) => {
 
@@ -81,14 +75,14 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                 <ConfigureNavbar/>
 
                 <div className={classes.root}>
-                    <div className={classes.padded}>
+                    <Box component='div' px={2}>
                         <h1>General</h1>
 
                         <p>
                             General settings. Note that some of
                             these may require you to reload.
                         </p>
-                    </div>
+                    </Box>
 
                     <SettingToggle title="Dark Mode"
                                    description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
@@ -163,7 +157,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
 
                     <Divider/>
 
-                    <Box mt={1}>
+                    <Box mt={1} mx={1}>
                         <ViewDeviceInfoButton/>
                         <Divider/>
                         <CancelSubscriptionButton/>

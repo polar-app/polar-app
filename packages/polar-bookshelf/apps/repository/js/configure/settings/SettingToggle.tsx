@@ -3,17 +3,8 @@ import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
-import {createStyles, makeStyles, useTheme} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import { Devices } from "polar-shared/src/util/Devices";
-
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        paragraphMobile:{
-            marginLeft: theme.spacing(5.5),
-            color:  theme.palette.text.secondary
-        }
-    }),
-);
 
 export interface PrefsWriter {
 
@@ -45,7 +36,6 @@ interface IProps {
 export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     const log = useLogger();
-    const classes = useStyles();
 
     const {prefs, name, defaultValue} = props;
 
@@ -74,7 +64,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     };
 
     return (
-        <div className={'ml-3 mr-3'}>
+        <Box mx={3}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
                 <MUIIconText style={{ flex: 1 }} className={'pt-1'} icon={props.icon}>
@@ -92,18 +82,20 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                     </h3>
                 </MUIIconText>
 
-                <div className="mt-auto mb-auto">
+                <Box component={'div'} my={'auto'} >
                     <SwitchButton size="medium"
                                   initialValue={value}
                                   onChange={value => onChange(value)} />
-                </div>
+                </Box>
 
             </div>
 
             <div>
-                <p className={Devices.isPhone()? classes.paragraphMobile: undefined}>{props.description}</p>
+                <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
+                    {props.description}
+                </Box>
             </div> 
-        </div>
+        </Box>
     );
 
 });
