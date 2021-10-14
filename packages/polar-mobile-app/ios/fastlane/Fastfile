@@ -23,7 +23,7 @@ platform :ios do
   lane :beta do
     match(type: "development")
     increment_build_number(xcodeproj: "PolarReactNative.xcodeproj")
-    build_app(workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    build_app(export_method: "development", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
   end
 
   lane :release do
