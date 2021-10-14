@@ -1,4 +1,4 @@
-git_url("git@github.com:Dzhuneyt/apple-appstore-certs.git")
+git_url("git@github.com:polar-app/fastlane-signing-certs.git")
 
 storage_mode("git")
 
