@@ -69,6 +69,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
+import {createStyles, makeStyles} from "@material-ui/core";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -196,28 +197,26 @@ namespace Device {
         )
     });
 
+    export const useHandheldStyles = makeStyles(() =>
+        createStyles({
+            paper: { width: '100vw' },
+        })
+    );
+
     export const Handheld = React.memo(function Handheld() {
 
         const [open, setOpen] = React.useState(false);
+        const classes = useHandheldStyles();
 
         return (
             <>
-
-                {/*<SwipeableDrawer*/}
-                {/*    anchor='left'*/}
-                {/*    open={open}*/}
-                {/*    onClose={() => setOpen(false)}*/}
-                {/*    onOpen={() => setOpen(true)}>*/}
-
-                {/*    <Outliner />*/}
-
-                {/*</SwipeableDrawer>*/}
                 <SideCar>
                     <Outliner/>
                 </SideCar>
 
                 <SwipeableDrawer
                     anchor='right'
+                    classes={{ paper: classes.paper }}
                     open={open}
                     onClose={() => setOpen(false)}
                     onOpen={() => setOpen(true)}>
@@ -235,8 +234,6 @@ namespace Device {
                      }}>
 
                     <HandheldToolbar toggleRightDrawer={() => setOpen(!open)}/>
-
-                    {/* <DocToolbar/> */}
 
                     <Main/>
 

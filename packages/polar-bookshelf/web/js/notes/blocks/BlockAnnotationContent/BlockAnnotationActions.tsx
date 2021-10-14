@@ -60,19 +60,22 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
     }, [setHovered, handleHide]);
 
     return (
-        <div
-            className={classes.root}
-            onMouseEnter={handleShow}
-            onMouseLeave={handleHide}
-        >
-            
-            <div className={classes.contentWrapper}>
-                {children}
+        <ClickAwayListener onClickAway={handleHide}>
+            <div
+                className={classes.root}
+                onMouseEnter={handleShow}
+                onMouseLeave={handleHide}
+                onClick={handleShow}
+            >
+                
+                <div className={classes.contentWrapper}>
+                    {children}
+                </div>
+                <div className={classes.actionsWrapper}>
+                    {hovered && <div className={classes.actionsOuter}>{actions}</div>}
+                </div>
             </div>
-            <div className={classes.actionsWrapper}>
-                {hovered && <div className={classes.actionsOuter}>{actions}</div>}
-            </div>
-        </div>
+        </ClickAwayListener>
     );
 };
 
