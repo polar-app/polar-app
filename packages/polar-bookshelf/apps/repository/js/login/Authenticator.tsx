@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {
     useAuthHandler,
     useTriggerFirebaseEmailAuth,
@@ -121,7 +122,7 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     const mode = React.useContext(AuthenticatorModeContext);
 
-    const hint = mode === 'create-account' ? 'Get Started' : 'Sign In'
+    const hint = mode === 'create-account' ? 'Join Private Beta' : 'Sign In'
 
     return (
         <>
@@ -132,7 +133,7 @@ const AuthButton = (props: IAuthButtonProps) => {
                         onClick={props.onClick}
                         style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
-                    {hint} with {props.strategy}
+                    {hint}
                 </Button>
             </DeviceRouters.Phone>
 
@@ -141,7 +142,7 @@ const AuthButton = (props: IAuthButtonProps) => {
                         color="primary"
                         className={classes.button}
                         onClick={props.onClick}>
-                    {hint} with {props.strategy}
+                    {hint}
                 </Button>
             </DeviceRouters.NotPhone>
         </>
@@ -502,18 +503,18 @@ const OrCreateNewAccount = () => {
 
 const UpdatedLogoLayout = () => {
     return (
-        <div style={{display: 'flex'}}>
-            <div style={{marginBottom: 'auto', display: 'flex', alignItems: "center", justifyContent: 'center'}}>
-                <Box m={2}>
-                    <PolarSVGIcon width={100} height={100}/>
-                </Box>
-                <Box m={1}>
-                    <Typography variant="h2" component="div">
-                        POLAR
-                    </Typography>
-                </Box>
+            <div style={{display: 'flex'}}>
+                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center", justifyContent: 'center'}}>
+                    <Box m={1}>
+                        <PolarSVGIcon width={100} height={100}/>
+                    </Box>
+                    <Box m={1}>
+                        <Typography variant="h2" component="div">
+                            POLAR
+                        </Typography>
+                    </Box>
+                </div>
             </div>
-        </div>
     )
 }
 
@@ -535,6 +536,9 @@ const FlexLayoutForm = () => {
 
 const Main = React.memo(function Main(props: IProps) {
     const classes = useStyles();
+
+    const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
+    const emailRef = React.useRef("");
 
     return (
         <>
@@ -560,7 +564,37 @@ const Main = React.memo(function Main(props: IProps) {
                                                 display: 'flex',
                                                 flexDirection: 'column'
                                             }}>
-                                                <EmailTokenAuthButton/>
+                                                <Divider className={classes.sendLinkDivider}/>
+                                                
+                                                <TextField autoFocus={true}
+                                                    className={classes.email}
+                                                    onChange={event => emailRef.current = event.target.value}
+                                                    placeholder="Enter your email address"
+                                                    variant="outlined"
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                                <EmailIcon style={{margin: '8px'}}/>
+                                                            )
+                                                        }}
+                                                />
+                                
+                                                <Button variant="contained"
+                                                        color="primary"
+                                                        className={classes.button}
+                                                        onClick={() => {
+                                                            // FIXME: call the cloud function
+                                                            const request = {
+                                                                email: emailRef.current.trim(),
+                                                                tag: "initial_signup",
+                                                            };
+                                                            JSONRPC.exec<unknown, any>('private-beta/register', request)
+                                                                .then((result: any) => {
+                                                                    console.log(result);
+                                                                    setIsRegistered(true);
+                                                                }).catch((reason: any) => console.error(reason));
+                                                        }}>
+                                                    Join Private Beta
+                                                </Button>
                                             </div>
                                     </div>
                                 </>
@@ -597,7 +631,6 @@ const Main = React.memo(function Main(props: IProps) {
                 <Box marginTop={1}>
                     {props.mode === 'create-account' && (
                         <>
-                        <div style={{float: 'inherit'}}>
                             <UpdatedLogoLayout/>
 
                             <h2>
@@ -607,8 +640,6 @@ const Main = React.memo(function Main(props: IProps) {
                             <Divider className={classes.sendLinkDivider}/>
 
                             <FlexLayoutForm/>
-                        </div>
-
                         </>
                     )}
 
