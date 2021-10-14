@@ -51,7 +51,6 @@ export const BetaRegister = React.memo(function BetaRegister(props: {}) {
 
                         {!isRegistered && <>
                             <TextField autoFocus={true}
-                                       className={classes.email}
                                        onChange={event => emailRef.current = event.target.value}
                                        placeholder="email@"
                                        variant="outlined"/>

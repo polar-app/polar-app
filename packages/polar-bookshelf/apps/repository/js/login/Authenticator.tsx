@@ -8,7 +8,6 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
@@ -22,24 +21,22 @@ import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 export const useStyles = makeStyles((theme) =>
     createStyles({
 
+        email: {
+            flexGrow: 1,
+            margin: theme.spacing(1),
+        },
+
         button: {
             flexGrow: 1,
             margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-            padding: '8px'
         },
+
         alert: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
         },
 
-        email: {
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-        },
         alternate: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
@@ -71,25 +68,18 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     return (
         <>
-            <DeviceRouters.Phone>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={props.onClick}
-                        style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
-                    {hint} with {props.strategy}
-                </Button>
-            </DeviceRouters.Phone>
+            <Button variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={props.onClick}
+                    style={{
+                        flexGrow: 1
+                    }}>
 
-            <DeviceRouters.NotPhone>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={props.onClick}>
-                    {hint} with {props.strategy}
-                </Button>
-            </DeviceRouters.NotPhone>
+                {hint} with {props.strategy}
+            </Button>
+
         </>
     );
 }
@@ -115,7 +105,6 @@ const ProgressActive = () => {
     );
 }
 
-// Function to keep
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
@@ -258,146 +247,84 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-            <DeviceRouters.Phone>
-                <>
-                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    {active && (
-                        <>
-                            {pending && (
-                                <ProgressActive/>
-                            )}
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     flexGrow: 1
+                 }}>
+                {active && (
+                    <>
+                        {pending && (
+                            <ProgressActive/>
+                        )}
 
-                            {! pending && (
-                                <ProgressInactive/>
-                            )}
+                        {! pending && (
+                            <ProgressInactive/>
+                        )}
 
-                            {alert && (
-                                <Alert severity={alert.type}
-                                    className={classes.alert}>
-                                    {alert.message}
-                                </Alert>
-                            )}
+                        {alert && (
+                            <Alert severity={alert.type}
+                                className={classes.alert}>
+                                {alert.message}
+                            </Alert>
+                        )}
 
-                            {triggered && (
-                                <>
-                                    <TextField autoFocus={true}
-                                        className={classes.email}
-                                        onChange={event => challengeRef.current = event.target.value}
-                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                        placeholder="Enter your Code Here"
-                                        variant="outlined"
-                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
+                        {triggered && (
+                            <>
+                                <TextField autoFocus={true}
+                                           className={classes.email}
+                                           onChange={event => challengeRef.current = event.target.value}
+                                           onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                           placeholder="Enter your Code Here"
+                                           variant="outlined"
+                                           style={{
+                                               textAlign: 'center',
+                                               flexGrow: 1,
+                                           }} />
 
-                                    <div className={classes.alternate}>
-                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
-                                    </div>
+                                <div className={classes.alternate}>
+                                    <Button onClick={handleEmailProvided}>Resend Email</Button>
+                                </div>
 
-                                    <Button variant="contained"
+                                <Button variant="contained"
                                         color="primary"
                                         className={classes.button}
                                         onClick={handleClick}
-                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}}>
+                                        style={{
+                                            textAlign: 'center',
+                                            flexGrow: 1,
+                                        }}>
                                         Verify Code
-                                    </Button>
-                                </>
-                            )}
+                                </Button>
+                            </>
+                        )}
 
-                            {! triggered && (
-                                <TextField autoFocus={true}
-                                    className={classes.email}
-                                    onChange={event => emailRef.current = event.target.value}
-                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                    placeholder="Enter your email address"
-                                    variant="outlined"
-                                    style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
-                                    InputProps={{
-                                    startAdornment: (
-                                            <EmailIcon style={{margin: '8px'}}/>
-                                        )
-                                    }}
-                                />
-                            )}
-                        </>
-                    )}
+                        {! triggered && (
+                            <TextField autoFocus={true}
+                                       className={classes.email}
+                                       onChange={event => emailRef.current = event.target.value}
+                                       onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                       placeholder="Enter your email address"
+                                       variant="outlined"
+                                       style={{
+                                           textAlign: 'center',
+                                           flexGrow: 1,
+                                       }}
+                                       InputProps={{
+                                       startAdornment: (
+                                               <EmailIcon style={{margin: '8px'}}/>
+                                           )
+                                       }}/>
+                        )}
+                    </>
+                )}
 
-                    {!triggered && (
-                        <AuthButton onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                        />
-                    )}
-                </div>
-                </>
-            </DeviceRouters.Phone>
-
-            <DeviceRouters.NotPhone>
-                <>
-                    {active && (
-                        <>
-                            <Divider/>
-
-                            {pending && (
-                                <ProgressActive/>
-                            )}
-
-                            {! pending && (
-                                <ProgressInactive/>
-                            )}
-
-                            {alert && (
-                                <Alert severity={alert.type}
-                                        className={classes.alert}>
-                                    {alert.message}
-                                </Alert>
-                            )}
-
-                            {triggered && (
-                                <>
-
-                                    <TextField autoFocus={true}
-                                        className={classes.email}
-                                        onChange={event => challengeRef.current = event.target.value}
-                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                        placeholder="Enter your Code Here"
-                                        variant="outlined" />
-
-                                    <div className={classes.alternate}>
-                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
-                                    </div>
-                                    <Button variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        onClick={handleClick}>
-                                        Verify Code
-                                    </Button>
-                                </>
-                            )}
-
-                            {! triggered && (
-                                <TextField autoFocus={true}
-                                    className={classes.email}
-                                    onChange={event => emailRef.current = event.target.value}
-                                    onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                    placeholder="Enter your email address"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: (
-                                                <EmailIcon style={{margin: '8px'}}/>
-                                            )
-                                        }}
-                                />
-                            )}
-                        </>
-                    )}
-
-                    {!triggered && (
-                        <AuthButton onClick={handleClick}
-                            strategy="Email"
-                            startIcon={<EmailIcon />}
-                        />
-                    )}
-                </>
-            </DeviceRouters.NotPhone>
+                {!triggered && (
+                    <AuthButton onClick={handleClick}
+                                strategy="Email"
+                                startIcon={<EmailIcon />}/>
+                )}
+            </div>
         </>
     );
 };
@@ -472,8 +399,6 @@ interface AuthContentProps {
  */
 const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
-    const classes = useStyles();
-
     return (
         <>
             <div className="AuthContent"
@@ -536,76 +461,6 @@ export const SignInAuthContent = () => {
         </AuthContent>
     )
 }
-
-const Main = React.memo(function Main(props: IProps) {
-    const classes = useStyles();
-
-    return (
-        <>
-            <div style={{
-                     height:"100vh",
-                     textAlign: 'center',
-                     flexGrow: 1,
-                     display: 'flex',
-                     flexDirection: 'column'
-                 }}>
-
-                {props.mode === 'create-account' && (
-                    <>
-                        <div style={{
-                                 display: 'flex',
-                                 flexGrow: 1,
-                                 alignItems: 'center'
-                             }}>
-                            <LogoAndTextSideBySide/>
-                        </div>
-
-                        <h2>
-                            Join The Waiting List
-                        </h2>
-
-                        <Divider/>
-
-                        <FlexLayoutForm/>
-                    </>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <>
-                    <Box margin={10}>
-                        <PolarSVGIcon width={125} height={125}/>
-                    </Box>
-                    <h2>
-                        Sign In to Polar
-                    </h2>
-                    <div style={{
-                             display: 'flex',
-                             flexDirection: 'column'
-                         }}>
-                        <EmailTokenAuthButton/>
-                    </div>
-
-                    <Divider/>
-
-                </>
-                )}
-
-                {props.mode === 'create-account' && (
-                    <SignInWithExistingAccountButton/>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <OrCreateNewAccountButton/>
-                )}
-
-                <div style={{flexGrow: 1}}/>
-
-                <AuthLegalDisclaimer/>
-
-            </div>
-        </>
-    );
-});
 
 const Pending = () => {
     return (
@@ -672,6 +527,9 @@ export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: Adaptive
     );
 
 });
+
+// TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
+// PrivateBetaAuthenticator or CreateAccountAuthenticator
 
 export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
