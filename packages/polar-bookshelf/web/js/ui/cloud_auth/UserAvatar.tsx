@@ -6,6 +6,7 @@ import isEqual from "react-fast-compare";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from 'clsx';
+import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -63,11 +64,10 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
     if (props.photoURL) {
 
         return (
-            <Avatar src={props.photoURL}
-                    className={className}
-                    style={props.style}
-                    onClick={props?.onClick}> 
-            </Avatar>
+            <IconButton onClick={props?.onClick} style={props.style} className={className}>
+                <Avatar src={props.photoURL}> 
+                </Avatar>
+            </IconButton>
         );
 
     } else if (displayName !== '') {
@@ -77,19 +77,21 @@ export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
         const letter = displayName[0].toUpperCase();
 
         return (
-            <Avatar className={className}
-                    style={props.style}>
-                {letter}
-            </Avatar>
+            <IconButton style={props.style} className={className} onClick={props?.onClick}>
+                <Avatar>
+                    {letter}
+                </Avatar>
+            </IconButton>
         );
 
     } else {
         // else use a blank account image
         return (
-            <Avatar className={className}
-                    style={props.style}>
-                <AccountCircleIcon/>
-            </Avatar>
+            <IconButton className={className} style={props.style} onClick={props?.onClick}>
+                <Avatar>
+                    <AccountCircleIcon/>
+                </Avatar>
+            </IconButton>
         );
     }
 

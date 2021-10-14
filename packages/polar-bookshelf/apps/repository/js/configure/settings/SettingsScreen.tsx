@@ -15,7 +15,7 @@ import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {useLocalStoragePrefs} from "./LocalStoragePrefs";
 import {ExportDataButton} from "../../premium/ExportDataButton";
-import {createStyles, makeStyles} from "@material-ui/core";
+import {createStyles, makeStyles, useTheme} from "@material-ui/core";
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
@@ -43,7 +43,7 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
     }
 ];
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             margin: '16px 0',
@@ -52,7 +52,8 @@ const useStyles = makeStyles(() =>
             }
         },
         padded: {
-            margin: '0 16px'
+            marginLeft: theme.spacing(2),
+            marginRight: theme.spacing(2)
         }
     }),
 );
