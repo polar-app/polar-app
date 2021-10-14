@@ -25,7 +25,7 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
             width: '100%',
             bottom: 0,
             left: 0,
-            zIndex: theme.zIndex.tooltip + 1000,
+            zIndex: 3,
             ...(show
                 ? { transform: 'translateY(0)' }
                 : { transform: 'translateY(100%)', position: 'absolute' }
