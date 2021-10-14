@@ -9,12 +9,12 @@ import {BlockContent} from "./store/BlocksStore";
 
 export type IBlockContentStructure<T = IBlockContent> = {
     content: T;
-    children: ReadonlyArray<IBlockContentStructure<T>>;
+    children: ReadonlyArray<IBlockContentStructure>;
 };
 
 export type BlockContentStructure<T = BlockContent> = {
     content: T;
-    children: ReadonlyArray<BlockContentStructure<T>>;
+    children: ReadonlyArray<BlockContentStructure>;
 };
 
 type IBlockContentMergableStructure<T = IBlockContent> = IBlockContentStructure<T> & {

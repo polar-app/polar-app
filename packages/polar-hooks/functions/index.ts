@@ -38,6 +38,7 @@ import {NSpaceCreateFunction} from "./impl/blocks/NSpaceFunction";
 import {AnswerIndexerFunction} from "./impl/ai/AnswerIndexerFunction";
 import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUpdateFunction";
+import {Polar3DocMetaMigratorFunction} from "./impl/polar-3.0/MigrationFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -86,3 +87,4 @@ exports.NSpaceCreateFunction = NSpaceCreateFunction
 exports.AnswerIndexer = AnswerIndexerFunction
 exports.AnswerExecutor = AnswerExecutorFunction;
 exports.AnswerExecutorTraceUpdate = AnswerExecutorTraceUpdateFunction
+exports.Polar3DocMetaMigratorFunction = Polar3DocMetaMigratorFunction;
