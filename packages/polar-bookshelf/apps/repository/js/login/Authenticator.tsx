@@ -611,6 +611,9 @@ const Main = React.memo(function Main(props: IProps) {
                         <h2>
                             Sign In to Polar
                         </h2>
+
+                        <Divider className={classes.sendLinkDivider}/>
+
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column'
