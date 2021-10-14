@@ -433,7 +433,7 @@ executors:
 
 # ~ Define Workflow Steps
 workflows:
-  main-workflow:
+  Webapp:
     jobs:
       ## ^ Approve the entire pipeline to start deployment
       - approve-deploy:
@@ -544,7 +544,7 @@ workflows:
               only:
                 - master
 
-  Mobile-Workflow:
+  IOS-Android:
     jobs:
       - build-setup:
           executor: large
