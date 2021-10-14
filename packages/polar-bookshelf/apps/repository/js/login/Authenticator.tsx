@@ -586,62 +586,63 @@ const Main = React.memo(function Main(props: IProps) {
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
-            <div style={{height:"100vh", textAlign: 'center', flexGrow: 1}}>
+            <>
+                <div style={{height:"100vh", textAlign: 'center', flexGrow: 1}}>
 
-                <Box marginTop={1}>
-                    {props.mode === 'create-account' && (
-                        <>
-                            <UpdatedLogoLayout/>
+                    <Box marginTop={1}>
+                        {props.mode === 'create-account' && (
+                            <>
+                                <UpdatedLogoLayout/>
 
+                                <h2>
+                                    Join The Waiting List
+                                </h2>
+
+                                <Divider className={classes.sendLinkDivider}/>
+
+                                <FlexLayoutForm/>
+                            </>
+                        )}
+
+                        {props.mode === 'sign-in' && (
+                            <>
+                            <Box margin={10}>
+                                <PolarSVGIcon width={125} height={125}/>
+                            </Box>
                             <h2>
-                                Join The Waiting List
+                                Sign In to Polar
                             </h2>
 
                             <Divider className={classes.sendLinkDivider}/>
 
-                            <FlexLayoutForm/>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                                }}>
+                                <EmailTokenAuthButton/>
+                            </div>
+
+                            <Divider className={classes.divider}/>
                         </>
+                        )}  
+                    </Box>
+
+                    {props.mode === 'create-account' && (
+                        <SignInWithExistingAccount/>
                     )}
 
                     {props.mode === 'sign-in' && (
-                        <>
-                        <Box margin={10}>
-                            <PolarSVGIcon width={125} height={125}/>
-                        </Box>
-                        <h2>
-                            Sign In to Polar
-                        </h2>
+                        <OrCreateNewAccount/>
+                    )}
 
-                        <Divider className={classes.sendLinkDivider}/>
-
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column'
-                            }}>
-                            <EmailTokenAuthButton/>
-                        </div>
-
-                        <Divider className={classes.divider}/>
-                    </>
-                    )}  
-                </Box>
-
-                {props.mode === 'create-account' && (
-                    <SignInWithExistingAccount/>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <OrCreateNewAccount/>
-                )}
-
-                <div style={{flexGrow: 1}}/>
-                <div>
-                    <p style={{fontSize: '10px'}} className={classes.legal}>
-                        You acknowledge that you will read, and agree to
-                        our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                    </p>
+                    <div>
+                        <p style={{fontSize: '10px'}} className={classes.legal}>
+                            You acknowledge that you will read, and agree to
+                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </>
             </DeviceRouters.Phone>
         </>
     );
