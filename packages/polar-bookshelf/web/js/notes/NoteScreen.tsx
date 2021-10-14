@@ -15,7 +15,7 @@ import {NoteRepoScreen} from './NoteRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
 import {SideCar} from '../sidenav/SideNav';
-import {RoutePathnames} from '../apps/repository/RoutePathnames';
+import {RoutePathNames} from '../apps/repository/RoutePathNames';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -33,16 +33,18 @@ export const NoteProviders: React.FC = ({ children }) => {
     const classes = useStyles();
 
     return (
-        <ActionMenuStoreProvider>
-            <NoteSelectionHandler style={{ height: '100%' }}>
-                <NoteStyle>
-                    <MUIBrowserLinkStyle className={classes.noteOuter}>
-                        {children}
-                        <ActionMenuPopup />
-                    </MUIBrowserLinkStyle>
-                </NoteStyle>
-            </NoteSelectionHandler>
-        </ActionMenuStoreProvider>
+        <div className="NoteRoot" style={{ height: '100%' }}>
+            <ActionMenuStoreProvider>
+                <NoteSelectionHandler style={{ height: '100%' }}>
+                    <NoteStyle>
+                        <MUIBrowserLinkStyle className={classes.noteOuter}>
+                            {children}
+                            <ActionMenuPopup />
+                        </MUIBrowserLinkStyle>
+                    </NoteStyle>
+                </NoteSelectionHandler>
+            </ActionMenuStoreProvider>
+        </div>
     );
 };
 
@@ -63,9 +65,9 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
                 </SideCar>
                 <JumpToNoteKeyboardCommand />
                 <Switch>
-                    <Route path={RoutePathnames.NOTES_REPO} component={NoteRepoScreen} />
-                    <Route path={RoutePathnames.NOTE(":id")} component={SingleNoteScreen} />
-                    <Route path={RoutePathnames.NOTES} component={DailyNotesScreen} />
+                    <Route path={RoutePathNames.NOTES_REPO} component={NoteRepoScreen} />
+                    <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
+                    <Route path={RoutePathNames.NOTES} component={DailyNotesScreen} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>

@@ -10,9 +10,10 @@ import {memoForwardRefDiv} from "../../react/ReactUtils";
 import {useLogoutCallback} from "../../accounts/AccountHooks";
 import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
-import Subscription = Billing.Subscription;
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
+import {AcceptBatch} from "./AcceptBatch";
+import Subscription = Billing.Subscription;
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -29,23 +30,6 @@ const LogoutButton = (props: LogoutButtonProps) => {
     </Button>;
 
 };
-//
-// const InviteUsersButton = () => {
-//
-//     return <Link to={{pathname: '/invite'}}>
-//         <Button id="cloud-sync-invite-users"
-//                 color="secondary"
-//                 outline
-//                 size="md">
-//
-//             <i className="fas fa-user-plus mr-1"/>
-//
-//             Invite Users
-//
-//         </Button>
-//     </Link>;
-//
-// };
 
 const ViewPlansAndPricingButton = () => {
 
@@ -86,7 +70,7 @@ interface IProps {
 
 }
 
-function useLogoutAction(): Callback {
+export function useLogoutAction(): Callback {
 
     const dialogs = useDialogManager();
 
@@ -105,6 +89,7 @@ function useLogoutAction(): Callback {
 
 }
 
+
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
     const logoutAction = useLogoutAction();
@@ -113,6 +98,17 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
     function handleLogout() {
         popperController.dismiss();
         logoutAction();
+    }
+
+    /**
+     * Return true if the provided email can accept users into the beta
+     */
+    function canAcceptBeta(email: EmailStr | undefined) {
+        const canAccept: string[] = [
+            'dzhuneyt@getpolarized.io',
+            'jonathan@getpolarized.io',
+        ];
+        return email && canAccept.includes(email);
     }
 
     return (
@@ -153,7 +149,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                 <div className="mt-2 pb-2 border-top text-center">
 
                     <div className="mt-4 mb-4">
-                        <PlanUsage/>
+                        <PlanUsage variant='h6'/>
                     </div>
 
                     <div className="mt-2 mb-4">
@@ -162,6 +158,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
 
                     <ViewPlansAndPricingButton/>
 
+                    {canAcceptBeta(props.userInfo.email) && <AcceptBatch/>}
                 </div>
 
                 <div className="text-right">

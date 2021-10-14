@@ -15,12 +15,8 @@ export type EditableContent = MarkdownContent
                               | TextHighlightAnnotationContent
                               | FlashcardAnnotationContent;
 
-export type TextContent = MarkdownContent
-                          | DocumentContent
-                          | NameContent
-                          | DateContent
-                          | TextHighlightAnnotationContent
-                          | FlashcardAnnotationContent;
+export type TextContent = EditableContent
+                          | DocumentContent;
 
 
 export type HasLinksContent = MarkdownContent | TextHighlightAnnotationContent;

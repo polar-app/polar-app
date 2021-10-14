@@ -2,6 +2,7 @@ import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
+import {IAnswersCostEstimation, ICostEstimation, ICostEstimationHolder} from "./ICostEstimation";
 
 export interface IAnswerExecutorTimings {
 
@@ -23,6 +24,27 @@ export interface IAnswerExecutorTimings {
     // eslint-disable-next-line camelcase
     readonly openai_answer: number;
 
+    // TODO: add support for the GCL cleanup latencies.
+
+}
+
+/**
+ * Total costs for the answer executor.
+ */
+export interface IAnswerExecutorCostEstimation extends ICostEstimation {
+
+    /**
+     * Cost estimation when re-rank is enabled.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_rerank_cost_estimation?: ICostEstimation;
+
+    /**
+     * Cost estimation for using the answer API to compute the response.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_answer_api_cost_estimation: IAnswersCostEstimation;
+
 }
 
 export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
@@ -34,15 +56,34 @@ export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 
 }
 
+export interface IAnswerEntity {
+
+    /**
+     * Whether this entity was referenced in the question of the anser
+     */
+    readonly type: 'question' | 'answer';
+
+    /**
+     * The text of this entity.
+     */
+    readonly text: string;
+
+}
+
 export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     /**
      * Unique ID for this response which can be used when flagging results for good/bad
      */
     readonly id: string;
     readonly question: string;
+
     // eslint-disable-next-line camelcase
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+
+    readonly entities: ReadonlyArray<IAnswerEntity>;
+
     readonly timings: IAnswerExecutorTimings;
+
 }
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;

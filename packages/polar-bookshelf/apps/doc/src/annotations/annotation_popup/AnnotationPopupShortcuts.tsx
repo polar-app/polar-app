@@ -9,7 +9,7 @@ import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/P
 import {useCopyAnnotation} from "./AnnotationPopupBar";
 import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
 import {IBlockAnnotationProps, IDocMetaAnnotationProps} from "./AnnotationPopupActions";
-import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
+import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 
@@ -138,12 +138,12 @@ const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = ({ annotatio
     };
 
     const BlockColorChanger: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
-        const { update } = useAnnotationBlockManager();
+        const blocksStore = useBlocksStore();
         const handleColorChangeRef = useRefWithUpdates(({ key }: KeyboardEvent) => {
             const color = keyToColor(key);
             if (color && color !== annotation.content.value.color) {
                 const contentJSON = annotation.content.toJSON();
-                update(annotation.id, {
+                blocksStore.setBlockContent(annotation.id, {
                     ...contentJSON,
                     value: { ...contentJSON.value, color }
                 });

@@ -8,31 +8,56 @@ export namespace SentenceShingler {
         readonly text: string;
     }
 
-    function computeShinglesFromSentences(sentences: ReadonlyArray<string>,
-                                          width: number = 4,
-                                          jump: number = 2): ReadonlyArray<ISentenceShingle> {
+    export function _computeShinglesFromSentences(sentences: ReadonlyArray<string>,
+                                                  width = 4,
+                                                  jump = 2): ReadonlyArray<ISentenceShingle> {
 
-        const result = [];
+        const result: ISentenceShingle[] = [];
 
-        for(let offset = 0; offset < sentences.length; offset = offset + jump) {
-            const end = offset + width;
-            const slice = sentences.slice(offset, end);
+        const pending = [...sentences];
+
+        function emitSlice(slice: ReadonlyArray<string>) {
+
             const shingle: ISentenceShingle = {
                 text: slice.join("  ")
             }
 
             result.push(shingle);
+
+        }
+
+        while (pending.length >= width) {
+
+            const slice = pending.slice(0, width);
+
+            emitSlice(slice);
+            pending.splice(0, jump);
+
+        }
+
+        // if we have an impartial number of shingles at the end we need to emit
+        // one final one that has an impartial overlap to verify that we don't
+        // lose any data overlapping our shingles.
+        if (pending.length > jump) {
+            const end = sentences.length;
+            const start = end - width
+            const slice = sentences.slice(start, end);
+            emitSlice(slice);
         }
 
         return result;
 
     }
 
-    export async function computeShinglesFromContent(content: TextStr) {
+    interface IComputeOpts {
+        readonly filterCompleteSentences?: boolean;
+    }
 
-        const sentences = await GCLSentenceSplitter.split(content);
+    export async function computeShinglesFromContent(content: TextStr, opts: IComputeOpts = {}) {
 
-        return computeShinglesFromSentences(sentences);
+        const sentences = await GCLSentenceSplitter.split(content, opts);
+
+        return _computeShinglesFromSentences(sentences);
 
     }
 

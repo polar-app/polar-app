@@ -29,8 +29,12 @@ const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
 const ADD_MOBILE = '/addmobile';
 const ACCOUNT = "#account";
+const ACCOUNT_MOBILE = "/accountmobile";
+const SETTINGS_MOBILE = "/settingsmobile";
+const PLAN_MOBILE = "/planmobile";
 
-export const RoutePathnames = {
+
+export const RoutePathNames = {
     HOME,
     ANNOTATIONS,
     NOTES,
@@ -39,7 +43,10 @@ export const RoutePathnames = {
     ANKI_SYNC,
     SETTINGS,
     STATISTICS,
+    ACCOUNT_MOBILE,
     ACCOUNT,
+    PLAN_MOBILE,
+    SETTINGS_MOBILE,
     WHATS_NEW,
     INVITE,
     PLANS,

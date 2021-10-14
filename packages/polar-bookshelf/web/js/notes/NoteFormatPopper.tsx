@@ -75,7 +75,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         const container = containerRef.current;
         if (mode === 'link' && container) {
             save();
-            setFakeRangePosition(getPosition(container));
+            setFakeRangePosition(getPosition());
         }
         setMode(mode);
     }, [setMode, save, containerRef, getPosition]);
@@ -89,7 +89,13 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
             return false;
         }
 
-        const range = window.getSelection()!.getRangeAt(0);
+        const selection = window.getSelection();
+
+        if (! selection || selection.rangeCount === 0) {
+            return false;
+        }
+
+        const range = selection.getRangeAt(0);
 
         if (range.collapsed) {
 
@@ -213,12 +219,10 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
              onKeyUp={onKeyUp}
              onKeyDown={onKeyDown}
              ref={containerRef}>
-                <div style={{ position: 'relative' }}>
-                    {fakeRangePosition &&
-                        <div className={classes.fakeRange} style={fakeRangePosition}></div>}
+                {fakeRangePosition &&
+                    <div className={classes.fakeRange} style={fakeRangePosition}></div>}
 
-                    {props.children}
-                </div>
+                {props.children}
 
                 {isBlockEditable && position && (
                     <ClickAwayListener onClickAway={clearPopup}>
@@ -266,17 +270,16 @@ const useRangeSaver = () => {
         return false;
     }, [rangeRef]);
 
-    const getPosition = React.useCallback((container: HTMLElement): ILTRect | undefined => {
+    const getPosition = React.useCallback((): ILTRect | undefined => {
         const range = rangeRef.current;
         if (!range) {
             return undefined;
         }
         const rangeRect = range.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
 
         return {
-            left: rangeRect.left - containerRect.left,
-            top: rangeRect.top - containerRect.top,
+            left: rangeRect.left,
+            top: rangeRect.top,
             width: rangeRect.width,
             height: rangeRect.height,
         };

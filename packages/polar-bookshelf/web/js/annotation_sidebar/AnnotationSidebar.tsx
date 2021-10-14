@@ -5,7 +5,7 @@ import {Block} from "../notes/Block";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
-import {AnnotationSidebar2} from "./AnnotationSidebar2";
+import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
 import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
 
@@ -35,7 +35,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
 
     const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docFingerprint]);
 
-    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint, sort: true });
+    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint });
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>
@@ -58,7 +58,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
                                 />
                             ))
                         ) : (
-                            <h2 className={classes.info}>No annotations found. why don't you create one!</h2>
+                            <NoAnnotations />
                         )
 
                     }

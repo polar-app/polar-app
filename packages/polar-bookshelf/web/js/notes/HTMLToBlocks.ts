@@ -5,10 +5,16 @@ import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {Tuples} from "polar-shared/src/util/Tuples";
+import {BlockContent} from "./store/BlocksStore";
 
 export type IBlockContentStructure<T = IBlockContent> = {
     content: T;
-    children: ReadonlyArray<IBlockContentStructure>;
+    children: ReadonlyArray<IBlockContentStructure<T>>;
+};
+
+export type BlockContentStructure<T = BlockContent> = {
+    content: T;
+    children: ReadonlyArray<BlockContentStructure<T>>;
 };
 
 type IBlockContentMergableStructure<T = IBlockContent> = IBlockContentStructure<T> & {
@@ -204,8 +210,10 @@ export namespace HTMLToBlocks {
                 current += (node.textContent || '').replace(/\s\s+/g, ' ');
             }
         }
+
         flush(true);
-        return blocks;
+
+        return mergeBlockStructures(blocks);
     };
 
     export async function parse(html: string): Promise<ReadonlyArray<IBlockContentStructure>>  {

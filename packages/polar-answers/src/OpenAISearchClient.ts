@@ -1,6 +1,7 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {OpenAIRequests} from "./OpenAIRequests";
 import {OpenAICostEstimator} from "./OpenAICostEstimator";
+import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 
 /**
  * Create search
@@ -24,7 +25,6 @@ import {OpenAICostEstimator} from "./OpenAICostEstimator";
  *
  */
 export namespace OpenAISearchClient {
-
 
     export interface IOpenAISearchRequest {
 
@@ -76,7 +76,7 @@ export namespace OpenAISearchClient {
     export async function exec(model: AIModel, request: IOpenAISearchRequest): Promise<IOpenAISearchResponse> {
 
         const url = `https://api.openai.com/v1/engines/${model}/search`;
-        return OpenAIRequests.exec(url, request);
+        return await OpenAIRequests.exec<IOpenAISearchRequest, IOpenAISearchResponse>(url, request);
 
     }
 

@@ -4,7 +4,7 @@ import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
-import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
+import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
 
 type EditAnnotationForm = {
     body: string;
@@ -15,7 +15,7 @@ export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => 
     const { clear } = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
-    const { update } = useAnnotationBlockManager();
+    const blocksStore = useBlocksStore();
 
     const inputs = React.useMemo<InputOptions<EditAnnotationForm>>(() => {
         const text = getTextHighlightText(annotation);
@@ -37,14 +37,14 @@ export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => 
             });
         } else {
             const contentJSON = annotation.annotation.content.toJSON();
-            update(annotation.annotation.id, {
+            blocksStore.setBlockContent(annotation.annotation.id, {
                 ...contentJSON,
                 value: { ...contentJSON.value, revisedText: body }
             })
         }
         dialogs.snackbar({ message: "Highlight updated successfully." });
         clear();
-    }, [annotationMutations, dialogs, clear, annotation, update]);
+    }, [annotationMutations, dialogs, clear, annotation, blocksStore]);
 
     return (
         <SimpleInputForm

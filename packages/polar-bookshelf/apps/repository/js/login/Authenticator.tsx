@@ -2,97 +2,42 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
-import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
+import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
-import {
-    useAuthHandler,
-    useTriggerFirebaseEmailAuth,
-    useTriggerFirebaseGoogleAuth,
-    useTriggerStartTokenAuth,
-    useTriggerVerifyTokenAuth
-} from './AuthenticatorHooks';
+import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
-import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
-import Themes from 'epubjs/types/themes';
+import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
-const useStyles = makeStyles((theme) =>
+export const useStyles = makeStyles((theme) =>
     createStyles({
 
-        logo: {
-            marginTop: theme.spacing(2),
+        email: {
+            flexGrow: 1,
+            margin: theme.spacing(1),
         },
+
         button: {
             flexGrow: 1,
             margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-            fontSize: '1.5em',
-        },
-        intro: {
-            color: theme.palette.text.secondary,
-            fontSize: '2.2em'
-        },
-
-        divider: {
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-        },
-
-        sendLinkDivider: {
-            margin: theme.spacing(1),
-            marginBottom: theme.spacing(3),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
         },
 
         alert: {
             margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            // marginLeft: theme.spacing(3),
+            // marginRight: theme.spacing(3),
         },
 
-        email: {
-            margin: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
-        },
-        legal: {
-            margin: theme.spacing(1),
-            marginTop: theme.spacing(5),
-            marginBottom: theme.spacing(2),
-            color: theme.palette.text.secondary,
-            fontSize: '1.5em',
-            textAlign: 'center',
-            "& a:link": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:visited": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:hover": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-            "& a:active": {
-                color: theme.palette.text.secondary,
-                textDecoration: 'none'
-            },
-        },
         alternate: {
             margin: theme.spacing(1),
             marginLeft: theme.spacing(3),
@@ -101,17 +46,9 @@ const useStyles = makeStyles((theme) =>
         },
         progress: {
             height: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            marginRight: theme.spacing(3),
+            // marginLeft: theme.spacing(3),
+            // marginRight: theme.spacing(3),
         },
-        linkDecoration: {
-            color: '#6754D6 !important', 
-            textDecoration: 'underline !important'
-        }, 
-        a: {
-            color: theme.palette.text.secondary,
-            textDecoration: 'underline'
-        }
     }),
 );
 
@@ -128,55 +65,28 @@ const AuthButton = (props: IAuthButtonProps) => {
 
     const mode = React.useContext(AuthenticatorModeContext);
 
-    const hint = mode === 'create-account' ? 'Continue' : 'Sign In'
+    const hint = mode === 'create-account' ? 'Get Started' : 'Sign In'
 
     return (
         <>
-            <DeviceRouters.Phone>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={props.onClick}
-                        startIcon={props.startIcon}
-                        style={{width: '95vw', margin: '10px', textAlign: 'center'}}>
 
-                    {hint} with {props.strategy}
-                </Button>
-            </DeviceRouters.Phone>
+            <Button variant="contained"
+                    color="primary"
+                    size="large"
+                    className={classes.button}
+                    onClick={props.onClick}
+                    style={{
+                        flexGrow: 1
+                    }}>
 
-            <DeviceRouters.NotPhone>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={props.onClick}
-                        startIcon={props.startIcon}>
+                {hint} with {props.strategy}
+            </Button>
 
-                    {hint} with {props.strategy}
-                </Button>
-            </DeviceRouters.NotPhone>
         </>
     );
 }
 
-// new Links component
-const Links = () => {
-
-    const classes = useStyles();
-
-    const mode = React.useContext(AuthenticatorModeContext);
-
-    return (
-        <>
-            <p className={classes.legal}>
-                You acknowledge that you will read, and agree to
-                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-            </p>
-        </>
-    );
-}
-
-
-const ProgressInactive = () => {
+const BackendProgressInactive = () => {
 
     const classes = useStyles();
 
@@ -187,7 +97,7 @@ const ProgressInactive = () => {
     );
 }
 
-const ProgressActive = () => {
+const BackendProgressActive = () => {
     const classes = useStyles();
 
     return (
@@ -197,7 +107,20 @@ const ProgressActive = () => {
     );
 }
 
-// Function to keep
+interface BackendProgressProps {
+    readonly pending: boolean;
+}
+
+const BackendProgress = (props: BackendProgressProps) => {
+
+    if (props.pending) {
+        return <BackendProgressActive/>;
+    }
+
+    return <BackendProgressInactive/>
+
+}
+
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
@@ -340,287 +263,307 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-            <DeviceRouters.Phone>
-                <>
-                    {active && (
-                        <>
-                            <Divider className={classes.sendLinkDivider}/>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1
+            }}>
+                {active && (
+                    <>
 
-                            {pending && (
-                                <ProgressActive/>
-                            )}
+                        <BackendProgress pending={pending}/>
 
-                            {! pending && (
-                                <ProgressInactive/>
-                            )}
+                        {alert && (
+                            <Alert severity={alert.type}
+                                   className={classes.alert}>
+                                {alert.message}
+                            </Alert>
+                        )}
 
-                            {alert && (
-                                <Alert severity={alert.type}
-                                    className={classes.alert}>
-                                    {alert.message}
-                                </Alert>
-                            )}
-
-                            {triggered && (
-                                <>
-                                    <TextField autoFocus={true}
-                                            className={classes.email}
-                                            onChange={event => challengeRef.current = event.target.value}
-                                            onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                            placeholder="Enter your Code Here"
-                                            variant="outlined" 
-                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} />
-
-                                    <div className={classes.alternate}>
-                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
-                                    </div>
-
-                                    <Button variant="contained"
-                                            color="primary"
-                                            className={classes.button}
-                                            onClick={handleClick}
-                                            style={{width: '95vw', textAlign: 'center', margin: '10px'}} >
-                                        Verify Code
-                                    </Button>
-                                </>
-                            )}
-
-                            {! triggered && (
+                        {triggered && (
+                            <>
                                 <TextField autoFocus={true}
-                                        className={classes.email}
-                                        onChange={event => emailRef.current = event.target.value}
-                                        onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                        placeholder="email@"
-                                        variant="outlined" 
-                                        style={{width: '95vw', textAlign: 'center', margin: '10px'}}/>
-                            )}
-                        </>
-                    )}
+                                           className={classes.email}
+                                           onChange={event => challengeRef.current = event.target.value}
+                                           onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                           placeholder="Enter your Code Here"
+                                           variant="outlined"
+                                           style={{
+                                               textAlign: 'center',
+                                               flexGrow: 1,
+                                           }} />
 
-                    {!triggered && (
+                                <div className={classes.alternate}>
+                                    <Button onClick={handleEmailProvided}>Resend Email</Button>
+                                </div>
 
-                        <AuthButton onClick={handleClick}
-                                    strategy="Email"
-                                    startIcon={<EmailIcon />}
-                                    />
-                    )}
+                                <Button variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        className={classes.button}
+                                        onClick={handleClick}
+                                        style={{
+                                            textAlign: 'center',
+                                            flexGrow: 1,
+                                        }}>
+                                    Verify Code
+                                </Button>
+                            </>
+                        )}
 
-                </>
-            </DeviceRouters.Phone>
+                        {! triggered && (
+                            <TextField autoFocus={true}
+                                       className={classes.email}
+                                       onChange={event => emailRef.current = event.target.value}
+                                       onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                       placeholder="Enter your email address"
+                                       variant="outlined"
+                                       style={{
+                                           textAlign: 'center',
+                                           flexGrow: 1,
+                                       }}
+                                       InputProps={{
+                                           startAdornment: (
+                                               <EmailIcon style={{margin: '8px'}}/>
+                                           )
+                                       }}/>
+                        )}
+                    </>
+                )}
 
-            <DeviceRouters.NotPhone>
-                <>
-                    {active && (
-                        <>
-                            <Divider className={classes.sendLinkDivider}/>
-
-                            {pending && (
-                                <ProgressActive/>
-                            )}
-
-                            {! pending && (
-                                <ProgressInactive/>
-                            )}
-
-                            {alert && (
-                                <Alert severity={alert.type}
-                                        className={classes.alert}>
-                                    {alert.message}
-                                </Alert>
-                            )}
-
-                            {triggered && (
-                                <>
-
-                                    <TextField autoFocus={true}
-                                                className={classes.email}
-                                                onChange={event => challengeRef.current = event.target.value}
-                                                onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
-                                                placeholder="Enter your Code Here"
-                                                variant="outlined" />
-
-                                    <div className={classes.alternate}>
-                                        <Button onClick={handleEmailProvided}>Resend Email</Button>
-                                    </div>
-                                    <Button variant="contained"
-                                            color="primary"
-                                            className={classes.button}
-                                            onClick={handleClick}>
-                                        Verify Code
-                                    </Button>
-                                </>
-                            )}
-
-                            {! triggered && (
-                                <TextField autoFocus={true}
-                                            className={classes.email}
-                                            onChange={event => emailRef.current = event.target.value}
-                                            onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                            placeholder="email@"
-                                            variant="outlined" />
-                            )}
-
-                        </>
-                    )}
-
-                    {!triggered && (
-
-                        <AuthButton onClick={handleClick}
-                                    strategy="Email"
-                                    startIcon={<EmailIcon />}
-                                    />
-                    )}
-                </>
-            </DeviceRouters.NotPhone>
+                {!triggered && (
+                    <AuthButton onClick={handleClick}
+                                strategy="Email"
+                                startIcon={<EmailIcon />}/>
+                )}
+            </div>
         </>
     );
 };
 
-// end comp 1
+const RegisterForBetaButton = () => {
 
-const SignInWithExistingAccount = () => {
-
-    const classes = useStyles();
-    const history = useHistory();
-
-    return (
-        
-
-        <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
-            <Button>or sign-in with existing account</Button>
-        </div>
-    );
-
-}
-
-const OrCreateNewAccount = () => {
-
-    const classes = useStyles();
-    const history = useHistory();
-
-    return (
-        <div className={classes.alternate} onClick={() => history.push('/create-account')}>
-            <Button>or create new account</Button>
-        </div>
-    );
-
-}
-
-const Main = React.memo(function Main(props: IProps) {
+    const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
+    const [pending, setPending] = React.useState(false);
+    const emailRef = React.useRef("");
 
     const classes = useStyles();
 
-    return (
+    const handleClick = React.useCallback(() => {
 
+        const request = {
+            email: emailRef.current.trim(),
+            tag: "initial_signup",
+        };
+
+        try {
+
+            setPending(true);
+
+            async function doAsync() {
+
+                await JSONRPC.exec<unknown, any>('private-beta/register', request);
+                setIsRegistered(true);
+
+                console.log("Registered now!");
+
+            }
+
+            doAsync()
+                .catch(err => console.error(err));
+
+        } finally {
+            setPending(false);
+        }
+
+    }, [setPending]);
+
+    return (
         <>
-            <DeviceRouters.NotPhone>
-            <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+            {isRegistered && (
+                <h2>
+                    Thank you for registering!
+                </h2>
+            )}
 
-            <div id="firebaseui-auth-container" style={{display: 'none'}}/>
+            <BackendProgress pending={pending}/>
 
-            <div className="text-center">
-
-                <div className={classes.logo}>
-                    <PolarSVGIcon width={125} height={125}/>
-                </div>
-
-
-                {props.mode === 'create-account' && (
-                    <h2 className={classes.intro}>
-                        Create your Polar Account
-                    </h2>
-                )}
-
-                {props.mode === 'sign-in' && (
-                    <h2 className={classes.intro}>
-                        Sign In to Polar
-                    </h2>
-                )}
-
+            {!isRegistered && (
                 <div style={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    <TextField autoFocus={true}
+                               className={classes.email}
+                               onChange={event => emailRef.current = event.target.value}
+                               placeholder="Enter your email address"
+                               InputProps={{
+                                   startAdornment: (
+                                       <EmailIcon style={{margin: '8px'}}/>
+                                   )}}
+                               variant="outlined"/>
 
-                    {/*<GoogleAuthButton/>*/}
-
-                    <EmailTokenAuthButton/>
-
-                    {/*<EmailAuthButton/>*/}
-
+                    <Button variant="contained"
+                            size="large"
+                            color="primary"
+                            className={classes.button}
+                            onClick={handleClick}>
+                        Join
+                    </Button>
                 </div>
-
-            </div>
-
-            <Divider className={classes.divider}/>
-
-            {props.mode === 'create-account' && (
-                <SignInWithExistingAccount/>
             )}
-
-            {props.mode === 'sign-in' && (
-                <OrCreateNewAccount/>
-            )}
-
-            <div style={{flexGrow: 1}}>
-
-            </div>
-                <Links/>
-            </div>
-        </DeviceRouters.NotPhone>
-
-        <DeviceRouters.Phone>
-            <div style={{display: 'block', height:"100vh"}}>
-                <div style={{textAlign: 'center', marginTop: '100px'}}>
-                    <div className={classes.logo}>
-                        <PolarSVGIcon width={125} height={125}/>
-                    </div>
-
-                    <div>
-                        <p className={classes.legal}>
-                            Welcome to Polar
-                        </p>
-                    </div>
-                </div>
-
-                <div style={{display: 'block', position: 'absolute', bottom: '20px'}}>
-
-                    <EmailTokenAuthButton />
-
-                    {props.mode === 'create-account' && (
-                        <SignInWithExistingAccount/>
-                    )}
-
-                    {props.mode === 'sign-in' && (
-                        <OrCreateNewAccount/>
-                    )}
-
-                    <div style={{flexGrow: 1}} />
-
-                    <div>
-                        <p style={{fontSize: '10px'}} className={classes.legal}>
-                            You acknowledge that you will read, and agree to
-                            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </DeviceRouters.Phone>
         </>
+    )
+}
 
+const SignInWithExistingAccountButton = () => {
+
+    const history = useHistory();
+
+    return (
+        <div style={{textAlign: 'center'}}>
+            <Button variant="text" onClick={() => history.push('/sign-in')}>
+                or sign-in with existing account
+            </Button>
+        </div>
+    );
+}
+
+const OrCreateNewAccountButton = () => {
+    const history = useHistory();
+    return (
+        <div style={{textAlign: 'center'}}>
+            <Button variant="text" onClick={() => history.push('/create-account')}>
+                or register for private beta
+            </Button>
+        </div>
+    );
+}
+
+const LogoAndTextSideBySide = () => {
+    return (
+        <div>
+            <div style={{display: 'flex'}}>
+                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
+                    <Box m={1}>
+                        <PolarSVGIcon width={100} height={100}/>
+                    </Box>
+                    <Box m={1}>
+                        <Typography variant="h2" component="div">
+                            POLAR
+                        </Typography>
+                    </Box>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const FlexLayoutForm = () => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+
+                <EmailTokenAuthButton/>
+
+            </div>
+
+        </div>
+    )
+}
+
+interface AuthContentProps {
+    readonly title: string;
+    readonly children: React.ReactNode;
+    readonly alternative: React.ReactNode;
+}
+
+/**
+ * Auth content wrapper which adds the logo, any title text.
+ */
+const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
+
+    return (
+        <>
+            <div className="AuthContent"
+                 style={{
+                     height:"100vh",
+                     textAlign: 'center',
+                     flexGrow: 1,
+                     display: 'flex',
+                     flexDirection: 'column'
+                 }}>
+
+                <>
+                    <div style={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <LogoAndTextSideBySide/>
+                    </div>
+
+                    <h2>
+                        {props.title}
+                    </h2>
+
+                    {props.children}
+
+                </>
+
+                {props.alternative}
+
+                <div style={{flexGrow: 1}}/>
+
+                <AuthLegalDisclaimer/>
+
+            </div>
+        </>
     );
 });
+
+export const PrivateBetaRegisterAuthContent = () => {
+    return (
+        <AuthContent title="Join the Waiting List"
+                     alternative={<SignInWithExistingAccountButton/>}>
+
+            <RegisterForBetaButton/>
+
+        </AuthContent>
+    )
+}
+
+export const SignInAuthContent = () => {
+    return (
+        <AuthContent title="Sign In to Polar"
+                     alternative={<OrCreateNewAccountButton/>}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+                <EmailTokenAuthButton/>
+            </div>
+        </AuthContent>
+    )
+}
 
 const Pending = () => {
     return (
         <div style={{
-                 flexGrow: 1,
-                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'center',
-                 alignItems: 'center'
-            }}>
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
             <CircularProgress style={{width: '150px', height: '150px'}}/>
         </div>
     )
@@ -634,62 +577,77 @@ interface IProps {
 
 const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 
+interface AdaptiveDialogProps {
+    readonly children: React.ReactNode;
+}
+
+/**
+ * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
+ */
+export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
+
+    return (
+        <>
+            <DeviceRouters.NotPhone>
+                <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%'
+                }}>
+
+                    <Paper style={{
+                        margin: 'auto',
+                        maxWidth: '450px',
+                        minHeight: '500px',
+                        maxHeight: '700px',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+
+                        {props.children}
+
+                    </Paper>
+                </div>
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+                <>
+                    {props.children}
+                </>
+            </DeviceRouters.Phone>
+        </>
+    );
+
+});
+
+// TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
+// PrivateBetaAuthenticator or CreateAccountAuthenticator
+
 export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
     const authStatus = useAuthHandler();
 
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
-            <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                            display: 'flex',
-                            width: '100%',
-                            height: '100%'
-                        }}>
+            <AdaptiveDialog>
+                <>
 
-                        <Paper style={{
-                                margin: 'auto',
-                                maxWidth: '450px',
-                                minHeight: '500px',
-                                maxHeight: '800px',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
-
-                            <>
-
-                                {authStatus === undefined && (
-                                    <Pending/>
-                                )}
-
-
-                                {authStatus === 'needs-auth' && (
-                                <Main {...props}/>
-                                )}
-
-                            </>
-
-                        </Paper>
-
-                    </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-                    <>
                     {authStatus === undefined && (
                         <Pending/>
                     )}
 
-                    {authStatus === 'needs-auth' && (
-                    <Main {...props}/>
+                    {authStatus === 'needs-auth' && props.mode === 'create-account' && (
+                        <PrivateBetaRegisterAuthContent/>
                     )}
-                    </>
-            </DeviceRouters.Phone>
-                
-                <Intercom/>
-            </>
+
+                    {authStatus === 'needs-auth' && props.mode === 'sign-in' && (
+                        <SignInAuthContent/>
+                    )}
+
+                    <Intercom/>
+                </>
+            </AdaptiveDialog>
         </AuthenticatorModeContext.Provider>
     );
 });

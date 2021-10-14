@@ -41,8 +41,11 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
-import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
+import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
 import {BlockTextContentUtils} from "../NoteUtils";
+import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {BlockHighlights} from "../BlockHighlights";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -132,8 +135,9 @@ export interface ISplitBlock {
 export interface INewBlockOpts {
     readonly split?: ISplitBlock;
     readonly content?: IBlockContent;
-    readonly asChild?: boolean;
+    readonly unshift?: boolean;
     readonly newBlockID?: BlockIDStr;
+    readonly newChildPos?: INewChildPosition;
 }
 
 export interface DeleteBlockRequest {
@@ -165,6 +169,7 @@ export interface NavOpts {
 
 export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
+    ref?: BlockIDStr;
 }
 
 export type InterstitialTypes = 'image';
@@ -342,6 +347,8 @@ export class BlocksStore implements IBlocksStore {
      */
     private _activeBlocksIndex: ActiveBlocksIndex = {};
 
+    public relatedTagsManager: RelatedTagsManager = new RelatedTagsManager();
+
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
                 readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
@@ -499,17 +506,24 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
+            if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
+                const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
+                delete this._indexByName[name];
+            }
+
             if (BlockPredicates.isNamedBlock(block)) {
                 const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
             }
 
-            if (block.content.type === "document") {
+            if (BlockPredicates.isDocumentBlock(block)) {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-
-            if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
+            /**
+             * Update links indices
+             */
+            if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
@@ -519,7 +533,33 @@ export class BlocksStore implements IBlocksStore {
                 this._reverse.add(link.id, block.id);
             }
 
+            /**
+             * Update tags indices
+             *
+             * Here we store the change in tags for a specific block in the relatedTagsManager
+             * 1. First we deregister the tags of the existing block (before it was updated)
+             * 2. We register the tags of the new block (the updated block)
+             */
+            if (! existingBlock || block.content.hasTagsMutated(existingBlock.content)) {
+                if (existingBlock) {
+                    this.relatedTagsManager.update(block.root, 'delete', existingBlock.content.getTags());
+                }
+                
+                this.relatedTagsManager.update(block.root, 'set', block.content.getTags());
 
+                if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
+                    if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
+                        const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
+                        const tag = { id: existingBlock.id, label: oldName };
+                        this.relatedTagsManager.update(block.root, 'delete', [tag]);
+                    }
+
+                    const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
+                    const tag = { id: block.id, label: newName };
+                    this.relatedTagsManager.update(block.root, 'set', [tag]);
+
+                }
+            }
         }
 
         this._active = opts.newActive ? opts.newActive : this._active;
@@ -534,7 +574,7 @@ export class BlocksStore implements IBlocksStore {
         blocks: ReadonlyArray<IBlockContentStructure>,
         opts: IInsertBlocksContentStructureOpts = {},
     ): ReadonlyArray<BlockIDStr> {
-        const refID = this.active?.id;
+        const refID = opts.ref || this.active?.id;
 
         if (! refID) {
             console.error('Don\'t know where to insert the new blocks');
@@ -556,7 +596,7 @@ export class BlocksStore implements IBlocksStore {
                     .reverse()
                     .forEach(({ children, content }) => {
                         const newBlockID = ids[i++];
-                        const newBlock = this.doCreateNewBlock(ref, { asChild: isParent, content, newBlockID });
+                        const newBlock = this.doCreateNewBlock(ref, { unshift: isParent, content, newBlockID });
                         if (newBlock) {
                             storeBlocks(children, newBlock.id, true);
                         }
@@ -807,10 +847,12 @@ export class BlocksStore implements IBlocksStore {
             DoDOMNav();
             return true;
         }
+        
+        const rootBlock = this._index[root];
 
         const items = this.computeLinearTree(root, {
             expanded: true,
-            includeInitial: true,
+            includeInitial: rootBlock.content.type === 'document' ? false : true,
             root: autoExpandRoot ? root : undefined,
         });
 
@@ -843,14 +885,7 @@ export class BlocksStore implements IBlocksStore {
                 this._selected[this._active?.id] = true;
                 this._selectedAnchor = this._active?.id;
 
-                function clearSelection() {
-                    const sel = window.getSelection()!;
-                    sel.getRangeAt(0).collapse(true);
-                }
-
-                // TODO: this probably shouldn't be here - in the store.
-                clearSelection();
-
+                CursorPositions.clearSelection();
                 return true;
             }
 
@@ -1319,9 +1354,6 @@ export class BlocksStore implements IBlocksStore {
 
             if (block) {
 
-                delete this._indexByName[block.content.data.toLowerCase()];
-                this._indexByName[newName.toLowerCase()] = id;
-
                 block.withMutation(() => {
                     const content = new NameContent({
                         ...block.content.toJSON(),
@@ -1357,17 +1389,58 @@ export class BlocksStore implements IBlocksStore {
 
             }
 
-
-        }
+        };
 
         return this.doUndoPush('setBlockContent', [id], redo);
 
     }
 
+    @action public setHighlightAnnotationBlockContent(id: BlockIDStr, content: AnnotationHighlightContent, docMeta: IDocMeta) {
+
+        const redo = () => {
+            const block = this.getBlockForMutation(id);
+
+            if (! block || ! BlockPredicates.isAnnotationHighlightBlock(block)) {
+                return console.error('The highlight block to be updated was not found');
+            }
+
+            const parent = block.parent ? this.getBlockForMutation(block.parent) : null;
+
+            if (! parent) {
+                return console.error('The highlight block to be updated does not have a parrent');
+            }
+
+            const items = this
+                .idsToBlocks(parent.itemsAsArray)
+                .filter(BlockPredicates.isAnnotationHighlightBlock);
+
+            const siblings = items
+                .map(({ content, id }) => ({ content, id }))
+                .filter(({ id }) => id !== block.id);
+
+            const position = BlockHighlights.calculateHighlightBlockPosition(siblings, { id, content }, docMeta);
+
+            block.withMutation(() => {
+                block.setContent(content);
+            });
+
+            parent.withMutation(() => {
+                parent.removeItem(block.id);
+                parent.addItem(block.id, position);
+            });
+
+            this.doPut([block, parent]);
+
+        };
+
+        return this.doUndoPush('setHighlightAnnotationBlockContent', [id], redo);
+    }
+
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
-                                     targetName: BlockNameStr,
+                                     rawTargetName: BlockNameStr,
                                      content: MarkdownStr) {
 
+        const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
@@ -1396,6 +1469,7 @@ export class BlocksStore implements IBlocksStore {
                 data: targetName,
                 links: [],
             });
+
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
@@ -1403,7 +1477,7 @@ export class BlocksStore implements IBlocksStore {
             });
 
             sourceBlock.withMutation(() => {
-                sourceBlock.content.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.content.addLink({id: targetBlockID, text: rawTargetName});
                 ;
                 sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
             });
@@ -1411,6 +1485,7 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([sourceBlock]);
 
             const cursorPos = this.cursorOffsetCapture();
+
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }
@@ -1552,7 +1627,7 @@ export class BlocksStore implements IBlocksStore {
             // Block has no parent (in the case of a root block), or a block that has children
             // with suffix of an empty string, and annotation blocks
             if (
-                opts.asChild
+                opts.unshift
                 || ! block.parent
                 || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))
                 || BlockPredicates.isAnnotationBlock(block)
@@ -1610,7 +1685,7 @@ export class BlocksStore implements IBlocksStore {
         const links = getLinks();
         const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-        const newBlockPosition = computeNewBlockPosition();
+        const newBlockPosition: INewBlockPosition = opts.newChildPos ? { ...opts.newChildPos, parentBlock: currentBlock, type: 'relative' } : computeNewBlockPosition();
 
         const {parentBlock} = newBlockPosition;
 
@@ -2272,7 +2347,7 @@ export class BlocksStore implements IBlocksStore {
         const parentID = blocks[0].parent;
 
         if (!parentID) {
-            return console.log("moveBlock: can\'t move blocks with no parents");
+            return console.error("moveBlock: can\'t move blocks with no parents");
         }
 
         const parent = this._index[parentID];
@@ -2280,6 +2355,10 @@ export class BlocksStore implements IBlocksStore {
 
         if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
             throw new Error("Only sibling blocks can be moved");
+        }
+
+        if (parent.content.type === 'document') {
+            return console.error("moveBlock: Annotation blocks cannot be moved");
         }
 
         const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>

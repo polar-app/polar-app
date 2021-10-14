@@ -3,7 +3,7 @@ import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {ExtendedDeviceInfo} from "../repo_header/DeviceInfo";
 import {useHistory} from "react-router-dom";
 import {FullWidthButton} from '../configure/settings/FullWidthButton';
-import {RoutePathnames} from '../../../../web/js/apps/repository/RoutePathnames';
+import {RoutePathNames} from '../../../../web/js/apps/repository/RoutePathNames';
 import SubjectIcon from '@material-ui/icons/Subject';
 import {Divider} from '@material-ui/core';
 
@@ -13,7 +13,7 @@ const LogsButton = () => {
     const history = useHistory();
 
     const onLogs = React.useCallback(() => {
-        history.push(RoutePathnames.LOGS);
+        history.push(RoutePathNames.LOGS);
     }, [history]);
 
 

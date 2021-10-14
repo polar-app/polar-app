@@ -118,12 +118,12 @@ export namespace BlocksStoreUndoQueues {
 
         const sideAffectedIdentifiers = getAffectedDocumentBlocksIdentifiers(blocksStore, identifiers);
 
-        identifiers = [
+        const ids = new Set([
             ...expandToParentAndChildren(blocksStore, identifiers),
             ...sideAffectedIdentifiers,
-        ];
+        ]);
 
-        if (identifiers.length === 0) {
+        if (ids.size === 0) {
             throw new Error("Expansion failed to identify additional identifiers");
         }
         
@@ -133,10 +133,10 @@ export namespace BlocksStoreUndoQueues {
          * transaction.
          */
         const computeApplicableBlocks = (blocks: ReadonlyArray<IBlock>) => {
-            return blocks.filter(block => identifiers.includes(block.id));
+            return blocks.filter(block => ids.has(block.id));
         ;}
 
-        const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
+        const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(Array.from(ids)));
         const oldActive: IActiveBlock | undefined = blocksStore.cursorOffsetCapture();
 
         let afterBlocks: ReadonlyArray<IBlock> = [];
@@ -144,13 +144,13 @@ export namespace BlocksStoreUndoQueues {
 
         const capture = () => {
 
-            const beforeSideEffectsSnapshot = blocksStore.createSnapshot(identifiers);
+            const beforeSideEffectsSnapshot = blocksStore.createSnapshot(Array.from(ids));
             const beforeSideEffectsAfterBlocks = computeApplicableBlocks(beforeSideEffectsSnapshot);
             const beforeSideEffectsMutations = computeMutatedBlocks(beforeBlocks, beforeSideEffectsAfterBlocks);
 
             performDocumentSideEffects(blocksStore, sideAffectedIdentifiers, beforeSideEffectsMutations);
 
-            const snapshot = blocksStore.createSnapshot(identifiers);
+            const snapshot = blocksStore.createSnapshot(Array.from(ids));
 
             afterBlocks = computeApplicableBlocks(snapshot);
             newActive = blocksStore.cursorOffsetCapture();
@@ -193,7 +193,8 @@ export namespace BlocksStoreUndoQueues {
 
         const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
 
-            const newMutationNumber = (blocksStore.getBlock(mutation.id)?.mutation || -1) + 1;
+            const blockMutation = blocksStore.getBlock(mutation.id)?.mutation;
+            const newMutationNumber = blockMutation === undefined ? 0 : blockMutation + 1;
 
             switch (mutationType) {
 

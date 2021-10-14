@@ -1,6 +1,8 @@
+import {Theme} from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
+import {Devices} from 'polar-shared/src/util/Devices';
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 
@@ -12,16 +14,20 @@ const useContainerStyles = makeStyles(() =>
     }),
 );
 
-const useInnerContainerStyles = makeStyles(() =>
+type IUseInnerContainerStylesProps = {
+    flushed: boolean;
+};
+
+const useInnerContainerStyles = makeStyles<Theme, IUseInnerContainerStylesProps>(() =>
     createStyles({
-        noteContentOuter: {
+        noteContentOuter: ({ flushed }) => ({
             width: '100%',
             flex: '1 1 0',
             minHeight: 0,
             display: 'flex',
             justifyContent: 'center',
-            padding: '16px 26px',
-        },
+            ...(! flushed && { padding: '16px 26px' }),
+        }),
     }),
 );
 
@@ -39,7 +45,8 @@ export const NotesContainer: React.FC = deepMemo(function NotesContainer(props) 
 
 export const NotesInnerContainer: React.FC = ({ children }) => {
 
-    const classes = useInnerContainerStyles();
+    const isHandHeld = React.useMemo(() => ! Devices.isDesktop(), []);
+    const classes = useInnerContainerStyles({ flushed: isHandHeld });
 
     return (
         <div className={classes.noteContentOuter}>

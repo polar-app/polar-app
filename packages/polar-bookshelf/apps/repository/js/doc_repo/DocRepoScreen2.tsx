@@ -2,9 +2,6 @@ import React from "react";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from "../FixedNav";
 import {DocRepoTable2} from "./DocRepoTable2";
-import {Route, Switch} from "react-router";
-import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
@@ -24,8 +21,6 @@ namespace main {
     ));
 
 }
-
-const onClose = () => window.history.back();
 
 namespace devices {
 

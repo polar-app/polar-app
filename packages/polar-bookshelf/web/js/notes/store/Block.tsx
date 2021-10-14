@@ -81,7 +81,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._content = Contents.create(opts.content);
         this._mutation = opts.mutation;
 
-        makeObservable(this)
+        makeObservable(this);
 
     }
 

@@ -12,6 +12,7 @@ This section contains info on the notes block editor.
 1. [Overview](#overview)
 2. [Wiki Links](#wiki-links)
 3. [Setting innerHTML](#setting-innerhtml)
+4. [Multiline Blocks](#multiline-blocks)
 
 ## Overview
 
@@ -50,3 +51,35 @@ What we're currently doing as a solution to this issue is that right before sett
 1. Save the *current position* of the *cursor*.
 2. Update the block's content by setting `innerHTML`.
 3. *Restore* the old *position* of the *cursor* that we *saved* earlier.
+
+## Multiline Blocks
+
+In general, we didn't want to support multi-line blocks, mainly because we had a different idea on how we want to implement them, the idea being that we would use a different kind of block content which would contain a nested block structure where users can add multiple nested blocks instead of actual lines.
+
+We still had one issue though, and that is blocks with really long text content that ends up wrapping into multiple lines.
+In situations like this, we have no way of allowing users to navigate between the lines of a single block. because up & down arrow keys always navigate between separate blocks, so we needed
+a way to get the current position of the cursor and see whether it is on the first/last line of the content and only then we would navigate to a separate block.
+
+**Example**
+
+Let's say we have a block with the following content that takes up 4 lines.
+```
+Hello world
+My name is 
+Potato
+Goodbye
+```
+
+We have 3 situations for handling cursor movement, those being the following.
+1. The cursor being on the first line "Hello world". In this case, we have to handle the 2 following paths
+   1. The *arrow up* key being pressed. and in that situation (since we're on the first line), we would navigate the cursor to the block that's above this one.
+   2. The *arrow down* key being pressed. Here we would just let the browser handle the cursor movement, which ends up moving the cursor to the second line "My name is"
+2. The cursor being on the second or third lines. In this case, we can just let the browser handle the movement.
+3. The cursor being on the last line "Goodbye". In this case we would have to handle the same situation we were in when we were working with the first line.
+
+**Getting the position of the caret**
+
+At first we tried getting the active selection range by using `document.getSelection().getRangeAt(0)` and then doing a `getBoundingClientRect` on the range,
+but for some reason sometimes it returns zeroes for all the values when you have the cursor in specific places, so as you can see it's very unreliable.
+
+So we ended up inserting a `<span />` element that contains a *single whitespace* character at the position of the caret and calling `getBoundingClientRect` on the span instead.

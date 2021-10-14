@@ -7,6 +7,8 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
+import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace PDFText {
 
@@ -17,6 +19,7 @@ export namespace PDFText {
         readonly pageNum: PageNumber;
         readonly extract: ReadonlyArray<ReadonlyArray<IPDFTextWord>>;
         readonly viewport: PageViewport;
+        readonly progress: Progress;
     }
 
     export interface IOpts {
@@ -39,47 +42,63 @@ export namespace PDFText {
 
         const numPages = Math.min(doc.numPages, opts.maxPages || Number.MAX_VALUE)
 
+        const progressTracker = new ProgressTracker({
+            id: Hashcodes.create(docPathOrURL),
+            total: numPages
+        });
+
         for (let pageNum = 1; pageNum <= numPages; pageNum++) {
 
-            if (skipPages.includes(pageNum)) {
-                // skip this page and don't index any text.
-                console.log("Skipping page: " + pageNum);
-                continue;
-            }
+            try {
+                if (skipPages.includes(pageNum)) {
+                    // skip this page and don't index any text.
+                    console.log("Skipping page: " + pageNum);
+                    continue;
+                }
 
-            const page = await doc.getPage(pageNum);
-            const viewport = page.getViewport({scale: 1.0});
+                const page = await doc.getPage(pageNum);
+                const viewport = page.getViewport({scale: 1.0});
 
-            const textContent = await page.getTextContent({
-                normalizeWhitespace: true,
-                disableCombineTextItems: false
-            });
+                const textContent = await page.getTextContent({
+                    normalizeWhitespace: true,
+                    disableCombineTextItems: false
+                });
 
-            function toPDFTextWord(textItem: TextItem): IPDFTextWord {
-                const tx = Util.transform(viewport.transform, textItem.transform);
-                const x = tx[4];
-                const y = tx[5];
-                return {
+                function toPDFTextWord(textItem: TextItem): IPDFTextWord {
+                    const tx = Util.transform(viewport.transform, textItem.transform);
+                    const x = tx[4];
+                    const y = tx[5];
+                    return {
+                        pageNum,
+                        x, y,
+                        width: textItem.width,
+                        height: textItem.height,
+                        str: textItem.str,
+                    };
+                }
+
+                const toTextIItemGroup = (item: IPDFTextWord): string => {
+                    const y = item.y;
+                    return `${y}:${item.height}`;
+                }
+
+                const textWords = textContent.items.map(toPDFTextWord);
+                const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
+
+                const extract = Object.values(grouped)
+                    .map(current => PDFTextWordMerger.doMergeWords(current));
+
+                // eslint-disable-next-line node/no-callback-literal
+                await callback({
                     pageNum,
-                    x, y,
-                    width: textItem.width,
-                    height: textItem.height,
-                    str: textItem.str,
-                };
+                    extract,
+                    viewport,
+                    progress: progressTracker.peek()
+                });
+
+            } finally {
+                progressTracker.incr();
             }
-
-            const toTextIItemGroup = (item: IPDFTextWord): string => {
-                const y = item.y;
-                return `${y}:${item.height}`;
-            }
-
-            const textWords = textContent.items.map(toPDFTextWord);
-            const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
-
-            const extract = Object.values(grouped)
-                .map(current => PDFTextWordMerger.doMergeWords(current));
-
-            await callback({pageNum, extract, viewport});
 
         }
 

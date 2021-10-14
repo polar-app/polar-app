@@ -5,7 +5,14 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import {useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 
-export const SidenavTrigger: React.FC = () => {
+interface IProps {
+    readonly icon?: React.ReactNode;
+}
+
+export const SidenavTriggerIconButton = function SidenavTriggerIconButton(props: IProps) {
+
+    // TODO: this could be cleaned up and made into a hook.
+
     const {setOpen} = useSideNavCallbacks();
     const {isOpen} = useSideNavStore(['isOpen']);
     const history = useHistory();
@@ -14,7 +21,7 @@ export const SidenavTrigger: React.FC = () => {
         setOpen(!isOpen);
         history.push(url);
     };
-            
+
     React.useEffect(()=>{
         return history.listen((location) => {
             // if we press the back button
@@ -31,7 +38,8 @@ export const SidenavTrigger: React.FC = () => {
 
     return (
         <IconButton onClick={ () => handleToggle(`#sidenav${Date.now()}`)}>
-            <MenuIcon/>
+            {props.icon ? props.icon : <MenuIcon/>}
         </IconButton>
     );
+
 };

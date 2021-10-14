@@ -138,7 +138,8 @@ export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogPr
 
         <MUIDialog open={state.open}
                    onClose={handleClose}
-                   maxWidth="lg"
+                   maxWidth="md"
+                   fullWidth={true}
                    aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>

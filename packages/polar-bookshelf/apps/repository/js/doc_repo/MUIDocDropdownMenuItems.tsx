@@ -29,6 +29,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {FeatureToggle} from '../persistence_layer/PrefsContext2';
 import AddIcon from '@material-ui/icons/Add';
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
@@ -194,6 +195,7 @@ function useIndexForAIHandler() {
 
     const documentDownloadURLCalculator = useDocumentDownloadURLCalculator();
     const errorDialog = useErrorDialog();
+    const dialogManager = useDialogManager();
 
     return React.useCallback(() => {
 
@@ -214,12 +216,25 @@ function useIndexForAIHandler() {
 
             }
 
-            JSONRPC.exec("AnswerIndexer", {url, docID})
+            async function doAsync() {
+
+                // NOTE that the AnswerIndexer doesn't trigger a background job
+                // and will wait until complete so we have to send the message
+                // first.
+                dialogManager.snackbar({
+                    message: "Indexing document for AI.  This might take a few minutes."
+                })
+
+                await JSONRPC.exec("AnswerIndexer", {url, docID})
+
+            }
+
+            doAsync()
                 .catch(err => console.error("Could not index document for AI: " + url, err));
 
         }
 
-    }, [documentDownloadURLCalculator, errorDialog]);
+    }, [documentDownloadURLCalculator, errorDialog, dialogManager]);
 
 }
 
@@ -313,21 +328,27 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
 
             <Divider/>
 
-            <MenuItem onClick={documentDownloadHandler}>
-                <ListItemIcon>
-                    <SaveAltIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Download Document"/>
-            </MenuItem>
+            <DeviceRouter.Desktop>
+                <>
+                    <MenuItem onClick={documentDownloadHandler}>
+                        <ListItemIcon>
+                            <SaveAltIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Download Document"/>
+                    </MenuItem>
 
-            <MenuItem onClick={jsonDownloadHandler}>
-                <ListItemIcon>
-                    <FADatabaseIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Download Document Metadata"/>
-            </MenuItem>
+                    <MenuItem onClick={jsonDownloadHandler}>
+                        <ListItemIcon>
+                            <FADatabaseIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Download Document Metadata"/>
+                    </MenuItem>
 
-            <Divider/>
+                    <Divider/>
+
+                </>
+
+            </DeviceRouter.Desktop>
 
             <MenuItem onClick={callbacks.onDeleted}>
                 <ListItemIcon>

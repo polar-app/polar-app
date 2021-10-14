@@ -6,7 +6,7 @@ import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;
 
-xdescribe("AnswerIndexer", function() {
+describe("AnswerIndexer", function() {
 
     this.timeout(30000000);
 
@@ -34,6 +34,12 @@ xdescribe("AnswerIndexer", function() {
 
     }
 
+    xit("basic bigtable", async function () {
+
+        await doIndexDoc("data/bigtable.pdf", '1234')
+
+    });
+
     xit("basic", async function () {
 
         // await doIndexDoc("data/bigtable.pdf", '1234')
@@ -55,40 +61,40 @@ xdescribe("AnswerIndexer", function() {
 
     });
 
-    it("doc 4", async function() {
+    xit("doc 4", async function() {
 
         await doIndexDoc("/Users/burton/astronomy.pdf", '4567')
 
     });
 
 
-    it("doc 5", async function() {
+    xit("doc 5", async function() {
 
         await doIndexDoc("/Users/burton/western-civ-2.pdf", '5678')
 
     });
 
-    it("doc 6", async function() {
+    xit("doc 6", async function() {
 
         await doIndexDoc("/Users/burton/western-civ-3.pdf", '6789')
 
     });
 
-    it("doc 7", async function() {
+    xit("doc 7", async function() {
 
         await doIndexDoc("/Users/burton/history-in-the-making-united-states.pdf", '78910')
 
 
     });
 
-    it('Index Elmer_Candy_Corporation.pdf', async () => {
+    xit('Index Elmer_Candy_Corporation.pdf', async () => {
         await doIndexDoc(
             path.resolve(__dirname, '../data/Elmer_Candy_Corporation.pdf'),
             '78911',
         )
     })
 
-    it('index Visa_policy_of_Venezuela.pdf', async () => {
+    xit('index Visa_policy_of_Venezuela.pdf', async () => {
         await doIndexDoc(
             path.resolve(__dirname, '../data/Visa_policy_of_Venezuela.pdf'),
             '78912',

@@ -95,7 +95,7 @@ export class BlocksTreeStore {
 
     createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
         if (this.root === id) {
-            return this.blocksStore.createNewBlock(id, {content: opts.content, asChild: true});
+            return this.blocksStore.createNewBlock(id, {content: opts.content, unshift: true});
         }
         return this.blocksStore.createNewBlock(id, opts);
     }

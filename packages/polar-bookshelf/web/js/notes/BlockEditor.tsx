@@ -76,7 +76,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
 
         if (content.type === 'name') {
             handleRename(content, data);
-        } else if (content.type !== AnnotationContentType.FLASHCARD) {
+        } else if (! block.readonly && content.type !== AnnotationContentType.FLASHCARD) {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksTreeStore.setBlockContent(block.id, newContent);
         }
@@ -182,10 +182,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     if (block.content.type === "document") {
 
         const { docInfo } = block.content;
+        const tags = block.content.getTags();
 
         return (
             <BlockDocumentContent
                 id={id}
+                tags={tags}
                 parent={parent}
                 className={className}
                 style={style}

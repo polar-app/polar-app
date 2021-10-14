@@ -6,7 +6,7 @@ import {INameContent} from "./content/INameContent";
 import {IImageContent} from "./content/IImageContent";
 import {IDateContent} from "./content/IDateContent";
 import PositionalArray = PositionalArrays.PositionalArray;
-import {IAnnotationContent} from "./content/IAnnotationContent";
+import {IAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "./content/IAnnotationContent";
 import {IDocumentContent} from "./content/IDocumentContent";
 
 export type BlockIDStr = IDStr;
@@ -35,6 +35,15 @@ export type IBlockContent = IMarkdownContent
                             
                             | IDocumentContent
                             | IAnnotationContent;
+
+export type IEditableContent = IMarkdownContent
+                               | INameContent
+                               | IDateContent
+                               | ITextHighlightAnnotationContent
+                               | IFlashcardAnnotationContent;
+
+export type ITextContent = IEditableContent
+                           | IDocumentContent;
 
 export type IBlockContentMap = {
     [K in IBlockContent as K['type']]: K;

@@ -1,7 +1,10 @@
 import {OpenAISecrets} from "./OpenAISecrets";
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {OpenAIRequestsCache} from "./OpenAIRequestsCache";
 
 export namespace OpenAIRequests {
+
+    const cache = OpenAIRequestsCache.create();
 
     export async function exec<B, T>(url: string, body: B): Promise<T> {
 
@@ -13,6 +16,12 @@ export namespace OpenAIRequests {
             throw new Error("No OPENAI_API_KEY in environment");
         }
 
+        if (await cache.containsKey({url, body})) {
+            return await cache.get({url, body}) as any;
+        }
+
+        console.log("Executing request against OpenAI URL: ", url);
+
         const response = await Fetches.fetch(url, {
             method: 'POST',
             body: JSON.stringify(body),
@@ -23,10 +32,13 @@ export namespace OpenAIRequests {
         })
 
         if (response.ok) {
-            return await response.json();
+            const json = await response.json();
+            await cache.put({url, body}, json);
+            return json;
         }
 
         throw new Error(`Invalid response: ${response.status}: ${response.statusText}`);
     }
 
 }
+

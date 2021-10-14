@@ -1,10 +1,10 @@
 import React from "react";
-import {BlockIDStr, IBlockContent, IBlockContentMap} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContent, IBlockContentMap, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import equal from "deep-equal";
-import {BlockPredicates, EditableContent, TextContent} from "./store/BlockPredicates";
+import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
 import {DocInfos} from "../metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {Block} from "./store/Block";
@@ -65,7 +65,7 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
                 return root.itemsAsArray[0];
             }
 
-            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
+            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { unshift: true }).id;
         };
 
         blocksStore.setActiveWithPosition(getFirstChildID(), 'start');
@@ -93,7 +93,7 @@ export const useBlockTagEditorDialog = () => {
         const toTarget = (block: Block): ITaggedBlock => ({
             id: block.id,
             content: block.content,
-            tags: block.content.getTagsMap(),
+            tags: Tags.toMap(block.content.getTags()),
         });
 
         const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
@@ -133,7 +133,7 @@ export namespace BlockContentUtils {
         strategy: Tags.ComputeNewTagsStrategy = 'set'
     ): void {
         const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
-            const newTags = Tags.computeNewTags(content.getTagsMap(), tags, strategy);
+            const newTags = Tags.computeNewTags(Tags.toMap(content.getTags()), tags, strategy);
 
             const newTagLinks = newTags.map(({ label }) => {
                 const getBlockID = (): string => {
@@ -283,7 +283,7 @@ export namespace BlockTextContentUtils {
      *
      * @param content An editable text content instance @see TextContent
      */
-    export function getTextContentMarkdown(content: TextContent): string {
+    export function getTextContentMarkdown(content: ITextContent): string {
         switch (content.type) {
             case 'date':
             case 'name':
