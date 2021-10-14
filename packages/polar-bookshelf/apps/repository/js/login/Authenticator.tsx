@@ -375,15 +375,19 @@ const LogoAndTextSideBySide = () => {
 const FlexLayoutForm = () => {
     return (
         <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-            }}>
+                 display: 'flex',
+                 flexDirection: 'column'
+             }}>
+
                 <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                }}>
+                         display: 'flex',
+                         flexDirection: 'column'
+                     }}>
+
                     <EmailTokenAuthButton/>
+
                 </div>
+
         </div>
     )
 }
