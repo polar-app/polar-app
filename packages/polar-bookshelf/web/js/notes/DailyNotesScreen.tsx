@@ -20,8 +20,9 @@ const DAILY_NOTES_CHUNK_SIZE = 3;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        faded: {
+        footerHeading: {
             color: theme.palette.text.hint,
+            fontSize: '1rem',
         }
     }),
 );
@@ -99,7 +100,7 @@ export const DailyNotesScreen: React.FC = () => {
                         <Box display="flex" m={2} justifyContent="flex-end">
                             <Typography
                                 variant="h6"
-                                className={classes.faded}
+                                className={classes.footerHeading}
                                 onClick={() => setThreshold(threshold + DAILY_NOTES_CHUNK_SIZE)}
                                 style={{ cursor: 'pointer' }}
                                 ref={ref}
@@ -110,7 +111,7 @@ export const DailyNotesScreen: React.FC = () => {
                     }
                     {! hasMore &&
                         <Box display="flex" m={2} justifyContent="center">
-                            <Typography variant="h6" className={classes.faded}>
+                            <Typography variant="h6" className={classes.footerHeading}>
                                 You've reached the end!
                             </Typography>
                         </Box>

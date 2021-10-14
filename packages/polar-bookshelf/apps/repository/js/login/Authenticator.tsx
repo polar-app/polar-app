@@ -2,18 +2,17 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
-import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import ArrowForward from '@material-ui/icons/ArrowForwardOutlined';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
-import { Typography } from '@material-ui/core';
+import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
+
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {
     useAuthHandler,
@@ -22,14 +21,11 @@ import {
     useTriggerStartTokenAuth,
     useTriggerVerifyTokenAuth
 } from './AuthenticatorHooks';
+import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
-import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
-import Themes from 'epubjs/types/themes';
-import { PointerType } from 'polar-dom-text-search/src/IPointer';
-import { Box } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -103,7 +99,7 @@ export const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(3),
         },
         linkDecoration: {
-            color: theme.palette.text.secondary, 
+            color: theme.palette.text.secondary,
             textDecoration: 'underline !important'
         }
     }),
@@ -381,11 +377,11 @@ const EmailTokenAuthButton = () => {
                                     onChange={event => emailRef.current = event.target.value}
                                     onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                     placeholder="Enter your email address"
-                                    variant="outlined" 
+                                    variant="outlined"
                                     style={{width: '95vw', textAlign: 'center', margin: '10px',  borderColor: '#6754D6 !important'}}
                                     InputProps={{
                                     startAdornment: (
-                                            <EmailIcon style={{margin: '8px'}}/> 
+                                            <EmailIcon style={{margin: '8px'}}/>
                                         )
                                     }}
                                 />
@@ -623,7 +619,7 @@ const Main = React.memo(function Main(props: IProps) {
                     )}
                 <Links/>
                 </div>
-                
+
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
@@ -698,7 +694,7 @@ const Main = React.memo(function Main(props: IProps) {
                             <FlexLayoutForm/>
                         
                     </>
-                    )}  
+                    )}
                 </Box>
 
                 {props.mode === 'create-account' && (
@@ -792,7 +788,7 @@ export const Authenticator = React.memo(function Authenticator(props: IProps) {
                         )}
                     </>
             </DeviceRouters.Phone>
-                
+
                 <Intercom/>
             </>
         </AuthenticatorModeContext.Provider>

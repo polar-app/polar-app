@@ -48,6 +48,8 @@ export const useBlockTagsSectionStyles = makeStyles(() =>
     createStyles({
         root: {
             margin: '3px 0',
+            display: 'flex',
+            flexWrap: 'wrap', 
             '& > a': {
                 marginRight: 4,
                 fontSize: 12,

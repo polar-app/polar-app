@@ -162,12 +162,11 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
 
     const selectRowClickHandler = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
 
+        selectRow(row.id, event, 'click');
+
         if (Devices.isTablet() || Devices.isPhone()) {
             callbacks.onOpen();
-            return;
         }
-
-        selectRow(row.id, event, 'click');
 
     }, [row.id, selectRow]);
 
