@@ -1,7 +1,7 @@
 import {Button, createStyles, makeStyles} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import React from "react";
-import { RoutePathnames } from "../../apps/repository/RoutePathnames";
+import { RoutePathNames } from "../../apps/repository/RoutePathNames";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -15,7 +15,7 @@ export const NotesRepoButton = () => {
     const classes = useStyles();
 
     return (
-        <Link style={{ textDecoration: 'none' }} to={RoutePathnames.NOTES_REPO}>
+        <Link style={{ textDecoration: 'none' }} to={RoutePathNames.NOTES_REPO}>
             <Button className={classes.root} variant="outlined" disableElevation>All Notes</Button>
         </Link>
     );

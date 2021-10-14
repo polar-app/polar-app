@@ -3,7 +3,7 @@ import React from 'react';
 import {CreateNote} from './toolbar/CreateNote';
 import {SearchForNote} from "./toolbar/SearchForNote";
 import {NotesRepoButton} from './toolbar/NotesRepoButton';
-import {SidenavTrigger} from '../sidenav/SidenavTrigger';
+import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
@@ -64,7 +64,7 @@ export const NotesToolbar = () => {
         <>
             <div className={classes.root}>
                 <div className={classes.left}>
-                    <SidenavTrigger />
+                    <SidenavTriggerIconButton />
                     <NotesRepoButton />
                     {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
                         <Button

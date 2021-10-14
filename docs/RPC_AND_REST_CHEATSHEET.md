@@ -1,3 +1,31 @@
+# Writing Backend RPC and HTTP functions
+
+Our main philosophy around building out backend functions is that we use a RPC
+request and response framework.
+
+These are just async functions that take a request as a single parameter, and return a response.
+
+We have a facade that wraps this pattern to make any function like this a backend RPC function.
+
+## Wrapper  
+
+Backend methods that require authentication need to be defined as:
+
+```typescript
+    export async function exec(idUser: IDUser,
+                               request: IMyRequest): Promise<IMyResponse | IMyError> {
+
+        // call the main function you want to execute.  This should literally just be one line of
+        // code just to provide HTTP / RPC backend framework
+    
+    }
+```
+
+## Delegate
+
+All your logic should then be placed in a main delegate which we test directly
+without having to worry about HTTP issues.
+
 # AWS Lambdas as a way to run Cloud Functions
 
 ### Define a new AWS Lambda-based Cloud  Function
