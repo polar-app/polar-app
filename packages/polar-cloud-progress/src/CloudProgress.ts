@@ -61,11 +61,11 @@ export namespace CloudProgress {
         });
     }
 
-export function create(id: IDStr,
-                    uid: UserIDStr,
-                    meta: CloudProgresCollection.ICloudProgressMeta = {}) {
+    export function create(id: IDStr,
+                           uid: UserIDStr,
+                           meta: CloudProgresCollection.ICloudProgressMeta = {}) {
 
-const firestore = FirestoreAdmin.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         
         const debouncer = Debouncers.inline(500);
 
