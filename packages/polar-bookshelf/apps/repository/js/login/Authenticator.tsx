@@ -556,6 +556,8 @@ const Main = React.memo(function Main(props: IProps) {
                                         Join The Waiting List
                                     </h2>
 
+                                    <Divider className={classes.sendLinkDivider}/>
+
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'column'
@@ -564,8 +566,7 @@ const Main = React.memo(function Main(props: IProps) {
                                                 display: 'flex',
                                                 flexDirection: 'column'
                                             }}>
-                                                <Divider className={classes.sendLinkDivider}/>
-                                                
+
                                                 <TextField autoFocus={true}
                                                     className={classes.email}
                                                     onChange={event => emailRef.current = event.target.value}
@@ -626,7 +627,7 @@ const Main = React.memo(function Main(props: IProps) {
             </DeviceRouters.NotPhone>
 
             <DeviceRouters.Phone>
-            <div style={{height:"100vh", textAlign: 'center', flexGrow: 1}}>
+            <div style={{height:"100vh", textAlign: 'center', flexGrow: 1, marginTop: '15%'}}>
 
                 <Box marginTop={1}>
                     {props.mode === 'create-account' && (
@@ -639,7 +640,48 @@ const Main = React.memo(function Main(props: IProps) {
 
                             <Divider className={classes.sendLinkDivider}/>
 
-                            <FlexLayoutForm/>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                                }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
+
+                                        <TextField autoFocus={true}
+                                            className={classes.email}
+                                            onChange={event => emailRef.current = event.target.value}
+                                            placeholder="Enter your email address"
+                                            variant="outlined"
+                                            style={{width: '95vw', margin: '10px', textAlign: 'center'}}
+                                            InputProps={{
+                                                startAdornment: (
+                                                        <EmailIcon style={{margin: '8px'}}/>
+                                                    )
+                                                }}
+                                        />
+                        
+                                        <Button variant="contained"
+                                                color="primary"
+                                                className={classes.button}
+                                                style={{width: '95vw', margin: '10px', textAlign: 'center'}}
+                                                onClick={() => {
+                                                // FIXME: call the cloud function
+                                                const request = {
+                                                    email: emailRef.current.trim(),
+                                                    tag: "initial_signup",
+                                                };
+                                                JSONRPC.exec<unknown, any>('private-beta/register', request)
+                                                    .then((result: any) => {
+                                                        console.log(result);
+                                                        setIsRegistered(true);
+                                                    }).catch((reason: any) => console.error(reason));
+                                                }}>
+                                        Join Private Beta
+                                    </Button>
+                                </div>
+                            </div>
                         </>
                     )}
 
