@@ -92,16 +92,16 @@ export const UserDetailsRow = React.memo(function UserDetailsRow(){
     const userInfoContext = useUserInfoContext();
 
     return(
-        <div className={classes.root}>
+        <Box ml={1} className={classes.root}>
             <UserAvatar size={'medium'} className={classes.avatar} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
-            <div className={classes.details}>
+            <Box component='div' ml={1} className={classes.details}>
                 <Box component='span' color='text.primary'>{userInfoContext?.userInfo?.displayName}</Box>
                 <Box component='span' color='text.secondary'>{userInfoContext?.userInfo?.email}</Box>
-            </div>
+            </Box>
             {userInfoContext?.userInfo?.subscription &&
                 <IconByPlan className={classes.icon} subscription={userInfoContext?.userInfo?.subscription}/>
             }
-        </div>
+        </Box>
     );
 });
 

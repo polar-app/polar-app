@@ -63,15 +63,7 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
 
     if (props.photoURL) {
 
-        // checking if the UserAvatar should be an IconButton
-        if(typeof props.onClick === "undefined"){
-            return <Avatar className={className} style={props.style} src={props.photoURL}/>;
-        }
-        return (
-            <IconButton onClick={props.onClick} className={className} style={props.style}>
-                <Avatar src={props.photoURL}/>
-            </IconButton>
-        );
+        return <Avatar className={className} style={props.style} src={props.photoURL}/>;
 
     } else if (displayName !== '') {
 
@@ -79,34 +71,27 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
 
         const letter = displayName[0].toUpperCase();
         
-        // checking if the UserAvatar should be an IconButton
-        if(typeof props.onClick === "undefined"){
-            return <Avatar className={className} style={props.style}>{letter} </Avatar>;
-        }
-        return (
-            <IconButton onClick={props.onClick} className={className} style={props.style}>
-                <Avatar>
-                    {letter}
-                </Avatar>
-            </IconButton>
-        );
+        return <Avatar className={className} style={props.style}>{letter} </Avatar>;
 
     } else {
-        
-        // checking if the UserAvatar should be an IconButton
-        if(typeof props.onClick === "undefined"){
-            return <Avatar className={className} style={props.style}>
-                <AccountCircleIcon/>
-            </Avatar>;
-        }
-        // else use a blank account image
-        return (
-            <IconButton onClick={props.onClick} className={className} style={props.style}>
-                <Avatar>
-                    <AccountCircleIcon/>
-                </Avatar>
-            </IconButton>
-        );
+
+        return <Avatar className={className} style={props.style}>
+            <AccountCircleIcon/>
+        </Avatar>;
     }
 
 }, isEqual);
+
+interface UserAvatarIconButtonProps extends UserAvatarProps {
+    readonly onClick?: () => void;
+}
+
+export const UserAvatarIconButton = React.memo(function UserAvatarIconButton(props: UserAvatarIconButtonProps) {
+
+    return (
+        <IconButton onClick={props.onClick} className={props.className} style={props.style}>
+            <UserAvatar {...props}/>
+        </IconButton>
+    )
+
+});
