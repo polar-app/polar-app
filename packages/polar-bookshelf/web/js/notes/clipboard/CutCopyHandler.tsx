@@ -101,7 +101,7 @@ namespace CopyUtils {
         const wikiAnchorElements = elem.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
 
         const removeLink = (link: HTMLAnchorElement) => {
-            const anchor = getNoteAnchorFromHref(link.href);
+            const anchor = getNoteAnchorFromHref(link.getAttribute('href')!);
 
             if (anchor) {
                 link.href = `${window.location.origin}${RoutePathNames.NOTE(anchor)}`;
@@ -133,7 +133,7 @@ namespace CopyUtils {
         const linksMap = arrayStream(block.content.links).toMap(({ text }) => text);
 
         return arrayStream(Array.from(wikiAnchorElements))
-            .map(anchorElem => linksMap[anchorElem.href.slice(1)])
+            .map(anchorElem => linksMap[anchorElem.getAttribute('href')!.slice(1)])
             .filterPresent()
             .collect();
     }
