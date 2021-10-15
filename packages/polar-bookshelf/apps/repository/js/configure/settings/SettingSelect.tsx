@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) =>
         radioLabel: {
             fontSize: '1rem',
         },
+
     }),
 );
 
@@ -73,23 +74,24 @@ export const SettingSelect = (props: IProps) => {
                     </Box>
                 </Box>
 
-                <Paper>
-                    <RadioGroup name={name} value={value} onChange={onChange}>
-                        {props.options.map(current =>
-                            <FormControlLabel
-                                key={current.id}
-                                value={current.id}
-                                labelPlacement="start"
-                                classes={{
-                                    root: classes.radioLabelRoot,
-                                    label: classes.radioLabel,
-                                }}
-                                control={<Radio />}
-                                label={current.label}
-                            />
-                        )}
-                    </RadioGroup>
-
+                <Paper >
+                    <Box ml={Devices.isPhone()? 9 : 1.3} mr={Devices.isPhone()? 2 : 1.3}>
+                        <RadioGroup name={name} value={value} onChange={onChange}>
+                            {props.options.map(current =>
+                                <FormControlLabel
+                                    key={current.id}
+                                    value={current.id}
+                                    labelPlacement="start"
+                                    classes={{
+                                        root: classes.radioLabelRoot,
+                                        label: classes.radioLabel,
+                                    }}
+                                    control={<Radio />}
+                                    label={current.label}
+                                />
+                            )}
+                        </RadioGroup>
+                    </Box>
                 </Paper>
 
             </div>
