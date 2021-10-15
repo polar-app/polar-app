@@ -163,7 +163,7 @@ export namespace UserBackupCreator {
             transform(firebaseObject, encoding, callback) {
 
                 // i'm not sure how to prevent this error
-                function doAsync() {
+                async function doAsync() {
 
                     const id = firebaseObject.id;
 
@@ -216,7 +216,7 @@ export namespace UserBackupCreator {
 
                 doAsync()
                     .catch(err => {
-                        callback(null, null)
+                        callback(null, null);
                         console.error(err);
                     });
 
