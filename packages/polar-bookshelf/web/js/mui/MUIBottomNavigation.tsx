@@ -76,6 +76,12 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             href: RoutePathNames.SETTINGS_MOBILE,
             icon: <SettingsIcon/>
         },
+        {
+            id: 'switch',
+            label: 'Switch',
+            href: RoutePathNames.SWITCH,
+            icon: <SettingsIcon/>
+        },
     ]), []);
 };
 
