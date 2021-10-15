@@ -43,8 +43,6 @@
     "examples",
     "scripts",
     "*.d.ts",
-    "*.js",
-    "web/js",
-    "apps"
+    "*.js"
   ]
 }
