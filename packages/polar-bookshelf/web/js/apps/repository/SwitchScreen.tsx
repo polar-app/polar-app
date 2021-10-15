@@ -70,8 +70,8 @@ export const SwitchScreen = () => {
     const {data} = useDocRepoStore(['data']);
     function useDocInfos(){
         const docs = data.map(current => current.docInfo);
-        return docs.sort((a: any, b: any)=>{
-            return a.lastUpdated && b.lastUpdated && moment(a.lastUpdated).diff(b.lastUpdated, 'milliseconds');
+        return docs.sort((a: IDocInfo, b: IDocInfo)=>{
+            return ISODateTimeStrings.parse(a.lastUpdated) - ISODateTimeStrings.parse(b.lastUpdated);
         })
     };
     const orderedTabsByRecency = useDocInfos();
