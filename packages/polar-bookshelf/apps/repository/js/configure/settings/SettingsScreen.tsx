@@ -126,12 +126,13 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                    name="fixed-width-epub"
                                    icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}
                                    prefs={prefs}/>
+                    <Divider/>
                     {/*<SettingEntry title="Enable groups"*/}
                     {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                     {/*              name="groups"*/}
                     {/*              prefs={prefs}*/}
                     {/*              preview={true}/>*/}
-                    <Divider/>
+                    {/* <Divider/> */}
                     <SettingToggle title="Automatic pagemarks"
                                    description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
                                    name={KnownPrefs.AUTO_PAGEMARKS}
@@ -147,6 +148,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                     {/*        prefs={prefs}*/}
                     {/*        preview={true}/>*/}
                     {/*</DeviceRouters.Desktop>*/}
+                    {/* <Divider/> */}
 
                     <SettingToggle title="Development"
                                    description="Enables general development features for software engineers working on Polar."

@@ -63,6 +63,10 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
 
     if (props.photoURL) {
 
+        // checking if the UserAvatar should be an IconButton
+        if(typeof props.onClick === "undefined"){
+            return <Avatar className={className} style={props.style} src={props.photoURL}/>;
+        }
         return (
             <IconButton onClick={props.onClick} className={className} style={props.style}>
                 <Avatar src={props.photoURL}/>
@@ -74,7 +78,11 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
         // Revert to letter avatars...
 
         const letter = displayName[0].toUpperCase();
-
+        
+        // checking if the UserAvatar should be an IconButton
+        if(typeof props.onClick === "undefined"){
+            return <Avatar className={className} style={props.style}>{letter} </Avatar>;
+        }
         return (
             <IconButton onClick={props.onClick} className={className} style={props.style}>
                 <Avatar>
@@ -84,6 +92,13 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
         );
 
     } else {
+        
+        // checking if the UserAvatar should be an IconButton
+        if(typeof props.onClick === "undefined"){
+            return <Avatar className={className} style={props.style}>
+                <AccountCircleIcon/>
+            </Avatar>;
+        }
         // else use a blank account image
         return (
             <IconButton onClick={props.onClick} className={className} style={props.style}>
