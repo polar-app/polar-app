@@ -405,7 +405,14 @@ export namespace ESLint {
                 // "use-isnan": "error",
                 // "valid-typeof": "off"
             },
-            "ignorePatterns": ["dist", "node_modules", "examples", "scripts", "*.d.ts", "*.js", "web/js", "apps"]
+            "ignorePatterns": [
+                "dist",
+                "node_modules",
+                "examples",
+                "scripts",
+                "*.d.ts",
+                "*.js"
+            ]
         };
 
     }
