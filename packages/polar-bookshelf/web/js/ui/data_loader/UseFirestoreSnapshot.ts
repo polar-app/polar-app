@@ -54,7 +54,7 @@ export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IF
 
         return query.onSnapshot(onNext, onError);
 
-    }, []);
+    }, [collectionName, firestore, onError, onNext, opts.limit, opts.offset, opts.where]);
 
     return [snapshot, error];
 
