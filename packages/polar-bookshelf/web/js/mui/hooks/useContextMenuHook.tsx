@@ -29,7 +29,7 @@ export const useContextMenuHook = (handleClose: () => void) => {
     const handleCloseWithGoBack = React.useCallback(() => {
         handleClose();
         history.goBack();
-    }, [history])
+    }, [handleClose, history])
 
     return Devices.isDesktop()? handleClose : handleCloseWithGoBack;
 }
