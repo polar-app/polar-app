@@ -406,7 +406,7 @@ jobs:
           paths:
             - vendor/bundle
       - run:
-          name: install_dependencies
+          name: Bundle & Deploy
           command: |
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
@@ -429,7 +429,7 @@ jobs:
           paths:
             - vendor/bundle
       - run:
-          name: bundle & deploy
+          name: Bundle & Deploy
           command: |
             pod install
             bundle exec fastlane beta
