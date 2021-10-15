@@ -65,6 +65,34 @@ export const BlockContentEditable = (props: IProps) => {
         return div.innerHTML;
     }, [divRef]);
 
+    const handleChange = React.useCallback(() => {
+
+        if (! divRef.current) {
+            return;
+        }
+
+        const newContent = MarkdownContentConverter.toMarkdown(getCurrentContent());
+
+        if (newContent === contentRef.current) {
+            // there was no change so skip this.
+            return;
+        }
+
+        if (ENABLE_CURSOR_RESET_TRACE) {
+            console.log("==== update handleChange: ")
+            console.log(`    contentRef.current:  '${contentRef.current}'`, );
+            console.log(`    newContent:          '${newContent}'`, );
+        }
+
+        contentRef.current = newContent;
+        props.onChange(newContent);
+
+    }, [props]);
+
+    const updateMarkdownFromEditable = React.useCallback(() => {
+        handleChange();
+    }, [handleChange]);
+
     const onPasteImage = React.useCallback((image: IPasteImageData) => {
         console.log("Got paste: ", image);
 
@@ -83,8 +111,18 @@ export const BlockContentEditable = (props: IProps) => {
     }, [blocksTreeStore, props.id]);
 
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
-        blocksTreeStore.insertFromBlockContentStructure(blocks);
-    }, [blocksTreeStore]);
+        const block = blocks[0];
+        if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
+            document.execCommand("insertHTML", false, block.content.data);
+            const existingBlock = blocksTreeStore.getBlock(props.id)!;
+            // TODO: This is sort of a hack because we're changing the links in the in-memory version
+            // of the block and then expecting `handleChange` to persist the new data
+            block.content.links.forEach(link => existingBlock.content.addLink(link));
+            handleChange(); 
+        } else {
+            blocksTreeStore.insertFromBlockContentStructure(blocks);
+        }
+    }, [blocksTreeStore, handleChange, props.id]);
 
     const onPasteHTML = React.useCallback((html: HTMLStr) => document.execCommand("insertHTML", false, html), []);
 
@@ -119,7 +157,7 @@ export const BlockContentEditable = (props: IProps) => {
                 updateCursorPosition(focusedBlock, currPosition, true);
             }
         }
-    }, [divRef, getCurrentContent]);
+    }, [divRef, getCurrentContent, handleChange]);
 
     const handlePaste = usePasteHandler({
         onPasteImage,
@@ -129,34 +167,6 @@ export const BlockContentEditable = (props: IProps) => {
         onPasteText,
         id: props.id,
     });
-
-    const handleChange = React.useCallback(() => {
-
-        if (! divRef.current) {
-            return;
-        }
-
-        const newContent = MarkdownContentConverter.toMarkdown(getCurrentContent());
-
-        if (newContent === contentRef.current) {
-            // there was no change so skip this.
-            return;
-        }
-
-        if (ENABLE_CURSOR_RESET_TRACE) {
-            console.log("==== update handleChange: ")
-            console.log(`    contentRef.current:  '${contentRef.current}'`, );
-            console.log(`    newContent:          '${newContent}'`, );
-        }
-
-        contentRef.current = newContent;
-        props.onChange(newContent);
-
-    }, [props]);
-
-    const updateMarkdownFromEditable = React.useCallback(() => {
-        handleChange();
-    }, [handleChange]);
 
     const handleKeyUp = React.useCallback(() => {
 

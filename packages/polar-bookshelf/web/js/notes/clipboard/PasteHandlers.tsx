@@ -178,17 +178,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 const html = await getHTMLString();
                 const blocks = await HTMLToBlocks.parse(html);
 
-                const block = blocks[0];
-
-                /**
-                 * If there's only one block and it has no children then
-                 * we just wanna paste the content in the currently active block.
-                 */
-                if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
-                    onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
-                } else {
-                    onPasteBlocks(blocks);
-                }
+                onPasteBlocks(blocks);
             }
         }
 
@@ -202,14 +192,8 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
                 try {
                     const blocks = JSON.parse(await getJSONString());
-                    const block = blocks[0];
 
-                    // TODO: Might need to validate the structure here.
-                    if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
-                        onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
-                    } else {
-                        onPasteBlocks(blocks);
-                    }
+                    onPasteBlocks(blocks);
 
                 } catch (e) {
                     console.error('Error: failed to parse application/polarblocks+json', e);
