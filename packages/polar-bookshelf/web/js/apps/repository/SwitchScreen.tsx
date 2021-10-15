@@ -9,6 +9,8 @@ import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepo
 import moment from 'moment';
 import { MUIBottomNavigation } from '../../../../web/js/mui/MUIBottomNavigation';
 import { BOTTOM_NAV_HEIGHT } from './RepositoryApp';
+import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
+import { ISODateTimeStrings } from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -58,10 +60,10 @@ const TableHeader = (props: TableHeaderProps) => {
         </TableHead>
     );
 }
-/**
- * 
- * @returns 
- */
+function toDate(ts: string | undefined): number {
+    return ts ? ISODateTimeStrings.parse(ts).getTime() : 0;
+}
+
 export const SwitchScreen = () => {
 
     const classes = useStyles();
@@ -71,7 +73,7 @@ export const SwitchScreen = () => {
     function useDocInfos(){
         const docs = data.map(current => current.docInfo);
         return docs.sort((a: IDocInfo, b: IDocInfo)=>{
-            return ISODateTimeStrings.parse(a.lastUpdated) - ISODateTimeStrings.parse(b.lastUpdated);
+            return toDate(a.lastUpdated) - toDate(b.lastUpdated);
         })
     };
     const orderedTabsByRecency = useDocInfos();
@@ -105,7 +107,6 @@ export const SwitchScreen = () => {
                         <TableHeader/>
                     }
             </Table>          
-            <MUIBottomNavigation/>
         </>
     );
 }
