@@ -72,7 +72,7 @@ export const AndroidHistoryListener = () => {
             window.removeEventListener('message', handler);
         }
 
-    }, []);
+    }, [handler]);
 
     return null;
 

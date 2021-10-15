@@ -137,7 +137,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         }
 
-    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, history, id]);
+    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, id]);
 
 }
 

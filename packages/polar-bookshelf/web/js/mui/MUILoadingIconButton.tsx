@@ -24,7 +24,7 @@ export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
             .catch(err => props.onError(err))
             .finally(() => setState('done'))
 
-    }, [])
+    }, [props])
 
     if (props.disabled || state === 'done') {
         return (

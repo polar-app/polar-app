@@ -58,7 +58,7 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
 
         // Go to homepage after upload is triggered
         history.push('/');
-    }, [addFileImporter]);
+    }, [addFileImporter, history]);
 
     return(
         <>
