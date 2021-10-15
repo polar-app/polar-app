@@ -214,6 +214,7 @@ export namespace ESLint {
                 "import/no-cycle": "warn",
                 "import/no-absolute-path": "warn",
 
+                "dot-notation": "warn",
                 "no-sequences": "warn",
                 "promise/param-names": "warn",
                 "@typescript-eslint/ban-types": "warn",
