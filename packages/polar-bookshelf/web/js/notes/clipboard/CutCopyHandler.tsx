@@ -147,8 +147,6 @@ export const useCutCopyHandler = () => {
             return false;
         }
 
-        e.preventDefault();
-
         const copyData = blocksStore.hasSelected()
             ? CopyUtils.extractContentsFromBlocksSelection(blocksStore)
             : CopyUtils.extractContentsFromSelection(blocksStore);
@@ -172,11 +170,17 @@ export const useCutCopyHandler = () => {
 
     const onCut: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
         if (copy(e)) {
-            blocksStore.deleteBlocks(blocksStore.selectedIDs());
+            const selectedIDs = blocksStore.selectedIDs();
+            if (selectedIDs.length > 0) {
+                blocksStore.deleteBlocks(selectedIDs);
+            }
         }
     }, [copy, blocksStore]);
 
-    const onCopy: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => copy(e), [copy]);
+    const onCopy: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
+        e.preventDefault();
+        copy(e);
+    }, [copy]);
 
 
     return {onCopy, onCut};
