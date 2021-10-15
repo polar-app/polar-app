@@ -214,9 +214,9 @@ export namespace ESLint {
                 "import/no-cycle": "warn",
                 "import/no-absolute-path": "warn",
 
-                "camelCase": "warn",
                 "promise/param-names": "warn",
 
+                "camelcase": "warn",
                 "node/handle-callback-err": "warn",
                 "yoda": "warn",
                 "one-var": "warn",
