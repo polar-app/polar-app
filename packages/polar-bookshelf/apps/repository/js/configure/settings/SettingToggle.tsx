@@ -67,8 +67,8 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
         <Box mx={3}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
-                <MUIIconText style={{ flex: 1 }} className={'pt-1'} icon={props.icon}>
-                    <h3 style={{ position: 'relative', display: 'inline-block' }}>
+                <MUIIconText style={{ flex: 1 }} icon={props.icon}>
+                    <Box component={'h3'}pt={1} style={{ position: 'relative', display: 'inline-block' }}>
                         <b>{props.title}</b>
                         {props.beta && (
                             <div style={{
@@ -79,7 +79,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                                 fontSize: 9,
                             }}>BETA</div>
                         )} 
-                    </h3>
+                    </Box>
                 </MUIIconText>
 
                 <Box component={'div'} my={'auto'} >
