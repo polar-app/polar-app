@@ -408,10 +408,8 @@ jobs:
       - run:
           name: install_dependencies
           command: |
-            gem install bundler
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
-            bundle install
             bundle exec fastlane run validate_play_store_json_key
             bundle exec fastlane beta
 
@@ -431,10 +429,8 @@ jobs:
           paths:
             - vendor/bundle
       - run:
-          name: build & install
+          name: bundle & deploy
           command: |
-            gem install bundler
-            bundle install
             pod install
             bundle exec fastlane beta
 
