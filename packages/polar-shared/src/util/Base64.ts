@@ -14,6 +14,7 @@ export class Base64 {
         if (typeof btoa !== 'undefined') {
             return btoa(data);
         } else {
+            // eslint-disable-next-line node/no-deprecated-api
             const buff = new Buffer(data);
             return buff.toString('base64');
         }
@@ -24,6 +25,7 @@ export class Base64 {
         if (typeof btoa !== 'undefined') {
             return btoa(data);
         } else {
+            // eslint-disable-next-line node/no-deprecated-api
             const buff = new Buffer(data);
             return buff.toString('base64');
         }

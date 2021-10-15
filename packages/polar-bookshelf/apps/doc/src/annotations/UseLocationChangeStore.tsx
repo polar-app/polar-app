@@ -1,9 +1,6 @@
 import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
 import {IScrollTarget} from "./ScrollIntoViewUsingLocation";
 
 export type InitialScrollLoader = (scrollTarget: IScrollTarget, ref: HTMLElement | null) => void;
@@ -20,6 +17,7 @@ const initialStore: IUseLocationChangeStore = {
     initialScrollLoader: () => console.warn("Using null initialScrollLoader")
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Mutator {
 }
 

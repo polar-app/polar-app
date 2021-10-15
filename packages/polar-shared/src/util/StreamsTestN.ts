@@ -49,6 +49,7 @@ describe('StreamsTest', function() {
 
     it("toLines", async function() {
 
+        // eslint-disable-next-line node/no-deprecated-api
         const buff = new Buffer("hello\nworld\n");
         const stream = Buffers.toStream(buff);
 
