@@ -598,8 +598,8 @@ export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: Adaptive
                     <Paper style={{
                         margin: 'auto',
                         maxWidth: '450px',
-                        minHeight: '500px',
-                        maxHeight: '700px',
+                        minHeight: '450px',
+                        maxHeight: '650px',
                         width: '100%',
                         display: 'flex',
                         flexDirection: 'column'
