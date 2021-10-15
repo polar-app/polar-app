@@ -388,7 +388,7 @@ jobs:
             - polar-mobile-app
 
   # @ Build fastlane for deployment
-  fastlane-android:
+  Android:
     parameters:
       executor:
         type: executor
@@ -415,7 +415,7 @@ jobs:
             bundle exec fastlane run validate_play_store_json_key
             bundle exec fastlane beta
 
-  fastlane-ios:
+  IOS:
     working_directory: ~/polar-mobile-app/ios
     macos:
       xcode: "13.0.0"
@@ -585,11 +585,11 @@ workflows:
       - build-setup:
           executor: large
 
-      - fastlane-android:
+      - Android:
           executor: android
           requires:
             - build-setup
 
-      - fastlane-ios:
+      - IOS:
           requires:
             - build-setup
