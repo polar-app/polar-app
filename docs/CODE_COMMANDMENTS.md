@@ -86,4 +86,3 @@ Specifically, ```arrayStream``` can be REALLY helpful when making lots of transf
 More importantly, it allows you to avoid working with indexes, and I've found
 that off by one and null errors are by FAR the most frequently occurring errors
 in production and this helps prevent them.
-
