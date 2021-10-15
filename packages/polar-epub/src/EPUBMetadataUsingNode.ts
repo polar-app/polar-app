@@ -96,6 +96,7 @@ export class EPUBMetadataUsingNode {
     }
 
     private static getZip(docPathOrURL: PathOrURLStr) {
+        // eslint-disable-next-line new-cap
         return new StreamZip.async({
             file: docPathOrURL,
             storeEntries: true,
