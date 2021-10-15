@@ -75,7 +75,7 @@ export const SettingSelect = (props: IProps) => {
                 </Box>
 
                 <Paper >
-                    <Box ml={Devices.isPhone()? 9 : 1.3} mr={Devices.isPhone()? 2 : 1.3}>
+                    <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
                         <RadioGroup name={name} value={value} onChange={onChange}>
                             {props.options.map(current =>
                                 <FormControlLabel
