@@ -77,3 +77,13 @@ use the 'any' within the function.
 Most of the time using 'any' is almost certainly the wrong thing to do and can
 cause a lot of bugs later on.
 
+## Streams and Functional Programming
+
+We have a number of utilities for working with streams of objects and using functional programming.
+
+Specifically, ```arrayStream``` can be REALLY helpful when making lots of transformations on objects.
+
+More importantly, it allows you to avoid working with indexes, and I've found
+that off by one and null errors are by FAR the most frequently occurring errors
+in production and this helps prevent them.
+
