@@ -30,7 +30,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
         this.state = {};
     }
 
-    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<{}>): boolean {
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>): boolean {
         return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState);
     }
 
@@ -51,6 +51,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
             });
         };
 
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useContextMenuHook(handleClose);
 
         function handleContextMenu(event: React.MouseEvent) {

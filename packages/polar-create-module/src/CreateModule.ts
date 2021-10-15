@@ -215,7 +215,7 @@ export namespace ESLint {
                 "import/no-absolute-path": "warn",
 
                 "promise/param-names": "warn",
-
+                "@typescript-eslint/ban-types": "warn",
                 "camelcase": "warn",
                 "node/handle-callback-err": "warn",
                 "yoda": "warn",
