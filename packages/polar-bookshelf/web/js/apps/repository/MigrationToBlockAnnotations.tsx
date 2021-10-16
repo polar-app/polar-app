@@ -20,7 +20,7 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     // TODO: need to write the cloud progress listener... and the key that's used.
 
-    // start doing the migration now...
+    // TODO start doing the migration now...
 
     return (
         <AdaptiveDialog>
@@ -30,4 +30,3 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         </AdaptiveDialog>
     )
 });
-
