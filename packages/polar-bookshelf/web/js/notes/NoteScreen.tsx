@@ -61,7 +61,7 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
         <NotesContainer>
             <NoteProviders>
                 <SideCar>
-                    <div>Empty for now</div>
+                    <div style={{ padding: 12 }}>Empty for now</div>
                 </SideCar>
                 <JumpToNoteKeyboardCommand />
                 <Switch>

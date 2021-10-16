@@ -1,7 +1,6 @@
 import React from "react";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
@@ -105,7 +104,6 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
     const noteWikiLinkCreator = useNoteWikiLinkIdentifierCreator();
-    const history = useHistory();
 
     return React.useCallback((event: ILinkNavigationEvent): boolean => {
 
@@ -126,7 +124,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         if (anchor) {
             const link = noteWikiLinkCreator(id, anchor);
-            noteLinkLoader(encodeURI(link));
+            noteLinkLoader(link);
 
             abortEvent();
             return true;
