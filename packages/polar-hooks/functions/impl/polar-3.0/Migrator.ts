@@ -16,6 +16,7 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export namespace Polar3DocMetaMigrator {
+
     const OLD_DOC_META_COLLECTION_NAME = 'doc_meta';
     const NEW_DOC_META_COLLECTION_NAME = 'doc_meta2';
     const DOC_INFO_COLLECTION_NAME = 'doc_info';
@@ -33,13 +34,14 @@ export namespace Polar3DocMetaMigrator {
         await firebase.auth().signInWithCustomToken(userToken);
 
         const firestore = await FirestoreBrowserClient.getInstance();
-        
+
         const docMetas = await getDocMetas(firestore, userID);
 
         docMetas.forEach(migrateDocMeta.bind(null, userID, firestore));
     }
 
     async function getDocMetas(firestore: IFirestore<unknown>, userID: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
+
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
             .where('uid', '==', userID.uid);
@@ -70,7 +72,7 @@ export namespace Polar3DocMetaMigrator {
         await purgeAnnotations(userID, firestore, batch, createDocMetaClone(docMetaRecord));
         await migrateAnnotationsToBlocks(userID, firestore, batch, createDocMetaClone(docMetaRecord));
         await bumpVersions(userID, firestore, batch, createDocMetaClone(docMetaRecord));
-        
+
         // await batch.commit();
     }
 
