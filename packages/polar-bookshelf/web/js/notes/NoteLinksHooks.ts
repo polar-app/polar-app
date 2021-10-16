@@ -126,7 +126,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         if (anchor) {
             const link = noteWikiLinkCreator(id, anchor);
-            noteLinkLoader(link);
+            noteLinkLoader(encodeURI(link));
 
             abortEvent();
             return true;
