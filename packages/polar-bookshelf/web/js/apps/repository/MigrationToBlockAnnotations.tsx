@@ -1,23 +1,33 @@
-import {useFirestoreSnapshotSubscriber} from "../../ui/data_loader/UseFirestoreSnapshot";
-import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
-import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
-import IMigration = MigrationCollection.IMigration;
-import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
+import {AdaptiveDialog} from "../../mui/AdaptiveDialog";
+import {useMigrationSnapshotByName} from "./UseMigrationSnapshot";
 
-export function useMigrationSnapshot() {
+interface IProps {
+    readonly children: JSX.Element;
+}
 
-    const {uid, firestore} = useFirestore();
+export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
-    if (! uid) {
-        throw new Error("User not authenticated");
+    const [migration, error] = useMigrationSnapshotByName('block-annotations');
+
+    if (migration?.status === 'completed') {
+        return props.children;
     }
 
-    const subscriber = MigrationCollection.createSnapshot(firestore, uid);
-    const converter = React.useCallback((data: TDocumentData) => {
-        return data as IMigration;
-    }, [])
+    // TODO: handle the error now...
 
-    return useFirestoreSnapshotSubscriber(subscriber, converter)
+    // TODO: how do we START the migration...We have to trigger the cloud function on the backend.
 
-}
+    // TODO: need to write the cloud progress listener... and the key that's used.
+
+    // start doing the migration now...
+
+    return (
+        <AdaptiveDialog>
+            <div>
+                TODO
+            </div>
+        </AdaptiveDialog>
+    )
+});
+
