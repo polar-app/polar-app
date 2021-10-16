@@ -33,10 +33,10 @@ export namespace Scanner {
 
             const fullPathResolved = FilePaths.resolve(fullPath);
 
-            const path = fullPathResolved.substring(dirResolved.length)
+            const sourcePath = fullPathResolved.substring(dirResolved.length)
 
             references.push({
-                module, dir: dirResolved, path
+                module, dir: dirResolved, sourcePath, fullPath
             })
 
         });
