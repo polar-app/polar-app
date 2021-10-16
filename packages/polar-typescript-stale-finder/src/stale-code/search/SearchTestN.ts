@@ -1,11 +1,10 @@
-import { Stale, Search } from "./find";
+import { Stale, Search } from "./Search";
 import { assert } from 'chai';
-import {DefaultOpts, IFile} from "./find";
+import {DefaultOpts, IFile} from "./Search";
 import * as path from 'path';
-import * as fs from "fs";
 
 /**
- * Tests to make sure that the extensions of the file name/path are properly found 
+ * Tests to make sure that the extensions of the file name/path are properly found
  */
 describe ('GetExtension', function() {
     it ("Test 1", function() {
@@ -84,7 +83,7 @@ describe ('UpdateHitMap', function() {
     });
     it ("Test 3", function() {
         var data = path.resolve();
-        const opts = new DefaultOpts(); 
+        const opts = new DefaultOpts();
         var fileArray = Search.findFilesRecursively(data, opts);
         var currMap = new Map();
         var finalMap = Stale.initializeTypescriptMapFiles(fileArray, currMap);
@@ -127,7 +126,7 @@ describe ('ExpandPath', function() {
 });
 
 /**
- * Tests to see whether maps are properly being sorted when this function is called ... 
+ * Tests to see whether maps are properly being sorted when this function is called ...
  * Both the value and key should move to the proper spot, not just one or the other
  */
 describe ('SortMap', function() {
@@ -180,7 +179,7 @@ describe ('SwapMapValues', function() {
 
 /**
  * Tests to see that if there is a "@NotStale" string in a file, then that file is not added to the hitmap
- 
+
 describe ('IsNotStale', function() {
     it ("Test 1", function() {
         const data = fs.readFileSync("./src/stale-code/search/Search.ts",'utf8');
@@ -198,14 +197,14 @@ describe ('IsNotStale', function() {
  */
 describe ('ParseImports', function() {
     it ("Test 1", function() {
-        const data = 
+        const data =
         `
         import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
         `;
         assert.equal(Stale.parseImports(data)[0], "import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';");
     });
     it ("Test 2", function() {
-        const data = 
+        const data =
         `
         import {DocMetas} from "../metadata/DocMetas";
         import {
@@ -244,6 +243,6 @@ describe ('ParseImports', function() {
               "        } from './Datastore';",
             "import {Backend} from 'polar-shared/src/datastore/Backend';"
         ];
-        assert.deepEqual(Stale.parseImports(data), result);    
+        assert.deepEqual(Stale.parseImports(data), result);
     });
 });
