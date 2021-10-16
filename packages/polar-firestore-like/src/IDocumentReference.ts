@@ -62,8 +62,8 @@ export interface IDocumentReference<SM> {
     set(data: TDocumentData): Promise<void>;
     set(data: Partial<TDocumentData>, options: ISetOptions): Promise<void>;
 
-    update(data: TUpdateData, precondition?: IPrecondition): Promise<void>;
-    delete(precondition?: IPrecondition): Promise<void>;
+    update(data: TUpdateData /* , precondition?: IPrecondition*/ ): Promise<void>;
+    delete(/* precondition?: IPrecondition */): Promise<void>;
 
     onSnapshot(observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
     onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
