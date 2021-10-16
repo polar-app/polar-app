@@ -1,10 +1,19 @@
-import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 import {PathStr} from "polar-shared/src/util/Strings";
 
 export namespace DependencyIndex {
 
     export interface IDependencyIndex {
+
+        /**
+         * Register a source file so that it has zero references.
+         */
+        readonly register: (importer: PathStr) => void;
+
+        /**
+         * Register a dep which will increase the dependency account.
+         */
         readonly registerDependency: (importer: PathStr, imported: PathStr) => void;
+
         readonly computeRanking: () => ReadonlyArray<IImportReference>;
     }
 
@@ -15,24 +24,33 @@ export namespace DependencyIndex {
 
     export function create(): IDependencyIndex {
 
-        const multimap = new ArrayListMultimap<PathStr, PathStr>();
+        const index: {[key: string]: {[path: string]: boolean}} = {};
+
+        function register(importer: PathStr) {
+            index[importer] = {};
+        }
 
         function registerDependency(importer: PathStr, imported: PathStr) {
-            multimap.put(imported, importer);
+
+            if (! index[imported]) {
+                index[imported] = {}
+            }
+
+            index[imported][importer] = true;
         }
 
         function computeRanking() {
 
-            let refs = multimap.keys().map((key): IImportReference => ({
+            let refs = Object.keys(index).map((key): IImportReference => ({
                 path: key,
-                refs: multimap.get(key).length
+                refs: Object.keys(index[key]).length
             }));
 
             return refs.sort((a, b) => b.refs - a.refs);
 
         }
 
-        return {registerDependency, computeRanking};
+        return {register, registerDependency, computeRanking};
 
     }
 

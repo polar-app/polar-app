@@ -22,6 +22,22 @@ export namespace OrphanFinder {
 
     }
 
+    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
+        const sourceReferences = await _computeSourceReferences(modules);
+
+        const predicate = (path: string): boolean => {
+
+            if (path.endsWith(".d.ts")) {
+                return false;
+            }
+
+            return path.endsWith(".ts") || path.endsWith(".tsx");
+
+        }
+
+        return sourceReferences.filter(current => predicate(current.fullPath));
+
+    }
 
     async function computeTypescriptImports(sourceReference: ISourceReference) {
 
@@ -75,7 +91,7 @@ export namespace OrphanFinder {
 
         console.log("Scanning modules...")
 
-        const sourceReferences = await _computeSourceReferences(modules);
+        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
@@ -85,9 +101,13 @@ export namespace OrphanFinder {
 
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
-        // this should register all the imports... now we just need to score them..
+        // ** register all files so that they get a ref count of zero..
+        sourceReferences.map(current => dependencyIndex.register(current.fullPath));
+
+        // *** this should register all the imports...
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.imported))
 
+        // *** now we just need to score them..
         const ranking = dependencyIndex.computeRanking();
 
         const grid = TextGrid.create(2);
