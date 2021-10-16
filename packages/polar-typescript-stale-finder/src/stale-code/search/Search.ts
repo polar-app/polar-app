@@ -134,12 +134,12 @@ export class Stale {
      * @param currMap
      */
     public static updateHitMap (currFullPath : string, currMap : Map<string,number>) : Map<string,number> {
-        if (currFullPath != undefined) {
+        if (currFullPath !== undefined) {
             /// checks to see if the hitmap already has that path
             if (currMap.has(currFullPath) === true) {
                 /// if it does then increments the value of that file by 1
                 var currVal = currMap.get(currFullPath);
-                if (currVal != undefined) {
+                if (currVal !== undefined) {
                     currMap.set(currFullPath, currVal + 1);
                 }
             }
@@ -157,16 +157,16 @@ export class Stale {
      * @param finalPath
      */
     public static checkFullPath (finalPath : string) : string {
-        if (fs.existsSync(finalPath) == false) {
+        if (fs.existsSync(finalPath) === false) {
             finalPath = finalPath + 'x';
-            if (fs.existsSync(finalPath) == false) {
+            if (fs.existsSync(finalPath) === false) {
                 finalPath = finalPath.replace(finalPath.substring(finalPath.length-3), "");
                 finalPath = finalPath + 'd.ts';
                 if (finalPath.includes('utils.js.d.ts')) {
                     finalPath = finalPath.replace(finalPath.substring(finalPath.length-7), "");
                     finalPath = finalPath + 'ts';
                 }
-                if (fs.existsSync(finalPath) == false) {
+                if (fs.existsSync(finalPath) === false) {
                     console.warn("File does not exist: " + finalPath);
                 }
             }
@@ -181,7 +181,7 @@ export class Stale {
     public static expandPath (currPath : string) : string {
         /// fixes the punctuation of the file path of the import
         currPath = currPath.replace(/['"]+/g, '');
-        if (currPath.includes('.ts') == false) {
+        if (currPath.includes('.ts') === false) {
             currPath = currPath.replace(currPath.substring(currPath.length-1), "");
             currPath = currPath + '.ts';
         }
@@ -222,11 +222,15 @@ export class Stale {
      * @param finalMap
      */
     public static printMap(finalMap : any[][]) {
+
         for (var j = 0; j < finalMap.length; j++) {
             var curr = finalMap[j];
-            if (curr[1].includes('Test') == false && curr[1].includes('test') == false) {
-                console.log(curr[0], ' ', curr[1]);
-            }
+            // if (curr[1].includes('Test') === false && curr[1].includes('test') === false) {
+            //     console.log(curr[0], ' ', curr[1]);
+            // }
+
+            // console.log(curr[0], ' ', curr[1]);
+
         }
     }
 

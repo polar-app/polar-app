@@ -29,9 +29,10 @@ export function main() {
             /// if it is then continues to the next file
             if (file.name.includes('test.ts')  || file.name.includes('.d.ts')) {
                 continue;
-            }
-            /// checks to make sure that the file type is either .ts or .tsx
-            else if (ext != undefined && ['ts','tsx'].includes(ext)) {
+            } else if (ext !== undefined && ['ts','tsx'].includes(ext)) {
+
+                /// checks to make sure that the file type is either .ts or .tsx
+
                 /// gets all the contents of the current file
                 const data = fs.readFileSync(initialFilePath,'utf8');
                 /// gets an array of all imports in the file
@@ -47,7 +48,7 @@ export function main() {
                     var filePath = importLine.split(' ').pop();
                     var fullPath;
                     /// converts that file path into a full file path
-                    if (filePath != undefined) {
+                    if (filePath !== undefined) {
                         if (filePath.includes('./') || filePath.includes('../')) {
                             filePath = Stale.expandPath(filePath);
                             /// creates the full path with the proper directory name
@@ -56,7 +57,7 @@ export function main() {
                             fullPath = Stale.checkFullPath(fullPath);
                         }
                     }
-                    if (fullPath != undefined) {
+                    if (fullPath !== undefined) {
                         /// updates the value of the file in the hitMap
                         hitMap = Stale.updateHitMap(fullPath, hitMap);
                     }
