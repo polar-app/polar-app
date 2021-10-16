@@ -2,40 +2,27 @@ import {useFirestoreSnapshotSubscriber} from "../../ui/data_loader/UseFirestoreS
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
-import IMigration = MigrationCollection.IMigration;
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
-import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import IMigration = MigrationCollection.IMigration;
 
 export function useMigrationSnapshot() {
 
     const {uid, firestore} = useFirestore();
 
-    if (! uid) {
-        throw new Error("User not authenticated");
-    }
-
     const subscriber = MigrationCollection.createSnapshot(firestore, uid);
-    const converter = React.useCallback((data: TDocumentData) => {
-        return data as IMigration;
-    }, [])
+    const converter = React.useCallback((data: TDocumentData) => (data as IMigration), [])
 
     return useFirestoreSnapshotSubscriber(subscriber, converter)
 
 }
 
-export function useMigrationSnapshotByName(name: string): [IMigration | undefined, IFirestoreError | undefined] {
+export function useMigrationSnapshotByName(name: string) {
 
-    const [snapshot, error] = useMigrationSnapshot();
+    const {uid, firestore} = useFirestore();
 
-    const match
-            = arrayStream(snapshot || [])
-                .filter(current => current.name === name)
-                .first();
+    const subscriber = MigrationCollection.createSnapshotByName(firestore, uid, name);
+    const converter = React.useCallback((data: TDocumentData) => (data as IMigration), [])
 
-    return [
-        match,
-        error
-    ];
+    return useFirestoreSnapshotSubscriber(subscriber, converter)
 
 }

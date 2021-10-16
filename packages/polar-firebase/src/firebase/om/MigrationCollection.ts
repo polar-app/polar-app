@@ -3,7 +3,10 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {UserIDStr} from "../Collections";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import {FirestoreSnapshotSubscriber} from "polar-firestore-like/src/FirestoreSnapshots";
+import {
+    FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER,
+    FirestoreSnapshotSubscriber
+} from "polar-firestore-like/src/FirestoreSnapshots";
 
 /**
  * Keeps track of migrations.  Each user has a set of migrations which they can
@@ -71,11 +74,32 @@ export namespace MigrationCollection {
     }
 
     export function createSnapshot<SM = undefined>(firestore: IFirestore<SM>,
-                                                   uid: UserIDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+                                                   uid: UserIDStr | undefined): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+
+        if (! uid) {
+            return FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER;
+        }
 
         return (onNext, onError) => {
             return firestore.collection(COLLECTION_NAME)
                 .where('uid', '==', uid)
+                .onSnapshot(onNext, onError);
+        }
+
+    }
+
+    export function createSnapshotByName<SM = undefined>(firestore: IFirestore<SM>,
+                                                        uid: UserIDStr | undefined,
+                                                        name: string): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+
+        if (! uid) {
+            return FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER;
+        }
+
+        return (onNext, onError) => {
+            return firestore.collection(COLLECTION_NAME)
+                .where('uid', '==', uid)
+                .where('name', '==', name)
                 .onSnapshot(onNext, onError);
         }
 
