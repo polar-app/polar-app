@@ -53,6 +53,17 @@ export namespace MigrationCollection {
 
     export type IMigration = IMigrationStarted | IMigrationCompleted | IMigrationFailed;
 
+    export async function getByName<SM = unknown>(firestore: IFirestore<SM>,
+                                                  uid: UserIDStr | undefined,
+                                                  name: string) {
+
+        return firestore.collection(COLLECTION_NAME)
+                        .where('uid', '==', uid)
+                        .where('name', '==', name)
+                        .get();
+
+    }
+
     export async function write<SM = undefined>(firestore: IFirestore<SM>, write: Exclude<IMigration, 'id' | 'written'>) {
 
         const id = Hashcodes.createID({
@@ -89,8 +100,8 @@ export namespace MigrationCollection {
     }
 
     export function createSnapshotByName<SM = undefined>(firestore: IFirestore<SM>,
-                                                        uid: UserIDStr | undefined,
-                                                        name: string): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+                                                         uid: UserIDStr | undefined,
+                                                         name: string): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
 
         if (! uid) {
             return FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER;
