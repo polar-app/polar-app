@@ -1,3 +1,5 @@
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {AdaptiveDialog} from "../../mui/AdaptiveDialog";
 import {useMigrationSnapshotByName} from "./UseMigrationSnapshot";
@@ -24,8 +26,28 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     return (
         <AdaptiveDialog>
-            <div>
-                TODO
+
+            <div style={{
+                     display: 'flex',
+                     justifyContent: 'center'
+                 }}>
+
+                <Box m={1}>
+                    <Typography variant="h2">
+                        We're migrating your data!
+                    </Typography>
+                </Box>
+
+                <Box m={1}>
+
+                    <Typography variant="h4">
+                        Just a moment please.  We're migrating your data to enable
+                        some really cool new features.  We're also going to create a
+                        backup just in case.
+                    </Typography>
+
+                </Box>
+
             </div>
         </AdaptiveDialog>
     )
