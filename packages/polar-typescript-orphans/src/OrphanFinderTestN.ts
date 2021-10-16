@@ -22,10 +22,17 @@ describe("OrphanFinder", function () {
 
         it("basic", async () => {
 
-            await OrphanFinder.doFind([{
-                name: 'polar-bookshelf',
-                dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
-            }])
+            await OrphanFinder.doFind([
+                {
+                    name: 'polar-bookshelf',
+                    dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
+                },
+                {
+                    name: 'polar-bookshelf',
+                    dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/apps'
+                }
+
+            ])
 
 
         });

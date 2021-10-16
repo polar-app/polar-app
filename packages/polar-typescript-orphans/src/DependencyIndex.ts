@@ -41,7 +41,7 @@ export namespace DependencyIndex {
 
         function computeRanking() {
 
-            let refs = Object.keys(index).map((key): IImportReference => ({
+            const refs = Object.keys(index).map((key): IImportReference => ({
                 path: key,
                 refs: Object.keys(index[key]).length
             }));
