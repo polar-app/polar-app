@@ -7,7 +7,7 @@ describe("OrphanFinder", function () {
 
     describe("_computeSourceReferences", () => {
 
-        it("basic", async () => {
+        xit("basic", async () => {
 
             const sourceReferences = await OrphanFinder._computeSourceReferences([{
                 name: 'polar-bookshelf',
@@ -21,7 +21,7 @@ describe("OrphanFinder", function () {
 
     describe("doFind", () => {
 
-        it("basic", async () => {
+        xit("basic", async () => {
 
             const modules = [
                 {

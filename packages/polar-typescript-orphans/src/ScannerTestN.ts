@@ -1,7 +1,7 @@
 import {Scanner} from "./Scanner";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
-describe("Scanner", function() {
+xdescribe("Scanner", function() {
 
     xit("basic", async () => {
 

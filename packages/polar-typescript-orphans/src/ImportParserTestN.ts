@@ -2,7 +2,7 @@ import {ImportParser} from "./ImportParser";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Files} from "polar-shared/src/util/Files";
 
-describe("ImportParser", function () {
+xdescribe("ImportParser", function () {
 
     xit("basic parser", () => {
 
