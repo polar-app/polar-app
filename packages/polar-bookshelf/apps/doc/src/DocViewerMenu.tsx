@@ -510,7 +510,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             const selected = annotations.map(annotationMetaToRefResolver);
             annotationMutationsContext.onDeleted({selected});
         }
-    }, [blocksStore, annotationMutationsContext]);
+    }, [blocksStore, annotationMetaToRefResolver, annotationMutationsContext]);
 
     const onCopy = () => {
         Clipboards.writeText(origin.selectionToText());
@@ -595,7 +595,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         const {pageNum} = highlight;
 
         // TODO make sure the right doc panel is exposed
-    
+
         const targetPrefix = NEW_NOTES_ANNOTATION_BAR_ENABLED ? DOMBlocks.BLOCK_ID_PREFIX : 'annotation-';
 
         const ptr = AnnotationPtrs.create({

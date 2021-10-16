@@ -126,9 +126,6 @@ export const TableCellTags = React.memo(function TableCellTags(props: TableCellT
                    onClick={event => props.selectRow(props.viewID, event, 'click')}
                    onContextMenu={props.contextMenuHandler}>
 
-            {/*TODO: this sorting and mapping might be better done */}
-            {/*at the RepoDocInfo level so it's done once not per*/}
-            {/*display render.*/}
             {arrayStream(Tags.onlyRegular(Object.values(props.tags || {})))
                 .sort((a, b) => a.label.localeCompare(b.label))
                 .map(current => current.label)
@@ -168,7 +165,7 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
             callbacks.onOpen();
         }
 
-    }, [row.id, selectRow]);
+    }, [callbacks, row.id, selectRow]);
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
     const columns = useDocRepoColumns();
