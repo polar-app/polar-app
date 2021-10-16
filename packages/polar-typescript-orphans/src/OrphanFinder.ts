@@ -22,10 +22,11 @@ export namespace OrphanFinder {
 
     }
 
-    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
+    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>,
+                                                                     filters: ReadonlyArray<PathRegexStr>) {
         const sourceReferences = await _computeSourceReferences(modules);
 
-        const predicate = (path: string): boolean => {
+        const typescriptFilePredicate = (path: string): boolean => {
 
             if (path.endsWith(".d.ts")) {
                 return false;
@@ -35,7 +36,12 @@ export namespace OrphanFinder {
 
         }
 
-        return sourceReferences.filter(current => predicate(current.fullPath));
+        const notFilteredPredicate = (path: string): boolean => {
+            return filters.filter(filter => path.match(filter)).length === 0;
+        }
+
+        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath))
+                               .filter(current => notFilteredPredicate(current.fullPath));
 
     }
 
@@ -88,13 +94,24 @@ export namespace OrphanFinder {
 
     }
 
-    export async function doFind(modules: ReadonlyArray<IModuleReference>) {
+    export type PathRegexStr = string;
+
+    interface IDoFindOpts {
+        readonly filters?: ReadonlyArray<PathRegexStr>
+        readonly modules: ReadonlyArray<IModuleReference>;
+    }
+
+    export async function doFind(opts: IDoFindOpts) {
+
+        const {modules} = opts;
+
+        const filters = opts.filters || [];
 
         const dependencyIndex = DependencyIndex.create();
 
         console.log("Scanning modules...")
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
+        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, filters);
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 

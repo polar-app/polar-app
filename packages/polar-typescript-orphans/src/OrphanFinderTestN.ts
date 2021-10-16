@@ -1,4 +1,5 @@
 import {OrphanFinder} from "./OrphanFinder";
+import PathRegexStr = OrphanFinder.PathRegexStr;
 
 describe("OrphanFinder", function () {
 
@@ -22,7 +23,7 @@ describe("OrphanFinder", function () {
 
         it("basic", async () => {
 
-            await OrphanFinder.doFind([
+            const modules = [
                 {
                     name: 'polar-bookshelf',
                     dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
@@ -32,7 +33,17 @@ describe("OrphanFinder", function () {
                     dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/apps'
                 }
 
-            ])
+            ];
+
+            const filters: ReadonlyArray<PathRegexStr> = [
+                "Test.ts$",
+                "TestN.ts$",
+                "TestK.ts$",
+                "TestNK.ts$",
+                "TestKN.ts$",
+            ];
+
+            await OrphanFinder.doFind({modules, filters})
 
 
         });
