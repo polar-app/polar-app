@@ -3,9 +3,7 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {UserIDStr} from "../Collections";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
-import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
-import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {FirestoreSnapshotSubscriber} from "polar-firestore-like/src/FirestoreSnapshots";
 
 /**
  * Keeps track of migrations.  Each user has a set of migrations which they can
@@ -73,13 +71,13 @@ export namespace MigrationCollection {
     }
 
     export function createSnapshot<SM = undefined>(firestore: IFirestore<SM>,
-                                                   uid: UserIDStr,
-                                                   onNext: (snapshot: IQuerySnapshot<SM>) => void,
-                                                   onError: (err: IFirestoreError) => void): SnapshotUnsubscriber {
+                                                   uid: UserIDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
 
-        return firestore.collection(COLLECTION_NAME)
-                        .where('uid', '==', uid)
-                        .onSnapshot(onNext, onError);
+        return (onNext, onError) => {
+            return firestore.collection(COLLECTION_NAME)
+                .where('uid', '==', uid)
+                .onSnapshot(onNext, onError);
+        }
 
     }
 

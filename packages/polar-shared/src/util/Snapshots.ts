@@ -6,6 +6,7 @@ import {IDStr} from "./Strings";
  */
 export type OnErrorCallback = (err: ErrorType) => void;
 
+// TODO: I think this value as undefined is not correct
 export type OnNextCallback<V> = (value: V | undefined) => void;
 
 /**

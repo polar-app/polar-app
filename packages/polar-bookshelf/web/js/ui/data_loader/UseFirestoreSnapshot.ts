@@ -6,7 +6,7 @@ import {IWhereClause} from "polar-firestore-like/src/ICollectionReference";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import React from "react";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {FirestoreSnapshotConverter, FirestoreSnapshotSubscriber} from "polar-firestore-like/src/FirestoreSnapshots";
 
 interface IFirestoreSnapshotOpts {
     readonly offset?: number;
@@ -61,24 +61,40 @@ export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IF
 
 }
 
-export function useFirestoreSnapshotSubscriber<SM extends unknown>(subscriber: (onNext: (snapshot: IQuerySnapshot<SM>) => void,
-                                                                                onError: (err: IFirestoreError) => void) => SnapshotUnsubscriber): IFirestoreSnapshotTuple {
+export type IFirestoreConvertedSnapshotTuple<T, SM = unknown,> = [ReadonlyArray<T> | undefined, IFirestoreError | undefined];
+
+export function useFirestoreSnapshotSubscriber<SM extends unknown, T>(subscriber: FirestoreSnapshotSubscriber<IQuerySnapshot<SM>>,
+                                                                      converter: FirestoreSnapshotConverter<T>): IFirestoreConvertedSnapshotTuple<T, SM> {
 
     const {firestore} = useFirestore();
 
-    const [snapshot, setSnapshot] = React.useState<IQuerySnapshot<SM> | undefined>(undefined);
+    const [snapshot, setSnapshot] = React.useState<ReadonlyArray<T> | undefined>(undefined);
     const [error, setError] = React.useState<IFirestoreError | undefined>(undefined);
 
     const onNext = React.useCallback((snapshot: IQuerySnapshot<SM>) => {
-        setSnapshot(snapshot);
-    }, []);
+
+        if (snapshot) {
+
+            if (snapshot.empty) {
+                setSnapshot([]);
+            } else {
+                setSnapshot(snapshot.docs.map(current => converter(current.data())));
+            }
+
+        } else {
+            setSnapshot(undefined);
+        }
+
+    }, [converter]);
 
     const onError = React.useCallback((err: IFirestoreError) => {
         setError(err);
     }, []);
 
     React.useEffect(() => {
+
         return subscriber(onNext, onError);
+
     }, [firestore, onError, onNext, subscriber]);
 
     return [snapshot, error];
