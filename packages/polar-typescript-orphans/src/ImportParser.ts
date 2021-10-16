@@ -41,7 +41,7 @@ export namespace ImportParser {
         const promises = [
             detectPath(FilePaths.join(importerPathDirName, importPath)),
             detectPath(FilePaths.join(importerPathDirName, importPath + ".ts")),
-            detectPath(FilePaths.join(importerPathDirName, importPath + ".tx")),
+            detectPath(FilePaths.join(importerPathDirName, importPath + ".tsx")),
         ]
 
         const resolved = await Promise.all(promises);

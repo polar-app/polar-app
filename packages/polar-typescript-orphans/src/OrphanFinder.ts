@@ -44,8 +44,10 @@ export namespace OrphanFinder {
         const buff = await Files.readFileAsync(sourceReference.fullPath);
         const content = buff.toString("utf-8");
 
-        return ImportParser.parse(content)
+        const imported = ImportParser.parse(content)
             .filter(ImportParser.accept);
+
+        return imported;
 
     }
 
@@ -56,10 +58,11 @@ export namespace OrphanFinder {
         const promises = imports.map(current => ImportParser.resolve(sourceReference.fullPath, current));
         const resolved = await Promise.all(promises);
 
-        return arrayStream(resolved)
+        const imported = arrayStream(resolved)
             .filterPresent()
             .collect();
 
+        return imported;
     }
 
     export interface IImport {
