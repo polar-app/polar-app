@@ -42,8 +42,7 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
                     <Typography variant="h4">
                         Just a moment please.  We're migrating your data to enable
-                        some really cool new features.  We're also going to create a
-                        backup just in case.
+                        some really cool new features.
                     </Typography>
 
                 </Box>
