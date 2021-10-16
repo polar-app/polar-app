@@ -26,6 +26,7 @@ import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationCo
 import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
 
 export namespace AnnotationBlockMigrator {
+
     export const textToMarkdown = (text: Text | string) =>
         Texts.isText(text) ? MarkdownContentConverter.toMarkdown(Texts.toHTML(text) || '') : text;
 
