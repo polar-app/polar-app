@@ -137,7 +137,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
 
         doDismiss(reason);
 
-    }, [onCancel]);
+    }, [doDismiss]);
 
     const handleCancel = React.useCallback(() => {
 
@@ -148,7 +148,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
     const handleAccept = React.useCallback(() => {
         doDismiss('accept');
         props.onAccept();
-    }, [props]);
+    }, [doDismiss, props]);
 
     // FIXME: I don't think error should be the default here.
     const type: AlertType = props.type || 'error';

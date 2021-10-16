@@ -175,6 +175,7 @@ module.exports = (config) => {
                         test: path.resolve(__dirname, '../../node_modules/electron/index.js'),
                         use: 'null-loader'
                     }
+
                 ]
 
             },

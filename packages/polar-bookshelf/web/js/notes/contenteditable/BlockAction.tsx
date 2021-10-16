@@ -209,7 +209,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
         const text = activePromptRef.current?.actionInput.textContent || '';
 
         return computeActionInputTextRef.current(text);
-    }, []);
+    }, [computeActionInputTextRef]);
 
     const clearActivePrompt = React.useCallback((noRange?: boolean) => {
 
@@ -345,7 +345,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         doReset();
 
-    }, [actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
+    }, [handleComputeActionInputText, createActionRangeForHandler, onAction, actionExecutor, doReset]);
 
     const doCompleteOrReset = React.useCallback(() => {
 
@@ -447,7 +447,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         throw new Error("No selection");
 
-    }, [theme.palette.text.hint, trigger, wrapStart]);
+    }, [theme.palette.text.hint, trigger.length, wrapEnd, wrapStart]);
 
     const computePosition = React.useCallback(() => {
 
@@ -647,7 +647,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
         return () => {
             elem.removeEventListener('input', handleInput);
         };
-    }, [computeItemsRef, disabled]);
+    }, [actionStore, captureInitialMarkdownContent, computeItemsRef, computePosition, createActionHandler, createActivePrompt, disabled, divRef, handleComputeActionInputText, trigger]);
 
     const handleClick = React.useCallback(() => {
 

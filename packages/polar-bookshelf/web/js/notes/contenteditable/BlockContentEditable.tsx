@@ -87,7 +87,7 @@ export const BlockContentEditable = (props: IProps) => {
         contentRef.current = newContent;
         props.onChange(newContent);
 
-    }, [props]);
+    }, [props, getCurrentContent]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
         handleChange();
@@ -157,7 +157,7 @@ export const BlockContentEditable = (props: IProps) => {
                 updateCursorPosition(focusedBlock, currPosition, true);
             }
         }
-    }, [divRef, getCurrentContent, handleChange]);
+    }, [blocksTreeStore, getCurrentContent, props, updateCursorPosition]);
 
     const handlePaste = usePasteHandler({
         onPasteImage,
@@ -327,12 +327,12 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             link1.getAttribute('href') === link2.getAttribute('href') &&
             link1.textContent === link2.textContent;
 
-        for (let mutation of mutations) {
+        for (const mutation of mutations) {
             const added = mutationNodesToWikiLinks(mutation.addedNodes);
             const removed = mutationNodesToWikiLinks(mutation.removedNodes)
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
-            for (let removedLink of removedLinks) {
+            for (const removedLink of removedLinks) {
                 const block = blocksStore.getBlockForMutation(blockID);
                 const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && BlockPredicates.canHaveLinks(block)) {

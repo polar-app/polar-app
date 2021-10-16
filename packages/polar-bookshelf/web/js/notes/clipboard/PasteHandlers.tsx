@@ -230,6 +230,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteHTML, onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
+    }, [uploadHandler, id, onPasteImage, onPasteHTML, onPasteBlocks, onPasteText, onPasteError])
 
 }
