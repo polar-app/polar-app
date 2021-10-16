@@ -1,6 +1,11 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {UserIDStr} from "../Collections";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
+import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
+import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 /**
  * Keeps track of migrations.  Each user has a set of migrations which they can
@@ -47,7 +52,7 @@ export namespace MigrationCollection {
 
     export type IMigration = IMigrationStarted | IMigrationCompleted | IMigrationFailed;
 
-    export async function write<SM>(firestore: IFirestore<SM>, write: Exclude<IMigration, 'id' | 'written'>) {
+    export async function write<SM = undefined>(firestore: IFirestore<SM>, write: Exclude<IMigration, 'id' | 'written'>) {
 
         const id = Hashcodes.createID({
             uid: write.uid,
@@ -64,6 +69,17 @@ export namespace MigrationCollection {
         }
 
         await ref.set(value);
+
+    }
+
+    export function createSnapshot<SM = undefined>(firestore: IFirestore<SM>,
+                                                   uid: UserIDStr,
+                                                   onNext: (snapshot: IQuerySnapshot<SM>) => void,
+                                                   onError: (err: IFirestoreError) => void): SnapshotUnsubscriber {
+
+        return firestore.collection(COLLECTION_NAME)
+                        .where('uid', '==', uid)
+                        .onSnapshot(onNext, onError);
 
     }
 

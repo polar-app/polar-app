@@ -6,6 +6,7 @@ import {IWhereClause} from "polar-firestore-like/src/ICollectionReference";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import React from "react";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 interface IFirestoreSnapshotOpts {
     readonly offset?: number;
@@ -13,7 +14,7 @@ interface IFirestoreSnapshotOpts {
     readonly where?: ReadonlyArray<IWhereClause>;
 }
 
-export type IFirestoreSnapshotTuple = [IQuerySnapshot<ISnapshotMetadata>| undefined, IFirestoreError | undefined];
+export type IFirestoreSnapshotTuple<SM = unknown> = [IQuerySnapshot<SM>| undefined, IFirestoreError | undefined];
 
 /**
  * Get a snapshot from Firestore but also allow the user to subscribe by types
@@ -55,6 +56,30 @@ export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IF
         return query.onSnapshot(onNext, onError);
 
     }, [collectionName, firestore, onError, onNext, opts.limit, opts.offset, opts.where]);
+
+    return [snapshot, error];
+
+}
+
+export function useFirestoreSnapshotSubscriber<SM extends unknown>(subscriber: (onNext: (snapshot: IQuerySnapshot<SM>) => void,
+                                                                                onError: (err: IFirestoreError) => void) => SnapshotUnsubscriber): IFirestoreSnapshotTuple {
+
+    const {firestore} = useFirestore();
+
+    const [snapshot, setSnapshot] = React.useState<IQuerySnapshot<SM> | undefined>(undefined);
+    const [error, setError] = React.useState<IFirestoreError | undefined>(undefined);
+
+    const onNext = React.useCallback((snapshot: IQuerySnapshot<SM>) => {
+        setSnapshot(snapshot);
+    }, []);
+
+    const onError = React.useCallback((err: IFirestoreError) => {
+        setError(err);
+    }, []);
+
+    React.useEffect(() => {
+        return subscriber(onNext, onError);
+    }, [firestore, onError, onNext, subscriber]);
 
     return [snapshot, error];
 
