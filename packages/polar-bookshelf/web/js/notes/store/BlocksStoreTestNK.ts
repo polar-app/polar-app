@@ -29,6 +29,7 @@ import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -2597,7 +2598,7 @@ describe('BlocksStore', function() {
         });
 
 
-        it("should create a new child in the refed block (when the asChild option is true)", () => {
+        it("should create a new child in the refed block (when the unshift option is true)", () => {
             const store = createStore();
 
             const id = '105';
@@ -2657,6 +2658,37 @@ describe('BlocksStore', function() {
             const createdBlock2 = store.createNewBlock(block1.id, {split: {prefix: '', suffix: block1.content.data}});
             assertPresent(createdBlock2);
             assert.equal(store.isExpanded(createdBlock2.id), true);
+        });
+
+        it("should split the links properly when a block is split", () => {
+            const store = createStore();
+            const root = '102';
+            const link1 = { id: '2024', text: '(hello)' };
+            const link2 = { id: '2024', text: '[[world]]' };
+            const content: IMarkdownContent = {
+                type: 'markdown',
+                data: '[[(hello)]] what is happening [[\\[\\[world\\]\\]]]',
+                links: [link1, link2]
+            };
+
+            const { id } = store.createNewBlock(root, { content });
+
+            const block = store.getBlock(id);
+
+            assertPresent(block);
+
+            const { id: newBlockID } = store.createNewBlock(id, {
+                split: { prefix: '[[(hello)]] what is happening', suffix: ' [[\\[\\[world\\]\\]]]' }
+            });
+            
+            const oldBlock = store.getBlock(id);
+            const newBlock = store.getBlock(newBlockID);
+
+            assertPresent(oldBlock);
+            assertPresent(newBlock);
+
+            assert.deepEqual(oldBlock.content.links, [link1]);
+            assert.deepEqual(newBlock.content.links, [link2]);
         });
     });
 

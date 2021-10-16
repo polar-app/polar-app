@@ -21,9 +21,16 @@ describe('WikiLinksToHTML', function() {
 
     });
 
-    it("should not allow brackets inside of the special link notation", function() {
-        const input = "Potato [[ test [[hello]]";
-        const expected = `Potato [[ test <a contenteditable="false" class="note-link" href="#hello">hello</a>`;
+    it("should not allow brackets inside of the special link notation", () => {
+        const input = "Potato [[what]] after ]] [[ test [[hello]]";
+        const expected = `Potato <a contenteditable="false" class="note-link" href="#what">what</a> after ]] [[ test <a contenteditable="false" class="note-link" href="#hello">hello</a>`;
+
+        assert.equal(WikiLinksToHTML.escape(input), expected);
+    });
+
+    it("should allow escaped brackets inside of the special link notation", () => {
+        const input = `Potato [[ test [[\\[\\[(hello)\\]\\]]] wrapper ]]`;
+        const expected = `Potato [[ test <a contenteditable="false" class="note-link" href="#[[(hello)]]">\\[\\[(hello)\\]\\]</a> wrapper ]]`;
 
         assert.equal(WikiLinksToHTML.escape(input), expected);
     });

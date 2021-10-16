@@ -116,12 +116,10 @@ function useActionExecutor(id: BlockIDStr) {
                     ? actionOp.target.slice(1)
                     : actionOp.target;
                 a.setAttribute('contenteditable', 'false');
+                a.classList.add(type === 'tag' ? 'note-tag' : 'note-link');
                 a.setAttribute('href', '#' + trimmedTarget);
-                a.appendChild(document.createTextNode(actionOp.target.trim()));
+                a.appendChild(document.createTextNode(actionOp.target));
 
-                if (type === 'tag') {
-                    a.classList.add('note-tag');
-                }
 
                 coveringRange.insertNode(a);
             };
