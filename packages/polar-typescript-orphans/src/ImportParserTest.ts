@@ -13,4 +13,15 @@ describe("ImportParser", function () {
 
     });
 
+    it("basic parser with two imports", () => {
+
+        const imports = ImportParser.parse("import {Foo} from './Foo'\nimport {Bar} from './Bar'");
+
+        assertJSON(imports, [
+            "./Foo", "./Bar"
+        ])
+
+    });
+
+
 })
