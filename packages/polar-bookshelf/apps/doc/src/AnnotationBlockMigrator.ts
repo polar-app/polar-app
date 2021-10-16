@@ -2,42 +2,42 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {DocIDStr} from "polar-shared/src/util/Strings";
-import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
-import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
-import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
 import {Text} from "polar-shared/src/metadata/Text";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {IBlocksStore} from "../../../web/js/notes/store/IBlocksStore";
 import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
-import {NameContent} from "../../../web/js/notes/content/NameContent";
 import {InheritedTag} from "polar-shared/src/tags/InheritedTags";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {TAG_IDENTIFIER} from "../../../web/js/notes/content/HasLinks";
-import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {BlockContent} from "../../../web/js/notes/store/BlocksStore";
-import {BlockContentStructure} from "../../../web/js/notes/HTMLToBlocks";
-import {MarkdownContent} from "../../../web/js/notes/content/MarkdownContent";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
+import {IBlocksStore} from "../../../web/js/notes/store/IBlocksStore";
+import {BlockContentStructure} from "../../../web/js/notes/HTMLToBlocks";
+import {MarkdownContent} from "../../../web/js/notes/content/MarkdownContent";
+import {TAG_IDENTIFIER} from "../../../web/js/notes/content/HasLinks";
+import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {BlockContent} from "../../../web/js/notes/store/BlocksStore";
+import {NameContent} from "../../../web/js/notes/content/NameContent";
+import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
+import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
 
 export namespace AnnotationBlockMigrator {
     export const textToMarkdown = (text: Text | string) =>
         Texts.isText(text) ? MarkdownContentConverter.toMarkdown(Texts.toHTML(text) || '') : text;
 
     export function tagsToLinks(blocksStore: IBlocksStore, tags?: Record<string, InheritedTag>): ReadonlyArray<IBlockLink> {
-        
+
         if (! tags) {
             return [];
         }
 
         const toBlockLink = (tag: Tag): IBlockLink => {
             const block = blocksStore.getBlockByName(tag.label);
-            
+
             if (block) {
                 return { text: `${TAG_IDENTIFIER}${tag.label}`, id: block.id };
             } else {
