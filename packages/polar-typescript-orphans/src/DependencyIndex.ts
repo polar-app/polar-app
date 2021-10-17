@@ -14,10 +14,10 @@ export namespace DependencyIndex {
          */
         readonly registerDependency: (importer: PathStr, imported: PathStr) => void;
 
-        readonly computeRanking: () => ReadonlyArray<IImportReference>;
+        readonly computeRanking: () => ReadonlyArray<IImportRanking>;
     }
 
-    export interface IImportReference {
+    export interface IImportRanking {
         readonly path: string;
         readonly refs: number;
     }
@@ -41,7 +41,7 @@ export namespace DependencyIndex {
 
         function computeRanking() {
 
-            const refs = Object.keys(index).map((key): IImportReference => ({
+            const refs = Object.keys(index).map((key): IImportRanking => ({
                 path: key,
                 refs: Object.keys(index[key]).length
             }));
