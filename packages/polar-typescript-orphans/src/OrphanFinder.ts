@@ -241,9 +241,6 @@ export namespace OrphanFinder {
         // *** now we just need to score them..
         const importRankings = dependencyIndex.computeImportRankings();
 
-        // FIXME: the orphanFilter STILL counts in the report and those should count AGAINST the import count but not
-        // be computed as orphans.
-
         function createImportRankingsReport() {
 
             const grid = TextGrid.create(4);
@@ -290,8 +287,8 @@ export namespace OrphanFinder {
             return grid.format();
         }
 
-        // console.log("Orphan tests: ================")
-        // console.log(computeOrphanTestsReport());
+        console.log("Orphan tests: ================")
+        console.log(computeOrphanTestsReport());
 
     }
 

@@ -41,4 +41,10 @@ There are three type of files:
     - test: Test files that shouldn't be calculated as normal orphans because they should NEVER have any imports.
             but if they import orphans then they should count as orphans too.
 
-    - TODO: maybe we don't have to compute tests that are in error, just let the build fail...  
+    - TODO: maybe we don't have to compute tests that are in error, just let the build fail... 
+
+... we're still getting confused when:
+
+    - testing infra code is linked to from just ONE test and itself doesn't have tests
+    - tests share some testing code among themselves and other tests...
+    
