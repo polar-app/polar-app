@@ -7,7 +7,7 @@ export namespace FirebaseUserCreator {
 
     export async function createMigrationForBlockAnnotations(uid: UserIDStr) {
         const firestore = FirestoreAdmin.getInstance();
-        await MigrationCollection.createSnapshotByName(firestore, uid, 'block-annotations')
+        await MigrationCollection.createByName(firestore, uid, 'block-annotations')
     }
 
     export async function create(email: string, password: string) {
