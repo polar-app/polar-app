@@ -2,11 +2,13 @@ import {IModuleReference} from "./IModuleReference";
 import {DependencyIndex} from "./DependencyIndex";
 import {Scanner} from "./Scanner";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ISourceReference} from "./ISourceReference";
+import {ISourceReference, ISourceReferenceWithType, SourceType} from "./ISourceReference";
 import {Files} from "polar-shared/src/util/Files";
 import {ImportParser} from "./ImportParser";
 import {PathStr} from "polar-shared/src/util/Strings";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
+import {Predicates} from "polar-shared/src/util/Predicates";
+import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
 
 export namespace OrphanFinder {
 
@@ -22,17 +24,20 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, filters: ReadonlyArray<PathRegexStr>) {
+    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
 
-        const notFilteredPredicate = (path: string): boolean => {
-            return filters.filter(filter => path.match(filter)).length === 0;
-        }
-
-        return sourceReferences.filter(current => notFilteredPredicate(current.fullPath));
+        return sourceReferences.filter(current => predicate(current.fullPath));
 
     }
 
-    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
+    /**
+     * Given a path to a file, determine which type it is.
+     */
+    export type SourceTypeClassifier = (path: PathStr) => SourceType;
+
+    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>,
+                                                                     classifier: SourceTypeClassifier): Promise<ReadonlyArray<ISourceReferenceWithType>> {
+
         const sourceReferences = await _computeSourceReferences(modules);
 
         const typescriptFilePredicate = (path: string): boolean => {
@@ -45,7 +50,11 @@ export namespace OrphanFinder {
 
         }
 
-        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath));
+        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath))
+                               .map(current => {
+                                   const type = classifier(current.fullPath);
+                                   return {...current, type};
+                               });
 
     }
 
@@ -78,15 +87,16 @@ export namespace OrphanFinder {
 
     export interface IImport {
         readonly importer: PathStr;
+        readonly type: SourceType;
         readonly imported: PathStr;
     }
 
-    async function _computeImportsForSourceReference(sourceReference: ISourceReference,
+    async function _computeImportsForSourceReference(sourceReference: ISourceReferenceWithType,
                                                      moduleIndex: OrphanFinder.IModuleIndex): Promise<ReadonlyArray<OrphanFinder.IImport>> {
 
         const resolvedTypescriptImports = await resolveTypescriptImports(sourceReference, moduleIndex);
         const importer = sourceReference.fullPath;
-        return resolvedTypescriptImports.map(imported => ({importer, imported}));
+        return resolvedTypescriptImports.map(imported => ({importer, type: sourceReference.type, imported}));
 
     }
 
@@ -133,7 +143,7 @@ export namespace OrphanFinder {
 
     }
 
-    async function computeImports(sourceReferences: ReadonlyArray<ISourceReference>): Promise<ReadonlyArray<IImport>> {
+    async function computeImports(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): Promise<ReadonlyArray<IImport>> {
 
         const moduleIndex = computeModuleIndex(sourceReferences);
 
@@ -152,10 +162,16 @@ export namespace OrphanFinder {
     interface IDoFindOpts {
 
         /**
-         * Files that match this pattern can't actually be orphans but CAN count
-         * towards imports.
+         * Patterns for test files which are handled differently.
          */
-        readonly orphanFilter?: ReadonlyArray<PathRegexStr>
+        readonly testsFilter?: ReadonlyArray<PathRegexStr>
+
+        /**
+         * Files that match this pattern can't actually be orphans but CAN count
+         * towards imports as they are just entry points.
+         */
+        readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
+
         readonly modules: ReadonlyArray<IModuleReference>;
     }
 
@@ -163,39 +179,118 @@ export namespace OrphanFinder {
 
         const {modules} = opts;
 
-        const orphanFilter = opts.orphanFilter || [];
+        const entriesFilter = opts.entriesFilter || [];
+        const testsFilter = opts.testsFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
         console.log("Scanning modules...")
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
+        const sourceTypeClassifier = (path: PathStr) => {
+
+            const testPredicate = PathRegexFilterPredicates.createMatchAny(testsFilter);
+
+            if (testPredicate(path)) {
+                return 'test';
+            } else {
+                return 'main';
+            }
+
+        }
+
+        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+
+        // *** the main source references is the actual source code, not including tests.
+
+        function computeMainSourceReferences() {
+
+            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            return _filterSourceReferences(sourceReferences, predicate);
+
+        }
+        //
+        // function computeTestSourceReferences() {
+        //
+        //     const predicate = PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]);
+        //     return _filterSourceReferences(sourceReferences, predicate);
+        //
+        // }
+
+        const mainSourceReferences = computeMainSourceReferences();
+        // const testSourceReferences = computeTestSourceReferences();
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
         console.log("Scanning imports...")
 
+        // Note that these imports have to be computed over the
+        // mainSourceReferences NOT the sourceReferences because unit tests
+        // shouldn't count against ref numbers because if they do then we would
+        // never get down to zero and they would never be orphans.
         const imports = await computeImports(sourceReferences);
 
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        _filterSourceReferences(sourceReferences, orphanFilter)
-            .map(current => dependencyIndex.register(current.fullPath));
+        sourceReferences
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
         // *** this should register all the imports...
-        imports.map(current => dependencyIndex.registerDependency(current.importer, current.imported))
+        imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
-        const ranking = dependencyIndex.computeRanking();
+        const importRankings = dependencyIndex.computeImportRankings();
 
-        const grid = TextGrid.create(2);
+        function createImportRankingsReport() {
 
-        grid.headers("path", "refs");
-        ranking.map(current => grid.row(current.path, current.refs));
+            const grid = TextGrid.create(4);
 
-        console.log(grid.format());
+            const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
+
+            grid.headers("path", "main refs", "test refs", "orphan");
+            importRankings
+                .filter(current => current.type === 'main')
+                .filter(current => ! entriesPredicate(current.path))
+                .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
+
+            return grid.format();
+
+        }
+
+        console.log(createImportRankingsReport());
+
+        interface IOrphanTest {
+            readonly path: PathStr;
+            readonly imported: PathStr;
+        }
+
+        function computeOrphanTests(): ReadonlyArray<IOrphanTest> {
+
+            return arrayStream(importRankings)
+                .filter(current => current.orphan)
+                .filter(current => current.nrTestRefs === 1)
+                .map((current): IOrphanTest => {
+                    return {
+                        path: current.testRefs[0],
+                        imported: current.path
+                    }
+                })
+                .collect()
+
+        }
+
+        function computeOrphanTestsReport() {
+            const orphanTest = computeOrphanTests();
+            const grid = TextGrid.create(2);
+            grid.headers('path', 'imported');
+            orphanTest.forEach(current => grid.row(current.path, current.imported))
+            return grid.format();
+        }
+
+        console.log("Orphan tests: ================")
+        console.log(computeOrphanTestsReport());
 
     }
 
 }
+

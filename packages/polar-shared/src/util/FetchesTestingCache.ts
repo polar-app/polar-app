@@ -4,7 +4,7 @@ import {Fetches} from "./Fetch";
 
 export namespace FetchesTestingCache {
 
-    async function computePath(url: string) {
+    export async function _computePath(url: string) {
 
         await Files.createDirAsync('test')
         await Files.createDirAsync('test/fetch-cache')
@@ -17,7 +17,7 @@ export namespace FetchesTestingCache {
 
     export async function fetch(url: string): Promise<string> {
 
-        const path = await computePath(url);
+        const path = await _computePath(url);
 
         const exists = await Files.existsAsync(path);
 

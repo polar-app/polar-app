@@ -1,8 +1,8 @@
 import {PassThrough} from "stream";
 
-export class Buffers {
+export namespace Buffers {
 
-    public static toStream(buffer: Buffer) {
+    export function toStream(buffer: Buffer) {
 
         const result = new PassThrough();
 
@@ -13,7 +13,7 @@ export class Buffers {
 
     }
 
-    public static toArrayBuffer(buffer: Buffer) {
+    export function toArrayBuffer(buffer: Buffer) {
         return buffer.buffer;
     }
 
