@@ -188,12 +188,12 @@ export namespace OrphanFinder {
 
         const sourceTypeClassifier = (path: PathStr) => {
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
+            const testPredicate = PathRegexFilterPredicates.createMatchAny(testsFilter);
 
-            if (predicate(path)) {
-                return 'main';
-            } else {
+            if (testPredicate(path)) {
                 return 'test';
+            } else {
+                return 'main';
             }
 
         }
@@ -256,53 +256,48 @@ export namespace OrphanFinder {
 
         console.log(createImportRankingsReport());
 
-        // FIXME: don't show the tests in the main report...
-        // FIXME show the tests that are now orphaned too..
+        async function computeOrphanTests() {
 
-        // async function computeOrphanTests() {
-        //
-        //     const testSourceImports = await computeImports(testSourceReferences);
-        //
-        //     // ** map or orphans by full path.
-        //     const orphanMap =
-        //         arrayStream(importRankings)
-        //             .filter(current => current.refs === 0)
-        //             .toMap2(current => current.path, () => true);
-        //
-        //     // ** groups of tests and their imports that are fully resolved.
-        //     const groupedByImporter =
-        //         arrayStream(testSourceImports)
-        //             .partition(current => {
-        //                 return [current.importer, current.imported]
-        //             })
-        //
-        //     // ** predicate which returns true if any of the imports are orphans
-        //     const predicate = (imports: ReadonlyArray<PathStr>) => {
-        //         return imports.filter(current => orphanMap[current]).length > 0;
-        //     }
-        //
-        //     const orphanedTests =
-        //         Object.values(groupedByImporter)
-        //               .filter(current => predicate(current.values.map(i => i.imported)))
-        //               .map(current => current.id)
-        //
-        //     return orphanedTests;
-        //
-        // }
+            const testSourceImports = await computeImports(sourceReferences);
 
-        // TODO now the problem is that SOME code is only used by TEST code... so really what I need to do is
-        // have a filter that counts imports JUST from one test as being orphaned.
-        //
-        // async function computeOrphanTestsReport() {
-        //     const orphanTest = await computeOrphanTests();
-        //     const grid = TextGrid.create(1);
-        //     grid.headers('path');
-        //     orphanTest.forEach(current => grid.row(current))
-        //     return grid.format();
-        // }
-        //
-        // console.log("Orphan tests: ================")
-        // console.log(await computeOrphanTestsReport());
+            // ** map or orphans by full path.
+            const orphanMap =
+                arrayStream(importRankings)
+                    .filter(current => current.type === 'main')
+                    .filter(current => current.orphan)
+                    .toMap2(current => current.path, () => true);
+
+            // ** groups of tests and their imports that are fully resolved.
+            const groupedByImporter =
+                arrayStream(testSourceImports)
+                    .partition(current => {
+                        return [current.importer, current.imported]
+                    })
+
+            // ** predicate which returns true if any of the imports are orphans
+            const predicate = (imports: ReadonlyArray<PathStr>) => {
+                return imports.filter(current => orphanMap[current]).length > 0;
+            }
+
+            const orphanedTests =
+                Object.values(groupedByImporter)
+                      .filter(current => predicate(current.values.map(i => i.imported)))
+                      .map(current => current.id)
+
+            return orphanedTests;
+
+        }
+
+        async function computeOrphanTestsReport() {
+            const orphanTest = await computeOrphanTests();
+            const grid = TextGrid.create(1);
+            grid.headers('path');
+            orphanTest.forEach(current => grid.row(current))
+            return grid.format();
+        }
+
+        console.log("Orphan tests: ================")
+        console.log(await computeOrphanTestsReport());
 
     }
 
