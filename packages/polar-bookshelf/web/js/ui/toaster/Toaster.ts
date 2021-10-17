@@ -1,11 +1,12 @@
 import Toastr from 'toastr';
-import $ from '../JQuery';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 Toastr.options.toastClass = 'toastr';
 
 /**
  * High level interface to create toaster UI popups for messages.
+ *
+ * @Deprecated
  */
 export class Toaster {
 
