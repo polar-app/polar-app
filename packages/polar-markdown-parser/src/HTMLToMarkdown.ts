@@ -92,18 +92,16 @@ export namespace HTMLToMarkdown {
     turndownService.addRule('link', {
         filter: ['a'],
         replacement: (content, node) => {
-            if (! (node instanceof HTMLAnchorElement)) {
-                return '';
-            }
+            const anchor = node as HTMLAnchorElement;
 
-            const href = node.getAttribute('href');
+            const href = anchor.getAttribute('href');
 
             if (! href) {
                 return '';
             }
 
             if (href.startsWith('#')) {
-                return node.outerHTML;
+                return anchor.outerHTML;
             }
 
             return `[${content}](${href})`;

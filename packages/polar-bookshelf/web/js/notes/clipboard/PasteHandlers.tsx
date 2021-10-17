@@ -1,9 +1,8 @@
 import React from "react";
-import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {useUploadHandler} from "../UploadHandler";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -15,7 +14,6 @@ export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void;
     readonly onPasteError: (err: unknown) => void;
-    readonly onPasteHTML: (html: HTMLStr) => void;
     readonly onPasteText: (text: string) => void;
     readonly id: BlockIDStr;
 }
@@ -139,7 +137,7 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, onPasteHTML, id } = opts;
+    const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, id } = opts;
     const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
@@ -230,6 +228,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [uploadHandler, id, onPasteImage, onPasteHTML, onPasteBlocks, onPasteText, onPasteError])
+    }, [uploadHandler, id, onPasteImage, onPasteBlocks, onPasteText, onPasteError])
 
 }

@@ -112,6 +112,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
         const block = blocks[0];
+
         if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
             document.execCommand("insertHTML", false, block.content.data);
             const existingBlock = blocksTreeStore.getBlock(props.id)!;
@@ -123,8 +124,6 @@ export const BlockContentEditable = (props: IProps) => {
             blocksTreeStore.insertFromBlockContentStructure(blocks);
         }
     }, [blocksTreeStore, handleChange, props.id]);
-
-    const onPasteHTML = React.useCallback((html: HTMLStr) => document.execCommand("insertHTML", false, html), []);
 
     const onPasteError = React.useCallback((err: unknown) => console.error("Got paste error: ", err), []);
 
@@ -163,7 +162,6 @@ export const BlockContentEditable = (props: IProps) => {
         onPasteImage,
         onPasteError,
         onPasteBlocks,
-        onPasteHTML,
         onPasteText,
         id: props.id,
     });
