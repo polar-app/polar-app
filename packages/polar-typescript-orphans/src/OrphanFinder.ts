@@ -2,7 +2,7 @@ import {IModuleReference} from "./IModuleReference";
 import {DependencyIndex} from "./DependencyIndex";
 import {Scanner} from "./Scanner";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ISourceReference} from "./ISourceReference";
+import {ISourceReference, ISourceReferenceWithType, SourceType} from "./ISourceReference";
 import {Files} from "polar-shared/src/util/Files";
 import {ImportParser} from "./ImportParser";
 import {PathStr} from "polar-shared/src/util/Strings";
@@ -30,7 +30,13 @@ export namespace OrphanFinder {
 
     }
 
-    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
+    /**
+     * Given a path to a file, determine which type it is.
+     */
+    export type SourceTypeClassifier = (path: PathStr) => SourceType;
+
+    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>,
+                                                                     classifier: SourceTypeClassifier): Promise<ReadonlyArray<ISourceReferenceWithType>> {
 
         const sourceReferences = await _computeSourceReferences(modules);
 
@@ -44,7 +50,11 @@ export namespace OrphanFinder {
 
         }
 
-        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath));
+        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath))
+                               .map(current => {
+                                   const type = classifier(current.fullPath);
+                                   return {...current, type};
+                               });
 
     }
 
@@ -77,15 +87,16 @@ export namespace OrphanFinder {
 
     export interface IImport {
         readonly importer: PathStr;
+        readonly type: SourceType;
         readonly imported: PathStr;
     }
 
-    async function _computeImportsForSourceReference(sourceReference: ISourceReference,
+    async function _computeImportsForSourceReference(sourceReference: ISourceReferenceWithType,
                                                      moduleIndex: OrphanFinder.IModuleIndex): Promise<ReadonlyArray<OrphanFinder.IImport>> {
 
         const resolvedTypescriptImports = await resolveTypescriptImports(sourceReference, moduleIndex);
         const importer = sourceReference.fullPath;
-        return resolvedTypescriptImports.map(imported => ({importer, imported}));
+        return resolvedTypescriptImports.map(imported => ({importer, type: sourceReference.type, imported}));
 
     }
 
@@ -132,7 +143,7 @@ export namespace OrphanFinder {
 
     }
 
-    async function computeImports(sourceReferences: ReadonlyArray<ISourceReference>): Promise<ReadonlyArray<IImport>> {
+    async function computeImports(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): Promise<ReadonlyArray<IImport>> {
 
         const moduleIndex = computeModuleIndex(sourceReferences);
 
@@ -175,57 +186,118 @@ export namespace OrphanFinder {
 
         console.log("Scanning modules...")
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
+        const sourceTypeClassifier = (path: PathStr) => {
+
+            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
+
+            if (predicate(path)) {
+                return 'main';
+            } else {
+                return 'test';
+            }
+
+        }
+
+        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
 
         // *** the main source references is the actual source code, not including tests.
 
-        function computeMainSourceReferences() {
+        // function computeMainSourceReferences() {
+        //
+        //     const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
+        //     return _filterSourceReferences(sourceReferences, predicate);
+        //
+        // }
+        //
+        // function computeTestSourceReferences() {
+        //
+        //     const predicate = PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]);
+        //     return _filterSourceReferences(sourceReferences, predicate);
+        //
+        // }
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
-            return _filterSourceReferences(sourceReferences, predicate);
-
-        }
-
-        function computeTestSourceReferences() {
-
-            const predicate = PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]);
-            return _filterSourceReferences(sourceReferences, predicate);
-
-        }
-
-        const mainSourceReferences = computeMainSourceReferences();
-        const testSourceReferences = computeTestSourceReferences();
+        // const mainSourceReferences = computeMainSourceReferences();
+        // const testSourceReferences = computeTestSourceReferences();
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
         console.log("Scanning imports...")
 
+        // Note that these imports have to be computed over the
+        // mainSourceReferences NOT the sourceReferences because unit tests
+        // shouldn't count against ref numbers because if they do then we would
+        // never get down to zero and they would never be orphans.
         const imports = await computeImports(sourceReferences);
 
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        mainSourceReferences
+        sourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath));
 
         // *** this should register all the imports...
-        imports.map(current => dependencyIndex.registerDependency(current.importer, current.imported))
+        imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
         const importRankings = dependencyIndex.computeImportRankings();
 
         function createImportRankingsReport() {
 
-            const grid = TextGrid.create(2);
+            const grid = TextGrid.create(3);
 
-            grid.headers("path", "refs");
-            importRankings.map(current => grid.row(current.path, current.refs));
+            grid.headers("path", "main refs", "test refs");
+            importRankings.map(current => grid.row(current.path, current.mainRefs, current.testRefs));
 
             return grid.format();
 
         }
 
         console.log(createImportRankingsReport());
+
+        // async function computeOrphanTests() {
+        //
+        //     const testSourceImports = await computeImports(testSourceReferences);
+        //
+        //     // ** map or orphans by full path.
+        //     const orphanMap =
+        //         arrayStream(importRankings)
+        //             .filter(current => current.refs === 0)
+        //             .toMap2(current => current.path, () => true);
+        //
+        //     // ** groups of tests and their imports that are fully resolved.
+        //     const groupedByImporter =
+        //         arrayStream(testSourceImports)
+        //             .partition(current => {
+        //                 return [current.importer, current.imported]
+        //             })
+        //
+        //     // ** predicate which returns true if any of the imports are orphans
+        //     const predicate = (imports: ReadonlyArray<PathStr>) => {
+        //         return imports.filter(current => orphanMap[current]).length > 0;
+        //     }
+        //
+        //     const orphanedTests =
+        //         Object.values(groupedByImporter)
+        //               .filter(current => predicate(current.values.map(i => i.imported)))
+        //               .map(current => current.id)
+        //
+        //     return orphanedTests;
+        //
+        // }
+
+        // TODO now the problem is that SOME code is only used by TEST code... so really what I need to do is
+        // have a filter that counts imports JUST from one test as being orphaned.
+        //
+        // async function computeOrphanTestsReport() {
+        //     const orphanTest = await computeOrphanTests();
+        //     const grid = TextGrid.create(1);
+        //     grid.headers('path');
+        //     orphanTest.forEach(current => grid.row(current))
+        //     return grid.format();
+        // }
+        //
+        // console.log("Orphan tests: ================")
+        // console.log(await computeOrphanTestsReport());
 
     }
 

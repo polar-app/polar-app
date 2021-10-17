@@ -25,3 +25,5 @@ TODO:
 
             - Then we report the orphan tests
     
+
+        - TODOL this is wrong... a test is an orphan test if it links to something that is now an orphan.

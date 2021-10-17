@@ -1,4 +1,7 @@
+export type SourceType = 'main' | 'test';
+
 export interface ISourceReference {
+
     readonly module: string;
 
     readonly dir: string;
@@ -17,4 +20,11 @@ export interface ISourceReference {
      * The full path on disk of the source file.
      */
     readonly fullPath: string;
+
+}
+
+export interface ISourceReferenceWithType extends ISourceReference {
+
+    readonly type: SourceType;
+
 }
