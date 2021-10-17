@@ -21,7 +21,7 @@ describe("OrphanFinder", function () {
 
     describe("doFind", () => {
 
-        xit("basic", async () => {
+        it("basic", async () => {
 
             const modules = [
                 {
@@ -43,8 +43,8 @@ describe("OrphanFinder", function () {
                 "TestNK.ts$",
                 "TestKN.ts$",
                 // the entry points for our apps.
-                "\/entry\.ts$",
-                "\/index\.ts$"
+                "\/entry\.tsx?$",
+                "\/index\.tsx?$"
             ];
 
             await OrphanFinder.doFind({modules, orphanFilter})
