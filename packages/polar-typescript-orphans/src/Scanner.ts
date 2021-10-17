@@ -2,6 +2,7 @@ import {Files} from "polar-shared/src/util/Files";
 import {ISourceReference} from "./ISourceReference";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
+import {IModuleReference} from "./IModuleReference";
 
 export namespace Scanner {
 
@@ -15,7 +16,9 @@ export namespace Scanner {
 
     }
 
-    export async function doScan(module: string, dir: string): Promise<ReadonlyArray<ISourceReference>> {
+    export async function doScan(module: IModuleReference): Promise<ReadonlyArray<ISourceReference>> {
+
+        const dir = module.dir;
 
         const references: ISourceReference[] = [];
 
@@ -24,6 +27,7 @@ export namespace Scanner {
         }
 
         const dirResolved = requireTrailingSlash(FilePaths.resolve(dir));
+        const moduleRootDirResolved = requireTrailingSlash(FilePaths.resolve(module.rootDir));
 
         await Files.recursively(dir, async (fullPath, stat) => {
 
@@ -33,10 +37,15 @@ export namespace Scanner {
 
             const fullPathResolved = FilePaths.resolve(fullPath);
 
+            const modulePath = fullPathResolved.substring(moduleRootDirResolved.length);
             const sourcePath = fullPathResolved.substring(dirResolved.length)
 
             references.push({
-                module, dir: dirResolved, sourcePath, fullPath
+                module: module.name,
+                dir: dirResolved,
+                modulePath,
+                sourcePath,
+                fullPath
             })
 
         });

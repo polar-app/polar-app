@@ -41,17 +41,30 @@ export namespace ImportParser {
 
         const importerPathDirName = FilePaths.dirname(importerPath);
 
-        async function detectPath(potentialPath: PathStr | undefined | null) {
+        async function detectPath(potentialPath: PathStr | undefined | null, debug = false) {
 
             if (potentialPath === undefined || potentialPath === null) {
                 return undefined;
             }
 
+            if (debug) {
+                // console.log("attempting to resolve: " + potentialPath);
+            }
+
             if (await Files.existsAsync(potentialPath)) {
+
+                // console.log("found to resolve: " + potentialPath);
+
                 return FilePaths.resolve(potentialPath);
             }
 
             return undefined;
+
+        }
+
+        function resolveImportPathToFilePath(importPath: string) {
+
+            return moduleIndex.importModuleToPathMap[importPath];
 
         }
 
@@ -61,9 +74,9 @@ export namespace ImportParser {
             detectPath(FilePaths.join(importerPathDirName, importPath + ".ts")),
             detectPath(FilePaths.join(importerPathDirName, importPath + ".tsx")),
 
-            detectPath(moduleIndex.importModuleToPathMap[importPath]),
-            detectPath(moduleIndex.importModuleToPathMap[importPath + ".ts"]),
-            detectPath(moduleIndex.importModuleToPathMap[importPath + ".tsx"]),
+            detectPath(resolveImportPathToFilePath(importPath), true),
+            detectPath(resolveImportPathToFilePath(importPath + ".ts"), true),
+            detectPath(resolveImportPathToFilePath(importPath + ".tsx"), true),
 
         ]
 

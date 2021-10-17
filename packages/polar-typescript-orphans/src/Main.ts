@@ -79,6 +79,7 @@ async function doAsync() {
                       .filterPresent()
                       .map((current): IModuleReference => ({
                           name: moduleRoot.name,
+                          rootDir: moduleRoot.dir,
                           dir: current
                       }))
                       .collect();
