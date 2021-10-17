@@ -1,8 +1,6 @@
 /**
  * Class that works around some insanity with the nodejs setTimeout API.
  */
-import {DOM} from "polar-shared/src/util/DOM";
-
 export class Timeouts {
 
     public static setTimeout(handler: () => void, timeout: number): Timeout {

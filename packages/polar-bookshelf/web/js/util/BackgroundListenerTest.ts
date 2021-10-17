@@ -1,9 +1,9 @@
-import {BackgroundListener} from "./BackgroundListener";
+import {BackgroundListeners} from "./BackgroundListener";
 
-describe('BackgroundListener', function() {
+describe('BackgroundListeners', function() {
 
     it("basic", function() {
-
+        console.log(BackgroundListeners);
     });
 
 });
