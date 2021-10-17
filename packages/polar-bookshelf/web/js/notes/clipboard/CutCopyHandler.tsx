@@ -1,8 +1,8 @@
 import React from "react";
 import {RoutePathNames} from "../../apps/repository/RoutePathNames";
-import {IBlockLink} from "../../../../../polar-blocks/src/blocks/IBlock";
-import {arrayStream} from "../../../../../polar-shared/src/util/ArrayStreams";
-import {HTMLStr, MarkdownStr} from "../../../../../polar-shared/src/util/Strings";
+import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {BlockContentStructureConverter} from "../BlockContentStructureConverter";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {IBlockContentStructure} from "../HTMLToBlocks";
