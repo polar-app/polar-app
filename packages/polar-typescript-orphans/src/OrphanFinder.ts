@@ -152,10 +152,16 @@ export namespace OrphanFinder {
     interface IDoFindOpts {
 
         /**
+         * Patterns for test files which are handled differently.
+         */
+        readonly testsFilter?: ReadonlyArray<PathRegexStr>
+
+        /**
          * Files that match this pattern can't actually be orphans but CAN count
          * towards imports.
          */
-        readonly orphanFilter?: ReadonlyArray<PathRegexStr>
+        readonly orphanFilter?: ReadonlyArray<PathRegexStr>;
+
         readonly modules: ReadonlyArray<IModuleReference>;
     }
 
@@ -164,6 +170,7 @@ export namespace OrphanFinder {
         const {modules} = opts;
 
         const orphanFilter = opts.orphanFilter || [];
+        const testsFilter = opts.testsFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
@@ -180,7 +187,7 @@ export namespace OrphanFinder {
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        _filterSourceReferences(sourceReferences, orphanFilter)
+        _filterSourceReferences(sourceReferences, [...orphanFilter, ...testsFilter])
             .map(current => dependencyIndex.register(current.fullPath));
 
         // *** this should register all the imports...

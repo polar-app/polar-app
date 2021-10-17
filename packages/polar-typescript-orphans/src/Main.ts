@@ -133,19 +133,22 @@ async function doAsync() {
     console.log(createModuleReport());
 
 
-    const orphanFilter = [
+    const testsFilter = [
         "Test.ts$",
         "TestN.ts$",
         "TestK.ts$",
         "TestNK.ts$",
         "TestKN.ts$",
+    ]
+
+    const orphanFilter = [
         "\/entry\.tsx?$",
         "\/index\.tsx?$",
         'login\.ts$',
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, orphanFilter });
+    await OrphanFinder.doFind({ modules, orphanFilter, testsFilter });
 
 }
 
