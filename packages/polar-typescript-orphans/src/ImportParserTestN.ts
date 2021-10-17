@@ -2,9 +2,9 @@ import {ImportParser} from "./ImportParser";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Files} from "polar-shared/src/util/Files";
 
-xdescribe("ImportParser", function () {
+describe("ImportParser", function () {
 
-    xit("basic parser", () => {
+    it("basic parser", () => {
 
         const imports = ImportParser.parse("import {Foo} from './Foo'");
 
@@ -14,7 +14,7 @@ xdescribe("ImportParser", function () {
 
     });
 
-    xit("basic parser with two imports", () => {
+    it("basic parser with two imports", () => {
 
         const imports = ImportParser.parse("import {Foo} from './Foo'\nimport {Bar} from './Bar'");
 
@@ -23,6 +23,20 @@ xdescribe("ImportParser", function () {
         ])
 
     });
+
+    it("import $", () => {
+
+        const content = "import $ from '../../../../ui/JQuery';\n"
+
+        const imports = ImportParser.parse(content);
+
+        assertJSON(imports, [
+            "../../../../ui/JQuery"
+        ])
+
+
+    });
+
 
     describe("resolve", () => {
 
