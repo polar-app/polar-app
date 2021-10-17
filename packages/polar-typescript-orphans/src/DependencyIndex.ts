@@ -14,7 +14,7 @@ export namespace DependencyIndex {
          */
         readonly registerDependency: (importer: PathStr, imported: PathStr) => void;
 
-        readonly computeRanking: () => ReadonlyArray<IImportRanking>;
+        readonly computeImportRankings: () => ReadonlyArray<IImportRanking>;
     }
 
     export interface IImportRanking {
@@ -50,7 +50,7 @@ export namespace DependencyIndex {
 
         }
 
-        return {register, registerDependency, computeRanking};
+        return {register, registerDependency, computeImportRankings: computeRanking};
 
     }
 

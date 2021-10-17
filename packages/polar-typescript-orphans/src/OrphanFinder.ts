@@ -24,15 +24,14 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, filters: ReadonlyArray<PathRegexStr>) {
-
-        const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny(filters));
+    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
 
         return sourceReferences.filter(current => predicate(current.fullPath));
 
     }
 
     export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
+
         const sourceReferences = await _computeSourceReferences(modules);
 
         const typescriptFilePredicate = (path: string): boolean => {
@@ -178,6 +177,25 @@ export namespace OrphanFinder {
 
         const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
 
+        // *** the main source references is the actual source code, not including tests.
+
+        function computeMainSourceReferences() {
+
+            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
+            return _filterSourceReferences(sourceReferences, predicate);
+
+        }
+
+        function computeTestSourceReferences() {
+
+            const predicate = PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]);
+            return _filterSourceReferences(sourceReferences, predicate);
+
+        }
+
+        const mainSourceReferences = computeMainSourceReferences();
+        const testSourceReferences = computeTestSourceReferences();
+
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
         console.log("Scanning imports...")
@@ -187,21 +205,27 @@ export namespace OrphanFinder {
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        _filterSourceReferences(sourceReferences, [...orphanFilter, ...testsFilter])
-            .map(current => dependencyIndex.register(current.fullPath));
+        mainSourceReferences
+            .forEach(current => dependencyIndex.register(current.fullPath));
 
         // *** this should register all the imports...
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.imported))
 
         // *** now we just need to score them..
-        const ranking = dependencyIndex.computeRanking();
+        const importRankings = dependencyIndex.computeImportRankings();
 
-        const grid = TextGrid.create(2);
+        function createImportRankingsReport() {
 
-        grid.headers("path", "refs");
-        ranking.map(current => grid.row(current.path, current.refs));
+            const grid = TextGrid.create(2);
 
-        console.log(grid.format());
+            grid.headers("path", "refs");
+            importRankings.map(current => grid.row(current.path, current.refs));
+
+            return grid.format();
+
+        }
+
+        console.log(createImportRankingsReport());
 
     }
 
