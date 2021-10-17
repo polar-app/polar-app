@@ -248,7 +248,7 @@ export namespace OrphanFinder {
             grid.headers("path", "main refs", "test refs", "orphan");
             importRankings
                 .filter(current => current.type === 'main')
-                .forEach(current => grid.row(current.path, current.mainRefs, current.testRefs, current.orphan));
+                .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
 
             return grid.format();
 
@@ -257,6 +257,9 @@ export namespace OrphanFinder {
         console.log(createImportRankingsReport());
 
         async function computeOrphanTests() {
+
+            // FIXME this orphan tests are EASIER than we think... they're just
+            // the name of the tests that link to orphans.
 
             const testSourceImports = await computeImports(sourceReferences);
 
