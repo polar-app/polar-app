@@ -35,16 +35,19 @@ describe("OrphanFinder", function () {
 
             ];
 
-            const filters: ReadonlyArray<PathRegexStr> = [
+            const orphanFilter: ReadonlyArray<PathRegexStr> = [
+                // test code...
                 "Test.ts$",
                 "TestN.ts$",
                 "TestK.ts$",
                 "TestNK.ts$",
                 "TestKN.ts$",
+                // the entry points for our apps.
+                "\/entry\.ts$",
+                "\/index\.ts$"
             ];
 
-            await OrphanFinder.doFind({modules, filters})
-
+            await OrphanFinder.doFind({modules, orphanFilter})
 
         });
     });

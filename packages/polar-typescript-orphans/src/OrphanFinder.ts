@@ -22,8 +22,17 @@ export namespace OrphanFinder {
 
     }
 
-    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>,
-                                                                     filters: ReadonlyArray<PathRegexStr>) {
+    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, filters: ReadonlyArray<PathRegexStr>) {
+
+        const notFilteredPredicate = (path: string): boolean => {
+            return filters.filter(filter => path.match(filter)).length === 0;
+        }
+
+        return sourceReferences.filter(current => notFilteredPredicate(current.fullPath));
+
+    }
+
+    export async function _computeSourceReferencesForTypescriptFiles(modules: ReadonlyArray<IModuleReference>) {
         const sourceReferences = await _computeSourceReferences(modules);
 
         const typescriptFilePredicate = (path: string): boolean => {
@@ -36,12 +45,7 @@ export namespace OrphanFinder {
 
         }
 
-        const notFilteredPredicate = (path: string): boolean => {
-            return filters.filter(filter => path.match(filter)).length === 0;
-        }
-
-        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath))
-                               .filter(current => notFilteredPredicate(current.fullPath));
+        return sourceReferences.filter(current => typescriptFilePredicate(current.fullPath));
 
     }
 
@@ -97,7 +101,12 @@ export namespace OrphanFinder {
     export type PathRegexStr = string;
 
     interface IDoFindOpts {
-        readonly filters?: ReadonlyArray<PathRegexStr>
+
+        /**
+         * Files that match this pattern can't actually be orphans but CAN count
+         * towards imports.
+         */
+        readonly orphanFilter?: ReadonlyArray<PathRegexStr>
         readonly modules: ReadonlyArray<IModuleReference>;
     }
 
@@ -105,13 +114,13 @@ export namespace OrphanFinder {
 
         const {modules} = opts;
 
-        const filters = opts.filters || [];
+        const orphanFilter = opts.orphanFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
         console.log("Scanning modules...")
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, filters);
+        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules);
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
@@ -122,7 +131,8 @@ export namespace OrphanFinder {
         console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        sourceReferences.map(current => dependencyIndex.register(current.fullPath));
+        _filterSourceReferences(sourceReferences, orphanFilter)
+            .map(current => dependencyIndex.register(current.fullPath));
 
         // *** this should register all the imports...
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.imported))
