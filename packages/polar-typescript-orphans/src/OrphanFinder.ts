@@ -281,9 +281,9 @@ export namespace OrphanFinder {
 
         function computeOrphanTestsReport() {
             const orphanTest = computeOrphanTests();
-            const grid = TextGrid.create(2);
-            grid.headers('path', 'imported');
-            orphanTest.forEach(current => grid.row(current.path, current.imported))
+            const grid = TextGrid.create(3);
+            grid.headers('path', 'imported', 'orphan');
+            orphanTest.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 

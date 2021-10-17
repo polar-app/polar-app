@@ -5,4 +5,4 @@ describe("MockDatastore", function () {
         const datastore = new MockDatastore();
         console.log(datastore);
     });
-})
+ })
