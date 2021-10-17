@@ -23,6 +23,10 @@ export namespace DependencyIndex {
         readonly type: SourceType;
         readonly nrMainRefs: number;
         readonly nrTestRefs: number;
+
+        readonly mainRefs: ReadonlyArray<PathStr>;
+        readonly testRefs: ReadonlyArray<PathStr>;
+
         readonly orphan: boolean;
     }
 
@@ -74,8 +78,12 @@ export namespace DependencyIndex {
         function computeImportRankings(): ReadonlyArray<IImportRanking> {
 
             const imports = Object.values(index).map((current): IImportRanking => {
-                const nrMainRefs = Object.values(current.mainRefs).length;
-                const nrTestRefs = Object.values(current.testRefs).length;
+
+                const mainRefs = Object.keys(current.mainRefs);
+                const testRefs = Object.keys(current.testRefs);
+
+                const nrMainRefs = mainRefs.length;
+                const nrTestRefs = testRefs.length;
 
                 const orphan = nrMainRefs === 0 && nrTestRefs <= 1;
 
@@ -84,7 +92,9 @@ export namespace DependencyIndex {
                     type: current.type,
                     nrMainRefs,
                     nrTestRefs,
-                    orphan
+                    orphan,
+                    mainRefs,
+                    testRefs
                 }
             })
 

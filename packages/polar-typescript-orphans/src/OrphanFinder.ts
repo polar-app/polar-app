@@ -168,9 +168,9 @@ export namespace OrphanFinder {
 
         /**
          * Files that match this pattern can't actually be orphans but CAN count
-         * towards imports.
+         * towards imports as they are just entry points.
          */
-        readonly orphanFilter?: ReadonlyArray<PathRegexStr>;
+        readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
         readonly modules: ReadonlyArray<IModuleReference>;
     }
@@ -179,7 +179,7 @@ export namespace OrphanFinder {
 
         const {modules} = opts;
 
-        const orphanFilter = opts.orphanFilter || [];
+        const entriesFilter = opts.entriesFilter || [];
         const testsFilter = opts.testsFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
@@ -202,12 +202,12 @@ export namespace OrphanFinder {
 
         // *** the main source references is the actual source code, not including tests.
 
-        // function computeMainSourceReferences() {
-        //
-        //     const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...orphanFilter, ...testsFilter]));
-        //     return _filterSourceReferences(sourceReferences, predicate);
-        //
-        // }
+        function computeMainSourceReferences() {
+
+            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            return _filterSourceReferences(sourceReferences, predicate);
+
+        }
         //
         // function computeTestSourceReferences() {
         //
@@ -216,7 +216,7 @@ export namespace OrphanFinder {
         //
         // }
 
-        // const mainSourceReferences = computeMainSourceReferences();
+        const mainSourceReferences = computeMainSourceReferences();
         // const testSourceReferences = computeTestSourceReferences();
 
         console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
@@ -241,13 +241,19 @@ export namespace OrphanFinder {
         // *** now we just need to score them..
         const importRankings = dependencyIndex.computeImportRankings();
 
+        // FIXME: the orphanFilter STILL counts in the report and those should count AGAINST the import count but not
+        // be computed as orphans.
+
         function createImportRankingsReport() {
 
             const grid = TextGrid.create(4);
 
+            const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
+
             grid.headers("path", "main refs", "test refs", "orphan");
             importRankings
                 .filter(current => current.type === 'main')
+                .filter(current => ! entriesPredicate(current.path))
                 .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
 
             return grid.format();
@@ -256,51 +262,36 @@ export namespace OrphanFinder {
 
         console.log(createImportRankingsReport());
 
-        async function computeOrphanTests() {
+        interface IOrphanTest {
+            readonly path: PathStr;
+            readonly imported: PathStr;
+        }
 
-            // FIXME this orphan tests are EASIER than we think... they're just
-            // the name of the tests that link to orphans.
+        function computeOrphanTests(): ReadonlyArray<IOrphanTest> {
 
-            const testSourceImports = await computeImports(sourceReferences);
-
-            // ** map or orphans by full path.
-            const orphanMap =
-                arrayStream(importRankings)
-                    .filter(current => current.type === 'main')
-                    .filter(current => current.orphan)
-                    .toMap2(current => current.path, () => true);
-
-            // ** groups of tests and their imports that are fully resolved.
-            const groupedByImporter =
-                arrayStream(testSourceImports)
-                    .partition(current => {
-                        return [current.importer, current.imported]
-                    })
-
-            // ** predicate which returns true if any of the imports are orphans
-            const predicate = (imports: ReadonlyArray<PathStr>) => {
-                return imports.filter(current => orphanMap[current]).length > 0;
-            }
-
-            const orphanedTests =
-                Object.values(groupedByImporter)
-                      .filter(current => predicate(current.values.map(i => i.imported)))
-                      .map(current => current.id)
-
-            return orphanedTests;
+            return arrayStream(importRankings)
+                .filter(current => current.orphan)
+                .filter(current => current.nrTestRefs === 1)
+                .map((current): IOrphanTest => {
+                    return {
+                        path: current.testRefs[0],
+                        imported: current.path
+                    }
+                })
+                .collect()
 
         }
 
-        async function computeOrphanTestsReport() {
-            const orphanTest = await computeOrphanTests();
-            const grid = TextGrid.create(1);
-            grid.headers('path');
-            orphanTest.forEach(current => grid.row(current))
+        function computeOrphanTestsReport() {
+            const orphanTest = computeOrphanTests();
+            const grid = TextGrid.create(2);
+            grid.headers('path', 'imported');
+            orphanTest.forEach(current => grid.row(current.path, current.imported))
             return grid.format();
         }
 
-        console.log("Orphan tests: ================")
-        console.log(await computeOrphanTestsReport());
+        // console.log("Orphan tests: ================")
+        // console.log(computeOrphanTestsReport());
 
     }
 

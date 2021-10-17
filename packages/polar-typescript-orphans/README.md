@@ -27,3 +27,18 @@ TODO:
     
 
         - TODOL this is wrong... a test is an orphan test if it links to something that is now an orphan.
+
+
+There are three type of files:
+
+    - entry points: Files that are compiled and imported by HTML/webpack or used on the command line (node) but 
+                    don't have any immediate dependencies so they could accidentally be computed as orphans.
+                    These should count as dependencies but shouldn't be allowed to be computed as orphans.
+
+    - main: Source files that are regular source files, are used by tests, and entry points, and can be counted
+            as orphans.
+
+    - test: Test files that shouldn't be calculated as normal orphans because they should NEVER have any imports.
+            but if they import orphans then they should count as orphans too.
+
+    - TODO: maybe we don't have to compute tests that are in error, just let the build fail...  

@@ -141,14 +141,14 @@ async function doAsync() {
         "TestKN.ts$",
     ]
 
-    const orphanFilter = [
+    const entriesFilter = [
         "\/entry\.tsx?$",
         "\/index\.tsx?$",
         'login\.ts$',
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, orphanFilter, testsFilter });
+    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter });
 
 }
 
