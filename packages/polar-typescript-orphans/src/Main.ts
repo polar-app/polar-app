@@ -139,6 +139,7 @@ async function doAsync() {
         "TestK.ts$",
         "TestNK.ts$",
         "TestKN.ts$",
+        "Story.tsx",
     ]
 
     const entriesFilter = [
