@@ -7,6 +7,8 @@ import {Files} from "polar-shared/src/util/Files";
 import {ImportParser} from "./ImportParser";
 import {PathStr} from "polar-shared/src/util/Strings";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
+import {Predicates} from "polar-shared/src/util/Predicates";
+import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
 
 export namespace OrphanFinder {
 
@@ -24,11 +26,9 @@ export namespace OrphanFinder {
 
     export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, filters: ReadonlyArray<PathRegexStr>) {
 
-        const notFilteredPredicate = (path: string): boolean => {
-            return filters.filter(filter => path.match(filter)).length === 0;
-        }
+        const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny(filters));
 
-        return sourceReferences.filter(current => notFilteredPredicate(current.fullPath));
+        return sourceReferences.filter(current => predicate(current.fullPath));
 
     }
 
@@ -206,3 +206,4 @@ export namespace OrphanFinder {
     }
 
 }
+
