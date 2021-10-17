@@ -38,6 +38,19 @@ describe("ImportParser", function () {
     });
 
 
+    it("import polar-bookshelf/blah", () => {
+
+        const content = "import {Blah} from 'polar-bookshelf/Blah/Blah.ts';\n"
+
+        const imports = ImportParser.parse(content);
+
+        assertJSON(imports, [
+            "polar-bookshelf/Blah/Blah.ts"
+        ])
+
+
+    });
+
     describe("resolve", () => {
 
         xit("basic", async () => {
