@@ -59,13 +59,13 @@ describe("ImportParser", function () {
 
             const buff = await Files.readFileAsync(path);
             const content = buff.toString("utf-8");
-
-            const imports = ImportParser.parse(content).filter(ImportParser.accept);
-
-            const promises = imports.map(current => ImportParser.resolve(path, current));
-            const resolved = await Promise.all(promises);
-
-            console.log(resolved);
+            //
+            // const imports = ImportParser.parse(content).filter(ImportParser.accept);
+            //
+            // const promises = imports.map(current => ImportParser.resolve(path, current));
+            // const resolved = await Promise.all(promises);
+            //
+            // console.log(resolved);
 
         });
 

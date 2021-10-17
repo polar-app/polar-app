@@ -5,6 +5,7 @@ import * as fs from "fs";
 import {PathStr} from "polar-shared/src/util/Strings";
 import {IModuleReference} from "./IModuleReference";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {TextGrid} from "polar-shared/src/util/TextGrid";
 
 async function doAsync() {
 
@@ -29,7 +30,12 @@ async function doAsync() {
 
                 const stat = await Files.statAsync(path);
                 const basename = FilePaths.basename(path);
-                return {stat, path, basename};
+
+                return {
+                    stat,
+                    path: FilePaths.resolve(path),
+                    basename
+                };
 
             }
 
@@ -107,6 +113,24 @@ async function doAsync() {
     // ];
 
     const modules = await computeModules("./packages");
+
+    function createModuleReport() {
+
+        const sorted = [...modules].sort((a, b) => a.name.localeCompare(b.name));
+
+        const grid = TextGrid.create(2);
+        grid.headers('name', 'dir');
+
+        sorted.forEach(current => grid.row(current.name, current.dir));
+
+        return grid.format();
+
+    }
+
+    console.log("Working with the following modules: ")
+    console.log("====================================")
+    console.log(createModuleReport());
+
 
     const orphanFilter = [
         "Test.ts$",
