@@ -195,23 +195,29 @@ export namespace ESLint {
                 "project": "./tsconfig.json"
             },
             "extends": ["eslint:recommended", "standard", "plugin:@typescript-eslint/recommended", "prettier"],
-            "plugins": ["@typescript-eslint", "react", "react-hooks"],
+            "plugins": [
+                "@typescript-eslint",
+                "react",
+                "react-hooks",
+                "unused-imports"
+            ],
             "env": {
                 "es6": true,
                 "node": true
             },
             "rules": {
+                "unused-imports/no-unused-imports": "error",
                 "react-hooks/rules-of-hooks": "error",
                 "react-hooks/exhaustive-deps": "error",
                 "@typescript-eslint/no-floating-promises": "error",
                 "@typescript-eslint/await-thenable": "error",
                 "@typescript-eslint/no-misused-promises": "error",
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+                "import/no-cycle": "error",
 
                 "curly": "warn",
                 "brace-style": "warn",
                 "import/newline-after-import": "warn",
-                "import/no-cycle": "warn",
                 "import/no-absolute-path": "warn",
 
                 "dot-notation": "warn",
