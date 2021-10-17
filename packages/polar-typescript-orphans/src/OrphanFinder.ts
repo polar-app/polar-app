@@ -12,7 +12,7 @@ export namespace OrphanFinder {
 
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
-        const promises = modules.map(module => Scanner.doScan(module.name, module.dir))
+        const promises = modules.map(module => Scanner.doScan(module))
 
         const references = await Promise.all(promises);
 
@@ -107,7 +107,7 @@ export namespace OrphanFinder {
 
         const map: {[path: string]: string} = {}
 
-        sourceReferences.forEach(sourceReference => map[`${sourceReference.module}/${sourceReference.sourcePath}`] = sourceReference.fullPath);
+        sourceReferences.forEach(sourceReference => map[`${sourceReference.module}/${sourceReference.modulePath}`] = sourceReference.fullPath);
 
         return map;
 

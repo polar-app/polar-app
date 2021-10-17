@@ -9,12 +9,12 @@ describe("OrphanFinder", function () {
 
         xit("basic", async () => {
 
-            const sourceReferences = await OrphanFinder._computeSourceReferences([{
-                name: 'polar-bookshelf',
-                dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
-            }])
-
-            console.log(sourceReferences)
+            // const sourceReferences = await OrphanFinder._computeSourceReferences([{
+            //     name: 'polar-bookshelf',
+            //     dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
+            // }])
+            //
+            // console.log(sourceReferences)
 
         });
     });
@@ -47,7 +47,7 @@ describe("OrphanFinder", function () {
                 "\/index\.ts$"
             ];
 
-            await OrphanFinder.doFind({modules, orphanFilter})
+            // await OrphanFinder.doFind({modules, orphanFilter})
 
         });
     });

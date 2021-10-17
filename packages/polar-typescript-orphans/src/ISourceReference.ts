@@ -4,6 +4,11 @@ export interface ISourceReference {
     readonly dir: string;
 
     /**
+     * The local path within the module
+     */
+    readonly modulePath: string;
+
+    /**
      * The local path within the dir that the source is located.
      */
     readonly sourcePath: string;
