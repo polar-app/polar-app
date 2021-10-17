@@ -243,16 +243,19 @@ export namespace OrphanFinder {
 
         function createImportRankingsReport() {
 
-            const grid = TextGrid.create(3);
+            const grid = TextGrid.create(4);
 
-            grid.headers("path", "main refs", "test refs");
-            importRankings.map(current => grid.row(current.path, current.mainRefs, current.testRefs));
+            grid.headers("path", "main refs", "test refs", "orphan");
+            importRankings.map(current => grid.row(current.path, current.mainRefs, current.testRefs, current.orphan));
 
             return grid.format();
 
         }
 
         console.log(createImportRankingsReport());
+
+        // FIXME: don't show the tests in the main report...
+        // FIXME show the tests that are now orphaned too..
 
         // async function computeOrphanTests() {
         //

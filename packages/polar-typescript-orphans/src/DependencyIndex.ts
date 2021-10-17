@@ -22,6 +22,7 @@ export namespace DependencyIndex {
         readonly path: string;
         readonly mainRefs: number;
         readonly testRefs: number;
+        readonly orphan: boolean;
     }
 
     export interface IDependencyIndexEntry {
@@ -66,13 +67,19 @@ export namespace DependencyIndex {
 
         }
 
-        function computeRanking() {
+        function computeImportRankings(): ReadonlyArray<IImportRanking> {
 
-            const imports = Object.values(index).map(current => {
+            const imports = Object.values(index).map((current): IImportRanking => {
+                const mainRefs = Object.values(current.mainRefs).length;
+                const testRefs = Object.values(current.testRefs).length;
+
+                const orphan = mainRefs === 0 && testRefs <= 1;
+
                 return {
                     path: current.path,
-                    mainRefs: Object.values(current.mainRefs).length,
-                    testRefs: Object.values(current.testRefs).length
+                    mainRefs,
+                    testRefs,
+                    orphan
                 }
             })
 
@@ -80,7 +87,7 @@ export namespace DependencyIndex {
 
         }
 
-        return {register, registerDependency, computeImportRankings: computeRanking};
+        return {register, registerDependency, computeImportRankings};
 
     }
 
