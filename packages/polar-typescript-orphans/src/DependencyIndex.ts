@@ -8,7 +8,7 @@ export namespace DependencyIndex {
         /**
          * Register a source file so that it has zero references.
          */
-        readonly register: (importer: PathStr) => void;
+        readonly register: (importer: PathStr, type: SourceType) => void;
 
         /**
          * Register a dep which will increase the dependency account.
@@ -20,6 +20,7 @@ export namespace DependencyIndex {
 
     export interface IImportRanking {
         readonly path: string;
+        readonly type: SourceType;
         readonly mainRefs: number;
         readonly testRefs: number;
         readonly orphan: boolean;
@@ -28,6 +29,7 @@ export namespace DependencyIndex {
     export interface IDependencyIndexEntry {
 
         readonly path: string;
+        readonly type: SourceType;
         readonly mainRefs: {[path: string]: true};
         readonly testRefs: {[path: string]: true};
 
@@ -37,9 +39,10 @@ export namespace DependencyIndex {
 
         const index: {[key: string]: IDependencyIndexEntry} = {};
 
-        function register(importer: PathStr) {
+        function register(importer: PathStr, type: SourceType) {
             index[importer] = {
                 path: importer,
+                type,
                 mainRefs: {},
                 testRefs: {}
             };
@@ -50,6 +53,7 @@ export namespace DependencyIndex {
             if (! index[imported]) {
                 index[imported] = {
                     path: imported,
+                    type,
                     mainRefs: {},
                     testRefs: {}
                 }
@@ -77,6 +81,7 @@ export namespace DependencyIndex {
 
                 return {
                     path: current.path,
+                    type: current.type,
                     mainRefs,
                     testRefs,
                     orphan

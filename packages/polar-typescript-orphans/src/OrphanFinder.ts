@@ -233,7 +233,7 @@ export namespace OrphanFinder {
 
         // ** register all files so that they get a ref count of zero..
         sourceReferences
-            .forEach(current => dependencyIndex.register(current.fullPath));
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
         // *** this should register all the imports...
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
@@ -246,7 +246,9 @@ export namespace OrphanFinder {
             const grid = TextGrid.create(4);
 
             grid.headers("path", "main refs", "test refs", "orphan");
-            importRankings.map(current => grid.row(current.path, current.mainRefs, current.testRefs, current.orphan));
+            importRankings
+                .filter(current => current.type === 'main')
+                .forEach(current => grid.row(current.path, current.mainRefs, current.testRefs, current.orphan));
 
             return grid.format();
 
