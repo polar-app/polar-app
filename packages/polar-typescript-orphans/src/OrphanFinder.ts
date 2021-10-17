@@ -49,23 +49,24 @@ export namespace OrphanFinder {
 
     }
 
-    async function computeTypescriptImports(sourceReference: ISourceReference) {
+    async function computeTypescriptImports(sourceReference: ISourceReference, moduleIndex: IModuleIndex) {
 
         const buff = await Files.readFileAsync(sourceReference.fullPath);
         const content = buff.toString("utf-8");
 
         const imported = ImportParser.parse(content)
-            .filter(ImportParser.accept);
+            .filter(current => ImportParser.accept(current, moduleIndex));
 
         return imported;
 
     }
 
-    async function resolveTypescriptImports(sourceReference: ISourceReference): Promise<ReadonlyArray<PathStr>> {
+    async function resolveTypescriptImports(sourceReference: ISourceReference,
+                                            moduleIndex: OrphanFinder.IModuleIndex): Promise<ReadonlyArray<PathStr>> {
 
-        const imports = await computeTypescriptImports(sourceReference);
+        const imports = await computeTypescriptImports(sourceReference, moduleIndex);
 
-        const promises = imports.map(current => ImportParser.resolve(sourceReference.fullPath, current));
+        const promises = imports.map(current => ImportParser.resolve(sourceReference.fullPath, current, moduleIndex));
         const resolved = await Promise.all(promises);
 
         const imported = arrayStream(resolved)
@@ -80,15 +81,63 @@ export namespace OrphanFinder {
         readonly imported: PathStr;
     }
 
-    async function _computeImportsForSourceReference(sourceReference: ISourceReference): Promise<ReadonlyArray<IImport>> {
-        const resolvedTypescriptImports = await resolveTypescriptImports(sourceReference);
+    async function _computeImportsForSourceReference(sourceReference: ISourceReference,
+                                                     moduleIndex: OrphanFinder.IModuleIndex): Promise<ReadonlyArray<OrphanFinder.IImport>> {
+
+        const resolvedTypescriptImports = await resolveTypescriptImports(sourceReference, moduleIndex);
         const importer = sourceReference.fullPath;
         return resolvedTypescriptImports.map(imported => ({importer, imported}));
+
+    }
+
+    export interface IModuleIndex {
+
+        readonly hasModule: (moduleName: string) => boolean;
+
+        readonly importModuleToPathMap: Readonly<MutableImportModuleToPathMap>;
+
+    }
+
+    /**
+     * Compute a map between the module path foo/bar/cat/ to the local FS path.
+     */
+    export type MutableImportModuleToPathMap = {[path: string]: string}
+
+    function computeImportModuleToPathMap(sourceReferences: ReadonlyArray<ISourceReference>): Readonly<MutableImportModuleToPathMap> {
+
+        const map: {[path: string]: string} = {}
+
+        sourceReferences.forEach(sourceReference => map[`${sourceReference.module}/${sourceReference.sourcePath}`] = sourceReference.fullPath);
+
+        return map;
+
+    }
+
+    function computeModuleIndex(sourceReferences: ReadonlyArray<ISourceReference>): IModuleIndex {
+
+        function computeModuleNamesIndex() {
+
+            return arrayStream(sourceReferences)
+                .map(current => current.module)
+                .toMap2(key => key, () => true)
+
+        }
+
+        const moduleNamedIndex = computeModuleNamesIndex();
+
+        const hasModule = (moduleName: string): boolean => moduleNamedIndex[moduleName];
+
+        const importModuleToPathMap = computeImportModuleToPathMap(sourceReferences);
+
+        return {hasModule, importModuleToPathMap};
+
     }
 
     async function computeImports(sourceReferences: ReadonlyArray<ISourceReference>): Promise<ReadonlyArray<IImport>> {
 
-        const promises = sourceReferences.map(current => _computeImportsForSourceReference(current));
+        const moduleIndex = computeModuleIndex(sourceReferences);
+
+        const promises = sourceReferences.map(current => _computeImportsForSourceReference(current, moduleIndex));
 
         const resolved = await Promise.all(promises);
 

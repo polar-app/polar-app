@@ -38,6 +38,19 @@ describe("ImportParser", function () {
     });
 
 
+    it("import polar-bookshelf/blah", () => {
+
+        const content = "import {Blah} from 'polar-bookshelf/Blah/Blah.ts';\n"
+
+        const imports = ImportParser.parse(content);
+
+        assertJSON(imports, [
+            "polar-bookshelf/Blah/Blah.ts"
+        ])
+
+
+    });
+
     describe("resolve", () => {
 
         xit("basic", async () => {
@@ -46,13 +59,13 @@ describe("ImportParser", function () {
 
             const buff = await Files.readFileAsync(path);
             const content = buff.toString("utf-8");
-
-            const imports = ImportParser.parse(content).filter(ImportParser.accept);
-
-            const promises = imports.map(current => ImportParser.resolve(path, current));
-            const resolved = await Promise.all(promises);
-
-            console.log(resolved);
+            //
+            // const imports = ImportParser.parse(content).filter(ImportParser.accept);
+            //
+            // const promises = imports.map(current => ImportParser.resolve(path, current));
+            // const resolved = await Promise.all(promises);
+            //
+            // console.log(resolved);
 
         });
 

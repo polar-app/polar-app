@@ -2,6 +2,8 @@ import {PathStr} from "polar-shared/src/util/Strings";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Files} from "polar-shared/src/util/Files";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {OrphanFinder} from "./OrphanFinder";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace ImportParser {
 
@@ -20,15 +22,30 @@ export namespace ImportParser {
 
     }
 
-    export function accept(importPath: PathStr) {
+    export function accept(importPath: PathStr, moduleIndex: OrphanFinder.IModuleIndex) {
+
+        const importModuleName = Arrays.first(importPath.split('/'));
+
+        if (importModuleName && moduleIndex.hasModule(importModuleName)) {
+            // this true because we have to attempt to resolve the path.
+            return true;
+        }
+
         return importPath.startsWith("./") || importPath.startsWith("../");
+
     }
 
-    export async function resolve(importerPath: PathStr, importPath: PathStr): Promise<PathStr | undefined> {
+    export async function resolve(importerPath: PathStr,
+                                  importPath: PathStr,
+                                  moduleIndex: OrphanFinder.IModuleIndex): Promise<PathStr | undefined> {
 
         const importerPathDirName = FilePaths.dirname(importerPath);
 
-        async function detectPath(potentialPath: PathStr) {
+        async function detectPath(potentialPath: PathStr | undefined | null) {
+
+            if (potentialPath === undefined || potentialPath === null) {
+                return undefined;
+            }
 
             if (await Files.existsAsync(potentialPath)) {
                 return FilePaths.resolve(potentialPath);
@@ -39,9 +56,15 @@ export namespace ImportParser {
         }
 
         const promises = [
+
             detectPath(FilePaths.join(importerPathDirName, importPath)),
             detectPath(FilePaths.join(importerPathDirName, importPath + ".ts")),
             detectPath(FilePaths.join(importerPathDirName, importPath + ".tsx")),
+
+            detectPath(moduleIndex.importModuleToPathMap[importPath]),
+            detectPath(moduleIndex.importModuleToPathMap[importPath + ".ts"]),
+            detectPath(moduleIndex.importModuleToPathMap[importPath + ".tsx"]),
+
         ]
 
         const resolved = await Promise.all(promises);
