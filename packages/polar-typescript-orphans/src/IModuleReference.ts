@@ -12,8 +12,8 @@ export interface IModuleReference {
     readonly rootDir: PathStr;
 
     /**
-     * This is going to be the src dir
+     * The full path to the directory in the module that contains our source code.
      */
-    readonly dir: PathStr;
+    readonly srcDir: PathStr;
 
 }

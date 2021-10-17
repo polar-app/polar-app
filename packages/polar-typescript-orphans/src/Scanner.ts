@@ -18,18 +18,18 @@ export namespace Scanner {
 
     export async function doScan(module: IModuleReference): Promise<ReadonlyArray<ISourceReference>> {
 
-        const dir = module.dir;
+        const srcDir = module.srcDir;
 
         const references: ISourceReference[] = [];
 
-        if (! await Files.existsAsync(dir)) {
-            throw new Error("Dir does not exist: " + dir);
+        if (! await Files.existsAsync(srcDir)) {
+            throw new Error("Dir does not exist: " + srcDir);
         }
 
-        const dirResolved = requireTrailingSlash(FilePaths.resolve(dir));
+        const dirResolved = requireTrailingSlash(FilePaths.resolve(srcDir));
         const moduleRootDirResolved = requireTrailingSlash(FilePaths.resolve(module.rootDir));
 
-        await Files.recursively(dir, async (fullPath, stat) => {
+        await Files.recursively(srcDir, async (fullPath, stat) => {
 
             if (stat.isDirectory()) {
                 return;

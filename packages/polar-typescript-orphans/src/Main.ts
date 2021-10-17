@@ -80,7 +80,7 @@ async function doAsync() {
                       .map((current): IModuleReference => ({
                           name: moduleRoot.name,
                           rootDir: moduleRoot.dir,
-                          dir: current
+                          srcDir: current
                       }))
                       .collect();
 
@@ -122,7 +122,7 @@ async function doAsync() {
         const grid = TextGrid.create(2);
         grid.headers('name', 'dir');
 
-        sorted.forEach(current => grid.row(current.name, current.dir));
+        sorted.forEach(current => grid.row(current.name, current.srcDir));
 
         return grid.format();
 
