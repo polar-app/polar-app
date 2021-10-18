@@ -97,7 +97,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
         // get the most recent area highlight as since this is using state
         // we can have a stale highlight.
-        
+
         if (NEW_NOTES_ANNOTATION_BAR_ENABLED && docScale) {
             const docViewerElement = docViewerElements.getDocViewerElement();
 
@@ -107,7 +107,8 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
                 docScale,
                 fileType,
                 docViewerElement,
-            });
+            }).catch(err => console.error(err))
+
         } else {
             const pageMeta = IDocMetas.getPageMeta(docMeta!, pageNum);
             const areaHighlight = (pageMeta.areaHighlights || {})[id];
@@ -116,14 +117,8 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
         }
 
         return undefined;
-    }, [
-        docMeta,
-        pageNum,
-        id,
-        onAreaHighlightUpdated,
-        updateBlockAreaHighlight,
-        docViewerElements,
-    ]);
+
+    }, [docScale, docViewerElements, updateBlockAreaHighlight, id, pageNum, fileType, docMeta, onAreaHighlightUpdated]);
 
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 
@@ -168,7 +163,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
             container,
             id);
 
-    }, [areaHighlight, fingerprint, handleRegionResize, pageNum, toOverlayRect, draggable]);
+    }, [toOverlayRect, id, areaHighlight.color, draggable, fingerprint, pageNum, handleRegionResize]);
 
     // const rect = Arrays.first(Object.values(areaHighlight.rects));
     //

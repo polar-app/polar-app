@@ -333,7 +333,7 @@ export class ArrayStream<T> {
     }
 
     public toMap2<V>(toKey: (value: T, index: number) => string,
-                    toValue: (value: T, index: number) => V ): {[key: string]: V} {
+                     toValue: (value: T, index: number) => V ): {[key: string]: V} {
 
         const map: {[key: string]: V} = {};
 

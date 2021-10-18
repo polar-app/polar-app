@@ -5,6 +5,7 @@ require('blueimp-load-image/js/load-image-iptc-map.js');
 require('blueimp-load-image/js/load-image-meta.js');
 require('blueimp-load-image/js/load-image-orientation.js');
 require('blueimp-load-image/js/load-image-scale.js');
+// eslint-disable-next-line import/first
 import loadImage from "blueimp-load-image";
 
 export namespace ImageResolutions {

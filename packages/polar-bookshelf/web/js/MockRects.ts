@@ -15,6 +15,7 @@ export const MOCK_RECTS: any = {
             left: 300,
             top: 300,
             width: 100,
+
             height: 100
         })
 

@@ -125,7 +125,7 @@ export namespace DocumentDataUpdater {
         const docMetaCollection = firestore.collection('doc_meta');
         const docInfoCollection = firestore.collection('doc_info');
 
-        for (let { type, block } of documentMutations) {
+        for (const { type, block } of documentMutations) {
             const { fingerprint } = block.content.docInfo;
             const identifier = FirebaseDatastores.computeDocMetaID(fingerprint, block.uid)
             const docMetaDoc = docMetaCollection.doc(identifier);
@@ -259,7 +259,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             mutations
         ).catch(err => console.log("Unable to commit mutations: ", err, mutations));
 
-    }, [firestore, ]);
+    }, [firestore, repoDocMetaManager.repoDocInfoIndex, uid]);
 
 }
 

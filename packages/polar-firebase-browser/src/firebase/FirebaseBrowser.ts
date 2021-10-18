@@ -1,9 +1,8 @@
 import firebase from 'firebase/app'
-// import auth from 'firebase/auth'
-require('firebase/auth');
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
+require('firebase/auth');
 
 const log = Logger.create();
 
@@ -34,7 +33,7 @@ export const getConfig = () => {
     // Return different values based on the environment.
 
     // tslint:disable-next-line
-    return PROJECTS['prod'];
+    return PROJECTS.prod;
 
 };
 

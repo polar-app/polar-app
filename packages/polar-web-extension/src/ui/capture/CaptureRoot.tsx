@@ -64,7 +64,13 @@ export const CaptureRoot = deepMemo(() => {
     }, []);
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 // NOTE: height and overflow needed to enable scrolling.
+                 height: '100vh',
+                 overflow: 'auto'
+             }}>
 
             <AppBar position="fixed" color="inherit">
                 <Toolbar>
