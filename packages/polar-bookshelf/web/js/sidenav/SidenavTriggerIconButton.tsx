@@ -30,7 +30,7 @@ export const SidenavTriggerIconButton = function SidenavTriggerIconButton(props:
             }
 
         })
-    },[history]);
+    }, [history, setOpen]);
 
     if (Devices.isDesktop()) {
         return null;

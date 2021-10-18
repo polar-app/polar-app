@@ -83,8 +83,6 @@ interface IUseRouteContainerStylesProps {
     sidenavWidth: number;
 }
 
-export const BOTTOM_NAV_HEIGHT = 58;
-
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
         root({isSidenavOpen, sidenavWidth}) {

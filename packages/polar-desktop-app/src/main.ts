@@ -50,6 +50,7 @@ function allowAnkiSyncOrigin() {
         }
 
         if (! isAnkiSyncRequest()) {
+            // eslint-disable-next-line node/no-callback-literal
             callback({});
             return;
         }
@@ -82,6 +83,7 @@ function allowAnkiSyncOrigin() {
 
         const newResponseHeaders = {...details.responseHeaders, ...additionalHeaders};
 
+        // eslint-disable-next-line node/no-callback-literal
         callback({ responseHeaders: newResponseHeaders});
 
     });

@@ -31,6 +31,7 @@ export class Result<T> implements IResult<T> {
             return this.value;
         }
 
+        // eslint-disable-next-line no-throw-literal
         throw this.err!;
 
     }

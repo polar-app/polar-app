@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 import {Functions} from './Functions';
 import {assert} from 'chai';
 import {Strings} from "./Strings";

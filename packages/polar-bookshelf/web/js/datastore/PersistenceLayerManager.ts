@@ -1,13 +1,11 @@
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerFactory';
-import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
 import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
 const log = Logger.create();
 
@@ -159,14 +157,6 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (type === 'web') {
             return WebPersistenceLayerFactory.create();
-        }
-
-        if (type === 'local') {
-            return RemotePersistenceLayerFactory.create();
-        }
-
-        if (type === 'cloud') {
-            return CloudPersistenceLayerFactory.create();
         }
 
         throw new Error("Unknown type: " + type);
