@@ -22,7 +22,7 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     match(type: "appstore")
-    sh("ls")
+    sh("./test.sh")
     # build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     # app_store_connect_api_key
     # upload_to_testflight
