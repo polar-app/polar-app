@@ -22,7 +22,7 @@ describe('EPUBContent', () => {
 
         assert.equal(contentStream.length, chapters);
 
-        const titlePageStream = contentStream[0];
+        const titlePageStream = contentStream[0].stream;
 
         titlePageStream.on('readable', () => {
             const buff = titlePageStream.read();
