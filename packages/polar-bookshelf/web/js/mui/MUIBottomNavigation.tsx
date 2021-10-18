@@ -7,7 +7,6 @@ import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from 'react-router-dom';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
-import SettingsIcon from '@material-ui/icons/Settings';
 import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
@@ -70,13 +69,6 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
                 icon: <NotesIcon />
             }] : []
         ),
-        // at least buttons are required so for now add settings
-        {
-            id: 'settings',
-            label: 'Settings',
-            href: RoutePathNames.SETTINGS_MOBILE,
-            icon: <SettingsIcon/>
-        },
         {
             id: 'switch',
             label: 'Switch',
