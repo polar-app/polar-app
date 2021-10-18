@@ -60,8 +60,10 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
         <>
             <SidenavTriggerIconButton/>
 
-            <ChromeExtensionInstallBar/>
-
+            <DeviceRouter.Desktop>
+                <ChromeExtensionInstallBar/>
+            </DeviceRouter.Desktop>
+            
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
             </div>
