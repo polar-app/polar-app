@@ -34,11 +34,11 @@ const useStyles = makeStyles((theme) =>
             alignItems: 'center'
         },
         mainContainer:{
-            height: 'auto',
+            height: '100%',
             overflow: 'auto'
         },
         avatar:{
-            marginLeft: theme.spacing(0.5),
+            marginLeft: theme.spacing(1),
         },
         icon:{
             marginLeft: 'auto',
@@ -63,10 +63,7 @@ const useStyles = makeStyles((theme) =>
             width:'100%',
             borderTop: '1px solid grey',
             borderBottom: '1px solid grey',
-            paddingTop: theme.spacing(1.2),
-            paddingBottom: theme.spacing(1.2),
-            paddingLeft: theme.spacing(2.5),
-            paddingRight: theme.spacing(2.5),
+            padding: theme.spacing(2),
         },
         IconAndTitle:{
             display: 'flex',
@@ -92,7 +89,7 @@ export const UserDetailsRow = React.memo(function UserDetailsRow(){
     const userInfoContext = useUserInfoContext();
 
     return(
-        <Box ml={1} className={classes.root}>
+        <Box ml={1} pr={1} className={classes.root}>
             <UserAvatar size={'medium'} className={classes.avatar} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
             <Box component='div' ml={1} className={classes.details}>
                 <Box component='span' color='text.primary'>{userInfoContext?.userInfo?.displayName}</Box>
