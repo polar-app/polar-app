@@ -34,9 +34,8 @@ platform :ios do
     match(type: "appstore")
     app_store_connect_api_key
     sh("./update_version.sh")
-    ENV["LATEST"] = "version_number"
     increment_version_number(
-      version_number: "version_number"
+      version_number: $LATEST
     )
     # build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     # upload_to_app_store( # upload your app to App Store Connect
