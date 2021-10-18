@@ -408,6 +408,7 @@ jobs:
       - run:
           name: Bundle & Deploy
           command: |
+            bundle update fastlane
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
             bundle exec fastlane run google_play_track_version_codes
@@ -432,6 +433,7 @@ jobs:
       - run:
           name: Bundle & Deploy
           command: |
+            bundle update fastlane
             pod install
             bundle exec fastlane beta
 
