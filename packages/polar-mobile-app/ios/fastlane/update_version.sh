@@ -58,6 +58,4 @@ function green_text_box()
 
 red_text_box "Replacing Version"
 
-LATEST=$(curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '"')
-
-sed -i "s/\$VERSION/$LATEST/g" ../PolarReactNative/Info.plist
+export LATEST=$(curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '"')
