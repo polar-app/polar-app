@@ -9,6 +9,7 @@ import {
 } from "polar-firestore-like/src/FirestoreSnapshots";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**
  * Keeps track of migrations.  Each user has a set of migrations which they can
@@ -163,6 +164,11 @@ export namespace MigrationCollection {
                 .onSnapshot(onNext, onError);
         }
 
+    }
+
+    export async function createMigrationForBlockAnnotations(uid: UserIDStr) {
+        const firestore = FirestoreAdmin.getInstance();
+        await MigrationCollection.createByName(firestore, uid, 'block-annotations')
     }
 
 }
