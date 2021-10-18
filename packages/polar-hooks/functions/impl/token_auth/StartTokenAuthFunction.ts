@@ -8,6 +8,7 @@ import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthC
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 import {Challenges} from "polar-shared/src/util/Challenges";
+import {isPrivateBetaEnabled} from "polar-private-beta/src/isPrivateBetaEnabled";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -47,12 +48,16 @@ export async function createOrFetchChallenge(email: EmailStr): Promise<IChalleng
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
 
+    if (await isPrivateBetaEnabled()) {
+        ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
+        return;
+    }
     if (req.method.toUpperCase() !== 'POST') {
         ExpressFunctions.sendResponse(res, "POST required", 500, 'text/plain');
         return;
     }
 
-    if (! isPresent(req.body)) {
+    if (!isPresent(req.body)) {
         ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
         return;
     }
@@ -100,7 +105,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
     async function sendMailWithProvider(message: IEmailTemplate,
                                         provider: MailProvider) {
 
-        switch(provider) {
+        switch (provider) {
 
             case "sendgrid":
                 await Sendgrid.send(message);
@@ -138,7 +143,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         const firestore = FirestoreAdmin.getInstance();
         const challenge = await AuthChallengeCollection.get(firestore, email);
 
-        if (! challenge) {
+        if (!challenge) {
             throw new Error("No previous challenge sent");
         }
 
