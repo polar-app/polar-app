@@ -57,8 +57,10 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
                 dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
 
                 // Reset to old name
-                const blockElem = DOMBlocks.getBlockElement(id)!;
-                blockElem.innerHTML = MarkdownContentConverter.toHTML(content.data);
+                const blockElem = DOMBlocks.getBlockElement(id);
+                if (blockElem) {
+                    blockElem.innerHTML = MarkdownContentConverter.toHTML(content.data);
+                }
             }
         };
 

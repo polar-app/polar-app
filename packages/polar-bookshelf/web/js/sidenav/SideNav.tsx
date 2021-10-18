@@ -189,7 +189,7 @@ const AccountButton = React.memo(function AccountButton() {
     return (
         <SideNavHistoryButton title="Account"
                               path={RoutePathNames.ACCOUNT}>
-            <AccountAvatar className={classes.secondaryIcon}/>
+            <AccountAvatar className={classes.secondaryIcon} size='small'/>
         </SideNavHistoryButton>
     )
 });

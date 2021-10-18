@@ -101,7 +101,7 @@ namespace CopyUtils {
         const wikiAnchorElements = elem.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
 
         const removeLink = (link: HTMLAnchorElement) => {
-            const anchor = getNoteAnchorFromHref(link.href);
+            const anchor = getNoteAnchorFromHref(link.getAttribute('href')!);
 
             if (anchor) {
                 link.href = `${window.location.origin}${RoutePathNames.NOTE(anchor)}`;
@@ -133,7 +133,7 @@ namespace CopyUtils {
         const linksMap = arrayStream(block.content.links).toMap(({ text }) => text);
 
         return arrayStream(Array.from(wikiAnchorElements))
-            .map(anchorElem => linksMap[anchorElem.href.slice(1)])
+            .map(anchorElem => linksMap[anchorElem.getAttribute('href')!.slice(1)])
             .filterPresent()
             .collect();
     }
@@ -146,8 +146,6 @@ export const useCutCopyHandler = () => {
         if (! e.clipboardData) {
             return false;
         }
-
-        e.preventDefault();
 
         const copyData = blocksStore.hasSelected()
             ? CopyUtils.extractContentsFromBlocksSelection(blocksStore)
@@ -172,11 +170,17 @@ export const useCutCopyHandler = () => {
 
     const onCut: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
         if (copy(e)) {
-            blocksStore.deleteBlocks(blocksStore.selectedIDs());
+            const selectedIDs = blocksStore.selectedIDs();
+            if (selectedIDs.length > 0) {
+                blocksStore.deleteBlocks(selectedIDs);
+            }
         }
     }, [copy, blocksStore]);
 
-    const onCopy: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => copy(e), [copy]);
+    const onCopy: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
+        e.preventDefault();
+        copy(e);
+    }, [copy]);
 
 
     return {onCopy, onCut};

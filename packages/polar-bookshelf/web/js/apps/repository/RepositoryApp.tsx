@@ -68,6 +68,7 @@ import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import { AccountPageMobile } from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
+import { SwitchScreen } from './SwitchScreen';
 
 interface IProps {
     readonly app: App;
@@ -364,6 +365,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <SettingsScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
+                                    <SwitchScreen/>
+                                </PersistentRoute>
+                                
                                 <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
                                     <PricingScreen/>
                                 </PersistentRoute>

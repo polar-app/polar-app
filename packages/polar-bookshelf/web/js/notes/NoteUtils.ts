@@ -25,27 +25,51 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 
+type IUseNamedBlocksOpts = {
+    sort?: boolean;
+};
 
 /**
  * Get all the named blocks in notes.
+ *
+ * @param opts Options object @see IUseNamedBlocksOpts
  */
-export const useNamedBlocks = (): ReadonlyArray<Block<NamedContent>> => {
+export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Block<NamedContent>> => {
+    const { sort = false } = opts;
 	const blocksStore = useBlocksStore();
 	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
 	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
     
 	React.useEffect(() => {
+        const getBlockTypeScore = (block: Readonly<Block<NamedContent>>) => {
+            switch (block.content.type) {
+                case 'date':
+                    return 100;
+                default:
+                    return 10;
+            }
+        };
+
+        const sorter = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+            const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
+            const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
+
+            return (getBlockTypeScore(a) - getBlockTypeScore(b)) // Block type
+                   + (strA.localeCompare(strB)); // Block name
+        };
+
 	    const disposer = autorun(() => {
             const namedBlocksIDs = Object.values(blocksStore.indexByName);
             if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
                 const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
-                setNamedBlocks(namedBlocks);
                 prevNamedBlocksIDsRef.current = namedBlocksIDs;
+                
+                setNamedBlocks(sort ? [...namedBlocks].sort(sorter) : namedBlocks);
             }
 	    });
     
 	    return () => disposer();
-	}, [blocksStore]);
+	}, [blocksStore, sort]);
     
 	return namedBlocks;
 };

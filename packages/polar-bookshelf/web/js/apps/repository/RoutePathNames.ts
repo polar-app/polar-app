@@ -32,7 +32,7 @@ const ACCOUNT = "#account";
 const ACCOUNT_MOBILE = "/accountmobile";
 const SETTINGS_MOBILE = "/settingsmobile";
 const PLAN_MOBILE = "/planmobile";
-
+const SWITCH = "/switch";
 
 export const RoutePathNames = {
     HOME,
@@ -47,6 +47,7 @@ export const RoutePathNames = {
     ACCOUNT,
     PLAN_MOBILE,
     SETTINGS_MOBILE,
+    SWITCH,
     WHATS_NEW,
     INVITE,
     PLANS,
