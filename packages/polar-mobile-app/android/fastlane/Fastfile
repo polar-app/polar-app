@@ -26,8 +26,8 @@ platform :android do
     track_code = google_play_track_version_codes(track: 'internal')
     version_code = increment_version_code(version_code: track_code[0]+1)
     android_set_version_name(version_name: version_code.to_s)
-    # gradle(task: "clean bundleRelease")
-    # upload_to_play_store(track: 'internal')
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(track: 'internal')
   end
 
   desc "Deploy a new version to the Google Play"
@@ -36,7 +36,7 @@ platform :android do
     track_code = google_play_track_version_codes(track: 'production')
     version_code = increment_version_code(version_code: track_code)
     android_set_version_name(version_name: version.to_s)
-    # gradle(task: "clean bundleRelease")
-    # upload_to_play_store(track: 'production')
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(track: 'production')
   end
 end

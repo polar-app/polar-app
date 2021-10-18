@@ -26,8 +26,8 @@ platform :ios do
     increment_build_number({
       build_number: latest_testflight_build_number + 1
     })
-    # build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
-    # upload_to_testflight
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    upload_to_testflight
   end
 
   lane :release do
@@ -37,11 +37,11 @@ platform :ios do
       version_number: sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'"),
       xcodeproj: "PolarReactNative.xcodeproj"
     )
-    # build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
-    # upload_to_app_store( # upload your app to App Store Connect
-    #     submit_for_review: true,
-    #     skip_screenshots: true,
-    #     force: true # Skip HTMl report verification
-    # )
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    upload_to_app_store( # upload your app to App Store Connect
+        submit_for_review: true,
+        skip_screenshots: true,
+        force: true # Skip HTMl report verification
+    )
   end
 end
