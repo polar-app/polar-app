@@ -6,9 +6,6 @@ import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/Doc
 import { useHistory } from 'react-router-dom';
 import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 
-import moment from 'moment';
-import { MUIBottomNavigation } from '../../../../web/js/mui/MUIBottomNavigation';
-import { BOTTOM_NAV_HEIGHT } from './RepositoryApp';
 import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
 import { ISODateTimeStrings } from 'polar-shared/src/metadata/ISODateTimeStrings';
 
@@ -85,8 +82,7 @@ export const SwitchScreen = () => {
                     style={{
                         minWidth: 0,
                         maxWidth: '100%',
-                        tableLayout: 'fixed',
-                        height: `calc(100% - ${BOTTOM_NAV_HEIGHT}px)`
+                        tableLayout: 'fixed'
                     }}
                     aria-labelledby="tableTitle"
                     size={'medium'}
