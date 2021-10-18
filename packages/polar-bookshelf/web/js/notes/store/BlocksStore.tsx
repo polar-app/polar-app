@@ -1593,7 +1593,7 @@ export class BlocksStore implements IBlocksStore {
             const map = origLinks
                 .reduce((map, link) => map.set(link.text, link), new Map<string, IBlockLink>());
             return [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
-                .map(([, text]) => map.get(text))
+                .map(([, text]) => map.get(text.replace(/\\([\[\]\(\)])/g, '$1')))
                 .filter((link): link is NonNullable<typeof link> => !!link);
         };
 

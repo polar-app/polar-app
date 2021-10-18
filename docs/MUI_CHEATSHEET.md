@@ -13,6 +13,9 @@ If you're messing around too much with CSS properties you're doing it wrong.
 
 # Styles
 
+Only use CSS directly if you HAVE to do it.  CSS is generally a bad idea so only
+put this in isolated components.
+
 ```typescript jsx
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

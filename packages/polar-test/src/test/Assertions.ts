@@ -177,3 +177,18 @@ function sorted(dict: any): any {
     }
 
 }
+
+export namespace Assertions {
+
+    export async function assertAsyncThrows(delegate: () => Promise<void>) {
+
+        try {
+            await delegate();
+            assert.isTrue(false, "Delegate didn't fail");
+        } catch {
+            /// we're good ..
+        }
+
+    }
+
+}

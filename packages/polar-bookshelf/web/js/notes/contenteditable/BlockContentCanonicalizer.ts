@@ -47,7 +47,7 @@ export namespace BlockContentCanonicalizer {
             const newTextContent = (anchor.textContent || '').trim();
 
             if (href && href.startsWith('#')) {
-                const newHref = '#' + newTextContent;
+                const newHref = `#${anchor.classList.contains('note-tag') ? newTextContent.replace(/^#/, '') : newTextContent}`;
                 if (href !== newHref) {
                     anchor.setAttribute('href', newHref);
                 }
