@@ -13,6 +13,9 @@ export namespace TextGrid {
         format: () => string;
     }
 
+    // TODO: change this to require the names of the headers and this way we
+    // don't need a headers() method and can compute nrColumns from the number
+    // of headers.
     export function create(nrColumns: number) {
 
         let _rows: ReadonlyArray<TextData>[] = [];

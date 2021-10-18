@@ -2,12 +2,11 @@ import {assert} from 'chai';
 import {PDFMetadata} from './PDFMetadata';
 import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {Assertions} from "./Assertions";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {DOIs} from "./DOIs";
 import {Strings} from "polar-shared/src/util/Strings";
 import {SampledHitMap} from "polar-shared/src/util/HitMap";
-import {assertJSON} from "polar-test/src/test/Assertions";
+import {Assertions, assertJSON} from "polar-test/src/test/Assertions";
 
 describe('PDF Metadata', function() {
 

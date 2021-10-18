@@ -68,6 +68,7 @@ import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import { AccountPageMobile } from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
+import { SwitchScreen } from './SwitchScreen';
 
 interface IProps {
     readonly app: App;
@@ -82,8 +83,6 @@ interface IUseRouteContainerStylesProps {
     isSidenavOpen: boolean;
     sidenavWidth: number;
 }
-
-export const BOTTOM_NAV_HEIGHT = 58;
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
@@ -366,6 +365,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <SettingsScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
+                                    <SwitchScreen/>
+                                </PersistentRoute>
+                                
                                 <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
                                     <PricingScreen/>
                                 </PersistentRoute>
