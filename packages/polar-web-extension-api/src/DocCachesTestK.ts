@@ -37,7 +37,8 @@ async function measureGet(iDocCache : IDocCache, id: IDStr): Promise<number> {
 describe('DocCaches', function () {
 
     it("basic", async function () {
-        this.timeout(10000)
+
+        this.timeout(120000)
 
         const blobData : string = createBlobData(1700000)
 
@@ -46,7 +47,7 @@ describe('DocCaches', function () {
         // convert blob size to Kilobytes
         const blobSize : number = blob.size / 1024
         console.log('blob size is: ' + blobSize + 'KB')
-        
+
         const backend : Backend = Backend.PUBLIC
         const fileRef : BackendFileRef = {name: 'fileRefname', backend}
         const docInfo : IDocInfo = {
