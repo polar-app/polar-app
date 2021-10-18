@@ -1,6 +1,7 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Sorting} from "./Sorting";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import { Devices } from "polar-shared/src/util/Devices";
 
 export interface ColumnDescriptor {
     disablePadding: boolean;
@@ -33,7 +34,7 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'keywords', numeric: false, disablePadding: true, label: 'Keywords', width: '250px', defaultOrder: 'asc' },
     { id: 'authors', numeric: true, disablePadding: true, label: 'Authors', width: '250px', defaultOrder: 'asc' },
     { id: 'editor', numeric: true, disablePadding: true, label: 'Editors', width: '250px', defaultOrder: 'asc' },
-    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: 'auto', defaultOrder: 'desc' },
+    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: Devices.isTablet()? '220px': 'auto', defaultOrder: 'desc' },
 ];
 
 export const DOC_BUTTON_COLUMN_WIDTH = '130px';

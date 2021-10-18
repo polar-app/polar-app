@@ -181,7 +181,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <TableCell key={column.id}
                                        className={classes.th}
                                        style={{
-                                           width: Devices.isTablet() && column.id=='progress'? '220px': column.width,
+                                           width: column.width,
                                            minWidth: column.width
                                        }}
                                        padding={column.disablePadding ? 'none' : 'default'}
