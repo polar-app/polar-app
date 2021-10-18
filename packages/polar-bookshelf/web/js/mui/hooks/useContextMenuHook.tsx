@@ -15,7 +15,7 @@ export const useContextMenuHook = (handleClose: () => void) => {
         if (!Devices.isDesktop()) {
             history.push({hash})
         }
-    },[history]);
+    },[hash, history]);
 
     React.useEffect(() => {
         if (location.hash === hash && !ref.current) {
@@ -24,12 +24,12 @@ export const useContextMenuHook = (handleClose: () => void) => {
         if (location.hash !== hash && ref.current && !Devices.isDesktop()){
             handleClose();
         }
-    }, [location.hash, hash]);
+    }, [location.hash, hash, handleClose]);
 
     const handleCloseWithGoBack = React.useCallback(() => {
         handleClose();
         history.goBack();
-    }, [history])
+    }, [handleClose, history])
 
     return Devices.isDesktop()? handleClose : handleCloseWithGoBack;
 }

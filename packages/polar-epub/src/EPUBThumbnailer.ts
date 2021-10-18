@@ -59,6 +59,7 @@ export namespace EPUBThumbnailer {
      * @param coverTargetPath
      */
     export async function extractToFile(epubFilePath: PathOrURLStr, coverTargetPath: string,) {
+        // eslint-disable-next-line new-cap
         const zip = new StreamZip.async({
             file: path.resolve(__dirname, epubFilePath),
             storeEntries: true,

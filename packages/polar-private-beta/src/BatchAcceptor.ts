@@ -1,6 +1,6 @@
 import {ComputeNextUserPriority} from "./ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
+import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {UserPersonas} from "polar-hooks-functions/impl/personas/UserPersonas";
 import {Sendgrid} from "polar-hooks-functions/impl/Sendgrid";

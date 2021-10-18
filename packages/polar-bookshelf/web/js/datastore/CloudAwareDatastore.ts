@@ -8,12 +8,13 @@ import {
     DeleteResult,
     DocMetaSnapshotEvent,
     DocMetaSnapshotEventListener,
-    DocMetaSnapshotEvents, DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DocMetaSnapshotEvents,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
     InitResult,
-    PrefsProvider,
     SnapshotResult,
     SyncDocMap,
     SyncDocMaps,
@@ -28,7 +29,6 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {UUID} from 'polar-shared/src/metadata/UUID';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
@@ -44,7 +44,6 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {InterceptedPrefsProvider, IPersistentPrefs} from "../util/prefs/Prefs";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
@@ -583,15 +582,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-}
-
-/**
- * Represents a doc and its UUID.  The UUID is optional though as older docs
- * may not have a doc but in practice almost all docs will have a UUID.
- */
-export interface DocUUID {
-    fingerprint: string;
-    uuid?: UUID;
 }
 
 export type CloudDatastoreID = 'local' | 'cloud';

@@ -2,9 +2,7 @@ import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
-
 import os from 'os';
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
@@ -14,7 +12,6 @@ import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Datastore} from './Datastore';
-import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';

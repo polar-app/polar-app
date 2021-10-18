@@ -5,7 +5,7 @@ import { IDStr, UserIDStr } from 'polar-shared/src/util/Strings';
 
 export namespace CloudProgresCollection {
     export const COLLECTION_NAME = "cloud_progress";
-    
+
     export interface ICloudProgressMeta {
         [key: string]: string | number | boolean;
     };
@@ -18,16 +18,16 @@ export namespace CloudProgresCollection {
         readonly uid: UserIDStr;
         readonly meta: ICloudProgressMeta;
         readonly duration: number;
-        type: 'started' | 'completed' | 'failed'
+        readonly type: 'started' | 'completed' | 'failed'
     };
 
     export type IProgressCompleted = IProgressStarted & {
-        completed: ISODateTimeString;
+        readonly completed: ISODateTimeString;
     };
 
     export type IProgressFailed = IProgressStarted & {
-        failed: ISODateTimeString;
-        message: string;
+        readonly failed: ISODateTimeString;
+        readonly message: string;
     };
 
     export type ICloudProgress = IProgressStarted |
@@ -37,7 +37,7 @@ export namespace CloudProgresCollection {
 
     export type ICloudProgressUpdateShared = Partial<Pick<IProgressStarted, 'written' | 'percentage' | 'duration'>>;
 
-    export type ICloudProgressUpdateFailed = ICloudProgressUpdateShared & 
+    export type ICloudProgressUpdateFailed = ICloudProgressUpdateShared &
                                              Required<Pick<IProgressFailed, 'failed' | 'type' | 'message'>>;
 
     export type ICloudProgressUpdateCompleted = ICloudProgressUpdateShared &
@@ -62,7 +62,7 @@ export namespace CloudProgresCollection {
                                             cloudProgress: ICloudProgress) {
 
         const collection = firestore.collection(COLLECTION_NAME)
-        
+
         const doc = collection.doc(id);
 
         await doc.set(cloudProgress);
@@ -74,7 +74,7 @@ export namespace CloudProgresCollection {
 
         const collection = firestore.collection(COLLECTION_NAME);
 
-        const doc = collection.doc(id);        
+        const doc = collection.doc(id);
 
         await doc.update(cloudProgressUpdate);
     }

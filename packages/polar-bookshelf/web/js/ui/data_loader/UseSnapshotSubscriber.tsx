@@ -61,7 +61,8 @@ export function useSnapshotSubscriberUsingCallbacks<T>(subscriber: SnapshotSubsc
 
 // TODO: I don't know if I like this because the subscription returns undefined
 // if the remote value is removed but we don't have a dedicated type so we're
-// unable to determine if the value was DELETED or just pending a read.
+// unable to determine if the value was DELETED or just pending a read.  I think
+// we have to fix this by having exists: true / false.
 /**
  * @NotStale I might end up using this in the future.
  */

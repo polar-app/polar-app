@@ -8,7 +8,6 @@ import {SyncProgressListener} from '../SyncProgressListener';
 import {SyncProgress} from '../SyncProgress';
 import {SyncQueue} from '../SyncQueue';
 
-
 describe('DecksSync', function() {
 
     let decksSync: DecksSync;

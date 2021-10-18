@@ -47,6 +47,7 @@ export namespace BlockPermissions {
             }
 
             // tslint:disable-next-line:no-string-literal
+            // eslint-disable-next-line dot-notation
             if (newPermissions['__public__']?.access === 'admin') {
                 throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
             }
