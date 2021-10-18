@@ -106,7 +106,7 @@ export namespace MarkdownContentConverter {
 
         const result = Mappers.create(srcHTML)
                               .map(html2markdown)
-                              .map(WikiLinksToMarkdown.unescape)
+                              .map(WikiLinksToHTML.unescape)
                               .collect();
 
         doTrace('toMarkdown', srcHTML, result);
