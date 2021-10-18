@@ -68,12 +68,9 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
     };
 
     return (
-
+    <>
+        {!Devices.isDesktop() && <DocRepoTableToolbar/>}
         <DefaultPageLayout>
-            {!Devices.isDesktop() && <DocRepoTableToolbar/>}
-            <ConfigureBody>
-                <ConfigureNavbar/>
-
                 <div className={classes.root}>
                     <Box component='div' px={2}>
                         <h1>General</h1>
@@ -182,9 +179,8 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
 
                 </div>
 
-            </ConfigureBody>
-
         </DefaultPageLayout>
+    </>
     );
 });
 
