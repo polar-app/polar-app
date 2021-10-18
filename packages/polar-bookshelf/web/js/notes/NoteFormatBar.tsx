@@ -1,13 +1,13 @@
 import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
-import { MUIButtonBar } from '../mui/MUIButtonBar';
+import {MUIButtonBar} from '../mui/MUIButtonBar';
 import {
     FABoldIcon,
-    FAItalicIcon, FALinkIcon,
-    FAQuoteLeftIcon,
+    FAItalicIcon,
+    FALinkIcon,
     FAStrikethroughIcon,
-    FASubscriptIcon, FASuperscriptIcon,
-    FAUnderlineIcon
+    FASubscriptIcon,
+    FASuperscriptIcon
 } from "../mui/MUIFontAwesome";
 import FormatClearIcon from '@material-ui/icons/FormatClear';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -15,7 +15,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CheckIcon from '@material-ui/icons/Check';
-import { URLStr } from 'polar-shared/src/util/Strings';
+import {URLStr} from 'polar-shared/src/util/Strings';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
