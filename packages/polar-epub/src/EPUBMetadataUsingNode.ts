@@ -125,7 +125,7 @@ export class EPUBMetadataUsingNode {
     }
 }
 
-interface IChapterReference {
+export interface IChapterReference {
     id: string, // e.g. "chapter_003"
     file: string, // e.g. "chapter_003.xhtml"
 }
