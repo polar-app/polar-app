@@ -1,1 +1,0 @@
-cat ../PolarReactNative/info.plist
