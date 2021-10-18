@@ -581,9 +581,13 @@ workflows:
       - build-setup:
           executor: large
 
+      - approve-android:
+          type: approval
+
       - Android:
           executor: android
           requires:
+            - approve-android
             - build-setup
 
       - IOS:
