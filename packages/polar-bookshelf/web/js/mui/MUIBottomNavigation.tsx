@@ -8,6 +8,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from 'react-router-dom';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import SettingsIcon from '@material-ui/icons/Settings';
+import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
@@ -80,9 +81,9 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             id: 'switch',
             label: 'Switch',
             href: RoutePathNames.SWITCH,
-            icon: <SettingsIcon/>
+            icon: <CarouselIcon/>
         },
-    ]), []);
+    ]), [notesEnabled]);
 };
 
 export const MUIBottomNavigation = ()  => {
