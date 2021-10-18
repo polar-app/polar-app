@@ -165,44 +165,46 @@ const PlanBox = (props: PlanBoxProps) => {
           <PurchaseOrChangePlanButton newSubscription={{plan: props.plan, interval: props.interval}} />
 
           <table className={classes.tableMobile}>
-            <tr className={classes.row}>
-              <td className={classes.rowHeadMobile}>
-                Storage
-              </td>
-              <td>{props.storage}</td>
-            </tr>
-            <tr className={classes.row}>
-              <td className={classes.rowHeadMobile}>
-                Maximum Captured <br /> Web Documents
-              </td>
-              <td>
-                {props.maxCapturedWebDocuments}
-              </td>
-            </tr>
-            <tr className={classes.row}>
-              <td className={classes.rowHeadMobile}>
-                Devices
-              </td>
-              <td>
-                {props.maxDevices}
-              </td>
-            </tr>
-            <CheckRow name="Priority Support" checked={props.support}/>
-            <CheckRow name="Related Tags" checked={props.relatedTags}/>
-            <tr className={classes.row}>
-              <td className={classes.rowHeadMobile}>
-                Auto-create flashcards (using GPT-3)
-              </td>
-              <td>
-                {
-                  props.autoFlashcards > 0
-                    ? `${props.autoFlashcards} / ${props.interval}`
-                    : <FATimesCircleIcon className={classes.checkCircle} />
-                }
-              </td>
-            </tr>
+            <tbody>
+              <tr className={classes.row}>
+                <td className={classes.rowHeadMobile}>
+                  Storage
+                </td>
+                <td>{props.storage}</td>
+              </tr>
+              <tr className={classes.row}>
+                <td className={classes.rowHeadMobile}>
+                  Maximum Captured <br /> Web Documents
+                </td>
+                <td>
+                  {props.maxCapturedWebDocuments}
+                </td>
+              </tr>
+              <tr className={classes.row}>
+                <td className={classes.rowHeadMobile}>
+                  Devices
+                </td>
+                <td>
+                  {props.maxDevices}
+                </td>
+              </tr>
+              <CheckRow name="Priority Support" checked={props.support}/>
+              <CheckRow name="Related Tags" checked={props.relatedTags}/>
+              <tr className={classes.row}>
+                <td className={classes.rowHeadMobile}>
+                  Auto-create flashcards (using GPT-3)
+                </td>
+                <td>
+                  {
+                    props.autoFlashcards > 0
+                      ? `${props.autoFlashcards} / ${props.interval}`
+                      : <FATimesCircleIcon className={classes.checkCircle} />
+                  }
+                </td>
+              </tr>
 
-            <CheckRow name="Personal onboarding by Polar team" checked={props.personalOnboarding}/>
+              <CheckRow name="Personal onboarding by Polar team" checked={props.personalOnboarding}/>
+            </tbody>
           </table>
         </Box>
       </Paper>
@@ -217,7 +219,6 @@ export const PricingContentForMobile = () => {
     <Box
       style={{
         display: "flex",
-        // flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         flexWrap: "wrap",

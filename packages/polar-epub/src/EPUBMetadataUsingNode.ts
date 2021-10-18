@@ -95,7 +95,7 @@ export class EPUBMetadataUsingNode {
         return await zip.entryData(chapterPath);
     }
 
-    private static getZip(docPathOrURL: PathOrURLStr) {
+    public static getZip(docPathOrURL: PathOrURLStr) {
         // eslint-disable-next-line new-cap
         return new StreamZip.async({
             file: docPathOrURL,
@@ -125,7 +125,7 @@ export class EPUBMetadataUsingNode {
     }
 }
 
-interface IChapterReference {
-    id: string, // e.g. "chapter_003"
-    file: string, // e.g. "chapter_003.xhtml"
+export interface IChapterReference {
+    readonly id: string, // e.g. "chapter_003"
+    readonly file: string, // e.g. "chapter_003.xhtml"
 }

@@ -2,7 +2,7 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "./HTMLToBlocks";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContentType} from "../../../../polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockTextContentUtils} from "./NoteUtils";
 
 export namespace BlockContentStructureConverter {
@@ -20,7 +20,7 @@ export namespace BlockContentStructureConverter {
             case AnnotationContentType.TEXT_HIGHLIGHT:
                 const data = BlockTextContentUtils.getTextContentMarkdown(content);
                 return MarkdownContentConverter.toHTML(data);
-                
+
         }
         // TODO: handle area highlights
 

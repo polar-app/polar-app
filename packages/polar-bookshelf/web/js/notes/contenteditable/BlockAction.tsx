@@ -116,12 +116,10 @@ function useActionExecutor(id: BlockIDStr) {
                     ? actionOp.target.slice(1)
                     : actionOp.target;
                 a.setAttribute('contenteditable', 'false');
+                a.classList.add(type === 'tag' ? 'note-tag' : 'note-link');
                 a.setAttribute('href', '#' + trimmedTarget);
-                a.appendChild(document.createTextNode(actionOp.target.trim()));
+                a.appendChild(document.createTextNode(actionOp.target));
 
-                if (type === 'tag') {
-                    a.classList.add('note-tag');
-                }
 
                 coveringRange.insertNode(a);
             };
@@ -276,8 +274,10 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
-        return inputRange.isPointInRange(range.startContainer, range.startOffset + delta) &&
-               inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
+        const actualDelta = range.collapsed ? delta : 0;
+
+        return inputRange.isPointInRange(range.startContainer, range.startOffset + actualDelta) &&
+               inputRange.isPointInRange(range.endContainer, range.endOffset + actualDelta);
 
     }, [divRef, wrapStart, wrapEnd]);
 

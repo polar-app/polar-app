@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) =>
             fontSize: '1.2rem !important'
         },
         item: {
-            fontSize: '1.2rem !important'
+            fontSize: '1.2rem !important',
+            wordBreak: 'break-all',
         }
 
     }),
@@ -88,6 +89,8 @@ interface IProps {
     readonly commandsProvider: CommandsProvider;
 
     readonly className?: string;
+
+    readonly style?: React.CSSProperties;
 
 }
 
@@ -209,8 +212,9 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
 
         <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
             <div style={{
+                     ...props.style,
                      display: 'flex',
-                     flexDirection: 'column'
+                     flexDirection: 'column',
                  }}
                  className={props.className}>
 
