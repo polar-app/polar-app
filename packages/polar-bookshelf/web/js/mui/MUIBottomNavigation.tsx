@@ -129,7 +129,7 @@ export const MUIBottomNavigation = ()  => {
         elem.addEventListener('transitionend', onTransitioned);
 
         return () => elem.removeEventListener('transitionend', onTransitioned);
-    }, [bottomNavRef]);
+    }, [bottomNavRef, isSidenavOpenRef]);
 
 
     if (location.pathname.startsWith('/doc/')) {

@@ -6,7 +6,7 @@ import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {UserRecord} from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
+import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;

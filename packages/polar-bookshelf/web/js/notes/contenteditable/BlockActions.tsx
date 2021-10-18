@@ -80,7 +80,7 @@ export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props
 
     const namedBlocks = useNamedBlocks();
     const blocksTreeStore = useBlocksTreeStore();
-    const block = React.useMemo(() => blocksTreeStore.getBlock(id), [id]);
+    const block = React.useMemo(() => blocksTreeStore.getBlock(id), [blocksTreeStore, id]);
     const canHaveLinks = React.useMemo(() => block && BlockPredicates.canHaveLinks(block), [block]);
 
     const noteLinkActions = React.useMemo(() => {

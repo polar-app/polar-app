@@ -10,7 +10,7 @@ export const LogoutDialog = () => {
 
     const handleLogout = React.useCallback(() => {
         doLogout();
-    }, []);
+    }, [doLogout]);
 
     console.log("Asking user if they want to logout");
 
@@ -21,6 +21,6 @@ export const LogoutDialog = () => {
             subtitle: "Just wanted to double check. Are you sure you want to logout?",
             onAccept: handleLogout
         });
-    }, [dialogManager]);
+    }, [dialogManager, handleLogout]);
 
 }

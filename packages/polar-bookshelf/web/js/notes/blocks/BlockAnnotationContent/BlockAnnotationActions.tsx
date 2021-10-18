@@ -67,7 +67,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
                 onMouseLeave={handleHide}
                 onClick={handleShow}
             >
-                
+
                 <div className={classes.contentWrapper}>
                     {children}
                 </div>
@@ -204,7 +204,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const handleDelete = React.useCallback(() => {
         blocksTreeStore.deleteBlocks([id]);
     }, [blocksTreeStore, id]);
-    
+
     const handleOpen = React.useCallback(() => {
         const ptr = AnnotationPtrs.create({
             target: id,
@@ -212,7 +212,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
             docID: annotation.docID,
         });
         history.push(AnnotationLinks.createRelativeURL(ptr));
-    }, [annotation, history]);
+    }, [annotation.docID, annotation.pageNum, history, id]);
 
     const handleColorChange = React.useCallback((color: ColorStr) => {
         const block = getBlock(id, annotation.type);
@@ -249,7 +249,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
 
     const editTags = React.useCallback(() => {
         blockTagEditorDialog([id]);
-    }, [blockTagEditorDialog]);
+    }, [blockTagEditorDialog, id]);
 
     return React.useMemo(() => {
         const actionMap: ISharedActionMap = {
