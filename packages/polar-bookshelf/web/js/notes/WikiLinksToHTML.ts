@@ -1,3 +1,5 @@
+import {TAG_IDENTIFIER} from "./content/HasLinks";
+
 export namespace WikiLinksToHTML {
 
     export function escape(markdown: string) {
@@ -9,7 +11,10 @@ export namespace WikiLinksToHTML {
     }
 
     export function unescape(html: string) {
-        return html.replace(/<a contenteditable="false" class="[\w-]+" href="([^"]+)">([^<]+)<\/a>/g, (_, args) => `[[${args.slice(1).replace(/([\[\]\(\)])/g, '\\$1')}]]`);
+        return html.replace(/<a contenteditable="false" class="[\w-]+" href="([^"]+)">([^<]+)<\/a>/g, (_, args, text) => {
+            const isTag = text.startsWith(TAG_IDENTIFIER);
+            return `[[${isTag ? TAG_IDENTIFIER : ''}${args.slice(1).replace(/([\[\]\(\)])/g, '\\$1')}]]`;
+        });
     }
 
 }

@@ -68,7 +68,7 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
 
     // e.g. href="#identifier"
     if (href.startsWith('#')) {
-        return Arrays.last(href.split('#')) as string;
+        return href.slice(1);
     }
 
     const notePathname = RoutePathNames.NOTE("");

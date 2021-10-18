@@ -274,8 +274,10 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
-        return inputRange.isPointInRange(range.startContainer, range.startOffset + delta) &&
-               inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
+        const actualDelta = range.collapsed ? delta : 0;
+
+        return inputRange.isPointInRange(range.startContainer, range.startOffset + actualDelta) &&
+               inputRange.isPointInRange(range.endContainer, range.endOffset + actualDelta);
 
     }, [divRef, wrapStart, wrapEnd]);
 

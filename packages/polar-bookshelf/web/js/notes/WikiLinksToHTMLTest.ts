@@ -39,7 +39,10 @@ describe('WikiLinksToHTML', function() {
         const input = "[[Hello]] [[#world]]";
         const expected = `<a contenteditable="false" class="note-link" href="#Hello">Hello</a> <a contenteditable="false" class="note-tag" href="#world">#world</a>`;
 
-        assert.equal(WikiLinksToHTML.escape(input), expected);
+        const escaped = WikiLinksToHTML.escape(input); 
+        const unescaped = WikiLinksToHTML.unescape(escaped);
+        assert.equal(escaped, expected);
+        assert.equal(unescaped, input);
     });
 });
 
