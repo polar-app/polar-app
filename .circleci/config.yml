@@ -410,6 +410,7 @@ jobs:
           command: |
             touch google-play-service-account.json
             echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
+            bundle exec fastlane google_play_track_version_codes
             bundle exec fastlane run validate_play_store_json_key
             bundle exec fastlane beta
 
