@@ -24,7 +24,8 @@ platform :android do
   desc "Deploy a new version to the Google Play internal testers track"
   lane :beta do
     track_code = google_play_track_version_codes(track: 'internal')
-    version_code = increment_version_code(version_code: track_code.to_i)
+    p track_code
+    version_code = increment_version_code(version_code: track_code[0])
     android_set_version_name(version_name: version_code.to_s)
     # gradle(task: "clean bundleRelease")
     # upload_to_play_store(track: 'internal')
