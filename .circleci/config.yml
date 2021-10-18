@@ -433,7 +433,7 @@ jobs:
           name: Bundle & Deploy
           command: |
             pod install
-            bundle exec fastlane release
+            bundle exec fastlane beta
 
 # ~ Define Custom Executors
 executors:
