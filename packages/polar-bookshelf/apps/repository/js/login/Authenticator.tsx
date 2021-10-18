@@ -11,7 +11,7 @@ import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
 import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {Analytics, useAnalytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
@@ -157,7 +157,7 @@ const EmailTokenAuthButton = () => {
             }
 
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -201,7 +201,7 @@ const EmailTokenAuthButton = () => {
                 setPending(false);
             }
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -290,7 +290,7 @@ const EmailTokenAuthButton = () => {
                                            style={{
                                                textAlign: 'center',
                                                flexGrow: 1,
-                                           }} />
+                                           }}/>
 
                                 <div className={classes.alternate}>
                                     <Button onClick={handleEmailProvided}>Resend Email</Button>
@@ -310,7 +310,7 @@ const EmailTokenAuthButton = () => {
                             </>
                         )}
 
-                        {! triggered && (
+                        {!triggered && (
                             <TextField autoFocus={true}
                                        className={classes.email}
                                        onChange={event => emailRef.current = event.target.value}
@@ -333,7 +333,7 @@ const EmailTokenAuthButton = () => {
                 {!triggered && (
                     <AuthButton onClick={handleClick}
                                 strategy="Email"
-                                startIcon={<EmailIcon />}/>
+                                startIcon={<EmailIcon/>}/>
                 )}
             </div>
         </>
@@ -348,11 +348,16 @@ const RegisterForBetaButton = () => {
 
     const classes = useStyles();
 
+    const analytics = useAnalytics();
+
     const handleClick = React.useCallback(() => {
 
+        const email = emailRef.current.trim();
+        const tag = 'initial_signup';
+
         const request = {
-            email: emailRef.current.trim(),
-            tag: "initial_signup",
+            email,
+            tag,
         };
 
         try {
@@ -361,8 +366,11 @@ const RegisterForBetaButton = () => {
 
             async function doAsync() {
 
-                await JSONRPC.exec<unknown, any>('private-beta/register', request);
+                await JSONRPC.exec<unknown, unknown>('private-beta/register', request);
                 setIsRegistered(true);
+
+                // @TODO also store the Referral code, once we start capturing it during signup
+                analytics.event2("private_beta_joined", {email});
 
                 console.log("Registered now!");
 
@@ -399,7 +407,8 @@ const RegisterForBetaButton = () => {
                                InputProps={{
                                    startAdornment: (
                                        <EmailIcon style={{margin: '8px'}}/>
-                                   )}}
+                                   )
+                               }}
                                variant="outlined"/>
 
                     <Button variant="contained"
@@ -493,7 +502,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
         <>
             <div className="AuthContent"
                  style={{
-                     height:"100vh",
+                     height: "100vh",
                      textAlign: 'center',
                      flexGrow: 1,
                      display: 'flex',
