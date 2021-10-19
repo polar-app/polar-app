@@ -204,13 +204,13 @@ describe('PDFText', function() {
     });
 
 
-    it("Plus One output", async () => {
+    xit("Plus One output", async () => {
 
         const textCapture = createTextCapture();
 
         await PDFText.getText('/Users/burton/plusone.pdf', textCapture.onPDFTextContent, {});
 
-        await AssertionsCache.writeToCache(textCapture.toString(), 'plus-one-pdf-output', 'txt');
+        // await AssertionsCache.writeToCache(textCapture.toString(), 'plus-one-pdf-output', 'txt');
 
     });
 
