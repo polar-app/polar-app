@@ -4,6 +4,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import IPDFTextContent = PDFText.IPDFTextContent;
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {AssertionsCache} from "polar-test/src/test/AssertionsCache";
 
 // TODO:
 //
@@ -199,6 +200,17 @@ describe('PDFText', function() {
         const textCapture = createTextCapture();
 
         await PDFText.getText('/Users/burton/plusone.pdf', textCapture.onPDFTextContent, {maxPages: 1});
+
+    });
+
+
+    it("Plus One output", async () => {
+
+        const textCapture = createTextCapture();
+
+        await PDFText.getText('/Users/burton/plusone.pdf', textCapture.onPDFTextContent, {});
+
+        await AssertionsCache.writeToCache(textCapture.toString(), 'plus-one-pdf-output', 'txt');
 
     });
 

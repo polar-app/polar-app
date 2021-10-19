@@ -140,8 +140,6 @@ function sorted(dict: any): any {
 
 }
 
-export const assertJSON = Assertions.assertJSON;
-
 export namespace Assertions {
 
     export function assertJSON(actual: any,
@@ -195,3 +193,5 @@ export namespace Assertions {
     }
 
 }
+
+export const assertJSON = Assertions.assertJSON;
