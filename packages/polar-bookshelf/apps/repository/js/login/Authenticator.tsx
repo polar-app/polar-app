@@ -6,7 +6,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Typography} from '@material-ui/core';
+import {Box, Divider, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -265,6 +265,7 @@ const EmailTokenAuthButton = () => {
         <>
             <div style={{
                 display: 'flex',
+                margin: '4%',
                 flexDirection: 'column',
                 flexGrow: 1
             }}>
@@ -390,6 +391,7 @@ const RegisterForBetaButton = () => {
 
             {!isRegistered && (
                 <div style={{
+                    margin: '4%',
                     display: 'flex',
                     flexDirection: 'column'
                 }}>
@@ -408,7 +410,7 @@ const RegisterForBetaButton = () => {
                             color="primary"
                             className={classes.button}
                             onClick={handleClick}>
-                        Join
+                        Get Started
                     </Button>
                 </div>
             )}
@@ -514,6 +516,8 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                     <h2>
                         {props.title}
                     </h2>
+
+                    <Divider/>
 
                     {props.children}
 

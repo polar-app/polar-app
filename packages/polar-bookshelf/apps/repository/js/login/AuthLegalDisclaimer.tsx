@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) =>
             marginTop: theme.spacing(5),
             marginBottom: theme.spacing(2),
             color: theme.palette.text.secondary,
-            fontSize: '1.3em',
+            fontSize: '1.0em',
             textAlign: 'center',
             "& a:link": {
                 color: theme.palette.text.secondary,
