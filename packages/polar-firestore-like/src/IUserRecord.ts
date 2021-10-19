@@ -7,6 +7,7 @@ export interface IUserRecordMain {
      * The user's `uid`.
      */
     readonly uid: string;
+
     /**
      * The user's primary email, if set.
      */
