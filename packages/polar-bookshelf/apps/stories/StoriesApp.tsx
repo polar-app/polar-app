@@ -55,6 +55,7 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
+import {MigrationDialog} from "./impl/PolarMigrationDialog"
 
 interface IStory {
     readonly name: string;
@@ -78,6 +79,11 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+    
+    {
+        name: "Migration Dialog 3.0",
+        component: <MigrationDialog/>
+    },
     {
         name: "Vertical Dynamic Scroller",
         component: <VerticalDynamicScrollerStory/>
