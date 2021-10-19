@@ -1,9 +1,9 @@
 import {ComputeNextUserPriority} from "./ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
-import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {UserPersonas} from "polar-hooks-functions/impl/personas/UserPersonas";
-import {Sendgrid} from "polar-hooks-functions/impl/Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
+import {IDUser} from "polar-rpc/src/IDUser";
 
 export namespace BatchAcceptor {
     import IUserRecord = UserPersonas.IUserRecord;
