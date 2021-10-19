@@ -34,7 +34,8 @@
     "polar-firebase-users": "0.0.0",
     "polar-private-beta-api": "0.0.0",
     "polar-rpc": "0.0.0",
-    "polar-sendgrid": "0.0.0"
+    "polar-sendgrid": "0.0.0",
+    "polar-firestore-liike": "0.0.0"
   },
   "files": [
     "**/*.js",
