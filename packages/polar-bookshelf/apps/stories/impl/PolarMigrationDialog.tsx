@@ -2,27 +2,8 @@ import { Link, Paper } from '@material-ui/core';
 import * as React from 'react';
 import {PolarSVGIcon} from "../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {Box, Typography} from '@material-ui/core';
-import Info from '@material-ui/icons/Info';
 import LinearProgress, { LinearProgressProps } from '@material-ui/core/LinearProgress';
-
-const LogoAndTextSideBySide = () => {
-    return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box mt={5}>
-                        <PolarSVGIcon width={75} height={75}/>
-                    </Box>
-                    <Box mt={5} ml={2}>
-                        <Typography variant="h3" component="div">
-                            POLAR
-                        </Typography>
-                    </Box>
-                </div>
-            </div>
-        </div>
-    )
-}
+import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
 
 const Infotext = () => {
     return (

@@ -439,12 +439,12 @@ const OrCreateNewAccountButton = () => {
     );
 }
 
-const LogoAndTextSideBySide = () => {
+export const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
                 <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1}>
+                    <Box m={1} mt={5}>
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
