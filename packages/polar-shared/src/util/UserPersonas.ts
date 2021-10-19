@@ -1,4 +1,4 @@
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "./Arrays";
 
 export namespace UserPersonas {
 

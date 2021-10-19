@@ -1,7 +1,7 @@
 import {Billing} from "polar-accounts/src/Billing";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IPersona, Personas} from "../personas/Personas";
-import {UserPersonas} from "../personas/UserPersonas";
+import {UserPersonas} from "polar-shared/src/util/UserPersonas";
 import V2Subscription = Billing.V2Subscription;
 import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
 import IUserPersona = UserPersonas.IUserPersona;
