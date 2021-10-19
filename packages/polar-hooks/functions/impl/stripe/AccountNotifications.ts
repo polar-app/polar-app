@@ -13,7 +13,7 @@ export namespace AccountNotifications {
 
     export async function changePlan(from: V2Subscription,
                                      to: V2Subscription,
-                                     user: IUserRecord) {
+                                     user: Pick<IUserRecord, 'uid' | 'email' | 'displayName'>) {
 
         if (! user.email) {
             console.warn("No user email");
