@@ -1,6 +1,6 @@
 import {IDUser} from "../util/IDUsers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Sendgrid} from "../Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {Emails} from "polar-shared/src/util/Emails";
 import {Universities, University} from "polar-shared/src/util/Universities";
 import {Domains} from "polar-shared/src/util/Domains";
