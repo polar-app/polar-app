@@ -49,6 +49,9 @@ export const useStyles = makeStyles((theme) =>
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
         },
+        Divider: {
+            margin: '10px'
+        }
     }),
 );
 
@@ -492,6 +495,8 @@ interface AuthContentProps {
  */
 const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
+    const classes = useStyles();
+
     return (
         <>
             <div className="AuthContent"
@@ -517,7 +522,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                         {props.title}
                     </h2>
 
-                    <Divider/>
+                    <Divider className={classes.Divider}/>
 
                     {props.children}
 
