@@ -1,18 +1,17 @@
 import {ComputeNextUserPriority} from "./ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
-import {UserPersonas} from "polar-hooks-functions/impl/personas/UserPersonas";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IDUser} from "polar-rpc/src/IDUser";
+import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 
 export namespace BatchAcceptor {
-    import IUserRecord = UserPersonas.IUserRecord;
 
     interface IBatchAcceptorRequest {
     }
 
     interface IBatchAcceptorResponse {
-        accepted: IUserRecord[],
+        readonly accepted: ReadonlyArray<IUserRecord>,
     }
 
     /**

@@ -10,7 +10,6 @@ import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 export namespace AccountNotifications {
 
     import V2Subscription = Billing.V2Subscription;
-    import IUserRecord = UserPersonas.IUserRecord;
 
     export async function changePlan(from: V2Subscription,
                                      to: V2Subscription,
