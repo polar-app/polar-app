@@ -2,9 +2,10 @@ import {Billing} from "polar-accounts/src/Billing";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IPersona, Personas} from "../personas/Personas";
 import {UserPersonas} from "../personas/UserPersonas";
-import IUserPersona = UserPersonas.IUserPersona;
 import V2Subscription = Billing.V2Subscription;
 import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
+import IUserPersona = UserPersonas.IUserPersona;
+import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 
 export namespace AccountNotifications {
 
