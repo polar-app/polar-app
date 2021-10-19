@@ -1,6 +1,5 @@
 import {PDFShingleParser} from "./PDFShingleParser";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {AssertionsCache} from "polar-test/src/test/AssertionsCache";
 
 describe("PDFShingleParser", function() {
 
@@ -20,7 +19,7 @@ describe("PDFShingleParser", function() {
 
         })
 
-        await AssertionsCache.writeToCache(result.join("\n"), 'plus-one-shingles', 'txt');
+        // await AssertionsCache.writeToCache(result.join("\n"), 'plus-one-shingles', 'txt');
 
     });
 
