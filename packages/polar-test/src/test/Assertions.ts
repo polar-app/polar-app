@@ -5,6 +5,7 @@
 import {Diffs} from "./Diffs";
 
 import {assert} from 'chai';
+import * as Assert from "assert";
 
 export interface ToJSONOpts {
     readonly ignoreWhitespace?: boolean;
@@ -13,45 +14,6 @@ export interface ToJSONOpts {
 
 export interface CompareOpts extends ToJSONOpts {
     readonly message?: string;
-}
-
-export function assertJSON(actual: any,
-                           expected: any,
-                           opts: CompareOpts = {}) {
-
-    assert.isDefined(actual, "'actual' must not be undefined");
-    assert.isDefined(expected, "'expected' must not be undefined");
-
-    assert.isNotNull(actual, "'actual' must not be null");
-    assert.isNotNull(expected, "'expected' must not be null");
-
-    // first convert both to JSON if necessary.
-    actual = toJSON(actual, opts);
-    expected = toJSON(expected, opts);
-
-    if ( actual !== expected) {
-        console.error("BEGIN ACTUAL ==========");
-        console.error(actual);
-        console.error("END ACTUAL   ==========");
-
-        console.error("BEGIN EXPECTED ==========");
-        console.error(expected);
-        console.error("END EXPECTED   ==========");
-
-        console.error("====== BEGIN DIFF ");
-        console.error(Diffs.compute(actual, expected));
-        console.error("====== END DIFF ");
-    }
-
-    try {
-
-        assert.equal(actual, expected, opts.message);
-
-    } catch (e) {
-        console.error("Assertion failed: ", e);
-        throw e;
-    }
-
 }
 
 interface EqualsJSONOpts {
@@ -178,7 +140,48 @@ function sorted(dict: any): any {
 
 }
 
+export const assertJSON = Assertions.assertJSON;
+
 export namespace Assertions {
+
+    export function assertJSON(actual: any,
+                               expected: any,
+                               opts: CompareOpts = {}) {
+
+        assert.isDefined(actual, "'actual' must not be undefined");
+        assert.isDefined(expected, "'expected' must not be undefined");
+
+        assert.isNotNull(actual, "'actual' must not be null");
+        assert.isNotNull(expected, "'expected' must not be null");
+
+        // first convert both to JSON if necessary.
+        actual = toJSON(actual, opts);
+        expected = toJSON(expected, opts);
+
+        if ( actual !== expected) {
+            console.error("BEGIN ACTUAL ==========");
+            console.error(actual);
+            console.error("END ACTUAL   ==========");
+
+            console.error("BEGIN EXPECTED ==========");
+            console.error(expected);
+            console.error("END EXPECTED   ==========");
+
+            console.error("====== BEGIN DIFF ");
+            console.error(Diffs.compute(actual, expected));
+            console.error("====== END DIFF ");
+        }
+
+        try {
+
+            assert.equal(actual, expected, opts.message);
+
+        } catch (e) {
+            console.error("Assertion failed: ", e);
+            throw e;
+        }
+
+    }
 
     export async function assertAsyncThrows(delegate: () => Promise<void>) {
 
