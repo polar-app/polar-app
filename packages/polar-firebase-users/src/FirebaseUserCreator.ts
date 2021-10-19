@@ -1,5 +1,6 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export namespace FirebaseUserCreator {
 
@@ -8,7 +9,9 @@ export namespace FirebaseUserCreator {
         const auth = FirebaseAdmin.app().auth();
         const user = await auth.createUser({email, password});
 
-        await MigrationCollection.createMigrationForBlockAnnotations(user.uid);
+        const firestore = FirestoreAdmin.getInstance();
+
+        await MigrationCollection.createMigrationForBlockAnnotations(firestore, user.uid);
 
         return user;
 
