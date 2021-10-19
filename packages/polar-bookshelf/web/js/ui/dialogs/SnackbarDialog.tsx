@@ -1,7 +1,7 @@
 import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
-import {CloseIcon} from "../icons/FixedWidthIcons";
+import CloseIcon from "@material-ui/icons/Close";
 import {deepMemo} from "../../react/ReactUtils";
 
 export interface SnackbarDialogProps {
