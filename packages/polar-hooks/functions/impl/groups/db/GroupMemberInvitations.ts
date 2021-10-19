@@ -12,7 +12,7 @@ import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import UserRecord = admin.auth.UserRecord;
+import {IUserRecord} from 'polar-rpc/src/IDUser'
 
 export class GroupMemberInvitations {
 
@@ -83,7 +83,7 @@ export class GroupMemberInvitations {
      * Verify that we can work with this group.  Either we're a member or it's
      * public or protected.
      */
-    public static async verifyGroupPermissions(user: UserRecord,
+    public static async verifyGroupPermissions(user: IUserRecord,
                                                groupID: GroupIDStr): Promise<GroupMemberVerification> {
 
         const group = await Groups.get(groupID);
@@ -171,16 +171,22 @@ export interface Sender {
 
 }
 
-export class Senders {
+export namespace Senders {
 
-    public static create(user: UserRecord, profileID: ProfileIDStr): Sender {
+    interface ICreateUser {
+        readonly photoURL?: string;
+        readonly displayName: string;
+        readonly email: string;
+    }
 
-        const image = user!.photoURL ? {url: user!.photoURL, size: null} : null;
+    export function create(user: ICreateUser, profileID: ProfileIDStr): Sender {
+
+        const image = user.photoURL ? {url: user.photoURL, size: null} : null;
 
         return {
             profileID,
-            name: user!.displayName || "",
-            email: user!.email!,
+            name: user.displayName || "",
+            email: user.email!,
             image
         };
 

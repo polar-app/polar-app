@@ -1,9 +1,8 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
-import * as admin from 'firebase-admin';
 import {IProfile, ProfileCollection} from 'polar-firebase/src/firebase/om/ProfileCollection';
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserIDStr } from 'polar-shared/src/util/Strings';
-import UserRecord = admin.auth.UserRecord;
+import {IUserRecord} from 'polar-rpc/src/IDUser'
 
 export class IDUsers {
 
@@ -19,11 +18,22 @@ export class IDUsers {
 
         const user = await auth.getUser(uid);
 
-        return await this.fromUser(user);
+        if (! user) {
+            throw new Error("No user for uid: " + uid);
+        }
+
+        if (! user.email) {
+            throw new Error("No email for user: " + uid);
+        }
+
+        return await this.fromUser({
+            uid: uid,
+            email: user.email
+        });
 
     }
 
-    public static async fromUser(user: UserRecord): Promise<IDUser> {
+    public static async fromUser(user: IUserRecord): Promise<IDUser> {
 
         const firestore = FirestoreAdmin.getInstance();
 
@@ -39,7 +49,7 @@ export class IDUsers {
 export interface IDUser {
 
     readonly uid: UserIDStr;
-    readonly user: UserRecord;
+    readonly user: IUserRecord;
     readonly profile: IProfile | undefined;
 
 }
