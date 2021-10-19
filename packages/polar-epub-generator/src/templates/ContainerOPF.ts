@@ -1,5 +1,5 @@
 import {EPUBGenerator} from "../EPUBGenerator";
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, Strings, URLStr} from "polar-shared/src/util/Strings";
 import {
     ISODateString,
     ISODateTimeString
@@ -52,7 +52,7 @@ export namespace ContainerOPF {
         function generateSubjects() {
 
             function toHTML(subject: string): string {
-                return `<dc:subject>${subject}</dc:subject>`;
+                return `<dc:subject>${Strings.escapeXML(subject)}</dc:subject>`;
             }
 
             return opts.subjects.map(toHTML).join("\n");
@@ -111,10 +111,10 @@ export namespace ContainerOPF {
   <metadata>
     <dc:identifier opf:scheme="URI" id="id">${opts.id}</dc:identifier>
     
-    <dc:creator opf:file-as="${opts.creator}">${opts.creator}</dc:creator>
+    <dc:creator opf:file-as="${opts.creator}">${Strings.escapeXML(opts.creator)}</dc:creator>
     
     <!-- <dc:contributor opf:role="ctb" opf:file-as=""></dc:contributor> -->
-    <dc:title>${opts.title}</dc:title>
+    <dc:title>${Strings.escapeXML(opts.title)}</dc:title>
     <dc:language xsi:type="dcterms:RFC4646">${opts.lang || 'en'} </dc:language>
 
     ${subjects}    

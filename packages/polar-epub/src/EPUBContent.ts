@@ -1,12 +1,20 @@
-import { EPUBMetadataUsingNode } from './EPUBMetadataUsingNode';
+import { EPUBMetadataUsingNode, IChapterReference } from './EPUBMetadataUsingNode';
 
-type EPUBContentStream = {
+interface IEPUBContent {
+    /**
+     * Chapter reference ID
+     * e.g.: "titlepage"|"chapter_001"|etc..
+     */
     readonly id: string;
-    readonly stream: NodeJS.ReadableStream;
+
+    /**
+     * HTML string of the page
+     */
+    readonly html: () => Promise<string>;
 };  
 export namespace EPUBContent {
-    export async function getStreams(filePath: string): Promise<EPUBContentStream[]> {
-        const results: EPUBContentStream[] = [];
+    export async function get(filePath: string): Promise<IEPUBContent[]> {
+        const results: IEPUBContent[] = [];
     
         const zip = EPUBMetadataUsingNode.getZip(filePath);
 
@@ -16,7 +24,7 @@ export namespace EPUBContent {
             for (const ref of refs) {
                 results.push({
                     id: ref.id,
-                    stream: await zip.stream(ref.file)
+                    html: () => extractChapterHtml(filePath, ref)
                 });
             }
         } catch(e) {
@@ -28,5 +36,23 @@ export namespace EPUBContent {
         }
 
         return results;
+    }
+
+    async function extractChapterHtml(filePath: string, ref: IChapterReference): Promise<string> {
+        const zipPage = EPUBMetadataUsingNode.getZip(filePath);
+
+        try {
+            const entry = await zipPage.entryData(ref.file); 
+            
+            const html = entry.toString('utf-8');
+
+            return html;
+        } catch (e) {
+            console.error(e);
+            
+            throw new Error(`Failed to read chapter of id: ${ref.id}`);
+        } finally {
+            await zipPage.close();
+        }
     }
 }

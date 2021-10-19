@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "workspaces": [
-    "packages/!(polar-mobile-app)",
-    "packages/polar-hooks/functions"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "packages/polar-hooks/functions"
+    ]
+  },
   "resolutions": {
     "**/@types/jsdom": "*",
     "**/@types/jsdom-global": "*",

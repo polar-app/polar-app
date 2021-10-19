@@ -31,6 +31,7 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
         dialogManager.confirm({
             title: "Export Data",
             subtitle: "This will export your data and send you an archive via email.  Do you wish to continue?",
+            type: 'info',
             onAccept: () => onExport()
         })
 

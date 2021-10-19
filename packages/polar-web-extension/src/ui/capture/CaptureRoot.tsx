@@ -12,13 +12,11 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
 import {SaveToPolarProgressListener} from './SaveToPolarProgressListener';
 import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
-import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
 import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
-import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 import {PolarLogoImage} from "polar-bookshelf/apps/repository/js/nav/PolarLogoImage";
 import {PolarLogoText} from "polar-bookshelf/apps/repository/js/nav/PolarLogoText";
-import {WebExtensions} from "polar-web-extension-api/src/WebExtensions";
-import {Tabs} from "../../chrome/Tabs";
+import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
+import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

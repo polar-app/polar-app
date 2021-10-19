@@ -95,6 +95,7 @@ export namespace SaveToPolarHandler {
         async function doAsync() {
 
             console.log("Generating EPUB...");
+            console.log("... with the following captured content: ", capture);
             const epub = await CapturedContentEPUBGenerator.generate(capture);
             console.log("Generating EPUB...done");
 

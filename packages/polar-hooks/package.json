@@ -19,7 +19,7 @@
     "dist": "echo noop",
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "mocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
     "karma": "echo no karma"
