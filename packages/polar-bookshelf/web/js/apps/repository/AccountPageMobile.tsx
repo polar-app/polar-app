@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root:{
             display: 'flex',
-            width: '100%',
             height:'13%',
             alignItems: 'center'
         },
