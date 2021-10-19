@@ -8,18 +8,15 @@ import HelpIcon from '@material-ui/icons/Help';
 import SettingsIcon from '@material-ui/icons/Settings';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {PlanUsage} from "../../../../web/js/apps/repository/accounting/PlanUsage";
-
-import { HeaderBar } from '../../../../apps/repository/js/doc_repo/HeaderBar';
 import { IconByPlan } from '../../../../apps/repository/js/account_overview/PlanIcon';
-
 import {useHistory} from 'react-router-dom';
 import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
 import { useLogoutAction } from '../../../../web/js/ui/cloud_auth/AccountControl';
 import { usePopperController } from '../../../../web/js/mui/menu/MUIPopper';
 import { RoutePathNames } from './RoutePathNames';
+import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
 const Chat = MenuItems.Chat;
 const Documentation = MenuItems.Documentation;
@@ -31,10 +28,6 @@ const useStyles = makeStyles((theme) =>
             display: 'flex',
             height:'13%',
             alignItems: 'center'
-        },
-        mainContainer:{
-            height: '100%',
-            overflow: 'auto'
         },
         avatar:{
             marginLeft: theme.spacing(1),
@@ -195,15 +188,15 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
  * The content of the account page
  */
 export const AccountPageMobile = React.memo(function AccountPageMobile() {
-    const classes = useStyles();
     return(
         <>
-            <HeaderBar title={'Account'}/>
-            <div className={classes.mainContainer}>
-                <UserDetailsRow/>
-                <PlanDetailsContainer/>
-                <PreferencesButtons/>
-            </div>
+            <AdaptivePageLayout title="Account">
+                <Box pt={1}>
+                    <UserDetailsRow/>
+                    <PlanDetailsContainer/>
+                    <PreferencesButtons/>
+                </Box>
+            </AdaptivePageLayout>
         </>
     );
 });
