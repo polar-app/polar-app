@@ -24,7 +24,7 @@
     "@material-ui/icons": "=4.11.2",
     "@material-ui/styles": "=4.11.3",
     "@types/node": "=14.17.9",
-    "@types/react": "=16.9.53",
+    "@types/react": "=17.0.2",
     "@types/react-helmet": "=6.1.0",
     "gatsby": "=2.32.3",
     "gatsby-image": "=2.8.0",
@@ -47,7 +47,7 @@
     "polar-bookshelf": "0.0.0",
     "polar-shared": "0.0.0",
     "react": "=17.0.2",
-    "react-dom": "=16.14.0",
+    "react-dom": "=17.0.2",
     "react-helmet": "=6.1.0",
     "react-reveal": "=1.2.2",
     "typeface-roboto": "=1.1.13"
