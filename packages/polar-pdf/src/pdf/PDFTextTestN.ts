@@ -4,7 +4,6 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import IPDFTextContent = PDFText.IPDFTextContent;
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {AssertionsCache} from "polar-test/src/test/AssertionsCache";
 
 // TODO:
 //

@@ -1,7 +1,7 @@
 import {Files} from "polar-shared/src/util/Files";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {Assertions, toJSON} from "./Assertions";
+import {Assertions, toJSON} from "polar-test/src/test/Assertions";
 import {assert} from 'chai';
 
 export namespace AssertionsCache {
