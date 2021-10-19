@@ -24,6 +24,20 @@ export function isDocumentSnapshotObserver<SM>(arg: any): arg is IDocumentSnapsh
     return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
 }
 
+export interface IPrecondition {
+
+    /**
+     * If set, the last update time to enforce.
+     */
+    // TODO: we don't support Timestamp right now because it's a class
+    // readonly lastUpdateTime?: Timestamp;
+
+    /**
+     * If set, enforces that the target document must or must not exist.
+     */
+    readonly exists?: boolean;
+
+}
 
 /**
  * A `DocumentReference` refers to a document location in a Firestore database
@@ -48,8 +62,8 @@ export interface IDocumentReference<SM> {
     set(data: TDocumentData): Promise<void>;
     set(data: Partial<TDocumentData>, options: ISetOptions): Promise<void>;
 
-    update(data: TUpdateData /* , precondition?: Precondition */): Promise<void>;
-    delete(): Promise<void>;
+    update(data: TUpdateData /* , precondition?: IPrecondition*/ ): Promise<void>;
+    delete(/* precondition?: IPrecondition */): Promise<void>;
 
     onSnapshot(observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
     onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;

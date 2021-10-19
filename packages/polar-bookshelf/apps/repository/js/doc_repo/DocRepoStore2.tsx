@@ -928,7 +928,7 @@ export function useDocLoaderFromDocID() {
             console.warn("No document for ID: " + docID);
         }
 
-    }, [docLoader]);
+    }, [data, docLoader]);
 }
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator, useDocRepoStoreReducer]

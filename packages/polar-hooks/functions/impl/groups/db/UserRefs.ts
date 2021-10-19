@@ -229,6 +229,7 @@ export class UserRefs {
      */
     public static toEmailAddrs(userRefs: ReadonlyArray<UserRef>): Promise<ReadonlyArray<EmailStr>> {
 
+        // eslint-disable-next-line array-callback-return
         const promises = userRefs.map(current => {
 
             switch (current.type) {

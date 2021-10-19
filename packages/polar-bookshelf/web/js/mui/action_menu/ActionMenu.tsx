@@ -6,7 +6,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {NULL_FUNCTION} from "../../../../../polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
 const useStyles = makeStyles((theme) =>

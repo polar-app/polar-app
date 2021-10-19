@@ -202,6 +202,17 @@ describe('PDFText', function() {
 
     });
 
+
+    xit("Plus One output", async () => {
+
+        const textCapture = createTextCapture();
+
+        await PDFText.getText('/Users/burton/plusone.pdf', textCapture.onPDFTextContent, {});
+
+        // await AssertionsCache.writeToCache(textCapture.toString(), 'plus-one-pdf-output', 'txt');
+
+    });
+
     xit("Dump of Astronomy Content p293", async () => {
 
         const targetPage = 291

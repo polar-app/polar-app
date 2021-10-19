@@ -88,7 +88,7 @@ async function updateScripts(): Promise<void> {
             // scenario because they use cloud resources which act as mutex / shared state and the tests will
             // clash with one another.
             pkg.scripts.mocha = "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
-            pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
+            pkg.scripts.eslint = "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
             pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
             pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
@@ -201,20 +201,63 @@ export namespace ESLint {
                 "node": true
             },
             "rules": {
-                "@typescript-eslint/no-namespace": "off",
-                "@typescript-eslint/explicit-module-boundary-types": "off",
-                "no-use-before-define": "off",
                 "react-hooks/rules-of-hooks": "error",
                 "react-hooks/exhaustive-deps": "error",
-                "curly": "error",
-                "brace-style": "error",
                 "@typescript-eslint/no-floating-promises": "error",
                 "@typescript-eslint/await-thenable": "error",
                 "@typescript-eslint/no-misused-promises": "error",
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-                "import/newline-after-import": "error",
-                "import/no-cycle": "error",
-                "import/no-absolute-path": "error",
+
+                "curly": "warn",
+                "brace-style": "warn",
+                "import/newline-after-import": "warn",
+                "import/no-cycle": "warn",
+                "import/no-absolute-path": "warn",
+
+                "dot-notation": "warn",
+                "no-sequences": "warn",
+                "promise/param-names": "warn",
+                "@typescript-eslint/ban-types": "warn",
+                "camelcase": "warn",
+                "node/handle-callback-err": "warn",
+                "yoda": "warn",
+                "one-var": "warn",
+                "prefer-const": "warn",
+                "prefer-regex-literals": "warn",
+                "prefer-rest-params": "warn",
+                "spaced-comment": "warn",
+                "no-useless-return": "warn",
+                "no-useless-escape": "warn",
+                "no-useless-computed-key": "warn",
+                "no-useless-catch": "warn",
+                "no-unused-expressions": "warn",
+                "no-unneeded-ternary": "warn",
+                "no-undef-init": "warn",
+                "no-self-compare": "warn",
+                "no-return-assign": "warn",
+                "no-prototype-builtins": "warn",
+                "no-var": "warn",
+                "no-new": "warn",
+                "no-lone-blocks": "warn",
+                "no-irregular-whitespace": "warn",
+                "no-fallthrough": "warn",
+                "no-empty": "warn",
+                "no-constant-condition": "warn",
+                "no-cond-assign": "warn",
+                "no-case-declarations": "warn",
+                "lines-between-class-members": "warn",
+                "import/no-duplicates": "warn",
+                "import/no-named-default": "warn",
+                "@typescript-eslint/ban-ts-comment": "warn",
+                "@typescript-eslint/no-empty-function": "warn",
+                "@typescript-eslint/no-empty-interface": "warn",
+                "@typescript-eslint/no-inferrable-types": "warn",
+                "@typescript-eslint/no-unused-vars": "warn",
+                "@typescript-eslint/no-var-requires": "warn",
+
+                "@typescript-eslint/no-namespace": "off",
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "no-use-before-define": "off",
                 "no-inner-declarations": "off",
 
                 // burton: this should be off because Typescript supports
@@ -405,7 +448,14 @@ export namespace ESLint {
                 // "use-isnan": "error",
                 // "valid-typeof": "off"
             },
-            "ignorePatterns": ["dist", "node_modules", "examples", "scripts", "*.d.ts", "*.js", "web/js", "apps"]
+            "ignorePatterns": [
+                "dist",
+                "node_modules",
+                "examples",
+                "scripts",
+                "*.d.ts",
+                "*.js"
+            ]
         };
 
     }

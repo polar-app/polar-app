@@ -1,6 +1,5 @@
 import {assert} from "chai";
 import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "../../test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
@@ -15,6 +14,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
+import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
 
 const ID = Hashcodes.createRandomID();
 
@@ -30,7 +30,7 @@ describe("BlocksPersistence", () => {
 
         const auth = app.auth();
 
-        await auth.signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+        await auth.signInWithEmailAndPassword(FirebaseTestingUsers.FIREBASE_USER, FirebaseTestingUsers.FIREBASE_PASS);
 
         await FirestoreBlocks.doDelete(ID);
 

@@ -74,7 +74,7 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
         const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
         docLoader(pdfRecord.docID, pdfRecord.pageNum);
 
-    }, [docLoader])
+    }, [docLoader, props])
 
     return (
         <Box mb={1} mr={1}>
@@ -180,15 +180,15 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
         setVoted(true);
 
-    }, [answerExecutorTraceUpdateClient, analytics]);
+    }, [answerExecutorTraceUpdateClient, props.id, analytics]);
 
     const handleDone = React.useCallback(() => {
         setVoted(true);
-    }, [doVote]);
+    }, []);
 
     const handleError = React.useCallback((err: Error) => {
         console.error("Unable to handle vote: ", err);
-    }, [doVote]);
+    }, []);
 
     return (
         <Box color="text.secondary"
@@ -356,7 +356,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
         }
 
 
-    }, [analytics]);
+    }, [analytics, dialogManager, methodName, toEvent]);
 
 }
 
@@ -445,11 +445,11 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
         doExec()
             .catch(err => console.error("Unable to answer question: " + question, err));
 
-    }, [executeWithoutDocuments])
+    }, [answerExecutorClient])
 
     const executeQuestion = React.useCallback(() => {
         executeRequest(questionRef.current)
-    }, []);
+    }, [executeRequest]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -457,7 +457,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             executeQuestion();
         }
 
-    }, [executeRequest, executeQuestion])
+    }, [executeQuestion])
 
     return (
         <MUIDialog open={true}
@@ -516,19 +516,6 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                     </Box>
 
                 </div>
-
-
-
-                {/*<FormControlLabel*/}
-                {/*    control={*/}
-                {/*        <Checkbox*/}
-                {/*            checked={executeWithoutDocuments}*/}
-                {/*            onChange={(event, checked) => setExecuteWithoutDocuments(checked)}*/}
-                {/*            name="executeWithoutDocuments"*/}
-                {/*        />*/}
-                {/*    }*/}
-                {/*    label="Execute without documents"*/}
-                {/*/>*/}
 
                 {answerResponse && (
                     <>

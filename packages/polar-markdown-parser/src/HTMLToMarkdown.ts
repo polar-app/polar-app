@@ -89,6 +89,25 @@ export namespace HTMLToMarkdown {
         }
     });
 
+    turndownService.addRule('link', {
+        filter: ['a'],
+        replacement: (content, node) => {
+            const anchor = node as HTMLAnchorElement;
+
+            const href = anchor.getAttribute('href');
+
+            if (! href) {
+                return '';
+            }
+
+            if (href.startsWith('#')) {
+                return anchor.outerHTML;
+            }
+
+            return `[${content}](${href})`;
+        }
+    })
+
     turndownService.use( [
         gfm,
         // todoList

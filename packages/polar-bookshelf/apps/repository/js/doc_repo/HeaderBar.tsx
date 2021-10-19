@@ -31,14 +31,6 @@ export const HeaderBar = React.memo(function HeaderBar(props: IProps) {
     const history = useHistory();
 
     return(
-        // <>
-        //     <div className={classes.root}>
-        //         <IconButton onClick={()=>history.goBack()}>
-        //             <ArrowBackIcon/>
-        //         </IconButton>
-        //         <span className={classes.title}>{props.title}</span>
-        //     </div>
-        // </>
         <AppBar position="static">
             <Toolbar>
                 <IconButton onClick={()=>history.goBack()}>
@@ -47,8 +39,6 @@ export const HeaderBar = React.memo(function HeaderBar(props: IProps) {
                 <span className={classes.title}>{props.title}</span>
 
             </Toolbar>
-            {/*<div style={{display: 'flex'}}>*/}
-            {/*</div>*/}
         </AppBar>
     );
 });

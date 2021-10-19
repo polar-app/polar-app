@@ -30,7 +30,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
         this.state = {};
     }
 
-    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<{}>): boolean {
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>): boolean {
         return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState);
     }
 
@@ -50,7 +50,8 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                 mouseY: undefined
             });
         };
-        
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useContextMenuHook(handleClose);
 
         function handleContextMenu(event: React.MouseEvent) {
@@ -64,22 +65,22 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
         return (
             <>
                 {this.state.mouseX !== undefined && this.state.mouseY !== undefined &&
-                    <Menu
-                        keepMounted
-                        open={this.state.mouseX !== undefined}
-                        onClose={() => handleClose()}
-                        onContextMenu={handleContextMenu}
-                        anchorReference="anchorPosition"
-                        anchorPosition={{
-                            top: this.state.mouseY,
-                            left: this.state.mouseX
-                        }}>
+                <Menu
+                    keepMounted
+                    open={this.state.mouseX !== undefined}
+                    onClose={() => handleClose()}
+                    onContextMenu={handleContextMenu}
+                    anchorReference="anchorPosition"
+                    anchorPosition={{
+                        top: this.state.mouseY,
+                        left: this.state.mouseX
+                    }}>
 
-                        <div>
-                            <MUIDocDropdownMenuItems/>
-                        </div>
+                    <div>
+                        <MUIDocDropdownMenuItems/>
+                    </div>
 
-                    </Menu>}
+                </Menu>}
 
                 {this.props.render(this.handleContextMenu)}
 

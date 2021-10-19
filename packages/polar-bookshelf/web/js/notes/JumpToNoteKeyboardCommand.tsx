@@ -3,22 +3,21 @@ import {ICommand} from "../mui/command_menu/MUICommandMenu";
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {useBlocksStore} from "./store/BlocksStore";
+import {NamedContent, useBlocksStore} from "./store/BlocksStore";
+import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
+import {Block} from "./store/Block";
 
 export const JumpToNoteKeyboardCommand = observer(() => {
 
-    const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedBlocks = blocksStore.getNamedBlocks();
+    const namedBlocks = useNamedBlocks({ sort : true });
 
     const commandsProvider = React.useCallback(() => {
 
-        function toCommand(namedBlock: string): ICommand {
-            return {
-                id: namedBlock,
-                text: namedBlock
-            }
+        function toCommand(block: Block<NamedContent>): ICommand {
+            const text = BlockTextContentUtils.getTextContentMarkdown(block.content);
+            return { id: text, text };
         }
 
         return [...namedBlocks].sort().map(toCommand);
