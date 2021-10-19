@@ -69,7 +69,7 @@ export class GroupProvisionFunctions {
         await GroupAdmins.getOrCreate(batch, groupID, uid);
         UserGroups.updateOrCreate(batch, idUser, groupID, true);
 
-        const from = Senders.create(user, idUser.profile.id);
+        const from = Senders.create({...user, displayName: ""}, idUser.profile.id);
 
         const invitations = await UserRefs.toInvitations(request.invitations);
 
