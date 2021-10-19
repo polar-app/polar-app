@@ -15,7 +15,6 @@ import {
     CacheFirstThenServerGetOptions,
     IGetOptionsWithOrder
 } from "polar-firestore-like/src/DocumentReferences";
-import {IUserRecord} from "polar-rpc/src/IDUser";
 
 export interface IProfileInit {
 
@@ -125,10 +124,10 @@ export namespace ProfileCollection {
         const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
         return Arrays.first(results);
     }
+
     export function set(firestore: IFirestore<unknown>,
                         batch: IWriteBatch<unknown>,
                         id: ProfileIDStr,
-                        user: IUserRecord,
                         update: IProfileUpdate) {
 
         const updated = ISODateTimeStrings.create();

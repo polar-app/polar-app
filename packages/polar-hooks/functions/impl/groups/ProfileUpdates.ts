@@ -60,7 +60,7 @@ export class ProfileUpdates {
             handle: update.handle
         });
 
-        ProfileCollection.set(firestore, batch, profileID, user, update);
+        ProfileCollection.set(firestore, batch, profileID, update);
 
         await batch.commit();
 
