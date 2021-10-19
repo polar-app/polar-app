@@ -26,4 +26,16 @@ describe('EPUBContent', () => {
 
         assert.equal(titlePageContent, titlePageData.toString('utf-8'));
     });
+
+    it("EPUB Text Parser tinkering", async () => {
+        const path = FilePaths.resolve(__dirname, '../alice.epub');
+
+        const contentStream = await EPUBContent.get(path);
+
+        const titlePageContent = await contentStream[1].html();
+
+        console.log("HTML:\n", titlePageContent);
+        
+        EPUBContent.parseHtml(titlePageContent);
+    });
 });

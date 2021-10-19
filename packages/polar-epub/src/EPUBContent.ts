@@ -1,4 +1,5 @@
 import { EPUBMetadataUsingNode, IChapterReference } from './EPUBMetadataUsingNode';
+import {JSDOM} from "jsdom"
 
 interface IEPUBContent {
     /**
@@ -12,6 +13,24 @@ interface IEPUBContent {
      */
     readonly html: () => Promise<string>;
 };  
+
+interface IEPUBText {
+    /**
+     * EPUB method of linking to specific content
+     * think of an anchor tag but for epubs.
+     * 
+     * Full spec reference:
+     * http://idpf.org/epub/linking/cfi/epub-cfi.html
+     * 
+     */
+    readonly CFI: string;
+
+    /**
+     * Parsed text
+     * 
+     */
+    readonly text: string;
+};
 export namespace EPUBContent {
     export async function get(filePath: string): Promise<IEPUBContent[]> {
         const results: IEPUBContent[] = [];
@@ -54,5 +73,52 @@ export namespace EPUBContent {
         } finally {
             await zipPage.close();
         }
+    }
+    
+
+    /**
+     * 
+     * @param html html string being parsed
+     * @param rootName epub document name e.g.:"alice.epub"
+     * @returns IEPUBParagraph[] - array of objects
+     */
+    export function parseHtml(html: string): void {
+        const dom = new JSDOM(html);
+
+        dom.window.document.body.childNodes.forEach((node, index) => {
+            parseChildren(node,`/${index}`);
+        });
+
+        // return dom.window.document.body.textContent ?? '';
+    }
+
+    export function parseChildren(node: ChildNode, nodePath = ""): IEPUBText|null{
+        if (!node.hasChildNodes()) {
+
+            // Ignore nodes with no text content
+            if (node.textContent?.trim().length === 0) {
+                return null;
+            }
+
+            const text = {
+                CFI: wrapCFIPath(nodePath),
+                text: <string>node.textContent
+            };
+
+            console.log(text);
+
+            return text;
+        }
+
+        node.childNodes.forEach((node, index) => {
+            parseChildren(node, `${nodePath}/${index}`);
+        });
+
+        return null;
+    }
+
+
+    function wrapCFIPath(CFIPath: string): string {
+        return `epubcfi(${CFIPath})`;
     }
 }
