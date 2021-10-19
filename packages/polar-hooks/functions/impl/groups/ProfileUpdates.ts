@@ -10,7 +10,7 @@ import {
 } from "polar-firebase/src/firebase/om/ProfileCollection";
 import { ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import UserRecord = admin.auth.UserRecord;
+import {IUserRecord} from "polar-rpc/src/IDUser";
 
 export class ProfileUpdates {
 
@@ -20,7 +20,7 @@ export class ProfileUpdates {
     }
 
     public static async doExec(uid: UserIDStr,
-                               user: UserRecord,
+                               user: IUserRecord,
                                update: IProfileUpdate): Promise<ProfileUpdateResponse> {
 
         TagsValidator.validate(Arrays.toArray(update.tags));

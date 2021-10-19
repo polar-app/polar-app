@@ -13,8 +13,8 @@ import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {IUserRecord} from 'polar-rpc/src/IDUser'
 import FieldValue = admin.firestore.FieldValue;
-import UserRecord = admin.auth.UserRecord;
 import Clause = Collections.Clause;
 
 const HASHCODE_LEN = 20;
@@ -195,7 +195,7 @@ export class Groups {
 
     }
 
-    public static async verifyAdmin(user: UserRecord, groupID: GroupIDStr) {
+    public static async verifyAdmin(user: IUserRecord, groupID: GroupIDStr) {
 
         const groupAdmin = await GroupAdmins.get(groupID);
 
