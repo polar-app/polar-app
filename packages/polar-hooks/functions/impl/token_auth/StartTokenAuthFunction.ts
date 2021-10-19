@@ -48,10 +48,6 @@ export async function createOrFetchChallenge(email: EmailStr): Promise<IChalleng
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
 
-    if (await isPrivateBetaEnabled()) {
-        ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
-        return;
-    }
     if (req.method.toUpperCase() !== 'POST') {
         ExpressFunctions.sendResponse(res, "POST required", 500, 'text/plain');
         return;
