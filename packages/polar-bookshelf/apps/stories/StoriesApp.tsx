@@ -55,6 +55,7 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
+import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
 
 interface IStory {
     readonly name: string;
@@ -274,6 +275,11 @@ const stories = createStoryIndex([
     {
         name: 'FeedbackButton',
         component: <FeedbackButtonStory />,
+    },
+
+    {
+        name: 'AdaptivePageLayout',
+        component: <AdaptivePageLayoutStory />,
     },
 
 ]);
