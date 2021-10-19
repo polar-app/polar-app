@@ -48,17 +48,18 @@ const Infotext = () => {
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
         <>
-        <Box display="flex" alignItems="center" flexDirection="column">
-        <Box width="100%">
-          <LinearProgress variant="determinate" {...props} />
-        </Box>
-        
-      </Box>
-        <Box m={1}>
-        <Typography variant="caption" color="textSecondary" gutterBottom>{`${Math.round(
-        props.value,
-        )}%`}</Typography>
-        </Box>
+            <Box mt={5} display="flex" alignItems="center" flexDirection="column">
+                <Box width="100%">
+                    <LinearProgress variant="determinate" {...props} />
+                </Box>
+            
+            </Box>
+            <Box m={1}>
+                <Typography variant="caption" color="textSecondary" gutterBottom>{`${Math.round(
+                    props.value,
+                    )}%`}
+                </Typography>
+            </Box>
         </>
       
     );
@@ -70,7 +71,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
             <div style={{display: 'flex'}}>
                 <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center", flexDirection: 'column'}}>
                     <Typography variant="caption">
-                        <Box mt={6} ml={6} mr={6} textAlign={'center'}>
+                        <Box mt={5} ml={6} mr={6} textAlign={'center'}>
                             As part of Polar's Updates, we're migrating the backend which can take up to a 
                             couple minutes, depending on the size of your repository. This is a one time migration. 
                             <Link> Learn More</Link>
