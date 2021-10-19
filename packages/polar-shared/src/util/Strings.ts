@@ -246,6 +246,36 @@ export namespace Strings {
 
     }
 
+    export function escapeXML(unsafe: string | null | undefined) {
+
+        if (unsafe === null || unsafe === undefined) {
+            // already done
+            return unsafe;
+        }
+
+        return unsafe.replace(/[<>&'"]/g, (c: string) => {
+
+            switch (c) {
+                case '<':
+                    return '&lt;';
+
+                case '>':
+                    return '&gt;';
+
+                case '&':
+                    return '&amp;';
+
+                case '\'':
+                    return '&apos;';
+
+                case '"':
+                    return '&quot;';
+
+                default:
+                    return c;
+            }
+        });
+    }
 }
 
 /**

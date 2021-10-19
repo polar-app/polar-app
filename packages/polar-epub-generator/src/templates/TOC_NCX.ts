@@ -1,3 +1,4 @@
+import {Strings} from "polar-shared/src/util/Strings";
 
 export namespace TOC_NCX {
 
@@ -67,7 +68,7 @@ export namespace TOC_NCX {
     <meta name="dtb:maxPageNumber" content="${opts.maxPageNumber}"/>
   </head>
   <docTitle>
-    <text>${opts.title}</text>
+    <text>${Strings.escapeXML(opts.title)}</text>
   </docTitle>
   
   <navMap>
