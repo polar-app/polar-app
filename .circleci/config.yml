@@ -144,6 +144,7 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
+  # ^ Webapp Workflow Jobs
   # @ Build the application for the following steps
   setting-up:
     parameters:
@@ -362,6 +363,84 @@ jobs:
             }
           event: pass
 
+  # ^ Mobile Workflow
+  # @ Build Setup
+  build-setup:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    description: build node Environment)
+    steps:
+      - checkout
+      - run:
+          name: isolate
+          command: |
+            git fetch
+            CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
+            mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
+            rm -rf /home/circleci/project
+      - run:
+          name: yarn install
+          command: |
+            cd /home/circleci/polar-mobile-app
+            sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
+            yarn install
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - polar-mobile-app
+
+  # @ Build fastlane for deployment
+  Android:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: build fastlane for ci
+    working_directory: ~/polar-mobile-app/android
+    steps:
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Bundle & Deploy
+          command: |
+            bundle update fastlane
+            touch google-play-service-account.json
+            echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
+            bundle exec fastlane run google_play_track_version_codes
+            bundle exec fastlane run validate_play_store_json_key
+            bundle exec fastlane beta
+
+  IOS:
+    working_directory: ~/polar-mobile-app/ios
+    macos:
+      xcode: "13.0.0"
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Bundle & Deploy
+          command: |
+            bundle update fastlane
+            pod install
+            bundle exec fastlane beta
+
 # ~ Define Custom Executors
 executors:
   # ! Default Executor for most jobs
@@ -373,6 +452,10 @@ executors:
     docker:
       - image: circleci/node:14.16.0-buster
     resource_class: large
+  android:
+    docker:
+      - image: circleci/android:api-30-node
+    resource_class: xlarge
   ff-chrome:
     docker:
       - image: cypress/browsers:node14.17.0-chrome88-ff89
@@ -380,7 +463,7 @@ executors:
 
 # ~ Define Workflow Steps
 workflows:
-  main-workflow:
+  Webapp:
     jobs:
       ## ^ Approve the entire pipeline to start deployment
       - approve-deploy:
@@ -400,7 +483,7 @@ workflows:
       - build-chrome-extension:
           executor: large
           requires:
-            - "setting-up"
+            - setting-up
 
       ## ^ Polar App Sub-Workflow Below Here
       # @ Run Karma Tests
@@ -502,3 +585,27 @@ workflows:
             branches:
               only:
                 - master
+
+  IOS-Android:
+    when:
+      equal: [master, << pipeline.git.branch >>]
+    jobs:
+      - Approve-Android:
+          type: approval
+
+      - Approve-IOS:
+          type: approval
+
+      - build-setup:
+          executor: large
+
+      - Android:
+          executor: android
+          requires:
+            - Approve-Android
+            - build-setup
+
+      - IOS:
+          requires:
+            - Approve-Android
+            - build-setup
