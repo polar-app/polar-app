@@ -444,7 +444,7 @@ export const LogoAndTextSideBySide = () => {
         <div>
             <div style={{display: 'flex'}}>
                 <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1} mt={5}>
+                    <Box m={1} mt={2}>
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>

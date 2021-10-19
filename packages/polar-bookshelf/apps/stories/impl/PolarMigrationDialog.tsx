@@ -12,7 +12,9 @@ const Infotext = () => {
                 <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center", flexDirection: 'column'}}>
                     <Box mt={6} ml={10} mr={10} textAlign={'center'}>
                         <Typography variant="body1">
-                            Just a Minute
+                            <b>
+                                Just a Minute
+                            </b>
                         </Typography>
                     </Box>
                     <Box ml={10} mr={10} textAlign={'center'}>
