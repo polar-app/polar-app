@@ -18,18 +18,12 @@ describe('EPUBContent', () => {
 
         await zip.close();
 
-        const contentStream = await EPUBContent.getStreams(path);
+        const contentStream = await EPUBContent.get(path);
 
         assert.equal(contentStream.length, chapters);
 
-        const titlePageStream = contentStream[0].stream;
+        const titlePageContent = await contentStream[0].html();
 
-        titlePageStream.on('readable', () => {
-            const buff = titlePageStream.read();
-
-            if (buff !== null) {
-                assert.equal(buff.toString(), titlePageData.toString());
-            }
-        });
+        assert.equal(titlePageContent, titlePageData.toString('utf-8'));
     });
 });

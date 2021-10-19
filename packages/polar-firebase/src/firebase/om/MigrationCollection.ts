@@ -165,4 +165,8 @@ export namespace MigrationCollection {
 
     }
 
+    export async function createMigrationForBlockAnnotations<SM = undefined>(firestore: IFirestore<SM>, uid: UserIDStr) {
+        await MigrationCollection.createByName(firestore, uid, 'block-annotations')
+    }
+
 }

@@ -1,22 +1,15 @@
 {
   "name": "polar-mobile-app",
-  "version": "2.1.81",
-  "private": true,
+  "version": "0.0.0",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
-    "tsc": "tsc"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "=1.15.5",
-    "react": "17.0.1",
+    "@react-native-async-storage/async-storage": "=1.15.9",
+    "react": "=17.0.2",
     "react-native": "0.64.1",
     "react-native-device-info": "=8.3.1",
     "react-native-fs": "=2.18.0",
@@ -26,21 +19,18 @@
   },
   "devDependencies": {
     "@babel/core": "=7.14.8",
-    "@babel/runtime": "=7.14.9",
+    "@babel/runtime": "=7.14.8",
     "@react-native-community/eslint-config": "=2.0.0",
     "@types/jest": "=26.0.24",
     "@types/react-native": "=0.64.5",
-    "@types/react-test-renderer": "=16.9.2",
+    "@types/react-test-renderer": "=17.0.1",
     "babel-jest": "=26.6.3",
-    "eslint": "=7.14.0",
+    "eslint": "=7.32.0",
     "jest": "=26.6.3",
     "metro-react-native-babel-preset": "=0.64.0",
-    "polar-eslint": "=2.1.81",
-    "polar-typescript": "=2.1.81",
-    "react-test-renderer": "17.0.1"
-  },
-  "resolutions": {
-    "@types/react": "=17"
+    "polar-eslint": "0.0.0",
+    "polar-typescript": "0.0.0",
+    "react-test-renderer": "17.0.2"
   },
   "jest": {
     "preset": "react-native",
