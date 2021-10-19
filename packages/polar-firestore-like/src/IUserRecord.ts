@@ -1,4 +1,7 @@
-export interface IUserRecord {
+/**
+ * Main records used for a user record.
+ */
+export interface IUserRecordMain {
 
     /**
      * The user's `uid`.
@@ -8,14 +11,20 @@ export interface IUserRecord {
      * The user's primary email, if set.
      */
     readonly email?: string;
-    /**
-     * Whether or not the user's primary email is verified.
-     */
-    readonly emailVerified: boolean;
+
     /**
      * The user's display name.
      */
     readonly displayName?: string;
+
+}
+
+export interface IUserRecord extends IUserRecordMain {
+
+    /**
+     * Whether or not the user's primary email is verified.
+     */
+    readonly emailVerified: boolean;
     /**
      * The user's primary phone number, if set.
      */
