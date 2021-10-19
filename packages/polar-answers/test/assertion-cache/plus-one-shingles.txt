@@ -1,11 +1,5 @@
 [
   {
-    "text": "RESEARCH ARTICLE\nAn add-on training program involving\nbreathing exercises, cold exposure, and\nmeditation attenuates inflammation and\ndisease activity in axial spondyloarthritis – A\nproof of concept trial\nG. A.  Buijze *,   H.M. Y.  De Jong , M. Kox , M. G. van de Sande , D. Van\n1☯ 2☯ 3 2\nID\nSchaardenburg\n2,4 5 6,7 3 2\n, R. M. Van Vugt , C. D.  Popa , P. Pickkers , D. L. P."
-  },
-  {
-    "text": "De Jong , M. Kox , M. G. van de Sande , D. Van\n1☯ 2☯ 3 2\nID\nSchaardenburg\n2,4 5 6,7 3 2\n, R. M. Van Vugt , C. D.  Popa , P. Pickkers , D. L. P.  Baeten\n1 Department of Orthopaedic Surgery, Amsterdam UMC, University of Amsterdam, Amsterdam, The\nNetherlands, 2 Department of Rheumatology and Clinical Immunology, Amsterdam UMC, University of\nAmsterdam, Amsterdam Rheumatology and Immunology Center, Amsterdam, The Netherlands,\n3 Department of Intensive Care Medicine, Nijmegen Institute for Infection, Inflammation and Immunity,\nRadboudUMC Nijmegen, Nijmegen, The Netherlands, 4 Reade, Amsterdam Rheumatology and Immunology\nCenter, Amsterdam, The Netherlands, 5 Department of Rheumatology and Clinical Immunology, Amsterdam\nUMC, Vrije Universiteit Amsterdam, Amsterdam, The Netherlands, 6 Department of Rheumatology, Sint\nMaartenskliniek, Nijmegen, The Netherlands, 7 Department of Rheumatology, RadboudUMC Nijmegen,\nNijmegen, The Netherlands\n☯ These authors contributed equally to this work.  * g.a.buijze@amc.uva.nl\nAbstract\nObjectives\nThe primary objective of this trial was to assess safety and anti-inflammatory effects of an\nadd-on training program involving breathing exercises, cold exposure, and meditation in\npatients with axial spondyloarthritis\nMethods\nThis study was an open-label, randomised, one-way crossover clinical proof-of-concept\ntrial."
-  },
-  {
     "text": "Baeten\n1 Department of Orthopaedic Surgery, Amsterdam UMC, University of Amsterdam, Amsterdam, The\nNetherlands, 2 Department of Rheumatology and Clinical Immunology, Amsterdam UMC, University of\nAmsterdam, Amsterdam Rheumatology and Immunology Center, Amsterdam, The Netherlands,\n3 Department of Intensive Care Medicine, Nijmegen Institute for Infection, Inflammation and Immunity,\nRadboudUMC Nijmegen, Nijmegen, The Netherlands, 4 Reade, Amsterdam Rheumatology and Immunology\nCenter, Amsterdam, The Netherlands, 5 Department of Rheumatology and Clinical Immunology, Amsterdam\nUMC, Vrije Universiteit Amsterdam, Amsterdam, The Netherlands, 6 Department of Rheumatology, Sint\nMaartenskliniek, Nijmegen, The Netherlands, 7 Department of Rheumatology, RadboudUMC Nijmegen,\nNijmegen, The Netherlands\n☯ These authors contributed equally to this work.  * g.a.buijze@amc.uva.nl\nAbstract\nObjectives\nThe primary objective of this trial was to assess safety and anti-inflammatory effects of an\nadd-on training program involving breathing exercises, cold exposure, and meditation in\npatients with axial spondyloarthritis\nMethods\nThis study was an open-label, randomised, one-way crossover clinical proof-of-concept\ntrial.  Twenty-four patients with moderately active axial spondyloarthritis(ASDAS >2.1) and\nhs-CRP �5mg/L were included and randomised to an intervention (n = 13) and control\ngroup (n = 11) group that additionally received the intervention after the control period.  The\nintervention period lasted for 8 weeks."
   },
   {
@@ -15,10 +9,10 @@
     "text": "The primary endpoint was safety, secondary end-\npoints were change in hs-CRP, serum calprotectin levels and ESR over the 8-week period.  Exploratory endpoints included disease activity measured by ASDAS-CRP and BASDAI,\nquality of life (SF-36, EQ-5D, EQ-5D VAS), and hospital anxiety and depression (HADS).  Results\nWe found no significant differences in adverse events between groups, with one serious\nadverse event occurring 8 weeks after end of the intervention and judged ‘unrelated’.  During\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 1 / 11\na1111111111\na1111111111\na1111111111\na1111111111\na1111111111\nOPEN ACCESS\nCitation: Buijze GA, De Jong HMY, Kox M, van de\nSande MG, Van Schaardenburg D, Van Vugt RM, et\nal. (2019) An add-on training program involving\nbreathing exercises, cold exposure, and meditation\nattenuates inflammation and disease activity in\naxial spondyloarthritis – A proof of concept trial."
   },
   {
-    "text": "Results\nWe found no significant differences in adverse events between groups, with one serious\nadverse event occurring 8 weeks after end of the intervention and judged ‘unrelated’.  During\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 1 / 11\na1111111111\na1111111111\na1111111111\na1111111111\na1111111111\nOPEN ACCESS\nCitation: Buijze GA, De Jong HMY, Kox M, van de\nSande MG, Van Schaardenburg D, Van Vugt RM, et\nal. (2019) An add-on training program involving\nbreathing exercises, cold exposure, and meditation\nattenuates inflammation and disease activity in\naxial spondyloarthritis – A proof of concept trial.  PLoS ONE 14(12): e0225749.  https://doi.org/\n10.1371/journal.pone.0225749\nEditor: Johannes Fleckenstein, University of Bern,\nSWITZERLAND\nReceived: April 17, 2019\nAccepted: November 7, 2019\nPublished: December 2, 2019\nCopyright: © 2019 Buijze et al."
+    "text": "Results\nWe found no significant differences in adverse events between groups, with one serious\nadverse event occurring 8 weeks after end of the intervention and judged ‘unrelated’.  During\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 1 / 11\na1111111111\na1111111111\na1111111111\na1111111111\na1111111111\nOPEN ACCESS\nCitation: Buijze GA, De Jong HMY, Kox M, van de\nSande MG, Van Schaardenburg D, Van Vugt RM, et\nal. (2019) An add-on training program involving\nbreathing exercises, cold exposure, and meditation\nattenuates inflammation and disease activity in\naxial spondyloarthritis – A proof of concept trial.  https://doi.org/\n10.1371/journal.pone.0225749\nEditor: Johannes Fleckenstein, University of Bern,\nSWITZERLAND\nReceived: April 17, 2019\nAccepted: November 7, 2019\nPublished: December 2, 2019\nCopyright: © 2019 Buijze et al.  This is an open\naccess article distributed under the terms of the\nCreative Commons Attribution License, which\npermits unrestricted use, distribution, and\nreproduction in any medium, provided the original\nauthor and source are credited."
   },
   {
-    "text": "PLoS ONE 14(12): e0225749.  https://doi.org/\n10.1371/journal.pone.0225749\nEditor: Johannes Fleckenstein, University of Bern,\nSWITZERLAND\nReceived: April 17, 2019\nAccepted: November 7, 2019\nPublished: December 2, 2019\nCopyright: © 2019 Buijze et al.  This is an open\naccess article distributed under the terms of the\nCreative Commons Attribution License, which\npermits unrestricted use, distribution, and\nreproduction in any medium, provided the original\nauthor and source are credited.  Data Availability Statement: All relevant data are\nwithin the manuscript and its Supporting\nInformation files."
+    "text": "https://doi.org/\n10.1371/journal.pone.0225749\nEditor: Johannes Fleckenstein, University of Bern,\nSWITZERLAND\nReceived: April 17, 2019\nAccepted: November 7, 2019\nPublished: December 2, 2019\nCopyright: © 2019 Buijze et al.  This is an open\naccess article distributed under the terms of the\nCreative Commons Attribution License, which\npermits unrestricted use, distribution, and\nreproduction in any medium, provided the original\nauthor and source are credited.  Data Availability Statement: All relevant data are\nwithin the manuscript and its Supporting\nInformation files.  Funding: The authors received no specific funding\nfor this work."
   },
   {
     "text": "This is an open\naccess article distributed under the terms of the\nCreative Commons Attribution License, which\npermits unrestricted use, distribution, and\nreproduction in any medium, provided the original\nauthor and source are credited.  Data Availability Statement: All relevant data are\nwithin the manuscript and its Supporting\nInformation files.  Funding: The authors received no specific funding\nfor this work.  Competing interests: The authors have declared\nthat no competing interests exist."
@@ -129,7 +123,7 @@
     "text": "During the first 4 weeks, participants had group trainings twice weekly, the second 4\nweeks once weekly.  During the intervention period, and after extensive written and oral\ninstructions, participants practiced the exercises daily at home and registered their progression\nin a diary.  In this diary the participants reported per day a) their progression in breath reten-\ntion at home and b) their mental and physical state.  The adherence to the training program\nwas discussed and assessed weekly by the trainers and during the study visits by the medical\npersonnel."
   },
   {
-    "text": "In this diary the participants reported per day a) their progression in breath reten-\ntion at home and b) their mental and physical state.  The adherence to the training program\nwas discussed and assessed weekly by the trainers and during the study visits by the medical\npersonnel.  Assessments\nPrimary safety assessments included vital signs, physical examination, electrocardiogram, hae-\nmatology and chemistry at baseline, 4, 8, and 24 weeks and upon indication, and recording of\nadverse events (AEs) and serious adverse events (SAEs).  The number and severity of adverse\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 4 / 11"
+    "text": "During the intervention period, and after extensive written and oral\ninstructions, participants practiced the exercises daily at home and registered their progression\nin a diary.  In this diary the participants reported per day a) their progression in breath reten-\ntion at home and b) their mental and physical state.  The adherence to the training program\nwas discussed and assessed weekly by the trainers and during the study visits by the medical\npersonnel.  Assessments\nPrimary safety assessments included vital signs, physical examination, electrocardiogram, hae-\nmatology and chemistry at baseline, 4, 8, and 24 weeks and upon indication, and recording of\nadverse events (AEs) and serious adverse events (SAEs)."
   }
 ]
 [
@@ -173,11 +167,7 @@
     "text": "Two because of insuf-\nficient motivation for the intervention, 1 was lost to follow-up.  In total 21 participants started\nwith the intervention, of whom 19 completed the intervention period.  All 11 patients in the\nlate intervention group completed the control period.  Add-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 5 / 11"
   }
 ]
-[
-  {
-    "text": "https://doi.org/10.1371/journal.pone.0225749.g001\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 6 / 11"
-  }
-]
+[]
 [
   {
     "text": "Safety\nNo serious adverse events occurred during the intervention period.  During the intervention\nperiod, 10 participants in the intervention group reported a total of 12 AEs (2 participants\nreported 2 AEs), and 7 participants of the control group reported a total of 9 AEs (2 partici-\npants reported 2 AEs)(p = 0.268).  The most common AE was common cold (4 vs. 2, respec-\ntively, Table 2).  Three AEs during the intervention period had a moderate severity (1 in the\nintervention group and 2 in the control group)."
@@ -189,13 +179,7 @@
     "text": "During the follow-up period (n = 19), there\nwas one SAE of a participant who experienced a hypertensive crisis 8 weeks after end of the\nintervention and was hospitalised for one night.  Upon further examination by a ophthalmolo-\ngist there were signs of longstanding disease, therefore this SAE was judged ‘unrelated’ to the\nstudy procedures and did not lead to discontinuation of the study.  Secondary endpoints\nAll secondary endpoints are listed in Table 3.  In the intervention group, ESR significantly\ndeclined over time: from 16[9–26.5] mm/hr at baseline to 9[5–23] mm/hr at week 8, p = 0.040,\nwhile it did not in the control group: from 14[8.3–27.3] mm/hr to 16[5–37] mm/hr, p = 0.406)."
   },
   {
-    "text": "Secondary endpoints\nAll secondary endpoints are listed in Table 3.  In the intervention group, ESR significantly\ndeclined over time: from 16[9–26.5] mm/hr at baseline to 9[5–23] mm/hr at week 8, p = 0.040,\nwhile it did not in the control group: from 14[8.3–27.3] mm/hr to 16[5–37] mm/hr, p = 0.406).  Table 1.  Demographics, characteristics and medication use at baseline."
-  },
-  {
-    "text": "Table 1.  Demographics, characteristics and medication use at baseline.  Total study population Early intervention group Late intervention group\n(n = 24) (n = 13) (n = 11)\nMale sex, n(%) 15 (62.5) 8 (61.5) 7 (63.6)\nAge, years 35.00 ± 7.31 35.46 ±8.29 34.45 ± 6.30\nBMI, kg/m\n2\n23.22 ± 6.39 24.46 ±3.22 21.44 ±9.25\nHLA-B27 positive, n(%)\n#\n16/21 (76.1) 11/12 (91.7) 5/9 (55.5)\nHs-CRP at baseline, mg/L, median (IQR) 8.3 (5.4–16.4) 7.9 (6.3–16) 8.7 (5.2–17.2)\nASDAS-CRP 3.02 ± 0.89 3.10 ±0.97 2.93 ± 0.81\nFulfill mNY, n(%) 16 (66.7) 9 (69.2) 7 (63.6)\nIBP, n(%) 23 (95.8) 13 (100) 10 (90.9)\nPsoriasis, n(%) 1 (4.2) 1 (7.7) 0 (0)\nIBD, n(%) 2 (8.3) 1 (7.7) 1 (9.1)\nEnthesitis, n(%) 5 (20.8) 4 (30.8) 1 (9.1)\nArthritis, n(%) 9 (37.5) 5 (38.5) 4 (36.4  )\nDactylitis, n(%) 1 (4.2) 1 (7.7) 0 (0)\nUveitis, n(%) 6 (25.0) 5 (38.5) 1 (9.1)\nFamily history positive for SpA, n(%) 8 (33.3) 6 (46.2) 2 (18.2)\nGood response to NSAIDs, n(%) 22 (91.7) 11 (84.6) 11 (100)\nElevated hs-CRP, n(%) 24 (100) 13 (100) 11 (100)\nNSAIDs, n(%) 22 (91.7) 11 (84.6) 11 (100)\nAnti-TNFα, n(%) 3 (12.5) 2 (15.4) 1 (9.1)\nAnti-IL17, n(%) 2 (8.3) 1 (7.7) 1 (9.1)\ncDMARDs, n(%) 2 (8.3) 2 (15.4) 0 (0)\nCorticosteroids, n(%) 1 (4.2) 1 (7.7) 0 (0)\nGeneral medication, n(%) 9 (37.5) 5 (38.5) 4 (36.4)\nExcept where indicated otherwise, values are mean ± SD\n#\nHLA-B27 status is missing in 3 patients\nIBP inflammatory back pain, IBD inflammatory bowel disease, mNY criteria modified New York criteria, cDMARDs conventional disease"
-  },
-  {
-    "text": "Demographics, characteristics and medication use at baseline.  Total study population Early intervention group Late intervention group\n(n = 24) (n = 13) (n = 11)\nMale sex, n(%) 15 (62.5) 8 (61.5) 7 (63.6)\nAge, years 35.00 ± 7.31 35.46 ±8.29 34.45 ± 6.30\nBMI, kg/m\n2\n23.22 ± 6.39 24.46 ±3.22 21.44 ±9.25\nHLA-B27 positive, n(%)\n#\n16/21 (76.1) 11/12 (91.7) 5/9 (55.5)\nHs-CRP at baseline, mg/L, median (IQR) 8.3 (5.4–16.4) 7.9 (6.3–16) 8.7 (5.2–17.2)\nASDAS-CRP 3.02 ± 0.89 3.10 ±0.97 2.93 ± 0.81\nFulfill mNY, n(%) 16 (66.7) 9 (69.2) 7 (63.6)\nIBP, n(%) 23 (95.8) 13 (100) 10 (90.9)\nPsoriasis, n(%) 1 (4.2) 1 (7.7) 0 (0)\nIBD, n(%) 2 (8.3) 1 (7.7) 1 (9.1)\nEnthesitis, n(%) 5 (20.8) 4 (30.8) 1 (9.1)\nArthritis, n(%) 9 (37.5) 5 (38.5) 4 (36.4  )\nDactylitis, n(%) 1 (4.2) 1 (7.7) 0 (0)\nUveitis, n(%) 6 (25.0) 5 (38.5) 1 (9.1)\nFamily history positive for SpA, n(%) 8 (33.3) 6 (46.2) 2 (18.2)\nGood response to NSAIDs, n(%) 22 (91.7) 11 (84.6) 11 (100)\nElevated hs-CRP, n(%) 24 (100) 13 (100) 11 (100)\nNSAIDs, n(%) 22 (91.7) 11 (84.6) 11 (100)\nAnti-TNFα, n(%) 3 (12.5) 2 (15.4) 1 (9.1)\nAnti-IL17, n(%) 2 (8.3) 1 (7.7) 1 (9.1)\ncDMARDs, n(%) 2 (8.3) 2 (15.4) 0 (0)\nCorticosteroids, n(%) 1 (4.2) 1 (7.7) 0 (0)\nGeneral medication, n(%) 9 (37.5) 5 (38.5) 4 (36.4)\nExcept where indicated otherwise, values are mean ± SD\n#\nHLA-B27 status is missing in 3 patients\nIBP inflammatory back pain, IBD inflammatory bowel disease, mNY criteria modified New York criteria, cDMARDs conventional disease  modifying anti-rheumatic\ndrugs, NSAIDs non-steroidal anti-inflammatory drugs\nhttps://doi.org/10.1371/journal.pone.0225749.t001\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 7 / 11"
+    "text": "Upon further examination by a ophthalmolo-\ngist there were signs of longstanding disease, therefore this SAE was judged ‘unrelated’ to the\nstudy procedures and did not lead to discontinuation of the study.  Secondary endpoints\nAll secondary endpoints are listed in Table 3.  In the intervention group, ESR significantly\ndeclined over time: from 16[9–26.5] mm/hr at baseline to 9[5–23] mm/hr at week 8, p = 0.040,\nwhile it did not in the control group: from 14[8.3–27.3] mm/hr to 16[5–37] mm/hr, p = 0.406).  modifying anti-rheumatic\ndrugs, NSAIDs non-steroidal anti-inflammatory drugs\nhttps://doi.org/10.1371/journal.pone.0225749.t001\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 7 / 11"
   }
 ]
 [
@@ -226,31 +210,25 @@
 ]
 [
   {
-    "text": "healthy participants during experimental endotoxemia[2].  The intervention also tended to\nresult in decreased serum calprotectin levels, a validated disease activity biomarker in axSpA\n[8], although this did not reach a statistical significance.  Various measures of disease activity\n(ASDAS-CRP, BASDAI) and quality of life (SF-36) improved following the intervention.  The\neffects observed in the intervention group are unlikely to be due to regression to the mean as\nthere were no effects in the control group."
+    "text": "The intervention also tended to\nresult in decreased serum calprotectin levels, a validated disease activity biomarker in axSpA\n[8], although this did not reach a statistical significance.  Various measures of disease activity\n(ASDAS-CRP, BASDAI) and quality of life (SF-36) improved following the intervention.  The\neffects observed in the intervention group are unlikely to be due to regression to the mean as\nthere were no effects in the control group.  Therefore, our results are indicative that voluntary\nmodulation of the immune response may not only be possible in acute inflammatory response\ndue to microbial stimulation but also in chronic inflammation related to immune-mediated\ninflammatory diseases."
   },
   {
-    "text": "Various measures of disease activity\n(ASDAS-CRP, BASDAI) and quality of life (SF-36) improved following the intervention.  The\neffects observed in the intervention group are unlikely to be due to regression to the mean as\nthere were no effects in the control group.  Therefore, our results are indicative that voluntary\nmodulation of the immune response may not only be possible in acute inflammatory response\ndue to microbial stimulation but also in chronic inflammation related to immune-mediated\ninflammatory diseases.  This study has several limitations."
+    "text": "The\neffects observed in the intervention group are unlikely to be due to regression to the mean as\nthere were no effects in the control group.  Therefore, our results are indicative that voluntary\nmodulation of the immune response may not only be possible in acute inflammatory response\ndue to microbial stimulation but also in chronic inflammation related to immune-mediated\ninflammatory diseases.  This study has several limitations.  1) As this study was a proof-of-concept trial the sample\nsize was small and not powered to investigate efficacy."
   },
   {
-    "text": "Therefore, our results are indicative that voluntary\nmodulation of the immune response may not only be possible in acute inflammatory response\ndue to microbial stimulation but also in chronic inflammation related to immune-mediated\ninflammatory diseases.  This study has several limitations.  1) As this study was a proof-of-concept trial the sample\nsize was small and not powered to investigate efficacy.  However, despite this small sample size,\nsignificant changes in the secondary and exploratory outcomes were found."
+    "text": "This study has several limitations.  1) As this study was a proof-of-concept trial the sample\nsize was small and not powered to investigate efficacy.  However, despite this small sample size,\nsignificant changes in the secondary and exploratory outcomes were found.  Larger follow-up\nstudies are required to formally assess clinical efficacy."
   },
   {
-    "text": "1) As this study was a proof-of-concept trial the sample\nsize was small and not powered to investigate efficacy.  However, despite this small sample size,\nsignificant changes in the secondary and exploratory outcomes were found.  Larger follow-up\nstudies are required to formally assess clinical efficacy.  2) The unblinded design of the study renders our results susceptible for a placebo effect."
+    "text": "However, despite this small sample size,\nsignificant changes in the secondary and exploratory outcomes were found.  Larger follow-up\nstudies are required to formally assess clinical efficacy.  2) The unblinded design of the study renders our results susceptible for a placebo effect.  As\nthe studied intervention is not suitable for a genuine placebo treatment, we chose hs-CRP, ESR\nand calprotectin as a secondary biologic endpoint that does not suffer from subjective influ-\nences or variability in the measurements."
   },
   {
-    "text": "Larger follow-up\nstudies are required to formally assess clinical efficacy.  2) The unblinded design of the study renders our results susceptible for a placebo effect.  As\nthe studied intervention is not suitable for a genuine placebo treatment, we chose hs-CRP, ESR\nand calprotectin as a secondary biologic endpoint that does not suffer from subjective influ-\nences or variability in the measurements.  Furthermore, we used a delayed intervention group\nto assess the impact of regression to the mean."
+    "text": "2) The unblinded design of the study renders our results susceptible for a placebo effect.  As\nthe studied intervention is not suitable for a genuine placebo treatment, we chose hs-CRP, ESR\nand calprotectin as a secondary biologic endpoint that does not suffer from subjective influ-\nences or variability in the measurements.  Furthermore, we used a delayed intervention group\nto assess the impact of regression to the mean.  With this design we neutralized the aforemen-\ntioned components of placebo effect."
   },
   {
-    "text": "As\nthe studied intervention is not suitable for a genuine placebo treatment, we chose hs-CRP, ESR\nand calprotectin as a secondary biologic endpoint that does not suffer from subjective influ-\nences or variability in the measurements.  Furthermore, we used a delayed intervention group\nto assess the impact of regression to the mean.  With this design we neutralized the aforemen-\ntioned components of placebo effect.  Moreover, the data obtained did not suggest an effect of\nregression to the mean since we observed changes in the intervention but not in the control\ngroup."
+    "text": "Furthermore, we used a delayed intervention group\nto assess the impact of regression to the mean.  With this design we neutralized the aforemen-\ntioned components of placebo effect.  Moreover, the data obtained did not suggest an effect of\nregression to the mean since we observed changes in the intervention but not in the control\ngroup.  HADS-Depression 3(1–6) 3(1–6) 2(1–6) .508 3(2–6) 4(1–5) 1(1–4) .137\nValues are presented as median (interquartile range)."
   },
   {
-    "text": "With this design we neutralized the aforemen-\ntioned components of placebo effect.  Moreover, the data obtained did not suggest an effect of\nregression to the mean since we observed changes in the intervention but not in the control\ngroup.  Table 3.  Analysis of inflammatory markers in peripheral blood, ASDAS, BASDAI, SF-36, EQ-5D, EQ-5D VAS and HADS during the 8-week intervention period."
-  },
-  {
-    "text": "Table 3.  Analysis of inflammatory markers in peripheral blood, ASDAS, BASDAI, SF-36, EQ-5D, EQ-5D VAS and HADS during the 8-week intervention period.  Intervention group Intra-group\np value\n# #\nControl group Intra-group\np value\nBaseline (n = 21) 4w 8w Baseline (n = 11) 4w 8w\n(n = 21) (n = 19) (n = 11) (n = 11)\nhs-CRP (mg/l) 10.2 8.9 6 .103 8.7 11 13.2 .286\n(6.5–17.1) (3.5–13.1) (3.9–15.6) (5.2–17.2) (8.4–20.2) (7.9–20.1)\nESR (mm/hr) 16 10 9 .040\n(9–26.5) (6.5–31.5) (5–23)\n�\n14 12 16 .406\n(8.3–27.3) (8–34) (5–37)\nCalprotectin (pg/ml) 2295 (1648–4923) 2245 (1273–3245) 2165 (953–3734) .064 2115 (1300–2571) 2086 2279 .182\n(1221–3527) (1770–4989)\nASDAS-CRP 3.1 2.5 2.3 .044\n(2.5–3.6) (1.9–3.2) (1.7–3.2)\n�\n2.9 3.4 3.1 .213\n(2.3–3.6) (3–3.6) (2.7–3.6)\nBASDAI 4.5 3.3 2.6 .012\n(3–5.9) (2.1–5.8) (  1.4–3.5)\n�\n3.2 5.5 4.3 .755\n(2.8–5.5) (3–6.2) (2.5–5.7)\nSF-36 PCS 44.8 (36.0–48.8) 44.6 (39.9–47.4) 49.3 (40.7–54.7) .004\n�\n41.8 (34.1–49.1) 42.1 42.8 .859\n(35.9–46.1) (33.5–48.0)\nSF-36 MCS 45.5 50.4 53.5 .004\n(39.9–53.5) (44.3–54.6) (46.8–56.7)\n�\n42.0 45.0 42.6 .859\n(38.1–50.4) (37.2–53.9) (40.0–52.5)\nEQ-5D .81 .81 0.84 .102 .81 .81 .81 .933\n(.65-.84) (.67-.92) (.81–1.00) (.69-.84) (.25-.81) (.65-.84)\nEQ-5D VAS 66.5 70.0 75.5 .090 67.5 60.0 66.5 .674\n(59.3–74.0) (55.5–76.0) (70.0–87.0) (48.3–76.3) (45.0–72.5) (62.0–75.5)\nHADS-Anxiety 5.0 4.0 4.0 .369 5.0 5.0 3.0 .138\n(2.5–7.5) (2.5–6.0) (.5–6.0) (3.0–7.0) (4.0–6.0) (1.0–5.0)"
-  },
-  {
-    "text": "Intervention group Intra-group\np value\n# #\nControl group Intra-group\np value\nBaseline (n = 21) 4w 8w Baseline (n = 11) 4w 8w\n(n = 21) (n = 19) (n = 11) (n = 11)\nhs-CRP (mg/l) 10.2 8.9 6 .103 8.7 11 13.2 .286\n(6.5–17.1) (3.5–13.1) (3.9–15.6) (5.2–17.2) (8.4–20.2) (7.9–20.1)\nESR (mm/hr) 16 10 9 .040\n(9–26.5) (6.5–31.5) (5–23)\n�\n14 12 16 .406\n(8.3–27.3) (8–34) (5–37)\nCalprotectin (pg/ml) 2295 (1648–4923) 2245 (1273–3245) 2165 (953–3734) .064 2115 (1300–2571) 2086 2279 .182\n(1221–3527) (1770–4989)\nASDAS-CRP 3.1 2.5 2.3 .044\n(2.5–3.6) (1.9–3.2) (1.7–3.2)\n�\n2.9 3.4 3.1 .213\n(2.3–3.6) (3–3.6) (2.7–3.6)\nBASDAI 4.5 3.3 2.6 .012\n(3–5.9) (2.1–5.8) (  1.4–3.5)\n�\n3.2 5.5 4.3 .755\n(2.8–5.5) (3–6.2) (2.5–5.7)\nSF-36 PCS 44.8 (36.0–48.8) 44.6 (39.9–47.4) 49.3 (40.7–54.7) .004\n�\n41.8 (34.1–49.1) 42.1 42.8 .859\n(35.9–46.1) (33.5–48.0)\nSF-36 MCS 45.5 50.4 53.5 .004\n(39.9–53.5) (44.3–54.6) (46.8–56.7)\n�\n42.0 45.0 42.6 .859\n(38.1–50.4) (37.2–53.9) (40.0–52.5)\nEQ-5D .81 .81 0.84 .102 .81 .81 .81 .933\n(.65-.84) (.67-.92) (.81–1.00) (.69-.84) (.25-.81) (.65-.84)\nEQ-5D VAS 66.5 70.0 75.5 .090 67.5 60.0 66.5 .674\n(59.3–74.0) (55.5–76.0) (70.0–87.0) (48.3–76.3) (45.0–72.5) (62.0–75.5)\nHADS-Anxiety 5.0 4.0 4.0 .369 5.0 5.0 3.0 .138\n(2.5–7.5) (2.5–6.0) (.5–6.0) (3.0–7.0) (4.0–6.0) (1.0–5.0)  HADS-Depression 3(1–6) 3(1–6) 2(1–6) .508 3(2–6) 4(1–5) 1(1–4) .137\nValues are presented as median (interquartile range).  �\n: P < .05\n#\nWilcoxon signed rank test\nhttps://doi.org/10.1371/journal.pone.0225749.t003\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 9 / 11"
+    "text": "With this design we neutralized the aforemen-\ntioned components of placebo effect.  Moreover, the data obtained did not suggest an effect of\nregression to the mean since we observed changes in the intervention but not in the control\ngroup.  HADS-Depression 3(1–6) 3(1–6) 2(1–6) .508 3(2–6) 4(1–5) 1(1–4) .137\nValues are presented as median (interquartile range).  �\n: P < .05\n#\nWilcoxon signed rank test\nhttps://doi.org/10.1371/journal.pone.0225749.t003\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 9 / 11"
   }
 ]
 [
@@ -267,128 +245,20 @@
     "text": "4) The adherence to the training program at home was not formally checked, although dis-\ncussed weekly during the group sessions and study visits.  The adherence to the group sessions\nwas high as on average the participants missed 1.5 out of 12 group sessions, due to holidays,\nother obligations or sickness.\n5) Although not a major part of the add-on training program, the strength exercises\n(performed in conjunction with the breathing exercises) might play a role in the improve-\nments we found in the participants, since exercise is a pivotal part of the treatment of axial\nspondyloarthritis.  In conclusion, the present study demonstrates that the add-on training program used in\nthis study can safely be applied in patients with axial spondyloarthritis and potentially modu-\nlates inflammatory response.  These findings warrant further clinical assessment of this novel\ntherapeutic approach."
   },
   {
-    "text": "In conclusion, the present study demonstrates that the add-on training program used in\nthis study can safely be applied in patients with axial spondyloarthritis and potentially modu-\nlates inflammatory response.  These findings warrant further clinical assessment of this novel\ntherapeutic approach.  Future research should include a larger sample size to formally evaluate\nclinical efficacy and should by focussed on further elucidation of the mechanism of action of\nthe combined and/or individual components of the training program.  Supporting information\nS1 CONSORT 2010 Checklist."
+    "text": "In conclusion, the present study demonstrates that the add-on training program used in\nthis study can safely be applied in patients with axial spondyloarthritis and potentially modu-\nlates inflammatory response.  These findings warrant further clinical assessment of this novel\ntherapeutic approach.  Future research should include a larger sample size to formally evaluate\nclinical efficacy and should by focussed on further elucidation of the mechanism of action of\nthe combined and/or individual components of the training program.  (SAV)\nAcknowledgments\nWe thank all the patients who participated in the study for their enthusiasm and participation."
   },
   {
-    "text": "Future research should include a larger sample size to formally evaluate\nclinical efficacy and should by focussed on further elucidation of the mechanism of action of\nthe combined and/or individual components of the training program.  Supporting information\nS1 CONSORT 2010 Checklist.  (PDF)\nS1 Fig.  Study design."
+    "text": "Future research should include a larger sample size to formally evaluate\nclinical efficacy and should by focussed on further elucidation of the mechanism of action of\nthe combined and/or individual components of the training program.  (SAV)\nAcknowledgments\nWe thank all the patients who participated in the study for their enthusiasm and participation.  We are appreciative of the support of Professor Piet van Riel to launch the study; Lisa van Maa-\nnen, Sanne Pons, Wim Hof, Isa Hof, Henk van den Berg, Marianne Peper, Linda Hochsten-\nbach, and Iris Premssler for their support during the study and training sessions.  Lastly, the\nCentre for Rehabilitation; the Department of Technical Support and the Department of Secu-\nrity from the Academic Medical Centre, Amsterdam, the Netherlands for providing training\nspace, technical and logistic assistance, respectively."
   },
   {
-    "text": "(PDF)\nS1 Fig.  Study design.  (TIF)\nS1 File.  SPSS database."
-  },
-  {
-    "text": "(TIF)\nS1 File.  SPSS database.  (SAV)\nAcknowledgments\nWe thank all the patients who participated in the study for their enthusiasm and participation.  We are appreciative of the support of Professor Piet van Riel to launch the study; Lisa van Maa-\nnen, Sanne Pons, Wim Hof, Isa Hof, Henk van den Berg, Marianne Peper, Linda Hochsten-\nbach, and Iris Premssler for their support during the study and training sessions."
-  },
-  {
-    "text": "(SAV)\nAcknowledgments\nWe thank all the patients who participated in the study for their enthusiasm and participation.  We are appreciative of the support of Professor Piet van Riel to launch the study; Lisa van Maa-\nnen, Sanne Pons, Wim Hof, Isa Hof, Henk van den Berg, Marianne Peper, Linda Hochsten-\nbach, and Iris Premssler for their support during the study and training sessions.  We thank dr.  Luitzen Groen and Marije Wolters for their support with the statistics of this study."
-  },
-  {
-    "text": "We thank dr.  Luitzen Groen and Marije Wolters for their support with the statistics of this study.  Lastly, the\nCentre for Rehabilitation; the Department of Technical Support and the Department of Secu-\nrity from the Academic Medical Centre, Amsterdam, the Netherlands for providing training\nspace, technical and logistic assistance, respectively.  Author Contributions\nConceptualization: G. A."
-  },
-  {
-    "text": "Lastly, the\nCentre for Rehabilitation; the Department of Technical Support and the Department of Secu-\nrity from the Academic Medical Centre, Amsterdam, the Netherlands for providing training\nspace, technical and logistic assistance, respectively.  Author Contributions\nConceptualization: G. A.  Buijze, M. Kox, P. Pickkers, D. L. P.  Baeten."
-  },
-  {
-    "text": "Buijze, M. Kox, P. Pickkers, D. L. P.  Baeten.  Formal analysis: G. A.  Buijze, H. M. Y."
-  },
-  {
-    "text": "Formal analysis: G. A.  Buijze, H. M. Y.  De Jong.  Funding acquisition: D. L. P."
-  },
-  {
-    "text": "De Jong.  Funding acquisition: D. L. P.  Baeten.  Add-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 10 / 11"
+    "text": "(SAV)\nAcknowledgments\nWe thank all the patients who participated in the study for their enthusiasm and participation.  We are appreciative of the support of Professor Piet van Riel to launch the study; Lisa van Maa-\nnen, Sanne Pons, Wim Hof, Isa Hof, Henk van den Berg, Marianne Peper, Linda Hochsten-\nbach, and Iris Premssler for their support during the study and training sessions.  Lastly, the\nCentre for Rehabilitation; the Department of Technical Support and the Department of Secu-\nrity from the Academic Medical Centre, Amsterdam, the Netherlands for providing training\nspace, technical and logistic assistance, respectively.  Add-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 10 / 11"
   }
 ]
 [
   {
-    "text": "Investigation: H. M. Y.  De Jong.  Methodology: G. A.  Buijze, P. Pickkers, D. L. P."
+    "text": "Kox M, van Eijk LT, Zwaag J, van den Wildenberg J, Sweep FCGJ, van der Hoeven JG, et al. Voluntary\nactivation of the sympathetic nervous system and attenuation of the innate immune response in\nhumans.  van Tok MN, Satumtira N, Dorris M, Pots D, Slobodin G, van de Sande MG, et al. Innate immune activa-\ntion can trigger experimental spondyloarthritis in HLA-B27/Huβ2m Transgenic Rats.  Lukas C, Landewe R, Sieper J, Dougados M, Davis J, Braun J, et al. Development of an ASAS-\n ́\nendorsed disease activity score (ASDAS) in patients with ankylosing spondylitis.  A new approach to defining dis-\nease status in ankylosing spondylitis: the Bath Ankylosing Spondylitis Disease Activity Index."
   },
   {
-    "text": "Methodology: G. A.  Buijze, P. Pickkers, D. L. P.  Baeten.  Project administration: G. A."
-  },
-  {
-    "text": "Baeten.  Project administration: G. A.  Buijze, H. M. Y.  De Jong."
-  },
-  {
-    "text": "Buijze, H. M. Y.  De Jong.  Resources: D. L. P.  Baeten."
-  },
-  {
-    "text": "Resources: D. L. P.  Baeten.  Supervision: M. G. van de Sande, D. L. P.  Baeten."
-  },
-  {
-    "text": "Supervision: M. G. van de Sande, D. L. P.  Baeten.  Validation: M. Kox, P. Pickkers.  Visualization: M. Kox."
-  },
-  {
-    "text": "Validation: M. Kox, P. Pickkers.  Visualization: M. Kox.  Writing – original draft: G. A.  Buijze, H. M. Y."
-  },
-  {
-    "text": "Writing – original draft: G. A.  Buijze, H. M. Y.  De Jong, M. G. van de Sande, D. L. P.  Baeten."
-  },
-  {
-    "text": "De Jong, M. G. van de Sande, D. L. P.  Baeten.  Writing – review & editing: M. Kox, M. G. van de Sande, D. Van Schaardenburg, R. M. Van\nVugt, C. D.  Popa, P. Pickkers, D. L. P."
-  },
-  {
-    "text": "Writing – review & editing: M. Kox, M. G. van de Sande, D. Van Schaardenburg, R. M. Van\nVugt, C. D.  Popa, P. Pickkers, D. L. P.  Baeten.  References\n1."
-  },
-  {
-    "text": "Baeten.  References\n1.  Kox M, Stoffels M, Smeekens SP, van Alfen N, Gomes M, Eijsvogels TMH, et al.  The influence of con-\ncentration/meditation on autonomic nervous system activity and the innate immune response: a case\nstudy."
-  },
-  {
-    "text": "Kox M, Stoffels M, Smeekens SP, van Alfen N, Gomes M, Eijsvogels TMH, et al.  The influence of con-\ncentration/meditation on autonomic nervous system activity and the innate immune response: a case\nstudy.  Psychosom Med. 2012; 74(5):489–94.  https://doi.org/10.1097/PSY.0b013e3182583c6d PMID:\n22685240\n2."
-  },
-  {
-    "text": "Psychosom Med. 2012; 74(5):489–94.  https://doi.org/10.1097/PSY.0b013e3182583c6d PMID:\n22685240\n2.  Kox M, van Eijk LT, Zwaag J, van den Wildenberg J, Sweep FCGJ, van der Hoeven JG, et al. Voluntary\nactivation of the sympathetic nervous system and attenuation of the innate immune response in\nhumans.  Proc Natl Acad Sci U S A. 2014; 111(20):7379–84."
-  },
-  {
-    "text": "Kox M, van Eijk LT, Zwaag J, van den Wildenberg J, Sweep FCGJ, van der Hoeven JG, et al. Voluntary\nactivation of the sympathetic nervous system and attenuation of the innate immune response in\nhumans.  Proc Natl Acad Sci U S A. 2014; 111(20):7379–84.  https://doi.org/10.1073/pnas.1322174111\nPMID: 24799686\n3.  Dougados M, Baeten D. Spondyloarthritis."
-  },
-  {
-    "text": "https://doi.org/10.1073/pnas.1322174111\nPMID: 24799686\n3.  Dougados M, Baeten D. Spondyloarthritis.  Lancet.  2011; 377(9783):2127–37."
-  },
-  {
-    "text": "Lancet.  2011; 377(9783):2127–37.  https://doi.org/10.1016/\nS0140-6736(11)60071-8 PMID: 21684383\n4.  Ambarus C, Yeremenko N, Tak PP, Baeten D. Pathogenesis of spondyloarthritis."
-  },
-  {
-    "text": "https://doi.org/10.1016/\nS0140-6736(11)60071-8 PMID: 21684383\n4.  Ambarus C, Yeremenko N, Tak PP, Baeten D. Pathogenesis of spondyloarthritis.  Curr Opin Rheumatol.\n2012; 24(4):351–8.  https://doi.org/10.1097/BOR.0b013e3283534df4 PMID: 22488076\n5."
-  },
-  {
-    "text": "Curr Opin Rheumatol.\n2012; 24(4):351–8.  https://doi.org/10.1097/BOR.0b013e3283534df4 PMID: 22488076\n5.  van Tok MN, Satumtira N, Dorris M, Pots D, Slobodin G, van de Sande MG, et al. Innate immune activa-\ntion can trigger experimental spondyloarthritis in HLA-B27/Huβ2m Transgenic Rats.  Front Immunol.\n2017; 8(AUG):1–12."
-  },
-  {
-    "text": "van Tok MN, Satumtira N, Dorris M, Pots D, Slobodin G, van de Sande MG, et al. Innate immune activa-\ntion can trigger experimental spondyloarthritis in HLA-B27/Huβ2m Transgenic Rats.  Front Immunol.\n2017; 8(AUG):1–12.  6.  Rudwaleit M, van der Heijde D, Landewe R, Listing J, Akkoc N, Brandt J, et al."
-  },
-  {
-    "text": "6.  Rudwaleit M, van der Heijde D, Landewe R, Listing J, Akkoc N, Brandt J, et al.  The development of\n ́\nAssessment of SpondyloArthritis international Society classification criteria for axial spondyloarthritis\n(part II): validation and final selection.  Ann Rheum Dis. 2009; 68(6):777–83."
-  },
-  {
-    "text": "The development of\n ́\nAssessment of SpondyloArthritis international Society classification criteria for axial spondyloarthritis\n(part II): validation and final selection.  Ann Rheum Dis. 2009; 68(6):777–83.  https://doi.org/10.1136/ard.  2009.108233 PMID: 19297344\n7."
-  },
-  {
-    "text": "https://doi.org/10.1136/ard.  2009.108233 PMID: 19297344\n7.  Lukas C, Landewe R, Sieper J, Dougados M, Davis J, Braun J, et al. Development of an ASAS-\n ́\nendorsed disease activity score (ASDAS) in patients with ankylosing spondylitis.  Ann Rheum Dis. 2009;\n68(1):18–24."
-  },
-  {
-    "text": "Lukas C, Landewe R, Sieper J, Dougados M, Davis J, Braun J, et al. Development of an ASAS-\n ́\nendorsed disease activity score (ASDAS) in patients with ankylosing spondylitis.  Ann Rheum Dis. 2009;\n68(1):18–24.  https://doi.org/10.1136/ard.2008.094870 PMID: 18625618\n8.  Turina MC, Yeremenko N, Paramarta JE, Rycke L De, Baeten D. Calprotectin (S100A8 / 9) as serum\nbiomarker for clinical response in proof-of-concept trials in axial and peripheral spondyloarthritis.\n2014;1–9."
-  },
-  {
-    "text": "https://doi.org/10.1136/ard.2008.094870 PMID: 18625618\n8.  Turina MC, Yeremenko N, Paramarta JE, Rycke L De, Baeten D. Calprotectin (S100A8 / 9) as serum\nbiomarker for clinical response in proof-of-concept trials in axial and peripheral spondyloarthritis.\n2014;1–9.  9.  Garrett S, Jenkinson T, Kennedy L, Whitelock H, Gaisford P, Calin A."
-  },
-  {
-    "text": "9.  Garrett S, Jenkinson T, Kennedy L, Whitelock H, Gaisford P, Calin A.  A new approach to defining dis-\nease status in ankylosing spondylitis: the Bath Ankylosing Spondylitis Disease Activity Index.  J Rheu-\nmatol. 1994; 21(12):2286–91."
-  },
-  {
-    "text": "A new approach to defining dis-\nease status in ankylosing spondylitis: the Bath Ankylosing Spondylitis Disease Activity Index.  J Rheu-\nmatol. 1994; 21(12):2286–91.  PMID: 7699630\n10.  Ware JE, Sherbourne CD."
-  },
-  {
-    "text": "PMID: 7699630\n10.  Ware JE, Sherbourne CD.  The MOS 36-Item Short-Form Health Survey (SF-36) I. Conceptual Frame-\nwork and Item Selection. 2012; 30(6):473–83.  11."
-  },
-  {
-    "text": "The MOS 36-Item Short-Form Health Survey (SF-36) I. Conceptual Frame-\nwork and Item Selection. 2012; 30(6):473–83.  11.  Group E. EuroQol *—a new facility for the measurement of health-related quality of life.  1990; 16:199–\n206."
-  },
-  {
-    "text": "Group E. EuroQol *—a new facility for the measurement of health-related quality of life.  1990; 16:199–\n206.  https://doi.org/10.1016/0168-8510(90)90421-9 PMID: 10109801\n12.  Zigmond A, Snaith R."
-  },
-  {
-    "text": "https://doi.org/10.1016/0168-8510(90)90421-9 PMID: 10109801\n12.  Zigmond A, Snaith R.  The hospital anxiety and depression scale.  Acta Psychiatr Scand. 1983; 67\n(6):361–70."
-  },
-  {
-    "text": "Zigmond A, Snaith R.  The hospital anxiety and depression scale.  Acta Psychiatr Scand. 1983; 67\n(6):361–70.  https://doi.org/10.1111/j.1600-0447.1983.tb09716.x PMID: 6880820\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 11 / 11"
+    "text": "Lukas C, Landewe R, Sieper J, Dougados M, Davis J, Braun J, et al. Development of an ASAS-\n ́\nendorsed disease activity score (ASDAS) in patients with ankylosing spondylitis.  A new approach to defining dis-\nease status in ankylosing spondylitis: the Bath Ankylosing Spondylitis Disease Activity Index.  Group E. EuroQol *—a new facility for the measurement of health-related quality of life.  https://doi.org/10.1111/j.1600-0447.1983.tb09716.x PMID: 6880820\nAdd-on training program in axial spondyloarthritis\nPLOS ONE | https://doi.org/10.1371/journal.pone.0225749 December 2, 2019 11 / 11"
   }
 ]

@@ -6,13 +6,13 @@ describe("PDFShingleParser", function() {
 
     this.timeout(60000)
 
-    it("basic", async () => {
+    xit("basic", async () => {
 
         const url = FilePaths.toURL('/Users/burton/plusone.pdf')
 
         const result: string[] = [];
 
-        await PDFShingleParser.parse({url, filterCompleteSentences: false}, async (event) => {
+        await PDFShingleParser.parse({url, filterCompleteSentences: true}, async (event) => {
 
             const {shingles} = event;
 
