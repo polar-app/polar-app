@@ -47,6 +47,10 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
+            // margin: '16px 0',
+            '& h1, & h2, & h3, & h4, & h5': {
+                margin: 0,
+            },
             height: '100%',
             overflow: 'auto'
         },
@@ -71,7 +75,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
         {!Devices.isDesktop() && <HeaderBar title={'Settings'}/>}
         <div className={classes.root}>
             <Box component='div' px={2}>
-                <h1>General</h1>
+                <Box component="h1" pt={2}>General</Box>
 
                 <p>
                     General settings. Note that some of
