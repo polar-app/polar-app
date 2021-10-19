@@ -56,6 +56,7 @@ import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory'
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {MigrationDialog} from "./impl/PolarMigrationDialog"
+import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
 
 interface IStory {
     readonly name: string;
@@ -280,6 +281,11 @@ const stories = createStoryIndex([
     {
         name: 'FeedbackButton',
         component: <FeedbackButtonStory />,
+    },
+
+    {
+        name: 'AdaptivePageLayout',
+        component: <AdaptivePageLayoutStory />,
     },
 
 ]);

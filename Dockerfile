@@ -29,3 +29,4 @@ RUN yarn config set cache-folder /polar-app/.cache
 
 # @ Expose the port for polar-bookshelf serving
 EXPOSE 8050
+EXPOSE 8051
