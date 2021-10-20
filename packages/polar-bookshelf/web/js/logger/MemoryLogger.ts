@@ -3,7 +3,6 @@ import {FixedBuffer} from '../util/FixedBuffer';
 import {LogLevelName, LogMessage} from './Logging';
 import {EventListener, Releaseable} from '../reactor/EventListener';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Strings} from "polar-shared/src/util/Strings";
 
 const capacity = 250;
 

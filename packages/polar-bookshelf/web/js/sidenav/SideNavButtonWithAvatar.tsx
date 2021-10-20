@@ -1,6 +1,6 @@
 import * as React from "react";
-import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
-import { deepMemo } from "../react/ReactUtils";
+import {TabDescriptor, useSideNavCallbacks} from "./SideNavStore";
+import {deepMemo} from "../react/ReactUtils";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {SIDENAV_SECONDARY_BUTTON_SIZE} from "./SideNav";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
@@ -17,7 +17,7 @@ import cyan from '@material-ui/core/colors/cyan';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 
 import useTheme from "@material-ui/core/styles/useTheme";
-import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 interface IProps {
     readonly tab: TabDescriptor;

@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkRects} from './PagemarkRects';
 import {Rects} from '../Rects';

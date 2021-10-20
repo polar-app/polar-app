@@ -1,11 +1,7 @@
-
 import {assert} from 'chai';
-
-import {DocInfo} from './DocInfo';
 import {DocInfos} from './DocInfos';
 import {DocDetail} from './DocDetail';
 import {DocDetails} from './DocDetails';
-import {assertJSON} from '../test/Assertions';
 
 describe('DocDetails', function () {
 

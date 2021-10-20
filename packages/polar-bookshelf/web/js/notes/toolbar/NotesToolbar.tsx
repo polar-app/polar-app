@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchForNote } from './SearchForNote';
+import {SearchForNote} from './SearchForNote';
 
 export const NotesToolbar = () => {
     return (

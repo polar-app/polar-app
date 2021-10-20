@@ -1,7 +1,12 @@
 import React from "react";
-import {AnnotationContentType, } from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType,} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContentTypeMap, AnnotationHighlightContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
+import {
+    AnnotationContentTypeMap,
+    AnnotationHighlightContent,
+    AreaHighlightAnnotationContent,
+    FlashcardAnnotationContent
+} from "./content/AnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -27,7 +32,7 @@ type IUseHighlightBlocks<T extends IHighlightContentType> = {
      * The ID of the document that the highlights belong to.
      */
     docID: string;
-    
+
     /**
      * The type of the highlights we want to fetch @see IHighlightContentType
      */
@@ -107,7 +112,7 @@ export const useAnnotationBlockManager = () => {
             return undefined;
         }
     }, [blocksStore]);
-    
+
     const getBlock = React.useCallback(<T extends AnnotationContentType = AnnotationContentType>(id: BlockIDStr, type?: T): Block<AnnotationContentTypeMap[T]> | undefined => {
         const block = blocksStore.getBlockForMutation(id);
 
@@ -242,7 +247,7 @@ type IBlockAreaHighlightOpts = {
 
 type ICreateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
     type: 'create',
-    
+
     /**
      * The ID of the document that the created areahighlight will belong to.
      */
@@ -288,7 +293,7 @@ export const useBlockAreaHighlight = () => {
                     return root.content.docInfo.fingerprint;
                 }
             }
-            
+
             return null;
         };
 
@@ -301,7 +306,7 @@ export const useBlockAreaHighlight = () => {
         };
 
         const fingerprint = getFingerprint();
-        
+
         if (! fingerprint) {
             return;
         }
@@ -314,7 +319,7 @@ export const useBlockAreaHighlight = () => {
             pageNum,
             docViewerElement,
         });
-    
+
 
         const blockID = getBlockID(fingerprint, content);
 
