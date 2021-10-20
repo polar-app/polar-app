@@ -3,7 +3,7 @@ import {DocMeta} from './DocMeta';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
-import {AnnotationInfos} from './AnnotationInfos';
+import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {PageMetas} from './PageMetas';
 import {forDict} from 'polar-shared/src/util/Functions';

@@ -1,4 +1,4 @@
-import {AnnotationInfo} from 'polar-shared/src/metadata/AnnotationInfo';
+import {AnnotationInfo} from './AnnotationInfo';
 
 export class AnnotationInfos {
 
