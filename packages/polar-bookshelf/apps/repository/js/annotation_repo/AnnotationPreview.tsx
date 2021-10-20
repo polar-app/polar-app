@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
-import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import Box from '@material-ui/core/Box';
-import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
+import {PlainTextStr} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
 

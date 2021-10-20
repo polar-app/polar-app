@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import { Devices } from "polar-shared/src/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

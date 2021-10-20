@@ -1,7 +1,4 @@
-// @NotStale
-
 import React from "react";
-import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";
 import {keyMapWithGroup} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
 const keyMap = keyMapWithGroup({

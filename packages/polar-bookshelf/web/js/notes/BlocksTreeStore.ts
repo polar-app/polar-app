@@ -1,7 +1,21 @@
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "./HTMLToBlocks";
 import {Block} from "./store/Block";
-import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
+import {
+    BlockNameStr,
+    DoIndentResult,
+    DoUnIndentResult,
+    IActiveBlock,
+    IBlockActivated,
+    IBlockMerge,
+    ICreatedBlock,
+    ICreateNewNamedBlockOpts,
+    IDropTarget,
+    INewBlockOpts,
+    Interstitial,
+    NavOpts,
+    NavPosition
+} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";

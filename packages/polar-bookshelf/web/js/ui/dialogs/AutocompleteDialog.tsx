@@ -11,7 +11,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
-import { useHistory, useLocation } from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) =>
     createStyles({

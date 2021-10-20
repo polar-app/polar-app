@@ -1,6 +1,5 @@
 import {Rule} from './Rule';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 

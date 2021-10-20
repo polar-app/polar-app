@@ -1,6 +1,5 @@
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
-import {Flashcard} from '../../../../metadata/Flashcard';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import * as _ from 'lodash';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';

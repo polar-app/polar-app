@@ -1,10 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import {Callback} from "polar-shared/src/util/Functions";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {deepMemo} from "../../react/ReactUtils";
 
 export function isInputCompleteEvent(event: KeyboardEvent) {

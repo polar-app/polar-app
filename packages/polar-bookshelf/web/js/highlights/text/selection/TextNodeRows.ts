@@ -2,7 +2,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {TextNodes} from './TextNodes';
 import {Rects} from '../../../Rects';
 import {Text} from '../../../util/Text';
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tuples} from "polar-shared/src/util/Tuples";
 import createSiblings = Tuples.createSiblings;
 

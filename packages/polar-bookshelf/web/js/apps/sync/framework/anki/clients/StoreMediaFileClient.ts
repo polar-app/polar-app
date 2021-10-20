@@ -1,6 +1,5 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 import * as TypeMoq from "typemoq";
-import {NoteDescriptor} from '../NoteDescriptor';
 
 /**
  *

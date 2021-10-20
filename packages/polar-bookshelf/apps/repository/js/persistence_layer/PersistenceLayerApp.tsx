@@ -1,22 +1,14 @@
 import React from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
-import {UserTagsDataLoader, useUserTagsDB} from "./UserTagsDataLoader";
+import {useUserTagsDB} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
-import {
-    ListenablePersistenceLayerProvider,
-} from "../../../../web/js/datastore/PersistenceLayer";
+import {ListenablePersistenceLayerProvider,} from "../../../../web/js/datastore/PersistenceLayer";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {
-    TagDescriptor,
-    TagDescriptors
-} from "polar-shared/src/tags/TagDescriptors";
+import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 import {RepoDataLoader} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {
-    createContextMemo,
-    useContextMemo
-} from "../../../../web/js/react/ContextMemo";
+import {createContextMemo, useContextMemo} from "../../../../web/js/react/ContextMemo";
 import {Provider} from "polar-shared/src/util/Providers";
 import {
     BaseDocMetaLookupContext,

@@ -6,8 +6,10 @@ import {PersistenceLayerManager} from "../../datastore/PersistenceLayerManager";
 import {useSideNavStore} from "../../sidenav/SideNavStore";
 import {PersistentRoute} from "./PersistentRoute";
 import {deepMemo} from "../../react/ReactUtils";
-import {PersistenceLayerContext} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    PersistenceLayerApp,
+    PersistenceLayerContext
+} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
 import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/AnnotationSidebarStore";
 import {DocMetaContextProvider} from "../../annotation_sidebar/DocMetaContextProvider";

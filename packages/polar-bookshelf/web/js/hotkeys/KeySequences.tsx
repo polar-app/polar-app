@@ -1,6 +1,6 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import { KeySequence } from "./KeySequence";
+import {KeySequence} from "./KeySequence";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import {KeyBinding} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 

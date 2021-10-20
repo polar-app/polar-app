@@ -5,8 +5,8 @@ import {MUITreeItem} from "./MUITreeItem";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {memoForwardRef} from "../../react/ReactUtils";
-import TagID = Tags.TagID;
 import {SelectRowType} from '../../../../apps/repository/js/doc_repo/SelectionEvents2';
+import TagID = Tags.TagID;
 
 interface IProps {
     readonly root: TagNode<TagDescriptorSelected>;

@@ -3,7 +3,11 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
-import {AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {
+    AreaHighlightAnnotationContent,
+    FlashcardAnnotationContent,
+    TextHighlightAnnotationContent
+} from "../../../web/js/notes/content/AnnotationContent";
 import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
 import {Text} from "polar-shared/src/metadata/Text";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
@@ -21,14 +25,14 @@ export namespace AnnotationBlockMigrator {
         Texts.isText(text) ? MarkdownContentConverter.toMarkdown(Texts.toHTML(text) || '') : text;
 
     export function tagsToLinks(blocksStore: IBlocksStore, tags?: Record<string, InheritedTag>): ReadonlyArray<IBlockLink> {
-        
+
         if (! tags) {
             return [];
         }
 
         const toBlockLink = (tag: Tag): IBlockLink => {
             const block = blocksStore.getBlockByName(tag.label);
-            
+
             if (block) {
                 return { text: `${TAG_IDENTIFIER}${tag.label}`, id: block.id };
             } else {

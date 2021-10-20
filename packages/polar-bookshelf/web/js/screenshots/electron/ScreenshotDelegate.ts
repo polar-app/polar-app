@@ -1,5 +1,4 @@
-import {Screenshot} from '../Screenshot';
-import {ScreenshotRequest} from '../Screenshot';
+import {Screenshot, ScreenshotRequest} from '../Screenshot';
 import {webContents} from 'electron';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';

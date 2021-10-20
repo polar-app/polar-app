@@ -2,13 +2,10 @@ import React from 'react';
 import {useDocFindCallbacks} from './DocFindStore';
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
-import {
-    GlobalKeyboardShortcuts,
-    keyMapWithGroup
-} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",

@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import * as React from "react";
 import {KeySequences} from "../../hotkeys/KeySequences";
-import { MUIListItemRight } from "./MUIListItemRight";
+import {MUIListItemRight} from "./MUIListItemRight";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 
 const useStyles = makeStyles((theme) =>

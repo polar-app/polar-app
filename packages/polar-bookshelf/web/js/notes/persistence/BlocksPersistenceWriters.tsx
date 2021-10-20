@@ -2,7 +2,6 @@ import React from 'react';
 import {BlocksPersistenceWriter, FirestoreBlocksStoreMutations} from "./FirestoreBlocksStoreMutations";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase/app';
@@ -23,6 +22,7 @@ import {RepoDocInfoDataObjectIndex} from '../../../../apps/repository/js/RepoDoc
 import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';
 

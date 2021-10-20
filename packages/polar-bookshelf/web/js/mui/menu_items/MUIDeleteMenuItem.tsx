@@ -1,10 +1,7 @@
 import {MUIMenuItem} from "../menu/MUIMenuItem";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from "react";
-import {MUIDeleteAction} from "../actions/MUIDeleteAction";
 import {Callback} from "polar-shared/src/util/Functions";
-import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
-import {useDialogManager} from "../dialogs/MUIDialogControllers";
 
 interface IProps {
     readonly onClick: Callback;

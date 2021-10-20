@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {SetStore, createObservableStore} from "../react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {Analytics} from '../analytics/Analytics';
 
 /**

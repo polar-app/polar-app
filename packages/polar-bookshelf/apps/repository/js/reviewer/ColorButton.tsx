@@ -1,8 +1,8 @@
 import React from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import Button, {ButtonProps} from '@material-ui/core/Button';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import isEqual from "react-fast-compare";
-import { createStyles, darken } from '@material-ui/core/styles';
+import {createStyles, darken} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => {
     return createStyles({

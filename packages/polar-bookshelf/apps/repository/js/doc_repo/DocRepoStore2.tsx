@@ -16,20 +16,14 @@ import {
     useRepoDocMetaManager,
     useTagsProvider
 } from "../persistence_layer/PersistenceLayerApp";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {
-    TagSidebarEventForwarder,
-    TagSidebarEventForwarderContext
-} from "../store/TagSidebarEventForwarder";
+import {TagSidebarEventForwarder, TagSidebarEventForwarderContext} from "../store/TagSidebarEventForwarder";
 import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
@@ -39,15 +33,11 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
-import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
-import TypeConverter = Sorting.TypeConverter;
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
@@ -56,6 +46,10 @@ import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../doc/src/DocViewer";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
+import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
+import TypeConverter = Sorting.TypeConverter;
 
 interface IDocRepoStore {
 

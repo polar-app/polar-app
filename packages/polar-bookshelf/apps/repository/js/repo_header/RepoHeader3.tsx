@@ -12,7 +12,6 @@ import {CloudConnectivityButton} from "../../../../web/js/apps/repository/connec
 import {MoreActionsDropdown} from "./MoreActionsDropdown";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {ChromeExtensionInstallButton} from "../ChromeExtensionInstallButton";
-import Box from '@material-ui/core/Box';
 import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 export namespace RepoHeader {

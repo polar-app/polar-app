@@ -1,13 +1,10 @@
 import React from "react";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
-import {
-    GlobalKeyboardShortcuts,
-    keyMapWithGroup
-} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
 const globalKeyMap = keyMapWithGroup(
     {

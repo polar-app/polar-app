@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
-import { ActionListItem } from "./ActionListItem";
+import {ActionListItem} from "./ActionListItem";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 

@@ -1,14 +1,6 @@
-import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {isBinaryFileData} from './Datastore';
-import {DocMetaRef} from './DocMetaRef';
-import {DiskDatastore} from './DiskDatastore';
-import {RemoteDatastore} from './RemoteDatastore';
+import {Datastore} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {Blobs} from 'polar-shared/src/util/Blobs';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DatastoreFileCache} from './DatastoreFileCache';
 import {DelegatedDatastore} from './DelegatedDatastore';

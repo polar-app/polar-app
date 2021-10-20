@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 
 interface ISnapshot {

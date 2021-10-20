@@ -1,4 +1,3 @@
-import {UploadFilters} from "./UploadFilters";
 import {IUpload} from "./IUpload";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {UploadPaths} from "./UploadPaths";

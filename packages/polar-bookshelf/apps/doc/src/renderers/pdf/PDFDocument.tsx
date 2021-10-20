@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    EventBus,
-    PDFFindController,
-    PDFLinkService,
-    PDFRenderingQueue,
-    PDFViewer
-} from 'pdfjs-dist/web/pdf_viewer';
+import {EventBus, PDFFindController, PDFLinkService, PDFRenderingQueue, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
 import {LinkTarget, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
@@ -14,16 +8,8 @@ import {Finder} from "../../Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {
-    ScaleLevelTuple,
-    ScaleLevelTuples,
-    ScaleLevelTuplesMap
-} from "../../ScaleLevels";
-import {
-    IDocDescriptor,
-    IDocScale,
-    useDocViewerCallbacks,
-} from "../../DocViewerStore";
+import {ScaleLevelTuple, ScaleLevelTuples, ScaleLevelTuplesMap} from "../../ScaleLevels";
+import {IDocDescriptor, IDocScale, useDocViewerCallbacks,} from "../../DocViewerStore";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
@@ -33,27 +19,25 @@ import './PDFDocument.css';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Pagemarks} from "../../../../../web/js/metadata/Pagemarks";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
-import {
-    usePersistenceLayerContext,
-} from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext,} from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {DocumentInit} from "../DocumentInitHook";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IOutlineItem} from "../../outline/IOutlineItem";
-import Outline = _pdfjs.Outline;
 import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import Destination = _pdfjs.Destination;
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
-import { usePDFUpgrader } from './PDFUpgrader';
+import {usePDFUpgrader} from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
+import Outline = _pdfjs.Outline;
+import Destination = _pdfjs.Destination;
 
 interface DocViewer {
     readonly eventBus: EventBus;

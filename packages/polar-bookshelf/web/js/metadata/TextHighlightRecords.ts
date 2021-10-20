@@ -4,10 +4,7 @@ import {IText} from 'polar-shared/src/metadata/Text';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {
-    AnnotationOrder,
-    HighlightColor
-} from "polar-shared/src/metadata/IBaseHighlight";
+import {AnnotationOrder, HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
 

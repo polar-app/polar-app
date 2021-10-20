@@ -1,4 +1,4 @@
-import {PathStr, URLStr} from "polar-shared/src/util/Strings";
+import {PathStr} from "polar-shared/src/util/Strings";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 

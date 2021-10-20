@@ -13,17 +13,14 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Version} from "polar-shared/src/util/Version";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {Platforms} from "polar-shared/src/util/Platforms";
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from "../../datastore/PersistenceLayerManager";
+import {PersistenceLayerController, PersistenceLayerManager} from "../../datastore/PersistenceLayerManager";
 import * as ReactDOM from "react-dom";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import * as React from "react";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { MailingList } from "./auth_handler/MailingList";
+import {MailingList} from "./auth_handler/MailingList";
 
 const log = Logger.create();
 

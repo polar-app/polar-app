@@ -1,13 +1,8 @@
-import {
-    DictionaryPrefs,
-    IPersistentPrefs,
-    Prefs,
-    StringToPrefDict
-} from "../../util/prefs/Prefs";
+import {DictionaryPrefs, IPersistentPrefs, Prefs, StringToPrefDict} from "../../util/prefs/Prefs";
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import { Collections, } from "polar-firestore-like/src/Collections";
+import {Collections,} from "polar-firestore-like/src/Collections";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import { OnErrorCallback, SnapshotUnsubscriber } from 'polar-shared/src/util/Snapshots';
+import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";

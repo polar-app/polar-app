@@ -1,8 +1,6 @@
 import * as React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import SendIcon from "@material-ui/icons/Send";
 import ListItemText from "@material-ui/core/ListItemText";
 import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 

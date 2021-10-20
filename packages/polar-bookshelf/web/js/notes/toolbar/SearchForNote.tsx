@@ -9,7 +9,7 @@ import {NamedContent, useBlocksStore} from '../store/BlocksStore';
 import {MUIDialog} from '../../ui/dialogs/MUIDialog';
 import {ICommand, MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
 import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
-import {createStyles, IconButton, makeStyles, Tooltip, useTheme} from '@material-ui/core';
+import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import {Block} from "../store/Block";
 import CloseIcon from '@material-ui/icons/Close';
 

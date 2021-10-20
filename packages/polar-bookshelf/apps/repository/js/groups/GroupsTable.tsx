@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupCard} from "./GroupCard";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";

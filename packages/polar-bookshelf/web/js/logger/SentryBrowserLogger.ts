@@ -1,5 +1,5 @@
 import {ILogger} from 'polar-shared/src/logger/ILogger';
-import {captureException, init} from '@sentry/browser';
+import {captureException} from '@sentry/browser';
 import {SentryBrowser} from "./SentryBrowser";
 
 SentryBrowser.initWhenNecessary();
@@ -53,6 +53,6 @@ export class SentryBrowserLogger implements ILogger {
     public async sync(): Promise<void> {
         SentryBrowser.initWhenNecessary();
     }
-    
+
 }
 

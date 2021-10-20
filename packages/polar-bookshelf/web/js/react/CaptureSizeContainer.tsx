@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IDimensions } from 'polar-shared/src/util/IDimensions';
+import {IDimensions} from 'polar-shared/src/util/IDimensions';
 
 interface IProps {
     readonly children: JSX.Element;

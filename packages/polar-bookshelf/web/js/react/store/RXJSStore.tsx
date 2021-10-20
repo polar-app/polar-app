@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Subject} from "rxjs";
-import { Provider } from 'polar-shared/src/util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {typedMemo, useRefValue} from "../../hooks/ReactHooks";
 import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import {ICommand} from "../mui/command_menu/MUICommandMenu";
 import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import { MUICommandMenuKeyboardShortcut } from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
+import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 
 export const SwitchToOpenDocumentKeyboardCommand = () => {
 

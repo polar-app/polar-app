@@ -1,22 +1,16 @@
 import React, {useContext} from 'react';
 import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {
-    SetStore, UseContextHook
-} from "../../../../web/js/react/store/ObservableStore";
+import {SetStore, UseContextHook} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
-import {
-    useTagDescriptorsContext
-} from "../persistence_layer/PersistenceLayerApp";
+import {useTagDescriptorsContext} from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
 import {BatchMutators} from "../BatchMutators";
-import TagID = Tags.TagID;
-import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
@@ -24,6 +18,8 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {useCreateTag, useDeleteTag, useRenameTag} from "../persistence_layer/PersistenceLayerMutator2";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {SelectionEvents2, SelectRowType} from '../doc_repo/SelectionEvents2';
+import TagID = Tags.TagID;
+import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean

@@ -1,9 +1,4 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {AnkiSyncEngine} from './AnkiSyncEngine';
-import {MockDocMetas} from '../../../../metadata/DocMetas';
-import {MockFlashcards} from '../../../../metadata/Flashcards';
-import {DocMetaSet} from '../../../../metadata/DocMetaSet';
-import {SyncProgressListener} from '../SyncProgressListener';
 
 const log = Logger.create();
 

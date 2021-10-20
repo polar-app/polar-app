@@ -2,16 +2,12 @@ import * as React from 'react';
 import {useCallback, useState} from 'react';
 import {IDocAnnotationRef} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
-import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {CommentAnnotationView2} from "./CommentAnnotationView2";
 import isEqual from "react-fast-compare";
 import {EditComment2} from "./EditComment2";
-import {
-    ICommentUpdate,
-    useAnnotationMutationsContext
-} from "../../AnnotationMutationsContext";
+import {ICommentUpdate, useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {CommentAnnotationControlBar2} from "./CommentAnnotationControlBar2";
 

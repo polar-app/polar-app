@@ -1,4 +1,4 @@
-import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 
 const ENABLED = typeof localStorage !== 'undefined' &&
                 localStorage.getItem('analytics.tracing') === 'true';

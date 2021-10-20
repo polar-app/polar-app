@@ -5,11 +5,7 @@ import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Doc} from '../../metadata/Doc';
-import {
-    ContactProfile,
-    GroupSharingRecords,
-    MemberRecord
-} from './GroupSharingRecords';
+import {ContactProfile, GroupSharingRecords, MemberRecord} from './GroupSharingRecords';
 import {GroupSharingControl, InvitationRequest} from './GroupSharingControl';
 import {LoginRequired} from "./LoginRequired";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";

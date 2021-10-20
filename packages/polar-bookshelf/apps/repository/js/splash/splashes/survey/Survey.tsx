@@ -1,9 +1,6 @@
 import React from 'react';
 import {Splash} from '../../Splash';
-import {
-    SplitLayout,
-    SplitLayoutLeft
-} from '../../../../../../web/js/ui/split_layout/SplitLayout';
+import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
 

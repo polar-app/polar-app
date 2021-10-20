@@ -7,9 +7,9 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import {CardPaper} from "./CardPaper";
-import { useFlashcardStore, useFlashcardCallbacks, FlashcardStoreProvider } from './FlashcardStore';
+import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import { FlashcardGlobalHotKeys } from './FlashcardGlobalHotKeys';
+import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
 
 namespace card {
 

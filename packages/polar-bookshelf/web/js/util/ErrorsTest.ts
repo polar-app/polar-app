@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {Errors} from './Errors';
-import {Simulate} from 'react-dom/test-utils';
 
 describe('Errors', function() {
 

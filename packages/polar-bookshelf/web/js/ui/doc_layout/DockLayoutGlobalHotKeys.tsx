@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
-import { useDockLayoutCallbacks } from './DockLayoutStore';
+import {useDockLayoutCallbacks} from './DockLayoutStore';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const globalKeyMap = keyMapWithGroup({
