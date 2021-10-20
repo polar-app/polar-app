@@ -370,7 +370,7 @@ const RegisterForBetaButton = () => {
                 setIsRegistered(true);
 
                 // @TODO also store the Referral code, once we start capturing it during signup
-                analytics.event2("private_beta_joined", {email});
+                analytics.event2("private_beta_joined", {});
 
                 console.log("Registered now!");
 
