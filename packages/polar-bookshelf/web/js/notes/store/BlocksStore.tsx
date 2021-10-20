@@ -570,9 +570,16 @@ export class BlocksStore implements IBlocksStore {
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
 
         const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
-        structure.children.reduce((acc, substructure) => [...acc, ...toIDs(substructure)], [structure.id]);
+               structure.children.reduce((acc, substructure) =>
+                   [...acc, ...toIDs(substructure)], [structure.id]);
 
-        const ids = blocks.flatMap(toIDs);
+        // The reverse call below is EXTREMELY IMPORTANT because the undo/redo system
+        // mutates the blocks that belong to these ids in the same order specified here
+        // The reason why we have to reverse them is because when undoing this operation
+        // requires deleting all of the inserted blocks, and in order for that to happen
+        // we have to list children ids first before their parents, because doDelete
+        // doesn't like deleting blocks that have no parents
+        const ids = blocks.flatMap(blockStructure => toIDs(blockStructure).reverse());
 
         const redo = () => {
             const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref?: BlockIDStr, isParent: boolean = false) => {
@@ -609,7 +616,7 @@ export class BlocksStore implements IBlocksStore {
 
         const identifiers = [
             ...ids,
-            ...(opts.ref ? [this._index[opts.ref].parent || opts.ref] : []),
+            ...(opts.ref ? [opts.ref] : []),
         ];
         return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
     }

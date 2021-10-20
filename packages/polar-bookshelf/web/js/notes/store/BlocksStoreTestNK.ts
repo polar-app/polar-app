@@ -2796,8 +2796,6 @@ describe('BlocksStore', function() {
             const store = createStore();
             const id = '112';
 
-            store.setActive(id);
-
             createUndoRunner(store, ['112', ...blockIDs], () => {
                 store.insertFromBlockContentStructure(blockStructure, {ref: id});
                 const block102 = store.getBlockForMutation(id);
