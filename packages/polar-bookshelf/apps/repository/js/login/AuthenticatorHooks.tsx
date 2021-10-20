@@ -322,7 +322,7 @@ export function useTriggerStartTokenAuth() {
 }
 
 export interface IVerifyTokenAuthResponseError {
-    readonly code: 'no-email-for-challenge' | 'invalid-challenge';
+    readonly code: 'no-email-for-challenge' | 'invalid-challenge' | 'registrations-disabled';
 }
 
 export interface IVerifyTokenAuthResponse {
@@ -380,6 +380,8 @@ export function useTriggerVerifyTokenAuth() {
                 throw new Error('No email was found for that challenge.');
             case 'invalid-challenge':
                 throw new Error('The challenge code you provided was invalid.');
+            case 'registrations-disabled':
+                throw new Error('Registrations have now been disabled. Please join the private beta waiting list here.');
             default:
                 throw getErrorFromCloudFunctionResponse(response);
         }
