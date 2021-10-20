@@ -74,16 +74,6 @@ export class DocMetas {
     // result.init(result);
 
     /**
-     * Create a DocMeta object but place initial pagemarks on it. This is useful
-     * for testing.
-     *
-     * @deprecated use MockDocMetas
-     */
-    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
-        return MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-    }
-
-    /**
      * @deprecated use MockDocMetas
      */
     public static createMockDocMeta() {

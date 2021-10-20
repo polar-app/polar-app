@@ -54,7 +54,7 @@ describe('DocMetas', function() {
 
             const fingerprint = "0x001";
 
-            const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
             console.log(JSON.stringify(docMeta, null, "  "));
 
             DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50});
@@ -296,7 +296,7 @@ function createUpgradeDoc(): IDocMeta {
 
     const fingerprint = "0x001";
     const nrPages = 1;
-    const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+    const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
     const textHighlight = TextHighlights.createMockTextHighlight();
 

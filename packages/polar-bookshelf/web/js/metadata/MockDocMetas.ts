@@ -3,8 +3,9 @@ import {Pagemarks} from "./Pagemarks";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {TextHighlights} from "./TextHighlights";
 import {DocMetas} from "./DocMetas";
+import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
 
-export class MockDocMetas {
+export namespace MockDocMetas {
 
 
     /**
@@ -12,9 +13,9 @@ export class MockDocMetas {
      * for testing.
      *
      */
-    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number): IDocMeta {
+    export function createWithinInitialPagemarks(fingerprint: string, nrPages: number): IDocMeta {
 
-        const result = DocMetas.create(fingerprint, nrPages);
+        const result = DocMetaSerializer.create(fingerprint, nrPages);
 
         const maxPages = 3;
         for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
@@ -33,10 +34,10 @@ export class MockDocMetas {
 
     }
 
-    public static createMockDocMeta(fingerprint: string = "0x001") {
+    export function createMockDocMeta(fingerprint: string = "0x001") {
 
         const nrPages = 4;
-        const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+        const docMeta = createWithinInitialPagemarks(fingerprint, nrPages);
 
         const textHighlight = TextHighlights.createMockTextHighlight();
 
