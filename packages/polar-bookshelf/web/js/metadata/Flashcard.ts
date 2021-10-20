@@ -1,5 +1,5 @@
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {VersionedObject} from './VersionedObject';
+import {VersionedObject} from 'polar-shared/src/metadata/VersionedObject';
 import {Text} from 'polar-shared/src/metadata/Text';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
