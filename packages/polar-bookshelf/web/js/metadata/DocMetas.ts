@@ -6,7 +6,6 @@ import {Pagemarks} from './Pagemarks';
 import {PageMetas} from './PageMetas';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -21,6 +20,7 @@ import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 import {SparseDocMetas} from "./SparseDocMetas";
 import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
 import {MockDocMetas} from "./MockDocMetas";
+import {Errors} from "polar-shared/src/util/Errors";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
