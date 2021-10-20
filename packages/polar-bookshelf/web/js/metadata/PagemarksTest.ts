@@ -4,7 +4,7 @@ import {DocMetas} from "./DocMetas";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ReadingProgresses} from './ReadingProgresses';
+import {ReadingProgresses} from 'polar-shared/src/metadata/ReadingProgresses';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Objects} from "polar-shared/src/util/Objects";

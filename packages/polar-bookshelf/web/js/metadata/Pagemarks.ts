@@ -21,8 +21,8 @@ import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
 import {Pagemark} from 'polar-shared/src/metadata/Pagemark';
 import {PagemarkRects} from 'polar-shared/src/metadata/PagemarkRects';
 import {DocMetas} from './DocMetas';
-import {ReadingProgresses} from './ReadingProgresses';
-import {ReadingOverviews} from './ReadingOverviews';
+import {ReadingProgresses} from 'polar-shared/src/metadata/ReadingProgresses';
+import {ReadingOverviews} from 'polar-shared/src/metadata/ReadingOverviews';
 
 const log = Logger.create();
 

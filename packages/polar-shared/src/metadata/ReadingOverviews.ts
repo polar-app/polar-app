@@ -1,14 +1,14 @@
-import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import {HitMap} from 'polar-shared/src/util/HitMap';
-import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
-import {ISODateString, ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
-import {Reducers} from 'polar-shared/src/util/Reducers';
-import {Tuples} from 'polar-shared/src/util/Tuples';
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
-import {Numbers} from "polar-shared/src/util/Numbers";
+import {ReadingProgress} from './ReadingProgress';
+import {isPresent} from '../Preconditions';
+import {HitMap} from '../util/HitMap';
+import {ReadingOverview} from './ReadingOverview';
+import {ISODateString, ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {PagemarkMode} from './PagemarkMode';
+import {Reducers} from '../util/Reducers';
+import {Tuples} from '../util/Tuples';
+import {IPageMeta} from "./IPageMeta";
+import {ArrayListMultimap} from "../util/Multimap";
+import {Numbers} from "../util/Numbers";
 
 const PRE_EXISTING_DAY = '!preexisting';
 

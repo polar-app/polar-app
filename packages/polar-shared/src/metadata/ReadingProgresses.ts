@@ -1,7 +1,7 @@
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {ProgressByMode, ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {Hashcodes} from '../util/Hashcodes';
+import {ProgressByMode, ReadingProgress} from './ReadingProgress';
+import {Preconditions} from '../Preconditions';
 
 
 export class ReadingProgresses {
