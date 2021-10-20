@@ -1,8 +1,8 @@
-import {TestingTime} from 'polar-shared/src/test/TestingTime';
+import {TestingTime} from '../test/TestingTime';
 import {TextHighlightRecords} from './TextHighlightRecords';
-import {assertJSON} from '../test/Assertions';
-import {Rect} from 'polar-shared/src/util/Rect';
-import {ITextRect} from "polar-shared/src/metadata/ITextRect";
+import {assertJSON} from 'polar-test/src/test/Assertions';
+import {Rect} from '../util/Rect';
+import {ITextRect} from "./ITextRect";
 
 describe('TextHighlightRecords', function() {
 

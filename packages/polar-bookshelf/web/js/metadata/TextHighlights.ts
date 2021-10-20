@@ -11,7 +11,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
-import {TextHighlightRecords} from './TextHighlightRecords';
+import {TextHighlightRecords} from 'polar-shared/src/metadata/TextHighlightRecords';
 import {TextRect} from './TextRect';
 import {TextHighlight} from 'polar-shared/src/metadata/TextHighlight';
 

@@ -2,7 +2,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {TextSelections} from "../../../../web/js/highlights/text/controller/TextSelections";
 import {DocMetas} from "../../../../web/js/metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {TextHighlightRecords} from "../../../../web/js/metadata/TextHighlightRecords";
+import {TextHighlightRecords} from "polar-shared/src/metadata/TextHighlightRecords";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";

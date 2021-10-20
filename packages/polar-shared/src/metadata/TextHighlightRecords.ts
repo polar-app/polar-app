@@ -1,12 +1,12 @@
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {TextHighlight} from 'polar-shared/src/metadata/TextHighlight';
-import {IText} from 'polar-shared/src/metadata/Text';
-import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {AnnotationOrder, HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {ITextRect} from "polar-shared/src/metadata/ITextRect";
-import {Arrays} from "polar-shared/src/util/Arrays";
+import {Hashcodes} from '../util/Hashcodes';
+import {TextHighlight} from './TextHighlight';
+import {IText} from './Text';
+import {IRect} from '../util/rects/IRect';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ITextHighlight} from "./ITextHighlight";
+import {AnnotationOrder, HighlightColor} from "./IBaseHighlight";
+import {ITextRect} from "./ITextRect";
+import {Arrays} from "../util/Arrays";
 
 export class TextHighlightRecords {
 
