@@ -13,10 +13,9 @@ describe('Line', function() {
             "axis": "x",
             "start": 10,
             "end": 20,
-            "length": 10,
         };
 
-        assertJSON(line, expected, undefined, true);
+        assertJSON(line, expected, undefined);
 
     });
 

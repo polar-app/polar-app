@@ -1,4 +1,4 @@
-import {isPresent, notNull, Preconditions} from 'src/Preconditions';
+import {isPresent, notNull, Preconditions} from '../Preconditions';
 
 export type Axis = 'x' | 'y';
 
