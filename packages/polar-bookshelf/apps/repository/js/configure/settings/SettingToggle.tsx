@@ -4,7 +4,7 @@ import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 import {Box} from "@material-ui/core";
-import { Devices } from "polar-shared/src/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export interface PrefsWriter {
 
@@ -78,7 +78,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                                 color: 'red',
                                 fontSize: 9,
                             }}>BETA</div>
-                        )} 
+                        )}
                     </Box>
                 </MUIIconText>
 
@@ -94,7 +94,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                 <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
                     {props.description}
                 </Box>
-            </div> 
+            </div>
         </Box>
     );
 

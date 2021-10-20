@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {LeftRightSplit} from "../../../../web/js/ui/left_right_split/LeftRightSplit";

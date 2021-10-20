@@ -8,7 +8,6 @@ import {GroupDocInfos} from "../../../../web/js/datastore/sharing/GroupDocInfos"
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {GroupData} from "./GroupData";
-import {UserGroupCollection} from "polar-firebase/src/firebase/om/UserGroupCollection";
 import {GroupDeleteButton} from './GroupDeleteButton';
 import {GroupNavbar} from "./GroupNavbar";
 import {GroupURLs} from "polar-webapp-links/src/groups/GroupURLs";

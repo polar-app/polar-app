@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import { usePrefsContext } from '../persistence_layer/PrefsContext2';
+import {usePrefsContext} from '../persistence_layer/PrefsContext2';
 
 const PREF_KEY = 'doc_repo_columns';
 

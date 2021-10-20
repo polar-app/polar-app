@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    useDocViewerJumpToPageLoader,
-    useDocViewerPageJumpListener
-} from "../DocViewerAnnotationHook";
+import {useDocViewerJumpToPageLoader, useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
 import {ReadingProgressResume} from "../../../../web/js/view/ReadingProgressResume";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";

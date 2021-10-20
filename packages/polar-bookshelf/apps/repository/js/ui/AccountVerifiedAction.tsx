@@ -4,7 +4,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {AccountUpgrades} from "../../../../web/js/accounts/AccountUpgrades";
 
 export namespace AccountVerifiedAction {

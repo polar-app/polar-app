@@ -2,7 +2,7 @@ import * as React from "react";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {DocInfoProperty} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import { Strings } from "polar-shared/src/util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
 import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 

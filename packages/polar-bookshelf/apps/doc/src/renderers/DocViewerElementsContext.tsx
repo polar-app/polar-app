@@ -1,6 +1,6 @@
 import {useDocViewerContext} from "./DocRenderer";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useDocViewerStore} from "../DocViewerStore";
 
 export interface IDocViewerElements {

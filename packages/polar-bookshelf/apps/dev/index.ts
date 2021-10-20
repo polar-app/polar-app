@@ -1,9 +1,5 @@
-import {PDFThumbnailer} from "polar-pdf/src/pdf/PDFThumbnailer";
-import {Canvases, ImageDatas, ImageData} from "polar-shared/src/util/Canvases";
-
+import {Canvases, ImageData, ImageDatas} from "polar-shared/src/util/Canvases";
 import "./index.scss"
-import {Fetches} from "polar-shared/src/util/Fetch";
-import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Blobs} from "polar-shared/src/util/Blobs";
 
 function showImage(thumbnail: ImageData) {

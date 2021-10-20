@@ -1,5 +1,5 @@
 import '@antv/g6';
-import { GraphOptions, IAbstractGraph, IG6GraphEvent, IGraph } from '@antv/g6';
+import {GraphOptions, IAbstractGraph, IG6GraphEvent, IGraph} from '@antv/g6';
 
 declare module '@antv/g6' {
     type IGraphOptions =  Omit<GraphOptions,"container"> & {

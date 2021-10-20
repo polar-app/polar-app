@@ -1,11 +1,10 @@
 import {FixedNav} from "../FixedNav";
 import * as React from "react";
-import {HeaderBar} from "../doc_repo/HeaderBar";
-import {AppBar, Box, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Box, Toolbar} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { useHistory } from "react-router-dom";
-import { DeviceRouter } from "../../../../web/js/ui/DeviceRouter";
+import {useHistory} from "react-router-dom";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 interface IProps {
     readonly title: string;

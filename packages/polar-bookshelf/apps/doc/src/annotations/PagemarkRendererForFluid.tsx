@@ -7,30 +7,17 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
-import {
-    createContextMenu,
-    useContextMenu
-} from "../../../repository/js/doc_repo/MUIContextMenu";
+import {createContextMenu, useContextMenu} from "../../../repository/js/doc_repo/MUIContextMenu";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
 import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
-import {
-    IPagemarkCoverage,
-    IPagemarkUpdate,
-    useDocViewerCallbacks
-} from "../DocViewerStore";
+import {IPagemarkCoverage, IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {
-    useWindowResizeEventListener,
-    useWindowScrollEventListener
-} from "../../../../web/js/react/WindowHooks";
+import {useWindowResizeEventListener, useWindowScrollEventListener} from "../../../../web/js/react/WindowHooks";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Direction} from "../FluidPagemarkFactory";
-import {
-    FluidElementPredicates,
-    RangeRects
-} from "./pagemarks/FluidElementPredicates";
+import {FluidElementPredicates, RangeRects} from "./pagemarks/FluidElementPredicates";
 
 function computePagemarkCoverageFromResize(box: ILTRect,
                                            browserContext: IBrowserContext,

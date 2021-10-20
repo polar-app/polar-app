@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {GroupDocInfoCard} from "./GroupDocInfoCard";
 import {GroupData} from "./GroupData";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";

@@ -8,10 +8,7 @@ import {PersistenceLayerController} from "../../../../../web/js/datastore/Persis
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupHighlightData} from "./GroupHighlightData";
 import {HighlightCard} from "../highlights/HighlightCard";
-import {
-    GroupHighlightURL,
-    GroupHighlightURLs
-} from "polar-webapp-links/src/groups/GroupHighlightURLs";
+import {GroupHighlightURL, GroupHighlightURLs} from "polar-webapp-links/src/groups/GroupHighlightURLs";
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();

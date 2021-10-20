@@ -1,8 +1,8 @@
 import React from 'react';
 import {Content} from "./Content";
 import {SearchBar} from "./SearchBar";
-import { DOMHighlights } from '../../web/js/dom_highlighter/DOMHighlights';
-import { DOMTextHit } from 'polar-dom-text-search/src/DOMTextHit';
+import {DOMHighlights} from '../../web/js/dom_highlighter/DOMHighlights';
+import {DOMTextHit} from 'polar-dom-text-search/src/DOMTextHit';
 import {DOMTextIndexes} from "polar-dom-text-search/src/DOMTextIndexes";
 
 export const DOMHits = () => {

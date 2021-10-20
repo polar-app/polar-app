@@ -21,8 +21,6 @@ import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {FullWidthButton} from './FullWidthButton';
-import {Devices} from "polar-shared/src/util/Devices";
-import {HeaderBar} from '../../doc_repo/HeaderBar';
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [

@@ -6,7 +6,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import { Strings } from "polar-shared/src/util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
 
 interface IProps extends DocInfoProperty {
     readonly className?: string;

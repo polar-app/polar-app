@@ -1,7 +1,7 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Sorting} from "./Sorting";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import { Devices } from "polar-shared/src/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export interface ColumnDescriptor {
     disablePadding: boolean;

@@ -1,7 +1,7 @@
 import React from "react";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
+import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
@@ -77,5 +77,5 @@ export const CreateComment: React.FC<IAnnotationPopupActionProps> = (props) => {
     return annotation.type === 'docMeta'
         ? <DocMetaComment annotation={annotation.annotation} />
         : <BlockComment annotation={annotation.annotation} />
-            
+
 };

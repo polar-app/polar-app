@@ -3,7 +3,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import {useLinkLoader} from "../../../../web/js/ui/util/LinkLoaderHook";
-import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 import {MUITooltip} from "../../../../web/js/mui/MUITooltip";

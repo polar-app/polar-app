@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { Numbers } from 'polar-shared/src/util/Numbers';
+import {Numbers} from 'polar-shared/src/util/Numbers';
 import {BlockContentEditable} from "../../../web/js/notes/contenteditable/BlockContentEditable";
 
 // interface EditorsProps {
