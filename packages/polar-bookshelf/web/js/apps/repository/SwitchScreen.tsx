@@ -70,7 +70,7 @@ export const SwitchScreen = () => {
     const orderedTabsByRecency = useSortedDocInfos();
 
     return (
-        <AdaptivePageLayout title="Recent Documents" fullWidth>
+        <AdaptivePageLayout title="Recent Documents" fullWidth noBack>
 
             <Table  style={{
                     }}
