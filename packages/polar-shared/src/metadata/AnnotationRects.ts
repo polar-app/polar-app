@@ -1,11 +1,11 @@
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Rect} from 'polar-shared/src/util/Rect';
+import {Preconditions} from '../Preconditions';
+import {Rect} from '../util/Rect';
 import {AnnotationRect} from './AnnotationRect';
-import {Line} from 'polar-shared/src/util/Line';
-import {Rects} from 'polar-shared/src/util/Rects';
+import {Line} from '../util/Line';
+import {Rects} from '../util/Rects';
 import {IDimensions} from "../util/IDimensions";
-import {IPoint} from "polar-shared/src/util/Point";
-import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {IPoint} from "../util/Point";
+import {ILTRect} from "../util/rects/ILTRect";
 
 export namespace AnnotationRects {
 
