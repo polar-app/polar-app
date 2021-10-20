@@ -6,7 +6,7 @@ import {TextHighlightRecords} from "../../../../web/js/metadata/TextHighlightRec
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {Rects} from "../../../../web/js/Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IDocScale} from "../DocViewerStore";

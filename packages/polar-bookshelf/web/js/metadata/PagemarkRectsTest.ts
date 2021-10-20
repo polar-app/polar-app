@@ -1,6 +1,6 @@
 import {assertJSON} from '../test/Assertions';
 import {PagemarkRects} from './PagemarkRects';
-import {Rects} from '../Rects';
+import {Rects} from 'polar-shared/src/util/Rects';
 
 describe('PagemarkRects', function() {
 

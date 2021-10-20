@@ -1,12 +1,12 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../../web/js/Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {computePageDimensions} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {Rect} from "../../../../web/js/Rect";
+import {Rect} from "polar-shared/src/util/Rect";
 import {Pagemark} from "../../../../web/js/metadata/Pagemark";
 import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
 import {Styles} from "../../../../web/js/util/Styles";

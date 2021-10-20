@@ -16,7 +16,7 @@ import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ICapturedScreenshot} from '../screenshots/Screenshot';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {DataURLs} from 'polar-shared/src/util/DataURLs';
-import {Rects} from '../Rects';
+import {Rects} from 'polar-shared/src/util/Rects';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
