@@ -1,4 +1,4 @@
-import {Annotation} from './Annotation';
+import {Annotation} from 'polar-shared/src/metadata/Annotation';
 import {Flashcard} from './Flashcard';
 import {Note} from './Note';
 import {Question} from './Question';

@@ -1,4 +1,4 @@
-import {Annotation} from './Annotation';
+import {Annotation} from 'polar-shared/src/metadata/Annotation';
 import {Note} from './Note';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
