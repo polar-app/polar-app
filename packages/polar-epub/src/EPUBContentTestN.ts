@@ -27,15 +27,19 @@ describe('EPUBContent', () => {
         assert.equal(titlePageContent, titlePageData.toString('utf-8'));
     });
 
-    it("EPUB Text Parser tinkering", async () => {
+    it("Can generate EPUB CFI XML root fragment", async () => {
         const path = FilePaths.resolve(__dirname, '../alice.epub');
 
-        const contentStream = await EPUBContent.get(path);
+        const firstChapterCFI = await EPUBContent.generateCFIXMLFragment(path, "chapter_001");
 
-        const titlePageContent = await contentStream[1].html();
+        const secondChapterCFI = await EPUBContent.generateCFIXMLFragment(path, "chapter_002");
 
-        console.log("HTML:\n", titlePageContent);
+        const lastChapterCFI = await EPUBContent.generateCFIXMLFragment(path, "chapter_010");
         
-        EPUBContent.parseHtml(titlePageContent);
+        assert.equal(firstChapterCFI, "/6/8[chapter_001]!");
+        
+        assert.equal(secondChapterCFI, "/6/10[chapter_002]!");
+
+        assert.equal(lastChapterCFI, "/6/26[chapter_010]!");
     });
 });
