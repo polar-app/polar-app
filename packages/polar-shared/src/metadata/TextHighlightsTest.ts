@@ -1,7 +1,7 @@
 import {assert} from 'chai';
-import {PageMeta} from 'polar-shared/src/metadata/PageMeta';
+import {PageMeta} from './PageMeta';
 import {TextHighlights} from './TextHighlights';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 
 describe('TestHighlights', function() {
 

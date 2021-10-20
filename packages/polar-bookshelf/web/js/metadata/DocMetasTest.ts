@@ -5,7 +5,7 @@ import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import {TextHighlights} from './TextHighlights';
+import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
 import {Pagemarks} from './Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {MockDocMetas} from "./MockDocMetas";

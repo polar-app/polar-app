@@ -1,19 +1,19 @@
-import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {Image} from 'polar-shared/src/metadata/Image';
-import {notNull} from 'polar-shared/src/Preconditions';
-import {DocMetas} from './DocMetas';
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
-import {HTMLStr, IDStr} from "polar-shared/src/util/Strings";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Texts} from "polar-shared/src/metadata/Texts";
-import {TextType} from "polar-shared/src/metadata/TextType";
-import {TextHighlightRecords} from 'polar-shared/src/metadata/TextHighlightRecords';
-import {TextRect} from 'polar-shared/src/metadata/TextRect';
-import {TextHighlight} from 'polar-shared/src/metadata/TextHighlight';
+import {IRect} from '../util/rects/IRect';
+import {Image} from './Image';
+import {notNull} from 'src/Preconditions';
+import {DocMetas} from 'polar-bookshelf/web/js/metadata/DocMetas';
+import {IPageMeta} from "./IPageMeta";
+import {IDocMeta} from "./IDocMeta";
+import {ITextHighlight} from "./ITextHighlight";
+import {ITextHighlights} from "./ITextHighlights";
+import {HTMLStr, IDStr} from "../util/Strings";
+import {Hashcodes} from "../util/Hashcodes";
+import {ISODateTimeStrings} from "./ISODateTimeStrings";
+import {Texts} from "./Texts";
+import {TextType} from "./TextType";
+import {TextHighlightRecords} from './TextHighlightRecords';
+import {TextRect} from './TextRect';
+import {TextHighlight} from './TextHighlight';
 
 export class TextHighlights {
 
