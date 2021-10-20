@@ -1,6 +1,6 @@
 import {IDocMeta} from "./IDocMeta";
 import {PagemarkType} from "./PagemarkType";
-import {DocMetas} from "src/metadata/DocMetas";
+import {DocMetas} from "./DocMetas";
 import {DocMetaSerializer} from "./DocMetaSerializer";
 import {TextHighlights} from "./TextHighlights";
 import {Pagemarks} from "./Pagemarks";

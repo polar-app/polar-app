@@ -15,7 +15,7 @@ import {IAreaHighlight} from "./IAreaHighlight";
 import {IFlashcard} from "./IFlashcard";
 import {IComment} from './IComment';
 import {AnnotationType} from './AnnotationType';
-import {Dictionaries} from "src/util/Dictionaries";
+import {Dictionaries} from "../util/Dictionaries";
 import {UUIDs} from "./UUIDs";
 import {SparseDocMetas} from "./SparseDocMetas";
 import {DocMetaSerializer} from "./DocMetaSerializer";

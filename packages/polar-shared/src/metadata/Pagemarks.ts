@@ -20,7 +20,7 @@ import {IDStr} from "../util/Strings";
 import {PagemarkRect} from './PagemarkRect';
 import {Pagemark} from './Pagemark';
 import {PagemarkRects} from './PagemarkRects';
-import {DocMetas} from 'src/metadata/DocMetas';
+import {DocMetas} from './DocMetas';
 import {ReadingProgresses} from './ReadingProgresses';
 import {ReadingOverviews} from './ReadingOverviews';
 

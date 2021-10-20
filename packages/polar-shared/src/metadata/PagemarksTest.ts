@@ -1,6 +1,6 @@
 import {assertJSON} from 'polar-test/src/test/Assertions';
 import {Pagemarks} from "./Pagemarks";
-import {DocMetas} from "src/metadata/DocMetas";
+import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
