@@ -11,7 +11,7 @@ export class Interval {
         this.line = new Line(start, end, "x");
     }
 
-    containsPoint(pt: number) {
+    public containsPoint(pt: number) {
         return this.line.containsPoint(pt);
     }
 
