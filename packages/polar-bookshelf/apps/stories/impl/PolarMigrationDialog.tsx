@@ -20,7 +20,6 @@ const MigrationDialogMainContent = () => {
                         <Box m={1}>
                             We're Migrating you to the latest version of Polar
                         </Box>
-                        
                         <Box m={2}>
                             <IndeterminateProgressBar/>
                         </Box>
