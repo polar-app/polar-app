@@ -190,7 +190,7 @@ jobs:
           name: test
           command: |
             cd /home/circleci/project
-            npx lerna run citest
+            npx lerna run test
       - store_test_results:
           path: /home/circleci/project/packages
 
