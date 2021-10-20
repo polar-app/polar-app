@@ -1,5 +1,5 @@
 import {TextRect} from "./TextRect";
-import {assertJSON} from "../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('TextRect', function() {
 
