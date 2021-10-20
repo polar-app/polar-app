@@ -41,11 +41,11 @@ interface IManifestItem {
     readonly '@_media-type': string;
     readonly '@_properties'?: string;
 }
-interface ISpine {
+export interface ISpine {
     readonly itemref: Array<ISpineRef>;
 }
 
-interface ISpineRef {
+export interface ISpineRef {
     readonly '@_idref': string;
     readonly '@_linear': "yes" | "no";
 }
@@ -112,6 +112,15 @@ export class EPUBMetadataUsingNode {
             // Find that full object, based on the `idref` above
             const fullObj = rootFileAsJSON.package.manifest.item
                 .find((val: IManifestItem) => val['@_id'] === idref);
+
+            // handles edge case of failing to find spine ID Ref 
+            // in package manifest
+            if (!fullObj) {
+                return {
+                    id: idref,
+                    file: idref
+                };
+            }
 
             // Return the ID and the pointer to the file within the epub zip
             return {
