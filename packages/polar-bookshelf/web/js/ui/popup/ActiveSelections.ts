@@ -1,4 +1,4 @@
-import {Point} from '../../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';

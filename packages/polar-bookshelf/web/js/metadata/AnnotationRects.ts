@@ -4,7 +4,7 @@ import {AnnotationRect} from './AnnotationRect';
 import {Line} from 'polar-shared/src/util/Line';
 import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
-import {IPoint} from "../Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 
 export namespace AnnotationRects {
