@@ -1,10 +1,5 @@
 import React, {useContext} from "react";
-import {
-    ASYNC_NULL_FUNCTION,
-    Callback,
-    Callback1,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {ASYNC_NULL_FUNCTION, Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
@@ -17,34 +12,15 @@ import {TextHighlights} from "../metadata/TextHighlights";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {
-    usePersistenceLayerContext,
-    useRepoDocMetaManager,
-    useTagsContext
-} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {
-    AreaHighlights,
-    AreaHighlightWriteOpts
-} from "../metadata/AreaHighlights";
+import {AreaHighlights} from "../metadata/AreaHighlights";
 import {ICapturedScreenshot} from "../screenshots/Screenshot";
 import {Position} from "polar-shared/src/metadata/IBaseHighlight";
-import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
-import {
-    IAnnotationRef,
-    IAnnotationRefWithDocMeta
-} from "polar-shared/src/metadata/AnnotationRefs";
+import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import {useLogger} from "../mui/MUILogger";
-import {Preconditions} from "polar-shared/src/Preconditions";
 import {DocMetas} from "../metadata/DocMetas";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 

@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-    academicOccupations,
-    businessOccupations,
-    Occupation,
-    Occupations
-} from "polar-shared/src/util/Occupations";
+import {academicOccupations, businessOccupations, Occupation, Occupations} from "polar-shared/src/util/Occupations";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 

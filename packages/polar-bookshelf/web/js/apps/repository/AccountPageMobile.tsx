@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { UserAvatar } from '../../../../web/js/ui/cloud_auth/UserAvatar';
-import { createStyles, makeStyles,Box, Collapse, Button, Paper} from '@material-ui/core';
-
+import {UserAvatar} from '../../../../web/js/ui/cloud_auth/UserAvatar';
+import {Box, Button, Collapse, createStyles, makeStyles, Paper} from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import HelpIcon from '@material-ui/icons/Help';
@@ -10,12 +9,12 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {PlanUsage} from "../../../../web/js/apps/repository/accounting/PlanUsage";
-import { IconByPlan } from '../../../../apps/repository/js/account_overview/PlanIcon';
+import {IconByPlan} from '../../../../apps/repository/js/account_overview/PlanIcon';
 import {useHistory} from 'react-router-dom';
 import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
-import { useLogoutAction } from '../../../../web/js/ui/cloud_auth/AccountControl';
-import { usePopperController } from '../../../../web/js/mui/menu/MUIPopper';
-import { RoutePathNames } from './RoutePathNames';
+import {useLogoutAction} from '../../../../web/js/ui/cloud_auth/AccountControl';
+import {usePopperController} from '../../../../web/js/mui/menu/MUIPopper';
+import {RoutePathNames} from './RoutePathNames';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
 const Chat = MenuItems.Chat;

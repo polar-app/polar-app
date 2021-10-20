@@ -1,16 +1,10 @@
 import * as React from "react";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import { IDimensions } from "polar-shared/src/util/IDimensions";
+import {IDimensions} from "polar-shared/src/util/IDimensions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {
-    IPageDescriptor,
-    useDocViewerElementsContext
-} from "../renderers/DocViewerElementsContext";
-import { useDocViewerStore } from "../DocViewerStore";
+import {IPageDescriptor, useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
+import {useDocViewerStore} from "../DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useRefProvider} from "../../../../web/js/hooks/ReactHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
@@ -26,7 +20,7 @@ export type Unsubscriber = () => void;
 export type Subscriber = () => Unsubscriber
 
 function useSubscriber(subscriber: Subscriber) {
-    
+
     const unsubscriberRef = React.useRef<Unsubscriber | undefined>(undefined);
 
     useComponentDidMount(() => {

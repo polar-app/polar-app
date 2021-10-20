@@ -1,7 +1,7 @@
 import * as React from "react";
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import { createReactiveStore } from "../react/store/ReactiveStore";
+import {createReactiveStore} from "../react/store/ReactiveStore";
 
 export interface INoteFormatBarPosition {
 

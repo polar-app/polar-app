@@ -1,12 +1,7 @@
 import {GroupIDStr} from "../Datastore";
 import {Collections, OrderByClause} from "./db/Collections";
-import {GroupDoc} from "polar-firebase/src/firebase/om/GroupDocCollection";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {
-    ISODateString,
-    ISODateTimeString
-} from "polar-shared/src/metadata/ISODateTimeStrings";
-import { DocRef } from "polar-shared/src/groups/DocRef";
+import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export class GroupDocInfos {
 

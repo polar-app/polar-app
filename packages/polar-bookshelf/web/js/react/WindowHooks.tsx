@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../hooks/ReactLifecycleHooks";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface WindowOpts {

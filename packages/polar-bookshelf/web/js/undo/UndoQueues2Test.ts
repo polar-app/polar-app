@@ -1,7 +1,6 @@
 import {assert} from 'chai';
-import {UndoQueues} from "./UndoQueues";
-import { assertJSON } from '../test/Assertions';
-import { UndoQueues2 } from './UndoQueues2';
+import {assertJSON} from '../test/Assertions';
+import {UndoQueues2} from './UndoQueues2';
 import IUndoQueueEntry = UndoQueues2.IUndoQueueAction;
 
 describe('UndoQueues2', function() {

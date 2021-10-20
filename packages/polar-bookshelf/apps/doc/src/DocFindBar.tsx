@@ -11,7 +11,7 @@ import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 import Collapse from "@material-ui/core/Collapse/Collapse";
-import { DeviceRouter } from "../../../web/js/ui/DeviceRouter";
+import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {Devices} from "polar-shared/src/util/Devices";
 
 type FindCallback = (opts: IFindOpts) => void;

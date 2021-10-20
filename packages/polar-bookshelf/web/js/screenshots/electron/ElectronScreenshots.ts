@@ -1,21 +1,12 @@
 import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {IXYRects} from 'polar-shared/src/util/rects/IXYRects';
-import {
-    CaptureOpts,
-    DefaultCaptureOpts,
-    Screenshot,
-    ScreenshotRequest
-} from '../Screenshot';
+import {CaptureOpts, DefaultCaptureOpts, Screenshot, ScreenshotRequest} from '../Screenshot';
 import {ClientRects} from 'polar-shared/src/util/rects/ClientRects';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {
-    IScreenshotDelegate,
-    ScreenshotDelegate,
-    WebContentsID
-} from './ScreenshotDelegate';
+import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
 import {AnnotationToggler} from '../AnnotationToggler';
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Promises} from "polar-shared/src/util/Promises";
 
 const log = Logger.create();

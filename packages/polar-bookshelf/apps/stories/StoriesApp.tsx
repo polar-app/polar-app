@@ -55,7 +55,7 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
-import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
+import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 
 interface IStory {
     readonly name: string;

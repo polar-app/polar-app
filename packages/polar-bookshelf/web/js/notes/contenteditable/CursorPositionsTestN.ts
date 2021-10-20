@@ -1,5 +1,4 @@
 import {ConstructorOptions, JSDOM} from "jsdom";
-import {assert} from "chai";
 import {CursorPositions} from "./CursorPositions";
 import {assertJSON} from "../../test/Assertions";
 

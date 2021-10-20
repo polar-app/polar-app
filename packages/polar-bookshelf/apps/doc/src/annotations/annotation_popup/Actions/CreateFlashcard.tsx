@@ -2,7 +2,7 @@ import React from "react";
 import {getTextHighlightText, useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
+import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";

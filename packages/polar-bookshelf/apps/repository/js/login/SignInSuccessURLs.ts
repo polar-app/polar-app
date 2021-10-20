@@ -1,6 +1,5 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {URLs} from "polar-shared/src/util/URLs";
-import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 export namespace SignInSuccessURLs {
 

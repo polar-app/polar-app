@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import {isObservable, isObservableProp} from 'mobx';
-import { MUIContextMenuStore } from "./MUIContextMenuStore";
+import {MUIContextMenuStore} from "./MUIContextMenuStore";
 
 describe('MUIContextMenuStore', function() {
 

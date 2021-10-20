@@ -1,14 +1,7 @@
 import React from 'react';
 import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
-import {
-    GroupDatastores,
-    GroupDocRef
-} from "../../../../web/js/datastore/sharing/GroupDatastores";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {GroupDocCollection} from "polar-firebase/src/firebase/om/GroupDocCollection";
-import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import Button from "@material-ui/core/Button";
 
 const log = Logger.create();

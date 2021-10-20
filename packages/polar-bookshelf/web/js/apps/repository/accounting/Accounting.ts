@@ -1,18 +1,11 @@
 import * as React from 'react';
-import {useDocRepoStore} from "../../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {useUserInfoContext} from "../auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 import {AccountUpgrades} from "../../../accounts/AccountUpgrades";
-import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
-import {
-    usePersistenceLayerContext,
-    useRepoDocMetaManager
-} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {DocMetaSnapshotError, DocMetaSnapshotEvent} from "../../../datastore/Datastore";
-import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {useRepoDocMetaManager} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
 
 export type Bytes = number;
 

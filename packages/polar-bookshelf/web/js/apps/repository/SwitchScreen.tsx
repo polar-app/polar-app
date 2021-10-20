@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
+import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import {useHistory} from 'react-router-dom';
 import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
@@ -29,17 +30,23 @@ const useStyles = makeStyles<Theme>((theme) =>
 interface TableHeaderProps {
     readonly nonEmpty?: boolean;
 }
-
+/**
+ *
+ * @param props a blooean variable to determine if there was any recently opened documents or not
+ * @returns returns the approprite header title
+ */
 const TableHeader = (props: TableHeaderProps) => {
     const classes = useStyles();
 
     return(
         <TableHead>
             <TableRow>
-                <TableCell width="auto">
-                    { ! props.nonEmpty && (
+                <TableCell>
+                    { props.nonEmpty ?
+                        <span className={classes.headerFont}>Recently Updated Documents:</span>
+                        :
                         <span className={classes.headerFont}>No recent files</span>
-                    )}
+                    }
                 </TableCell>
             </TableRow>
         </TableHead>

@@ -2,12 +2,12 @@ import React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 import {Highlights} from "./Highlights";
 import {useScrollIntoViewUsingLocation} from "../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
-import intersectsWithWindow = Highlights.intersectsWithWindow;
-import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {useSidenavDocumentChangeCallback} from "../../../apps/doc/src/renderers/UseSidenavDocumentChangeCallbackHook";
 import {Functions} from "polar-shared/src/util/Functions";
 import useTheme from '@material-ui/core/styles/useTheme';
+import intersectsWithWindow = Highlights.intersectsWithWindow;
+import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;

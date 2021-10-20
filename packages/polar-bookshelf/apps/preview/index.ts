@@ -1,18 +1,8 @@
 import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-
-import {
-    EventBus,
-    PDFFindController,
-    PDFLinkService,
-    PDFViewer,
-    PDFViewerOptions
-} from 'pdfjs-dist/web/pdf_viewer';
+import {EventBus, PDFFindController, PDFLinkService, PDFViewer, PDFViewerOptions} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
-import {
-    DocPreviewCached,
-    DocPreviewCollection
-} from "polar-firebase/src/firebase/om/DocPreviewCollection";
+import {DocPreviewCached, DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {Version} from 'polar-shared/src/util/Version';
 import {Analytics} from "../../web/js/analytics/Analytics";

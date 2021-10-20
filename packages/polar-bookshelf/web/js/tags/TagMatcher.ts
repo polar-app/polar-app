@@ -1,5 +1,4 @@
-import {Tag, TagIDStr} from 'polar-shared/src/tags/Tags';
-import {Tags} from 'polar-shared/src/tags/Tags';
+import {Tag, TagIDStr, Tags} from 'polar-shared/src/tags/Tags';
 import {TagPaths} from './TagPaths';
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 

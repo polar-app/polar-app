@@ -2,7 +2,7 @@ import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {MUIMenuItem} from "../mui/menu/MUIMenuItem";
 import CloseIcon from '@material-ui/icons/Close';
-import {TabDescriptor, TabDescriptorInit, TabID, useSideNavCallbacks} from "./SideNavStore";
+import {TabDescriptor, useSideNavCallbacks} from "./SideNavStore";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";

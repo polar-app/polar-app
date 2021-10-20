@@ -1,11 +1,10 @@
-
 import {remote} from 'electron';
-/**
- * Determine the electron context we're running within.
- */
 import {BrowserWindowReference} from '../../ui/dialog_window/BrowserWindowReference';
 import {ElectronMainContext, ElectronRendererContext} from './ElectronContext';
 
+/**
+ * Determine the electron context we're running within.
+ */
 export class ElectronContexts {
 
     public static create() {

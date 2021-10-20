@@ -1,5 +1,5 @@
 import {assertJSON} from "../../test/Assertions";
-import { ReverseIndex } from "./ReverseIndex";
+import {ReverseIndex} from "./ReverseIndex";
 
 describe("ReverseIndex", () => {
 

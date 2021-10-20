@@ -1,9 +1,9 @@
 import React from 'react';
-import {useLocation, useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {PHZMigrationClient} from "polar-web-extension-api/src/PHZMigrationClient";
 import {AuthRequired} from "../../../../../apps/repository/js/AuthRequired";
 import {WebExtensionPresenceClient} from "polar-web-extension-api/src/WebExtensionPresenceClient";
-import { ChromeStoreURLs } from 'polar-web-extension-api/src/ChromeStoreURLs';
+import {ChromeStoreURLs} from 'polar-web-extension-api/src/ChromeStoreURLs';
 
 export const PHZMigrationScreen = () => (
     <AuthRequired>

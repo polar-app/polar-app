@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Rating, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";

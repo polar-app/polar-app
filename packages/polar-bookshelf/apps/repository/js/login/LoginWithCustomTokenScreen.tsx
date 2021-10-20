@@ -1,8 +1,5 @@
-import React, {useEffect} from 'react';
-import {
-    FirebaseUIAuth,
-    FirebaseUIAuthOptions
-} from "../../../../web/js/firebase/FirebaseUIAuth";
+import React from 'react';
+import {FirebaseUIAuth, FirebaseUIAuthOptions} from "../../../../web/js/firebase/FirebaseUIAuth";
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';

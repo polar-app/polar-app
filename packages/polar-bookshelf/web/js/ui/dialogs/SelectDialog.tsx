@@ -1,5 +1,4 @@
 import React from "react";
-import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button";
@@ -11,7 +10,7 @@ import List from "@material-ui/core/List";
 import Box from "@material-ui/core/Box";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
-import { MUIDialog } from "./MUIDialog";
+import {MUIDialog} from "./MUIDialog";
 
 export interface ISelectOption<V> {
     readonly id: IDStr;

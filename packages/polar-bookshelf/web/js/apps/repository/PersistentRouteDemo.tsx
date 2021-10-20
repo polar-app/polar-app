@@ -1,7 +1,6 @@
 import React from 'react';
 import isEqual from "react-fast-compare";
-import {HashRouter, Link, Switch} from "react-router-dom";
-import {Route} from "react-router-dom";
+import {HashRouter, Link, Route, Switch} from "react-router-dom";
 import {PersistentRoute} from "./PersistentRoute";
 
 export const PersistentRouteDemo = React.memo(function PersistentRouteDemo() {

@@ -1,4 +1,3 @@
-
 import * as assert from 'assert';
 import {BrowserWindowRegistry, ID, LiveWindowsProvider} from './BrowserWindowRegistry';
 import {assertJSON} from '../../test/Assertions';

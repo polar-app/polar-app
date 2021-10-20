@@ -1,4 +1,4 @@
-import {HandleStyles, ResizeEnable, Rnd, ResizableDelta} from "react-rnd";
+import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
 import {ResizeDirection} from "re-resizable";
 import * as React from "react";
 import {useState} from "react";

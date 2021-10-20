@@ -10,13 +10,17 @@ import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {DocumentContent} from "./DocumentContent";
-import {AnnotationContentType,
-        IAreaHighlightAnnotationContent,
-        IFlashcardAnnotationContent,
-        ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {AreaHighlightAnnotationContent,
-        FlashcardAnnotationContent,
-        TextHighlightAnnotationContent} from "./AnnotationContent";
+import {
+    AnnotationContentType,
+    IAreaHighlightAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {
+    AreaHighlightAnnotationContent,
+    FlashcardAnnotationContent,
+    TextHighlightAnnotationContent
+} from "./AnnotationContent";
 
 export namespace Contents {
 

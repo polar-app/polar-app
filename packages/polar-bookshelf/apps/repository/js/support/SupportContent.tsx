@@ -1,6 +1,5 @@
 import React from 'react';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
-import {Billing} from "polar-accounts/src/Billing";
 import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 

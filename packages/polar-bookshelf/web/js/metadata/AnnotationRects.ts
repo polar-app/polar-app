@@ -6,7 +6,6 @@ import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
 import {IPoint} from "../Point";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export namespace AnnotationRects {
 

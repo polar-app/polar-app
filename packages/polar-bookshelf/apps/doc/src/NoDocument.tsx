@@ -1,7 +1,4 @@
-import {MUIDialog} from "../../../web/js/ui/dialogs/MUIDialog";
 import React from "react";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import LinkOffIcon from '@material-ui/icons/LinkOff';

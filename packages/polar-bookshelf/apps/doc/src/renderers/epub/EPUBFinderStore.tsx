@@ -1,10 +1,7 @@
 import {Provider} from "polar-shared/src/util/Providers";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../../web/js/react/store/ObservableStore";
-import { useDocViewerStore } from "../../DocViewerStore";
+import {createObservableStore, SetStore} from "../../../../../web/js/react/store/ObservableStore";
+import {useDocViewerStore} from "../../DocViewerStore";
 
 export interface IEPUBFinderStore {
 

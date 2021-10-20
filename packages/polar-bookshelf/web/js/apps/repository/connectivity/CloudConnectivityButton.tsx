@@ -1,14 +1,5 @@
 import React from 'react';
-import {useFirestoreConnectivity} from "../../../firebase/FirestoreHooks";
-import CloudOffIcon from '@material-ui/icons/CloudOff';
-import Button from '@material-ui/core/Button/Button';
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../../hooks/ReactLifecycleHooks";
-import Tooltip from '@material-ui/core/Tooltip';
-import Icon from '@material-ui/core/Icon';
-import { CloudOffline } from './CloudOffline';
+import {CloudOffline} from './CloudOffline';
 
 export function useOnline(): boolean{
 

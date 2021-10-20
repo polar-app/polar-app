@@ -1,5 +1,12 @@
 import {computed, makeObservable, observable, toJS} from "mobx";
-import {AnnotationContentType, IAnnotationContent, IAnnotationContentBase, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {
+    AnnotationContentType,
+    IAnnotationContent,
+    IAnnotationContentBase,
+    IAreaHighlightAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";

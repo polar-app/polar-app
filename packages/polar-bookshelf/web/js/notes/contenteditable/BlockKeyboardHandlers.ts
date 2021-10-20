@@ -8,9 +8,8 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
 import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
-import {BlockPredicates} from "../store/BlockPredicates";
 
-const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
+const PAGE_NAV_BLOCKS_JUMP_COUNT = 10;
 
 const hasEditorSelection = (): boolean => {
 

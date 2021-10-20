@@ -1,8 +1,5 @@
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 
 export interface IViewerContainerStore {
     readonly viewerContainer: HTMLElement | undefined;

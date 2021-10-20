@@ -1,9 +1,6 @@
-import {MediaContents} from './MediaContents';
-import {assertJSON} from '../../../../test/Assertions';
 import {DiskDatastore} from '../../../../datastore/DiskDatastore';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
-import {DocMeta} from '../../../../metadata/DocMeta';
 import {DefaultPersistenceLayer} from '../../../../datastore/DefaultPersistenceLayer';
 import {assert} from 'chai';
 

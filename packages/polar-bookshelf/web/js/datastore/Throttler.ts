@@ -1,5 +1,4 @@
-import {Timeouts} from '../util/Timeouts';
-import {Timeout} from '../util/Timeouts';
+import {Timeout, Timeouts} from '../util/Timeouts';
 import {Objects} from "polar-shared/src/util/Objects";
 
 /**

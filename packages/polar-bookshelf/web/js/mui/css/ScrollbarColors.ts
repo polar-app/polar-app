@@ -1,4 +1,4 @@
-import { Theme } from "@material-ui/core";
+import {Theme} from "@material-ui/core";
 
 namespace ScrollbarColors {
     export function createCSSForReact(theme: Theme) {
@@ -11,21 +11,21 @@ namespace ScrollbarColors {
             },
             '*::-webkit-scrollbar-track': {
                 // '-webkit-box-shadow': 'inset 0 0 5px rgba(255, 255, 255, 0.3'
-                ...(isDark && 
+                ...(isDark &&
                     { backgroundColor: '#494949!important' }),
 
-                ...(isLight && 
+                ...(isLight &&
                     { backgroundColor: `${theme.palette.background.paper}!important` }),
             },
             '*::-webkit-scrollbar-thumb': {
                 borderRadius: '10px!important',
-                ...(isDark && 
+                ...(isDark &&
                     {
                         backgroundColor: `${theme.palette.grey['600']}!important`,
                         border: 'solid 2px #494949!important',
                     }),
 
-                ...(isLight && 
+                ...(isLight &&
                     {
                         backgroundColor: `${theme.palette.grey['400']}!important`,
                         border: `solid 2px ${theme.palette.background.paper}!important`,
@@ -44,21 +44,21 @@ namespace ScrollbarColors {
             },
             '*::-webkit-scrollbar-track': {
                 // '-webkit-box-shadow': 'inset 0 0 5px rgba(255, 255, 255, 0.3'
-                ...(isDark && 
+                ...(isDark &&
                     { 'background-color': '#494949!important' }),
 
-                ...(isLight && 
+                ...(isLight &&
                     { 'background-color': `${theme.palette.background.paper}!important` }),
             },
             '*::-webkit-scrollbar-thumb': {
                 'border-radius': '10px!important',
-                ...(isDark && 
+                ...(isDark &&
                     {
                         'background-color': `${theme.palette.grey['600']}!important`,
                         'border': 'solid 2px #494949!important',
                     }),
 
-                ...(isLight && 
+                ...(isLight &&
                     {
                         'background-color': `${theme.palette.grey['400']}!important`,
                         'border': `solid 2px ${theme.palette.background.paper}!important`,

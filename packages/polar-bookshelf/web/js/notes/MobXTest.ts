@@ -1,4 +1,4 @@
-import { makeObservable, makeAutoObservable, observable, action, computed, isObservable, isObservableProp } from "mobx"
+import {isObservable, isObservableProp, makeObservable, observable} from "mobx"
 import {assert} from 'chai';
 
 class MyStore {

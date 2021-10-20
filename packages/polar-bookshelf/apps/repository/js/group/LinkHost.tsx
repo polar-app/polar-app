@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {GroupDocInfo} from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
 
 export class LinkHost extends React.Component<IProps, IState> {

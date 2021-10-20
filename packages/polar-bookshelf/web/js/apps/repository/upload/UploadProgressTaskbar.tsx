@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {WriteFileProgressListener, WriteFileProgress} from "../../../datastore/Datastore";
-import { Percentage } from 'polar-shared/src/util/ProgressTracker';
+import {WriteFileProgress} from "../../../datastore/Datastore";
+import {Percentage} from 'polar-shared/src/util/ProgressTracker';
 import {TaskbarDialogProps} from "../../../ui/dialogs/TaskbarDialog";
 
 export type UpdateProgressCallback = (progress: WriteFileProgress | number | 'terminate') => void;

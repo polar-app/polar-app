@@ -6,7 +6,6 @@ import {MUIMenuItem} from "../../mui/menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 import isEqual from "react-fast-compare";
 import {useAnnotationMutationsContext} from "../AnnotationMutationsContext";
-import Tooltip from '@material-ui/core/Tooltip';
 
 
 interface IProps {

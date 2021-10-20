@@ -4,7 +4,7 @@ import {useLogger} from "../../../mui/MUILogger";
 import {AsyncProvider} from "polar-shared/src/util/Providers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import { FileRef } from 'polar-shared/src/datastore/FileRef';
+import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {Paths} from "polar-shared/src/util/Paths";
 import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";

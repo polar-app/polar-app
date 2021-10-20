@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useCallback, useState} from 'react';
 import {IDocAnnotationRef} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
-import {CancelButton} from "../CancelButton";
 import {FlashcardAnnotationView2} from './FlashcardAnnotationView2';
 import {Flashcard} from '../../../metadata/Flashcard';
 import isEqual from 'react-fast-compare';

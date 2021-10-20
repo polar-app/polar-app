@@ -1,5 +1,4 @@
 import {DocIDStr} from '../rpc/GroupProvisions';
-import {DocMeta} from '../../../metadata/DocMeta';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
