@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Rects} from "polar-shared/src/util/Rects";
+import {Rects} from "./Rects";
 import {RectArt} from "./RectArt";
 
 describe('RectArt', function() {

@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import {Rects} from './Rects';
-import {assertJSON} from 'polar-bookshelf/web/js/test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 import {Rect} from './Rect';
-import {RectArt} from 'polar-bookshelf/web/js/util/RectArt';
+import {RectArt} from './RectArt';
 import {MOCK_RECTS} from './MockRects';
 
 describe('Rects', function() {

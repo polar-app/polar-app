@@ -1,5 +1,5 @@
-import {TextArray} from 'polar-shared/src/util/TextArray';
-import {Rect} from 'polar-shared/src/util/Rect';
+import {TextArray} from './TextArray';
+import {Rect} from './Rect';
 
 /**
  * Draw ascii art rects for visualization.
