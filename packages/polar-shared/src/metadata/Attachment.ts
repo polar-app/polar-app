@@ -1,7 +1,7 @@
 import {SerializedObject} from "./SerializedObject";
-import {Preconditions} from '../util/Preconditions';
 import {IAttachment} from "./IAttachment";
 import {BackendFileRef} from "../datastore/BackendFileRef";
+import {Preconditions} from "../Preconditions";
 
 export class Attachment extends SerializedObject implements IAttachment {
 
