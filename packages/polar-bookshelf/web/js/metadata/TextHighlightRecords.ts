@@ -1,5 +1,5 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {TextHighlight} from './TextHighlight';
+import {TextHighlight} from 'polar-shared/src/metadata/TextHighlight';
 import {IText} from 'polar-shared/src/metadata/Text';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';

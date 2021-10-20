@@ -1,7 +1,4 @@
-import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {TextRect} from './TextRect';
-import {TextHighlight} from './TextHighlight';
 import {Image} from 'polar-shared/src/metadata/Image';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {DocMetas} from './DocMetas';
@@ -14,6 +11,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
+import {TextHighlightRecords} from './TextHighlightRecords';
+import {TextRect} from './TextRect';
+import {TextHighlight} from 'polar-shared/src/metadata/TextHighlight';
 
 export class TextHighlights {
 

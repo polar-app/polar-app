@@ -1,10 +1,10 @@
-import {Text} from 'polar-shared/src/metadata/Text';
-import {Texts} from 'polar-shared/src/metadata/Texts';
-import {TextType} from 'polar-shared/src/metadata/TextType';
-import {BaseHighlight} from 'polar-shared/src/metadata/BaseHighlight';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {ITextRect} from "polar-shared/src/metadata/ITextRect";
+import {Text} from './Text';
+import {Texts} from './Texts';
+import {TextType} from './TextType';
+import {BaseHighlight} from './BaseHighlight';
+import {Preconditions} from 'src/Preconditions';
+import {ITextHighlight} from "./ITextHighlight";
+import {ITextRect} from "./ITextRect";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
