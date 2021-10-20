@@ -1,5 +1,4 @@
 import * as React from "react";
-import clsx from "clsx";
 import {deepMemo} from "../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

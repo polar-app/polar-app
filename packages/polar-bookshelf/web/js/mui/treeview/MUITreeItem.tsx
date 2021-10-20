@@ -6,9 +6,9 @@ import {MUITreeItemLabel} from "./MUITreeItemLabel";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DragTarget2} from "../../ui/tree/DragTarget2";
-import TagID = Tags.TagID;
 import {TNode} from "../../ui/tree/TNode";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/SelectionEvents2";
+import TagID = Tags.TagID;
 
 interface IProps {
 

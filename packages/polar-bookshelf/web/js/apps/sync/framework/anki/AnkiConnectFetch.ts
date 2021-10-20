@@ -1,7 +1,7 @@
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import { AnkiSyncError } from './AnkiSyncError';
+import {AnkiSyncError} from './AnkiSyncError';
 
 const log = Logger.create();
 

@@ -1,5 +1,3 @@
-
-import {assert} from 'chai';
 import {assertJSON} from '../../test/Assertions';
 import {AddFileRequests} from './AddFileRequests';
 

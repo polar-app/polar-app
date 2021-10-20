@@ -1,6 +1,4 @@
-import {assertJSON} from "../../../../test/Assertions";
 import {ModelNames} from "./ModelNames";
-import {assert} from 'chai';
 
 describe('ModelNames', function() {
 

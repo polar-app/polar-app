@@ -1,5 +1,5 @@
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
-import { Platforms } from "polar-shared/src/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
 

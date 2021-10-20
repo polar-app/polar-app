@@ -1,4 +1,3 @@
-
 import {BrowserWindow, ipcMain} from 'electron';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Broadcasters} from './Broadcasters';

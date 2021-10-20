@@ -3,9 +3,7 @@ import * as React from 'react';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
-import {
-    PersistenceLayerManager,
-} from '../../datastore/PersistenceLayerManager';
+import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
@@ -17,7 +15,7 @@ import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 import {SentryBrowser} from "../../logger/SentryBrowser";
-import { LicenseInfo } from '@material-ui/x-grid';
+import {LicenseInfo} from '@material-ui/x-grid';
 
 // Add xgrid license
 LicenseInfo.setLicenseKey('e8f3730ab06cd9f0c5cb3e6c2dfcddbaT1JERVI6MjgwMDQsRVhQSVJZPTE2NTk5MDA0NzkwMDAsS0VZVkVSU0lPTj0x');

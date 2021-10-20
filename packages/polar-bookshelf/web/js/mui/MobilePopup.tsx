@@ -1,4 +1,4 @@
-import {AppBar, Box, ButtonBase, createStyles, darken, IconButton, makeStyles, Toolbar} from "@material-ui/core";
+import {AppBar, Box, createStyles, IconButton, makeStyles, Toolbar} from "@material-ui/core";
 import {Devices} from "polar-shared/src/util/Devices";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";

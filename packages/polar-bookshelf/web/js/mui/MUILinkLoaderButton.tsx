@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import Button from "@material-ui/core/Button";
-import { deepMemo } from "../react/ReactUtils";
-import { PropTypes } from '@material-ui/core';
+import {deepMemo} from "../react/ReactUtils";
+import {PropTypes} from '@material-ui/core';
 
 interface IProps {
 

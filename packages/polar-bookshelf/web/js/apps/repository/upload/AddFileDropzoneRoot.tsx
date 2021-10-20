@@ -1,9 +1,6 @@
 import React from 'react';
 import {AddFileDropzoneProvider} from './AddFileDropzoneStore';
-import {
-    useDragAndDropBackdropListener,
-    useDragAndDropImportListener
-} from "./AddFileDropzone";
+import {useDragAndDropBackdropListener, useDragAndDropImportListener} from "./AddFileDropzone";
 
 export const AddFileDropzoneRoot: React.FC = React.memo(function AddFileDropzoneRoot(props) {
 

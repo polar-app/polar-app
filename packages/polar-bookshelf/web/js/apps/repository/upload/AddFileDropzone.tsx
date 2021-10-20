@@ -1,19 +1,12 @@
 import * as React from "react";
-import {
-    useAddFileDropzoneCallbacks,
-    useAddFileDropzoneStore
-} from "./AddFileDropzoneStore";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../../hooks/ReactLifecycleHooks";
+import {useAddFileDropzoneCallbacks, useAddFileDropzoneStore} from "./AddFileDropzoneStore";
 import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {AddFileHooks} from "./AddFileHooks";
 import {Uploads} from "./Uploads";
 import {FileSystemEntries} from "./FileSystemEntries";
-import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
+import useAddFileImporter = AddFileHooks.useAddFileImporter;
 
 function useTaskProgress() {
 
@@ -58,7 +51,7 @@ function useDropHandler() {
                 return;
             }
 
-            // create a progress dialog that we're computing the file list... 
+            // create a progress dialog that we're computing the file list...
             const progressCallback = await dialogManager.taskbar({
                 message: "Computing file list... one sec.",
                 autoHideDuration: 1,
