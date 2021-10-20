@@ -1,4 +1,4 @@
-import {Pagemark} from './Pagemark';
+import {Pagemark} from 'polar-shared/src/metadata/Pagemark';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
 import {Preconditions} from 'polar-shared/src/Preconditions';

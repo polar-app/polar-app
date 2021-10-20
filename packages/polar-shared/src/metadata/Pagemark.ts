@@ -1,10 +1,10 @@
-import {Annotation} from 'polar-shared/src/metadata/Annotation';
-import {Note} from 'polar-shared/src/metadata/Note';
-import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
-import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
-import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
-import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {Annotation} from './Annotation';
+import {Note} from './Note';
+import {PagemarkType} from './PagemarkType';
+import {PagemarkRect} from './PagemarkRect';
+import {MetadataSerializer} from './MetadataSerializer';
+import {PagemarkMode} from './PagemarkMode';
+import {IPagemark} from "./IPagemark";
 
 export class Pagemark extends Annotation implements IPagemark {
 

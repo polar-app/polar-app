@@ -18,7 +18,7 @@ import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {IPagemarkRef} from 'polar-shared/src/metadata/IPagemarkRef';
 import {IDStr} from "polar-shared/src/util/Strings";
 import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
-import {Pagemark} from './Pagemark';
+import {Pagemark} from 'polar-shared/src/metadata/Pagemark';
 import {PagemarkRects} from './PagemarkRects';
 import {DocMetas} from './DocMetas';
 import {ReadingProgresses} from './ReadingProgresses';

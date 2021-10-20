@@ -7,7 +7,7 @@ import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Rect} from "polar-shared/src/util/Rect";
-import {Pagemark} from "../../../../web/js/metadata/Pagemark";
+import {Pagemark} from "polar-shared/src/metadata/Pagemark";
 import {PagemarkRect} from "polar-shared/src/metadata/PagemarkRect";
 import {Styles} from "../../../../web/js/util/Styles";
 import {Optional} from "polar-shared/src/util/ts/Optional";
