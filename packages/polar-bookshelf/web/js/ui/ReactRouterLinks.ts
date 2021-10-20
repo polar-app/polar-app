@@ -1,6 +1,6 @@
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {ILocation, ILocationWithPathAndHash} from "../react/router/ReactRouters";
+import {ILocation} from "../react/router/ReactRouters";
 
 export interface RouterLinkObj {
     readonly pathname: string;

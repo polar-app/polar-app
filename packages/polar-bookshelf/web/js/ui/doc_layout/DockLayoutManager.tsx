@@ -5,7 +5,7 @@ import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {DockSplitter} from "./DockSplitter";
 import {deepMemo} from "../../react/ReactUtils";
 import {useStateRef} from "../../hooks/ReactHooks";
-import {useDockLayoutStore, useDockLayoutCallbacks} from './DockLayoutStore';
+import {useDockLayoutCallbacks, useDockLayoutStore} from './DockLayoutStore';
 import {Point} from '../../Point';
 import {Debouncers} from 'polar-shared/src/util/Debouncers';
 
