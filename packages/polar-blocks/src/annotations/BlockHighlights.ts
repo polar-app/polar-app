@@ -1,5 +1,5 @@
-import {AnnotationContentType, IAnnotationHighlightContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {BlockIDStr, INewChildPosition} from "polar-blocks/src/blocks/IBlock";
+import {AnnotationContentType, IAnnotationHighlightContent} from "../blocks/content/IAnnotationContent";
+import {BlockIDStr, INewChildPosition} from "../blocks/IBlock";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter";

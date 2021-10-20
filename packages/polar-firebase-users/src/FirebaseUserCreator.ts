@@ -1,6 +1,7 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 
 export namespace FirebaseUserCreator {
 
