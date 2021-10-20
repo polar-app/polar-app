@@ -1,10 +1,10 @@
-import {Rect} from './Rect';
 import {Preconditions} from 'polar-shared/src/Preconditions';
+import {IRect} from 'polar-shared/src/util/rects/IRect';
+import {Objects} from "polar-shared/src/util/Objects";
+import {Rect} from './Rect';
 import {Point} from './Point';
 import {Line} from './util/Line';
 import {Styles} from './util/Styles';
-import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {Objects} from "polar-shared/src/util/Objects";
 
 export class Rects {
 
