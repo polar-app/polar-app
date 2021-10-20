@@ -1,6 +1,6 @@
 import {IRect} from '../util/rects/IRect';
 import {Image} from './Image';
-import {notNull} from 'src/Preconditions';
+import {notNull} from '../Preconditions';
 import {DocMetas} from 'polar-bookshelf/web/js/metadata/DocMetas';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
