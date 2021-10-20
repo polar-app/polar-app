@@ -5,6 +5,7 @@ import {DocInfos} from "./DocInfos";
 import {IPageMeta} from "./IPageMeta";
 import {PageInfo} from "./PageInfo";
 import {PageMeta} from "./PageMeta";
+import {SparseDocMetas} from "./SparseDocMetas";
 
 export namespace DocMetaSerializer {
 
@@ -39,16 +40,16 @@ export namespace DocMetaSerializer {
 
     }
 
-    // export function serialize(docMeta: IDocMeta, spacing: string = "  ") {
-    //
-    //     if (ENABLE_SPARSE_DOC_SERIALIZE) {
-    //         const data = SparseDocMetas.toSparse(docMeta);
-    //         return JSON.stringify(data, null, spacing);
-    //     } else {
-    //         return JSON.stringify(docMeta, null, spacing);
-    //     }
-    //
-    // }
+    export function serialize(docMeta: IDocMeta, spacing: string = "  ") {
+
+        if (ENABLE_SPARSE_DOC_SERIALIZE) {
+            const data = SparseDocMetas.toSparse(docMeta);
+            return JSON.stringify(data, null, spacing);
+        } else {
+            return JSON.stringify(docMeta, null, spacing);
+        }
+
+    }
 
 //
 //     export function deserialize(data: string, fingerprint: string): IDocMeta {
