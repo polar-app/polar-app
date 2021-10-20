@@ -2,7 +2,6 @@ import {useAnnotationSidebarCallbacks} from "../../../apps/doc/src/AnnotationSid
 import {MUIPaperToolbar} from "../mui/MUIPaperToolbar";
 import {MUISearchBox2} from "../mui/MUISearchBox2";
 import {ExportButton} from "../ui/export/ExportButton";
-import {LocalStorageFeatureToggle} from "../ui/LocalStorageFeatureToggle";
 import * as React from "react";
 import {Exporters, ExportFormat} from "../metadata/exporter/Exporters";
 import {useDocMetaContext} from "./DocMetaContextProvider";

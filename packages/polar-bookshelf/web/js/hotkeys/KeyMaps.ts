@@ -1,9 +1,4 @@
-import {
-    ActionName, KeyEventName,
-    KeyMap,
-    KeySequence,
-    MouseTrapKeySequence
-} from "react-hotkeys";
+import {ActionName, KeyEventName, KeyMap, KeySequence, MouseTrapKeySequence} from "react-hotkeys";
 
 export namespace KeyMaps {
 

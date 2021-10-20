@@ -1,5 +1,5 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksToGraph {

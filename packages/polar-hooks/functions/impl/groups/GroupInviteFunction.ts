@@ -29,7 +29,7 @@ export class GroupInviteFunctions {
 
         const batch = firestore.batch();
 
-        const from = Senders.create(user, profile.id);
+        const from = Senders.create({...user, displayName: ""}, profile.id);
 
         const invitations = await UserRefs.toInvitations(request.invitations);
 

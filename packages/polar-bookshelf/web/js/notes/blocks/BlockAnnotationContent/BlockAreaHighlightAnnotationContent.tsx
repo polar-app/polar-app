@@ -6,7 +6,11 @@ import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
 import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
-import {BlockAnnotationActionsWrapper, ISharedActionType, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
+import {
+    BlockAnnotationActionsWrapper,
+    ISharedActionType,
+    useSharedAnnotationBlockActions
+} from "./BlockAnnotationActions";
 import {BlockImageContent} from "../BlockImageContent";
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 

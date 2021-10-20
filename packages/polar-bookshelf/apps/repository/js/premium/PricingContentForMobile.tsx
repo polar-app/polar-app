@@ -1,17 +1,14 @@
 import React from "react";
-import {Box, Divider, makeStyles, Paper} from "@material-ui/core";
-import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {Box, makeStyles, Paper} from "@material-ui/core";
 import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {PurchaseOrChangePlanButton} from "./PurchaseOrChangePlanButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
-import {PricingFAQ} from "./PricingFAQ";
 import {PlanIntervalToggle} from "./PlanIntervalToggle";
-import { usePricingStore } from "./PricingStore";
+import {usePricingStore} from "./PricingStore";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
-import {Plans} from "polar-accounts/src/Plans";
 import V2Plan = Billing.V2Plan;
 import V2PlanFree = Billing.V2PlanFree;
 

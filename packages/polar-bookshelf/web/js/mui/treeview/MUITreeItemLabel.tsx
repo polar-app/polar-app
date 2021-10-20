@@ -4,12 +4,12 @@ import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {MUIEfficientCheckbox} from "../../../../apps/repository/js/folders/MUIEfficientCheckbox";
 import {Tags} from "polar-shared/src/tags/Tags";
-import TagID = Tags.TagID;
 import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {useDragContext} from "../../ui/tree/DragTarget2";
 import {useContextMenu} from "../../../../apps/repository/js/doc_repo/MUIContextMenu";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/SelectionEvents2";
+import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme) =>
     createStyles({

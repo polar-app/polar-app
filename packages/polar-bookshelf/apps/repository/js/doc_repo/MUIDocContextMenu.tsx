@@ -1,8 +1,6 @@
 import React from "react";
 import Menu from "@material-ui/core/Menu";
-import {
-    MUIDocDropdownMenuItems
-} from "./MUIDocDropdownMenuItems";
+import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
 import isEqual from "react-fast-compare";
 import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 

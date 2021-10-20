@@ -3,7 +3,7 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {PricingStoreProvider} from './PricingStore';
 import {PricingContent} from "./PricingContent";
 import {DefaultChangePlanContextProvider} from "./actions/DefaultChangePlanContextProvider";
-import { HeaderBar } from '../doc_repo/HeaderBar';
+import {HeaderBar} from '../doc_repo/HeaderBar';
 
 export const PricingScreen = () => {
 

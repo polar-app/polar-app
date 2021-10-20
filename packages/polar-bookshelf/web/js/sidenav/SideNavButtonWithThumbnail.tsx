@@ -1,6 +1,6 @@
 import * as React from "react";
 import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
-import { deepMemo } from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";

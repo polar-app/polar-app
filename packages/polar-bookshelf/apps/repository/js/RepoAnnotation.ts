@@ -1,23 +1,21 @@
-/**
- * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
- * replace missing titles with Untitled and define other default values.
- */
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from 'polar-shared/src/metadata/IComment';
-import {HTMLStr, IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 
+/**
+ * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
+ * replace missing titles with Untitled and define other default values.
+ */
 export interface RepoAnnotation {
 
     /**

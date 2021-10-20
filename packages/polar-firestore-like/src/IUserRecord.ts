@@ -1,34 +1,45 @@
-export interface IUserRecord {
+/**
+ * Main records used for a user record.
+ */
+export interface IUserRecordMain {
 
     /**
      * The user's `uid`.
      */
-    uid: string;
+    readonly uid: string;
+
     /**
      * The user's primary email, if set.
      */
-    email?: string;
-    /**
-     * Whether or not the user's primary email is verified.
-     */
-    emailVerified: boolean;
+    readonly email?: string;
+
     /**
      * The user's display name.
      */
-    displayName?: string;
+    readonly displayName?: string;
+
+}
+
+export interface IUserRecord extends IUserRecordMain {
+
+    /**
+     * Whether or not the user's primary email is verified.
+     */
+    readonly emailVerified: boolean;
     /**
      * The user's primary phone number, if set.
      */
-    phoneNumber?: string;
+    readonly phoneNumber?: string;
     /**
      * The user's photo URL.
      */
-    photoURL?: string;
+    readonly photoURL?: string;
     /**
      * Whether or not the user is disabled: `true` for disabled; `false` for
      * enabled.
      */
-    disabled: boolean;
+    readonly disabled: boolean;
+
     // /**
     //  * Additional metadata about the user.
     //  */

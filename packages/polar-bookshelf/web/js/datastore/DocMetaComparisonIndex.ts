@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {DocMetaMutation} from './Datastore';

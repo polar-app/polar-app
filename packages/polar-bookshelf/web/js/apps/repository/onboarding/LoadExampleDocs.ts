@@ -1,22 +1,15 @@
 import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {ImportedFile, DocImporter} from '../importers/DocImporter';
+import {DocImporter, ImportedFile} from '../importers/DocImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
-import {
-    HashAlgorithm,
-    Hashcode,
-    HashEncoding
-} from 'polar-shared/src/metadata/Hashcode';
+import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";

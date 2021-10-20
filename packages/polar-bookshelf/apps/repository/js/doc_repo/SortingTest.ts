@@ -1,13 +1,13 @@
 import {MockRepoDocInfos} from "../MockRepoDocInfos";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
-import { Sorting } from "./Sorting";
+import {Sorting} from "./Sorting";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {assertJSON} from "../../../../web/js/test/Assertions";
-import TypeConverter = Sorting.TypeConverter;
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import TypeConverter = Sorting.TypeConverter;
 
 const now = new Date();
 const today = ISODateTimeStrings.create();

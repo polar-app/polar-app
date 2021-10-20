@@ -1,5 +1,4 @@
 import React from 'react';
-import {Grow, Slide, useScrollTrigger } from "@material-ui/core"
 
 export const ScrollTransitionStory = () => {
     //

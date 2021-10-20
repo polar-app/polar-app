@@ -1,7 +1,7 @@
 import React from "react";
-import { Provider } from "polar-shared/src/util/Providers";
+import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface TabDescriptor {
   // The URL for this tab so that the router can be used with it.

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DocCard} from "./doc_cards/DocCard";
 import Grid from '@material-ui/core/Grid';
-import { DocCardImages } from './doc_cards/DocCardImages';
+import {DocCardImages} from './doc_cards/DocCardImages';
 
 const PDFCard = () => (
     <Grid item style={{flexGrow: 1, display: 'flex'}}>

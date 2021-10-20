@@ -12,7 +12,6 @@ import {MUIMenuItem} from '../mui/menu/MUIMenuItem';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BorderAllIcon from '@material-ui/icons/BorderAll';
-import SearchIcon from '@material-ui/icons/Search';
 import {useHistory} from "react-router";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {NameContent} from "./content/NameContent";
@@ -161,7 +160,7 @@ const HandheldNotesToolbar = () => {
 
     const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
 
-    const handleAllNotesNavigation = React.useCallback(() => 
+    const handleAllNotesNavigation = React.useCallback(() =>
         history.push(RoutePathNames.NOTES_REPO), [history]);
 
     return (

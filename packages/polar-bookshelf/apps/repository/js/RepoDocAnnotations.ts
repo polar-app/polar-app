@@ -3,10 +3,7 @@ import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
-import {
-    IDocAnnotation,
-    IDocAnnotationRef
-} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {IDocAnnotation, IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 
 export class RepoDocAnnotations {
 

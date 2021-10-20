@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {AsyncOptions, useAsync} from 'react-async';
-import { NULL_FUNCTION } from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export function useComponentDidMount(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n

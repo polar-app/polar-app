@@ -1,4 +1,4 @@
-import { PrefsWriter } from "./SettingToggle";
+import {PrefsWriter} from "./SettingToggle";
 
 export function useLocalStoragePrefs(): PrefsWriter {
 

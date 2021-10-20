@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import { deepMemo } from '../react/ReactUtils';
+import {deepMemo} from '../react/ReactUtils';
 
 interface IProps {
     readonly id: string;

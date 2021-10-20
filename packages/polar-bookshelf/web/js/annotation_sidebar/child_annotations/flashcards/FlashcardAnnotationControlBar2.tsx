@@ -6,10 +6,7 @@ import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";
-import {
-    IDeleteMutation,
-    useAnnotationMutationsContext
-} from "../../AnnotationMutationsContext";
+import {IDeleteMutation, useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 import {deepMemo} from "../../../react/ReactUtils";
 import {MUIDocDeleteButton} from "../../../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 

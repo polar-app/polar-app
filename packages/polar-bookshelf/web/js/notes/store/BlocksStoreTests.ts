@@ -1,4 +1,4 @@
-import { ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";

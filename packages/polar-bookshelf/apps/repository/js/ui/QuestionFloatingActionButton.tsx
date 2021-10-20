@@ -1,14 +1,14 @@
 import React from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
-import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenuPopper} from "../../../../web/js/mui/menu/MUIMenuPopper";
 import Tooltip from "@material-ui/core/Tooltip";
 import {useZest} from "../../../../web/js/zest/ZestInjector";
 import {useLinkLoader} from "../../../../web/js/ui/util/LinkLoaderHook";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
-import { Plans } from "polar-accounts/src/Plans";
+import {Plans} from "polar-accounts/src/Plans";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useActiveKeyboardShortcutsCallbacks} from "../../../../web/js/hotkeys/ActiveKeyboardShortcutsStore";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";

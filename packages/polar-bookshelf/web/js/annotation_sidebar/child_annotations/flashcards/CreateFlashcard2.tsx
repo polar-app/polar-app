@@ -3,10 +3,7 @@ import {useCallback} from 'react';
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
-import {
-    IFlashcardCreate,
-    useAnnotationMutationsContext
-} from "../../AnnotationMutationsContext";
+import {IFlashcardCreate, useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 import {FlashcardInputFieldsType} from "./flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {IDocAnnotationRef} from "../../DocAnnotation";

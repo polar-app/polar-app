@@ -13,13 +13,12 @@ import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {AutoBlur} from "./AutoBlur";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
-import { LinearProgress } from "@material-ui/core";
-import { Devices } from "polar-shared/src/util/Devices";
+import {LinearProgress} from "@material-ui/core";
+import {Devices} from "polar-shared/src/util/Devices";
 import {useDocRepoColumns} from "./DocRepoTableHead";
 
 const useStyles = makeStyles((theme: Theme) =>

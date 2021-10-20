@@ -10,7 +10,6 @@ import {reaction} from 'mobx';
 import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockPredicates} from './store/BlockPredicates';
-import {ActiveSelections} from "../ui/popup/ActiveSelections";
 import {Selections} from "../highlights/text/selection/Selections";
 
 const useStyles = makeStyles((theme) =>

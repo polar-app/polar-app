@@ -15,16 +15,9 @@ import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
 import isEqual from "react-fast-compare";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
-import {
-    createContextMenu,
-    useContextMenu
-} from "../../../repository/js/doc_repo/MUIContextMenu";
+import {createContextMenu, useContextMenu} from "../../../repository/js/doc_repo/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import {
-    IPagemarkCoverage,
-    IPagemarkUpdate,
-    useDocViewerCallbacks
-} from "../DocViewerStore";
+import {IPagemarkCoverage, IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 

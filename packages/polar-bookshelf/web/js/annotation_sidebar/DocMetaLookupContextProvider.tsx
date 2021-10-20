@@ -1,14 +1,8 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import React, {useContext} from "react";
-import {
-    IAnnotationRef,
-    IAnnotationRefWithDocMeta
-} from "polar-shared/src/metadata/AnnotationRefs";
-import {
-    IAnnotationMutationHolder,
-    IAnnotationMutationHolderWithDocMeta
-} from "./AnnotationMutationsContext";
+import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
+import {IAnnotationMutationHolder, IAnnotationMutationHolderWithDocMeta} from "./AnnotationMutationsContext";
 
 export interface IDocMetaLookupContext {
 

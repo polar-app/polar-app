@@ -2,7 +2,6 @@ import React from 'react';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
 import {UserImage} from './UserImage';
 import Button from "@material-ui/core/Button";
 

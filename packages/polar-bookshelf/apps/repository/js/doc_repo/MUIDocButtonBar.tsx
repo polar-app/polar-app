@@ -2,11 +2,11 @@ import React, {useCallback} from "react";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 import {IDStr} from "polar-shared/src/util/Strings";
-import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
-import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
-import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
+import {MUIDocTagButton} from "./buttons/MUIDocTagButton";
+import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
+import {MUIDocFlagButton} from "./buttons/MUIDocFlagButton";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import { OverflowMenuButton } from "./buttons/DocOverflowMenuButton";
+import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 
 interface IProps {
 

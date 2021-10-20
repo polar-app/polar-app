@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUIInlineErrorDialog, MUIErrorBoundaryMessage, MUIErrorBoundary} from "../../../web/js/mui/MUIErrorBoundary";
+import {MUIErrorBoundary} from "../../../web/js/mui/MUIErrorBoundary";
 
 const ErrorRender = () => {
 

@@ -1,6 +1,5 @@
 /* tslint:disable:label-position */
 import withStyles from "@material-ui/core/styles/withStyles";
-import {GlobalCssSummernoteStyles} from "./GlobalCssSummernote";
 
 /**
  * Basic "gap box" for having easy / uniform margins between sub-components

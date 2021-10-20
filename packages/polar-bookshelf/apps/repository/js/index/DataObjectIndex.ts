@@ -4,7 +4,7 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {ForwardTagToDocIDIndex} from "./ForwardTagToDocIDIndex";
 import {ReverseDocIDToTagIndex} from "./ReverseDocIDToTagIndex";
 import {isPresent} from "polar-shared/src/Preconditions";
-import { IDStr } from 'polar-shared/src/util/Strings';
+import {IDStr} from 'polar-shared/src/util/Strings';
 
 
 export class TagIndex {

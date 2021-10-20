@@ -5,7 +5,6 @@ import {LocalPrefs} from '../../util/LocalPrefs';
 import {DatastoreOverview} from '../../datastore/Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 

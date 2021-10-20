@@ -1,11 +1,11 @@
 import * as React from "react";
-import { IDStr } from "polar-shared/src/util/Strings";
+import {IDStr} from "polar-shared/src/util/Strings";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useDocRepoStoreReducer} from "../../repository/js/doc_repo/DocRepoStore2";
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import {RepoDocInfo} from "../../repository/js/RepoDocInfo";
 
 export type DocViewerSnapshotType = 'snapshot-local' | 'snapshot-server';

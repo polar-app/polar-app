@@ -1,6 +1,6 @@
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
 import {Version} from "polar-shared/src/util/Version";
-import { AppRuntime, AppRuntimeID } from "polar-shared/src/util/AppRuntime";
+import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {Device, Devices} from "polar-shared/src/util/Devices";
 
 export namespace StandardEventProperties {

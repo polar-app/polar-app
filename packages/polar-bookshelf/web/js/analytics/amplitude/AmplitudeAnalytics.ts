@@ -1,6 +1,6 @@
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {Analytics} from "../Analytics";
-import { StandardEventProperties } from "../StandardEventProperties";
+import {StandardEventProperties} from "../StandardEventProperties";
 
 function isBrowser() {
     return typeof window !== 'undefined';

@@ -3,7 +3,7 @@ import {ICommand} from "../mui/command_menu/MUICommandMenu";
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {NamedContent, useBlocksStore} from "./store/BlocksStore";
+import {NamedContent} from "./store/BlocksStore";
 import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
 import {Block} from "./store/Block";
 

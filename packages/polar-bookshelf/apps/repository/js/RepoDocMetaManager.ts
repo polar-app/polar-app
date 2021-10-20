@@ -15,7 +15,7 @@ import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
 import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
-import { IDocMeta } from 'polar-shared/src/metadata/IDocMeta';
+import {IDocMeta} from 'polar-shared/src/metadata/IDocMeta';
 import {DocViewerSnapshots} from "../../doc/src/DocViewerSnapshots";
 
 const log = Logger.create();

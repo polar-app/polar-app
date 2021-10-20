@@ -1,7 +1,12 @@
-import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {isBinaryFileData} from './Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DatastoreID,
+    ErrorListener,
+    InitResult,
+    isBinaryFileData,
+    WriteFileOpts
+} from './Datastore';
 import {DocMetaRef} from './DocMetaRef';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';

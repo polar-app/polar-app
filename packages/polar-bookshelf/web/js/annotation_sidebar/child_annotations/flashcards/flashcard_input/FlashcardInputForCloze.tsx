@@ -4,11 +4,7 @@ import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
-import {
-    ClozeFields,
-    FlashcardInputFieldsType,
-    FlashcardInputs
-} from './FlashcardInputs';
+import {ClozeFields, FlashcardInputFieldsType, FlashcardInputs} from './FlashcardInputs';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';

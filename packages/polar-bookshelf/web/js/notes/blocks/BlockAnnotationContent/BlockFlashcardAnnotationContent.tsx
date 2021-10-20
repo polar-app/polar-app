@@ -6,7 +6,11 @@ import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMome
 import {BlockEditorGenericProps} from "../../BlockEditor";
 import {FlashcardAnnotationContent} from "../../content/AnnotationContent";
 import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
-import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
+import {
+    BlockAnnotationAction,
+    BlockAnnotationActionsWrapper,
+    useSharedAnnotationBlockActions
+} from "./BlockAnnotationActions";
 import CachedIcon from '@material-ui/icons/Cached';
 import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";

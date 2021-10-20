@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
-import { isObservableProp } from "mobx";
-import { observer } from "mobx-react-lite"
+import {action, computed, isObservableProp, makeAutoObservable, makeObservable, observable} from "mobx"
+import {observer} from "mobx-react-lite"
 import Button from '@material-ui/core/Button';
 
 // TODO see if I ca useActiveNote and get the one from the list ot items and that it won't update until the value is

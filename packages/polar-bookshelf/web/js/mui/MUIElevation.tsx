@@ -1,6 +1,6 @@
 import React from 'react';
 import {deepMemo} from "../react/ReactUtils";
-import {useTheme, lighten} from "@material-ui/core/styles";
+import {useTheme} from "@material-ui/core/styles";
 import grey from '@material-ui/core/colors/grey'
 import clsx from 'clsx';
 

@@ -6,8 +6,7 @@ import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayer} from '../PersistenceLayer';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
-import {ErrorListener} from '../Datastore';
-import {DatastoreInitOpts} from '../Datastore';
+import {DatastoreInitOpts, ErrorListener} from '../Datastore';
 
 /**
  * A PersistenceLayer that allows the user to receive advertisements regarding

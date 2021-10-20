@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    MUIHoverController,
-    MUIHoverListener,
-    MUIHoverTypeContext
-} from "./MUIHoverContext";
+import {MUIHoverController, MUIHoverListener, MUIHoverTypeContext} from "./MUIHoverContext";
 
 const ListeningComponent = () => (
     <MUIHoverListener>

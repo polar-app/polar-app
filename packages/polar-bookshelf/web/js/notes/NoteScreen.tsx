@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Route, RouteComponentProps, Switch} from 'react-router-dom';
-import {LinearProgress} from '@material-ui/core';
+import {createStyles, LinearProgress, makeStyles} from '@material-ui/core';
 import {useBlocksStore} from './store/BlocksStore';
 import {JumpToNoteKeyboardCommand} from './JumpToNoteKeyboardCommand';
 import {observer} from 'mobx-react-lite';
@@ -10,7 +10,6 @@ import {NoteStyle} from "./NoteStyle";
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import {createStyles, makeStyles} from "@material-ui/core";
 import {NoteRepoScreen} from './NoteRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';

@@ -1,11 +1,11 @@
 import React from 'react';
 import {CompositeAnalytics} from "./CompositeAnalytics";
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "./IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "./IAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
-import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
+import {ConsoleAnalytics} from "./console/ConsoleAnalytics";
 import {CannyAnalytics} from "./canny/CannyAnalytics";
 import {SentryAnalytics} from "./sentry/SentryAnalytics";
 
