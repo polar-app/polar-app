@@ -1,19 +1,22 @@
-import {createStyles, makeStyles} from "@material-ui/core";
+import {Box, createStyles, makeStyles} from "@material-ui/core";
+import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Tag} from "polar-shared/src/tags/Tags";
 import React from "react";
 import {DocInfos} from "../../metadata/DocInfos";
 import {BlockEditorGenericProps} from "../BlockEditor";
+import {BlockTagsSection} from "./BlockAnnotationContent/BlockHighlightContentWrapper";
 
 const useStyles = makeStyles(() =>
     createStyles({
         infoSection: {
             display: 'flex',
-            fontSize: 9,
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            fontSize: 12,
             marginTop: 4,
             fontWeight: 'normal',
-            '& > div + div': {
-                marginLeft: 12,
+            '& > *': {
+                marginRight: 14,
             }
         }
     }),
@@ -21,16 +24,14 @@ const useStyles = makeStyles(() =>
 
 interface IProps extends BlockEditorGenericProps {
     docInfo: IDocInfo;
-    tags: ReadonlyArray<Tag>;
+    tagLinks: ReadonlyArray<IBlockLink>;
 }
 
 
 export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentContent(props) {
-    const { className, style, docInfo, tags } = props;
+    const { className, style, docInfo, tagLinks, onClick } = props;
     const classes = useStyles();
     const title = React.useMemo(() => DocInfos.bestTitle(docInfo), [docInfo]);
-
-    const tagsText = React.useMemo(() => tags.map(({ label }) => label).join(', '), [tags]);
 
     return (
         <div className={className}
@@ -38,7 +39,10 @@ export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentCont
             {title}
             <div className={classes.infoSection}>
                 <div><b>Reading progress</b> {docInfo.progress}%</div>
-                <div><b>Tags</b> {tagsText}</div>
+                <Box alignItems="center" display="flex">
+                    <b>Tags</b>&nbsp;&nbsp;<BlockTagsSection onClick={onClick} links={tagLinks} />
+                </Box>
+                
             </div>
         </div>
     );
