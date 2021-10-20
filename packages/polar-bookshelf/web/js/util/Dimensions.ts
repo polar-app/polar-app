@@ -1,9 +1,9 @@
-/**
- * Simple dimension of a Rect.
- */
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IDimensions} from "./IDimensions";
 
+/**
+ * Simple dimension of a Rect.
+ */
 export class Dimensions {
 
     /**
