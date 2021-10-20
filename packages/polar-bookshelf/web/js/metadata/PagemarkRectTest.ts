@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {PagemarkRect} from './PagemarkRect';
+import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
 import {assertJSON} from '../test/Assertions';
 
 describe('PagemarkRect', function() {

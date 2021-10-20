@@ -24,7 +24,7 @@ import {DocViewerSnapshots} from "./DocViewerSnapshots";
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {Direction, FluidPagemarkFactory, NullFluidPagemarkFactory} from "./FluidPagemarkFactory";
 import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
-import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
+import {PagemarkRect} from "polar-shared/src/metadata/PagemarkRect";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 import {Numbers} from 'polar-shared/src/util/Numbers';
