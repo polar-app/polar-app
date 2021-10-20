@@ -78,20 +78,6 @@ export type IBlockContentMap = {
     [K in IBlockContent as K['type']]: K;
 };
 
-export interface IBlockLink {
-
-    /**
-     * The id of the block we're linking to.
-     */
-    readonly id: BlockIDStr;
-
-    /**
-     * The text of the block in the markdown note.
-     */
-    readonly text: string;
-
-}
-
 export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly id: BlockIDStr;
