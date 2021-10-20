@@ -40,7 +40,7 @@ const Infotext = () => {
 
     return (  
         <AdaptiveDialog>
-                <Box display='flex' flexGrow={1} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+                <Box m={1} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
                     <Typography variant="body1">
                         <b>
                             Just a Minute
@@ -49,14 +49,13 @@ const Infotext = () => {
 
                     <Typography variant="body1">
                         We're Migrating you to the latest version of Polar
-                        
                         <LinearProgressWithLabel value={progress} />
                     </Typography>
 
                         
                     
                     <Typography variant="caption">
-                        <Box mt={5} ml={6} mr={6} textAlign={'center'}>
+                        <Box mt={2} ml={2} mr={2} textAlign={'center'}>
                             As part of Polar's Updates, we're migrating the backend which can take up to a 
                             couple minutes, depending on the size of your repository. This is a one time migration. 
                             <Link> Learn More</Link>
@@ -76,10 +75,8 @@ export const MigrationDialog = () => {
                         <Box mt={2}>
                             <LogoAndTextSideBySide/>
                         </Box>
-                        
-                        <Box>
+                    
                             <Infotext/>
-                        </Box>
                 </Paper>
             </AdaptiveDialog>
     );
