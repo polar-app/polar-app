@@ -1,20 +1,14 @@
-import {PagemarkRect} from './PagemarkRect';
-import {Pagemark} from './Pagemark';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Percentage100, Percentages, round} from 'polar-shared/src/util/Percentages';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
-import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {HitMap} from 'polar-shared/src/util/HitMap';
-import {ReadingOverviews} from './ReadingOverviews';
 import {IPageMeta, PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -23,6 +17,13 @@ import {Objects} from "polar-shared/src/util/Objects";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {IPagemarkRef} from 'polar-shared/src/metadata/IPagemarkRef';
 import {IDStr} from "polar-shared/src/util/Strings";
+
+import {PagemarkRect} from './PagemarkRect';
+import {Pagemark} from './Pagemark';
+import {PagemarkRects} from './PagemarkRects';
+import {DocMetas} from './DocMetas';
+import {ReadingProgresses} from './ReadingProgresses';
+import {ReadingOverviews} from './ReadingOverviews';
 
 const log = Logger.create();
 
