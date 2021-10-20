@@ -381,7 +381,7 @@ export function useTriggerVerifyTokenAuth() {
             case 'invalid-challenge':
                 throw new Error('The challenge code you provided was invalid.');
             case 'registrations-disabled':
-                throw new Error('Registrations have now been disabled. Please join the private beta waiting list here.');
+                throw new Error('Registrations have now been disabled. Please join the private beta waiting list below.');
             default:
                 throw getErrorFromCloudFunctionResponse(response);
         }
