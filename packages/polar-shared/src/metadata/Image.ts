@@ -1,7 +1,7 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IImage, ImageType} from "polar-shared/src/metadata/IImage";
-import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {SerializedObject} from "./SerializedObject";
+import {IImage, ImageType} from "./IImage";
+import {BackendFileRef} from "../datastore/BackendFileRef";
+import {Preconditions} from "../Preconditions";
 
 export class Image extends SerializedObject implements IImage {
 

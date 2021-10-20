@@ -2,7 +2,7 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
-import {Image} from './Image';
+import {Image} from 'polar-shared/src/metadata/Image';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {DocMetas} from './DocMetas';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";

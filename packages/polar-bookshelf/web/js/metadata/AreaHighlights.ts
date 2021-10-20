@@ -2,7 +2,7 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Image} from './Image';
+import {Image} from 'polar-shared/src/metadata/Image';
 import {Datastore} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
