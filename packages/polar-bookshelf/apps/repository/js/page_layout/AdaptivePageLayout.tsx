@@ -10,6 +10,8 @@ import { DeviceRouter } from "../../../../web/js/ui/DeviceRouter";
 interface IProps {
     readonly title: string;
     readonly children: JSX.Element;
+    readonly noBack?: boolean;
+    readonly fullWidth?: boolean;
 }
 
 /**
@@ -28,10 +30,13 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                 <>
                     <AppBar position="static">
                         <Toolbar>
-                            <IconButton onClick={()=>history.goBack()}>
-                                <ArrowBackIcon/>
-                            </IconButton>
-                            <Typography component="h3">{props.title}</Typography>
+
+                            {! props.noBack && (
+                                <IconButton onClick={()=>history.goBack()}>
+                                    <ArrowBackIcon/>
+                                </IconButton>
+                            )}
+                            {props.title}
                         </Toolbar>
                     </AppBar>
                 </>
@@ -47,7 +52,7 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
 
                     <Box ml="auto" mr="auto"
                          style={{
-                             maxWidth: '700px',
+                             maxWidth: props.fullWidth ? undefined : '700px',
                          }}>
 
                         {props.children}
