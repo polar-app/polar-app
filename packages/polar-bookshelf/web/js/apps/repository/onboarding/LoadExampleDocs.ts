@@ -6,7 +6,7 @@ import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocMetas} from '../../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';

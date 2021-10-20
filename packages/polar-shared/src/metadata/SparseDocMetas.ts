@@ -1,6 +1,6 @@
 import {IDocMeta} from "./IDocMeta";
 import {IFlashcardMap, IPageMeta} from "./IPageMeta";
-import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {DocMetas} from "src/metadata/DocMetas";
 import {IDocInfo} from "./IDocInfo";
 import {IAnnotationInfo} from "./IAnnotationInfo";
 import {IAttachment} from "./IAttachment";

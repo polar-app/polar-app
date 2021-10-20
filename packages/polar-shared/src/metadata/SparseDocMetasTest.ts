@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {Files} from '../util/Files';
 import {IDimensions} from '../util/IDimensions';
-import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {DocMetas} from "src/metadata/DocMetas";
 import {SparseDimensions, SparseDocMetas} from "./SparseDocMetas";
 import {MockDocMetas} from "./MockDocMetas";
 import {assertJSON} from "polar-test/src/test/Assertions";

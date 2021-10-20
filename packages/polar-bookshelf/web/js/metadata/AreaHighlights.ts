@@ -6,7 +6,7 @@ import {Image} from 'polar-shared/src/metadata/Image';
 import {Datastore} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
-import {DocMetas} from './DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from 'polar-shared/src/metadata/Attachment';

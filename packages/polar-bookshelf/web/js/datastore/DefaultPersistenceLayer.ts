@@ -13,7 +13,7 @@ import {
     WriteFileOpts
 } from './Datastore';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';

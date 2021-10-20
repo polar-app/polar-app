@@ -21,7 +21,7 @@ import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 export interface IAnnotationMutationHolder<M> {

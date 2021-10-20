@@ -1,6 +1,6 @@
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TextSelections} from "../../../../web/js/highlights/text/controller/TextSelections";
-import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {TextHighlightRecords} from "polar-shared/src/metadata/TextHighlightRecords";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";

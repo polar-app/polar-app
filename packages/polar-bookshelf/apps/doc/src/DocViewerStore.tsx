@@ -35,7 +35,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {LocalRelatedTagsStore} from "../../../web/js/tags/related/LocalRelatedTagsStore";
 import {IRelatedTagsData, RelatedTagsManager} from "../../../web/js/tags/related/RelatedTagsManager";
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import isEqual from 'react-fast-compare';
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";

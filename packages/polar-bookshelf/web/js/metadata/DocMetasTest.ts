@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
-import {DocMetas} from './DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
