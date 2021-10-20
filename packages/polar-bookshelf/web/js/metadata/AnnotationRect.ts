@@ -1,10 +1,10 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Dimensions} from 'polar-shared/src/util/Dimensions';
-import {Interval} from '../math/Interval';
 import {Rects} from 'polar-shared/src/util/Rects';
 import {IAnnotationRect} from "polar-shared/src/metadata/IAnnotationRect";
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
 import {IDimensions} from 'polar-shared/src/util/IDimensions';
+import {Interval} from 'polar-shared/src/util/Interval';
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 
