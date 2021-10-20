@@ -5,7 +5,9 @@ import {
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
-    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
     WriteFileOpts
@@ -16,11 +18,7 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {
-    AbstractPersistenceLayer,
-    PersistenceLayer,
-    WriteOpts
-} from './PersistenceLayer';
+import {AbstractPersistenceLayer, PersistenceLayer, WriteOpts} from './PersistenceLayer';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';

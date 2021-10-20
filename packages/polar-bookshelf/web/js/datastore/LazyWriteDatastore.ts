@@ -1,13 +1,10 @@
-import {AbstractDatastore, Datastore, DatastoreID, DeleteResult} from './Datastore';
+import {Datastore, DatastoreID, DeleteResult, WriteOpts} from './Datastore';
 import {DelegatedDatastore} from './DelegatedDatastore';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
-import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {WriteOpts} from './Datastore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 

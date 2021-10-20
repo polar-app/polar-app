@@ -5,12 +5,9 @@ import {MemoryDatastore} from './MemoryDatastore';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {InitResult} from './Datastore';
 import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
-import { Backend } from 'polar-shared/src/datastore/Backend';
-import { FileRef } from 'polar-shared/src/datastore/FileRef';
-import {
-    GetFileOpts,
-    ReadableBinaryDatastore
-} from "polar-shared/src/datastore/IDatastore";
+import {Backend} from 'polar-shared/src/datastore/Backend';
+import {FileRef} from 'polar-shared/src/datastore/FileRef';
+import {GetFileOpts, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 
 export class MockDatastore extends MemoryDatastore {
 

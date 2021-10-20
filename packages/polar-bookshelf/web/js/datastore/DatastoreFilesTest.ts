@@ -1,5 +1,4 @@
 import {assert} from "chai";
-import {DiskDatastore} from './DiskDatastore';
 import {DatastoreFiles} from "./DatastoreFiles";
 
 describe('DastastoreFiles', function() {

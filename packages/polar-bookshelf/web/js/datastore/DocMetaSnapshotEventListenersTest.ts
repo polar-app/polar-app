@@ -1,19 +1,22 @@
-
-import {DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DatastoreConsistency, DocMetaMutation, MutationType} from './Datastore';
+import {
+    DatastoreConsistency,
+    DocMetaMutation,
+    DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener,
+    MutationType
+} from './Datastore';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
-import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
-import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {DocMeta} from '../metadata/DocMeta';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 describe('DocMetaSnapshotEventListener', function() {

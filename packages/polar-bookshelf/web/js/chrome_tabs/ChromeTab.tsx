@@ -1,9 +1,8 @@
 import React from "react";
-import { Tab, Theme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom"
+import {Tab, Theme} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Link} from "react-router-dom"
 import CloseIcon from '@material-ui/icons/Close';
-import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 
 const TAB_CLOSE_TIME = 200;
 

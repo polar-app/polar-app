@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IDocAnnotationRef} from '../../DocAnnotation';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
-import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import Divider from '@material-ui/core/Divider';
 import isEqual from 'react-fast-compare';
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
