@@ -3,7 +3,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
 import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
-import {Attachment} from './Attachment';
+import {Attachment} from 'polar-shared/src/metadata/Attachment';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared/src/metadata/IDocInfo";

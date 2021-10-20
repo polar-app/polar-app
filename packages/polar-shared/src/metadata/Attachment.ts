@@ -1,7 +1,7 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IAttachment} from "polar-shared/src/metadata/IAttachment";
-import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {SerializedObject} from "./SerializedObject";
+import {Preconditions} from '../util/Preconditions';
+import {IAttachment} from "./IAttachment";
+import {BackendFileRef} from "../datastore/BackendFileRef";
 
 export class Attachment extends SerializedObject implements IAttachment {
 

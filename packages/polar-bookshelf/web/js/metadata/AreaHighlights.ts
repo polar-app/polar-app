@@ -9,7 +9,7 @@ import {Images} from './Images';
 import {DocMetas} from './DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
-import {Attachment} from './Attachment';
+import {Attachment} from 'polar-shared/src/metadata/Attachment';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects, Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
