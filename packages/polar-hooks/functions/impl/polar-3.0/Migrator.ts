@@ -4,10 +4,8 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {DocMetaHolder, RecordHolder} from "../groups/db/doc_annotations/DocAnnotations";
 import {IDUser} from "../util/IDUsers";
-import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {TextHighlightRecords} from "polar-bookshelf/web/js/metadata/TextHighlightRecords";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
@@ -16,6 +14,9 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {BlocksSnapshot} from "polar-migration-block-annotations/src/BlocksSnapshot";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 export namespace Polar3DocMetaMigrator {
 
@@ -54,7 +55,8 @@ export namespace Polar3DocMetaMigrator {
 
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
-            .where('uid', '==', userID.uid);
+            .where('uid', '==', userID.uid)
+            .where('ver', '!=', 2);
 
         const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
             snapshot.data() as RecordHolder<DocMetaHolder>;
@@ -194,22 +196,27 @@ export namespace Polar3DocMetaMigrator {
 
         const oldDoc = oldDocMetaCollection.doc(original.id);
 
-        DocMetas.withSkippedMutations(docMeta, () => {
-            const deleteValues = (obj: any) => Object.keys(obj).forEach(key => delete obj[key]);
+        const newDocMeta: IDocMeta = {
+            ...docMeta,
+            pageMetas: Object.entries(docMeta.pageMetas).reduce((dict, [pageNum, pageMeta]) => {
+                const newPageMeta: IPageMeta = {
+                    ...pageMeta,
+                    textHighlights: {},
+                    areaHighlights: {},
+                };
 
-            // Delete all highlights
-            Object.values(docMeta.pageMetas).forEach((pageMeta) => {
-                deleteValues(pageMeta.textHighlights);
-                deleteValues(pageMeta.areaHighlights);
-            });
+                return {
+                    ...dict,
+                    [pageNum]: newPageMeta,
+                };
+            }, {}),
+        };
 
-            // Add placeholder
-            const placeholder = createPlaceholderTextHighlight();
+        const placeholder = createPlaceholderTextHighlight();
 
-            docMeta.pageMetas[0].textHighlights[placeholder.id] = placeholder;
-        });
+        newDocMeta.pageMetas[0].textHighlights[placeholder.id] = placeholder;
 
-        batch.update(oldDoc, 'value.value', DocMetas.serialize(docMeta));
+        batch.update(oldDoc, 'value.value', DocMetas.serialize(newDocMeta));
     }
 
     /**
@@ -217,8 +224,23 @@ export namespace Polar3DocMetaMigrator {
      */
     function createPlaceholderTextHighlight(): ITextHighlight {
         const text = Texts.create('Your annotations have been migrated to Polar 3.0 and are no longer visible in your older client. Please upgrade', TextType.TEXT);
+        const id = Hashcodes.createRandomID();
+        const now = ISODateTimeStrings.create();
 
-        return TextHighlightRecords.create([], [], text, 'red').value;
+        return {
+            id,
+            guid: id,
+            created: now,
+            lastUpdated: now,
+            rects: {},
+            textSelections: {},
+            text,
+            images: {},
+            notes: {},
+            questions: {},
+            flashcards: {},
+            color: 'red',
+        };
     }
 
     /**
