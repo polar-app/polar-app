@@ -23,7 +23,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {UUIDs} from "./UUIDs";
+import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 import {SparseDocMetas} from "./SparseDocMetas";
 import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
 

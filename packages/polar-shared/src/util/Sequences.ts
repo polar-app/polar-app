@@ -1,5 +1,5 @@
-import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Strings} from "polar-shared/src/util/Strings";
+import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {Strings} from "./Strings";
 
 /**
  * Creates human readable sequences that are opaque strings.  They only need to

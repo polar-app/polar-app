@@ -10,7 +10,7 @@ import {MockDocMetas} from '../metadata/DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {assert} from 'chai';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';

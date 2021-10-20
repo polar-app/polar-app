@@ -38,7 +38,7 @@ import {IRelatedTagsData, RelatedTagsManager} from "../../../web/js/tags/related
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import isEqual from 'react-fast-compare';
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
-import {UUIDs} from "../../../web/js/metadata/UUIDs";
+import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 import {IOutline} from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from "../../../web/js/analytics/Analytics";

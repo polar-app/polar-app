@@ -1,4 +1,4 @@
-import {UUID} from 'polar-shared/src/metadata/UUID';
+import {UUID} from './UUID';
 import {Sequence, Sequences} from '../util/Sequences';
 
 export namespace UUIDs {

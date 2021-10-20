@@ -25,7 +25,7 @@ import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Sequences} from './Sequences';
+import {TestingTime} from "../test/TestingTime";
 
 describe('Sequences', function() {
 

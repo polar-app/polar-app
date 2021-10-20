@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Promises} from 'polar-shared/src/util/Promises';
+import {Promises} from '../util/Promises';
 import {UUIDs} from './UUIDs';
 
 describe('UUIDs', function() {
