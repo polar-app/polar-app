@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Line} from './Line';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 
 describe('Line', function() {
 

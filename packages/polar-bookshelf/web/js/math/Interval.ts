@@ -1,7 +1,7 @@
 /**
  * Represents a mathematical interval between two values.
  */
-import {ILine, Line} from '../util/Line';
+import {ILine, Line} from 'polar-shared/src/util/Line';
 
 export class Interval {
 

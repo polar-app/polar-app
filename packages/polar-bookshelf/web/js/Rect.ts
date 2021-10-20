@@ -1,5 +1,5 @@
 import {Dimensions} from 'polar-shared/src/util/Dimensions';
-import {Line} from './util/Line';
+import {Line} from 'polar-shared/src/util/Line';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";

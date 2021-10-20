@@ -1,4 +1,4 @@
-import {isPresent, notNull, Preconditions} from 'polar-shared/src/Preconditions';
+import {isPresent, notNull, Preconditions} from 'src/Preconditions';
 
 export type Axis = 'x' | 'y';
 
