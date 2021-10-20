@@ -14,7 +14,7 @@ import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
-import {MetadataSerializer} from '../metadata/MetadataSerializer';
+import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {MockDocMetas} from "../metadata/MockDocMetas";

@@ -2,7 +2,7 @@ import {Annotation} from './Annotation';
 import {Note} from './Note';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
-import {MetadataSerializer} from './MetadataSerializer';
+import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 

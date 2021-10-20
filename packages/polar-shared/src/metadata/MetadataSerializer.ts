@@ -1,5 +1,5 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {SerializedObject} from "./SerializedObject";
+import {Preconditions} from '../Preconditions';
 
 /**
  * All JSON must go through the metadata serializer so we can handle proper
