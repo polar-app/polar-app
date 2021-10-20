@@ -1,4 +1,4 @@
-import {TextArray} from './TextArray';
+import {TextArray} from 'polar-shared/src/util/TextArray';
 import {Rect} from '../Rect';
 
 /**
