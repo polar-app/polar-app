@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {DocMeta} from './DocMeta';
+import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas, MockDocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';

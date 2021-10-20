@@ -1,5 +1,5 @@
 import {PageMeta} from './PageMeta';
-import {DocMeta} from './DocMeta';
+import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';

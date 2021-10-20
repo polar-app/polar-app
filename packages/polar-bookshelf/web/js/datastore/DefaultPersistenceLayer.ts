@@ -12,7 +12,7 @@ import {
     SnapshotResult,
     WriteFileOpts
 } from './Datastore';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';

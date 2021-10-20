@@ -1,11 +1,11 @@
-import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
-import {Attachment} from 'polar-shared/src/metadata/Attachment';
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {DocInfo} from './DocInfo';
+import {SerializedObject} from "./SerializedObject";
+import {Preconditions} from '../Preconditions';
+import {AnnotationInfos} from './AnnotationInfos';
+import {Attachment} from './Attachment';
+import {IPageMeta} from "./IPageMeta";
+import {IDocInfo} from "./IDocInfo";
+import {IDocMeta} from "./IDocMeta";
 
 
 /**
