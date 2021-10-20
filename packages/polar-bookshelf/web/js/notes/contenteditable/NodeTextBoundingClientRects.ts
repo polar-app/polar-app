@@ -1,4 +1,4 @@
-import { Numbers } from "polar-shared/src/util/Numbers";
+import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace NodeTextBoundingClientRects {

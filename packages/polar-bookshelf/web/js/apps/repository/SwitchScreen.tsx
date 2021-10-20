@@ -1,13 +1,10 @@
 import * as React from 'react';
-
-import {createStyles, makeStyles, Table, TableHead, TableRow, TableCell, Theme} from '@material-ui/core';
-
-import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
-import { useHistory } from 'react-router-dom';
-import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
-
-import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
-import { ISODateTimeStrings } from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
+import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
+import {useHistory} from 'react-router-dom';
+import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -36,7 +33,7 @@ interface TableHeaderProps {
     readonly nonEmpty?: boolean;
 }
 /**
- * 
+ *
  * @param props a blooean variable to determine if there was any recently opened documents or not
  * @returns returns the approprite header title
  */
@@ -44,10 +41,10 @@ const TableHeader = (props: TableHeaderProps) => {
     const classes = useStyles();
 
     return(
-        <TableHead>   
+        <TableHead>
             <TableRow>
                 <TableCell>
-                    { props.nonEmpty ? 
+                    { props.nonEmpty ?
                         <span className={classes.headerFont}>Recently Updated Documents:</span>
                         :
                         <span className={classes.headerFont}>No recent files</span>
@@ -88,7 +85,7 @@ export const SwitchScreen = () => {
                     size={'medium'}
                     aria-label="enhanced table">
 
-                    {orderedTabsByRecency.length > 0 ? 
+                    {orderedTabsByRecency.length > 0 ?
                         <>
                             <TableHeader nonEmpty/>
                             {orderedTabsByRecency.map( column =>
@@ -102,7 +99,7 @@ export const SwitchScreen = () => {
                         :
                         <TableHeader/>
                     }
-            </Table>          
+            </Table>
         </>
     );
 }

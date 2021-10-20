@@ -1,6 +1,6 @@
-import { Functions } from 'polar-shared/src/util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import * as React from 'react';
-import { useZenModeStore } from '../../../web/js/mui/ZenModeStore';
+import {useZenModeStore} from '../../../web/js/mui/ZenModeStore';
 import {useDocViewerStore} from "./DocViewerStore";
 
 /**

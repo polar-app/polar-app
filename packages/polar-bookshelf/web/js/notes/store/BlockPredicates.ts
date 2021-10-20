@@ -3,7 +3,12 @@ import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {DateContent} from "../content/DateContent";
 import {NamedContent} from "./BlocksStore";
-import {AnnotationContent, AnnotationHighlightContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
+import {
+    AnnotationContent,
+    AnnotationHighlightContent,
+    FlashcardAnnotationContent,
+    TextHighlightAnnotationContent
+} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
@@ -50,7 +55,7 @@ export namespace BlockPredicates {
 
     export function canHaveLinks(block: Readonly<Block>): block is Block<HasLinksContent> {
         return [
-            'markdown', 
+            'markdown',
             AnnotationContentType.TEXT_HIGHLIGHT,
         ].indexOf(block.content.type) > -1;
     }

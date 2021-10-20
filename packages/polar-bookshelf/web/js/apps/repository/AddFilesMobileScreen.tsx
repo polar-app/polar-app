@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
-
 import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
-
-import { Uploads } from './upload/Uploads';
+import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
+import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
+import {useHistory} from 'react-router-dom';
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
-import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
-import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles<Theme>((theme) =>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useRef, useState } from "react";
+import {useCallback, useRef, useState} from 'react';
 
 type OnLongPress = (event: React.MouseEvent | React.TouchEvent) => void;
 type OnClick = () => void;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,

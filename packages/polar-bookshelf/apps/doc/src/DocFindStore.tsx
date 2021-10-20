@@ -1,17 +1,8 @@
 import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {
-    Finder,
-    FindHandler,
-    IFindOpts,
-    IFindOptsBase,
-    IMatches
-} from "./Finders";
+import {Finder, FindHandler, IFindOpts, IFindOptsBase, IMatches} from "./Finders";
 
 export interface IDocFindStore {
 

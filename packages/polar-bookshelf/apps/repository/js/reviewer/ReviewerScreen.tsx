@@ -5,7 +5,7 @@ import {Reviewers} from "./Reviewers";
 import {useFirestore} from "../FirestoreProvider";
 import {Reviewer} from './Reviewer';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import { ReviewerStoreProvider } from './ReviewerStore';
+import {ReviewerStoreProvider} from './ReviewerStore';
 
 
 export interface IProps {

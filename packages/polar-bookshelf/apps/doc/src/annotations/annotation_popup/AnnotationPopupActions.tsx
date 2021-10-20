@@ -17,7 +17,7 @@ import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {Block} from "../../../../../web/js/notes/store/Block";
-import { useBlocksStore } from "../../../../../web/js/notes/store/BlocksStore";
+import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 
 export type IDocMetaAnnotationProps = {
     annotation: IDocAnnotation,

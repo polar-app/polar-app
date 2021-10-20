@@ -9,9 +9,8 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {UserAvatarIconButton} from '../../../../web/js/ui/cloud_auth/UserAvatar';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useHistory} from 'react-router-dom';
-import { RoutePathNames } from '../../../../web/js/apps/repository/RoutePathNames';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import {RoutePathNames} from '../../../../web/js/apps/repository/RoutePathNames';
+
 export interface IProps {
 
     /**

@@ -2,7 +2,7 @@ import {IconButton} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Devices} from "polar-shared/src/util/Devices";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 
 interface IProps {

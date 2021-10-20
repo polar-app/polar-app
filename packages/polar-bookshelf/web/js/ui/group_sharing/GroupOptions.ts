@@ -1,6 +1,3 @@
-import {ContactProfile} from './GroupSharingRecords';
-import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
-import {ContactOption} from './ContactsSelector';
 import {Group} from "../../datastore/sharing/db/Groups";
 import {GroupOption} from "./GroupsSelector";
 

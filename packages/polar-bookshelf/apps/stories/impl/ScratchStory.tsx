@@ -1,8 +1,6 @@
-import IconButton from '@material-ui/core/IconButton';
 import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import * as React from 'react';
-import {FAHomeIcon} from "../../../web/js/mui/MUIFontAwesome";
 import {BarMode, NoteFormatBar} from "../../../web/js/notes/NoteFormatBar";
 
 const useStyles = makeStyles((theme) =>

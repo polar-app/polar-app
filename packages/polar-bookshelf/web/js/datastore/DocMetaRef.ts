@@ -1,12 +1,10 @@
-/**
- * Represents a light weight reference to a DocMeta file.
- */
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {DocMeta} from '../metadata/DocMeta';
-import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 
+/**
+ * Represents a light weight reference to a DocMeta file.
+ */
 export interface DocMetaRef {
 
     readonly fingerprint: string;

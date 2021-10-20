@@ -3,10 +3,7 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
 import {AppTags} from "./AppTags";
-import {
-    OnErrorCallback,
-    SnapshotSubscriber
-} from 'polar-shared/src/util/Snapshots';
+import {OnErrorCallback, SnapshotSubscriber} from 'polar-shared/src/util/Snapshots';
 import {TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 import {DataLoader2, IDataProps} from "../../../../web/js/ui/data_loader/DataLoader2";
 

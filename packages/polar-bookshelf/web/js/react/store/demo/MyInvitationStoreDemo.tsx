@@ -1,12 +1,6 @@
-import React, {useState} from 'react';
-import {
-    CallbacksFactory,
-    createObservableStore,
-    ObservableStore, SetStore
-} from "../ObservableStore";
-import Button from "@material-ui/core/Button";
-import { TagStoreProvider, useTagStore } from './TagStoreDemo';
-import {useTagsContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import React from 'react';
+import {CallbacksFactory, createObservableStore, ObservableStore, SetStore} from "../ObservableStore";
+import {useTagStore} from './TagStoreDemo';
 
 interface IInvitation {
     readonly invited: boolean;

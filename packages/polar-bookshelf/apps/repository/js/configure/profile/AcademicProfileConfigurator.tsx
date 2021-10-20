@@ -1,16 +1,11 @@
 import * as React from "react";
-import {EducationLevelSelect} from "./selectors/EducationLevelSelect";
 import {FieldOfStudySelect} from "./selectors/FieldOfStudySelect";
-import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {UniversitySelect} from "./selectors/UniversitySelect";
 import {AcademicOccupationProfile, FormData} from "./ProfileConfigurator";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {
-    AcademicOccupation,
-    Occupation
-} from "polar-shared/src/util/Occupations";
+import {AcademicOccupation, Occupation} from "polar-shared/src/util/Occupations";
 import Box from "@material-ui/core/Box";
 
 interface IProps {

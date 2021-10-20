@@ -1,7 +1,4 @@
-import {
-    createObservableStore,
-    SetStore
-} from "../../../react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 
 export interface IAddFileDropzoneStore {

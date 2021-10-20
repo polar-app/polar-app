@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Billing } from 'polar-accounts/src/Billing';
+import {Billing} from 'polar-accounts/src/Billing';
 import {IDStr} from "polar-shared/src/util/Strings";
-import { URLs } from 'polar-shared/src/util/URLs';
-import { StripeUtils } from '../../stripe/StripeUtils';
+import {URLs} from 'polar-shared/src/util/URLs';
+import {StripeUtils} from '../../stripe/StripeUtils';
 
 async function startStripeSession(newSubscription: Billing.V2Subscription, email: string): Promise<IDStr> {
 

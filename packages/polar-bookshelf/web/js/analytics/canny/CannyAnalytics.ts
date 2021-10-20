@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import onlyDefinedProperties = Dictionaries.onlyDefinedProperties;
 

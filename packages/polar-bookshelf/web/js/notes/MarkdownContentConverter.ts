@@ -1,12 +1,11 @@
 import {MarkdownToHTML} from "polar-markdown-parser/src/MarkdownToHTML";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
+import {WikiLinksToHTML} from "./WikiLinksToHTML";
+import {Mappers} from "polar-shared/src/util/Mapper";
+import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
+import {Elements} from "../util/Elements";
 import markdown2html = MarkdownToHTML.markdown2html;
 import html2markdown = HTMLToMarkdown.html2markdown;
-import {WikiLinksToHTML} from "./WikiLinksToHTML";
-import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
-import {Mappers} from "polar-shared/src/util/Mapper";
-import {MarkdownStr, HTMLStr} from "polar-shared/src/util/Strings";
-import {Elements} from "../util/Elements";
 
 const TRACE = false;
 
@@ -72,7 +71,7 @@ export namespace MarkdownContentConverter {
 
     function getWhitespaceCount(el: HTMLElement): WhitespaceCount {
         const target = el.cloneNode(true);
-        
+
         target.normalize();
 
         const nodes = getTextNodesIn(target);

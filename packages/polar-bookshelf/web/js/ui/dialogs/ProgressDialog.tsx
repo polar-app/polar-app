@@ -4,7 +4,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {LinearProgressWithLabel} from './LinearProgressWithLabel';
-import { MUIDialog } from './MUIDialog';
+import {MUIDialog} from './MUIDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -1,5 +1,4 @@
 import {CallbacksFactory, createObservableStore} from "../ObservableStore";
-import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useAlphaStore} from "./AlphaStoreDemo";
 
 interface IBetaStore {

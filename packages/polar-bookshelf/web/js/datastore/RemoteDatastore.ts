@@ -1,13 +1,20 @@
-import {Datastore, DatastoreID, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, InitResult, SnapshotResult} from './Datastore';
-import {DeleteResult} from './Datastore';
-import {WriteOpts} from './Datastore';
+import {
+    Datastore,
+    DatastoreID,
+    DeleteResult,
+    DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    InitResult,
+    SnapshotResult,
+    WriteOpts
+} from './Datastore';
 import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef} from './DocMetaRef';
-import {DatastoreMutation} from './DatastoreMutation';
-import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutations} from './DatastoreMutations';
 

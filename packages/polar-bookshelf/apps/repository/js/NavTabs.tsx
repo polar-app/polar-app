@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {
-    ReactRouterLinks,
-    RouterLink
-} from "../../../web/js/ui/ReactRouterLinks";
+import {ReactRouterLinks, RouterLink} from "../../../web/js/ui/ReactRouterLinks";
 import Tabs from '@material-ui/core/Tabs';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Tab from "@material-ui/core/Tab";

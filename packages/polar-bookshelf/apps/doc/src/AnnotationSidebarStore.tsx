@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter";

@@ -12,7 +12,6 @@ import {ConstructorOptions, JSDOM} from "jsdom";
 import {NameContent} from "../content/NameContent";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {Asserts} from "polar-shared/src/Asserts";
-import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
@@ -31,6 +30,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import assertPresent = Asserts.assertPresent;
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -671,7 +671,7 @@ describe('BlocksStore', function() {
                         "_height": 100,
                         "_links": [],
                     },
-                    "_items": {}, 
+                    "_items": {},
                     "_mutation": 0,
                 },
                 "115": {
@@ -689,7 +689,7 @@ describe('BlocksStore', function() {
                         "_links": [],
                         "_type": 'markdown',
                     },
-                    "_items": {}, 
+                    "_items": {},
                     "_mutation": 0,
                 },
                 "2020document": {
@@ -724,7 +724,7 @@ describe('BlocksStore', function() {
                     "_items": PositionalArrays.create([
                         '2021text',
                         '2022area',
-                    ]), 
+                    ]),
                     "_mutation": 0,
                 },
                 "2021text": {
@@ -748,7 +748,7 @@ describe('BlocksStore', function() {
                             "color": 'yellow',
                         }
                     },
-                    "_items": {}, 
+                    "_items": {},
                     "_mutation": 0,
                 },
                 "2022area": {
@@ -776,7 +776,7 @@ describe('BlocksStore', function() {
                             },
                         }
                     },
-                    "_items": PositionalArrays.create(['2023flashcard', '2024']), 
+                    "_items": PositionalArrays.create(['2023flashcard', '2024']),
                     "_mutation": 0,
                 },
                 "2023flashcard": {
@@ -803,7 +803,7 @@ describe('BlocksStore', function() {
                             "archetype": 'whatever'
                         }
                     },
-                    "_items": {}, 
+                    "_items": {},
                     "_mutation": 0,
                 },
                 "2024": {
@@ -2681,7 +2681,7 @@ describe('BlocksStore', function() {
             const { id: newBlockID } = store.createNewBlock(id, {
                 split: { prefix: '[[(hello)]] what is happening', suffix: ' [[\\[\\[world\\]\\]]]' }
             });
-            
+
             const oldBlock = store.getBlock(id);
             const newBlock = store.getBlock(newBlockID);
 

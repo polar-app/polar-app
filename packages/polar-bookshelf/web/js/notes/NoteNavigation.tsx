@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 

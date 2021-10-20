@@ -8,8 +8,8 @@ import {Provider} from 'polar-shared/src/util/Providers';
 import {useJumpToAnnotationHandler} from "../../../../../web/js/annotation_sidebar/JumpToAnnotationHook";
 import {useDocViewerContext} from "../DocRenderer";
 import {useDocViewerStore} from '../../DocViewerStore';
-import EPUBFinder = EPUBFinders.EPUBFinder;
 import {AnnotationPtrs, IAnnotationPtr} from "../../../../../web/js/annotation_sidebar/AnnotationPtrs";
+import EPUBFinder = EPUBFinders.EPUBFinder;
 
 export namespace EPUBFindControllers {
 

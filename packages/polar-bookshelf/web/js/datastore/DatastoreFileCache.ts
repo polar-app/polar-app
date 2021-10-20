@@ -1,6 +1,5 @@
-import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
+import {DocFileMeta, DocFileURLMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileURLMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileRef} from "polar-shared/src/datastore/FileRef";

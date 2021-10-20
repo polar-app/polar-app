@@ -1,9 +1,5 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {
-    createChildren,
-    IDocAnnotation,
-    IDocAnnotationRef
-} from './DocAnnotation';
+import {createChildren, IDocAnnotation, IDocAnnotationRef} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
@@ -26,10 +22,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {
-    InheritedTag,
-    toSelfInheritedTags
-} from "polar-shared/src/tags/InheritedTags";
+import {InheritedTag, toSelfInheritedTags} from "polar-shared/src/tags/InheritedTags";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {IDocMetaRef} from "polar-shared/src/metadata/AnnotationRefs";
 

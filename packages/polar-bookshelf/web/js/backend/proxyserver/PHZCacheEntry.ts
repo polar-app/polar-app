@@ -1,12 +1,11 @@
-/**
- * A cache entry backed by a phz file.
- */
 import {CacheEntry, DataCallback, ICacheEntry} from "./CacheEntry";
-import {PHZReader} from 'polar-content-capture/src/phz/PHZReader';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ResourceEntry} from 'polar-content-capture/src/phz/ResourceEntry';
 import {CompressedReader} from "polar-content-capture/src/phz/CompressedReader";
 
+/**
+ * A cache entry backed by a phz file.
+ */
 export class PHZCacheEntry extends CacheEntry implements IPHZCacheEntry {
 
     public phzReader: CompressedReader;

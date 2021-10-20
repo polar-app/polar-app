@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {FolderSelectionEvents} from "../../../repository/js/folder_sidebar/FolderSelectionEvents";
+import {IDStr} from "polar-shared/src/util/Strings";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
-import {IDStr} from "polar-shared/src/util/Strings";
 
 interface IOutlinerStore {
 

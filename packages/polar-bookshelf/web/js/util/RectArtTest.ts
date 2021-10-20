@@ -1,12 +1,6 @@
-
 import {assert} from 'chai';
-import {assertJSON} from "../test/Assertions";
-
-import {Rect} from "../Rect";
 import {Rects} from "../Rects";
-
 import {RectArt} from "./RectArt";
-import {TextArray} from "./TextArray";
 
 describe('RectArt', function() {
 

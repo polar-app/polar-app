@@ -29,7 +29,7 @@ import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
-import {DeviceRouter, DeviceRouters} from '../ui/DeviceRouter';
+import {DeviceRouter} from '../ui/DeviceRouter';
 import {FeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 export const SIDENAV_WIDTH = 56;

@@ -1,10 +1,7 @@
 import React from "react";
 import {useDocRepoCallbacks} from "./doc_repo/DocRepoStore2";
 import {useHistory} from "react-router-dom";
-import {
-    GlobalKeyboardShortcuts,
-    keyMapWithGroup
-} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
 const globalKeyMap = keyMapWithGroup(
     {

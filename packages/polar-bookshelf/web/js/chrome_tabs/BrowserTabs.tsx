@@ -1,12 +1,8 @@
 import React from "react";
-import { AppBar, Tabs, makeStyles, Theme } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import { ChromeTab } from "./ChromeTab";
-import { BrowserTabContent } from "./BrowserTabContent";
-import {
-  useBrowserTabsCallbacks,
-  useBrowserTabsStore
-} from "./BrowserTabsStore";
+import {AppBar, makeStyles, Tabs, Theme} from "@material-ui/core";
+import {useHistory} from "react-router-dom";
+import {ChromeTab} from "./ChromeTab";
+import {useBrowserTabsCallbacks, useBrowserTabsStore} from "./BrowserTabsStore";
 
 const useStyles = makeStyles((theme: Theme) => ({
   tabs: {
@@ -55,7 +51,7 @@ export const BrowserTabs = () => {
   React.useEffect(() => {
     if (activeTab) {
       history.push(tabs[activeTab].url);
-    } 
+    }
   }, [activeTab, history, tabs]);
 
   // Change tabs

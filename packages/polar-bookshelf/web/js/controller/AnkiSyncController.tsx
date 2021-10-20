@@ -3,13 +3,8 @@ import {SyncProgressListener} from '../apps/sync/framework/SyncProgressListener'
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
 import {Analytics} from "../analytics/Analytics";
 import {useLogger} from "../mui/MUILogger";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../hooks/ReactLifecycleHooks";
-import {
-    useRepoDocMetaManager
-} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useRepoDocMetaManager} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {DocMetaSupplier} from "../metadata/DocMetaSupplier";

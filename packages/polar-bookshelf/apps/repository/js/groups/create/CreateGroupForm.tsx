@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, TagStr} from "polar-shared/src/tags/Tags";
-import {
-    GroupProvisionRequest,
-    GroupProvisions
-} from "../../../../../web/js/datastore/sharing/rpc/GroupProvisions";
+import {GroupProvisionRequest, GroupProvisions} from "../../../../../web/js/datastore/sharing/rpc/GroupProvisions";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTagsManager";
 import InputLabel from '@material-ui/core/InputLabel';

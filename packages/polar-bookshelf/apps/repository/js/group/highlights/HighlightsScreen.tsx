@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    GroupNameStr,
-    Groups
-} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {GroupNameStr, Groups} from "../../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {GroupHighlightsData} from "./GroupHighlightsData";
 import {Logger} from "polar-shared/src/logger/Logger";

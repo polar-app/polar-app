@@ -5,10 +5,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlobWriter} from "./writers/BlobWriter";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
-import {
-    ReadableBinaryDatastore,
-    ReadableBinaryDatastoreProvider
-} from "polar-shared/src/datastore/IDatastore";
+import {ReadableBinaryDatastore, ReadableBinaryDatastoreProvider} from "polar-shared/src/datastore/IDatastore";
 import {Analytics} from '../../analytics/Analytics';
 
 /**

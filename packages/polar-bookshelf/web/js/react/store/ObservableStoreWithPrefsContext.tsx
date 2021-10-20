@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {
     createObservableStore,
-    ObservableStoreOpts, ObservableStoreProps,
-    ObservableStoreTuple, pick,
+    ObservableStoreOpts,
+    ObservableStoreProps,
+    ObservableStoreTuple,
+    pick,
 } from "./ObservableStore";
 import {usePrefsContext} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 

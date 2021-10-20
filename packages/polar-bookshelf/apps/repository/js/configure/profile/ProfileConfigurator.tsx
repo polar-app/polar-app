@@ -1,15 +1,9 @@
-import {
-    OccupationSelect
-} from "./selectors/OccupationSelect";
-import {DomainNameStr, University} from "polar-shared/src/util/Universities";
+import {OccupationSelect} from "./selectors/OccupationSelect";
+import {University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
-import {
-    AcademicOccupation,
-    BusinessOccupation,
-    Occupation
-} from "polar-shared/src/util/Occupations";
+import {AcademicOccupation, BusinessOccupation, Occupation} from "polar-shared/src/util/Occupations";
 import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";

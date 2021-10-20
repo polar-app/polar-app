@@ -2,13 +2,13 @@ import * as React from 'react';
 import {Month} from "polar-shared/src/metadata/IDocBib";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import { StringProperty } from './StringProperty';
+import {StringProperty} from './StringProperty';
 import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import { StringArrayAutocompleteProperty } from './StringArrayAutocompleteProperty';
+import {StringArrayAutocompleteProperty} from './StringArrayAutocompleteProperty';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import { TextProperty } from './TextProperty';
+import {TextProperty} from './TextProperty';
 import {MonthProperty} from "./MonthProperty";
 
 /**

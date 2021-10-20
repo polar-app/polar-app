@@ -1,5 +1,4 @@
-import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTagsManager";
-import { FluidElementPredicates } from "./FluidElementPredicates";
+import {FluidElementPredicates} from "./FluidElementPredicates";
 
 describe('FluidElementPredicates', function() {
 

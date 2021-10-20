@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
-    BlockComponentProps, HiddenBlockComponentProps,
+    BlockComponentProps,
+    HiddenBlockComponentProps,
     IntersectionList,
     VisibleComponentProps
 } from "../../../web/js/intersection_list/IntersectionList";

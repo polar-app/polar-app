@@ -1,7 +1,7 @@
 /* tslint:disable:no-var-keyword prefer-const */
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useZenModeStore } from '../../../mui/ZenModeStore';
+import {useLocation} from 'react-router-dom';
+import {useZenModeStore} from '../../../mui/ZenModeStore';
 import {createIntercomClient} from "../../../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "./IntercomHooks";
 import {Devices} from "polar-shared/src/util/Devices";

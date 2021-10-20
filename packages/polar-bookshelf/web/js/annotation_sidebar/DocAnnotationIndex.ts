@@ -1,9 +1,4 @@
-import {
-    DefaultDocAnnotation,
-    DocAnnotation,
-    DocAnnotationMap,
-    IDocAnnotation
-} from './DocAnnotation';
+import {DefaultDocAnnotation, DocAnnotation, DocAnnotationMap, IDocAnnotation} from './DocAnnotation';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {SetArrays} from "polar-shared/src/util/SetArrays";

@@ -4,10 +4,7 @@ import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
 import {AddTagsDropdown} from "./AddTagsDropdown";
-import {
-    useFolderSidebarCallbacks,
-    useFolderSidebarStore
-} from "../folder_sidebar/FolderSidebarStore";
+import {useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
 import {createContextMenu, MenuComponentProps} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 import {TagIDStr} from "polar-shared/src/tags/Tags";

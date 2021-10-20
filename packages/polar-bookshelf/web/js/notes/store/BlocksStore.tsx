@@ -28,7 +28,10 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
+import {
+    IBlockExpandCollectionSnapshot,
+    useBlockExpandCollectionSnapshots
+} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {IBlockContentStructure, NewChildPos, BlockIDStr, IBlock, IBlockContent, IBlockLink, INewChildPosition, NamespaceIDStr, UIDStr, INamedContent} from "polar-blocks/src/blocks/IBlock";
@@ -540,7 +543,7 @@ export class BlocksStore implements IBlocksStore {
                 if (existingBlock) {
                     this.relatedTagsManager.update(block.root, 'delete', existingBlock.content.getTags());
                 }
-                
+
                 this.relatedTagsManager.update(block.root, 'set', block.content.getTags());
 
                 if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
@@ -845,7 +848,7 @@ export class BlocksStore implements IBlocksStore {
             console.warn("No currently active node");
             return false;
         }
-        
+
         const DoDOMNav = () => {
             const newBlockID = DOMBlocks.nav(delta, opts.pos);
             if (newBlockID) {
@@ -858,7 +861,7 @@ export class BlocksStore implements IBlocksStore {
             DoDOMNav();
             return true;
         }
-        
+
         const rootBlock = this._index[root];
 
         const items = this.computeLinearTree(root, {
@@ -905,7 +908,7 @@ export class BlocksStore implements IBlocksStore {
             this.clearSelected('doNav');
         }
 
-        DoDOMNav();        
+        DoDOMNav();
 
         return true;
 
@@ -1970,7 +1973,7 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const parent = this.getBlock(block.parent);
-        
+
         // If the parent is an annotation then we can't unindent
         // Because the parent of that annotation is a document which only allows annotations beneath it
         if (! parent || BlockPredicates.isAnnotationHighlightBlock(parent)) {
@@ -2031,7 +2034,7 @@ export class BlocksStore implements IBlocksStore {
             if (! parentBlock) {
                 return {error: 'no-parent-block'};
             }
-            
+
             if (BlockPredicates.isAnnotationHighlightBlock(parentBlock)) {
                 return {error: 'grandparent-is-document'};
             }
