@@ -1,9 +1,9 @@
-/**
- * Draw ascii art rects for visualization.
- */
 import {TextArray} from './TextArray';
 import {Rect} from '../Rect';
 
+/**
+ * Draw ascii art rects for visualization.
+ */
 export class RectArt {
 
     private readonly width: number;
