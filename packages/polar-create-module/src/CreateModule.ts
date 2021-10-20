@@ -57,12 +57,12 @@ export async function createNewModule(): Promise<void> {
 
     // $ Create Remaining Files
     if(config.Typescript) {
-        await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.create()));
-        await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.create()));
+        await fs.promises.writeFile(`../${packageName}/.eslintrc.json`, createJSONDataFile(ESLint.create()));
+        await fs.promises.writeFile(`../${packageName}/tsconfig.json`, createJSONDataFile(TSConfig.create()));
 
     }
     if(config.Karma) {
-        await fs.promises.writeFile('karma.conf.js', Karma.create());
+        await fs.promises.writeFile(`../${packageName}/karma.conf.js`, Karma.create());
     }
 
     // $ Return Success Message
