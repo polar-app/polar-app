@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {PageMeta} from './PageMeta';
+import {PageMeta} from 'polar-shared/src/metadata/PageMeta';
 import {TextHighlights} from './TextHighlights';
 import {assertJSON} from '../test/Assertions';
 

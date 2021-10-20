@@ -1,7 +1,7 @@
-import {PageMeta} from './PageMeta';
+import {PageMeta} from 'polar-shared/src/metadata/PageMeta';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {PageInfo} from './PageInfo';
+import {PageInfo} from 'polar-shared/src/metadata/PageInfo';
 import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
@@ -68,17 +68,7 @@ export class DocMetas {
      */
     public static create(fingerprint: string, nrPages: number, filename?: string) {
 
-        const docInfo = DocInfos.create(fingerprint, nrPages, filename);
-
-        const pageMetas: {[id: string]: IPageMeta} = {};
-
-        for (let idx = 1; idx <= nrPages; ++idx) {
-            const pageInfo = new PageInfo({num: idx});
-            const pageMeta = new PageMeta({pageInfo});
-            pageMetas[idx] = pageMeta;
-        }
-
-        return new DocMeta(docInfo, pageMetas);
+        return DocMetaSerializer.create(fingerprint, nrPages, filename)
 
     }
 

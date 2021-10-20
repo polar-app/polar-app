@@ -1,6 +1,6 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
+import {SerializedObject} from "./SerializedObject";
+import {Preconditions} from '../Preconditions';
+import {IPageInfo} from "./IPageInfo";
 import {IDimensions} from "../util/IDimensions";
 
 export class PageInfo extends SerializedObject implements IPageInfo {

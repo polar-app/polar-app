@@ -1,16 +1,16 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
-import {IPagemark} from "polar-shared/src/metadata/IPagemark";
-import {INote} from "polar-shared/src/metadata/INote";
-import {IComment} from "polar-shared/src/metadata/IComment";
-import {IQuestion} from "polar-shared/src/metadata/IQuestion";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {IScreenshot} from "polar-shared/src/metadata/IScreenshot";
-import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
+import {SerializedObject} from "./SerializedObject";
+import {ReadingProgress} from './ReadingProgress';
+import {IPageMeta} from "./IPageMeta";
+import {IPageInfo} from "./IPageInfo";
+import {IPagemark} from "./IPagemark";
+import {INote} from "./INote";
+import {IComment} from "./IComment";
+import {IQuestion} from "./IQuestion";
+import {IFlashcard} from "./IFlashcard";
+import {ITextHighlight} from "./ITextHighlight";
+import {IAreaHighlight} from "./IAreaHighlight";
+import {IScreenshot} from "./IScreenshot";
+import {IThumbnail} from "./IThumbnail";
 
 export class PageMeta extends SerializedObject implements IPageMeta {
 
