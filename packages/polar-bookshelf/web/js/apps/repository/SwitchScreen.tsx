@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
-import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import {useHistory} from 'react-router-dom';
 import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
@@ -11,16 +10,9 @@ const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
         th: {
             whiteSpace: 'nowrap',
-        },
-        row: {
-            "& th": {
-                paddingTop: theme.spacing(1),
-                paddingBottom: theme.spacing(1),
-                paddingLeft: 0,
-                paddingRight: 0,
-                borderCollapse: 'collapse',
-                lineHeight: '1em'
-            }
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 0
         },
         headerFont:{
             fontSize: '1.2em'
@@ -79,8 +71,7 @@ export const SwitchScreen = () => {
     return (
         <AdaptivePageLayout title="Recent Documents" fullWidth noBack>
 
-            <Table  style={{
-                    }}
+            <Table  style={{width: '100%'}}
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table">
 
@@ -88,7 +79,7 @@ export const SwitchScreen = () => {
                         <>
                             {orderedTabsByRecency.map( column =>
                                 <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
-                                    <TableCell key={column.uuid} className={classes.th} width="auto">
+                                    <TableCell key={column.uuid} className={classes.th}>
                                         {column.title}
                                     </TableCell>
                                 </TableRow>
