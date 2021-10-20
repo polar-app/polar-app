@@ -35,7 +35,7 @@
     "**/eslint-plugin-promise": "*"
   },
   "scripts": {
-    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
+    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
     "bootstrap": "lerna bootstrap && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link",
     "bootstrap-ci": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link",
     "eslint": "lerna run eslint --no-bail",
