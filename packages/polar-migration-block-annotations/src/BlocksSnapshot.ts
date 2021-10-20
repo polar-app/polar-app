@@ -18,6 +18,8 @@ export namespace BlocksSnapshot {
 
             const now = ISODateTimeStrings.create();
 
+            const directChildrenIDs = children.map(({ id }) => id);
+
             const block: IBlock = {
                 id,
                 parent: parent?.id,
@@ -28,15 +30,14 @@ export namespace BlocksSnapshot {
                 content,
                 created: now,
                 updated: now,
-                items: PositionalArrays.create(),
+                items: PositionalArrays.create(directChildrenIDs),
                 mutation: 0,
             };
 
             const childrenBlocks = children.flatMap(childStructure => toBlock(childStructure, block));
-            const childrenBlockIDs = childrenBlocks.map(({ id }) => id);
 
             return [
-                { ...block, items: PositionalArrays.create(childrenBlockIDs) },
+                block,
                 ...childrenBlocks,
             ];
         };
