@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    ICommentCreate,
-    useAnnotationMutationsContext
-} from "../../AnnotationMutationsContext";
+import {ICommentCreate, useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {EditComment2} from './EditComment2';
 import {IDocAnnotationRef} from "../../DocAnnotation";

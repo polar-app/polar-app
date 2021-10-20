@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Button from "@material-ui/core/Button";
 import {TagStoreProvider, useTagStore} from './TagStoreDemo';
-import { useMyInvitationStore, useMyInvitationStoreCallbacks, MyInvitationStoreProvider } from './MyInvitationStoreDemo';
+import {MyInvitationStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks} from './MyInvitationStoreDemo';
 import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface ToggleMountedProps {

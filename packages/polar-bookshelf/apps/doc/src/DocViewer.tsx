@@ -10,11 +10,7 @@ import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {DocFindBar} from "./DocFindBar";
 import {DocViewerGlobalHotKeys} from "./DocViewerGlobalHotKeys";
-import {
-    computeDocViewerContextMenuOrigin,
-    DocViewerMenu,
-    IDocViewerContextMenuOrigin
-} from "./DocViewerMenu";
+import {computeDocViewerContextMenuOrigin, DocViewerMenu, IDocViewerContextMenuOrigin} from "./DocViewerMenu";
 import {createContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Helmet} from "react-helmet";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
@@ -26,7 +22,7 @@ import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
+import {useRefValue, useStateRef} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {Outliner} from "./outline/Outliner";

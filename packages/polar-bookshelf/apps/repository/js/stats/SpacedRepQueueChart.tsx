@@ -1,6 +1,6 @@
 import * as React from 'react';
 import StatTitle from './StatTitle';
-import {ResponsiveLine, Serie, Datum} from '@nivo/line';
+import {Datum, ResponsiveLine, Serie} from '@nivo/line';
 import {SpacedRepStat, StatType} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -9,7 +9,7 @@ import {ReviewerStatistics} from "../reviewer/ReviewerStatistics";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
-import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
+import {minDatapointsReducer, sumDatapointsReducer} from './StatisticsReducers';
 import {useNivoTheme} from "./NivoHooks";
 import useTheme from '@material-ui/core/styles/useTheme';
 

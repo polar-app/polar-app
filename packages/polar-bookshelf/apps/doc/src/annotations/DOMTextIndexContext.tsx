@@ -1,9 +1,9 @@
 import React from "react";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {DOMTextIndex} from "polar-dom-text-search/src/DOMTextIndex";
-import { useDocViewerStore } from "../DocViewerStore";
+import {useDocViewerStore} from "../DocViewerStore";
 import {useEPUBDocumentStore} from "../renderers/epub/EPUBDocumentStore";
-import { DOMTextIndexes } from "polar-dom-text-search/src/DOMTextIndexes";
+import {DOMTextIndexes} from "polar-dom-text-search/src/DOMTextIndexes";
 
 interface IDOMTextIndexContent {
     readonly page: number;

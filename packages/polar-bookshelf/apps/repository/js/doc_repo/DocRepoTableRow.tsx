@@ -5,9 +5,8 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {RepoDocInfo} from "../RepoDocInfo";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
-import {DocRepoTableRowInner, cells} from "./DocRepoTableRowInner";
-import { useDocRepoContextMenu } from "./DocRepoTable2";
-import {useMUIHoverListener, MUIHoverStoreProvider} from "../../../../web/js/mui/MUIHoverStore";
+import {cells, DocRepoTableRowInner} from "./DocRepoTableRowInner";
+import {useDocRepoContextMenu} from "./DocRepoTable2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

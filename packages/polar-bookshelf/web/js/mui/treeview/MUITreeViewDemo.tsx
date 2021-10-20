@@ -1,10 +1,7 @@
 import React from "react";
 import {FolderSidebar2} from "../../../../apps/repository/js/folders/FolderSidebar2";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {
-    ITagsContext, PersistenceContext,
-    TagsContext
-} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {ITagsContext, TagsContext} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 function createTagDescriptor(tag: string, count: number): TagDescriptor {
     return {

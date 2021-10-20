@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-    FieldOfStudy,
-    fieldsOfStudy,
-    toFieldOfStudy
-} from "polar-shared/src/util/FieldOfStudies";
+import {FieldOfStudy, fieldsOfStudy, toFieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 

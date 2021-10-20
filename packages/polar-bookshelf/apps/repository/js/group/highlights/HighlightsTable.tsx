@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {GroupHighlightsData} from "./GroupHighlightsData";
 import {HighlightCard} from "./HighlightCard";
-import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {LoadingProgress} from "../../../../../web/js/ui/LoadingProgress";
 import {Pagination} from "../../../../../web/js/ui/Pagination";
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { deepMemo } from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import {SIDENAV_WIDTH, useSideNavContextMenu} from "./SideNav";
 import Tooltip from "@material-ui/core/Tooltip";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";
 import {useSideNavCurrentTabContext} from "./SideNavContextMenu";
 

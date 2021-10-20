@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import { DeviceRouters } from './DeviceRouter';
+import {DeviceRouters} from './DeviceRouter';
 import isEqual from 'react-fast-compare';
 import {MUITooltip} from "../mui/MUITooltip";
 
@@ -75,12 +75,12 @@ export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps
                         disableFocusRipple
                         disableRipple
                         size={size}
-                        onClick={handleToggle} 
+                        onClick={handleToggle}
                         className={active ? classes.buttonActive : classes.button}
             >
                 {icon}
-            </IconButton> 
-            } 
+            </IconButton>
+            }
         </MUITooltip>
 
     );

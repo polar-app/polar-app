@@ -9,7 +9,6 @@ import Chip from '@material-ui/core/Chip';
 import {MUIRelatedOptions} from "./MUIRelatedOptions";
 import {PremiumFeature} from "../../ui/premium_feature/PremiumFeature";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

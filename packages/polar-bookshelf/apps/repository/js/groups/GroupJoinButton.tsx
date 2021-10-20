@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-    GroupJoinRequest,
-    GroupJoins
-} from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
+import {GroupJoinRequest, GroupJoins} from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
-import {
-    GroupNameStr,
-    Groups
-} from "../../../../web/js/datastore/sharing/db/Groups";
+import {GroupNameStr, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import Button from '@material-ui/core/Button';
 
 const log = Logger.create();

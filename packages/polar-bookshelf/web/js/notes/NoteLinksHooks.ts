@@ -1,7 +1,6 @@
 import React from "react";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {useBlocksStore} from "./store/BlocksStore";

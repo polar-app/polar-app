@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {deepMemo} from "../../react/ReactUtils";
 
 /**

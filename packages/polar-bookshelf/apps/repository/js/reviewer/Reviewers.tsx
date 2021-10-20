@@ -15,10 +15,7 @@ import {
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {
-    SpacedRepStat,
-    SpacedRepStatCollection
-} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
+import {SpacedRepStat, SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";

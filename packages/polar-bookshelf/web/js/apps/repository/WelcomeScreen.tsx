@@ -1,16 +1,13 @@
 import * as React from 'react';
 import {
     isAcademicOccupationProfile,
-    OccupationProfile,
-    ProfileConfigurator
+    OccupationProfile
 } from "../../../../apps/repository/js/configure/profile/ProfileConfigurator";
 import {useAnalytics} from "../../analytics/Analytics";
 import {Slugs} from "polar-shared/src/util/Slugs";
 import {MUIDialog} from "../../ui/dialogs/MUIDialog";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
-import {PolarLogoImage} from "../../../../apps/repository/js/nav/PolarLogoImage";
-import {PolarLogoText} from "../../../../apps/repository/js/nav/PolarLogoText";
 import {WelcomeScreenContent} from "./WelcomeScreenContent";
 import Box from '@material-ui/core/Box';
 

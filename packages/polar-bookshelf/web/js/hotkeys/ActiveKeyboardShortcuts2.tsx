@@ -1,5 +1,5 @@
 import {useActiveKeyboardShortcutsCallbacks, useActiveKeyboardShortcutsStore} from "./ActiveKeyboardShortcutsStore";
-import {IKeyboardShortcutWithHandler, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
+import {IKeyboardShortcutWithHandler} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {GlobalKeyboardShortcuts, KeyMap} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";

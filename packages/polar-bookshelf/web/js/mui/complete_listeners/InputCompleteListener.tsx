@@ -2,12 +2,8 @@ import * as React from "react";
 import {Callback} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../react/ReactUtils";
 import {Providers} from "polar-shared/src/util/Providers";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { Platforms, Platform } from "polar-shared/src/util/Platforms";
+import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 
 export function isInputCompleteEvent(type: InputCompletionType, event: KeyboardEvent) {
 

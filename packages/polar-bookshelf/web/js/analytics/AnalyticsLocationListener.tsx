@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {AnalyticsURLCanonicalizer} from "./AnalyticsURLCanonicalizer";
 import {Analytics} from "./Analytics";
 

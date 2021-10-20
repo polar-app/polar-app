@@ -1,7 +1,7 @@
 import React from 'react';
 import {LoadDocRequest} from "./doc_loaders/LoadDocRequest";
 import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
-import { useSideNavDocLoader } from './doc_loaders/sidenav/SideNavDocLoaders';
+import {useSideNavDocLoader} from './doc_loaders/sidenav/SideNavDocLoaders';
 import {SIDE_NAV_ENABLED} from "../../sidenav/SideNavStore";
 
 export type DocLoader = (loadDocRequest: LoadDocRequest) => void;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {BlockComponent, ListValue, RefCallback, VisibleComponent, HiddenBlockComponent} from "./IntersectionList";
-import { useInView } from 'react-intersection-observer';
+import {BlockComponent, HiddenBlockComponent, ListValue, RefCallback, VisibleComponent} from "./IntersectionList";
+import {useInView} from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
 import {typedMemo} from "../hooks/ReactHooks";
 

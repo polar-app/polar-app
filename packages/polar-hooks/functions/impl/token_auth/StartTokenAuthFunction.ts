@@ -1,5 +1,5 @@
 import {EmailStr, Strings} from "polar-shared/src/util/Strings";
-import {Sendgrid} from "../Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Mailgun} from "../Mailgun";

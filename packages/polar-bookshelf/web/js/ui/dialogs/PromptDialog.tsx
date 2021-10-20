@@ -10,7 +10,7 @@ import {InputValidator} from "./InputValidators";
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {InputValidationErrorSnackbar} from "../../mui/dialogs/InputValidationErrorSnackbar";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
-import { MUIDialog } from './MUIDialog';
+import {MUIDialog} from './MUIDialog';
 import {deepMemo} from "../../react/ReactUtils";
 import {useHistory, useLocation} from 'react-router-dom';
 

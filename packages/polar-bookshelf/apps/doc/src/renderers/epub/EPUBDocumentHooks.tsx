@@ -2,7 +2,7 @@ import React from 'react';
 import ScrollbarColors from "../../../../../web/js/mui/css/ScrollbarColors";
 import useTheme from "@material-ui/core/styles/useTheme";
 import blue from '@material-ui/core/colors/blue';
-import { StringBuffer } from "polar-shared/src/util/StringBuffer";
+import {StringBuffer} from "polar-shared/src/util/StringBuffer";
 
 export namespace StylesheetMaps {
 

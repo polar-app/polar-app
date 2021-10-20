@@ -1,6 +1,6 @@
 import React from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import { RoutePathNames } from '../apps/repository/RoutePathNames';
+import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';

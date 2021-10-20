@@ -1,6 +1,6 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import { deepMemo } from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 function useItemsProvider(): ActionMenuItemProvider {

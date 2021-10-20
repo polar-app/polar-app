@@ -1,25 +1,13 @@
-import {Callback1, NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
+import {Callback, Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
-import {
-    AlertType,
-    ConfirmDialog,
-    ConfirmDialogProps
-} from "../../ui/dialogs/ConfirmDialog";
-import {
-    PromptDialog,
-    PromptDialogProps
-} from "../../ui/dialogs/PromptDialog";
-import {
-    AutocompleteDialog,
-    AutocompleteDialogProps
-} from "../../ui/dialogs/AutocompleteDialog";
-import {
-    SnackbarDialog,
-    SnackbarDialogProps
-} from "../../ui/dialogs/SnackbarDialog";
+import {AlertType, ConfirmDialog, ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
+import {PromptDialog, PromptDialogProps} from "../../ui/dialogs/PromptDialog";
+import {AutocompleteDialog, AutocompleteDialogProps} from "../../ui/dialogs/AutocompleteDialog";
+import {SnackbarDialog, SnackbarDialogProps} from "../../ui/dialogs/SnackbarDialog";
 import {
     TaskbarDialog,
-    TaskbarDialogProps, TaskbarDialogPropsWithCallback,
+    TaskbarDialogProps,
+    TaskbarDialogPropsWithCallback,
     TaskbarProgressCallback
 } from "../../ui/dialogs/TaskbarDialog";
 import {Latch} from "polar-shared/src/util/Latch";
@@ -193,7 +181,7 @@ const DialogHost = (props: DialogHostProps) => {
             dialog,
             taskbar,
             select
-        }; 
+        };
 
         // WARN: not sure if this is the appropriate way to do this but we need
         // to have this run after the component renders and this way it can

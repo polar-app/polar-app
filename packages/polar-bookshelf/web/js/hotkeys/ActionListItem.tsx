@@ -2,7 +2,7 @@ import * as React from "react";
 import {KeySequences} from "./KeySequences";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import { ListItemRight } from "./ListItemRight";
+import {ListItemRight} from "./ListItemRight";
 import {KeyBinding} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 interface IProps {

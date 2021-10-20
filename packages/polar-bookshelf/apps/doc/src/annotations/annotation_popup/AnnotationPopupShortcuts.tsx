@@ -1,7 +1,11 @@
 import React from "react";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
-import {GlobalKeyboardShortcuts, HandlerMap, keyMapWithGroup} from "../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {
+    GlobalKeyboardShortcuts,
+    HandlerMap,
+    keyMapWithGroup
+} from "../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
@@ -18,7 +22,7 @@ const annotationBarColorsKeyMap = keyMapWithGroup({
     keyMap: {
         CHANGE_COLOR: {
             name: "Change Annotation Color",
-            description: "Change the color of the selected annotation", 
+            description: "Change the color of the selected annotation",
             sequences: ANNOTATION_COLOR_SHORTCUT_KEYS.map(k => ({
                 keys: k,
                 platforms: ['macos', 'windows','linux']

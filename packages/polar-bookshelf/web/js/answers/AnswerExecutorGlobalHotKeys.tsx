@@ -3,8 +3,19 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField,
-    Tooltip, Typography, useTheme} from "@material-ui/core";
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    DialogContent,
+    LinearProgress,
+    TextField,
+    Tooltip,
+    Typography,
+    useTheme
+} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';

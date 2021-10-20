@@ -11,10 +11,10 @@ import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = Hashcodes.createRandomID();
 

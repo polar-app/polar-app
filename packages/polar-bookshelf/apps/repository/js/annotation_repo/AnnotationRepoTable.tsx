@@ -2,14 +2,10 @@ import * as React from 'react';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
-import {
-    useAnnotationRepoCallbacks,
-    useAnnotationRepoStore
-} from './AnnotationRepoStore';
+import {useAnnotationRepoCallbacks, useAnnotationRepoStore} from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";

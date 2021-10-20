@@ -10,8 +10,8 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
 import {isPresent} from "polar-shared/src/Preconditions";
-import { EPUBDocumentStoreProvider } from "./epub/EPUBDocumentStore";
-import { ResizeOnSidenavDocumentChange } from "./ResizeOnSidenavDocumentChange";
+import {EPUBDocumentStoreProvider} from "./epub/EPUBDocumentStore";
+import {ResizeOnSidenavDocumentChange} from "./ResizeOnSidenavDocumentChange";
 
 interface ILoadedProps {
     readonly docURL: URLStr;

@@ -3,8 +3,8 @@ import React from "react";
 import {IGenericCollectionSnapshot} from "./IGenericCollectionSnapshot";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
-import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
-import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import {IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 
 /**
  * tuple of field path, op, and value.

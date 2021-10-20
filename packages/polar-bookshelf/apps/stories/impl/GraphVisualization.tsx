@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import G6, { Graph, INode, StateStyles } from "@antv/g6";
-import { SimpleDialog } from "./SimpleDialog";
-import ContainerDimensions from 'react-container-dimensions'
+import React, {useEffect, useRef, useState} from "react";
+import G6, {Graph} from "@antv/g6";
+import {SimpleDialog} from "./SimpleDialog";
 import {MockBlocks} from "./MockBlocks";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksToGraph} from "../../../web/js/notes/viz/BlocksToGraph";

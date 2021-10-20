@@ -2,16 +2,14 @@ import * as React from 'react';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import {
-    IAnnotationRepoStore,
-    useAnnotationRepoStore, useAnnotationRepoStoreReducer
-} from './AnnotationRepoStore';
+import {IAnnotationRepoStore, useAnnotationRepoStore, useAnnotationRepoStoreReducer} from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
 import {
     BlockComponentProps,
-    HiddenBlockComponentProps, IntersectionList,
+    HiddenBlockComponentProps,
+    IntersectionList,
     VisibleComponentProps
 } from "../../../../web/js/intersection_list/IntersectionList";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";

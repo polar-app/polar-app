@@ -7,7 +7,6 @@ import {DocFileResolvers} from "../../../../../../web/js/datastore/DocFileResolv
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {Images} from "../../../../../../web/js/metadata/Images";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
-import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 const Image = (props: IProps) => {
 

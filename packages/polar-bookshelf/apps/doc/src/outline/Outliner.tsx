@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useDocViewerStore} from '../DocViewerStore';
-import {OutlinerStoreProviderDelegate, useOutlinerStore, useOutlinerCallbacks} from './OutlinerStore';
+import {OutlinerStoreProviderDelegate, useOutlinerCallbacks, useOutlinerStore} from './OutlinerStore';
 import {IOutlineItem, OutlineLocation} from './IOutlineItem';
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IDStr} from "polar-shared/src/util/Strings";

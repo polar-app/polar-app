@@ -9,18 +9,17 @@ import {useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {
-    BlockComponentProps, HiddenBlockComponentProps,
+    BlockComponentProps,
+    HiddenBlockComponentProps,
     IntersectionList,
     VisibleComponentProps
 } from "../../../../web/js/intersection_list/IntersectionList";
-import { RepoDocInfo } from '../RepoDocInfo';
+import {RepoDocInfo} from '../RepoDocInfo';
 import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {createContextMenu} from "./MUIContextMenu2";
-import {
-    IDocViewerContextMenuOrigin
-} from "../../../doc/src/DocViewerMenu";
+import {IDocViewerContextMenuOrigin} from "../../../doc/src/DocViewerMenu";
 import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
 
 const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComponentProps<RepoDocInfo>) {

@@ -1,8 +1,11 @@
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import React from "react";
-import {ActiveSelectionListener, ActiveSelections} from "../../../../../web/js/ui/popup/ActiveSelections";
-import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
+import {
+    ActiveSelectionEvent,
+    ActiveSelectionListener,
+    ActiveSelections
+} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {Elements} from "../../../../../web/js/util/Elements";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {IDocScale, useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
@@ -13,9 +16,12 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ActiveHighlightData} from "./AnnotationPopupHooks";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
-import {ITextHighlightCreate, useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {
+    ITextHighlightCreate,
+    useAnnotationMutationsContext
+} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
-import {DEFAULT_STATE, reducer, ACTIONS, IDocMetaAnnotation, IBlockAnnotation} from "./AnnotationPopupReducer";
+import {ACTIONS, DEFAULT_STATE, IBlockAnnotation, IDocMetaAnnotation, reducer} from "./AnnotationPopupReducer";
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
@@ -217,7 +223,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
                     const content = AnnotationBlockMigrator.migrateTextHighlight(
                         textHighlight,
-                        pageNum, 
+                        pageNum,
                         fingerprint,
                         [],
                     );
@@ -297,7 +303,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         }
         return undefined;
     }, [activeHighlight, setActiveHighlightRef, docMeta, getBlock]);
-    
+
     React.useEffect(() => {
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
