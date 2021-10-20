@@ -191,7 +191,7 @@ export const AccountPageMobile = React.memo(function AccountPageMobile() {
     return(
         <>
             <AdaptivePageLayout title="Account">
-                <Box pt={1}>
+                <Box pt={2}>
                     <UserDetailsRow/>
                     <PlanDetailsContainer/>
                     <PreferencesButtons/>

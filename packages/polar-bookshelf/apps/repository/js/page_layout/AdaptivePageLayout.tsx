@@ -31,7 +31,8 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                             <IconButton onClick={()=>history.goBack()}>
                                 <ArrowBackIcon/>
                             </IconButton>
-                            <Typography component="h3">{props.title}</Typography>
+                            {/*<Typography component="h3">{props.title}</Typography>*/}
+                            {props.title}
                         </Toolbar>
                     </AppBar>
                 </>
