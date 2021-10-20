@@ -1,13 +1,13 @@
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 import {Pagemarks} from "./Pagemarks";
-import {DocMetas} from "./DocMetas";
-import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ReadingProgresses} from 'polar-shared/src/metadata/ReadingProgresses';
-import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Objects} from "polar-shared/src/util/Objects";
+import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ReadingProgresses} from './ReadingProgresses';
+import {PagemarkMode} from './PagemarkMode';
+import {IDocMeta} from "./IDocMeta";
+import {Objects} from "../util/Objects";
 
 
 function reset() {

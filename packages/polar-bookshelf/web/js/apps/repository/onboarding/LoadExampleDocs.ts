@@ -2,7 +2,7 @@ import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocImporter, ImportedFile} from '../importers/DocImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
-import {Pagemarks} from '../../../metadata/Pagemarks';
+import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

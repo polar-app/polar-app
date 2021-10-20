@@ -1,6 +1,6 @@
 import {forDict} from 'polar-shared/src/util/Functions';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Pagemarks} from './Pagemarks';
+import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 

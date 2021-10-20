@@ -3,7 +3,7 @@ import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {DocMetas} from "./DocMetas";
 import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
 import {TextHighlights} from "polar-shared/src/metadata/TextHighlights";
-import {Pagemarks} from "./Pagemarks";
+import {Pagemarks} from "polar-shared/src/metadata/Pagemarks";
 
 export namespace MockDocMetas {
 

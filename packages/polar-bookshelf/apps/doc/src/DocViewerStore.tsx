@@ -14,7 +14,7 @@ import {
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
+import {Pagemarks} from "polar-shared/src/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {PDFScales, SCALE_VALUE_PAGE_WIDTH, ScaleLevelTuple} from "./ScaleLevels";

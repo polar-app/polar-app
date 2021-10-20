@@ -6,7 +6,7 @@ import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
-import {Pagemarks} from './Pagemarks';
+import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {MockDocMetas} from "./MockDocMetas";
 

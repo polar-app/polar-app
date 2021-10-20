@@ -17,7 +17,7 @@ import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
 import 'pdfjs-dist/web/pdf_viewer.css';
 import './PDFDocument.css';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Pagemarks} from "../../../../../web/js/metadata/Pagemarks";
+import {Pagemarks} from "polar-shared/src/metadata/Pagemarks";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
 import {usePersistenceLayerContext,} from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
