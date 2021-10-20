@@ -1,5 +1,6 @@
-import { EPUBMetadataUsingNode, IChapterReference } from './EPUBMetadataUsingNode';
+import { EPUBMetadataUsingNode, IChapterReference, ISpine } from './EPUBMetadataUsingNode';
 import {JSDOM} from "jsdom"
+import { getXmlToJSON } from './util/getXmlToJSON';
 
 interface IEPUBContent {
     /**
@@ -75,48 +76,121 @@ export namespace EPUBContent {
         }
     }
     
+    export async function parseContent(rootFile: string, content: IEPUBContent): Promise<IEPUBText[]> {
+        const dom = new JSDOM(await content.html());
+
+        const CFIXMLFragment = await generateCFIXMLFragment(rootFile, content.id);
+
+        const results: IEPUBText[] = [];
+
+        let rootEvenIndex = 0;
+
+        dom.window.document.documentElement.childNodes.forEach((node) => {
+            if (node.nodeName !== '#text') {
+                rootEvenIndex += 2;
+
+                parseChildren(node,`${CFIXMLFragment}/${rootEvenIndex}`, results);
+            }
+        });
+
+        return results;
+    }
+
+    export function parseChildren(node: ChildNode, nodePath = "", results: IEPUBText[]): void {
+
+        /** 
+         * Paragraphs may contain nested elements  
+         * 
+         **/
+        if (node.nodeName === "P") {
+            results.push({
+                CFI: wrapCFIPath(nodePath),
+                text: <string>node.textContent
+            });
+        }
+
+        if (!node.hasChildNodes()) {
+            if (node.textContent?.trim().length === 0) {
+                return;
+            }
+
+            results.push({
+                CFI: wrapCFIPath(nodePath),
+                text: <string>node.textContent
+            });
+
+            return;
+        }
+
+        let CFIEvenIndex = 0;
+        
+        node.childNodes.forEach((node) => {
+            if (node.nodeName !== '#text') {
+                console.log('here should not be ignore', node.nodeName);
+                CFIEvenIndex += 2;
+                parseChildren(node, `${nodePath}/${CFIEvenIndex}`, results);
+            }
+        });
+    }
 
     /**
      * 
-     * @param html html string being parsed
-     * @param rootName epub document name e.g.:"alice.epub"
-     * @returns IEPUBParagraph[] - array of objects
+     * @param rootFilePath epub file
+     * @param idRef spine 'idref' attribute value 
+     * @returns string CFI fragment of the XML chapter path ending with a step indirection '!'
+     * - http://idpf.org/epub/linking/cfi/epub-cfi.html#sec-path-indirection
      */
-    export function parseHtml(html: string): void {
-        const dom = new JSDOM(html);
+    async function generateCFIXMLFragment(rootFilePath: string, idRef: string) {
+        const rootFile = await EPUBMetadataUsingNode.getRootFileXML(rootFilePath);
 
-        dom.window.document.body.childNodes.forEach((node, index) => {
-            parseChildren(node,`/${index}`);
+        const xmlDOM = new JSDOM(rootFile.rootFileData, { 
+            contentType: "text/xml"
         });
 
-        // return dom.window.document.body.textContent ?? '';
-    }
+        let rootSpineIndex = 0;
 
-    export function parseChildren(node: ChildNode, nodePath = ""): IEPUBText|null{
-        if (!node.hasChildNodes()) {
+        let CFIRootEvenIndex = 0;
+        
+        let spineNode = <HTMLElement> {};
 
-            // Ignore nodes with no text content
-            if (node.textContent?.trim().length === 0) {
-                return null;
+        const rootChildren = Array.from(xmlDOM.window.document.documentElement.childNodes);
+
+
+        for (const node of rootChildren) {
+            
+            // Ignore empty whitespace '#text' nodes
+            if (node.nodeName !== "#text") {
+                
+                // CFI spec assigns even indices starting at 2
+                // to XML child nodes and increments it by 2 for each child node
+                // Ref: http://idpf.org/epub/linking/cfi/epub-cfi.html#sec-path-child-ref
+                CFIRootEvenIndex += 2;
+                
+                if (node.nodeName === 'spine') {
+                    spineNode = <HTMLElement> node;
+
+                    rootSpineIndex = CFIRootEvenIndex;
+                }
             }
-
-            const text = {
-                CFI: wrapCFIPath(nodePath),
-                text: <string>node.textContent
-            };
-
-            console.log(text);
-
-            return text;
         }
 
-        node.childNodes.forEach((node, index) => {
-            parseChildren(node, `${nodePath}/${index}`);
-        });
+        const spine = getXmlToJSON(spineNode.innerHTML) as ISpine;
 
-        return null;
+        let itemRefEvenIndex = 0;
+
+        let itemRefIndex = 0;
+
+        for (const ref of spine.itemref) {
+            itemRefEvenIndex += 2;
+
+            if(ref['@_idref'] === idRef) {
+                itemRefIndex = itemRefEvenIndex;
+                break;
+            }
+        }
+
+        return `/${rootSpineIndex}/${itemRefIndex}[${idRef}]!`;
     }
-
 
     function wrapCFIPath(CFIPath: string): string {
         return `epubcfi(${CFIPath})`;
