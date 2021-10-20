@@ -4,7 +4,6 @@ import {Objects} from "polar-shared/src/util/Objects";
 import {Rect} from './Rect';
 import {Point} from './Point';
 import {Line} from 'polar-shared/src/util/Line';
-import {Styles} from './util/Styles';
 
 export class Rects {
 
@@ -404,26 +403,6 @@ export class Rects {
             width: element.offsetWidth,
             height: element.offsetHeight,
         });
-
-    }
-
-    /**
-     * Parse the positioning from the style with left, top width and height and then
-     * return this as a rect.
-     * @param element {HTMLElement}
-     */
-    static fromElementStyle(element: HTMLElement) {
-
-        const rect = {
-
-            left: Styles.parsePX(element.style.left),
-            top: Styles.parsePX(element.style.top),
-            width: Styles.parsePX(element.style.width),
-            height: Styles.parsePX(element.style.height)
-
-        };
-
-        return Rects.createFromBasicRect(rect);
 
     }
 
