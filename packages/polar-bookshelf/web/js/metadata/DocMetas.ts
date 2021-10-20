@@ -2,7 +2,7 @@ import {PageMeta} from './PageMeta';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PageInfo} from './PageInfo';
-import {DocInfos} from './DocInfos';
+import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {PageMetas} from './PageMetas';

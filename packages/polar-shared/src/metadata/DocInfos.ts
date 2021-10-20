@@ -1,9 +1,9 @@
-import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
-import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {DocInfo} from './DocInfo';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {Optional} from 'src/util/ts/Optional';
+import {UUIDs} from './UUIDs';
+import {PagemarkType} from './PagemarkType';
+import {IDocInfo} from "./IDocInfo";
 
 export class DocInfos {
 
