@@ -3,7 +3,7 @@
  * DocInfo if necessary.
  */
 import {Image} from './Image';
-import {Author} from './Author';
+import {Author} from 'polar-shared/src/metadata/Author';
 import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 import {IText} from "polar-shared/src/metadata/Text";

@@ -1,4 +1,4 @@
-import {Author} from './Author';
+import {Author} from 'polar-shared/src/metadata/Author';
 import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';

@@ -1,6 +1,6 @@
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
-import {AuthorImage, IAuthor} from "polar-shared/src/metadata/IAuthor";
-import {ProfileIDStr} from "polar-shared/src/util/Strings";
+import {SerializedObject} from "./SerializedObject";
+import {AuthorImage, IAuthor} from "./IAuthor";
+import {ProfileIDStr} from "../util/Strings";
 
 export class Author extends SerializedObject implements IAuthor {
 
