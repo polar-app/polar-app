@@ -3,7 +3,7 @@ import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
 import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
-import {PageMetas} from './PageMetas';
+import {PageMetas} from 'polar-shared/src/metadata/PageMetas';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
