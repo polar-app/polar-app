@@ -5,13 +5,9 @@ import {AnnotationInfos} from 'polar-shared/src/metadata/AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {PageMetas} from './PageMetas';
 import {forDict} from 'polar-shared/src/util/Functions';
-import {TextHighlights} from './TextHighlights';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {Datastore} from '../datastore/Datastore';
-import {Backend} from 'polar-shared/src/datastore/Backend';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
@@ -24,6 +20,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 import {SparseDocMetas} from "./SparseDocMetas";
 import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
+import {MockDocMetas} from "./MockDocMetas";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
@@ -300,76 +297,6 @@ export class DocMetas {
     public static copyOf(docMeta: IDocMeta): IDocMeta {
         return DocMetaSerializer.copyOf(docMeta);
     }
-
-}
-
-export class MockDocMetas {
-
-
-    /**
-     * Create a DocMeta object but place initial pagemarks on it. This is useful
-     * for testing.
-     *
-     */
-    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number): IDocMeta {
-
-        const result = DocMetas.create(fingerprint, nrPages);
-
-        const maxPages = 3;
-        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
-
-            const pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
-
-            Pagemarks.updatePagemark(result, pageNum, pagemark);
-
-        }
-
-        return result;
-
-    }
-
-    public static createMockDocMeta(fingerprint: string = "0x001") {
-
-        const nrPages = 4;
-        const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-
-        const textHighlight = TextHighlights.createMockTextHighlight();
-
-        DocMetas.getPageMeta(docMeta, 1).textHighlights[textHighlight.id] = textHighlight;
-
-        return docMeta;
-
-    }
-
-    public static async createMockDocMetaFromPDF(datastore: Datastore): Promise<MockDoc> {
-
-        const docMeta = MockDocMetas.createMockDocMeta();
-
-        const pdfPath = FilePaths.join(__dirname, "..", "..", "..", "docs", "examples", "pdf", "chubby.pdf");
-
-        const fileRef: FileRef = {
-            name: "chubby.pdf"
-        };
-
-        docMeta.docInfo.filename = fileRef.name;
-        docMeta.docInfo.backend = Backend.STASH;
-
-        await datastore.writeFile(Backend.STASH, fileRef, {path: pdfPath});
-
-        await datastore.writeDocMeta(docMeta);
-
-        const result: MockDoc = {
-            docMeta, fileRef
-        };
-
-        return result;
-
-    }
-
 
 }
 

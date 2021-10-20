@@ -1,7 +1,7 @@
 import {assertJSON} from '../test/Assertions';
-import {MockDocMetas} from './DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {DocInfoStatistics} from './DocInfoStatistics';
+import {MockDocMetas} from "./MockDocMetas";
 
 describe('DocInfoStatistics', function() {
 

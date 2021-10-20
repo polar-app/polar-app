@@ -6,7 +6,6 @@ import {
     MutationType
 } from './Datastore';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {assert} from 'chai';
@@ -18,6 +17,7 @@ import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {MockDocMetas} from "../metadata/MockDocMetas";
 
 describe('DocMetaSnapshotEventListener', function() {
 

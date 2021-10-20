@@ -7,7 +7,7 @@ import {TextHighlights} from '../metadata/TextHighlights';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Ref, Refs} from "polar-shared/src/metadata/Refs";
-import {MockDocMetas} from "../metadata/DocMetas";
+import {MockDocMetas} from "../metadata/MockDocMetas";
 
 function toDocAnnotations(docAnnotationIndex: DocAnnotationIndex) {
     return docAnnotationIndex.getDocAnnotationsSorted().map(current => current.obj);

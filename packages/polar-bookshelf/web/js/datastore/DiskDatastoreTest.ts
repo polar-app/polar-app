@@ -11,9 +11,9 @@ import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetaFileRef} from './DocMetaRef';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
+import {MockDocMetas} from "../metadata/MockDocMetas";
 
 const tmpdir = os.tmpdir();
 

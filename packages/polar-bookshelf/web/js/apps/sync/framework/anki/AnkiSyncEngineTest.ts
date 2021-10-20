@@ -3,7 +3,8 @@ import {Texts} from 'polar-shared/src/metadata/Texts';
 import {TextType} from 'polar-shared/src/metadata/TextType';
 import {Flashcards} from '../../../../metadata/Flashcards';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {DocMetas, MockDocMetas} from '../../../../metadata/DocMetas';
+import {DocMetas} from '../../../../metadata/DocMetas';
+import {MockDocMetas} from "../../../../metadata/MockDocMetas";
 
 xdescribe('AnkiSyncEngine', function() {
 

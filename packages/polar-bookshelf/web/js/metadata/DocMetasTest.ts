@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
-import {DocMetas, MockDocMetas} from './DocMetas';
+import {DocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
@@ -8,6 +8,7 @@ import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlights} from './TextHighlights';
 import {Pagemarks} from './Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {MockDocMetas} from "./MockDocMetas";
 
 describe('DocMetas', function() {
 
