@@ -1,4 +1,4 @@
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";

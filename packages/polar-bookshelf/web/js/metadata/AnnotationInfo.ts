@@ -1,4 +1,4 @@
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IAnnotationInfo} from "polar-shared/src/metadata/IAnnotationInfo";
 

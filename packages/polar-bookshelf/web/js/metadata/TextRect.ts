@@ -1,6 +1,6 @@
 import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {SerializedObject} from "./SerializedObject";
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 
 export class TextRect extends SerializedObject implements ITextRect {
 

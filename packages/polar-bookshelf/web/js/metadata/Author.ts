@@ -1,4 +1,4 @@
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {AuthorImage, IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {ProfileIDStr} from "polar-shared/src/util/Strings";
 

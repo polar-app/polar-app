@@ -1,4 +1,4 @@
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
 import {IDimensions} from "../util/IDimensions";

@@ -1,10 +1,10 @@
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
+import {Preconditions} from 'polar-shared/src/Preconditions';
+
 /**
  * All JSON must go through the metadata serializer so we can handle proper
  * serialization but also object validation once they are deserialized.
  */
-import {SerializedObject} from './SerializedObject';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-
 export class MetadataSerializer {
 
     public static serialize(object: any, spacing: string = "") {

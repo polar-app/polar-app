@@ -1,5 +1,5 @@
 import {DocInfo} from './DocInfo';
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
 import {Attachment} from './Attachment';

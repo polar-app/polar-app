@@ -1,8 +1,3 @@
-/**
- * Lightweight metadata about a document. We do not include full page metadata
- * with this object which makes it lightweight to pass around.
- */
-import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
@@ -16,7 +11,12 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 import {IText} from "polar-shared/src/metadata/Text";
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 
+/**
+ * Lightweight metadata about a document. We do not include full page metadata
+ * with this object which makes it lightweight to pass around.
+ */
 export class DocInfo extends SerializedObject implements IDocInfo {
 
     public nrPages: number;

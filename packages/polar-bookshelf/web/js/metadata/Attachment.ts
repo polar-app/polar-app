@@ -1,4 +1,4 @@
-import {SerializedObject} from './SerializedObject';
+import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IAttachment} from "polar-shared/src/metadata/IAttachment";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
