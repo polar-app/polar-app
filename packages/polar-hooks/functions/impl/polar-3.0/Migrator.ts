@@ -10,16 +10,19 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {TextHighlightRecords} from "polar-bookshelf/web/js/metadata/TextHighlightRecords";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
-import {BlockMigrator} from "./BlockMigrator";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
+import {BlocksSnapshot} from "polar-migration-block-annotations/src/BlocksSnapshot";
+import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export namespace Polar3DocMetaMigrator {
 
     const OLD_DOC_META_COLLECTION_NAME = 'doc_meta';
     const NEW_DOC_META_COLLECTION_NAME = 'doc_meta2';
     const DOC_INFO_COLLECTION_NAME = 'doc_info';
+    const BLOCK_COLLECTION_NAME = 'block';
 
     export type IDocMetaWOriginal = {
         docMeta: IDocMeta;
@@ -40,7 +43,14 @@ export namespace Polar3DocMetaMigrator {
         docMetas.forEach(migrateDocMeta.bind(null, userID, firestore));
     }
 
-    async function getDocMetas(firestore: IFirestore<unknown>, userID: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
+    /**
+     * Get all docMeta records for a specific user
+     *
+     * @param firestore Firestore instance
+     * @param userID UserID object @see IDUser
+     */
+    async function getDocMetas(firestore: IFirestore<unknown>,
+                               userID: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
 
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
@@ -56,6 +66,13 @@ export namespace Polar3DocMetaMigrator {
             .collect();
     }
 
+    /**
+     * Migrate a docMeta document to the new blocks system
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     * @param docMetaRecord The docMetaRecord to be migrated
+     */
     async function migrateDocMeta(userID: IDUser,
                                   firestore: IFirestore<unknown>,
                                   docMetaRecord: RecordHolder<DocMetaHolder>): Promise<void> {
@@ -73,9 +90,18 @@ export namespace Polar3DocMetaMigrator {
         await migrateAnnotationsToBlocks(userID, firestore, batch, createDocMetaClone(docMetaRecord));
         await bumpVersions(userID, firestore, batch, createDocMetaClone(docMetaRecord));
 
+        
         // await batch.commit();
     }
 
+    /**
+     * Bump the old documents' versions so that we don't migrate them again
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     * @param batch Firestore batch instance
+     * @param data IDocMeta related data @see IDocMetaWOriginal
+     */
     async function bumpVersions(_: IDUser,
                                 firestore: IFirestore<unknown>,
                                 batch: IWriteBatch<unknown>,
@@ -91,6 +117,14 @@ export namespace Polar3DocMetaMigrator {
         batch.update(docInfoDoc, { ver: 2 });
     }
 
+    /**
+     * Backup the old docMeta document before performing the migration
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     * @param batch Firestore batch instance
+     * @param data IDocMeta related data @see IDocMetaWOriginal
+     */
     async function backupDocMeta(_: IDUser,
                                  firestore: IFirestore<unknown>,
                                  batch: IWriteBatch<unknown>,
@@ -104,15 +138,51 @@ export namespace Polar3DocMetaMigrator {
         batch.set(newDoc, original);
     }
 
+    /**
+     * Migrate the annotations of a docMeta record to the new blocks system
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     * @param batch Firestore batch instance
+     * @param data IDocMeta related data @see IDocMetaWOriginal
+     */
     async function migrateAnnotationsToBlocks(userID: IDUser,
                                               firestore: IFirestore<unknown>,
                                               batch: IWriteBatch<unknown>,
                                               data: IDocMetaWOriginal): Promise<void> {
 
-        BlockMigrator.migrateDocMeta(userID, firestore, batch, data);
+        const blockCollection = firestore.collection(BLOCK_COLLECTION_NAME);
+
+        const existingNamedBlocks = await getExistingNamedBlocks(userID, firestore);
+
+        const { tagContentsStructure, docContentStructure } = DocMetaBlockContents
+            .getFromDocMeta(data.docMeta, existingNamedBlocks);
+
+        const documentBlocksSnapshot = BlocksSnapshot
+            .blockContentStructureToBlockSnapshot(userID.uid, [docContentStructure]);
+
+        
+        const namedBlocksSnapshots = BlocksSnapshot
+            .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
+
+
+        const writeToBatch = (block: IBlock) =>
+            batch.set(blockCollection.doc(block.id), block);
+
+        documentBlocksSnapshot.map(writeToBatch);
+        namedBlocksSnapshots.map(writeToBatch);
 
     }
 
+    /**
+     * Remove all the annotations from the migrated docMeta record & add a placeholder
+     * annotation that indicates that the migration had happened
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     * @param batch Firestore batch instance
+     * @param data IDocMeta related data @see IDocMetaWOriginal
+     */
     async function purgeAnnotations(_: IDUser,
                                     firestore: IFirestore<unknown>,
                                     batch: IWriteBatch<unknown>,
@@ -142,10 +212,36 @@ export namespace Polar3DocMetaMigrator {
         batch.update(oldDoc, 'value.value', DocMetas.serialize(docMeta));
     }
 
+    /**
+     * Create a placeholder text annotation that will replace the migrated annotations
+     */
     function createPlaceholderTextHighlight(): ITextHighlight {
         const text = Texts.create('Your annotations have been migrated to Polar 3.0 and are no longer visible in your older client. Please upgrade', TextType.TEXT);
 
         return TextHighlightRecords.create([], [], text, 'red').value;
+    }
+
+    /**
+     * Get the existing named blocks in the blocks sytem
+     *
+     * This fetches all the named notes in the blocks system to prevent having duplicates when migrating annotation tags
+     *
+     * @param userID UserID object @see IDUser
+     * @param firestore Firestore instance
+     */
+    async function getExistingNamedBlocks(userID: IDUser,
+                                          firestore: IFirestore<unknown>): Promise<ReadonlyArray<IBlock<INamedContent>>> {
+
+        const existingNamedBlocksQuery = await firestore
+            .collection(OLD_DOC_META_COLLECTION_NAME)
+            .where('uid', '==', userID.uid)
+            .where('content.type', 'in', ['name', 'date', 'document'])
+            .get()
+
+        const existingNamedBlocks = existingNamedBlocksQuery.docs
+            .map(snapshot =>  snapshot.data() as IBlock<INamedContent>);
+
+        return existingNamedBlocks;
     }
 }
 

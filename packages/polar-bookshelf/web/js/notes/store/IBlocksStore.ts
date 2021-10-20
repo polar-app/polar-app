@@ -19,11 +19,12 @@ import {
     IDropPosition,
     BlocksIndexByDocumentID,
     IInsertBlocksContentStructureOpts,
+    ICreateBlockContentStructureOpts,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {IBlockContentStructure} from "../HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
@@ -120,7 +121,7 @@ export interface IBlocksStore {
 
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                     opts?: IInsertBlocksContentStructureOpts): ReadonlyArray<BlockIDStr>;
-    createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure>;
+    createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>, opts?: ICreateBlockContentStructureOpts): ReadonlyArray<IBlockContentStructure>;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 
@@ -156,4 +157,6 @@ export interface IBlocksStore {
 
     cursorOffsetCapture(): IActiveBlock | undefined;
     cursorOffsetRestore(active: IActiveBlock | undefined): void;
+
+    createSnapshot(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock>;
 }

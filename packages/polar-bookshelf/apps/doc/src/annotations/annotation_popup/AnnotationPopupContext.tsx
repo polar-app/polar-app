@@ -30,7 +30,8 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {AnnotationBlockMigrator} from "../../AnnotationBlockMigrator";
+import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
+import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -215,14 +216,19 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 const {pageMeta, textHighlight} = createdTextHighlight;
 
                 if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
-                    const content = AnnotationBlockMigrator.migrateTextHighlight(
-                        textHighlight,
+                    const content = BlockContentAnnotationTree.toTextHighlightAnnotation(
+                        docMeta,
                         pageNum, 
-                        fingerprint,
-                        [],
+                        textHighlight,
                     );
 
-                    const id = createAnnotation(fingerprint, content);
+                    const id = createAnnotation(fingerprint, new TextHighlightAnnotationContent({
+                        type: content.type,
+                        docID: content.docID,
+                        links: [],
+                        pageNum: content.pageNum,
+                        value: content.value,
+                    }));
 
                     if (id) {
                         setActiveHighlight({

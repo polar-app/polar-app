@@ -5,12 +5,13 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {BlockContentStructureConverter} from "../BlockContentStructureConverter";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {IBlockContentStructure} from "../HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {getNoteAnchorFromHref} from "../NoteLinksHooks";
 import {Block} from "../store/Block";
 import {useBlocksStore} from "../store/BlocksStore";
 import {IBlocksStore} from "../store/IBlocksStore";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 namespace CopyUtils {
     type ICopyData = {
@@ -21,9 +22,7 @@ namespace CopyUtils {
 
     export function extractContentsFromBlocksSelection(blocksStore: IBlocksStore): ICopyData {
         const selectedIDs = blocksStore.selectedIDs();
-        const polarBlocks = blocksStore.createBlockContentStructure(selectedIDs);
-
-
+        const polarBlocks = blocksStore.createBlockContentStructure(selectedIDs, { useNewIDs: true });
 
         const rawHTML = BlockContentStructureConverter.toHTML(polarBlocks);
         const div = document.createElement('div');
@@ -69,6 +68,7 @@ namespace CopyUtils {
             const wikiLinks = getWikiLinks(block, div);
 
             return [{
+                id: Hashcodes.createRandomID(),
                 content: {
                     type: 'markdown',
                     links: wikiLinks,

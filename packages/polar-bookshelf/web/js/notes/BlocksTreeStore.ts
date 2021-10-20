@@ -1,10 +1,10 @@
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {IBlockContentStructure} from "./HTMLToBlocks";
 import {Block} from "./store/Block";
-import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
+import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreateBlockContentStructureOpts, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, IInsertBlocksContentStructureOpts, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 
 export class BlocksTreeStore {
     public readonly root: BlockIDStr;
@@ -140,8 +140,9 @@ export class BlocksTreeStore {
         return this.blocksStore.setBlockContent(id, content);
     }
 
-    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr> {
-        return this.blocksStore.insertFromBlockContentStructure(blocks);
+    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
+                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
+        return this.blocksStore.insertFromBlockContentStructure(blocks, opts);
     }
 
     getNamedBlocks(): ReadonlyArray<string> {
@@ -196,8 +197,8 @@ export class BlocksTreeStore {
         return this.blocksStore.idsToBlocks(ids);
     }
 
-    createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure> {
-        return this.blocksStore.createBlockContentStructure(ids);
+    createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>, opts?: ICreateBlockContentStructureOpts): ReadonlyArray<IBlockContentStructure> {
+        return this.blocksStore.createBlockContentStructure(ids, opts);
     }
 
     getActiveBlockForNote(id: BlockIDStr): IActiveBlock | undefined {

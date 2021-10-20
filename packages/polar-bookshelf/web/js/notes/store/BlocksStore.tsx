@@ -30,9 +30,8 @@ import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriter
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
-import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IBlockContentStructure, NewChildPos, BlockIDStr, IBlock, IBlockContent, IBlockLink, INewChildPosition, NamespaceIDStr, UIDStr, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
@@ -45,7 +44,7 @@ import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent}
 import {BlockTextContentUtils} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BlockHighlights} from "../BlockHighlights";
+import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -120,16 +119,14 @@ export interface DoPutOpts {
 
 export type NewBlockPosition = 'before' | 'after' | 'split';
 
-export type NewChildPos = 'before' | 'after';
-
-export interface INewChildPosition {
-    readonly ref: BlockIDStr;
-    readonly pos: NewChildPos;
-}
 
 export interface ISplitBlock {
     readonly prefix: string;
     readonly suffix: string;
+}
+
+export interface ICreateBlockContentStructureOpts {
+    useNewIDs?: boolean;
 }
 
 export interface INewBlockOpts {
@@ -168,7 +165,6 @@ export interface NavOpts {
 }
 
 export interface IInsertBlocksContentStructureOpts {
-    blockIDs?: ReadonlyArray<BlockIDStr>;
     ref?: BlockIDStr;
 }
 
@@ -252,7 +248,7 @@ export interface IDoDeleteOpts {
 }
 
 interface ICreateNewNamedBlockBase {
-    readonly content: NamedContent;
+    readonly content: INamedContent;
 }
 
 export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
@@ -498,7 +494,7 @@ export class BlocksStore implements IBlocksStore {
 
             const existingBlock = this.getBlock(blockData.id);
 
-            if (!opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
+            if (! opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
                 // skip this update as it hasn't changed
                 continue;
             }
@@ -570,43 +566,51 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public insertFromBlockContentStructure(
-        blocks: ReadonlyArray<IBlockContentStructure>,
-        opts: IInsertBlocksContentStructureOpts = {},
-    ): ReadonlyArray<BlockIDStr> {
-        const refID = opts.ref || this.active?.id;
+    @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
+                                                   opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
 
-        if (! refID) {
-            console.error('Don\'t know where to insert the new blocks');
-            return [];
-        }
+        const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
+        structure.children.reduce((acc, substructure) => [...acc, ...toIDs(substructure)], [structure.id]);
 
-        const countBlocks = (blocks: ReadonlyArray<IBlockContentStructure>): number => blocks.length + blocks.reduce((sum, {children}) => sum + countBlocks(children), 0);
-        const count = countBlocks(blocks);
-        const ids: ReadonlyArray<BlockIDStr> = opts.blockIDs || Array.from({ length: count }).map(() => Hashcodes.createRandomID());
+        const ids = blocks.flatMap(toIDs);
 
-        if (ids.length !== count) {
-            throw new Error('Not enough custom ids provided');
-        }
-
-        let i = 0;
         const redo = () => {
-            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref: BlockIDStr, isParent: boolean = false) => {
+            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref?: BlockIDStr, isParent: boolean = false) => {
                 [...blocks]
                     .reverse()
-                    .forEach(({ children, content }) => {
-                        const newBlockID = ids[i++];
-                        const newBlock = this.doCreateNewBlock(ref, { unshift: isParent, content, newBlockID });
-                        if (newBlock) {
-                            storeBlocks(children, newBlock.id, true);
+                    .forEach(({ children, content, id }) => {
+                        if (ref) {
+                            const newBlock = this.doCreateNewBlock(ref, {
+                                unshift: isParent, content, newBlockID: id,
+                            });
+
+                            if (newBlock) {
+                                storeBlocks(children, newBlock.id, true);
+                            }
+                        } else {
+                            if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
+                                
+                                const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
+
+                                if (savedBlockID) {
+                                    storeBlocks(children, savedBlockID, true);
+                                }
+
+                            }
                         }
+
                     });
             };
-            storeBlocks(blocks, refID, false);
+
+            storeBlocks(blocks, opts.ref, false);
+
             return ids;
         };
 
-        const identifiers = [...[...ids].reverse(), this._index[refID].parent || refID];
+        const identifiers = [
+            ...ids,
+            ...(opts.ref ? [this._index[opts.ref].parent || opts.ref] : []),
+        ];
         return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
     }
 
@@ -2084,9 +2088,13 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure> {
+    public createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>,
+                                       opts: ICreateBlockContentStructureOpts = {}): ReadonlyArray<IBlockContentStructure> {
+        const { useNewIDs = false } = opts;
+
         const construct = (block: Block): IBlockContentStructure => {
             return {
+                id: useNewIDs ? Hashcodes.createRandomID() : block.id,
                 content: block.content.toJSON(),
                 children: this.idsToBlocks(block.itemsAsArray).map(construct)
             };

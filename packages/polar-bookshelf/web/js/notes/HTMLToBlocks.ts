@@ -1,16 +1,12 @@
 import {TextHighlightMerger} from "../../../apps/doc/src/text_highlighter/TextHighlightMerger";
 import {Images} from "polar-shared/src/util/Images";
 import {Elements} from "../util/Elements";
-import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {BlockContent} from "./store/BlocksStore";
-
-export type IBlockContentStructure<T = IBlockContent> = {
-    content: T;
-    children: ReadonlyArray<IBlockContentStructure>;
-};
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export type BlockContentStructure<T = BlockContent> = {
     content: T;
@@ -64,6 +60,7 @@ export namespace HTMLToBlocks {
             b: IBlockContentMergableStructure<IMarkdownContent>
         ): IBlockContentMergableStructure<IMarkdownContent> => {
             return {
+                id: Hashcodes.createRandomID(),
                 content: mergeMarkdownContent(a.content, b.content),
                 children: [...a.children, ...b.children],
                 mergable: true,
@@ -93,6 +90,7 @@ export namespace HTMLToBlocks {
             const trimmed = current.replace(/\s\s+/g, ' ');
             if (trimmed.length > 0) {
                 blocks.push({
+                    id: Hashcodes.createRandomID(),
                     content: createMarkdownContent(trimmed),
                     children: [],
                     mergable,
@@ -134,12 +132,14 @@ export namespace HTMLToBlocks {
                         if (src.startsWith('data:image')) {
                             flush(false);
                             blocks.push({
+                                id: Hashcodes.createRandomID(),
                                 content: await createImageContent(src),
                                 children: [],
                                 mergable: false,
                             });
                         } else if (/^https?/.test(src)) {
                             blocks.push({
+                                id: Hashcodes.createRandomID(),
                                 content: createMarkdownContent(`${current}![](${src})`),
                                 children: [],
                                 mergable: true,
@@ -153,6 +153,7 @@ export namespace HTMLToBlocks {
                         if (! anchor.href.toLowerCase().startsWith("javascript")) {
                             flush(true);
                             blocks.push({
+                                id: Hashcodes.createRandomID(),
                                 content: createMarkdownContent(`[${elem.textContent || anchor}](${anchor.href})`),
                                 children: [],
                                 mergable: true,
@@ -162,6 +163,7 @@ export namespace HTMLToBlocks {
                     case 'PRE':
                         flush(true);
                         blocks.push({
+                            id: Hashcodes.createRandomID(),
                             content: createMarkdownContent(`\n\`\`\`\n${elem.textContent || ''}\n\`\`\`\n`),
                             children: [],
                             mergable: true,
@@ -189,6 +191,7 @@ export namespace HTMLToBlocks {
                         if (current.length) {
                             const trimmed = current.replace(/\s\s+/g, ' ');
                             newBlock = {
+                                id: Hashcodes.createRandomID(),
                                 content: createMarkdownContent(trimmed),
                                 children: [],
                                 mergable: false,
@@ -257,7 +260,7 @@ export namespace HTMLToBlocks {
 
         const normalize = (blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<IBlockContentStructure> => {
             const normalized = blocks
-                .map(({ content, children }) => ({ content, children }))
+                .map(({ content, children, id }) => ({ content, children, id }))
                 .map(block => ({ ...block, children: normalize(block.children) }))
             const flattened = flatten(normalized)
                 .map(trim);
