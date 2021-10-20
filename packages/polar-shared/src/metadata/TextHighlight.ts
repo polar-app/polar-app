@@ -2,7 +2,7 @@ import {Text} from './Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';
-import {Preconditions} from 'src/Preconditions';
+import {Preconditions} from '../Preconditions';
 import {ITextHighlight} from "./ITextHighlight";
 import {ITextRect} from "./ITextRect";
 
