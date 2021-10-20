@@ -10,6 +10,7 @@ import { DeviceRouter } from "../../../../web/js/ui/DeviceRouter";
 interface IProps {
     readonly title: string;
     readonly children: JSX.Element;
+    readonly fullWidth?: boolean;
 }
 
 /**
@@ -31,7 +32,6 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                             <IconButton onClick={()=>history.goBack()}>
                                 <ArrowBackIcon/>
                             </IconButton>
-                            {/*<Typography component="h3">{props.title}</Typography>*/}
                             {props.title}
                         </Toolbar>
                     </AppBar>
@@ -48,7 +48,7 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
 
                     <Box ml="auto" mr="auto"
                          style={{
-                             maxWidth: '700px',
+                             maxWidth: props.fullWidth ? undefined : '700px',
                          }}>
 
                         {props.children}

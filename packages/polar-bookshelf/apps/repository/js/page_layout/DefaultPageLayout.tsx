@@ -15,7 +15,6 @@ export const DefaultPageLayout: React.FC = ({ children }) => (
 
             </div>
 
-
         </FixedNav.Body>
 
     </FixedNav>

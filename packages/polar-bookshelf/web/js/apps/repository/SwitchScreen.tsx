@@ -1,19 +1,13 @@
 import * as React from 'react';
-
-import {createStyles, makeStyles, Table, TableHead, TableRow, TableCell, Theme} from '@material-ui/core';
-
-import { DocRepoTableToolbar } from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
-import { useHistory } from 'react-router-dom';
-import { useDocRepoStore } from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
-
-import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
-import { ISODateTimeStrings } from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
+import {useHistory} from 'react-router-dom';
+import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
-        root: {
-            backgroundColor: theme.palette.background.default
-        },
         th: {
             whiteSpace: 'nowrap',
         },
@@ -35,23 +29,17 @@ const useStyles = makeStyles<Theme>((theme) =>
 interface TableHeaderProps {
     readonly nonEmpty?: boolean;
 }
-/**
- * 
- * @param props a blooean variable to determine if there was any recently opened documents or not
- * @returns returns the approprite header title
- */
+
 const TableHeader = (props: TableHeaderProps) => {
     const classes = useStyles();
 
     return(
-        <TableHead>   
+        <TableHead>
             <TableRow>
-                <TableCell>
-                    { props.nonEmpty ? 
-                        <span className={classes.headerFont}>Recently Updated Documents:</span>
-                        :
+                <TableCell width="auto">
+                    { ! props.nonEmpty && (
                         <span className={classes.headerFont}>No recent files</span>
-                    }
+                    )}
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -61,39 +49,39 @@ function toDate(ts: string | undefined): number {
     return ts ? ISODateTimeStrings.parse(ts).getTime() : 0;
 }
 
+
+function useSortedDocInfos() {
+
+    const {data} = useDocRepoStore(['data']);
+
+    const docs = data.map(current => current.docInfo);
+
+    return docs.sort((a: IDocInfo, b: IDocInfo)=>{
+        return toDate(a.lastUpdated) - toDate(b.lastUpdated);
+    });
+
+}
+
 export const SwitchScreen = () => {
 
     const classes = useStyles();
     const history = useHistory();
 
-    const {data} = useDocRepoStore(['data']);
-    function useDocInfos(){
-        const docs = data.map(current => current.docInfo);
-        return docs.sort((a: IDocInfo, b: IDocInfo)=>{
-            return toDate(a.lastUpdated) - toDate(b.lastUpdated);
-        })
-    };
-    const orderedTabsByRecency = useDocInfos();
+    const orderedTabsByRecency = useSortedDocInfos();
 
     return (
-        <>
-            <DocRepoTableToolbar/>
-            <Table  stickyHeader
-                    style={{
-                        minWidth: 0,
-                        maxWidth: '100%',
-                        tableLayout: 'fixed'
+        <AdaptivePageLayout title="Recent Documents" fullWidth>
+
+            <Table  style={{
                     }}
                     aria-labelledby="tableTitle"
-                    size={'medium'}
                     aria-label="enhanced table">
 
-                    {orderedTabsByRecency.length > 0 ? 
+                    {orderedTabsByRecency.length > 0 ?
                         <>
-                            <TableHeader nonEmpty/>
                             {orderedTabsByRecency.map( column =>
                                 <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
-                                    <TableCell key={column.uuid} className={classes.th}>
+                                    <TableCell key={column.uuid} className={classes.th} width="auto">
                                         {column.title}
                                     </TableCell>
                                 </TableRow>
@@ -102,7 +90,7 @@ export const SwitchScreen = () => {
                         :
                         <TableHeader/>
                     }
-            </Table>          
-        </>
+            </Table>
+        </AdaptivePageLayout>
     );
 }
