@@ -1,7 +1,7 @@
-import {ExtendedAnnotation} from 'polar-shared/src/metadata/ExtendedAnnotation';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {HighlightColor, HighlightRects, IBaseHighlight, Position} from "polar-shared/src/metadata/IBaseHighlight";
-import {IImage} from "polar-shared/src/metadata/IImage";
+import {ExtendedAnnotation} from './ExtendedAnnotation';
+import {Preconditions} from '../Preconditions';
+import {HighlightColor, HighlightRects, IBaseHighlight, Position} from "./IBaseHighlight";
+import {IImage} from "./IImage";
 
 export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight {
 
