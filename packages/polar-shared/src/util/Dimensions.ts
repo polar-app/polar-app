@@ -1,4 +1,4 @@
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {Preconditions} from '../Preconditions';
 import {IDimensions} from "./IDimensions";
 
 /**

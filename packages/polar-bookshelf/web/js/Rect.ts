@@ -1,4 +1,4 @@
-import {Dimensions} from './util/Dimensions';
+import {Dimensions} from 'polar-shared/src/util/Dimensions';
 import {Line} from './util/Line';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IRect} from 'polar-shared/src/util/rects/IRect';

@@ -1,5 +1,5 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Dimensions} from '../util/Dimensions';
+import {Dimensions} from 'polar-shared/src/util/Dimensions';
 import {Interval} from '../math/Interval';
 import {Rects} from '../Rects';
 import {IAnnotationRect} from "polar-shared/src/metadata/IAnnotationRect";
