@@ -1,9 +1,9 @@
-import {Pagemark} from 'polar-shared/src/metadata/Pagemark';
-import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Rect} from 'polar-shared/src/util/Rect';
-import {Rects} from 'polar-shared/src/util/Rects';
+import {Pagemark} from './Pagemark';
+import {PagemarkType} from './PagemarkType';
+import {PagemarkRect} from './PagemarkRect';
+import {Preconditions} from '../Preconditions';
+import {Rect} from '../util/Rect';
+import {Rects} from '../util/Rects';
 
 export class PagemarkRects {
 
