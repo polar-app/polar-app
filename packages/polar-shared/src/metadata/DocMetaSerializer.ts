@@ -1,13 +1,16 @@
-// import {IDocMeta} from "./IDocMeta";
-// import {SparseDocMetas} from "./SparseDocMetas";
-// import {Preconditions} from "../Preconditions";
-// // import {PageMetas} from "polar-bookshelf/web/js/metadata/PageMetas";
-// // import {AnnotationInfos} from "polar-bookshelf/web/js/metadata/AnnotationInfos";
-// // import {DocInfos} from "polar-bookshelf/web/js/metadata/DocInfos";
-//
+import {IDocMeta} from "./IDocMeta";
+import {Dictionaries} from "../util/Dictionaries";
+import {DocMeta} from "./DocMeta";
+
 export namespace DocMetaSerializer {
 
     export const ENABLE_SPARSE_DOC_SERIALIZE = true;
+
+    export function copyOf(docMeta: IDocMeta): IDocMeta {
+        docMeta = Dictionaries.copyOf(docMeta);
+        const docInfo = Dictionaries.copyOf(docMeta.docInfo);
+        return Object.assign(new DocMeta(docInfo, {}), docMeta);
+    }
 
     // export function serialize(docMeta: IDocMeta, spacing: string = "  ") {
     //

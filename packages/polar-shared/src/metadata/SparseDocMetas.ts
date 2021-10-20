@@ -13,6 +13,7 @@ import {IScreenshot} from "./IScreenshot";
 import {IThumbnail} from "./IThumbnail";
 import {ReadingProgress} from "./ReadingProgress";
 import {IDimensions} from "../util/IDimensions";
+import {DocMetaSerializer} from "./DocMetaSerializer";
 
 export namespace SparseDocMetas {
 
@@ -20,63 +21,63 @@ export namespace SparseDocMetas {
         return docMeta.encodingType === 'sparse';
     }
 
-    // /**
-    //  * Convert to sparse DocMeta without excessive PageMetas that are empty.
-    //  */
-    // export function toSparse(docMeta: IDocMeta): ISparseDocMeta {
-    //
-    //     const docMetaCopy = DocMetas.copyOf(docMeta);
-    //
-    //     const result: ISparseDocMeta = {
-    //         annotationInfo: docMetaCopy.annotationInfo,
-    //         version: docMetaCopy.version,
-    //         attachments: docMetaCopy.attachments,
-    //         encodingType: 'sparse',
-    //         docInfo: docMetaCopy.docInfo,
-    //         pageMetas: {},
-    //     };
-    //
-    //     // *** make the pageMetas sparse
-    //     for(const key of Object.keys(docMetaCopy.pageMetas)) {
-    //
-    //         const pageMeta = docMetaCopy.pageMetas[key as any];
-    //
-    //         const sparsePageMeta = SparsePageMetas.toSparse(pageMeta);
-    //
-    //         if (sparsePageMeta) {
-    //             result.pageMetas[key as any] = sparsePageMeta;
-    //         }
-    //
-    //     }
-    //
-    //     return result;
-    //
-    // }
-//
-//     export function fromSparse(data: any): IDocMeta {
-//
-//         if (data.encodingType !== 'sparse') {
-//             throw new Error("Not sparse docMeta");
-//         }
-//
-//         const result: IDocMeta = {
-//             docInfo: data.docInfo,
-//             pageMetas: {},
-//             annotationInfo: data.annotationInfo,
-//             version: data.version,
-//             attachments: data.attachments,
-//         };
-//
-//         // now reconstruct the PageMetas...
-//
-//         for (let idx = 1; idx <= result.docInfo.nrPages; ++idx) {
-//             result.pageMetas[idx] = SparsePageMetas.fromSparse(idx, data.pageMetas[idx]);
-//         }
-//
-//         return result;
-//
-//     }
-//
+    /**
+     * Convert to sparse DocMeta without excessive PageMetas that are empty.
+     */
+    export function toSparse(docMeta: IDocMeta): ISparseDocMeta {
+
+        const docMetaCopy = DocMetaSerializer.copyOf(docMeta);
+
+        const result: ISparseDocMeta = {
+            annotationInfo: docMetaCopy.annotationInfo,
+            version: docMetaCopy.version,
+            attachments: docMetaCopy.attachments,
+            encodingType: 'sparse',
+            docInfo: docMetaCopy.docInfo,
+            pageMetas: {},
+        };
+
+        // *** make the pageMetas sparse
+        for(const key of Object.keys(docMetaCopy.pageMetas)) {
+
+            const pageMeta = docMetaCopy.pageMetas[key as any];
+
+            const sparsePageMeta = SparsePageMetas.toSparse(pageMeta);
+
+            if (sparsePageMeta) {
+                result.pageMetas[key as any] = sparsePageMeta;
+            }
+
+        }
+
+        return result;
+
+    }
+
+    export function fromSparse(data: any): IDocMeta {
+
+        if (data.encodingType !== 'sparse') {
+            throw new Error("Not sparse docMeta");
+        }
+
+        const result: IDocMeta = {
+            docInfo: data.docInfo,
+            pageMetas: {},
+            annotationInfo: data.annotationInfo,
+            version: data.version,
+            attachments: data.attachments,
+        };
+
+        // now reconstruct the PageMetas...
+
+        for (let idx = 1; idx <= result.docInfo.nrPages; ++idx) {
+            result.pageMetas[idx] = SparsePageMetas.fromSparse(idx, data.pageMetas[idx]);
+        }
+
+        return result;
+
+    }
+
 }
 
 export namespace SparsePageMetas {

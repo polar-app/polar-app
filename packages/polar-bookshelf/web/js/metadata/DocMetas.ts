@@ -25,6 +25,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "./UUIDs";
 import {SparseDocMetas} from "./SparseDocMetas";
+import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
@@ -309,9 +310,7 @@ export class DocMetas {
     }
 
     public static copyOf(docMeta: IDocMeta): IDocMeta {
-        docMeta = Dictionaries.copyOf(docMeta);
-        const docInfo = Dictionaries.copyOf(docMeta.docInfo);
-        return Object.assign(new DocMeta(docInfo, {}), docMeta);
+        return DocMetaSerializer.copyOf(docMeta);
     }
 
 }
