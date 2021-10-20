@@ -22,7 +22,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {FullWidthButton} from './FullWidthButton';
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
-import { DeviceRouters } from 'web/js/ui/DeviceRouter';
+import { DeviceRouters } from '../../../../../web/js/ui/DeviceRouter';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -158,8 +158,10 @@ const Main = () => {
                     <Divider/>
 
                     <DeviceRouters.Desktop>
-                        <CancelSubscriptionButton/>
-                        <ManageSubscriptionButton/>
+                        <>
+                            <CancelSubscriptionButton/>
+                            <ManageSubscriptionButton/>
+                        </>
                     </DeviceRouters.Desktop>
 
                     <ExportDataButton/>
