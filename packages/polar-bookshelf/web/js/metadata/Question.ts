@@ -1,7 +1,7 @@
 /**
  * Some type of follow up on content that we need to analyze.
  */
-import {Note} from './Note';
+import {Note} from 'polar-shared/src/metadata/Note';
 
 export class Question extends Note {
 

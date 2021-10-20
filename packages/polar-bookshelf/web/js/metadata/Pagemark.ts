@@ -1,5 +1,5 @@
 import {Annotation} from 'polar-shared/src/metadata/Annotation';
-import {Note} from './Note';
+import {Note} from 'polar-shared/src/metadata/Note';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRect} from 'polar-shared/src/metadata/PagemarkRect';
 import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';

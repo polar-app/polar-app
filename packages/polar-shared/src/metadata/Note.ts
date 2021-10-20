@@ -1,8 +1,8 @@
-import {TextType} from 'polar-shared/src/metadata/TextType';
-import {VersionedObject} from 'polar-shared/src/metadata/VersionedObject';
-import {Text} from 'polar-shared/src/metadata/Text';
-import {Texts} from 'polar-shared/src/metadata/Texts';
-import {INote} from "polar-shared/src/metadata/INote";
+import {TextType} from './TextType';
+import {VersionedObject} from './VersionedObject';
+import {Text} from './Text';
+import {Texts} from './Texts';
+import {INote} from "./INote";
 
 /**
  * Private note describing this object.  Meant to last a long time.
