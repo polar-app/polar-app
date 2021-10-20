@@ -1,4 +1,4 @@
-import {DocInfo} from './DocInfo';
+import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {UUIDs} from './UUIDs';

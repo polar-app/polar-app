@@ -1,17 +1,17 @@
-import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
-import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
-import {Attachment} from 'polar-shared/src/metadata/Attachment';
-import {Backend} from 'polar-shared/src/datastore/Backend';
-import {Tag} from 'polar-shared/src/tags/Tags';
-import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared/src/metadata/IDocInfo";
-import {Visibility} from "polar-shared/src/datastore/Visibility";
-import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
-import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
-import {IText} from "polar-shared/src/metadata/Text";
-import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
+import {PagemarkType} from './PagemarkType';
+import {Preconditions} from '../Preconditions';
+import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
+import {Hashcode} from './Hashcode';
+import {ReadingOverview} from './ReadingOverview';
+import {Attachment} from './Attachment';
+import {Backend} from './Backend';
+import {Tag} from '../tags/Tags';
+import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "./IDocInfo";
+import {Visibility} from "../datastore/Visibility";
+import {IDocAuthor} from "./IDocAuthor";
+import {IThumbnail} from "./IThumbnail";
+import {IText} from "./Text";
+import {SerializedObject} from "./SerializedObject";
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata

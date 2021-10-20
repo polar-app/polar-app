@@ -1,4 +1,4 @@
-import {DocInfo} from './DocInfo';
+import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
 import {SerializedObject} from "polar-shared/src/metadata/SerializedObject";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
