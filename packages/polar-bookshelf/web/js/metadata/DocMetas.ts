@@ -17,9 +17,9 @@ import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
-import {SparseDocMetas} from "./SparseDocMetas";
+import {SparseDocMetas} from "polar-shared/src/metadata/SparseDocMetas";
 import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
-import {MockDocMetas} from "./MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 import {Errors} from "polar-shared/src/util/Errors";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,

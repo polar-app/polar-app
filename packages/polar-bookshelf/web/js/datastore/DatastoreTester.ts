@@ -18,7 +18,7 @@ import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Latch} from "polar-shared/src/util/Latch";
-import {MockDocMetas} from "../metadata/MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 const tmpdir = os.tmpdir();
 

@@ -13,7 +13,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMetaFileRef} from './DocMetaRef';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
-import {MockDocMetas} from "../metadata/MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 const tmpdir = os.tmpdir();
 

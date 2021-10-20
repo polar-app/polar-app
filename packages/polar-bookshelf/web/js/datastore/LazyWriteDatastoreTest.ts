@@ -3,7 +3,7 @@ import {LazyWriteDatastore} from './LazyWriteDatastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {DocMetaFileRefs} from './DocMetaRef';
-import {MockDocMetas} from "../metadata/MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('LazyWriteDatastore', function() {
 

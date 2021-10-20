@@ -1,5 +1,6 @@
 import {IDocMeta} from "./IDocMeta";
 import {IFlashcardMap, IPageMeta} from "./IPageMeta";
+import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
 import {IDocInfo} from "./IDocInfo";
 import {IAnnotationInfo} from "./IAnnotationInfo";
 import {IAttachment} from "./IAttachment";
@@ -13,7 +14,6 @@ import {IScreenshot} from "./IScreenshot";
 import {IThumbnail} from "./IThumbnail";
 import {ReadingProgress} from "./ReadingProgress";
 import {IDimensions} from "../util/IDimensions";
-import {DocMetaSerializer} from "./DocMetaSerializer";
 
 export namespace SparseDocMetas {
 
@@ -26,7 +26,7 @@ export namespace SparseDocMetas {
      */
     export function toSparse(docMeta: IDocMeta): ISparseDocMeta {
 
-        const docMetaCopy = DocMetaSerializer.copyOf(docMeta);
+        const docMetaCopy = DocMetas.copyOf(docMeta);
 
         const result: ISparseDocMeta = {
             annotationInfo: docMetaCopy.annotationInfo,
@@ -85,15 +85,15 @@ export namespace SparsePageMetas {
     export function isSparse(pageMeta: IPageMeta): boolean {
 
         return SparseDictionaries.isSparse(pageMeta.pagemarks) &&
-            SparseDictionaries.isSparse(pageMeta.notes) &&
-            SparseDictionaries.isSparse(pageMeta.comments) &&
-            SparseDictionaries.isSparse(pageMeta.questions) &&
-            SparseDictionaries.isSparse(pageMeta.flashcards) &&
-            SparseDictionaries.isSparse(pageMeta.textHighlights) &&
-            SparseDictionaries.isSparse(pageMeta.areaHighlights) &&
-            SparseDictionaries.isSparse(pageMeta.screenshots) &&
-            SparseDictionaries.isSparse(pageMeta.thumbnails) &&
-            SparseDictionaries.isSparse(pageMeta.readingProgress);
+               SparseDictionaries.isSparse(pageMeta.notes) &&
+               SparseDictionaries.isSparse(pageMeta.comments) &&
+               SparseDictionaries.isSparse(pageMeta.questions) &&
+               SparseDictionaries.isSparse(pageMeta.flashcards) &&
+               SparseDictionaries.isSparse(pageMeta.textHighlights) &&
+               SparseDictionaries.isSparse(pageMeta.areaHighlights) &&
+               SparseDictionaries.isSparse(pageMeta.screenshots) &&
+               SparseDictionaries.isSparse(pageMeta.thumbnails) &&
+               SparseDictionaries.isSparse(pageMeta.readingProgress);
 
     }
 

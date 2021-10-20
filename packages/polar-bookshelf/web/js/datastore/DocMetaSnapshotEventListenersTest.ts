@@ -17,7 +17,7 @@ import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {MockDocMetas} from "../metadata/MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('DocMetaSnapshotEventListener', function() {
 

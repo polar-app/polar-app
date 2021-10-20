@@ -1,9 +1,9 @@
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
-import {DocMetas} from "./DocMetas";
-import {DocMetaSerializer} from "polar-shared/src/metadata/DocMetaSerializer";
-import {TextHighlights} from "polar-shared/src/metadata/TextHighlights";
-import {Pagemarks} from "polar-shared/src/metadata/Pagemarks";
+import {IDocMeta} from "./IDocMeta";
+import {PagemarkType} from "./PagemarkType";
+import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {DocMetaSerializer} from "./DocMetaSerializer";
+import {TextHighlights} from "./TextHighlights";
+import {Pagemarks} from "./Pagemarks";
 
 export namespace MockDocMetas {
 

@@ -1,5 +1,5 @@
 import {DocMetas} from "./DocMetas";
-import {MockDocMetas} from "./MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 xdescribe('DocMetasPerf', function() {
 

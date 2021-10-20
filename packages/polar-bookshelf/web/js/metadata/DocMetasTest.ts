@@ -8,7 +8,7 @@ import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
 import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {MockDocMetas} from "./MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('DocMetas', function() {
 

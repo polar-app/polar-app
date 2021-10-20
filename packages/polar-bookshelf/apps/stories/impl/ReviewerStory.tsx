@@ -13,7 +13,7 @@ import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
-import {MockDocMetas} from "../../../web/js/metadata/MockDocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 //
 // const createFlashcardTaskReps = async () => {
 //
