@@ -1,10 +1,7 @@
 import {Route, Switch} from "react-router-dom";
 import * as React from "react";
 import isEqual from "react-fast-compare";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {deepMemo} from "../../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

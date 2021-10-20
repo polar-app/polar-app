@@ -1,4 +1,4 @@
-import { IKeyboardShortcutEvent } from "./KeyboardShortcutsStore";
+import {IKeyboardShortcutEvent} from "./KeyboardShortcutsStore";
 
 export namespace KeyboardShortcutHandlers {
 

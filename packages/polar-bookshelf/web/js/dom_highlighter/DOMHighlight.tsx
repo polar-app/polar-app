@@ -1,18 +1,15 @@
 import {deepMemo} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
 import * as React from "react";
-import {
-    useWindowResizeEventListener,
-    useWindowScrollEventListener
-} from "../react/WindowHooks";
+import {useWindowResizeEventListener, useWindowScrollEventListener} from "../react/WindowHooks";
 import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
 import {AnimationFrameDebouncers} from "./AnimationFrameDebouncers";
-import withAnimationFrame = AnimationFrameDebouncers.withAnimationFrame;
-import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import withAnimationFrame = AnimationFrameDebouncers.withAnimationFrame;
+import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends DOMTextHit {
     readonly color?: string;

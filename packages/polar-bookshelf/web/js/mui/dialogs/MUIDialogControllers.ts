@@ -1,10 +1,6 @@
 import React from "react";
 import {MUIDialogControllerContext} from "./MUIDialogController";
-import {
-    Callback,
-    Callback1,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {Callback, Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useLogger} from "../MUILogger";
 
 export function useDialogManager() {

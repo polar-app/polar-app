@@ -2,8 +2,8 @@ import React from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
-import { DeviceRouters } from "../ui/DeviceRouter";
-import { useZenModeCallbacks } from "./ZenModeStore";
+import {DeviceRouters} from "../ui/DeviceRouter";
+import {useZenModeCallbacks} from "./ZenModeStore";
 import {ZenModeInactiveContainer} from "./ZenModeInactiveContainer";
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 

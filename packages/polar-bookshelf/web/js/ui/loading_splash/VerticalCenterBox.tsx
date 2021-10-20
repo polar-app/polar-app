@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {LoadingMessages} from "./LoadingMessages";
 
 export class VerticalCenterBox extends React.Component<IProps, IState> {
 

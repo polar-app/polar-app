@@ -4,7 +4,6 @@ import {CIDs} from './CIDs';
 import {Stopwatch, TrackedDuration} from 'polar-shared/src/util/Stopwatch';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {DurationMS} from 'polar-shared/src/util/TimeDurations';
-import {Analytics} from "../analytics/Analytics";
 
 const TRACKING_ID = 'UA-122721184-5';
 

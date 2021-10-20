@@ -7,8 +7,8 @@ import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {DocRepoGlobalHotKeys} from "./DocRepoGlobalHotKeys";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {Helmet} from "react-helmet";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
 export const DocRepoScreenRoutedComponents = React.memo(function DocRepoScreenRoutedComponents() {
 

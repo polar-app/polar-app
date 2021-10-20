@@ -1,12 +1,16 @@
 import React from "react";
-import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles, Box} from "@material-ui/core";
+import {Box, ClickAwayListener, createStyles, debounce, Grow, makeStyles, Popper} from "@material-ui/core";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
 import {useHistory} from "react-router";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContent, AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../../content/AnnotationContent";
+import {
+    AnnotationContent,
+    AreaHighlightAnnotationContent,
+    TextHighlightAnnotationContent
+} from "../../content/AnnotationContent";
 import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";

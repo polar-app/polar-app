@@ -1,6 +1,5 @@
 import React from 'react';
 import {Logger} from "polar-shared/src/logger/Logger";
-import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {Link} from "react-router-dom";
 
 const log = Logger.create();

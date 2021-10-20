@@ -5,13 +5,11 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {ProfileOwnerCollection} from "./ProfileOwnerCollection";
-import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
 import {
     DocumentReferences,
     CacheFirstThenServerGetOptions,
@@ -126,10 +124,10 @@ export namespace ProfileCollection {
         const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
         return Arrays.first(results);
     }
+
     export function set(firestore: IFirestore<unknown>,
                         batch: IWriteBatch<unknown>,
                         id: ProfileIDStr,
-                        user: IUserRecord,
                         update: IProfileUpdate) {
 
         const updated = ISODateTimeStrings.create();

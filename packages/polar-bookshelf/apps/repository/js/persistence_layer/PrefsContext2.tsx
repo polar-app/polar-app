@@ -1,6 +1,4 @@
-import {
-    createCachedSnapshotSubscriberContext,
-} from "../../../../web/js/snapshots/CachedSnapshotSubscriberContext";
+import {createCachedSnapshotSubscriberContext,} from "../../../../web/js/snapshots/CachedSnapshotSubscriberContext";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

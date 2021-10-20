@@ -3,10 +3,7 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {
-    IDocAnnotation,
-    IDocAnnotationRef
-} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {IDocAnnotation, IDocAnnotationRef} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {RepoDocAnnotations} from "../RepoDocAnnotations";
 import {TagMatcher2} from "../../../../web/js/tags/TagMatcher2";

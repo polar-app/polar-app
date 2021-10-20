@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    GroupMemberInvitation,
-    GroupMemberInvitations
-} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {GroupMemberInvitation, GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 // import {NotificationButton} from './NotificationButton.tsx.disabled';

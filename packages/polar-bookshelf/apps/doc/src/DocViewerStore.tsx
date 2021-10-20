@@ -1,9 +1,6 @@
 import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
@@ -25,11 +22,7 @@ import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
 import {Arrays} from 'polar-shared/src/util/Arrays';
-import {
-    Direction,
-    FluidPagemarkFactory,
-    NullFluidPagemarkFactory
-} from "./FluidPagemarkFactory";
+import {Direction, FluidPagemarkFactory, NullFluidPagemarkFactory} from "./FluidPagemarkFactory";
 import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
 import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
@@ -41,20 +34,12 @@ import {TaggedCallbacks} from "../../repository/js/annotation_repo/TaggedCallbac
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {LocalRelatedTagsStore} from "../../../web/js/tags/related/LocalRelatedTagsStore";
-import {
-    IRelatedTagsData,
-    RelatedTagsManager
-} from "../../../web/js/tags/related/RelatedTagsManager";
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-import ITagsHolder = TaggedCallbacks.ITagsHolder;
+import {IRelatedTagsData, RelatedTagsManager} from "../../../web/js/tags/related/RelatedTagsManager";
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import isEqual from 'react-fast-compare';
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
-import ScaleDelta = PDFScales.ScaleDelta;
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 import {UUIDs} from "../../../web/js/metadata/UUIDs";
-import { IOutline } from './outline/IOutline';
+import {IOutline} from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
@@ -64,6 +49,11 @@ import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {useBlockTagEditorDialog} from "../../../web/js/notes/NoteUtils";
 import {getBlockForDocument} from "../../../web/js/notes/HighlightBlocksHooks";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
+import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import ITagsHolder = TaggedCallbacks.ITagsHolder;
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import ScaleDelta = PDFScales.ScaleDelta;
 
 /**
  * Lightweight metadata describing the currently loaded document.

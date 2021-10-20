@@ -7,7 +7,6 @@ import {DocAuthor} from "./DocAuthor";
 import EditIcon from '@material-ui/icons/Edit';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../mui/MUIAnchor";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
@@ -15,7 +14,7 @@ import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles, CircularProgress} from "@material-ui/core";
+import {CircularProgress, createStyles, useTheme} from "@material-ui/core";
 import {deepMemo} from "../react/ReactUtils";
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
@@ -23,7 +22,6 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
-import {useTheme} from "@material-ui/core";
 import {useAnnotationLink} from './JumpToAnnotationHook';
 
 const useStyles = makeStyles((theme) =>

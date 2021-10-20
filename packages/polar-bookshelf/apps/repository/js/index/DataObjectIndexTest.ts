@@ -1,6 +1,5 @@
-import {Tag} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
-import {Tags} from 'polar-shared/src/tags/Tags';
 import {assertJSON} from '../../../../web/js/test/Assertions';
 
 describe('DataObjectIndex', function() {

@@ -1,6 +1,6 @@
 import {IHasLinksContent} from "polar-blocks/src/blocks/content/IHasLinksContent";
 import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
-import {observable, computed, makeObservable} from "mobx";
+import {computed, makeObservable, observable} from "mobx";
 import {Tag} from "polar-shared/src/tags/Tags";
 import deepEqual from "deep-equal";
 

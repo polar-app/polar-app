@@ -1,5 +1,4 @@
 import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
-import {PageMeta} from './PageMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {HitMap} from 'polar-shared/src/util/HitMap';
 import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';

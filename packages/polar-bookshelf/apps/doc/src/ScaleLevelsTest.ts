@@ -1,8 +1,3 @@
-import {ScaleLevelTuples, PDFScales} from "./ScaleLevels";
-import {assertJSON} from "../../../web/js/test/Assertions";
-import {assert} from 'chai';
-import {Arrays} from "polar-shared/src/util/Arrays";
-
 describe('ScaleLevels', function() {
 
     it("basic", function() {

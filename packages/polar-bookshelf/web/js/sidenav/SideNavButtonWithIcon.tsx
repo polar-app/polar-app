@@ -1,5 +1,5 @@
 import * as React from "react";
-import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
+import {TabDescriptor, useSideNavCallbacks} from "./SideNavStore";
 import {deepMemo} from "../react/ReactUtils";
 import {FaFilePdfIcon} from "../mui/MUIFontAwesome";
 import {ActiveTabButton} from "./ActiveTabButton";

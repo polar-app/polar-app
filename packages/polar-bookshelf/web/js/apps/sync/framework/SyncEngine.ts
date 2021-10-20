@@ -1,12 +1,11 @@
-/**
- * A SyncTarget provides a way to integrate with 3rd party sync implementations.
- */
 import {SyncProgressListener} from './SyncProgressListener';
 import {SyncEngineDescriptor} from './SyncEngineDescriptor';
 import {PendingSyncJob} from './SyncJob';
-import {DocMetaSet} from '../../../metadata/DocMetaSet';
 import {DocMetaSupplierCollection} from '../../../metadata/DocMetaSupplierCollection';
 
+/**
+ * A SyncTarget provides a way to integrate with 3rd party sync implementations.
+ */
 export interface SyncEngine {
 
     readonly descriptor: SyncEngineDescriptor;

@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-    ActionMenuItemsProvider,
-    useActionMenuStore
-} from "./ActionStore";
+import {ActionMenuItemsProvider, useActionMenuStore} from "./ActionStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 import {IDStr} from "polar-shared/src/util/Strings";
-import INodeOffset = ContentEditables.INodeOffset;
 import useTheme from '@material-ui/core/styles/useTheme';
+import INodeOffset = ContentEditables.INodeOffset;
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.

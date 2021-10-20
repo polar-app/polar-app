@@ -22,65 +22,65 @@ xdescribe('GroupProvision', function() {
     });
 
     it("Private groups with invitations", async function() {
-
-        const app = FirebaseAdmin.app();
-        const auth = app.auth();
-
-
-        async function doGroupProvision() {
-
-            console.log("========= doGroupProvision");
-
-            const user = await auth.getUserByEmail(FIREBASE_USER1);
-            const idUser = await IDUsers.fromUser(user);
-
-            const request: GroupProvisionRequest = {
-                docs: [],
-                invitations: {
-                    message: "Private invite to my special group",
-                    to: [
-                        UserRefs.fromEmail('getpolarized.test+test1@gmail.com')
-                    ]
-                },
-                visibility: 'private'
-            };
-
-            const response = await GroupProvisionFunctions.exec(idUser, request);
-            return response.id;
-
-        }
-
-        async function doGroupJoin(groupID: GroupIDStr) {
-
-            console.log("========= doGroupJoin");
-
-            // now switch to the user that was invited and join that group.
-
-            const user = await auth.getUserByEmail(FIREBASE_USER2);
-            const idUser = await IDUsers.fromUser(user);
-
-            const request: GroupJoinRequest = {
-                groupID
-            };
-
-            await GroupJoinFunctions.exec(idUser, request);
-
-        }
-
-        const groupID = await doGroupProvision();
-
-        await doGroupJoin(groupID);
-
-        // const idToken = await auth.createCustomToken(user.uid);
         //
-        // auth.verifyIdToken(idToken);
+        // const app = FirebaseAdmin.app();
+        // const auth = app.auth();
         //
         //
-        // const url = "https://us-central1-polar-test2.cloudfunctions.net/groupProvision";
+        // async function doGroupProvision() {
         //
-        // const response = await fetch(url, {method: 'POST', body: JSON.stringify(body)});
+        //     console.log("========= doGroupProvision");
         //
-        // assert.equal(response.status, 200);
+        //     const user = await auth.getUserByEmail(FIREBASE_USER1);
+        //     const idUser = await IDUsers.fromUser(user);
+        //
+        //     const request: GroupProvisionRequest = {
+        //         docs: [],
+        //         invitations: {
+        //             message: "Private invite to my special group",
+        //             to: [
+        //                 UserRefs.fromEmail('getpolarized.test+test1@gmail.com')
+        //             ]
+        //         },
+        //         visibility: 'private'
+        //     };
+        //
+        //     const response = await GroupProvisionFunctions.exec(idUser, request);
+        //     return response.id;
+        //
+        // }
+        //
+        // async function doGroupJoin(groupID: GroupIDStr) {
+        //
+        //     console.log("========= doGroupJoin");
+        //
+        //     // now switch to the user that was invited and join that group.
+        //
+        //     const user = await auth.getUserByEmail(FIREBASE_USER2);
+        //     const idUser = await IDUsers.fromUser(user);
+        //
+        //     const request: GroupJoinRequest = {
+        //         groupID
+        //     };
+        //
+        //     await GroupJoinFunctions.exec(idUser, request);
+        //
+        // }
+        //
+        // const groupID = await doGroupProvision();
+        //
+        // await doGroupJoin(groupID);
+        //
+        // // const idToken = await auth.createCustomToken(user.uid);
+        // //
+        // // auth.verifyIdToken(idToken);
+        // //
+        // //
+        // // const url = "https://us-central1-polar-test2.cloudfunctions.net/groupProvision";
+        // //
+        // // const response = await fetch(url, {method: 'POST', body: JSON.stringify(body)});
+        // //
+        // // assert.equal(response.status, 200);
 
     });
 

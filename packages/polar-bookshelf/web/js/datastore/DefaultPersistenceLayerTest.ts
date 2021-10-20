@@ -3,7 +3,6 @@ import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import uuid from 'uuid';
 
 
 describe('DefaultPersistenceLayer', function() {

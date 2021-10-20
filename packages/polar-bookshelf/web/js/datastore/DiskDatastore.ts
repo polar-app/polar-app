@@ -36,11 +36,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {
-    DictionaryPrefs,
-    IPersistentPrefs,
-    StringToPrefDict
-} from '../util/prefs/Prefs';
+import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from '../util/prefs/Prefs';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

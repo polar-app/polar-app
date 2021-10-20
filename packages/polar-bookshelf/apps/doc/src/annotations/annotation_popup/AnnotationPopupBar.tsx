@@ -19,8 +19,6 @@ import {SelectedContents} from "../../../../../web/js/highlights/text/selection/
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
-import {ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
 

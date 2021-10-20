@@ -3,11 +3,7 @@ import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
-import {
-    FlashcardInputFieldsType,
-    FlashcardInputs,
-    FrontAndBackFields
-} from './FlashcardInputs';
+import {FlashcardInputFieldsType, FlashcardInputs, FrontAndBackFields} from './FlashcardInputs';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {InputCompleteListener} from "../../../../mui/complete_listeners/InputCompleteListener";
 

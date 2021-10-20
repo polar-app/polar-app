@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
+import {AnnotationRepoTable2} from './AnnotationRepoTable2';
 
 /**
  * Deprecated MUI no longer needed

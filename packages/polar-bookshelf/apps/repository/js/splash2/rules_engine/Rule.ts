@@ -1,10 +1,9 @@
+import {EventHandlers, EventMap} from './Engine';
+
 /**
  * A rule accepts facts and determines if it should run and then emits a
  * new facts object.
  */
-import {EventMap} from './Engine';
-import {EventHandlers} from './Engine';
-
 export interface Rule<F, H extends EventHandlers, S> {
 
     /**

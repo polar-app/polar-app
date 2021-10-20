@@ -3,17 +3,14 @@ import {toUserInfo, UserInfo} from "./AuthHandler"
 import {useFirestore} from "../../../../../apps/repository/js/FirestoreProvider";
 import {AccountSnapshots} from "../../../accounts/AccountSnapshots";
 import {deepMemo} from "../../../react/ReactUtils";
-import {
-    SnapshotSubscribers,
-    SnapshotSubscriberWithID
-} from "polar-shared/src/util/Snapshots";
+import {SnapshotSubscribers, SnapshotSubscriberWithID} from "polar-shared/src/util/Snapshots";
 import {useSnapshotSubscriber} from "../../../ui/data_loader/UseSnapshotSubscriber";
-import { Billing } from 'polar-accounts/src/Billing';
-import V2PlanFree = Billing.V2PlanFree;
+import {Billing} from 'polar-accounts/src/Billing';
 import {Plans} from "polar-accounts/src/Plans";
 import {ISnapshot} from "../../../snapshots/CachedSnapshotSubscriberContext";
 import {useAnalytics} from "../../../analytics/Analytics";
 import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import V2PlanFree = Billing.V2PlanFree;
 
 interface IUserInfoContext {
 

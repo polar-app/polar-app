@@ -1,5 +1,5 @@
 import * as React from "react";
-import IconButton, { IconButtonTypeMap } from '@material-ui/core/IconButton/IconButton';
+import IconButton from '@material-ui/core/IconButton/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface MUILoadingIconButtonProps {

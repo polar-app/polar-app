@@ -3,7 +3,6 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
-import INodeOffset = ContentEditables.INodeOffset;
 import {useBlockContentEditableElement} from "./BlockContentEditable";
 import {observer} from "mobx-react-lite"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -12,6 +11,7 @@ import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
 import {TAG_IDENTIFIER} from '../content/HasLinks';
+import INodeOffset = ContentEditables.INodeOffset;
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.

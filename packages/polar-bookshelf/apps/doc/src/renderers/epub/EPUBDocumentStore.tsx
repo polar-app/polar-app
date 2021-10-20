@@ -1,8 +1,5 @@
 import {Provider} from "polar-shared/src/util/Providers";
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../../web/js/react/store/ObservableStore";
+import {createObservableStore, SetStore} from "../../../../../web/js/react/store/ObservableStore";
 import Section from "epubjs/types/section";
 
 export interface IEPUBDocumentStore {

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    MouseEvents,
-    useContextMenu
-} from "../../../../../repository/js/doc_repo/MUIContextMenu";
-import {Callback} from 'polar-shared/src/util/Functions';
+import {MouseEvents, useContextMenu} from "../../../../../repository/js/doc_repo/MUIContextMenu";
 import {useDocViewerIFrame} from "./EPUBIFrameHooks";
 
 export const EPUBIFrameWindowEventListener = () => {

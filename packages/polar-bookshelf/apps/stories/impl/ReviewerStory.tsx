@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    Task,
-    TaskRep
-} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";

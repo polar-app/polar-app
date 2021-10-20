@@ -1,19 +1,11 @@
 import {GroupMember} from 'polar-firebase/src/firebase/om/GroupMemberCollection';
-import {GroupMemberCollection} from 'polar-firebase/src/firebase/om/GroupMemberCollection';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
-import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
-import {Group, Groups} from '../../datastore/sharing/db/Groups';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {ContactCollection} from 'polar-firebase/src/firebase/om/ContactCollection';
+import {Group} from '../../datastore/sharing/db/Groups';
 import {Contact} from 'polar-firebase/src/firebase/om/ContactCollection';
-import {UserGroupCollection} from "polar-firebase/src/firebase/om/UserGroupCollection";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
-import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
-import {Promises} from "polar-shared/src/util/Promises";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 const log = Logger.create();

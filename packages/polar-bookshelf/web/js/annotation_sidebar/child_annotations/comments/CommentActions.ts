@@ -1,5 +1,5 @@
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDocAnnotation, IDocAnnotationRef} from "../../DocAnnotation";
+import {IDocAnnotationRef} from "../../DocAnnotation";
 import {IRef, Refs} from "polar-shared/src/metadata/Refs";
 import {Comments} from "../../../metadata/Comments";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";

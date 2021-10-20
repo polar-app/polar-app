@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VariableSizeList as List } from 'react-window';
+import {VariableSizeList as List} from 'react-window';
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {CaptureSizeContainer, useCaptureSizeCalculator} from "../../../web/js/react/CaptureSizeContainer";
 import {useDockLayoutResized} from "../../../web/js/ui/doc_layout/DockLayoutStore";

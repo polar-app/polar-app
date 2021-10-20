@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import {BlocksStoreProvider, useBlocksStore} from '../../../web/js/notes/store/BlocksStore';
 import {MockBlocks} from "./MockBlocks";
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {BlockStoreContextProvider} from "../../../web/js/notes/store/BlockStoreContextProvider";
 import {UndoQueueProvider2} from "../../../web/js/undo/UndoQueueProvider2";
 import {KeyboardShortcuts} from "../../../web/js/keyboard_shortcuts/KeyboardShortcuts";
