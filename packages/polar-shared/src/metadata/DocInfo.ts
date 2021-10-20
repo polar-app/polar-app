@@ -4,7 +4,7 @@ import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
 import {Hashcode} from './Hashcode';
 import {ReadingOverview} from './ReadingOverview';
 import {Attachment} from './Attachment';
-import {Backend} from './Backend';
+import {Backend} from '../datastore/Backend';
 import {Tag} from '../tags/Tags';
 import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "./IDocInfo";
 import {Visibility} from "../datastore/Visibility";
