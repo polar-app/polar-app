@@ -23,20 +23,19 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal testers track"
   lane :beta do
-    version_code = increment_version_code(
-        gradle_file_path: "./app/build.gradle"
-    )
-    android_set_version_name(
-        version_name: version_code.to_s,
-        gradle_file: "app/build.gradle" # optional
-    )
+    track_code = google_play_track_version_codes(track: 'internal')
+    version_code = increment_version_code(version_code: track_code[0]+1)
+    android_set_version_name(version_name: version_code.to_s)
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'internal')
   end
 
   desc "Deploy a new version to the Google Play"
   lane :release do
-    increment_version_code(gradle_file_path: "./app/build.gradle")
+    version = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
+    track_code = google_play_track_version_codes(track: 'production')
+    version_code = increment_version_code(version_code: track_code[0]+1)
+    android_set_version_name(version_name: version.to_s)
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'production')
   end

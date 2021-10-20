@@ -16,16 +16,28 @@
 default_platform(:ios)
 
 platform :ios do
+  before_all do
+    setup_circle_ci
+  end
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    increment_build_number(xcodeproj: "PolarReactNative.xcodeproj")
-    build_app(workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    match(type: "appstore")
+    app_store_connect_api_key
+    increment_build_number({
+      build_number: latest_testflight_build_number + 1
+    })
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     upload_to_testflight
   end
 
   lane :release do
-    increment_build_number(xcodeproj: "PolarReactNative.xcodeproj")
-    build_app(workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    match(type: "appstore")
+    app_store_connect_api_key
+    increment_version_number(
+      version_number: sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'"),
+      xcodeproj: "PolarReactNative.xcodeproj"
+    )
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     upload_to_app_store( # upload your app to App Store Connect
         submit_for_review: true,
         skip_screenshots: true,

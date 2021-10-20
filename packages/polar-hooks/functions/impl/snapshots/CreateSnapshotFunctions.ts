@@ -1,6 +1,6 @@
 import {IDUser} from '../util/IDUsers';
 import {UserBackupCreator} from "./UserBackupCreator";
-import {Sendgrid} from "../Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

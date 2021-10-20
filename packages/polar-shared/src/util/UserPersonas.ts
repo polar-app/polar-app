@@ -1,12 +1,6 @@
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "./Arrays";
 
 export namespace UserPersonas {
-
-    export interface IUserRecord {
-        readonly uid: string;
-        readonly email?: string;
-        readonly displayName?: string;
-    }
 
     export interface ICreateOpts {
         readonly email?: string;
