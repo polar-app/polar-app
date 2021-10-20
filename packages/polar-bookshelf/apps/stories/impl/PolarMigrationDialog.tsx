@@ -4,29 +4,7 @@ import {PolarSVGIcon} from "../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {Box, Typography} from '@material-ui/core';
 import LinearProgress, { LinearProgressProps } from '@material-ui/core/LinearProgress';
 import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
-
-const Infotext = () => {
-    return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center", flexDirection: 'column'}}>
-                    <Box mt={6} ml={10} mr={10} textAlign={'center'}>
-                        <Typography variant="body1">
-                            <b>
-                                Just a Minute
-                            </b>
-                        </Typography>
-                    </Box>
-                    <Box ml={10} mr={10} textAlign={'center'}>
-                    <Typography variant="body1">
-                        We're Migrating you to the latest version of Polar
-                    </Typography>
-                    </Box>
-                </div>
-            </div>
-        </div>
-    )
-}
+import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -44,29 +22,10 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
                 </Typography>
             </Box>
         </>
-      
     );
   }
 
-  const PolarMigrationEndInfo = () => {
-    return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center", flexDirection: 'column'}}>
-                    <Typography variant="caption">
-                        <Box mt={5} ml={6} mr={6} textAlign={'center'}>
-                            As part of Polar's Updates, we're migrating the backend which can take up to a 
-                            couple minutes, depending on the size of your repository. This is a one time migration. 
-                            <Link> Learn More</Link>
-                        </Box>
-                    </Typography>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export const MigrationDialog = () => {
+const Infotext = () => {
 
     const [progress, setProgress] = React.useState(10);
   
@@ -79,35 +38,50 @@ export const MigrationDialog = () => {
       };
     }, []);
 
-    return (
-        <div style={{
-            display: 'flex',
-            width: '100%',
-            height: '100%'
-        }}>
+    return (  
+        <AdaptiveDialog>
+                <Box display='flex' flexGrow={1} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+                    <Typography variant="body1">
+                        <b>
+                            Just a Minute
+                        </b>
+                    </Typography>
 
-            <Paper style={{
-                margin: 'auto',
-                maxWidth: '450px',
-                minHeight: '550px',
-                maxHeight: '750px',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+                    <Typography variant="body1">
+                        We're Migrating you to the latest version of Polar
+                        
+                        <LinearProgressWithLabel value={progress} />
+                    </Typography>
 
-                <LogoAndTextSideBySide/>
-
-                <Infotext/>
-
-                <Box m={2}>
-                    <LinearProgressWithLabel value={progress} />
+                        
+                    
+                    <Typography variant="caption">
+                        <Box mt={5} ml={6} mr={6} textAlign={'center'}>
+                            As part of Polar's Updates, we're migrating the backend which can take up to a 
+                            couple minutes, depending on the size of your repository. This is a one time migration. 
+                            <Link> Learn More</Link>
+                        </Box>
+                    </Typography>
                 </Box>
+        </AdaptiveDialog>
+    )
+}
 
-                <PolarMigrationEndInfo/>
+export const MigrationDialog = () => {
 
-            </Paper>
-        </div>
+    return (
+
+            <AdaptiveDialog>
+                <Paper>
+                        <Box mt={2}>
+                            <LogoAndTextSideBySide/>
+                        </Box>
+                        
+                        <Box>
+                            <Infotext/>
+                        </Box>
+                </Paper>
+            </AdaptiveDialog>
     );
 
 };

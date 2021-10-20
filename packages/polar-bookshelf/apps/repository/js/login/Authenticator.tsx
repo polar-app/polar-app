@@ -444,7 +444,7 @@ export const LogoAndTextSideBySide = () => {
         <div>
             <div style={{display: 'flex'}}>
                 <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1} mt={2}>
+                    <Box m={1}>
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
@@ -454,26 +454,6 @@ export const LogoAndTextSideBySide = () => {
                     </Box>
                 </div>
             </div>
-        </div>
-    )
-}
-
-const FlexLayoutForm = () => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
-                <EmailTokenAuthButton/>
-
-            </div>
-
         </div>
     )
 }
