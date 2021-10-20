@@ -1,7 +1,7 @@
 import {Annotation} from 'polar-shared/src/metadata/Annotation';
-import {Flashcard} from './Flashcard';
 import {Note} from 'polar-shared/src/metadata/Note';
 import {Question} from './Question';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 
 export class ExtendedAnnotation extends Annotation {
 

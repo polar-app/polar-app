@@ -6,7 +6,7 @@ import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {ClozeFields, FlashcardInputFieldsType, FlashcardInputs} from './FlashcardInputs';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
 import IconButton from '@material-ui/core/IconButton';
 import {ClozeDeletions} from "./ClozeDeletions";

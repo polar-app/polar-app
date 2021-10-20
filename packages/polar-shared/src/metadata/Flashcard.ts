@@ -1,10 +1,10 @@
-import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {VersionedObject} from 'polar-shared/src/metadata/VersionedObject';
-import {Text} from 'polar-shared/src/metadata/Text';
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Ref} from 'polar-shared/src/metadata/Refs';
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {FlashcardType} from './FlashcardType';
+import {VersionedObject} from './VersionedObject';
+import {Text} from './Text';
+import {Preconditions} from 'src/Preconditions';
+import {ISODateTimeString} from './ISODateTimeStrings';
+import {Ref} from './Refs';
+import {IFlashcard} from "./IFlashcard";
 
 export class Flashcard extends VersionedObject implements IFlashcard {
 
