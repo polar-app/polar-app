@@ -107,6 +107,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         const canAccept: string[] = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
+            'jonathan.graeupner@gmail.com',
         ];
         return email && canAccept.includes(email);
     }
