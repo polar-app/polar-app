@@ -1,7 +1,6 @@
 import { EPUBMetadataUsingNode, IChapterReference, ISpine } from './EPUBMetadataUsingNode';
 import {JSDOM} from "jsdom"
 import { getXmlToJSON } from './util/getXmlToJSON';
-
 interface IEPUBContent {
     /**
      * Chapter reference ID
@@ -24,7 +23,7 @@ interface IEPUBText {
      * http://idpf.org/epub/linking/cfi/epub-cfi.html
      * 
      */
-    readonly CFI: string;
+    readonly cfi: string;
 
     /**
      * Parsed text
@@ -76,6 +75,11 @@ export namespace EPUBContent {
         }
     }
     
+    /**
+     * 
+     * parse html content of an EPUB page/chapter
+     * 
+     */
     export async function parseContent(rootFile: string, content: IEPUBContent): Promise<IEPUBText[]> {
         const dom = new JSDOM(await content.html());
 
@@ -86,9 +90,8 @@ export namespace EPUBContent {
         let rootEvenIndex = 0;
 
         dom.window.document.documentElement.childNodes.forEach((node) => {
-            if (node.nodeName !== '#text') {
+            if (node.nodeType === node.ELEMENT_NODE) {
                 rootEvenIndex += 2;
-
                 parseChildren(node,`${CFIXMLFragment}/${rootEvenIndex}`, results);
             }
         });
@@ -96,41 +99,55 @@ export namespace EPUBContent {
         return results;
     }
 
+    /**
+     * 
+     * Recusively finds child nodes with extract its text contents 
+     * and generates a CFI step relevant to it's parent
+     * 
+     */
     export function parseChildren(node: ChildNode, nodePath = "", results: IEPUBText[]): void {
+        if (isTextElement(node.nodeName)) {
+            const text = <string> node.textContent?.trim();
 
-        /** 
-         * Paragraphs may contain nested elements  
-         * 
-         **/
-        if (node.nodeName === "P") {
-            results.push({
-                CFI: wrapCFIPath(nodePath),
-                text: <string>node.textContent
-            });
-        }
-
-        if (!node.hasChildNodes()) {
-            if (node.textContent?.trim().length === 0) {
-                return;
+            if (text.length !== 0) {
+                results.push({
+                    cfi: wrapCFIPath(nodePath),
+                    text: text
+                });
             }
-
-            results.push({
-                CFI: wrapCFIPath(nodePath),
-                text: <string>node.textContent
-            });
-
-            return;
         }
 
-        let CFIEvenIndex = 0;
         
-        node.childNodes.forEach((node) => {
-            if (node.nodeName !== '#text') {
-                console.log('here should not be ignore', node.nodeName);
-                CFIEvenIndex += 2;
-                parseChildren(node, `${nodePath}/${CFIEvenIndex}`, results);
-            }
-        });
+        if (node.hasChildNodes()) {
+            let CFIEvenIndex = 0;
+
+            node.childNodes.forEach((node) => {
+                if (node.nodeType === node.ELEMENT_NODE) {
+                    CFIEvenIndex += 2;
+                    parseChildren(node, `${nodePath}/${CFIEvenIndex}`, results);
+                }
+            });
+        }
+    }
+
+    /**
+     * 
+     * Check whether a given element name exists in the set of 
+     * text element or at least the ones we care about
+     * 
+     */
+    function isTextElement(elementName: string) {
+        const textElements = new Set([
+            'P',
+            'H1',
+            'H2',
+            'H3',
+            'H4',
+            'H5',
+            'H6'
+        ]);
+        
+        return textElements.has(elementName);
     }
 
     /**
@@ -140,7 +157,8 @@ export namespace EPUBContent {
      * @returns string CFI fragment of the XML chapter path ending with a step indirection '!'
      * - http://idpf.org/epub/linking/cfi/epub-cfi.html#sec-path-indirection
      */
-    async function generateCFIXMLFragment(rootFilePath: string, idRef: string) {
+    export async function generateCFIXMLFragment(rootFilePath: string,
+                                                 idRef: string): Promise<string> {
         const rootFile = await EPUBMetadataUsingNode.getRootFileXML(rootFilePath);
 
         const xmlDOM = new JSDOM(rootFile.rootFileData, { 
@@ -170,6 +188,7 @@ export namespace EPUBContent {
                     spineNode = <HTMLElement> node;
 
                     rootSpineIndex = CFIRootEvenIndex;
+                    break;
                 }
             }
         }

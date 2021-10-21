@@ -42,4 +42,16 @@ describe('EPUBContent', () => {
 
         assert.equal(lastChapterCFI, "/6/26[chapter_010]!");
     });
+
+    it("Can compute CFI and parse text", async () => {
+        const path = FilePaths.resolve(__dirname, '../alice.epub');
+
+        const content = await EPUBContent.get(path);
+
+        const parsedEpub = await EPUBContent.parseContent(path, content[1]);
+
+        assert.equal(parsedEpub[0].cfi, 'epubcfi(/6/8[chapter_001]!/4/2/2)');
+
+        assert.equal(parsedEpub[0].text, 'Down The Rabbit-Hole');
+    });
 });
