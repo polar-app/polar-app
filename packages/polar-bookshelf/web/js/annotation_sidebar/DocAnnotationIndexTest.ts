@@ -3,12 +3,11 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {TextHighlights} from '../metadata/TextHighlights';
+import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Ref, Refs} from "polar-shared/src/metadata/Refs";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {MockDocMetas} from "../metadata/DocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 function toDocAnnotations(docAnnotationIndex: DocAnnotationIndex) {
     return docAnnotationIndex.getDocAnnotationsSorted().map(current => current.obj);

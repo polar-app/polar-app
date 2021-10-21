@@ -4,13 +4,10 @@ import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
 import {Tags} from "polar-shared/src/tags/Tags";
 import isEqual from "react-fast-compare";
 import clsx from "clsx";
-import {
-    DragTarget2,
-    useDragContext
-} from "../../../../web/js/ui/tree/DragTarget2";
+import {DragTarget2, useDragContext} from "../../../../web/js/ui/tree/DragTarget2";
 import {useContextMenu} from "../doc_repo/MUIContextMenu";
-import TagID = Tags.TagID;
 import {SelectRowType} from "../doc_repo/SelectionEvents2";
+import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -95,7 +92,7 @@ export const MUITagListItemInner = React.memo(function MUITagListItemInner(props
     // TODO: needs tabindex and focus...
     return (
         <div className={className}
-            onContextMenu={onContextMenu} 
+            onContextMenu={onContextMenu}
             onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
             <div onClick={onCheckbox}

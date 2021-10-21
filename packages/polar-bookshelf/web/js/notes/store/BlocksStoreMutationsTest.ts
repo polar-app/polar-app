@@ -1,10 +1,10 @@
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {assertJSON} from "../../test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
-import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {cloneDeep} from "lodash";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 describe('BlocksStoreMutations', () => {
 

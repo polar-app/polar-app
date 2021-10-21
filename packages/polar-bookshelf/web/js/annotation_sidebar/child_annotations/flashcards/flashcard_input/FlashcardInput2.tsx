@@ -4,12 +4,9 @@ import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInputs';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import isEqual from "react-fast-compare";
-import {
-    IFlashcardUpdate,
-    useAnnotationMutationsContext
-} from "../../../AnnotationMutationsContext";
+import {IFlashcardUpdate, useAnnotationMutationsContext} from "../../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../../AnnotationActiveInputContext";
 import {IDocAnnotationRef} from "../../../DocAnnotation";
 

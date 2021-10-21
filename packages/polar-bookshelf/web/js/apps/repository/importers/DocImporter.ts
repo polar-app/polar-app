@@ -1,23 +1,17 @@
-import {
-    PersistenceLayerProvider,
-    WriteOpts
-} from '../../../datastore/PersistenceLayer';
+import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {DocMetas} from '../../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
-import {
-    HashAlgorithm,
-    Hashcode,
-    HashEncoding
-} from 'polar-shared/src/metadata/Hashcode';
+import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
 import {
     BackendFileRefData,
-    BinaryFileData, DatastoreConsistency,
+    BinaryFileData,
+    DatastoreConsistency,
     WriteFileProgressListener
 } from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';

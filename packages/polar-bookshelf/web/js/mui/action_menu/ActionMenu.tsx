@@ -6,7 +6,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {NULL_FUNCTION} from "../../../../../polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
 const useStyles = makeStyles((theme) =>
@@ -55,7 +55,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
     const classes = useStyles();
     const {onAction, onClose, items} = props;
 
-    const [index, setIndex] = React.useState<number | undefined>(0);
+    const [index, setIndex] = React.useState<number | undefined>(undefined);
 
     const handleActionExecuted = React.useCallback((action: IActionMenuItem) => {
 
@@ -63,6 +63,16 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         onClose('executed');
 
     }, [onClose, onAction]);
+
+    const handleIndexChange = React.useCallback((newIndex: number | undefined) => {
+
+        if (newIndex !== index) {
+            setIndex(newIndex);
+        }
+
+    }, [index]);
+
+    type IndexDelta = -1 | 1;
 
     /**
      *
@@ -82,7 +92,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             event.preventDefault();
         }
 
-        function computeNewIndex(delta: number) {
+        function computeNewIndex(delta: IndexDelta): number | undefined {
 
             if (index === undefined) {
 
@@ -91,9 +101,9 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
                     return 0;
                 }
 
-                if (index === -1) {
+                if (delta === -1) {
                     // got to the end
-                    return items.length - 1;
+                    return undefined;
                 }
 
                 return 0;
@@ -103,8 +113,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             const newIndex = index + delta;
 
             if (newIndex < 0) {
-                // return commandsFiltered.length - 1;
-                return 0;
+                return undefined;
             }
 
             if (newIndex >= items.length) {
@@ -115,25 +124,26 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
         }
 
-        function handleNewIndex(delta: number) {
-            const newIndex = computeNewIndex(delta);
-            setIndex(newIndex);
+        function handleNewIndex(newIndex: number | undefined) {
+            handleIndexChange(newIndex);
         }
 
         if (event.key === 'ArrowDown') {
             abortEvent();
-            handleNewIndex(1);
+            handleNewIndex(computeNewIndex(1));
         }
 
         if (event.key === 'ArrowUp') {
             abortEvent();
-            handleNewIndex(-1);
+            handleNewIndex(computeNewIndex(-1));
         }
 
         if (event.key === 'Escape') {
             abortEvent();
             onClose('cancel');
         }
+
+        // TODO: I don't think enter is handled?
 
         if (event.key === 'Tab') {
             if (index !== undefined) {
@@ -145,7 +155,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             }
         }
 
-    }, [items, handleActionExecuted, index, onClose]);
+    }, [index, items, handleIndexChange, onClose, handleActionExecuted]);
 
     React.useEffect(() => {
 
@@ -155,7 +165,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             window.removeEventListener('keydown', handleKeyDownForCommandNavigation, {capture: true});
         }
 
-    })
+    }, [handleKeyDownForCommandNavigation])
 
     const menuItems = items.map((item, idx) => {
 

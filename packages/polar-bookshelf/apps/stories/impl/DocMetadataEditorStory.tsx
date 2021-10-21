@@ -1,8 +1,7 @@
 import * as React from "react";
 import {DocMetadataEditor} from "../../repository/js/doc_repo/doc_metadata_editor/DocMetadataEditor";
-import { IDocInfo } from "polar-shared/src/metadata/IDocInfo";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { PagemarkType } from "polar-shared/src/metadata/PagemarkType";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 
 const DOC_INFO: IDocInfo = {
     title: "Zombies Invade Paris",

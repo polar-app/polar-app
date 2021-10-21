@@ -1,10 +1,6 @@
 import React from 'react';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {
-    NetPromoterScore,
-    UserFeedback,
-    UserFeedbacks
-} from '../../../../../web/js/telemetry/UserFeedback';
+import {NetPromoterScore, UserFeedback, UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {Suggestions} from '../../../../../web/js/ui/feedback/Suggestions';
 import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
 import {SplashKeys} from '../SplashKeys';

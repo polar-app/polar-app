@@ -3,6 +3,8 @@ import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+import {Box} from "@material-ui/core";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export interface PrefsWriter {
 
@@ -23,6 +25,7 @@ interface IProps {
     readonly defaultValue?: boolean;
     readonly icon?: JSX.Element;
     readonly beta?: boolean;
+    readonly className?: string | undefined;
 
     /**
      * Optional callback to listen to settings.
@@ -30,7 +33,7 @@ interface IProps {
     readonly onChange?: (value: boolean) => void;
 }
 
-export const SettingToggle = (props: IProps) => {
+export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     const log = useLogger();
 
@@ -61,11 +64,11 @@ export const SettingToggle = (props: IProps) => {
     };
 
     return (
-        <div style={{ margin: '30px 16px' }}>
+        <Box mx={3}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
                 <MUIIconText style={{ flex: 1 }} icon={props.icon}>
-                    <h3 style={{ position: 'relative', display: 'inline-block' }}>
+                    <Box component={'h3'} pt={1} style={{ position: 'relative', display: 'inline-block' }}>
                         <b>{props.title}</b>
                         {props.beta && (
                             <div style={{
@@ -75,22 +78,24 @@ export const SettingToggle = (props: IProps) => {
                                 color: 'red',
                                 fontSize: 9,
                             }}>BETA</div>
-                        )} 
-                    </h3>
+                        )}
+                    </Box>
                 </MUIIconText>
 
-                <div className="mt-auto mb-auto">
+                <Box component={'div'} my={'auto'} >
                     <SwitchButton size="medium"
                                   initialValue={value}
                                   onChange={value => onChange(value)} />
-                </div>
+                </Box>
 
             </div>
 
             <div>
-                <p>{props.description}</p>
+                <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
+                    {props.description}
+                </Box>
             </div>
-        </div>
+        </Box>
     );
 
-};
+});

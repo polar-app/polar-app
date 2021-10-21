@@ -2,8 +2,9 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
+import {Box, createStyles, FormControlLabel, makeStyles, Paper, Radio, RadioGroup} from "@material-ui/core";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+import {Devices} from "polar-shared/src/util/Devices";
 
 interface IProps {
     readonly title: string;
@@ -19,21 +20,23 @@ interface IOption {
     readonly label: string;
 }
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         radioLabelRoot: {
-            margin: 0,
+            marginLeft: Devices.isDesktop()? theme.spacing(2): 0,
+            marginRight: Devices.isDesktop()? theme.spacing(2): 0,
             justifyContent: 'space-between',
             alignItems: 'center',
         },
         radioLabel: {
             fontSize: '1rem',
         },
+
     }),
 );
 
 export const SettingSelect = (props: IProps) => {
-    
+
     const classes = useStyles();
     const log = useLogger();
     const prefs = usePrefsContext();
@@ -57,37 +60,39 @@ export const SettingSelect = (props: IProps) => {
                        .getOrElse(props.options[0].id);
 
     return (
-        <div style={{ margin: '30px 16px' }}>
+        <div>
             <div>
 
-                <div className="mt-auto mb-auto">
-                    <MUIIconText icon={props.icon}>
-                        <h3><b>{props.title}</b></h3>
-                    </MUIIconText>
-                    <p>
+                <Box mx={3}>
+                    <Box pt={2}>
+                        <MUIIconText style={{ flex: 1}} icon={props.icon}>
+                                <h3><b>{props.title}</b></h3>
+                        </MUIIconText>
+                    </Box>
+                    <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
                         {props.description}
-                    </p>
-                </div>
+                    </Box>
+                </Box>
 
-                <div className="mt-auto mb-auto">
-
-                    <RadioGroup name={name} value={value} onChange={onChange}>
-                        {props.options.map(current =>
-                            <FormControlLabel
-                                key={current.id}
-                                value={current.id}
-                                labelPlacement="start"
-                                classes={{
-                                    root: classes.radioLabelRoot,
-                                    label: classes.radioLabel,
-                                }}
-                                control={<Radio />}
-                                label={current.label}
-                            />
-                        )}
-                    </RadioGroup>
-
-                </div>
+                <Paper >
+                    <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
+                        <RadioGroup name={name} value={value} onChange={onChange}>
+                            {props.options.map(current =>
+                                <FormControlLabel
+                                    key={current.id}
+                                    value={current.id}
+                                    labelPlacement="start"
+                                    classes={{
+                                        root: classes.radioLabelRoot,
+                                        label: classes.radioLabel,
+                                    }}
+                                    control={<Radio />}
+                                    label={current.label}
+                                />
+                            )}
+                        </RadioGroup>
+                    </Box>
+                </Paper>
 
             </div>
 

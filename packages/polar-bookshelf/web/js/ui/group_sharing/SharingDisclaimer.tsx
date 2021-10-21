@@ -1,5 +1,4 @@
 import React from 'react';
-import {MemberRecord} from './GroupSharingRecords';
 
 /**
  * Allow the user to select from one or more of their contacts.

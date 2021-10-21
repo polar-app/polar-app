@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactJson from 'react-json-view';
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
-import { isPresent } from 'polar-shared/src/Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 class Styles {
 

@@ -3,8 +3,8 @@ import {deepMemo} from "../react/ReactUtils";
 import {
     IKeyboardShortcutWithHandler,
     KeyBinding,
-    useKeyboardShortcutsStore,
-    KeyboardEventHandlerUsingPredicate
+    KeyboardEventHandlerUsingPredicate,
+    useKeyboardShortcutsStore
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
@@ -31,7 +31,7 @@ export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent | Re
                 return event.shiftKey;
         }
     };
-    
+
     return pressed.every(isModifierPressed) && unpressed.every(modifier => ! isModifierPressed(modifier));
 };
 

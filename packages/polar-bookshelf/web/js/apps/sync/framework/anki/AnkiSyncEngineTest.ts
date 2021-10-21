@@ -1,17 +1,10 @@
-import {MediaContents} from './MediaContents';
-import {assertJSON} from '../../../../test/Assertions';
-import {DiskDatastore} from '../../../../datastore/DiskDatastore';
-import {FlashcardDescriptors} from './FlashcardDescriptors';
-import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
-import {DocMeta} from '../../../../metadata/DocMeta';
-import {DefaultPersistenceLayer} from '../../../../datastore/DefaultPersistenceLayer';
-import {assert} from 'chai';
 import {AnkiSyncEngine} from './AnkiSyncEngine';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {TextType} from 'polar-shared/src/metadata/TextType';
 import {Flashcards} from '../../../../metadata/Flashcards';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {DocMetas, MockDocMetas} from '../../../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 xdescribe('AnkiSyncEngine', function() {
 

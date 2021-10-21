@@ -4,17 +4,16 @@ import {
     IAreaHighlightUpdate,
     useAnnotationMutationsContext
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {IPoint} from "../../../../web/js/Point";
-import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
-import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
+import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
+import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 
 export interface AreaHighlightCreatedOpts {
     readonly rectWithinPageElement: ILTRect;

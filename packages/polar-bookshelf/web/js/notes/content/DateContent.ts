@@ -1,4 +1,4 @@
-import {makeObservable, observable, computed, toJS} from "mobx"
+import {computed, makeObservable, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DateContentFormat, IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";

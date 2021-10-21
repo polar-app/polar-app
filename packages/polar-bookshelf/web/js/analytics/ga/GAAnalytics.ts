@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr, IPageEvent, IAnalyticsUser} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
 /**

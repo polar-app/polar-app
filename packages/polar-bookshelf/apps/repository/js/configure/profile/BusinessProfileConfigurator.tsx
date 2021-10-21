@@ -3,10 +3,7 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {BusinessOccupationProfile, FormData} from "./ProfileConfigurator";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {
-    BusinessOccupation,
-    Occupation
-} from "polar-shared/src/util/Occupations";
+import {BusinessOccupation, Occupation} from "polar-shared/src/util/Occupations";
 import Input from "@material-ui/core/Input";
 
 interface IProps {

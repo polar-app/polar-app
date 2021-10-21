@@ -39,7 +39,7 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
@@ -66,8 +66,9 @@ import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
 import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
-import { AccountPageMobile } from './AccountPageMobile';
+import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
+import {SwitchScreen} from './SwitchScreen';
 
 interface IProps {
     readonly app: App;
@@ -82,8 +83,6 @@ interface IUseRouteContainerStylesProps {
     isSidenavOpen: boolean;
     sidenavWidth: number;
 }
-
-export const BOTTOM_NAV_HEIGHT = 58;
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
@@ -366,6 +365,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <SettingsScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
+                                    <SwitchScreen/>
+                                </PersistentRoute>
+
                                 <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
                                     <PricingScreen/>
                                 </PersistentRoute>
@@ -387,10 +390,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
-                                    <FeatureToggle featureName="notes-enabled">
+                                    <FeatureToggleEnabled featureName="notes-enabled">
                                         <Route path={RoutePathNames.NOTES}
                                                component={NotesScreen}/>
-                                    </FeatureToggle>
+                                    </FeatureToggleEnabled>
 
                                     <Route path="/hello-ssr"
                                            component={HelloServerSideRender}/>

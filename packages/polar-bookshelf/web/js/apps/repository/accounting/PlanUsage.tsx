@@ -1,15 +1,14 @@
 import React from 'react';
-import LinearProgress from "@material-ui/core/LinearProgress";
-import {useAccounting, useAccountingUsage} from "./Accounting";
+import {useAccountingUsage} from "./Accounting";
 import {Bytes} from "polar-shared/src/util/Bytes";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {BorderLinearProgress} from "../../../mui/BorderLinearProgress";
-import { Numbers } from 'polar-shared/src/util/Numbers';
+import {Numbers} from 'polar-shared/src/util/Numbers';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { Variant } from '@material-ui/core/styles/createTypography';
-import { Devices } from 'polar-shared/src/util/Devices';
+import {Variant} from '@material-ui/core/styles/createTypography';
+import {Devices} from 'polar-shared/src/util/Devices';
 
 const useStyles = makeStyles((theme) =>
     createStyles({

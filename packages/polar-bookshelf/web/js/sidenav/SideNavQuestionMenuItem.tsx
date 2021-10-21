@@ -4,17 +4,15 @@ import {Analytics} from "../analytics/Analytics";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {IEvent} from "../analytics/firestore/Events";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import {Box} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import { Devices } from "polar-shared/src/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        root: {
-
-        },
         icon: {
             fontSize: Devices.isDesktop()?'2.5rem': '1.5rem',
             color: theme.palette.text.secondary
@@ -78,7 +76,9 @@ export const SideNavQuestionMenuItem = React.forwardRef<HTMLLIElement, IProps>((
 
             {Icon &&
                 <ListItemIcon>
-                    <Icon className={classes.icon}/>
+                    <Box ml={1}>
+                        <Icon className={classes.icon}/>
+                    </Box>
                 </ListItemIcon>}
 
             <ListItemText primary={

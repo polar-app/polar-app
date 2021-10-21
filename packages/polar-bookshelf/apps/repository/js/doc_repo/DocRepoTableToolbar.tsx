@@ -2,10 +2,10 @@ import React from "react";
 import Divider from "@material-ui/core/Divider";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
-import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
+import {MUIDocTagButton} from "./buttons/MUIDocTagButton";
 import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
-import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
-import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
+import {MUIDocFlagButton} from "./buttons/MUIDocFlagButton";
+import {MUIDocDeleteButton} from "./buttons/MUIDocDeleteButton";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -60,7 +60,9 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
         <>
             <SidenavTriggerIconButton/>
 
-            <ChromeExtensionInstallBar/>
+            <DeviceRouter.Desktop>
+                <ChromeExtensionInstallBar/>
+            </DeviceRouter.Desktop>
 
             <div style={{ display: 'flex' }}>
                 {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }

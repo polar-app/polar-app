@@ -1,10 +1,7 @@
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
 import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
 import * as React from "react";
-import {
-    useAnnotationRepoCallbacks,
-    useAnnotationRepoStore
-} from "./AnnotationRepoStore";
+import {useAnnotationRepoCallbacks, useAnnotationRepoStore} from "./AnnotationRepoStore";
 import {AnnotationRepoTableDropdown2} from "./AnnotationRepoTableDropdown2";
 import {TextFilter2} from "./filter_bar/TextFilter2";
 import makeStyles from "@material-ui/core/styles/makeStyles";

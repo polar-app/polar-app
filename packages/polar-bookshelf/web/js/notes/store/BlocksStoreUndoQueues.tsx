@@ -5,7 +5,7 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {Block, IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
-import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
+import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IBlocksStore} from "./IBlocksStore";
 import {BlockPredicates} from "./BlockPredicates";
@@ -126,7 +126,7 @@ export namespace BlocksStoreUndoQueues {
         if (ids.size === 0) {
             throw new Error("Expansion failed to identify additional identifiers");
         }
-        
+
         /**
          * Computes only the blocks that are applicable to this operation.  We
          * have to know all the block IDs that would be involved with this
@@ -593,7 +593,7 @@ export namespace BlocksStoreUndoQueues {
      */
     export function getAffectedDocumentBlocksIdentifiers(blocksStore: IBlocksStore,
                                                          identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
-        
+
         const getDocumentRootID = (block: Block): BlockIDStr | null => {
             const rootBlock = blocksStore.getBlock(block.root);
 
@@ -628,7 +628,7 @@ export namespace BlocksStoreUndoQueues {
          * This function goes through all the mutations and computes a delta (number of blocks removed/added)
          * for each document block that is involved with this mutation.
          *
-         * They're stored in the following way 
+         * They're stored in the following way
          * ```
          * {
          *     'block-id': {
@@ -703,7 +703,7 @@ export namespace BlocksStoreUndoQueues {
                 const deltaType = getDeltaType(block);
 
                 const getDelta = () => mutation.type === 'added' ? 1 : mutation.type === 'removed' ? -1 : 0;
-                
+
                 deltaMap.set(ownerDocumentID, { ...record, [deltaType]: record[deltaType] + getDelta() });
             }, 0);
 

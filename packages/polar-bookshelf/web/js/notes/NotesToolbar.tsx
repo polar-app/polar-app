@@ -1,14 +1,69 @@
-import {Button, createStyles, Divider, makeStyles} from '@material-ui/core';
+import {Button, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Link} from "react-router-dom";
 import React from 'react';
-import {CreateNote} from './toolbar/CreateNote';
-import {SearchForNote} from "./toolbar/SearchForNote";
-import {NotesRepoButton} from './toolbar/NotesRepoButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
 import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
+import {MUIMenu} from '../mui/menu/MUIMenu';
+import {MUIMenuItem} from '../mui/menu/MUIMenuItem';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import BorderAllIcon from '@material-ui/icons/BorderAll';
+import {useHistory} from "react-router";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
+import {NameContent} from "./content/NameContent";
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {DeviceRouters} from '../ui/DeviceRouter';
 
-const useStyles = makeStyles(() =>
+export const useCreateNoteDialog = () => {
+    const dialogs = useDialogManager();
+    const history = useHistory();
+    const blocksStore = useBlocksStore();
+
+    return React.useCallback(() => {
+        dialogs.prompt({
+            title: "Create new named note",
+            autoFocus: true,
+            onCancel: NULL_FUNCTION,
+            onDone: (text) => {
+                const content = new NameContent({
+                    type: 'name',
+                    data: text,
+                    links: [],
+                });
+                const id = blocksStore.createNewNamedBlock({ content });
+                history.push(RoutePathNames.NOTE(id));
+            }
+        });
+    }, [dialogs, history, blocksStore]);
+};
+
+
+export const useHandlePurgeDocumentBlocks = () => {
+    const blocksStore = useBlocksStore();
+    const dialogs = useDialogManager();
+
+    return React.useCallback(() => {
+        const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
+        if (documentBlockIDs.length) {
+            blocksStore.deleteBlocks(documentBlockIDs);
+            dialogs.snackbar({
+                message: `Deleting a total of ${documentBlockIDs.length} document blocks!`,
+                type: 'success',
+            });
+        } else {
+            dialogs.snackbar({
+                message: `No document blocks were found!`,
+                type: 'error',
+            });
+        }
+    }, [blocksStore, dialogs]);
+};
+
+const useDesktopStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
@@ -39,33 +94,19 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const NotesToolbar = () => {
-    const classes = useStyles();
-    const blocksStore = useBlocksStore();
-    const dialogs = useDialogManager();
-
-    const handlePurgeDocumentNotes = React.useCallback(() => {
-        const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
-        if (documentBlockIDs.length) {
-            blocksStore.deleteBlocks(documentBlockIDs);
-            dialogs.snackbar({
-                message: `Deleting a total of ${documentBlockIDs.length} document blocks!`,
-                type: 'success',
-            });
-        } else {
-            dialogs.snackbar({
-                message: `No document blocks were found!`,
-                type: 'error',
-            });
-        }
-    }, [blocksStore, dialogs]);
+const DesktopNotesToolbar = () => {
+    const classes = useDesktopStyles();
+    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
+    const handleCreateNote = useCreateNoteDialog();
 
     return (
         <>
             <div className={classes.root}>
                 <div className={classes.left}>
                     <SidenavTriggerIconButton />
-                    <NotesRepoButton />
+                    <Link style={{ textDecoration: 'none' }} to={RoutePathNames.NOTES_REPO}>
+                        <Button variant="outlined" disableElevation>All Notes</Button>
+                    </Link>
                     {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
                         <Button
                             variant="outlined"
@@ -79,9 +120,86 @@ export const NotesToolbar = () => {
                     )}
                 </div>
                 <div className={classes.mid}><SearchForNote /></div>
-                <div className={classes.right}><CreateNote /></div>
+                <div className={classes.right}>
+                    <Button color="primary"
+                            style={{ height: 38 }}
+                            variant="contained"
+                            disableElevation
+                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
+                            onClick={handleCreateNote}
+                            size="medium">
+                        New
+                    </Button>
+                </div>
+            </div>
+            <div className={classes.divider}><Divider /></div>
+        </>
+    );
+};
+
+const useHandHeldStyles = makeStyles(() =>
+    createStyles({
+        root: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flex: '0 0 55px',
+            height: 55,
+            padding: '0 14px',
+        },
+        divider: {
+            padding: '0 14px',
+        },
+    }),
+);
+
+const HandheldNotesToolbar = () => {
+    const classes = useHandHeldStyles();
+    const createNoteDialog = useCreateNoteDialog();
+    const history = useHistory();
+
+    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
+
+    const handleAllNotesNavigation = React.useCallback(() =>
+        history.push(RoutePathNames.NOTES_REPO), [history]);
+
+    return (
+        <>
+            <div className={classes.root}>
+                <div>
+                    <SidenavTriggerIconButton />
+                    <Tooltip title="All Notes">
+                        <IconButton size="small" onClick={handleAllNotesNavigation}>
+                            <BorderAllIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+                <div>
+                    <SearchForNoteHandheld />
+                    <MUIMenu button={{ icon: <MoreVertIcon/>, size: 'small' }}>
+                        <div>
+                            <MUIMenuItem text="Create Note"
+                                         icon={<AddCircleOutlineIcon />}
+                                         onClick={createNoteDialog} />
+                            {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
+                                <MUIMenuItem text="Purge Document Blocks"
+                                             icon={<DeleteIcon />}
+                                             onClick={handlePurgeDocumentNotes} />
+                            )}
+                        </div>
+                    </MUIMenu>
+                </div>
             </div>
             <div className={classes.divider}><Divider /></div>
         </>
     )
+};
+
+export const NotesToolbar = () => {
+    return (
+        <>
+            <DeviceRouters.Handheld><HandheldNotesToolbar /></DeviceRouters.Handheld>
+            <DeviceRouters.Desktop><DesktopNotesToolbar /></DeviceRouters.Desktop>
+        </>
+    );
 };

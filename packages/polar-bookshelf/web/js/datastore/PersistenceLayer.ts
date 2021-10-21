@@ -1,9 +1,8 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {
-    BackendFileRefData,
     BinaryFileData,
     Datastore,
-    DatastoreCapabilities, DatastoreConsistency,
+    DatastoreCapabilities,
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
@@ -12,20 +11,18 @@ import {
     DocMetaSnapshotOpts,
     DocMetaSnapshotResult,
     ErrorListener,
-    GroupIDStr,
     SnapshotResult,
-    WriteFileOpts, WriteFileProgressListener, WriteOptsBase
+    WriteFileOpts,
+    WriteOptsBase
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {DatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
-import {UserTagsDB} from "./UserTagsDB";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export interface PersistenceLayer {

@@ -1,4 +1,4 @@
-import {HandleStyles, ResizeEnable, Rnd, ResizableDelta} from "react-rnd";
+import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
 import {ResizeDirection} from "re-resizable";
 import * as React from "react";
 import {useState} from "react";
@@ -7,7 +7,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
-import {IPoint} from "../../../../web/js/Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {IXYRect} from "polar-shared/src/util/rects/IXYRect";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 

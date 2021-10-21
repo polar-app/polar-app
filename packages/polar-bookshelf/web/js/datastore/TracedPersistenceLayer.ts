@@ -7,7 +7,9 @@ import {
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
-    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
     WriteFileOpts
@@ -21,7 +23,6 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {UserTagsDB} from "./UserTagsDB";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');

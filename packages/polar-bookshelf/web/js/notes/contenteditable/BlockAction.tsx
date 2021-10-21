@@ -3,7 +3,6 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
-import INodeOffset = ContentEditables.INodeOffset;
 import {useBlockContentEditableElement} from "./BlockContentEditable";
 import {observer} from "mobx-react-lite"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -12,6 +11,7 @@ import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
 import {TAG_IDENTIFIER} from '../content/HasLinks';
+import INodeOffset = ContentEditables.INodeOffset;
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -116,12 +116,10 @@ function useActionExecutor(id: BlockIDStr) {
                     ? actionOp.target.slice(1)
                     : actionOp.target;
                 a.setAttribute('contenteditable', 'false');
+                a.classList.add(type === 'tag' ? 'note-tag' : 'note-link');
                 a.setAttribute('href', '#' + trimmedTarget);
-                a.appendChild(document.createTextNode(actionOp.target.trim()));
+                a.appendChild(document.createTextNode(actionOp.target));
 
-                if (type === 'tag') {
-                    a.classList.add('note-tag');
-                }
 
                 coveringRange.insertNode(a);
             };
@@ -211,7 +209,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
         const text = activePromptRef.current?.actionInput.textContent || '';
 
         return computeActionInputTextRef.current(text);
-    }, []);
+    }, [computeActionInputTextRef]);
 
     const clearActivePrompt = React.useCallback((noRange?: boolean) => {
 
@@ -276,8 +274,10 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
-        return inputRange.isPointInRange(range.startContainer, range.startOffset + delta) &&
-               inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
+        const actualDelta = range.collapsed ? delta : 0;
+
+        return inputRange.isPointInRange(range.startContainer, range.startOffset + actualDelta) &&
+               inputRange.isPointInRange(range.endContainer, range.endOffset + actualDelta);
 
     }, [divRef, wrapStart, wrapEnd]);
 
@@ -347,7 +347,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         doReset();
 
-    }, [actionExecutor, handleComputeActionInputText, createActionRangeForHandler, doReset]);
+    }, [handleComputeActionInputText, createActionRangeForHandler, onAction, actionExecutor, doReset]);
 
     const doCompleteOrReset = React.useCallback(() => {
 
@@ -449,7 +449,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
         throw new Error("No selection");
 
-    }, [theme.palette.text.hint, trigger, wrapStart]);
+    }, [theme.palette.text.hint, trigger.length, wrapEnd, wrapStart]);
 
     const computePosition = React.useCallback(() => {
 
@@ -649,7 +649,7 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
         return () => {
             elem.removeEventListener('input', handleInput);
         };
-    }, [computeItemsRef, disabled]);
+    }, [actionStore, captureInitialMarkdownContent, computeItemsRef, computePosition, createActionHandler, createActivePrompt, disabled, divRef, handleComputeActionInputText, trigger]);
 
     const handleClick = React.useCallback(() => {
 

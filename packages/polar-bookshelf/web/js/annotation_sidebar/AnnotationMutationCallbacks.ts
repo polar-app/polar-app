@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-    Callback,
-    Callback1,
-} from "polar-shared/src/util/Functions";
+import {Callback, Callback1,} from "polar-shared/src/util/Functions";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
@@ -15,37 +12,34 @@ import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/Tagge
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
-import {
-    AreaHighlights,
-    AreaHighlightWriteOpts
-} from "../metadata/AreaHighlights";
+import {AreaHighlights, AreaHighlightWriteOpts} from "../metadata/AreaHighlights";
 import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
-import {
-    IAnnotationRef,
-    IAnnotationRefWithDocMeta
-} from "polar-shared/src/metadata/AnnotationRefs";
+import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../mui/MUILogger";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {DocMetas} from "../metadata/DocMetas";
-
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {
+    DocAnnotationsMutator,
+    IAnnotationMutationCallbacks,
+    IAnnotationMutationHolder,
+    IAnnotationMutationHolderWithDocMeta,
+    IAnnotationMutationSelected,
+    IAnnotationMutationSelectedWithDocMeta,
+    IAreaHighlightMutation,
+    IColorMutation,
+    ICommentMutation,
+    IDeleteMutation,
+    IDeleteMutationWithDocMeta,
+    IFlashcardMutation,
+    ITaggedMutation,
+    ITextHighlightMutation
+} from "./AnnotationMutationsContext";
+import {Analytics} from "../analytics/Analytics";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
-import {
-    IAnnotationMutationCallbacks,
-    IAnnotationMutationSelectedWithDocMeta,
-    IAnnotationMutationSelected,
-    IAnnotationMutationHolderWithDocMeta,
-    IAnnotationMutationHolder,
-    ITaggedMutation,
-    IDeleteMutation,
-    IDeleteMutationWithDocMeta,
-    DocAnnotationsMutator,
-    IAreaHighlightMutation, ITextHighlightMutation, ICommentMutation, IFlashcardMutation, IColorMutation
-} from "./AnnotationMutationsContext";
-import {Analytics} from "../analytics/Analytics";
 
 /**
  * @param updateStore: Update the store directly.

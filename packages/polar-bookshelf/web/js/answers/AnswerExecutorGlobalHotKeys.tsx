@@ -3,10 +3,21 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, Button, Card, CardActions, CardContent, CardHeader, DialogContent, LinearProgress, TextField,
-    Tooltip, Typography, useTheme} from "@material-ui/core";
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    DialogContent,
+    LinearProgress,
+    TextField,
+    Tooltip,
+    Typography,
+    useTheme
+} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
-import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureToggleEnabled} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {
     IAnswerExecutorError,
@@ -74,7 +85,7 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
         const pdfRecord = props.doc.record as IAnswerDigestRecordPDF;
         docLoader(pdfRecord.docID, pdfRecord.pageNum);
 
-    }, [docLoader])
+    }, [docLoader, props])
 
     return (
         <Box mb={1} mr={1}>
@@ -180,15 +191,15 @@ const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
         setVoted(true);
 
-    }, [answerExecutorTraceUpdateClient, analytics]);
+    }, [answerExecutorTraceUpdateClient, props.id, analytics]);
 
     const handleDone = React.useCallback(() => {
         setVoted(true);
-    }, [doVote]);
+    }, []);
 
     const handleError = React.useCallback((err: Error) => {
         console.error("Unable to handle vote: ", err);
-    }, [doVote]);
+    }, []);
 
     return (
         <Box color="text.secondary"
@@ -356,7 +367,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
         }
 
 
-    }, [analytics]);
+    }, [analytics, dialogManager, methodName, toEvent]);
 
 }
 
@@ -445,11 +456,11 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
         doExec()
             .catch(err => console.error("Unable to answer question: " + question, err));
 
-    }, [executeWithoutDocuments])
+    }, [answerExecutorClient])
 
     const executeQuestion = React.useCallback(() => {
         executeRequest(questionRef.current)
-    }, []);
+    }, [executeRequest]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -457,7 +468,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             executeQuestion();
         }
 
-    }, [executeRequest, executeQuestion])
+    }, [executeQuestion])
 
     return (
         <MUIDialog open={true}
@@ -517,19 +528,6 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
                 </div>
 
-
-
-                {/*<FormControlLabel*/}
-                {/*    control={*/}
-                {/*        <Checkbox*/}
-                {/*            checked={executeWithoutDocuments}*/}
-                {/*            onChange={(event, checked) => setExecuteWithoutDocuments(checked)}*/}
-                {/*            name="executeWithoutDocuments"*/}
-                {/*        />*/}
-                {/*    }*/}
-                {/*    label="Execute without documents"*/}
-                {/*/>*/}
-
                 {answerResponse && (
                     <>
 
@@ -556,7 +554,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
     };
 
     return (
-        <FeatureToggle featureName='answers'>
+        <FeatureToggleEnabled featureName='answers'>
             <>
                 {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
 
@@ -564,7 +562,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
                     keyMap={globalKeyMap}
                     handlerMap={globalKeyHandlers}/>
             </>
-        </FeatureToggle>
+        </FeatureToggleEnabled>
     );
 
 });

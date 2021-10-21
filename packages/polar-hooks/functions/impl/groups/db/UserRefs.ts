@@ -1,4 +1,3 @@
-import {UserRecord} from 'firebase-functions/lib/providers/auth';
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {ProfileOwner, ProfileOwners} from './ProfileOwners';
 import {Preconditions} from 'polar-shared/src/Preconditions';
@@ -7,6 +6,7 @@ import {Invitations, UserRefInvitations} from '../GroupInvites';
 import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {IUserRecord} from "polar-rpc/src/IDUser";
 
 /**
  * Takes a reference to a user (either a profileID or an email address)
@@ -28,7 +28,7 @@ export class UserProfiles {
 
     }
 
-    public static async fromUser(user: UserRecord): Promise<UserProfile> {
+    public static async fromUser(user: IUserRecord): Promise<UserProfile> {
 
         const firestore = FirestoreAdmin.getInstance();
 
@@ -84,7 +84,13 @@ export class UserProfiles {
         const getUser = AsyncProviders.memoize(async () => {
 
             try {
-                return await auth.getUserByEmail(email);
+                const user = await auth.getUserByEmail(email);
+
+                return {
+                    uid: user.uid,
+                    email: user.email!
+                }
+
             } catch (e) {
                 console.warn("Unable to find user: ", e);
                 return undefined;
@@ -146,8 +152,23 @@ export class UserProfiles {
         const auth = app.auth();
 
         const getUser = AsyncProviders.memoize(async () => {
-            const profileOwner = await getProfileOwner();
-            return await auth.getUser(profileOwner!.uid);
+
+            try {
+
+                const profileOwner = await getProfileOwner();
+
+                const user = await auth.getUserByEmail(profileOwner!.uid);
+
+                return {
+                    uid: user.uid,
+                    email: user.email!
+                }
+
+            } catch (e) {
+                console.warn("Unable to find user: ", e);
+                return undefined;
+            }
+
         });
 
         const getUserID = async () => {
@@ -190,7 +211,7 @@ export interface UserProfile {
     /**
      * Get the users UserRecord.
      */
-    getUser(): Promise<UserRecord | undefined>;
+    getUser(): Promise<IUserRecord | undefined>;
 
     getUserID(): Promise<ProfileIDStr | undefined>;
 
@@ -229,6 +250,7 @@ export class UserRefs {
      */
     public static toEmailAddrs(userRefs: ReadonlyArray<UserRef>): Promise<ReadonlyArray<EmailStr>> {
 
+        // eslint-disable-next-line array-callback-return
         const promises = userRefs.map(current => {
 
             switch (current.type) {

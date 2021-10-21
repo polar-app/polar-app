@@ -1,5 +1,5 @@
 import React from "react";
-import {IPoint} from '../../../../web/js/Point';
+import {IPoint} from 'polar-shared/src/util/Point';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ControlledAnnotationBars} from '../../../../web/js/ui/annotationbar/ControlledAnnotationBars';
 import {Elements} from '../../../../web/js/util/Elements';

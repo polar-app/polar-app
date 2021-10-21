@@ -1,19 +1,9 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
-import {
-    MinimalDocMetaMutation,
-    MutationType,
-    SnapshotProgress
-} from '../../../web/js/datastore/Datastore';
+import {MinimalDocMetaMutation, MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
-import {
-    PersistenceLayer,
-    PersistenceLayerProvider
-} from '../../../web/js/datastore/PersistenceLayer';
-import {
-    IEventDispatcher,
-    SimpleReactor
-} from '../../../web/js/reactor/SimpleReactor';
+import {PersistenceLayer, PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
+import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {ProgressTrackerIndex} from 'polar-shared/src/util/ProgressTrackerIndex';
 import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
@@ -22,10 +12,7 @@ import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/Determinat
 import {IndeterminateProgressBars} from '../../../web/js/ui/progress_bar/IndeterminateProgressBars';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
-import {
-    Progress,
-    ProgressTrackers
-} from "polar-shared/src/util/ProgressTracker";
+import {Progress, ProgressTrackers} from "polar-shared/src/util/ProgressTracker";
 
 const log = Logger.create();
 

@@ -3,7 +3,7 @@ import {AnnotationTypes} from "../../../../../../web/js/metadata/AnnotationTypes
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {TextHighlights} from "../../../../../../web/js/metadata/TextHighlights";
+import {TextHighlights} from "polar-shared/src/metadata/TextHighlights";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
 
 /**

@@ -2,7 +2,7 @@ import React from 'react';
 import {MUIDialog} from "../dialogs/MUIDialog";
 import {AccountControl} from "./AccountControl";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 export const AccountDialogScreen = () => {
 

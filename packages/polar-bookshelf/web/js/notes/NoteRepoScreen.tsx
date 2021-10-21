@@ -1,21 +1,20 @@
 import React from "react";
 import moment from "moment";
-import {GridCellParams, GridColDef, GridRowParams, XGrid} from '@material-ui/x-grid';
+import {GridCellParams, GridColDef, GridRowParams, MuiEvent, XGrid} from '@material-ui/x-grid';
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
-import {NotesInnerContainer} from "./NotesContainer";
-import {autorun} from "mobx";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {createStyles, fade, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
-import {BlockTextContentUtils} from "./NoteUtils";
+import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {NotesToolbar} from "./NotesToolbar";
+import {Devices} from "polar-shared/src/util/Devices";
+import {useNoteLinkLoader} from "./NoteLinkLoader";
 
 const DATE_FORMAT = 'MMMM Do, YYYY';
 
@@ -89,18 +88,22 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
         headerName: 'Title',
         flex: 2,
     },
-    {
-        field: 'created',
-        headerName: 'Added',
-        flex: 1,
-        valueFormatter: dateCellFormatter,
-    },
-    {
-        field: 'updated',
-        headerName: 'Updated',
-        flex: 1,
-        valueFormatter: dateCellFormatter,
-    },
+    ...(Devices.isDesktop()
+        ? [
+            {
+                field: 'created',
+                headerName: 'Added',
+                flex: 1,
+                valueFormatter: dateCellFormatter,
+            },
+            {
+                field: 'updated',
+                headerName: 'Updated',
+                flex: 1,
+                valueFormatter: dateCellFormatter,
+            },
+        ] : []
+    ),
     {
         field: 'actions',
         headerName: ' ',
@@ -157,42 +160,52 @@ const useStyles = makeStyles((theme) =>
 export const NoteRepoScreen: React.FC = () => {
     const classes = useStyles();
     const blocksStore = useBlocksStore();
-    const history = useHistory();
-    const [rows, setRows] = React.useState<TableRow[]>([]);
+    const namedBlocks = useNamedBlocks({ sort: true });
+    const noteLinkLoader = useNoteLinkLoader();
 
-    React.useEffect(() => autorun(() => {
-        const ids = Object.values(blocksStore.indexByName);
-        const blocks = (blocksStore.idsToBlocks(ids) as Block<NamedContent>[])
-            .map(block => block.toJSON())
+    const rows = React.useMemo(() => (
+        namedBlocks.map(block => block.toJSON())
             .map(({ id, content, created, updated }) => ({
                 title: BlockTextContentUtils.getTextContentMarkdown(content),
                 created: new Date(created),
                 id,
                 updated: new Date(updated),
-            }));
-        setRows(blocks);
-    }), [blocksStore]);
+            }))
+    ), [namedBlocks]);
 
-    const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
+    const loadNote = React.useCallback((id: BlockIDStr) => {
         const block = blocksStore.getBlockByTarget(id as string) as Block<NamedContent>;
-        history.push(RoutePathNames.NOTE(BlockTextContentUtils.getTextContentMarkdown(block.content)));
-    }, [history, blocksStore]);
+        noteLinkLoader(BlockTextContentUtils.getTextContentMarkdown(block.content));
+    }, [blocksStore, noteLinkLoader]);
+
+    const handleDoubleClick = React.useCallback(({ id }: GridRowParams) =>
+        loadNote(id as string), [loadNote]);
+
+    const handleClick = React.useCallback(({ id }: GridRowParams, event: MuiEvent<React.SyntheticEvent>) => {
+        if (Devices.isDesktop()) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        loadNote(id as string);
+    }, [loadNote]);
 
     return (
         <>
             <NotesToolbar />
-            {/*<NotesInnerContainer>*/}
-                <XGrid
-                    hideFooterSelectedRowCount={true}
-                    hideFooterRowCount={true}
-                    hideFooter={true}
-                    className={classes.root}
-                    columns={BLOCK_TABLE_COLUMNS}
-                    rows={rows}
-                    onRowDoubleClick={handleDoubleClick}
-                    checkboxSelection
-                />
-            {/*</NotesInnerContainer>*/}
+            <XGrid
+                hideFooterSelectedRowCount={true}
+                hideFooterRowCount={true}
+                hideFooter={true}
+                className={classes.root}
+                columns={BLOCK_TABLE_COLUMNS}
+                rows={rows}
+                onRowDoubleClick={handleDoubleClick}
+                onRowClick={handleClick}
+                checkboxSelection
+            />
         </>
     );
 };

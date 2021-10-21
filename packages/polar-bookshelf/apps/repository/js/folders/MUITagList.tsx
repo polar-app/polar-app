@@ -2,8 +2,8 @@ import React from 'react';
 import {MUITagListItem} from "./MUITagListItem";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {Tags} from "polar-shared/src/tags/Tags";
-import TagID = Tags.TagID;
 import {SelectRowType} from '../doc_repo/SelectionEvents2';
+import TagID = Tags.TagID;
 
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;

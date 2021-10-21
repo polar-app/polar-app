@@ -3,7 +3,6 @@ import IconButton from "@material-ui/core/IconButton";
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {MUIButtonBar} from "../../../web/js/mui/MUIButtonBar";
-import {StandardIconButton} from "../../repository/js/doc_repo/buttons/StandardIconButton";
 
 
 interface IProps {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import IconButton, { IconButtonTypeMap } from '@material-ui/core/IconButton/IconButton';
+import IconButton from '@material-ui/core/IconButton/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface MUILoadingIconButtonProps {
@@ -24,7 +24,7 @@ export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
             .catch(err => props.onError(err))
             .finally(() => setState('done'))
 
-    }, [])
+    }, [props])
 
     if (props.disabled || state === 'done') {
         return (

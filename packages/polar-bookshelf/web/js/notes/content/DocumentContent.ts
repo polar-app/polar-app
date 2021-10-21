@@ -1,4 +1,4 @@
-import {makeObservable, observable, computed, toJS} from "mobx"
+import {computed, makeObservable, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";

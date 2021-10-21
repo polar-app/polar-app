@@ -5,8 +5,8 @@ import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
 import {usePersistenceLayerContext} from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocMetaFileRefs} from "../../../../../web/js/datastore/DocMetaRef";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import { useDocViewerCallbacks } from '../../DocViewerStore';
-import {DocMetas} from "../../../../../web/js/metadata/DocMetas";
+import {useDocViewerCallbacks} from '../../DocViewerStore';
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
 function usePDFUpgraderForPageInfoDimensions() {
 

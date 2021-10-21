@@ -5,10 +5,15 @@ import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import {useBlocksStore} from '../store/BlocksStore';
+import {NamedContent, useBlocksStore} from '../store/BlocksStore';
+import {MUIDialog} from '../../ui/dialogs/MUIDialog';
+import {ICommand, MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
+import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
+import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Block} from "../store/Block";
+import CloseIcon from '@material-ui/icons/Close';
 
-export const SearchForNote = observer(() => {
-
+export const SearchForNote: React.FC = observer(() => {
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
@@ -26,8 +31,7 @@ export const SearchForNote = observer(() => {
             options={sortedNamedBlocks}
             getOptionLabel={(option) => option}
             inputValue={inputValue}
-            value={''}
-            fullWidth
+            value=""
             blurOnSelect={true}
             onInputChange={(_, nextInputValue) => {
                 setInputValue(nextInputValue);
@@ -54,3 +58,59 @@ export const SearchForNote = observer(() => {
         />
     );
 });
+
+const useSearchForNoteHandheldStyles = makeStyles((theme) =>
+    createStyles({
+        dialog: { fontSize: '1.3rem' },
+        commandMenu: {
+            margin: theme.spacing(1),
+            minHeight: 'min(80vh, 500px)',
+            maxHeight: 'min(80vh, 500px)',
+        },
+        closeButton: {
+            position: 'absolute',
+            top: theme.spacing(1),
+            right: theme.spacing(1),
+        },
+    })
+);
+
+export const SearchForNoteHandheld: React.FC = () => {
+    const classes = useSearchForNoteHandheldStyles();
+    const namedBlocks = useNamedBlocks({ sort: true });
+    const noteLinkLoader = useNoteLinkLoader();
+
+    const commandsProvider = React.useCallback(() => {
+        const toCommand = (block: Readonly<Block<NamedContent>>) => {
+            const text = BlockTextContentUtils.getTextContentMarkdown(block.content);
+            return { text, id: text };
+        };
+        return namedBlocks.map(toCommand);
+    }, [namedBlocks]);
+
+    const [active, setActive] = React.useState(false);
+
+    const handleCommand = React.useCallback((command: ICommand) =>
+        noteLinkLoader(command.id), [noteLinkLoader]);
+
+    return (
+        <>
+            <Tooltip title="Search">
+                <IconButton size="small" onClick={() => setActive(true)}>
+                    <SearchIcon />
+                </IconButton>
+            </Tooltip>
+            <MUIDialog fullWidth open={active} className={classes.dialog}>
+                <IconButton size="small" className={classes.closeButton} onClick={() => setActive(false)}>
+                    <CloseIcon />
+                </IconButton>
+                <MUICommandMenu onCommand={handleCommand}
+                                className={classes.commandMenu}
+                                title="Search for note"
+                                onClose={() => setActive(false)}
+                                commandsProvider={commandsProvider}/>
+
+            </MUIDialog>
+        </>
+    );
+};

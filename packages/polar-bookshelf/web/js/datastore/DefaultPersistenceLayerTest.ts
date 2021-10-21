@@ -1,9 +1,8 @@
 import {assert} from 'chai';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import uuid from 'uuid';
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 
 describe('DefaultPersistenceLayer', function() {

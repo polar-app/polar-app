@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
 
 interface IDragContext {

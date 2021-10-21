@@ -1,5 +1,5 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocInfo} from '../../../web/js/metadata/DocInfo';
+import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
@@ -15,7 +15,7 @@ import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
 import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
-import { IDocMeta } from 'polar-shared/src/metadata/IDocMeta';
+import {IDocMeta} from 'polar-shared/src/metadata/IDocMeta';
 import {DocViewerSnapshots} from "../../doc/src/DocViewerSnapshots";
 
 const log = Logger.create();

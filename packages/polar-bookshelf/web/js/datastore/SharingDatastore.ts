@@ -1,34 +1,34 @@
-import {AbstractDatastore, Datastore, DatastoreID} from './Datastore';
-import {WritableBinaryMetaDatastore} from './Datastore';
-import {DocMetaSnapshotEventListener} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {ErrorListener} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {SnapshotResult} from './Datastore';
-import {InitResult} from './Datastore';
-import {DeleteResult} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {WriteOpts} from './Datastore';
+import {
+    AbstractDatastore,
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreID,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    InitResult,
+    SnapshotResult,
+    WritableBinaryMetaDatastore,
+    WriteFileOpts,
+    WriteOpts
+} from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocMetaRef} from './DocMetaRef';
-import {DocMetaFileRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {
-    GetFileOpts,
-    NetworkLayers
-} from "polar-shared/src/datastore/IDatastore";
-import { FirebaseDocMetaID } from 'polar-shared/src/datastore/FirebaseDatastores';
+import {GetFileOpts, NetworkLayers} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDocMetaID} from 'polar-shared/src/datastore/FirebaseDatastores';
 
 const log = Logger.create();
 

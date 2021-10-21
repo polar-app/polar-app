@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUIElevation, Elevation, useElevationBackground} from "../../../web/js/mui/MUIElevation";
+import {Elevation, MUIElevation, useElevationBackground} from "../../../web/js/mui/MUIElevation";
 
 interface ElevationExampleProps {
     readonly elevation: Elevation;

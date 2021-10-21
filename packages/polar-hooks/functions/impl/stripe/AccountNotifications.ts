@@ -1,19 +1,19 @@
 import {Billing} from "polar-accounts/src/Billing";
-import {Sendgrid} from "../Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IPersona, Personas} from "../personas/Personas";
-import {UserPersonas} from "../personas/UserPersonas";
-import IUserPersona = UserPersonas.IUserPersona;
+import {UserPersonas} from "polar-shared/src/util/UserPersonas";
 import V2Subscription = Billing.V2Subscription;
 import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
+import IUserPersona = UserPersonas.IUserPersona;
+import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 
 export namespace AccountNotifications {
 
     import V2Subscription = Billing.V2Subscription;
-    import IUserRecord = UserPersonas.IUserRecord;
 
     export async function changePlan(from: V2Subscription,
                                      to: V2Subscription,
-                                     user: IUserRecord) {
+                                     user: Pick<IUserRecord, 'uid' | 'email' | 'displayName'>) {
 
         if (! user.email) {
             console.warn("No user email");

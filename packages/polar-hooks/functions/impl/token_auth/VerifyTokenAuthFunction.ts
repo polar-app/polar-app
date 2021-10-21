@@ -6,7 +6,8 @@ import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {UserRecord} from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {FirebaseUserCreator} from "polar-firebase-admin/src/FirebaseUserCreator";
+import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
+import {isPrivateBetaEnabled} from "polar-private-beta/src/isPrivateBetaEnabled";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -14,7 +15,7 @@ export interface IVerifyTokenAuthRequest {
 }
 
 export interface IVerifyTokenAuthResponseError {
-    readonly code: 'no-email-for-challenge' | 'invalid-challenge' ;
+    readonly code: 'no-email-for-challenge' | 'invalid-challenge' | 'registrations-disabled';
 }
 
 export interface IVerifyTokenAuthResponse {
@@ -42,7 +43,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
         return;
     }
 
-    if (! isPresent(req.body)) {
+    if (!isPresent(req.body)) {
         ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
         return;
     }
@@ -64,12 +65,12 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
         ExpressFunctions.sendResponse(res, response, 500);
     }
 
-    if (! authChallenge) {
+    if (!authChallenge) {
         await sendError({code: 'no-email-for-challenge'});
         return;
     }
 
-    if(authChallenge.challenge !== challenge) {
+    if (authChallenge.challenge !== challenge) {
         await sendError({code: 'invalid-challenge'});
         return;
     }
@@ -118,7 +119,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
         const user = await fetchUserByEmail(email);
 
-        if (! user) {
+        if (!user) {
             return await doCreateUser(email);
         }
 
@@ -126,6 +127,15 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
     }
 
+    if (await isPrivateBetaEnabled()) {
+        const authUser = await fetchUserByEmail(email);
+        if (!authUser) {
+            // User not found, attempt to self-register fails here because Private Beta is enabled
+            await sendError({code: 'registrations-disabled'});
+        }
+    }
+
+    // Private beta is not enabled. Proceed with normal "login || auto-register" flow
     const authUser = await getOrCreateUser();
 
     const customToken = await auth.createCustomToken(authUser.user.uid);

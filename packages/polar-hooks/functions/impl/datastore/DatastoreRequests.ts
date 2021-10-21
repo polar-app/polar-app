@@ -4,6 +4,7 @@ export class DatastoreRequests {
 
     public static parse<T>(link: string): T {
 
+        // eslint-disable-next-line node/no-deprecated-api
         const parsedURL = url.parse(link, true);
 
         if  (! parsedURL.query) {

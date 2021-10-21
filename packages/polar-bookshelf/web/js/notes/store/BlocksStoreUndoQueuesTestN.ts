@@ -7,9 +7,7 @@ import {assertBlockType, JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";
-import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {assert} from "chai";
@@ -18,6 +16,8 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {JSDOM} from "jsdom";
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -356,7 +356,7 @@ describe("BlocksStoreUndoQueues", () => {
             Asserts.assertPresent(updatedBlock);
 
             const updatedTime = ISODateTimeStrings.create((new Date(block.updated).getTime()) + 1000);
-            
+
             assert.equal(updatedBlock.updated, updatedTime);
         });
 
@@ -365,7 +365,7 @@ describe("BlocksStoreUndoQueues", () => {
             // Set up
             const blocksStore = createStore();
             const documentBlockID = '2020document';
-             
+
             const content = new TextHighlightAnnotationContent({
                 type: AnnotationContentType.TEXT_HIGHLIGHT,
                 links: [],
@@ -380,7 +380,7 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const { id: blockID } = blocksStore.createNewBlock(documentBlockID, { content });
-            const block = blocksStore.getBlock(blockID); 
+            const block = blocksStore.getBlock(blockID);
 
             Asserts.assertPresent(block);
             const blockJSON = block.toJSON();
@@ -418,7 +418,7 @@ describe("BlocksStoreUndoQueues", () => {
             const documentBlockID = '2020document';
             const randomBlock = blocksStore.getBlock('102');
             Asserts.assertPresent(randomBlock);
-             
+
             const content = new AreaHighlightAnnotationContent({
                 type: AnnotationContentType.AREA_HIGHLIGHT,
                 links: [],
@@ -431,7 +431,7 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const { id: blockID } = blocksStore.createNewBlock(documentBlockID, { content });
-            const block = blocksStore.getBlock(blockID); 
+            const block = blocksStore.getBlock(blockID);
 
             Asserts.assertPresent(block);
             const blockJSON = block.toJSON();

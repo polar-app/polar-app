@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {
-    ColorSelectorBox,
-    ColorStr
-} from "../../../../../../../web/js/ui/colors/ColorSelectorBox";
+import {ColorStr} from "../../../../../../../web/js/ui/colors/ColorSelectorBox";
 import PaletteIcon from '@material-ui/icons/Palette';
 import {MUIPopper, usePopperController} from "../../../../../../../web/js/mui/menu/MUIPopper";
 import {ResetableColorSelectorBox} from "../../../../../../../web/js/ui/colors/ResetableColorSelectorBox";

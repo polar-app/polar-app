@@ -1,5 +1,3 @@
-import {Fingerprints} from './Fingerprints';
-
 import {assert} from 'chai';
 import {FixedBuffer} from './FixedBuffer';
 

@@ -2,25 +2,24 @@ import {
     AbstractDatastore,
     BinaryFileData,
     Datastore,
+    DatastoreCapabilities,
     DatastoreID,
     DatastoreOverview,
+    DeleteResult,
     DocMetaSnapshotEventListener,
-    DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     InitResult,
-    PrefsProvider,
-    SnapshotResult
+    SnapshotResult,
+    WriteFileOpts,
+    WriteOpts
 } from './Datastore';
-import {DeleteResult} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {WriteOpts} from './Datastore';
 import {DatastoreMutation} from './DatastoreMutation';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";

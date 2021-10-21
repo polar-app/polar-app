@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import { GlobalHotKeyCompleteListener } from '../complete_listeners/GlobalHotKeyCompleteListener';
+import {GlobalHotKeyCompleteListener} from '../complete_listeners/GlobalHotKeyCompleteListener';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

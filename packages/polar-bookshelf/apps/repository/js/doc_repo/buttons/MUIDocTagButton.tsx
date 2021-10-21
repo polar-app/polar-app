@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonProps } from "./StandardToggleButton";
+import {ButtonProps} from "./StandardToggleButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {StandardIconButton} from "./StandardIconButton";
 

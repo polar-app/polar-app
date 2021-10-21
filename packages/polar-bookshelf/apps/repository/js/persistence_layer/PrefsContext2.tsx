@@ -1,6 +1,4 @@
-import {
-    createCachedSnapshotSubscriberContext,
-} from "../../../../web/js/snapshots/CachedSnapshotSubscriberContext";
+import {createCachedSnapshotSubscriberContext,} from "../../../../web/js/snapshots/CachedSnapshotSubscriberContext";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -60,9 +58,9 @@ interface IFeatureToggleProps {
 }
 
 /**
- * Only render the child component if a feature toggle is enabled.
+ * Only render the child component if a feature toggle is ENABLED.
  */
-export const FeatureToggle = React.memo((props: IFeatureToggleProps) => {
+export const FeatureToggleEnabled = React.memo((props: IFeatureToggleProps) => {
 
     const toggled = useFeatureToggle(props.featureName);
 
@@ -74,6 +72,20 @@ export const FeatureToggle = React.memo((props: IFeatureToggleProps) => {
 
 });
 
+/**
+ * Only render the child component if a feature toggle is DISABLED.
+ */
+export const FeatureToggleDisabled = React.memo((props: IFeatureToggleProps) => {
+
+    const toggled = useFeatureToggle(props.featureName);
+
+    if (!toggled) {
+        return props.children;
+    }
+
+    return null;
+
+});
 
 export const PrefsContext2 = React.memo((props: IProps) => {
 

@@ -11,14 +11,8 @@ import {
     useRepoDocMetaLoader,
     useRepoDocMetaManager
 } from "../persistence_layer/PersistenceLayerApp";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../../../../web/js/hooks/ReactLifecycleHooks";
-import {
-    TagSidebarEventForwarder,
-    TagSidebarEventForwarderContext
-} from "../store/TagSidebarEventForwarder";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {TagSidebarEventForwarder, TagSidebarEventForwarderContext} from "../store/TagSidebarEventForwarder";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -30,10 +24,7 @@ import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController"
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import {
-    Exporters,
-    ExportFormat
-} from "../../../../web/js/metadata/exporter/Exporters";
+import {Exporters, ExportFormat} from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {
     AnnotationMutationsContextProvider,
@@ -52,10 +43,8 @@ import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFile
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
-import {
-    useAnnotationMutationCallbacksFactory
-} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
-import { AnnotationType } from "polar-shared/src/metadata/AnnotationType";
+import {useAnnotationMutationCallbacksFactory} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from "polar-shared/src/metadata/IComment";

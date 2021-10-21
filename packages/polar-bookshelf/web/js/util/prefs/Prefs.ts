@@ -1,18 +1,9 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {
-    PersistentPrefsUpdatedCallback,
-    PrefsProvider
-} from "../../datastore/Datastore";
-import {
-    OnErrorCallback,
-    SnapshotUnsubscriber
-} from "polar-shared/src/util/Snapshots";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {PersistentPrefsUpdatedCallback, PrefsProvider} from "../../datastore/Datastore";
+import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export abstract class Prefs {
 

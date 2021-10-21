@@ -7,10 +7,7 @@ import {
     KeyboardShortcutEventHandler,
     useKeyboardShortcutsCallbacks
 } from "./KeyboardShortcutsStore";
-import {
-    useComponentDidMount,
-    useComponentWillUnmount
-} from "../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 export type KeyMap = {[key: string]: IKeyboardShortcut};
 export type HandlerMap = {[key: string]: KeyboardShortcutEventHandler | null};

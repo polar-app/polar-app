@@ -13,13 +13,12 @@ import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {AutoBlur} from "./AutoBlur";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
-import { LinearProgress } from "@material-ui/core";
-import { Devices } from "polar-shared/src/util/Devices";
+import {LinearProgress} from "@material-ui/core";
+import {Devices} from "polar-shared/src/util/Devices";
 import {useDocRepoColumns} from "./DocRepoTableHead";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -126,9 +125,6 @@ export const TableCellTags = React.memo(function TableCellTags(props: TableCellT
                    onClick={event => props.selectRow(props.viewID, event, 'click')}
                    onContextMenu={props.contextMenuHandler}>
 
-            {/*TODO: this sorting and mapping might be better done */}
-            {/*at the RepoDocInfo level so it's done once not per*/}
-            {/*display render.*/}
             {arrayStream(Tags.onlyRegular(Object.values(props.tags || {})))
                 .sort((a, b) => a.label.localeCompare(b.label))
                 .map(current => current.label)
@@ -168,7 +164,7 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
             callbacks.onOpen();
         }
 
-    }, [row.id, selectRow]);
+    }, [callbacks, row.id, selectRow]);
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
     const columns = useDocRepoColumns();

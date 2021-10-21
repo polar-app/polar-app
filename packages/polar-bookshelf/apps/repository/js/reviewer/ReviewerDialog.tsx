@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useState} from "react";
 import isEqual from "react-fast-compare";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,8 +11,7 @@ import {TransitionProps} from "@material-ui/core/transitions";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
-import {useState} from "react";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {useReviewerCallbacks} from "./ReviewerStore";
 
 const useStyles = makeStyles((theme) => ({

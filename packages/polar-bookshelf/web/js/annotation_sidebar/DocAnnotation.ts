@@ -1,5 +1,5 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Point} from '../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {IRef, Ref, Refs} from 'polar-shared/src/metadata/Refs';
@@ -12,10 +12,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {
-    AnnotationOrder,
-    HighlightColor
-} from "polar-shared/src/metadata/IBaseHighlight";
+import {AnnotationOrder, HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";

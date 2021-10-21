@@ -1,12 +1,16 @@
 import React from "react";
-import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles, Box} from "@material-ui/core";
+import {Box, ClickAwayListener, createStyles, debounce, Grow, makeStyles, Popper} from "@material-ui/core";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
 import {useHistory} from "react-router";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContent, AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../../content/AnnotationContent";
+import {
+    AnnotationContent,
+    AreaHighlightAnnotationContent,
+    TextHighlightAnnotationContent
+} from "../../content/AnnotationContent";
 import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -67,7 +71,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
                 onMouseLeave={handleHide}
                 onClick={handleShow}
             >
-                
+
                 <div className={classes.contentWrapper}>
                     {children}
                 </div>
@@ -204,7 +208,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     const handleDelete = React.useCallback(() => {
         blocksTreeStore.deleteBlocks([id]);
     }, [blocksTreeStore, id]);
-    
+
     const handleOpen = React.useCallback(() => {
         const ptr = AnnotationPtrs.create({
             target: id,
@@ -212,7 +216,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
             docID: annotation.docID,
         });
         history.push(AnnotationLinks.createRelativeURL(ptr));
-    }, [annotation, history]);
+    }, [annotation.docID, annotation.pageNum, history, id]);
 
     const handleColorChange = React.useCallback((color: ColorStr) => {
         const block = getBlock(id, annotation.type);
@@ -249,7 +253,7 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
 
     const editTags = React.useCallback(() => {
         blockTagEditorDialog([id]);
-    }, [blockTagEditorDialog]);
+    }, [blockTagEditorDialog, id]);
 
     return React.useMemo(() => {
         const actionMap: ISharedActionMap = {

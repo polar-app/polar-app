@@ -1,6 +1,6 @@
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import userflow from 'userflow.js'
-import { AppRuntime } from "polar-shared/src/util/AppRuntime";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 if (! AppRuntime.isNode()) {

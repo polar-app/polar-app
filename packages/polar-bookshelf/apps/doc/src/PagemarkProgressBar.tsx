@@ -1,17 +1,14 @@
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import * as React from "react";
-import { LinearProgress, useTheme } from "@material-ui/core";
+import {LinearProgress, useTheme} from "@material-ui/core";
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {useDocViewerStore} from "./DocViewerStore";
 import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume";
-import {
-    createContextMenu,
-    useContextMenu
-} from "../../repository/js/doc_repo/MUIContextMenu";
+import {createContextMenu, useContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
-import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {ZenModeActiveContainer} from "../../../web/js/mui/ZenModeActiveContainer";
+import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 
 export const ProgressBar = deepMemo(function ProgressBar() {
 

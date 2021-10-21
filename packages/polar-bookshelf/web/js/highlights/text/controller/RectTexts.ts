@@ -1,4 +1,4 @@
-import {Rect} from '../../../Rect';
+import {Rect} from 'polar-shared/src/util/Rect';
 import {RectText} from './RectText';
 import {TextNodes} from '../selection/TextNodes';
 

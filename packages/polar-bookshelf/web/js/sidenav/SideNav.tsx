@@ -29,8 +29,8 @@ import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
-import {DeviceRouter, DeviceRouters} from '../ui/DeviceRouter';
-import {FeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
+import {DeviceRouter} from '../ui/DeviceRouter';
+import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -189,7 +189,7 @@ const AccountButton = React.memo(function AccountButton() {
     return (
         <SideNavHistoryButton title="Account"
                               path={RoutePathNames.ACCOUNT}>
-            <AccountAvatar className={classes.secondaryIcon}/>
+            <AccountAvatar className={classes.secondaryIcon} size='small'/>
         </SideNavHistoryButton>
     )
 });
@@ -325,9 +325,9 @@ export const SideNav = React.memo(function SideNav() {
                                 <HomeButton/>
                                 <AnnotationsButton/>
 
-                                <FeatureToggle featureName="notes-enabled">
+                                <FeatureToggleEnabled featureName="notes-enabled">
                                     <NotesButton/>
-                                </FeatureToggle>
+                                </FeatureToggleEnabled>
 
                                 <DeviceRouter desktop={<StatsButton/>} />
 

@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {
-    Task,
-    TaskRep
-} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {FlashcardTaskAction} from "../../repository/js/reviewer/cards/FlashcardTaskAction";
-import {MockDocMetas} from "../../../web/js/metadata/DocMetas";
 import {Flashcards} from "../../../web/js/metadata/Flashcards";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {FlashcardTaskActions} from "../../repository/js/reviewer/cards/FlashcardTaskActions";
@@ -17,6 +13,7 @@ import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 //
 // const createFlashcardTaskReps = async () => {
 //

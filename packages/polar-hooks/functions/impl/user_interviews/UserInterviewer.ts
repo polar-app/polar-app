@@ -9,7 +9,7 @@ import {
     UserInterviewMessages,
     UserMessageType
 } from "./UserInterviewMessages";
-import {Sendgrid} from "../Sendgrid";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import UserRecord = admin.auth.UserRecord;
 
 const NR_MESSAGES_PER_BATCH = 20;

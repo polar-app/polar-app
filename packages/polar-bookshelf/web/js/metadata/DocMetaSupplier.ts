@@ -1,4 +1,3 @@
-import {DocMeta} from './DocMeta';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**

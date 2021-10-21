@@ -1,5 +1,4 @@
-import {Duration} from 'polar-shared/src/util/TimeDurations';
-import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
+import {Duration, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {defaultValue} from 'polar-shared/src/Preconditions';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {AutoFlashcardRequests} from "../api/AutoFlashcardRequests";
-import { useLogger } from '../mui/MUILogger';
-import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
+import {useLogger} from '../mui/MUILogger';
+import {AutoFlashcards} from 'polar-backend-api/src/api/AutoFlashcards';
 import {IFlashcardCreate, useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Refs} from "polar-shared/src/metadata/Refs";

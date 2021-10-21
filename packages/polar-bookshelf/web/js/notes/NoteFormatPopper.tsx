@@ -10,6 +10,7 @@ import {reaction} from 'mobx';
 import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockPredicates} from './store/BlockPredicates';
+import {Selections} from "../highlights/text/selection/Selections";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -146,7 +147,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
         clearPopupTimeout();
 
-        timeoutRef.current = window.setTimeout(() => doPopup(), 350);
+        timeoutRef.current = window.setTimeout(() => doPopup(), 100);
 
     }, [clearPopupTimeout, doPopup]);
 
@@ -197,8 +198,6 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     React.useEffect(() => {
 
-        // FIXME: this just isn't being fired reliably
-
         if (blocksTreeStore.hasSelected()) {
             clearPopup();
         }
@@ -206,6 +205,26 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     }, [clearPopup, selected, blocksTreeStore]);
 
     const noteFormatHandlers = useNoteFormatHandlers(isBlockEditable, props.onUpdated);
+
+    const handleSelectionChange = React.useCallback(() => {
+
+        const selection = window.getSelection();
+
+        if (selection && ! Selections.hasActiveTextSelection(selection)) {
+            clearPopup();
+        }
+
+    }, [clearPopup]);
+
+    React.useEffect(() => {
+
+        document.addEventListener('selectionchange', handleSelectionChange)
+
+        return () => {
+            document.removeEventListener('selectionchange', handleSelectionChange)
+        }
+
+    }, [handleSelectionChange])
 
     const onLink = React.useCallback((url: URLStr) => {
         restore();

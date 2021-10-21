@@ -1,4 +1,4 @@
-import {action, computed, makeObservable, observable} from "mobx"
+import {makeObservable} from "mobx"
 
 xdescribe('MobX', function() {
 

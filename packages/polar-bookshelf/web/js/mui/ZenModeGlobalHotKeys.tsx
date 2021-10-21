@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/GlobalKeyboardShortcuts';
-import { useZenModeCallbacks } from './ZenModeStore';
+import {useZenModeCallbacks} from './ZenModeStore';
 import {useFullScreenToggle} from "../../../apps/doc/src/toolbar/FullScreenButton";
 
 const globalKeyMap = keyMapWithGroup({

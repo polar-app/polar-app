@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {VisibleComponent, ListValue} from "./IntersectionList";
+import {ListValue, VisibleComponent} from "./IntersectionList";
 import {typedMemo} from "../hooks/ReactHooks";
 
 export interface IntersectionListItem<V extends ListValue> {

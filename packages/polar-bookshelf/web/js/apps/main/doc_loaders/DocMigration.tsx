@@ -2,7 +2,6 @@ import React from 'react';
 import {LoadDocRequest} from "./LoadDocRequest";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useLinkLoader} from "../../../ui/util/LinkLoaderHook";
 
 export type DocMigrationHandler = (loadDocRequest: LoadDocRequest) => boolean;

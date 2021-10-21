@@ -2,7 +2,6 @@ import React from 'react';
 import {BlocksPersistenceWriter, FirestoreBlocksStoreMutations} from "./FirestoreBlocksStoreMutations";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase/app';
@@ -23,6 +22,7 @@ import {RepoDocInfoDataObjectIndex} from '../../../../apps/repository/js/RepoDoc
 import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -125,7 +125,7 @@ export namespace DocumentDataUpdater {
         const docMetaCollection = firestore.collection('doc_meta');
         const docInfoCollection = firestore.collection('doc_info');
 
-        for (let { type, block } of documentMutations) {
+        for (const { type, block } of documentMutations) {
             const { fingerprint } = block.content.docInfo;
             const identifier = FirebaseDatastores.computeDocMetaID(fingerprint, block.uid)
             const docMetaDoc = docMetaCollection.doc(identifier);
@@ -259,7 +259,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             mutations
         ).catch(err => console.log("Unable to commit mutations: ", err, mutations));
 
-    }, [firestore, ]);
+    }, [firestore, repoDocMetaManager.repoDocInfoIndex, uid]);
 
 }
 

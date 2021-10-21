@@ -1,30 +1,23 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../../web/js/Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {computePageDimensions} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {Rect} from "../../../../web/js/Rect";
-import {Pagemark} from "../../../../web/js/metadata/Pagemark";
-import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
+import {Rect} from "polar-shared/src/util/Rect";
+import {Pagemark} from "polar-shared/src/metadata/Pagemark";
+import {PagemarkRect} from "polar-shared/src/metadata/PagemarkRect";
 import {Styles} from "../../../../web/js/util/Styles";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
 import isEqual from "react-fast-compare";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
-import {
-    createContextMenu,
-    useContextMenu
-} from "../../../repository/js/doc_repo/MUIContextMenu";
-import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import {
-    IPagemarkCoverage,
-    IPagemarkUpdate,
-    useDocViewerCallbacks
-} from "../DocViewerStore";
+import {createContextMenu, useContextMenu} from "../../../repository/js/doc_repo/MUIContextMenu";
+import {AnnotationRects} from "polar-shared/src/metadata/AnnotationRects";
+import {IPagemarkCoverage, IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 

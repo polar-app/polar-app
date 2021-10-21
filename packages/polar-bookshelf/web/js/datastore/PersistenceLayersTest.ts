@@ -1,14 +1,9 @@
-import {assert} from "chai";
-import {FirebaseDatastore} from './FirebaseDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DiskDatastore} from './DiskDatastore';
-import {Datastores} from './Datastores';
 import {PersistenceLayers} from './PersistenceLayers';
 import {MemoryDatastore} from './MemoryDatastore';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {PersistenceLayer} from './PersistenceLayer';
-import {UUIDs} from "../metadata/UUIDs";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('PersistenceLayers', function() {
 

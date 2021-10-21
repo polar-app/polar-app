@@ -5,7 +5,7 @@ import {Results} from 'polar-shared/src/util/Results';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
 import {Screenshots} from "../Screenshots";
-import { isPresent } from 'polar-shared/src/Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 export class BrowserScreenshots {
 

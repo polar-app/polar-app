@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
-import {UUIDs} from "../../../web/js/metadata/UUIDs";
+import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 
 
 describe('DocViewerSnapshots', function() {

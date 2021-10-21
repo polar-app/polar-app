@@ -1,8 +1,0 @@
-# search
-
-^(export )?const ([a-zA-Z]+) = deepMemo\((\(.*\)) => \{$
-
-# replace
-
-$1const $2 = React.memo(function $2$3 {
-

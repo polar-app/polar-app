@@ -36,18 +36,14 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {
-    DictionaryPrefs,
-    IPersistentPrefs,
-    StringToPrefDict
-} from '../util/prefs/Prefs';
+import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from '../util/prefs/Prefs';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();

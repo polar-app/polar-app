@@ -4,11 +4,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH, CONTEXT_MENU_ICON_WIDTH} from "./Columns";
+import {COLUMN_MAP, CONTEXT_MENU_ICON_WIDTH, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
-import {
-    useDocRepoStore, useDocRepoCallbacks
-} from "./DocRepoStore2";
+import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Devices} from "polar-shared/src/util/Devices";
@@ -16,10 +14,10 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import FlagIcon from '@material-ui/icons/Flag';
 import ArchiveIcon from "@material-ui/icons/Archive";
-import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
-import { MUIToggleButton } from "../../../../web/js/ui/MUIToggleButton";
-import { MUICheckboxIconButton } from "../../../../web/js/mui/MUICheckboxIconButton";
-import { SelectionActiveButtons } from "./DocRepoTableToolbar";
+import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
+import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import {SelectionActiveButtons} from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

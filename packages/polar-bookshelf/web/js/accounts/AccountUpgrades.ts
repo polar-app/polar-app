@@ -1,23 +1,20 @@
-/**
- * Handles listening for account changes for the user and telling them
- * of changes to their plan over time.
- */
 import {Billing} from "polar-accounts/src/Billing";
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Plans} from "polar-accounts/src/Plans";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanFree = Billing.V2PlanFree;
 import V2PlanPro = Billing.V2PlanPro;
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 const _1GB   =   1000000000;
 const _2GB   =   2000000000;
 const _50GB  =  50000000000;
 const _500GB = 500000000000;
 
+/**
+ * Handles listening for account changes for the user and telling them
+ * of changes to their plan over time.
+ */
 export namespace AccountUpgrades {
 
     import V2Plan = Billing.V2Plan;

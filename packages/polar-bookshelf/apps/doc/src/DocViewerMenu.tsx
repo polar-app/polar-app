@@ -2,24 +2,14 @@ import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import {
-    IPagemarkDelete,
-    useDocViewerCallbacks,
-    useDocViewerStore
-} from "./DocViewerStore";
-import {
-    IMouseEvent,
-    MenuComponentProps
-} from "../../repository/js/doc_repo/MUIContextMenu";
+import {IPagemarkDelete, useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {IMouseEvent, MenuComponentProps} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
-import {IPoint} from "../../../web/js/Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import {
-    IAnnotationMeta,
-    IAnnotationRef
-} from "polar-shared/src/metadata/AnnotationRefs";
+import {IAnnotationMeta, IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
@@ -40,7 +30,7 @@ import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import {MUIMenuSection} from "../../../web/js/mui/menu/MUIMenuSection";
 import {useJumpToAnnotationHandler} from "../../../web/js/annotation_sidebar/JumpToAnnotationHook";
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {AnnotationPtrs} from "../../../web/js/annotation_sidebar/AnnotationPtrs";
 import {useDocViewerElementsContext} from "./renderers/DocViewerElementsContext";
@@ -510,7 +500,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             const selected = annotations.map(annotationMetaToRefResolver);
             annotationMutationsContext.onDeleted({selected});
         }
-    }, [blocksStore, annotationMutationsContext]);
+    }, [blocksStore, annotationMetaToRefResolver, annotationMutationsContext]);
 
     const onCopy = () => {
         Clipboards.writeText(origin.selectionToText());
@@ -595,7 +585,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         const {pageNum} = highlight;
 
         // TODO make sure the right doc panel is exposed
-    
+
         const targetPrefix = NEW_NOTES_ANNOTATION_BAR_ENABLED ? DOMBlocks.BLOCK_ID_PREFIX : 'annotation-';
 
         const ptr = AnnotationPtrs.create({

@@ -1,7 +1,7 @@
 import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
-import { Equals } from "./Equals";
+import {Equals} from "./Equals";
 import {typedMemo} from "../../hooks/ReactHooks";
 
 export function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {

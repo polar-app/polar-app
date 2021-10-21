@@ -1,7 +1,7 @@
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
-import {DocInfos} from '../../../web/js/metadata/DocInfos';
+import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {Tag} from "polar-shared/src/tags/Tags";
 import {SortFunctions} from "./doc_repo/util/SortFunctions";
 import {Objects} from "polar-shared/src/util/Objects";

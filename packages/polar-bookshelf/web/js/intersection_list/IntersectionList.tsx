@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Arrays } from 'polar-shared/src/util/Arrays';
-import { IntersectionListBlock } from './IntersectionListBlock';
+import {Arrays} from 'polar-shared/src/util/Arrays';
+import {IntersectionListBlock} from './IntersectionListBlock';
 import {typedMemo} from "../hooks/ReactHooks";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;

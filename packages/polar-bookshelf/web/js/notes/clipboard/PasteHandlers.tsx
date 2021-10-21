@@ -1,9 +1,8 @@
 import React from "react";
-import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {useUploadHandler} from "../UploadHandler";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -15,7 +14,6 @@ export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void;
     readonly onPasteError: (err: unknown) => void;
-    readonly onPasteHTML: (html: HTMLStr) => void;
     readonly onPasteText: (text: string) => void;
     readonly id: BlockIDStr;
 }
@@ -139,7 +137,7 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, onPasteHTML, id } = opts;
+    const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, id } = opts;
     const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
@@ -178,17 +176,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 const html = await getHTMLString();
                 const blocks = await HTMLToBlocks.parse(html);
 
-                const block = blocks[0];
-
-                /**
-                 * If there's only one block and it has no children then
-                 * we just wanna paste the content in the currently active block.
-                 */
-                if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
-                    onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
-                } else {
-                    onPasteBlocks(blocks);
-                }
+                onPasteBlocks(blocks);
             }
         }
 
@@ -202,14 +190,8 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
                 try {
                     const blocks = JSON.parse(await getJSONString());
-                    const block = blocks[0];
 
-                    // TODO: Might need to validate the structure here.
-                    if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
-                        onPasteHTML(MarkdownContentConverter.toHTML(block.content.data));
-                    } else {
-                        onPasteBlocks(blocks);
-                    }
+                    onPasteBlocks(blocks);
 
                 } catch (e) {
                     console.error('Error: failed to parse application/polarblocks+json', e);
@@ -246,6 +228,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteHTML, onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
+    }, [uploadHandler, id, onPasteImage, onPasteBlocks, onPasteText, onPasteError])
 
 }

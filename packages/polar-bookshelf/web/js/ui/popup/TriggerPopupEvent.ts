@@ -1,4 +1,4 @@
-import {Point} from '../../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {Offset} from '../../util/Offset';
 
 export interface TriggerPopupEvent {

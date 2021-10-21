@@ -1,9 +1,6 @@
 import React from "react";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {
-    GlobalKeyboardShortcuts,
-    keyMapWithGroup
-} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {KeyboardShortcutHandlers} from "../../../../web/js/keyboard_shortcuts/KeyboardShortcutHandlers";
 
 const globalKeyMap = keyMapWithGroup(
