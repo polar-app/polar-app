@@ -1,7 +1,7 @@
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {DocMetaMutation} from './Datastore';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocUUID} from "./DocUUID";
 

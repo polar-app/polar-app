@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import os from 'os';
@@ -19,6 +18,7 @@ import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Latch} from "polar-shared/src/util/Latch";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 const tmpdir = os.tmpdir();
 

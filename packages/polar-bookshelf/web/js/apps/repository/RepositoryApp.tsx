@@ -39,7 +39,7 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
@@ -390,10 +390,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
-                                    <FeatureToggle featureName="notes-enabled">
+                                    <FeatureToggleEnabled featureName="notes-enabled">
                                         <Route path={RoutePathNames.NOTES}
                                                component={NotesScreen}/>
-                                    </FeatureToggle>
+                                    </FeatureToggleEnabled>
 
                                     <Route path="/hello-ssr"
                                            component={HelloServerSideRender}/>

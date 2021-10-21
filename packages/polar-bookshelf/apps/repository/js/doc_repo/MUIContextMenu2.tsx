@@ -1,7 +1,7 @@
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
-import {IPoint} from "../../../../web/js/Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
 import {observer} from "mobx-react-lite"

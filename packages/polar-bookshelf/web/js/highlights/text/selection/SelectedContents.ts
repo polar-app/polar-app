@@ -8,7 +8,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {FileType} from "../../../apps/main/file_loaders/FileType";
 import {RectText} from '../controller/RectText';
 import {TextHighlightMerger} from '../../../../../apps/doc/src/text_highlighter/TextHighlightMerger';
-import {Rect} from '../../../Rect';
+import {Rect} from 'polar-shared/src/util/Rect';
 
 export namespace SelectedContents {
 

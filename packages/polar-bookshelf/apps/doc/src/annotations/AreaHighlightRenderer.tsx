@@ -2,7 +2,7 @@ import * as React from "react";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../../web/js/Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {computePageDimensions} from "./AnnotationHooks";
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";

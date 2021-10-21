@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import Button from "@material-ui/core/Button";
 import {MUIButtonBar} from "../../../../mui/MUIButtonBar";
 import {CancelButton} from "../../CancelButton";

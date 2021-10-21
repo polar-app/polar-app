@@ -1,4 +1,4 @@
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import * as React from "react";
 import {LinearProgress, useTheme} from "@material-ui/core";
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";

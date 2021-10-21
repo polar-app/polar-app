@@ -1,4 +1,4 @@
-import {Rect} from "../Rect";
+import {Rect} from "polar-shared/src/util/Rect";
 import {AreaHighlightRect} from "./AreaHighlightRect";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 
