@@ -1,28 +1,18 @@
 import * as React from 'react';
 import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
-import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import {useHistory} from 'react-router-dom';
 import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
-        root: {
-            backgroundColor: theme.palette.background.default
-        },
         th: {
             whiteSpace: 'nowrap',
-        },
-        row: {
-            "& th": {
-                paddingTop: theme.spacing(1),
-                paddingBottom: theme.spacing(1),
-                paddingLeft: 0,
-                paddingRight: 0,
-                borderCollapse: 'collapse',
-                lineHeight: '1em'
-            }
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 0
         },
         headerFont:{
             fontSize: '1.2em'
@@ -58,36 +48,35 @@ function toDate(ts: string | undefined): number {
     return ts ? ISODateTimeStrings.parse(ts).getTime() : 0;
 }
 
+
+function useSortedDocInfos() {
+
+    const {data} = useDocRepoStore(['data']);
+
+    const docs = data.map(current => current.docInfo);
+
+    return docs.sort((a: IDocInfo, b: IDocInfo)=>{
+        return toDate(a.lastUpdated) - toDate(b.lastUpdated);
+    });
+
+}
+
 export const SwitchScreen = () => {
 
     const classes = useStyles();
     const history = useHistory();
 
-    const {data} = useDocRepoStore(['data']);
-    function useDocInfos(){
-        const docs = data.map(current => current.docInfo);
-        return docs.sort((a: IDocInfo, b: IDocInfo)=>{
-            return toDate(a.lastUpdated) - toDate(b.lastUpdated);
-        })
-    };
-    const orderedTabsByRecency = useDocInfos();
+    const orderedTabsByRecency = useSortedDocInfos();
 
     return (
-        <>
-            <DocRepoTableToolbar/>
-            <Table  stickyHeader
-                    style={{
-                        minWidth: 0,
-                        maxWidth: '100%',
-                        tableLayout: 'fixed'
-                    }}
+        <AdaptivePageLayout title="Recent Documents" fullWidth noBack>
+
+            <Table  style={{width: '100%'}}
                     aria-labelledby="tableTitle"
-                    size={'medium'}
                     aria-label="enhanced table">
 
                     {orderedTabsByRecency.length > 0 ?
                         <>
-                            <TableHeader nonEmpty/>
                             {orderedTabsByRecency.map( column =>
                                 <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
                                     <TableCell key={column.uuid} className={classes.th}>
@@ -100,6 +89,6 @@ export const SwitchScreen = () => {
                         <TableHeader/>
                     }
             </Table>
-        </>
+        </AdaptivePageLayout>
     );
 }

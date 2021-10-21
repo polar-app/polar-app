@@ -36,7 +36,7 @@ import 'firebase/storage';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';

@@ -8,7 +8,7 @@ import {FlashcardActions} from "./child_annotations/flashcards/FlashcardActions"
 import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
-import {TextHighlights} from "../metadata/TextHighlights";
+import {TextHighlights} from "polar-shared/src/metadata/TextHighlights";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
@@ -21,7 +21,7 @@ import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 export interface IAnnotationMutationHolder<M> {

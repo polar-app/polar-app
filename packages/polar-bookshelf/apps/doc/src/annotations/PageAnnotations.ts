@@ -1,4 +1,4 @@
-import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

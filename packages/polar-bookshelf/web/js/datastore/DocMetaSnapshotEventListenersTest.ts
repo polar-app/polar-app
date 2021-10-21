@@ -6,18 +6,18 @@ import {
     MutationType
 } from './Datastore';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {assert} from 'chai';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
-import {MetadataSerializer} from '../metadata/MetadataSerializer';
+import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('DocMetaSnapshotEventListener', function() {
 

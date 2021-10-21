@@ -1,4 +1,4 @@
-import {Rect} from '../../../../web/js/Rect';
+import {Rect} from 'polar-shared/src/util/Rect';
 import {assert} from 'chai';
 import {TextHighlightMerger} from './TextHighlightMerger';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
@@ -42,7 +42,7 @@ const TEST_DATA = [
      * Text:  JAVADI,  B.,  KONDO,  D.,  VINCENT,  J.-M.,ANDANDERSON,D.
      * Mining  for  statistical  models  of  availability  in  large-scaledistributed
      * systems:  An empirical study of SETI@home (2009).pp. 1–10.
-     * 
+     *
      */
     {
         input: `[{"left":444,"top":269,"right":449,"bottom":281,"width":4,"height":11},{"left":448,"top":271,"right":476,"bottom":281,"width":27,"height":9},{"left":476,"top":269,"right":509,"bottom":281,"width":32,"height":11},{"left":508,"top":271,"right":535,"bottom":281,"width":26,"height":9},{"left":535,"top":269,"right":569,"bottom":281,"width":33,"height":11},{"left":569,"top":271,"right":603,"bottom":281,"width":34,"height":9},{"left":602,"top":269,"right":637,"bottom":281,"width":35,"height":11},{"left":641,"top":271,"right":661,"bottom":281,"width":19,"height":9},{"left":665,"top":269,"right":672,"bottom":281,"width":7,"height":11},{"left":673,"top":271,"right":717,"bottom":281,"width":43,"height":9},{"left":717,"top":269,"right":720,"bottom":281,"width":3,"height":11},{"left":444,"top":281,"right":725,"bottom":293,"width":280,"height":11},{"left":444,"top":294,"right":724,"bottom":306,"width":279,"height":11},{"left":444,"top":307,"right":484,"bottom":319,"width":40,"height":11}]`,
@@ -63,7 +63,7 @@ const jsonToRects = (obj: string): Rect[] => JSON.parse(obj);
 
 describe('TextHighlightMerger', () => {
     describe('canMergeX', () => {
-        /*      
+        /*
          * --------  -----
          * |  a   |  | b |
          * --------  -----
@@ -86,12 +86,12 @@ describe('TextHighlightMerger', () => {
                 width  : 11,
                 height : 15,
             };
-            
+
             assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [10, 0]), true);
             assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [10, 0]), true);
         });
 
-        /*      
+        /*
          * --------    --------
          * |  a   |    |  b   |
          * --------    --------
@@ -228,7 +228,7 @@ describe('TextHighlightMerger', () => {
             assert.strictEqual(TextHighlightMerger.canMergeY(a, b, [0, 5]), true);
             assert.strictEqual(TextHighlightMerger.canMergeY(b, a, [0, 5]), true);
         });
-        
+
         it('Should allow merging random test 1', () => {
             const a = {
                 bottom : 397,

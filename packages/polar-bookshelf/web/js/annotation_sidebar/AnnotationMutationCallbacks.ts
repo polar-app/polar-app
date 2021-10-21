@@ -19,7 +19,7 @@ import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
 import {IAnnotationRef, IAnnotationRefWithDocMeta} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../mui/MUILogger";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {
     DocAnnotationsMutator,
     IAnnotationMutationCallbacks,

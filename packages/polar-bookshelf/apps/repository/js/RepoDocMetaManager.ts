@@ -1,5 +1,5 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocInfo} from '../../../web/js/metadata/DocInfo';
+import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';

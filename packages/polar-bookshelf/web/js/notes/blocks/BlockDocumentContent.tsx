@@ -2,7 +2,7 @@ import {Box, createStyles, makeStyles} from "@material-ui/core";
 import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import React from "react";
-import {DocInfos} from "../../metadata/DocInfos";
+import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 import {BlockEditorGenericProps} from "../BlockEditor";
 import {BlockTagsSection} from "./BlockAnnotationContent/BlockHighlightContentWrapper";
 

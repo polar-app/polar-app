@@ -1,9 +1,9 @@
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {PersistenceLayers} from './PersistenceLayers';
 import {MemoryDatastore} from './MemoryDatastore';
-import {MockDocMetas} from '../metadata/DocMetas';
 import {PersistenceLayer} from './PersistenceLayer';
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('PersistenceLayers', function() {
 

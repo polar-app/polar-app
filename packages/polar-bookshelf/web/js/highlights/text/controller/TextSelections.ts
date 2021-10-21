@@ -1,4 +1,4 @@
-import {TextRect} from "../../../metadata/TextRect";
+import {TextRect} from "polar-shared/src/metadata/TextRect";
 import {ISelectedContent} from "../selection/ISelectedContent";
 
 
@@ -10,7 +10,7 @@ export class TextSelections {
 
         ];
 
-        // TODO: could be cleaner as a map with a toTextRect 
+        // TODO: could be cleaner as a map with a toTextRect
         selectedContent.rectTexts.forEach((rectText: any) => {
             const textSelection = new TextRect({
                 rect: rectText.boundingPageRect,

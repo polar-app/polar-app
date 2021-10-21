@@ -1,5 +1,5 @@
-import {Pagemarks} from '../metadata/Pagemarks';
-import {DocMetas} from "../metadata/DocMetas";
+import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class CreatePagemarksForPageRanges {

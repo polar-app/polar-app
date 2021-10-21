@@ -4,7 +4,7 @@ import {
     IAreaHighlightUpdate,
     useAnnotationMutationsContext
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
