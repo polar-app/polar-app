@@ -145,7 +145,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
         // TODO: I don't think enter is handled?
 
-        if (event.key === 'Tab') {
+        if (event.key === 'Tab' ||  event.key === 'Enter') {
             if (index !== undefined) {
                 const command = items[index];
                 if (command) {
