@@ -383,7 +383,7 @@ const RegisterForBetaButton = () => {
             setPending(false);
         }
 
-    }, [setPending]);
+    }, [setPending, analytics]);
 
     return (
         <>
