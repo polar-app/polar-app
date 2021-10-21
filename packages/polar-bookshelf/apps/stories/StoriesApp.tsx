@@ -57,7 +57,6 @@ import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {MigrationDialog} from "./impl/PolarMigrationDialog"
 import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
-import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 
 interface IStory {
     readonly name: string;
