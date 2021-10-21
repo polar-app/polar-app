@@ -4,7 +4,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {DocInfoLike} from "../metadata/DocInfo";
+import {DocInfoLike} from "polar-shared/src/metadata/DocInfo";
 
 const log = Logger.create();
 

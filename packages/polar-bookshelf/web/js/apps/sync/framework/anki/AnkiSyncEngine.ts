@@ -7,7 +7,7 @@ import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
-import {DocInfos} from '../../../../metadata/DocInfos';
+import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';

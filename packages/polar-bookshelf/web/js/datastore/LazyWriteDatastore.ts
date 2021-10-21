@@ -3,7 +3,7 @@ import {DelegatedDatastore} from './DelegatedDatastore';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

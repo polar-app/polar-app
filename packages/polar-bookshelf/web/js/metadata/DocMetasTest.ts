@@ -1,13 +1,14 @@
 import {assert} from 'chai';
-import {DocMeta} from './DocMeta';
-import {DocMetas, MockDocMetas} from './DocMetas';
-import {MetadataSerializer} from './MetadataSerializer';
+import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
+import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import {TextHighlights} from './TextHighlights';
-import {Pagemarks} from './Pagemarks';
+import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
+import {Pagemarks} from 'polar-shared/src/metadata/Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 describe('DocMetas', function() {
 
@@ -53,7 +54,7 @@ describe('DocMetas', function() {
 
             const fingerprint = "0x001";
 
-            const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
             console.log(JSON.stringify(docMeta, null, "  "));
 
             DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50});
@@ -295,7 +296,7 @@ function createUpgradeDoc(): IDocMeta {
 
     const fingerprint = "0x001";
     const nrPages = 1;
-    const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+    const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
     const textHighlight = TextHighlights.createMockTextHighlight();
 

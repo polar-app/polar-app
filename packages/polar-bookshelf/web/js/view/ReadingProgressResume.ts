@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Rects} from '../Rects';
+import {Rects} from 'polar-shared/src/util/Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";

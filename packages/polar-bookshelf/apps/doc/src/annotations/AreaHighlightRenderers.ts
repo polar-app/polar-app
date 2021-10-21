@@ -1,5 +1,5 @@
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
+import {AnnotationRects} from "polar-shared/src/metadata/AnnotationRects";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IDocScale} from "../DocViewerStore";

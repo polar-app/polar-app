@@ -11,7 +11,7 @@ import {createContextMenu, useContextMenu} from "../../../repository/js/doc_repo
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
-import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
+import {PagemarkRect} from "polar-shared/src/metadata/PagemarkRect";
 import {IPagemarkCoverage, IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {useWindowResizeEventListener, useWindowScrollEventListener} from "../../../../web/js/react/WindowHooks";

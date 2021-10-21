@@ -7,7 +7,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
-import {IPoint} from "../../../../web/js/Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {IXYRect} from "polar-shared/src/util/rects/IXYRect";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 

@@ -9,11 +9,15 @@
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "webpack": "npx webpack --config=webpack.config.js",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh",
-    "mocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
-    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;"
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;",
+    "tscwatch": "tsc --watch",
+    "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "cimocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
   },
   "author": "",
   "license": "ISC",

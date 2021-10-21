@@ -5,7 +5,7 @@ import {IRect} from "polar-shared/src/util/rects/IRect";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../../web/js/Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {useDocViewerStore} from "../DocViewerStore";
 import {deepMemo, memoForwardRefDiv} from "../../../../web/js/react/ReactUtils";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";

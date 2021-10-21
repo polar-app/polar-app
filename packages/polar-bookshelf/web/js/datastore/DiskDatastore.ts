@@ -43,7 +43,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();

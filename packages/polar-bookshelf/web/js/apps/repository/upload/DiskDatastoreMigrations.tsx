@@ -7,7 +7,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {Paths} from "polar-shared/src/util/Paths";
 import {Blobs} from "polar-shared/src/util/Blobs";
-import {DocMetas} from "../../../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {IUpload} from "./IUpload";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";

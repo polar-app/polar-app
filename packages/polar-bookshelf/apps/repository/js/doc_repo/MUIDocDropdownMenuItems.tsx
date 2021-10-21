@@ -26,7 +26,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 import LaunchIcon from '@material-ui/icons/Launch';
-import {FeatureToggle} from '../persistence_layer/PrefsContext2';
+import {FeatureToggleEnabled} from '../persistence_layer/PrefsContext2';
 import AddIcon from '@material-ui/icons/Add';
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
@@ -269,14 +269,14 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
                 </MenuItem>}
 
             {isSingle &&
-                <FeatureToggle featureName='answers'>
+                <FeatureToggleEnabled featureName='answers'>
                     <MenuItem onClick={indexForAIHandler}>
                         <ListItemIcon>
                             <AddIcon fontSize="small"/>
                         </ListItemIcon>
                         <ListItemText primary="Index for AI"/>
                     </MenuItem>
-                </FeatureToggle>}
+                </FeatureToggleEnabled>}
 
             <MenuItem onClick={callbacks.onTagged}>
                 <ListItemIcon>

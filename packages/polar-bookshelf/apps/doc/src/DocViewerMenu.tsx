@@ -6,7 +6,7 @@ import {IPagemarkDelete, useDocViewerCallbacks, useDocViewerStore} from "./DocVi
 import {IMouseEvent, MenuComponentProps} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
-import {IPoint} from "../../../web/js/Point";
+import {IPoint} from "polar-shared/src/util/Point";
 import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {IAnnotationMeta, IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";

@@ -6,7 +6,7 @@ import {DockSplitter} from "./DockSplitter";
 import {deepMemo} from "../../react/ReactUtils";
 import {useStateRef} from "../../hooks/ReactHooks";
 import {useDockLayoutCallbacks, useDockLayoutStore} from './DockLayoutStore';
-import {Point} from '../../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {Debouncers} from 'polar-shared/src/util/Debouncers';
 
 class Styles {

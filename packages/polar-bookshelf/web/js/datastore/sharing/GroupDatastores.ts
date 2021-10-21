@@ -1,7 +1,7 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {PersistenceLayer} from '../PersistenceLayer';
 import {GroupIDStr} from '../Datastore';
-import {DocMetas} from '../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
 import {DocIDStr, GroupProvisionRequest, GroupProvisions} from './rpc/GroupProvisions';
 import {DatastoreCollection, RecordHolder} from '../FirebaseDatastore';

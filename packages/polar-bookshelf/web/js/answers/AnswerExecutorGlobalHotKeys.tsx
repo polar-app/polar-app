@@ -17,7 +17,7 @@ import {
     useTheme
 } from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
-import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureToggleEnabled} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {
     IAnswerExecutorError,
@@ -554,7 +554,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
     };
 
     return (
-        <FeatureToggle featureName='answers'>
+        <FeatureToggleEnabled featureName='answers'>
             <>
                 {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
 
@@ -562,7 +562,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
                     keyMap={globalKeyMap}
                     handlerMap={globalKeyHandlers}/>
             </>
-        </FeatureToggle>
+        </FeatureToggleEnabled>
     );
 
 });

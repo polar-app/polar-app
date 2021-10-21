@@ -5,7 +5,7 @@ import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import equal from "deep-equal";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
-import {DocInfos} from "../metadata/DocInfos";
+import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {Block} from "./store/Block";
 import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
@@ -39,7 +39,7 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
 	const blocksStore = useBlocksStore();
 	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
 	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
-    
+
 	React.useEffect(() => {
         const getBlockTypeScore = (block: Readonly<Block<NamedContent>>) => {
             switch (block.content.type) {
@@ -63,14 +63,14 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
             if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
                 const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
                 prevNamedBlocksIDsRef.current = namedBlocksIDs;
-                
+
                 setNamedBlocks(sort ? [...namedBlocks].sort(sorter) : namedBlocks);
             }
 	    });
-    
+
 	    return () => disposer();
 	}, [blocksStore, sort]);
-    
+
 	return namedBlocks;
 };
 
