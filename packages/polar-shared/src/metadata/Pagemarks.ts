@@ -14,7 +14,6 @@ import {IDocMeta} from "./IDocMeta";
 import {IPagemark} from "./IPagemark";
 import {Numbers} from "../util/Numbers";
 import {Objects} from "../util/Objects";
-import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {IPagemarkRef} from './IPagemarkRef';
 import {IDStr} from "../util/Strings";
 import {PagemarkRect} from './PagemarkRect';
@@ -23,6 +22,7 @@ import {PagemarkRects} from './PagemarkRects';
 import {DocMetas} from './DocMetas';
 import {ReadingProgresses} from './ReadingProgresses';
 import {ReadingOverviews} from './ReadingOverviews';
+import {PagemarkExtend} from "./PagemarkExtend";
 
 const log = Logger.create();
 
@@ -51,7 +51,7 @@ export class Pagemarks {
 
     public static createExtender(docMeta: IDocMeta) {
 
-        return (extendPagemark: ExtendPagemark) => {
+        return (extendPagemark: PagemarkExtend) => {
             Pagemarks.updatePagemarksForRange(docMeta, extendPagemark.page, 100, {start: extendPagemark.origin});
         };
 
