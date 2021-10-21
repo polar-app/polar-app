@@ -69,14 +69,6 @@ const Main = () => {
     return (
         <>
             <div className={classes.root}>
-                <Box component='div' px={2}>
-                    <Box component="h1" pt={2}>General</Box>
-
-                    <p>
-                        General settings. Note that some of
-                        these may require you to reload.
-                    </p>
-                </Box>
 
                 <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
