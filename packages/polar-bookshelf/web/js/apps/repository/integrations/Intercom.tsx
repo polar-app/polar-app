@@ -72,12 +72,10 @@ const IntercomInner = () => {
 }
 
 export const Intercom = () => {
-
-    if (document.location.href.startsWith('https://')) {
+    
         return (
             <IntercomInner/>
         )
-    }
 
     return null;
 
