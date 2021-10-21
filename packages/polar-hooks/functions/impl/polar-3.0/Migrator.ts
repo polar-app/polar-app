@@ -17,6 +17,7 @@ import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
 export namespace Polar3DocMetaMigrator {
 
@@ -41,7 +42,8 @@ export namespace Polar3DocMetaMigrator {
 
         const docMetas = await getDocMetas(firestore, userID);
 
-        docMetas.forEach(migrateDocMeta.bind(null, userID, firestore));
+        // TODO: We're probably gonna change this to migrate one docMeta at a time per function call
+        await docMetas.reduce((promise, docMeta) => promise.then(() => migrateDocMeta(userID, firestore, docMeta)), Promise.resolve());
     }
 
     /**
