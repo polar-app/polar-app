@@ -2,6 +2,7 @@ import React from 'react';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {Box, Typography} from '@material-ui/core';
@@ -262,7 +263,7 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-            <div style={{
+            <Box px={2} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 flexGrow: 1
@@ -335,7 +336,7 @@ const EmailTokenAuthButton = () => {
                                 strategy="Email"
                                 startIcon={<EmailIcon/>}/>
                 )}
-            </div>
+            </Box>
         </>
     );
 };
@@ -345,6 +346,7 @@ const RegisterForBetaButton = () => {
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
     const emailRef = React.useRef("");
+    const codeRef = React.useRef("");
 
     const classes = useStyles();
 
@@ -356,8 +358,8 @@ const RegisterForBetaButton = () => {
         const tag = 'initial_signup';
 
         const request = {
-            email,
-            tag,
+            email: emailRef.current.trim(),
+            tag: codeRef.current || "initial_signup",
         };
 
         try {
@@ -396,9 +398,9 @@ const RegisterForBetaButton = () => {
             <BackendProgress pending={pending}/>
 
             {!isRegistered && (
-                <div style={{
+                <Box component='div' px={2} style={{
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                 }}>
                     <TextField autoFocus={true}
                                className={classes.email}
@@ -411,6 +413,16 @@ const RegisterForBetaButton = () => {
                                }}
                                variant="outlined"/>
 
+                    <TextField autoFocus={true}
+                               className={classes.email}
+                               onChange={event => codeRef.current = event.target.value}
+                               placeholder="Referral code (optional)"
+                               InputProps={{
+                                   startAdornment: (
+                                       <VpnKeyIcon style={{margin: '8px'}}/>
+                                   )}}
+                               variant="outlined"/>
+
                     <Button variant="contained"
                             size="large"
                             color="primary"
@@ -418,7 +430,7 @@ const RegisterForBetaButton = () => {
                             onClick={handleClick}>
                         Join
                     </Button>
-                </div>
+                </Box>
             )}
         </>
     )
@@ -531,8 +543,9 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                 <div style={{flexGrow: 1}}/>
 
-                <AuthLegalDisclaimer/>
-
+                <Box px={2}>
+                    <AuthLegalDisclaimer/>
+                </Box>
             </div>
         </>
     );
