@@ -407,7 +407,7 @@ const RegisterForBetaButton = () => {
                     <TextField autoFocus={true}
                                className={classes.email}
                                onChange={event => codeRef.current = event.target.value}
-                               placeholder="Optional: Referral code?"
+                               placeholder="Referral code (optional)"
                                InputProps={{
                                    startAdornment: (
                                        <VpnKeyIcon style={{margin: '8px'}}/>
