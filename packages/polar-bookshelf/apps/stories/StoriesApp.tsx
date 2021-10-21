@@ -55,7 +55,7 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
-import {MigrationDialog} from "./impl/PolarMigrationDialog"
+import { MigrationToBlockAnnotations } from './impl/MigrationToBlockAnnotations';
 import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
 
 interface IStory {
@@ -83,7 +83,7 @@ const stories = createStoryIndex([
     
     {
         name: "Migration Dialog 3.0",
-        component: <MigrationDialog/>
+        component: <MigrationToBlockAnnotations/>
     },
     {
         name: "Vertical Dynamic Scroller",

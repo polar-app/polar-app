@@ -5,7 +5,7 @@ import { IndeterminateProgressBar } from '../../../web/js/ui/progress_bar/Indete
 import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
 import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
 
-const MigrationDialogMainContent = () => {
+const MigrationToBlockAnnotationsMainContent = () => {
 
     return (  
         <AdaptiveDialog>
@@ -37,7 +37,7 @@ const MigrationDialogMainContent = () => {
     )
 }
 
-export const MigrationDialog = () => {
+export const MigrationToBlockAnnotations = () => {
 
     return (
 
@@ -47,7 +47,7 @@ export const MigrationDialog = () => {
                             <LogoAndTextSideBySide/>
                         </Box>
                     
-                        <MigrationDialogMainContent/>
+                        <MigrationToBlockAnnotationsMainContent/>
                 </Paper>
             </AdaptiveDialog>
     );
