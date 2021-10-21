@@ -263,7 +263,7 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-            <div style={{
+            <Box px={2} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 flexGrow: 1
@@ -336,7 +336,7 @@ const EmailTokenAuthButton = () => {
                                 strategy="Email"
                                 startIcon={<EmailIcon />}/>
                 )}
-            </div>
+            </Box>
         </>
     );
 };
@@ -390,9 +390,9 @@ const RegisterForBetaButton = () => {
             <BackendProgress pending={pending}/>
 
             {!isRegistered && (
-                <div style={{
+                <Box component='div' px={2} style={{
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                 }}>
                     <TextField autoFocus={true}
                                className={classes.email}
@@ -421,7 +421,7 @@ const RegisterForBetaButton = () => {
                             onClick={handleClick}>
                         Join
                     </Button>
-                </div>
+                </Box>
             )}
         </>
     )
@@ -534,8 +534,9 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                 <div style={{flexGrow: 1}}/>
 
-                <AuthLegalDisclaimer/>
-
+                <Box px={2}>
+                    <AuthLegalDisclaimer/>
+                </Box>
             </div>
         </>
     );
