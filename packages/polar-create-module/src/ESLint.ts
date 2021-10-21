@@ -28,7 +28,6 @@ export namespace ESLint {
                 // ! Disabled Rules ///////////////////////////////////////////////////
 
                 // ? TS Rules
-
                 "@typescript-eslint/ban-types": "off",
                 "@typescript-eslint/no-namespace": "off",
                 "@typescript-eslint/ban-ts-comment": "off",
