@@ -18,6 +18,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
+import {EmailAddressParser} from "../../../../web/js/util/EmailAddressParser";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -57,6 +58,7 @@ interface IAuthButtonProps {
     readonly onClick: () => void;
     readonly strategy: string;
     readonly style?: React.CSSProperties;
+    readonly disabled?: boolean;
 }
 
 const AuthButton = (props: IAuthButtonProps) => {
@@ -74,6 +76,7 @@ const AuthButton = (props: IAuthButtonProps) => {
                     color="primary"
                     size="large"
                     className={classes.button}
+                    disabled={props.disabled}
                     onClick={props.onClick}
                     style={{
                         flexGrow: 1
@@ -133,6 +136,7 @@ const EmailTokenAuthButton = () => {
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
     const [active, setActive] = React.useState(true);
+    const [emailInput, setEmail] = React.useState("");
     const [triggered, setTriggered, triggeredRef] = useStateRef(false);
 
     const triggerStartTokenAuth = useTriggerStartTokenAuth();
@@ -143,6 +147,11 @@ const EmailTokenAuthButton = () => {
 
     const emailBeingVerifiedRef = React.useRef("");
 
+    const handleEmailChange = React.useCallback((value)=>{
+        setEmail(value);
+        emailRef.current = emailInput;
+    },[emailInput]);
+    
     const doTriggerVerifyTokenAuth = React.useCallback(async (email: string, challenge: string) => {
 
         setAlert(undefined);
@@ -314,7 +323,7 @@ const EmailTokenAuthButton = () => {
                         {!triggered && (
                             <TextField autoFocus={true}
                                        className={classes.email}
-                                       onChange={event => emailRef.current = event.target.value}
+                                       onChange={event => handleEmailChange(event.target.value)}
                                        onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                        placeholder="Enter your email address"
                                        variant="outlined"
@@ -334,6 +343,7 @@ const EmailTokenAuthButton = () => {
                 {!triggered && (
                     <AuthButton onClick={handleClick}
                                 strategy="Email"
+                                disabled={!EmailAddressParser.validateEmail(emailRef.current)}
                                 startIcon={<EmailIcon/>}/>
                 )}
             </Box>
@@ -345,6 +355,7 @@ const RegisterForBetaButton = () => {
 
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
+    const [emailInput,setEmail] = React.useState("");
     const emailRef = React.useRef("");
     const codeRef = React.useRef("");
 
@@ -352,10 +363,12 @@ const RegisterForBetaButton = () => {
 
     const analytics = useAnalytics();
 
-    const handleClick = React.useCallback(() => {
+    const handleEmailChange = React.useCallback((value)=>{
+        setEmail(value);
+        emailRef.current = emailInput;
+    },[emailInput]);
 
-        const email = emailRef.current.trim();
-        const tag = 'initial_signup';
+    const handleClick = React.useCallback(() => {
 
         const request = {
             email: emailRef.current.trim(),
@@ -404,7 +417,7 @@ const RegisterForBetaButton = () => {
                 }}>
                     <TextField autoFocus={true}
                                className={classes.email}
-                               onChange={event => emailRef.current = event.target.value}
+                               onChange={event => handleEmailChange(event.target.value)}
                                placeholder="Enter your email address"
                                InputProps={{
                                    startAdornment: (
@@ -426,6 +439,7 @@ const RegisterForBetaButton = () => {
                     <Button variant="contained"
                             size="large"
                             color="primary"
+                            disabled={!EmailAddressParser.validateEmail(emailRef.current)}
                             className={classes.button}
                             onClick={handleClick}>
                         Join
