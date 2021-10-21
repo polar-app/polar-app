@@ -3,7 +3,7 @@ import {useCallback, useState} from 'react';
 import {IDocAnnotationRef} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {FlashcardAnnotationView2} from './FlashcardAnnotationView2';
-import {Flashcard} from '../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import isEqual from 'react-fast-compare';
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {FlashcardInput2} from "./flashcard_input/FlashcardInput2";

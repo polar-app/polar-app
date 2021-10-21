@@ -2,7 +2,7 @@ import {createStyles, makeStyles} from "@material-ui/core";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag} from "polar-shared/src/tags/Tags";
 import React from "react";
-import {DocInfos} from "../../metadata/DocInfos";
+import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 import {BlockEditorGenericProps} from "../BlockEditor";
 
 const useStyles = makeStyles(() =>

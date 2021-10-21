@@ -3,7 +3,7 @@ import {Flashcards} from './Flashcards';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {TextType} from 'polar-shared/src/metadata/TextType';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {Flashcard} from './Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
 

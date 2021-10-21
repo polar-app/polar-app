@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {DocInfos} from './DocInfos';
+import {DocInfos} from 'polar-shared/src/metadata/DocInfos';
 import {DocDetail} from './DocDetail';
 import {DocDetails} from './DocDetails';
 

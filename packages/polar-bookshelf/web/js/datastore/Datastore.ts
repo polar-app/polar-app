@@ -8,7 +8,7 @@ import {DeterminateProgress, IndeterminateProgress, Progress,} from 'polar-share
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {InterceptedPersistentPrefs, InterceptedPersistentPrefsFactory, IPersistentPrefs} from '../util/prefs/Prefs';

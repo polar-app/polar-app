@@ -10,9 +10,9 @@ import {
     SyncDocMap,
     SyncDocs
 } from './Datastore';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {ProgressListener, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from "polar-shared/src/util/URLs";

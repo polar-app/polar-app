@@ -3,7 +3,7 @@ import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInputs';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 
 export const getDefaultFlashcardType = () => {
     const defaultFlashcardType = window.localStorage.getItem('default-flashcard-type');
