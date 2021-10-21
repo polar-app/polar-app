@@ -103,7 +103,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
                 if (delta === -1) {
                     // got to the end
-                    return undefined;
+                    return items.length - 1;
                 }
 
                 return 0;
@@ -117,7 +117,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             }
 
             if (newIndex >= items.length) {
-                return items.length - 1;
+                return undefined;
             }
 
             return newIndex;
