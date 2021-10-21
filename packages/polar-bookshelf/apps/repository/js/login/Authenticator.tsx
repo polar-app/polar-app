@@ -490,9 +490,6 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                  }}>
 
                 <>
-                <Box>
-                    
-                </Box>
                     <div style={{
                         display: 'flex',
                         flexGrow: 1,
