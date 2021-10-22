@@ -93,7 +93,9 @@ export namespace EPUBContent {
         dom.window.document.documentElement.childNodes.forEach((node) => {
             if (node.nodeType === node.ELEMENT_NODE) {
                 rootEvenIndex += 2;
-                parseChildren(node,`${CFIXMLFragment}/${rootEvenIndex}`, results);
+                if (node.nodeName !== 'HEAD') {
+                    parseChildren(node,`${CFIXMLFragment}/${rootEvenIndex}`, results);
+                }
             }
         });
 
@@ -106,49 +108,33 @@ export namespace EPUBContent {
      * and generates a CFI step relevant to it's parent
      * 
      */
-    export function parseChildren(node: ChildNode, nodePath = "", results: IEPUBText[]): void {
-        if (isTextElement(node.nodeName)) {
-            const text = <string> node.textContent?.trim();
-
-            if (text.length !== 0) {
-                results.push({
-                    cfi: wrapCFIPath(nodePath),
-                    text: text
-                });
-            }
-        }
-
-        
+    function parseChildren(node: ChildNode, nodePath: string, results: IEPUBText[]): void {
         if (node.hasChildNodes()) {
+
             let CFIEvenIndex = 0;
 
             node.childNodes.forEach((node) => {
+
+                // Extracts text child contents if it had any
+                if (node.nodeType === node.TEXT_NODE) {
+                    const text = <string> node.nodeValue?.trim();
+
+                    if (text.length !== 0) {
+                        results.push({
+                            cfi: wrapCFIPath(nodePath),
+                            text: text
+                        });
+                    }
+                }
+
+                // Parse child element 'grand children' in-order
                 if (node.nodeType === node.ELEMENT_NODE) {
                     CFIEvenIndex += 2;
                     parseChildren(node, `${nodePath}/${CFIEvenIndex}`, results);
                 }
+            
             });
         }
-    }
-
-    /**
-     * 
-     * Check whether a given element name exists in the set of 
-     * text element or at least the ones we care about
-     * 
-     */
-    function isTextElement(elementName: string) {
-        const textElements = new Set([
-            'P',
-            'H1',
-            'H2',
-            'H3',
-            'H4',
-            'H5',
-            'H6'
-        ]);
-        
-        return textElements.has(elementName);
     }
 
     /**
