@@ -14,6 +14,8 @@ export type ValueProviderElement<V> = React.FC<IValueProviderProps<V>>;
 
 export type ContextStateTuple<V> = Readonly<[ValueProviderElement<V>, UseValueHook<V>,  UseValueSetterHook<V>]>;
 
+// FIXME: actually this WILL trigger a re-render.
+
 /**
  * Creates a provider, and two hooks, one that provides the value and another
  * that provides a setter for that value.
