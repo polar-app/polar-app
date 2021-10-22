@@ -18,6 +18,7 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -350,6 +351,8 @@ const RegisterForBetaButton = () => {
     const [pending, setPending] = React.useState(false);
     const emailRef = React.useRef("");
 
+    const codeRef = React.useRef("");
+
     const classes = useStyles();
 
     const handleClick = React.useCallback(() => {
@@ -407,6 +410,16 @@ const RegisterForBetaButton = () => {
                                         <EmailIcon style={{margin: '8px'}}/>
                                     )}}
                                 variant="outlined"/>
+
+                                <TextField autoFocus={true}
+                               className={classes.email}
+                               onChange={event => codeRef.current = event.target.value}
+                               placeholder="Referral code (optional)"
+                               InputProps={{
+                                   startAdornment: (
+                                       <VpnKeyIcon style={{margin: '8px'}}/>
+                                   )}}
+                               variant="outlined"/>
 
                         <Button variant="contained"
                                 size="large"
