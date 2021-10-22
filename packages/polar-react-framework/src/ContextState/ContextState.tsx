@@ -1,20 +1,20 @@
 import React from 'react';
 
 
-interface IProviderProps<V> {
+interface IValueProviderProps<V> {
     readonly initialValue?: V | undefined
     readonly children: JSX.Element;
 }
 
 export type UseValueHook<V> = () => V | undefined;
 
-export type UseSetterHook<V> = (value: V | undefined) => void;
+export type UseValueSetterHook<V> = (value: V | undefined) => void;
 
 // export type ProviderElement<V> = (props: IProviderProps<V>) => React.ReactElement
 
-export type ProviderElement<V> = React.FC<IProviderProps<V>>;
+export type ValueProviderElement<V> = React.FC<IValueProviderProps<V>>;
 
-export type ContextStateTuple<V> = Readonly<[ProviderElement<V>, UseValueHook<V>,  UseSetterHook<V>]>;
+export type ContextStateTuple<V> = Readonly<[ValueProviderElement<V>, UseValueHook<V>,  UseValueSetterHook<V>]>;
 
 /**
  * Creates a provider, and two hooks, one that provides the value and another
@@ -23,15 +23,28 @@ export type ContextStateTuple<V> = Readonly<[ProviderElement<V>, UseValueHook<V>
  * It's designed for simple state injection where an single value changes
  * atomically without having to use something like mobx.
  *
+ *
+ * Usage would be:
+ *
+ * <source>
+ *
+ * const [FooProvider, useFoo, useFooSetter] createContextState();
+ *
+ * <FooProvider>
+ *  ...
+ * </FooProvider>
+ *
+ * </source>
+ *
  */
 export function createContextState<V>(): ContextStateTuple<V> {
 
     const providerContext = React.createContext<V | undefined>(undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const setterContext = React.createContext<UseSetterHook<V>>(null!);
+    const setterContext = React.createContext<UseValueSetterHook<V>>(null!);
 
-    const Provider = React.memo((props: IProviderProps<V>) => {
+    const Provider = React.memo((props: IValueProviderProps<V>) => {
 
         const [value, setValue] = React.useState(props.initialValue);
 
