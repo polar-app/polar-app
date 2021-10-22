@@ -3,7 +3,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
-import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
+import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";

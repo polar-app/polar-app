@@ -8,7 +8,7 @@ import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {BlockEditorGenericProps} from '../BlockEditor';
-import {IBlockContentStructure} from '../HTMLToBlocks';
+import {IBlockContentStructure} from 'polar-blocks/src/blocks/IBlock';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
@@ -113,6 +113,12 @@ export const BlockContentEditable = (props: IProps) => {
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
         const block = blocks[0];
 
+        const active = blocksTreeStore.active;
+
+        if (! active) {
+            throw new Error("Paste cannot be handled because there's no active block");
+        }
+
         if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
             document.execCommand("insertHTML", false, block.content.data);
             const existingBlock = blocksTreeStore.getBlock(props.id)!;
@@ -121,7 +127,7 @@ export const BlockContentEditable = (props: IProps) => {
             block.content.links.forEach(link => existingBlock.content.addLink(link));
             handleChange(); 
         } else {
-            blocksTreeStore.insertFromBlockContentStructure(blocks);
+            blocksTreeStore.insertFromBlockContentStructure(blocks, { ref: active.id });
         }
     }, [blocksTreeStore, handleChange, props.id]);
 
