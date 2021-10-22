@@ -5,13 +5,52 @@ import {getXmlToJSON} from "./util/getXmlToJSON";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import path from "path";
 
-const getMetadataFieldFromSpine = (spine: {
-    package: {
-        metadata: {
-            [key: string]: any,
-        }
+interface IEPUBRootFile {
+    /**
+     * Root file name
+     */
+    readonly name: string;
+
+    /**
+     * Root file contents converted to JSON
+     */
+    readonly contents: IEPUBRoot;
+}
+
+interface IEPUBRootFileXML {
+    readonly rootFile: string;
+    readonly rootFileData: string;
+}
+interface IEPUBRoot {
+    readonly package: {
+        readonly metadata: {
+            readonly [key: string]: any;
+        };
+        readonly spine: ISpine;
+        readonly manifest: IManifest;
     }
-}, name: string) => spine.package.metadata[`dc:${name}`];
+}
+
+
+interface IManifest {
+    readonly item: Array<IManifestItem>;
+}
+interface IManifestItem {
+    readonly '@_id': string;
+    readonly '@_href': string;
+    readonly '@_media-type': string;
+    readonly '@_properties'?: string;
+}
+export interface ISpine {
+    readonly itemref: Array<ISpineRef>;
+}
+
+export interface ISpineRef {
+    readonly '@_idref': string;
+    readonly '@_linear': "yes" | "no";
+}
+
+const getMetadataFieldFromSpine = (rootFile: IEPUBRoot, name: string) => rootFile.package.metadata[`dc:${name}`];
 
 export class EPUBMetadataUsingNode {
 
@@ -31,7 +70,7 @@ export class EPUBMetadataUsingNode {
 
         const nrPages = rootFileAsJSON.package.spine
             .itemref
-            .filter((ref: { [x: string]: any; }) => ref['@_linear'] === 'yes')
+            .filter((ref: ISpineRef) => ref['@_linear'] === 'yes')
             .length;
 
         return {
@@ -63,19 +102,27 @@ export class EPUBMetadataUsingNode {
 
         // References to the list of chapters within the epub, in a very simple structure
         const chapterReferences = rootFileAsJSON.package.spine.itemref
-            .filter((val: { [x: string]: string; }) => val['@_linear'] === 'yes');
+            .filter((val: ISpineRef) => val['@_linear'] === 'yes');
 
         // Convert the single structure of chapters to one that makes more sense and is richer
-        return chapterReferences.map((item: any) => {
+        return chapterReferences.map((item: ISpineRef) => {
             // Pointer to an ID within the root.package.manifest.item array
             const idref = item['@_idref'];
 
             // Find that full object, based on the `idref` above
             const fullObj = rootFileAsJSON.package.manifest.item
-                .find((val: { [x: string]: any; }) => val['@_id'] === idref);
+                .find((val: IManifestItem) => val['@_id'] === idref);
+
+            // handles edge case of failing to find spine ID Ref 
+            // in package manifest
+            if (!fullObj) {
+                return {
+                    id: idref,
+                    file: idref
+                };
+            }
 
             // Return the ID and the pointer to the file within the epub zip
-
             return {
                 id: idref,
                 file: `${pathToRootFile}/${fullObj['@_href']}`,
@@ -103,8 +150,19 @@ export class EPUBMetadataUsingNode {
         });
     }
 
-    private static async getRootFile(docPathOrURL: string) {
-        const zip = this.getZip(docPathOrURL)
+    private static async getRootFile(docPathOrURL: string): Promise<IEPUBRootFile> {
+        const { rootFile, rootFileData } = await this.getRootFileXML(docPathOrURL);
+
+        const rootFileAsJSON = getXmlToJSON(rootFileData.toString()) as IEPUBRoot;
+
+        return {
+            name: rootFile,
+            contents: rootFileAsJSON,
+        };
+    }
+
+    public static async getRootFileXML(docPathOrURL: string): Promise<IEPUBRootFileXML> {
+        const zip = this.getZip(docPathOrURL);
 
         const data = await zip.entryData('META-INF/container.xml');
 
@@ -115,12 +173,11 @@ export class EPUBMetadataUsingNode {
 
         const rootFileData = await zip.entryData(rootFile);
 
-        const rootFileAsJSON = getXmlToJSON(rootFileData.toString());
-
         await zip.close();
+
         return {
-            name: rootFile,
-            contents: rootFileAsJSON,
+            rootFile: rootFile,
+            rootFileData: rootFileData.toString()
         };
     }
 }
