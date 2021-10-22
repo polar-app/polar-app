@@ -1,7 +1,7 @@
 {
   "name": "polar-migration-block-annotations",
   "version": "0.0.0",
-  "description": "",
+  "description": "Migrate block annotations to the new system.",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
@@ -29,6 +29,9 @@
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
+    "polar-shared": "0.0.0",
+    "polar-firebase-admin": "0.0.0",
+    "polar-firestore-like": "0.0.0",
     "polar-blocks": "0.0.0"
   },
   "files": [

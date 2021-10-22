@@ -22,7 +22,7 @@ import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
-import {BlockHighlights} from "./BlockHighlights";
+import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
