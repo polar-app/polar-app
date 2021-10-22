@@ -274,19 +274,13 @@ export const StatsScreen = React.memo(function StatsScreen() {
 
     })
 
-    const desktop = <Desktop {...state}/>;
-    const phoneAndTablet = <PhoneAndTablet {...state}/>;
-
     return (
 
         <>
             <Helmet>
                 <title>Polar: Statistics</title>
             </Helmet>
-
-            <DeviceRouter desktop={desktop}
-                          phone={phoneAndTablet}
-                          tablet={phoneAndTablet}/>
+            <Desktop {...state}/>
         </>
     );
 

@@ -9,7 +9,7 @@ export function SupportContent() {
 
     const userInfoContext = useUserInfoContext();
 
-    const plan = userInfoContext?.userInfo?.subscription.plan || 'free'
+    const plan = userInfoContext?.userInfo?.subscription.plan || 'free';
 
     return (
         <div className="container">

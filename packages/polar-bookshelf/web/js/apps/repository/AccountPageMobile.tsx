@@ -164,12 +164,12 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
         <>
             <PreferencesButton
                     title={'Settings'}
-                    goToUrl={() => history.push(RoutePathNames.SETTINGS_MOBILE)}
+                    goToUrl={() => history.push(RoutePathNames.SETTINGS)}
                     icon={<SettingsIcon/>}    />
 
             <PreferencesButton
                 title={'Upgrade Plan'}
-                goToUrl={() => history.push(RoutePathNames.PLAN_MOBILE)}
+                goToUrl={() => history.push(RoutePathNames.PLANS)}
                 icon={<MonetizationOnIcon/>}   />
 
             <CollapsibleHelpSection/>
