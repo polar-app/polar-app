@@ -1,11 +1,13 @@
 import { Link, Paper } from '@material-ui/core';
 import * as React from 'react';
 import {Box, Typography} from '@material-ui/core';
-import { IndeterminateProgressBar } from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
+import { LinearProgressWithLabel } from '../../../web/js/ui/dialogs/LinearProgressWithLabel';
 import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
 import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
 
 export const MigrationToBlockAnnotationsMainContent = () => {
+
+    const [progress, setProgress] = React.useState(10);
 
     return (  
         <AdaptiveDialog>
@@ -25,7 +27,7 @@ export const MigrationToBlockAnnotationsMainContent = () => {
                             We're Migrating you to the latest version of Polar
                         </Box>
                         <Box m={2}>
-                            <IndeterminateProgressBar/>
+                            <LinearProgressWithLabel value={progress}/>
                         </Box>
                     </Typography>
                         
