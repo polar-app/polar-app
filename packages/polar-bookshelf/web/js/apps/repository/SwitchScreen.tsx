@@ -44,10 +44,19 @@ const TableHeader = (props: TableHeaderProps) => {
         </TableHead>
     );
 }
-function toDate(ts: string | undefined): number {
-    return ts ? ISODateTimeStrings.parse(ts).getTime() : 0;
-}
 
+function docInfoComparator(a: IDocInfo, b: IDocInfo) {
+
+    function toDate(ts: string | undefined): number {
+        return ts ? ISODateTimeStrings.parse(ts).getTime() : 0;
+    }
+
+    function docInfoToDate(docInfo: IDocInfo): number {
+        return Math.max(toDate(docInfo.lastUpdated), toDate(docInfo.added));
+    }
+
+    return docInfoToDate(b) - docInfoToDate(a);
+}
 
 function useSortedDocInfos() {
 
@@ -55,9 +64,7 @@ function useSortedDocInfos() {
 
     const docs = data.map(current => current.docInfo);
 
-    return docs.sort((a: IDocInfo, b: IDocInfo)=>{
-        return toDate(a.lastUpdated) - toDate(b.lastUpdated);
-    });
+    return docs.sort(docInfoComparator);
 
 }
 
