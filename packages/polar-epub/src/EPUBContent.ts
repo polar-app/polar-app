@@ -32,7 +32,7 @@ interface IEPUBText {
     readonly text: string;
 };
 export namespace EPUBContent {
-    export async function get(filePath: string): Promise<IEPUBContent[]> {
+    export async function get(filePath: string): Promise<ReadonlyArray<IEPUBContent>> {
         const results: IEPUBContent[] = [];
     
         const zip = EPUBMetadataUsingNode.getZip(filePath);
@@ -54,7 +54,7 @@ export namespace EPUBContent {
             await zip.close();
         }
 
-        return results;
+        return results as ReadonlyArray<IEPUBContent>;
     }
 
     async function extractChapterHtml(filePath: string, ref: IChapterReference): Promise<string> {
@@ -80,7 +80,8 @@ export namespace EPUBContent {
      * parse html content of an EPUB page/chapter
      * 
      */
-    export async function parseContent(rootFile: string, content: IEPUBContent): Promise<IEPUBText[]> {
+    export async function parseContent(rootFile: string,
+                                       content: IEPUBContent): Promise<ReadonlyArray<IEPUBText>> {
         const dom = new JSDOM(await content.html());
 
         const CFIXMLFragment = await generateCFIXMLFragment(rootFile, content.id);
@@ -96,7 +97,7 @@ export namespace EPUBContent {
             }
         });
 
-        return results;
+        return results as ReadonlyArray<IEPUBText>;
     }
 
     /**
