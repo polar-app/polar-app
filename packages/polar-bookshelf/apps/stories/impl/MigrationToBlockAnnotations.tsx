@@ -9,7 +9,11 @@ export const MigrationToBlockAnnotationsMainContent = () => {
 
     return (  
         <AdaptiveDialog>
-                <Box m={1} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
+                <Box m={2} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
+                    <Box m={2}>
+                        <LogoAndTextSideBySide/>
+                    </Box>
+                    
                     <Typography variant="body1">
                         <b>
                             Just a Minute
@@ -26,7 +30,7 @@ export const MigrationToBlockAnnotationsMainContent = () => {
                     </Typography>
                         
                     <Typography variant="caption">
-                        <Box mt={2} ml={2} mr={2} textAlign={'center'}>
+                        <Box m={2} textAlign={'center'} justifyContent={'center'}>
                             As part of Polar's Updates, we're migrating the backend which can take up to a 
                             couple minutes, depending on the size of your repository. This is a one time migration. 
                             <Link> Learn More</Link>
@@ -36,20 +40,3 @@ export const MigrationToBlockAnnotationsMainContent = () => {
         </AdaptiveDialog>
     )
 }
-
-export const MigrationToBlockAnnotations = () => {
-
-    return (
-
-            <AdaptiveDialog>
-                <Paper>
-                        <Box mt={2}>
-                            <LogoAndTextSideBySide/>
-                        </Box>
-                    
-                        <MigrationToBlockAnnotationsMainContent/>
-                </Paper>
-            </AdaptiveDialog>
-    );
-
-};
