@@ -89,11 +89,15 @@ export function createActionsProvider(actions: ReadonlyArray<IActionMenuItem>): 
 
 }
 
+export type Reset = () => void;
+
 export class ActionStore {
 
     @observable state: IActionState | undefined = undefined;
 
     @observable id: string;
+
+    @observable reset: Reset | undefined;
 
     constructor() {
         this.id = Hashcodes.createRandomID();
@@ -121,6 +125,14 @@ export class ActionStore {
             items
         });
 
+    }
+
+    @action public setReset(reset: Reset) {
+        this.reset = reset;
+    }
+
+    @action public clearReset() {
+        this.reset = undefined;
     }
 
 }
