@@ -1,4 +1,4 @@
-import {EmailStr, Strings} from "polar-shared/src/util/Strings";
+import {EmailStr} from "polar-shared/src/util/Strings";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {isPresent} from "polar-shared/src/Preconditions";
@@ -6,9 +6,11 @@ import {Mailgun} from "../Mailgun";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 import {Challenges} from "polar-shared/src/util/Challenges";
-import {isPrivateBetaEnabled} from "polar-private-beta/src/isPrivateBetaEnabled";
+import {UserRecord} from "firebase-functions/lib/providers/auth";
+import {Lazy} from "../util/Lazy";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -17,9 +19,12 @@ export interface IStartTokenAuthRequest {
 
 export type MailProvider = 'sendgrid' | 'mailgun';
 
+type ERROR_CODE_GENERIC_ERROR = 'unable-to-send-email';
+type ERROR_CODE_REGISTRATIONS_DISABLED = 'registrations-disabled';
+
 export interface IStartTokenErrorResponse {
-    readonly code: 'unable-to-send-email';
-    readonly status: 'unable-to-send-email';
+    readonly code: ERROR_CODE_GENERIC_ERROR | ERROR_CODE_REGISTRATIONS_DISABLED;
+    readonly status: ERROR_CODE_GENERIC_ERROR | ERROR_CODE_REGISTRATIONS_DISABLED;
     readonly message: string;
     readonly email: string;
 }
@@ -45,6 +50,8 @@ export async function createOrFetchChallenge(email: EmailStr): Promise<IChalleng
     return Challenges.create();
 
 }
+
+const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
 
@@ -155,7 +162,37 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     }
 
+    async function fetchUserByEmail(email: string): Promise<UserRecord | undefined> {
+
+        try {
+            const firebase = firebaseProvider();
+            const auth = firebase.auth();
+            return await auth.getUserByEmail(email);
+        } catch (err) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((err as any).code === 'auth/user-not-found') {
+                return undefined;
+            }
+            throw err;
+        }
+
+    }
+
     try {
+
+        const authUser = await fetchUserByEmail(email);
+        if (!authUser) {
+            // User not found, attempt to self-register fails here because Private Beta is enabled
+            const response: IStartTokenErrorResponse = {
+                code: "registrations-disabled",
+                status: "registrations-disabled",
+                message: 'User does not exist. Please register for the Private Beta',
+                email,
+            };
+
+            ExpressFunctions.sendResponse(res, response);
+            return;
+        }
 
         if (resend === true || resend === 'true') {
             await resendMessage();
