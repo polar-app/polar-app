@@ -10,8 +10,6 @@ export type UseValueHook<V> = () => V | undefined;
 
 export type UseValueSetterHook<V> = (value: V | undefined) => void;
 
-// export type ProviderElement<V> = (props: IProviderProps<V>) => React.ReactElement
-
 export type ValueProviderElement<V> = React.FC<IValueProviderProps<V>>;
 
 export type ContextStateTuple<V> = Readonly<[ValueProviderElement<V>, UseValueHook<V>,  UseValueSetterHook<V>]>;
