@@ -35,7 +35,9 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                                     <ArrowBackIcon/>
                                 </IconButton>
                             )}
+
                             {props.title}
+
                         </Toolbar>
                     </AppBar>
                 </>
