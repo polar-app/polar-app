@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
-import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
+import {AnnotationRepoFilters} from "../../repository/js/annotation_repo/AnnotationRepoFilters";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
@@ -83,7 +83,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
 
                 if (mutation.filter !== store.filter) {
 
-                    const view = AnnotationRepoFilters2.execute(store.data, {text: mutation.filter});
+                    const view = AnnotationRepoFilters.execute(store.data, {text: mutation.filter});
 
                     return {
                         ...store,
@@ -121,7 +121,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                                     // apply sort order
                                     .map(sorter)
                                     // apply current filters
-                                    .map(data => AnnotationRepoFilters2.execute(data, {text: store.filter}))
+                                    .map(data => AnnotationRepoFilters.execute(data, {text: store.filter}))
                                     .collect();
 
                 return {

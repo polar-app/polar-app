@@ -5,7 +5,7 @@ interface IProps {
     readonly onChange: (text: string) => void;
 }
 
-export const TextFilter2 = (props: IProps) => {
+export const TextFilter = (props: IProps) => {
 
     const width = '250px';
 
@@ -13,7 +13,7 @@ export const TextFilter2 = (props: IProps) => {
 
         <MUISearchBox2 id="filter_title"
                        placeholder="Filter by text"
-                       style={{width}}
+                       style={{ width }}
                        onChange={text => props.onChange(text)}/>
 
 

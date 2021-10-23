@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr, IBlockContent, IBlockContentMap, ITextContent} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
@@ -323,4 +323,30 @@ export namespace BlockTextContentUtils {
                     : content.value.fields.front;
         }
     }
+}
+
+export namespace BlockLinksMatcher {
+
+    export function filter<T extends IBlock>(list: ReadonlyArray<T>,
+                                             filterLinks: ReadonlyArray<IBlockLink>): ReadonlyArray<T> {
+        
+        const filterLinksMap = arrayStream(filterLinks).toMap(({ id }) => id);
+
+        function predicate(item: IBlock): boolean {
+
+            const itemLinks = item.content.links;
+
+            for (const itemLink of itemLinks) {
+                if (filterLinksMap[itemLink.id]) {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
+        return list.filter(predicate);
+    }
+
 }

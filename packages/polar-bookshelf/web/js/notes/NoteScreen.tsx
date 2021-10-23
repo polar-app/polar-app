@@ -32,7 +32,7 @@ export const NoteProviders: React.FC = ({ children }) => {
     const classes = useStyles();
 
     return (
-        <div className="NoteRoot" style={{ height: '100%' }}>
+        <div className="NoteRoot" style={{ height: '100%', width: '100%' }}>
             <ActionMenuStoreProvider>
                 <NoteSelectionHandler style={{ height: '100%' }}>
                     <NoteStyle>
