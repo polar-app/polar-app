@@ -25,8 +25,8 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {MUIRepositoryRoot} from "../../mui/MUIRepositoryRoot";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
-import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
-import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
+import {AnnotationRepoStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
+import {AnnotationRepoScreen} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -69,6 +69,7 @@ import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
+import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 
 interface IProps {
     readonly app: App;
@@ -298,14 +299,16 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                  repoDocMetaManager={repoDocMetaManager}
                                  repoDocMetaLoader={repoDocMetaLoader}
                                  persistenceLayerManager={persistenceLayerManager}>
-                <AnnotationRepoStore2>
-                    <AnnotationRepoSidebarTagStore>
-                        <>
-                            <ReviewRouter/>
-                            <AnnotationRepoScreen2/>
-                        </>
-                    </AnnotationRepoSidebarTagStore>
-                </AnnotationRepoStore2>
+                <AnnotationRepoStore>
+                    <BlocksAnnotationRepoStoreProvider>
+                        <AnnotationRepoSidebarTagStore>
+                            <>
+                                <ReviewRouter/>
+                                <AnnotationRepoScreen/>
+                            </>
+                        </AnnotationRepoSidebarTagStore>
+                    </BlocksAnnotationRepoStoreProvider>
+                </AnnotationRepoStore>
             </PersistenceLayerApp>
         );
     });

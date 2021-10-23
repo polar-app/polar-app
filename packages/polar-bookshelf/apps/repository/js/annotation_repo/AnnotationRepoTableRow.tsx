@@ -6,7 +6,7 @@ import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
 import isEqual from "react-fast-compare";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {FixedHeightAnnotationPreview} from "./FixedHeightAnnotationPreview";
-import {useAnnotationRepoTableContextMenu} from "./AnnotationRepoTable2";
+import {useAnnotationRepoTableContextMenu} from "./AnnotationRepoTable";
 
 interface IProps {
     readonly viewIndex: number;

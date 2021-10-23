@@ -13,7 +13,7 @@ import {TagMatcher2} from "../../../../web/js/tags/TagMatcher2";
  * Keeps track of the doc index so that we can filter it in the UI and have
  * the filter events send to the index and then update component state directly.
  */
-export namespace AnnotationRepoFilters2 {
+export namespace AnnotationRepoFilters {
 
     export interface Filter {
 
