@@ -3,7 +3,6 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters} from "../../repository/js/annotation_repo/AnnotationRepoFilters";
-import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
@@ -11,6 +10,7 @@ import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter";
 import PageInfoIndex = DocAnnotationSorter.PageInfoIndex;
 
 interface IAnnotationSidebarStore {
