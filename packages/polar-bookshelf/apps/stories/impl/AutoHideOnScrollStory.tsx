@@ -152,13 +152,14 @@ export const AutoHidePageLayout = (props: AutoHidePageLayoutProps) => {
 
                             </Toolbar>
                         </AppBar>
-                    </HideOnScrollUsingSlide>
 
-                    <Toolbar/>
+                    </HideOnScrollUsingSlide>
 
                 </>
 
             </DeviceRouter.Handheld>
+
+            <Toolbar/>
 
             <div style={{
                      display: 'flex',
@@ -167,6 +168,7 @@ export const AutoHidePageLayout = (props: AutoHidePageLayoutProps) => {
                      minWidth: 0,
                  }}
                  >
+
 
                 <div style={{
                          overflow: 'auto',
