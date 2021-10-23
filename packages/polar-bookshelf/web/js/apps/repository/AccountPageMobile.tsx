@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {UserAvatar} from '../../../../web/js/ui/cloud_auth/UserAvatar';
+import {UserAvatar} from '../../ui/cloud_auth/UserAvatar';
 import {Box, Button, Collapse, createStyles, makeStyles, Paper} from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -7,13 +7,13 @@ import HelpIcon from '@material-ui/icons/Help';
 import SettingsIcon from '@material-ui/icons/Settings';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
-import {PlanUsage} from "../../../../web/js/apps/repository/accounting/PlanUsage";
+import {useUserInfoContext} from "./auth_handler/UserInfoProvider";
+import {PlanUsage} from "./accounting/PlanUsage";
 import {IconByPlan} from '../../../../apps/repository/js/account_overview/PlanIcon';
 import {useHistory} from 'react-router-dom';
-import {MenuItems} from '../../../../web/js/sidenav/SideNavQuestionButton';
-import {useLogoutAction} from '../../../../web/js/ui/cloud_auth/AccountControl';
-import {usePopperController} from '../../../../web/js/mui/menu/MUIPopper';
+import {MenuItems} from '../../sidenav/SideNavQuestionButton';
+import {useLogoutAction} from '../../ui/cloud_auth/AccountControl';
+import {usePopperController} from '../../mui/menu/MUIPopper';
 import {RoutePathNames} from './RoutePathNames';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
@@ -81,7 +81,7 @@ export const UserDetailsRow = React.memo(function UserDetailsRow(){
 
     return(
         <Box ml={1} pr={1} className={classes.root}>
-            <UserAvatar size={'medium'} className={classes.avatar} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
+            <UserAvatar size={'medium'} className={classes.avatar}/>
             <Box component='div' ml={1} className={classes.details}>
                 <Box component='span' color='text.primary'>{userInfoContext?.userInfo?.displayName}</Box>
                 <Box component='span' color='text.secondary'>{userInfoContext?.userInfo?.email}</Box>

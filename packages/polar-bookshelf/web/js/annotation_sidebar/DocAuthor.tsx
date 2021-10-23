@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
-import {UserAvatar} from '../ui/cloud_auth/UserAvatar';
+import {UserAvatar, UserAvatarControlled} from '../ui/cloud_auth/UserAvatar';
 import isEqual from "react-fast-compare";
 
 interface IProps {
@@ -15,8 +15,8 @@ export const DocAuthor = React.memo(function DocAuthor(props: IProps) {
     const {author} = props;
 
     if (author && author.image) {
-        return <UserAvatar photoURL={props.author?.image?.src}
-                           displayName={props.author?.name}/>;
+        return <UserAvatarControlled photoURL={props.author?.image?.src}
+                                     displayName={props.author?.name}/>;
     } else {
         return null;
     }
