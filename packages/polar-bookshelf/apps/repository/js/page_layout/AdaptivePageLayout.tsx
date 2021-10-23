@@ -35,7 +35,9 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                                     <ArrowBackIcon/>
                                 </IconButton>
                             )}
+
                             {props.title}
+
                         </Toolbar>
                     </AppBar>
                 </>
@@ -44,21 +46,16 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
 
             <FixedNav.Body>
 
-                <div style={{
+                <Box ml="auto" mr="auto"
+                     style={{
+                         maxWidth: props.fullWidth ? undefined : '700px',
                          overflow: 'auto',
-                         flexGrow: 1
+                         flexGrow: 1,
                      }}>
 
-                    <Box ml="auto" mr="auto"
-                         style={{
-                             maxWidth: props.fullWidth ? undefined : '700px',
-                         }}>
+                    {props.children}
 
-                        {props.children}
-
-                    </Box>
-
-                </div>
+                </Box>
 
             </FixedNav.Body>
 
