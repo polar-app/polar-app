@@ -5,6 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {useHistory} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {UserAvatarIconButton} from "../../../../web/js/ui/cloud_auth/UserAvatarIconButton";
 
 interface IProps {
     readonly title: string;
@@ -30,12 +31,21 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                     <AppBar position="static">
                         <Toolbar>
 
-                            {! props.noBack && (
-                                <IconButton onClick={()=>history.goBack()}>
-                                    <ArrowBackIcon/>
-                                </IconButton>
-                            )}
-                            {props.title}
+                            <div>
+
+                                {! props.noBack && (
+                                    <IconButton onClick={() => history.goBack()}>
+                                        <ArrowBackIcon/>
+                                    </IconButton>
+                                )}
+
+                                {props.title}
+                            </div>
+
+                            <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', flexGrow: 1}}>
+                                <UserAvatarIconButton onClick={() => history.push('/account')}/>
+                            </div>
+
                         </Toolbar>
                     </AppBar>
                 </>

@@ -24,7 +24,6 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
 
     const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();
-    const userInfoContext = useUserInfoContext()
     const history = useHistory();
 
     const {setFilters} = callbacks;
@@ -37,9 +36,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
                     <span>My workspace</span>
 
                     <UserAvatarIconButton onClick={()=>history.push(RoutePathNames.ACCOUNT_MOBILE)}
-                                style={{marginLeft: 'auto'}}
-                                photoURL={userInfoContext?.userInfo?.photoURL}
-                                displayName={userInfoContext?.userInfo?.displayName}/>
+                                          style={{marginLeft: 'auto'}}/>
 
                 </>
 
