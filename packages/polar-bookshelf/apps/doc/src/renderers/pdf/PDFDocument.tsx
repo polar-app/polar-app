@@ -219,6 +219,13 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
+        if (! docViewer.containerElement) {
+            // fixes a bug where this is registered as an eventListener and gets
+            // closed after the document is loaded.
+            console.warn("No container element");
+            return;
+        }
+
         const loadingTask = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
 
         let progressTracker: ProgressTracker | undefined;
