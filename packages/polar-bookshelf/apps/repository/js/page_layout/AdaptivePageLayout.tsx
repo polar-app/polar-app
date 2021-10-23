@@ -30,16 +30,16 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
                 <>
                     <AppBar position="static">
                         <Toolbar>
-
-                            <div>
+                            <div style={{display: 'flex', alignItems: 'center'}}>
 
                                 {! props.noBack && (
-                                    <IconButton onClick={() => history.goBack()}>
+                                    <IconButton onClick={()=>history.goBack()}>
                                         <ArrowBackIcon/>
                                     </IconButton>
                                 )}
 
                                 {props.title}
+
                             </div>
 
                             <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', flexGrow: 1}}>
@@ -54,21 +54,16 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
 
             <FixedNav.Body>
 
-                <div style={{
+                <Box ml="auto" mr="auto"
+                     style={{
+                         maxWidth: props.fullWidth ? undefined : '700px',
                          overflow: 'auto',
-                         flexGrow: 1
+                         flexGrow: 1,
                      }}>
 
-                    <Box ml="auto" mr="auto"
-                         style={{
-                             maxWidth: props.fullWidth ? undefined : '700px',
-                         }}>
+                    {props.children}
 
-                        {props.children}
-
-                    </Box>
-
-                </div>
+                </Box>
 
             </FixedNav.Body>
 

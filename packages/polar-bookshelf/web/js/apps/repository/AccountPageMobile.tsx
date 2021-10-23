@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) =>
     })
 );
 
-interface IPrefButton{
+interface IPrefButton {
     readonly title: string;
     readonly icon: any;
     readonly goToUrl: React.MouseEventHandler;
