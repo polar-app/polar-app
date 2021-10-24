@@ -68,7 +68,7 @@ const Main = () => {
 
     return (
         <>
-            <Box pt={2} className={classes.root}>
+            <Box pt={2} pb={2} className={classes.root}>
 
                 <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
