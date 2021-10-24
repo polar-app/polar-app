@@ -1,5 +1,5 @@
-import {Visibility} from "src/datastore/Visibility";
-import {GroupIDStr} from "polar-bookshelf/web/js/datastore/Datastore";
+import {Visibility} from "../datastore/Visibility";
+import {GroupIDStr} from "../util/Strings";
 
 export interface RecordPermission {
 
