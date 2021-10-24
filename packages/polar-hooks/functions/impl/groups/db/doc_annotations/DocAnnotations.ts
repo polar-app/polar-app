@@ -10,6 +10,7 @@ import {UserID} from "../../../../sandbox/test";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 
 export type UserProfileProvider = (uid: UserIDStr) => Promise<IProfile | undefined>;
 
@@ -264,16 +265,6 @@ export class DocMetaHolders {
         };
 
     }
-
-}
-
-export interface DocMetaHolder {
-
-    // expose the high level DocInfo on this object which allows us to search by
-    // URL, tags, etc.
-    readonly docInfo: IDocInfo;
-
-    readonly value: string;
 
 }
 
