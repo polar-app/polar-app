@@ -1,4 +1,3 @@
-import {RecordHolder} from './FirebaseDatastore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Preconditions} from 'polar-shared/src/Preconditions';
@@ -7,6 +6,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {Analytics} from "../analytics/Analytics";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {RecordHolder} from "./RecordHolder";
 
 export class Invitations {
 

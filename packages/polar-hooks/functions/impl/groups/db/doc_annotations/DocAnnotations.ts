@@ -239,6 +239,7 @@ export interface RecordPermission {
     readonly groups?: ReadonlyArray<GroupIDStr> | null;
 
 }
+
 /**
  * Holds a data object literal by value. This contains the high level
  * information about a document including the ID and the visibility.  The value

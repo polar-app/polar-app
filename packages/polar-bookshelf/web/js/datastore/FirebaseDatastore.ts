@@ -42,7 +42,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {FirebaseBrowser, UserID} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -63,6 +63,7 @@ import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/Fireba
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "./RecordHolder";
 
 const log = Logger.create();
 
@@ -1134,22 +1135,6 @@ export interface RecordPermission {
     readonly visibility: Visibility;
 
     readonly groups?: ReadonlyArray<GroupIDStr> | null;
-
-}
-
-/**
- * Holds a data object literal by value. This contains the high level
- * information about a document including the ID and the visibility.  The value
- * object points to a more specific object which hold the actual data we need.
- */
-export interface RecordHolder<T> extends RecordPermission {
-
-    // the owner of this record.
-    readonly uid: UserID;
-
-    readonly id: string;
-
-    readonly value: T;
 
 }
 
