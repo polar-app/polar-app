@@ -89,7 +89,7 @@ export namespace MigrationToBlockAnnotations {
         await bumpVersions(userID, firestore, batch, createDocMetaClone(docMetaRecord));
 
 
-        // await batch.commit();
+        await batch.commit();
     }
 
     /**
