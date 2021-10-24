@@ -62,7 +62,7 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-import {DocMetaHolder} from "./DocMetaHolder";
+import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 
 const log = Logger.create();
 

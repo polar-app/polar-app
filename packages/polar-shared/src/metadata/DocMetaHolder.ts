@@ -1,4 +1,4 @@
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocInfo} from "./IDocInfo";
 
 export interface DocMetaHolder {
 
