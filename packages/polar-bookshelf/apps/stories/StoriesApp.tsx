@@ -56,6 +56,7 @@ import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory'
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
+import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 
 interface IStory {
     readonly name: string;
@@ -79,6 +80,11 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+
+    {
+        name: "Auth Hide on Scroll",
+        component: <AutoHideOnScrollStory/>
+    },
     {
         name: "Vertical Dynamic Scroller",
         component: <VerticalDynamicScrollerStory/>
