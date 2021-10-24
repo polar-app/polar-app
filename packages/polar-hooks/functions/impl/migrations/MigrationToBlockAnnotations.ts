@@ -19,7 +19,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
-export namespace Polar3DocMetaMigrator {
+export namespace MigrationToBlockAnnotations {
 
     const OLD_DOC_META_COLLECTION_NAME = 'doc_meta';
     const NEW_DOC_META_COLLECTION_NAME = 'doc_meta2';
@@ -94,7 +94,7 @@ export namespace Polar3DocMetaMigrator {
         await migrateAnnotationsToBlocks(userID, firestore, batch, createDocMetaClone(docMetaRecord));
         await bumpVersions(userID, firestore, batch, createDocMetaClone(docMetaRecord));
 
-        
+
         // await batch.commit();
     }
 
@@ -165,7 +165,7 @@ export namespace Polar3DocMetaMigrator {
         const documentBlocksSnapshot = BlocksSnapshot
             .blockContentStructureToBlockSnapshot(userID.uid, [docContentStructure]);
 
-        
+
         const namedBlocksSnapshots = BlocksSnapshot
             .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
 
