@@ -1,5 +1,5 @@
-import {UserID} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {RecordPermission} from "./FirebaseDatastore";
+import {RecordPermission} from "./RecordPermission";
+import {UserIDStr} from "../util/Strings";
 
 /**
  * Holds a data object literal by value. This contains the high level
@@ -9,7 +9,7 @@ import {RecordPermission} from "./FirebaseDatastore";
 export interface RecordHolder<T> extends RecordPermission {
 
     // the owner of this record.
-    readonly uid: UserID;
+    readonly uid: UserIDStr;
 
     readonly id: string;
 

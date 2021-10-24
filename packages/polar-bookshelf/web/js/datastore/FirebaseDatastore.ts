@@ -15,7 +15,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     FileMeta,
-    GroupIDStr,
     InitResult,
     MutationType,
     SnapshotResult,
@@ -63,7 +62,8 @@ import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/Fireba
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
-import {RecordHolder} from "./RecordHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
 
 const log = Logger.create();
 
@@ -1128,15 +1128,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 }
 
 type FirestoreSource = 'default' | 'server' | 'cache';
-
-export interface RecordPermission {
-
-    // the visibility of this record.
-    readonly visibility: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr> | null;
-
-}
 
 export enum DatastoreCollection {
 

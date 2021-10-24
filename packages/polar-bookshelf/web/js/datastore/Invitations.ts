@@ -6,7 +6,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {Analytics} from "../analytics/Analytics";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-import {RecordHolder} from "./RecordHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 
 export class Invitations {
 

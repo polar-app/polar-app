@@ -15,7 +15,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-import {RecordHolder} from "../RecordHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 
 const log = Logger.create();
 
