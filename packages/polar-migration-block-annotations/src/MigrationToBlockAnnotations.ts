@@ -2,8 +2,6 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {RecordHolder} from "polar-hooks-functions/impl/groups/db/doc_annotations/DocAnnotations";
-import {IDUser} from "polar-hooks-functions/impl/util/IDUsers";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {Texts} from "polar-shared/src/metadata/Texts";
@@ -19,6 +17,8 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {IDUser} from "polar-rpc/src/IDUser";
 
 export namespace MigrationToBlockAnnotations {
 
