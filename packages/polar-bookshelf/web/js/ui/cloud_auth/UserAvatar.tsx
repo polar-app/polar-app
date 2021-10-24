@@ -2,11 +2,10 @@ import Avatar from "@material-ui/core/Avatar";
 import React from "react";
 import {URLStr} from "polar-shared/src/util/Strings";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import isEqual from "react-fast-compare";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from 'clsx';
-import IconButton from "@material-ui/core/IconButton";
+import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -35,16 +34,19 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface UserAvatarProps {
+export interface UserAvatarControlledProps {
+
     readonly photoURL: URLStr | undefined;
     readonly displayName: string | undefined;
+
     readonly size?: 'small' | 'medium' | 'large' | 'xlarge';
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly onClick?: () => void;
+
 }
 
-export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps) {
+export const UserAvatarControlled = React.memo(function UserAvatar(props: UserAvatarControlledProps) {
 
     const classes = useStyles();
 
@@ -70,7 +72,7 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
         // Revert to letter avatars...
 
         const letter = displayName[0].toUpperCase();
-        
+
         return <Avatar className={className} style={props.style}>{letter} </Avatar>;
 
     } else {
@@ -80,18 +82,20 @@ export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps)
         </Avatar>;
     }
 
-}, isEqual);
+});
 
-interface UserAvatarIconButtonProps extends UserAvatarProps {
-    readonly onClick?: () => void;
+export interface UserAvatarProps extends Pick<UserAvatarControlledProps, 'onClick' | 'size' | 'className' | 'style'> {
+
 }
 
-export const UserAvatarIconButton = React.memo(function UserAvatarIconButton(props: UserAvatarIconButtonProps) {
+export const UserAvatar = React.memo(function UserAvatar(props: UserAvatarProps) {
 
+    const userInfoContext = useUserInfoContext();
     return (
-        <IconButton onClick={props.onClick} className={props.className} style={props.style}>
-            <UserAvatar {...props}/>
-        </IconButton>
+        <UserAvatarControlled {...props}
+                              photoURL={userInfoContext?.userInfo?.photoURL}
+                              displayName={userInfoContext?.userInfo?.displayName}/>
     )
 
 });
+

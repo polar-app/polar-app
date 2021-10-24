@@ -6,10 +6,9 @@ import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {UserAvatarIconButton} from '../../../../web/js/ui/cloud_auth/UserAvatar';
-import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useHistory} from 'react-router-dom';
 import {RoutePathNames} from '../../../../web/js/apps/repository/RoutePathNames';
+import {UserAvatarIconButton} from "../../../../web/js/ui/cloud_auth/UserAvatarIconButton";
 
 export interface IProps {
 
@@ -24,7 +23,6 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
 
     const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();
-    const userInfoContext = useUserInfoContext()
     const history = useHistory();
 
     const {setFilters} = callbacks;
@@ -37,9 +35,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
                     <span>My workspace</span>
 
                     <UserAvatarIconButton onClick={()=>history.push(RoutePathNames.ACCOUNT_MOBILE)}
-                                          style={{marginLeft: 'auto'}}
-                                          photoURL={userInfoContext?.userInfo?.photoURL}
-                                          displayName={userInfoContext?.userInfo?.displayName}/>
+                                          style={{marginLeft: 'auto'}}/>
 
                 </>
 

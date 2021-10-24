@@ -81,7 +81,7 @@ export const UserDetailsRow = React.memo(function UserDetailsRow(){
 
     return(
         <Box ml={1} pr={1} className={classes.root}>
-            <UserAvatar size={'medium'} className={classes.avatar} photoURL={userInfoContext?.userInfo?.photoURL} displayName={userInfoContext?.userInfo?.displayName}/>
+            <UserAvatar size={'medium'} className={classes.avatar}/>
             <Box component='div' ml={1} className={classes.details}>
                 <Box component='span' color='text.primary'>{userInfoContext?.userInfo?.displayName}</Box>
                 <Box component='span' color='text.secondary'>{userInfoContext?.userInfo?.email}</Box>
