@@ -1,13 +1,14 @@
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {MockIDocMetas} from "../../../datastore/MockIDocMetas";
-import {DocAnnotations, DocMetaHolders, IDocumentSnapshots, RecordHolder} from "./DocAnnotations";
+import {DocAnnotations, DocMetaHolders, IDocumentSnapshots} from "./DocAnnotations";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assert} from 'chai';
 import {GroupIDStr} from "../Groups";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {IProfile } from "polar-firebase/src/firebase/om/ProfileCollection";
-import {UserIDStr } from 'polar-shared/src/util/Strings';
+import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr} from 'polar-shared/src/util/Strings';
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 
 const uid = '10101';
 

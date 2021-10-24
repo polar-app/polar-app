@@ -6,11 +6,10 @@ import {IDRecord, IDRecordMutations} from "../mutations/IDRecordMutations";
 import {GroupIDStr} from "../Groups";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IDStr, ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {UserID} from "../../../../sandbox/test";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 
 export type UserProfileProvider = (uid: UserIDStr) => Promise<IProfile | undefined>;
 
@@ -227,32 +226,6 @@ export interface DocAnnotationMutation {
     readonly collection: DocAnnotationCollection;
     readonly type: MutationType;
     readonly value: ProfileDocAnnotation | GroupDocAnnotation;
-
-}
-
-
-export interface RecordPermission {
-
-    // the visibility of this record.
-    readonly visibility: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr> | null;
-
-}
-
-/**
- * Holds a data object literal by value. This contains the high level
- * information about a document including the ID and the visibility.  The value
- * object points to a more specific object which hold the actual data we need.
- */
-export interface RecordHolder<T> extends RecordPermission {
-
-    // the owner of this record.
-    readonly uid: UserID;
-
-    readonly id: string;
-
-    readonly value: T;
 
 }
 
