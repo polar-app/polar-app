@@ -62,6 +62,7 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {DocMetaHolder} from "./DocMetaHolder";
 
 const log = Logger.create();
 
@@ -1149,16 +1150,6 @@ export interface RecordHolder<T> extends RecordPermission {
     readonly id: string;
 
     readonly value: T;
-
-}
-
-export interface DocMetaHolder {
-
-    // expose the high level DocInfo on this object which allows us to search by
-    // URL, tags, etc.
-    readonly docInfo: IDocInfo;
-
-    readonly value: string;
 
 }
 
