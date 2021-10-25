@@ -173,6 +173,7 @@
     "polar-exporters": "0.0.0",
     "polar-file-saver": "0.0.0",
     "polar-firebase": "0.0.0",
+    "polar-migration-block-annotations": "0.0.0",
     "polar-firebase-browser": "0.0.0",
     "polar-firebase-test": "0.0.0",
     "polar-firestore-like": "0.0.0",

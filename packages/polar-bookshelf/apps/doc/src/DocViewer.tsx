@@ -34,30 +34,13 @@ import {SideCar} from "../../../web/js/sidenav/SideNav";
 import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {useFirestore} from "../../repository/js/FirestoreProvider";
-import {BlockContent, useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationContent, AnnotationHighlightContent} from "../../../web/js/notes/content/AnnotationContent";
+import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-import {IComment} from "polar-shared/src/metadata/IComment";
-import {MarkdownContent} from "../../../web/js/notes/content/MarkdownContent";
-import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
-import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
-import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
-import {AnnotationBlockMigrator} from "./AnnotationBlockMigrator";
+import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useAnnotationBlockManager} from "../../../web/js/notes/HighlightBlocksHooks";
-import {BlockContentStructure} from "../../../web/js/notes/HTMLToBlocks";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockHighlights} from "../../../web/js/notes/BlockHighlights";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 import AppBar from "@material-ui/core/AppBar";
@@ -66,6 +49,8 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
+import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
+import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -387,105 +372,29 @@ const useDocumentBlockMigrator = () => {
             return size !== 0;
         };
 
-        const createDocumentBlock = (): BlockIDStr => {
-            const tags = Object.entries(docMeta.docInfo.tags || {})
-                .reduce((acc, [key, tag]) => ({ ...acc, [key]: { ...tag, source: 'self' } }), {});
-
-            const links = AnnotationBlockMigrator.tagsToLinks(blocksStore, tags);
-
-            const docInfo = { ...docMeta.docInfo };
-            delete docInfo.tags;
-
-            return blocksStore.createNewNamedBlock({
-                content: new DocumentContent({
-                    type: "document",
-                    docInfo,
-                    links,
-                })
-            });
-        };
-
-        const generateAnnotationBlocks = (annotations: ReadonlyArray<IDocAnnotationRef>): ReadonlyArray<BlockContentStructure> =>
-            arrayStream(annotations)
-                .map((annotation) => {
-                    const content = migrateAnnotation(annotation);
-
-                    return content ? {
-                        content: content,
-                        children: generateAnnotationBlocks(annotation.children())
-                    } : null;
-                })
-                .filterPresent()
-                .collect();
-
-        const migrateAnnotation = (annotation: IDocAnnotationRef): BlockContent | null => {
-            const links = annotation.tags
-                ? AnnotationBlockMigrator.tagsToLinks(blocksStore, annotation.tags)
-                : [];
-
-            const getContent = (): AnnotationContent | MarkdownContent | null => {
-                switch (annotation.annotationType) {
-                    case AnnotationType.TEXT_HIGHLIGHT:
-                        return AnnotationBlockMigrator
-                            .migrateTextHighlight(
-                                annotation.original as ITextHighlight,
-                                annotation.pageNum,
-                                fingerprint,
-                                links,
-                            );
-                    case AnnotationType.AREA_HIGHLIGHT:
-                        return AnnotationBlockMigrator
-                            .migrateAreaHighlight(
-                                annotation.original as IAreaHighlight,
-                                annotation.pageNum,
-                                fingerprint,
-                                links,
-                            );
-                    case AnnotationType.FLASHCARD:
-                        return AnnotationBlockMigrator
-                            .migrateFlashcard(
-                                annotation.original as IFlashcard,
-                                annotation.pageNum,
-                                fingerprint,
-                                links,
-                            );
-                    case AnnotationType.COMMENT:
-                        const wikiLinks = AnnotationBlockMigrator.linksToMarkdown(links);
-                        const markdown = AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content);
-                        return new MarkdownContent({
-                            type: 'markdown',
-                            links: [],
-                            data: `${markdown} ${wikiLinks}`,
-                        });
-                    default:
-                        return null;
-                }
-            };
-
-            const content = getContent();
-
-            return content;
-        };
-
         const migrate = async () => {
             const exists = await blockExists();
 
             if (! exists) {
-                const annotations = DocAnnotationLoader2
-                    .load(docMeta, docFileResolver)
-                    .map(DocAnnotations.toRef);
-                const documentBlockID = createDocumentBlock();
+                const namedBlocksIDs = Object.values(blocksStore.indexByName);
+                const namedBlocks = blocksStore
+                    .createSnapshot(namedBlocksIDs)
+                    .filter((block): block is IBlock<INamedContent> =>
+                        ['document', 'name', 'date'].indexOf(block.content.type) > -1);
 
-                const contentStructure = generateAnnotationBlocks(annotations)
-                    .filter((data): data is BlockContentStructure<AnnotationHighlightContent> => (
-                        data.content.type === AnnotationContentType.AREA_HIGHLIGHT
-                        || data.content.type === AnnotationContentType.TEXT_HIGHLIGHT
-                    ))
-                    .map(data => ({ ...data, id: Hashcodes.createRandomID() }));
+                const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
+                    .getFromDocMeta(docMeta, namedBlocks);
 
-                const sorted = BlockHighlights.sortByPositionInDocument(docMeta, contentStructure);
+                const documentBlockID = blocksStore.createNewNamedBlock({
+                    content: new DocumentContent(docContentStructure.content),
+                });
 
-                blocksStore.insertFromBlockContentStructure(sorted, { ref: documentBlockID });
+                blocksStore.insertFromBlockContentStructure(
+                    docContentStructure.children,
+                    { ref: documentBlockID }
+                );
+
+                blocksStore.insertFromBlockContentStructure(tagContentsStructure);
 
                 dialogs.snackbar({
                     message: "Migrating your annotations to the new format. This may take some time!",

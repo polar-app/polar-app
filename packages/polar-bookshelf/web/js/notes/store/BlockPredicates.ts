@@ -57,7 +57,6 @@ export namespace BlockPredicates {
         return [
             'markdown',
             AnnotationContentType.TEXT_HIGHLIGHT,
-            AnnotationContentType.AREA_HIGHLIGHT,
         ].indexOf(block.content.type) > -1;
     }
 

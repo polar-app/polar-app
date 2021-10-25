@@ -1,8 +1,9 @@
 import React from "react";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {useUploadHandler} from "../UploadHandler";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {HTMLToBlocks} from "../HTMLToBlocks";
 
 export interface IPasteImageData {
     readonly url: URLStr;
