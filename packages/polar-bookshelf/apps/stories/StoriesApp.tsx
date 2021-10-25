@@ -9,16 +9,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {BrowserRouter, useHistory, useLocation} from 'react-router-dom';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 import Box from '@material-ui/core/Box';
-import {NotesStory} from "./impl/NotesStory";
 import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
 import {DocCardStory} from "./impl/DocCardStory";
-import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
-import {SideNavStory} from "./impl/SideNavStory";
-import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
-import {ReactWindowStory} from "./impl/ReactWindowStory";
 import {IntersectionListStory} from './impl/IntersectionListStory';
 import {IntersectionListTableStory} from './impl/IntersectionListTableStory';
 import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
@@ -26,18 +21,15 @@ import {MUITooltipStory} from "./impl/MUITooltipStory";
 import {MUIPaletteStory} from './impl/MUIPaletteStory';
 import {FirestoreSnapshotsStory} from './impl/FirestoreSnapshotsStory';
 import {HeightFitImgStory} from './impl/HeightFitImgStory';
-import {FirestoreInitStory} from "./impl/FirestoreInitStory";
 import {ActionMenuStory} from "./impl/ActionMenuStory";
 import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
 import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
 import {ProgressButtonStory} from './impl/ProgressButtonStory';
 import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import {UnmountComponentStory} from './impl/UnmountComponentStory';
-import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 import {AbortedRenderStory} from './impl/AbortedRenderStory';
 import {ScratchStory} from "./impl/ScratchStory";
 import {ErrorBoundaryStory} from './impl/ErrorBoundaryStory';
-import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
 import {ProfileStory} from './impl/ProfileStory';
 import {AccountVerificationStory} from './impl/AccountVerificationStory';
@@ -47,8 +39,6 @@ import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import {NestedContextStory} from './impl/NestedContextStory';
 import {CreateAccountStory} from "./impl/CreateAccountStory";
 import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
-import {MinimalContentEditablePerformanceStory} from './impl/MinimalContentEditablePerformanceStory';
-import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
 import {MUICommandActionMenuStory} from './impl/MUICommandActionMenuStory';
 import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
@@ -97,24 +87,12 @@ const stories = createStoryIndex([
         component: <AccountVerificationStory/>
     },
     {
-        name: 'MobX',
-        component: <MobXStory/>
-    },
-    {
         name: 'FontAwesomeIconStory',
         component: <FontAwesomeIconStory/>
     },
     {
-        name: 'Profile Story',
-        component: <ProfileStory/>
-    },
-    {
         name: 'Welcome Story',
         component: <WelcomeStory/>
-    },
-    {
-        name: "Error Boundary",
-        component: <ErrorBoundaryStory/>
     },
     {
         name: "Doc Metadata Editor",
@@ -141,10 +119,6 @@ const stories = createStoryIndex([
         component: <DocColumnsStory/>
     },
     {
-        name: "Whats New",
-        component: <WhatsNewStory/>
-    },
-    {
         name: "Intersection List",
         component: <IntersectionListStory/>,
         noMargin: true
@@ -165,10 +139,6 @@ const stories = createStoryIndex([
     {
         name: "MUIPaletteStory",
         component: <MUIPaletteStory/>
-    },
-    {
-        name: "FirestoreSnapshotsStory",
-        component: <FirestoreSnapshotsStory/>
     },
     {
         name: "HeightFitImgStory",
@@ -217,14 +187,6 @@ const stories = createStoryIndex([
     {
         name: 'TextAreaMarkdownEditorStory',
         component: <TextAreaMarkdownEditorStory/>
-    },
-    {
-        name: 'MinimalContentEditableStory',
-        component: <MinimalContentEditableStory/>
-    },
-    {
-        name: 'MinimalContentEditablePerformanceStory',
-        component: <MinimalContentEditablePerformanceStory/>
     },
     {
         name: 'MUICommandActionMenuStory',
