@@ -1,4 +1,4 @@
-import {BlockContent, BlockType, INewChildPosition} from "./BlocksStore";
+import {BlockContent, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable, toJS} from "mobx"
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Contents} from "../content/Contents";
@@ -6,7 +6,7 @@ import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {BlockIDStr, IBlock, IBlockContent, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, INewChildPosition, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import PositionalArray = PositionalArrays.PositionalArray;

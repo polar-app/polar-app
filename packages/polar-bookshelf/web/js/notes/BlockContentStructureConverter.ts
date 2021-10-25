@@ -1,5 +1,5 @@
 import {HTMLStr} from "polar-shared/src/util/Strings";
-import {IBlockContentStructure} from "./HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";

@@ -16,7 +16,8 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
+import {HTMLToBlocks} from "../HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
@@ -2725,25 +2726,30 @@ describe('BlocksStore', function() {
 
             const expected = [
                 {
+                    id: block102.id,
                     content: block102.content.toJSON(),
                     children: [
-                        {content: block103.content.toJSON(), children: []},
+                        {id: block103.id, content: block103.content.toJSON(), children: []},
                         {
+                            id: block104.id, 
                             content: block104.content.toJSON(),
                             children: [
-                                {content: block116.content.toJSON(), children: []}
+                                {id: block116.id, content: block116.content.toJSON(), children: []}
                             ]
                         },
                         {
+                            id: block105.id,
                             content: block105.content.toJSON(),
                             children: [
                                 {
+                                    id: block106.id,
                                     content: block106.content.toJSON(),
                                     children: [
                                         {
+                                            id: block117.id,
                                             content: block117.content.toJSON(),
                                             children: [
-                                                {content: block118.content.toJSON(), children: []},
+                                                {id: block118.id, content: block118.content.toJSON(), children: []},
                                             ]
                                         },
                                     ]
@@ -2761,37 +2767,37 @@ describe('BlocksStore', function() {
 
     describe("insertFromBlockContentStructure", () => {
         it("should insert a block structure properly", () => {
+            const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
             const blockStructure: ReadonlyArray<IBlockContentStructure> = [
-                {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
+                {id: blockIDs[0], content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {
+                    id: blockIDs[1],
                     content: HTMLToBlocks.createMarkdownContent("item2"),
                     children: [
-                        {content: HTMLToBlocks.createMarkdownContent("hmm"), children: []},
+                        {id: blockIDs[2], content: HTMLToBlocks.createMarkdownContent("hmm"), children: []},
                         {
+                            id: blockIDs[3],
                             content: HTMLToBlocks.createMarkdownContent("world"),
                             children: [
-                                {content: HTMLToBlocks.createMarkdownContent("potato"), children: []},
+                                {id: blockIDs[4], content: HTMLToBlocks.createMarkdownContent("potato"), children: []},
                             ]
                         },
                     ]
                 },
-                {content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("Test bold italics linethrough underline"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("What is going on right now"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("World"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("Foo"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("bar"), children: []},
+                {id: blockIDs[5], content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
+                {id: blockIDs[6], content: HTMLToBlocks.createMarkdownContent("Test bold italics linethrough underline"), children: []},
+                {id: blockIDs[7], content: HTMLToBlocks.createMarkdownContent("What is going on right now"), children: []},
+                {id: blockIDs[8], content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
+                {id: blockIDs[9], content: HTMLToBlocks.createMarkdownContent("World"), children: []},
+                {id: blockIDs[10], content: HTMLToBlocks.createMarkdownContent("Foo"), children: []},
+                {id: blockIDs[11], content: HTMLToBlocks.createMarkdownContent("bar"), children: []},
             ];
 
             const store = createStore();
             const id = '112';
 
-            store.setActive(id);
-            const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
-
             createUndoRunner(store, ['112', ...blockIDs], () => {
-                store.insertFromBlockContentStructure(blockStructure, {blockIDs});
+                store.insertFromBlockContentStructure(blockStructure, {ref: id});
                 const block102 = store.getBlockForMutation(id);
                 assertPresent(block102);
                 const content = [

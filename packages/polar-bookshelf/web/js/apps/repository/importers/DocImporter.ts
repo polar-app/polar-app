@@ -1,6 +1,6 @@
 import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {DocMetas} from '../../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle} from 'polar-shared/src/util/Files';

@@ -9,7 +9,7 @@ import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';

@@ -1,5 +1,5 @@
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {Rects} from "../Rects";
+import {Rects} from "polar-shared/src/util/Rects";
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";

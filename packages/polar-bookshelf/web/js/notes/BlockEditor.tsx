@@ -184,12 +184,13 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     if (block.content.type === "document") {
 
         const { docInfo } = block.content;
-        const tags = block.content.getTags();
+        const tagLinks = block.content.tagLinks;
 
         return (
             <BlockDocumentContent
                 id={id}
-                tags={tags}
+                tagLinks={tagLinks}
+                onClick={onClick}
                 parent={parent}
                 className={className}
                 style={style}

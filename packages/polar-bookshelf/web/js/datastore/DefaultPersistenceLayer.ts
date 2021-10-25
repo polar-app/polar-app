@@ -12,8 +12,8 @@ import {
     SnapshotResult,
     WriteFileOpts
 } from './Datastore';
-import {DocMeta} from '../metadata/DocMeta';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
@@ -25,7 +25,7 @@ import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
-import {UUIDs} from '../metadata/UUIDs';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

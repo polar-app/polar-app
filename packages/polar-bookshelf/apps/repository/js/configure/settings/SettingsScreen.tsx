@@ -22,6 +22,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {FullWidthButton} from './FullWidthButton';
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
+import { DeviceRouters } from '../../../../../web/js/ui/DeviceRouter';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -67,15 +68,7 @@ const Main = () => {
 
     return (
         <>
-            <div className={classes.root}>
-                <Box component='div' px={2}>
-                    <Box component="h1" pt={2}>General</Box>
-
-                    <p>
-                        General settings. Note that some of
-                        these may require you to reload.
-                    </p>
-                </Box>
+            <Box pt={2} className={classes.root}>
 
                 <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
@@ -155,8 +148,14 @@ const Main = () => {
                 <Box mt={1} mx={1}>
                     <ViewDeviceInfoButton/>
                     <Divider/>
-                    <CancelSubscriptionButton/>
-                    <ManageSubscriptionButton/>
+
+                    <DeviceRouters.Desktop>
+                        <>
+                            <CancelSubscriptionButton/>
+                            <ManageSubscriptionButton/>
+                        </>
+                    </DeviceRouters.Desktop>
+
                     <ExportDataButton/>
                     <Divider/>
 
@@ -173,7 +172,7 @@ const Main = () => {
                     </a>
                 </Box>
 
-            </div>
+            </Box>
         </>
     );
 }

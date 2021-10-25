@@ -30,7 +30,7 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
-import {FeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
+import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -325,9 +325,9 @@ export const SideNav = React.memo(function SideNav() {
                                 <HomeButton/>
                                 <AnnotationsButton/>
 
-                                <FeatureToggle featureName="notes-enabled">
+                                <FeatureToggleEnabled featureName="notes-enabled">
                                     <NotesButton/>
-                                </FeatureToggle>
+                                </FeatureToggleEnabled>
 
                                 <DeviceRouter desktop={<StatsButton/>} />
 

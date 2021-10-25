@@ -1,5 +1,3 @@
-import {Dictionaries} from "./Dictionaries";
-
 export class Objects {
 
     /**

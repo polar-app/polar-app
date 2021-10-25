@@ -3,7 +3,7 @@ import List from "@material-ui/core/List";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {IActionMenuItem} from "./ActionStore";
+import {IActionMenuItem, useActionMenuStore} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -54,8 +54,9 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
     const classes = useStyles();
     const {onAction, onClose, items} = props;
+    const actionMenuStore = useActionMenuStore();
 
-    const [index, setIndex] = React.useState<number | undefined>(0);
+    const [index, setIndex] = React.useState<number | undefined>(undefined);
 
     const handleActionExecuted = React.useCallback((action: IActionMenuItem) => {
 
@@ -63,6 +64,16 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         onClose('executed');
 
     }, [onClose, onAction]);
+
+    const handleIndexChange = React.useCallback((newIndex: number | undefined) => {
+
+        if (newIndex !== index) {
+            setIndex(newIndex);
+        }
+
+    }, [index]);
+
+    type IndexDelta = -1 | 1;
 
     /**
      *
@@ -82,7 +93,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             event.preventDefault();
         }
 
-        function computeNewIndex(delta: number) {
+        function computeNewIndex(delta: IndexDelta): number | undefined {
 
             if (index === undefined) {
 
@@ -91,7 +102,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
                     return 0;
                 }
 
-                if (index === -1) {
+                if (delta === -1) {
                     // got to the end
                     return items.length - 1;
                 }
@@ -103,31 +114,29 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             const newIndex = index + delta;
 
             if (newIndex < 0) {
-                // return commandsFiltered.length - 1;
-                return 0;
+                return undefined;
             }
 
             if (newIndex >= items.length) {
-                return items.length - 1;
+                return undefined;
             }
 
             return newIndex;
 
         }
 
-        function handleNewIndex(delta: number) {
-            const newIndex = computeNewIndex(delta);
-            setIndex(newIndex);
+        function handleNewIndex(newIndex: number | undefined) {
+            handleIndexChange(newIndex);
         }
 
         if (event.key === 'ArrowDown') {
             abortEvent();
-            handleNewIndex(1);
+            handleNewIndex(computeNewIndex(1));
         }
 
         if (event.key === 'ArrowUp') {
             abortEvent();
-            handleNewIndex(-1);
+            handleNewIndex(computeNewIndex(-1));
         }
 
         if (event.key === 'Escape') {
@@ -135,7 +144,9 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             onClose('cancel');
         }
 
-        if (event.key === 'Tab') {
+        // TODO: I don't think enter is handled?
+
+        if (event.key === 'Tab' ||  event.key === 'Enter') {
             if (index !== undefined) {
                 const command = items[index];
                 if (command) {
@@ -145,7 +156,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             }
         }
 
-    }, [items, handleActionExecuted, index, onClose]);
+    }, [index, items, handleIndexChange, onClose, handleActionExecuted]);
 
     React.useEffect(() => {
 
@@ -155,7 +166,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             window.removeEventListener('keydown', handleKeyDownForCommandNavigation, {capture: true});
         }
 
-    })
+    }, [handleKeyDownForCommandNavigation])
 
     const menuItems = items.map((item, idx) => {
 
@@ -173,9 +184,19 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         );
     });
 
+    const handleClickAway = React.useCallback(() => {
+
+        if (actionMenuStore.reset) {
+            actionMenuStore.reset()
+        }
+
+        props.onClose('cancel')
+
+    }, [actionMenuStore, props])
+
     return (
 
-        <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
+        <ClickAwayListener onClickAway={handleClickAway}>
             <div style={{
                      display: 'flex',
                      flexDirection: 'column'

@@ -3,7 +3,7 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "../doc_repo/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
+import {AnnotationRepoFilters} from "./AnnotationRepoFilters";
 import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import {
     IPersistenceContext,
@@ -85,7 +85,7 @@ export interface IAnnotationRepoStore {
      */
     readonly orderBy: keyof RepoDocInfo;
 
-    readonly filter: AnnotationRepoFilters2.Filter;
+    readonly filter: AnnotationRepoFilters.Filter;
 
 }
 
@@ -115,7 +115,7 @@ interface IAnnotationRepoCallbacks {
 
     readonly onExport: (format: ExportFormat) => void;
 
-    readonly setFilter: (filter: Partial<AnnotationRepoFilters2.Filter>) => void;
+    readonly setFilter: (filter: Partial<AnnotationRepoFilters.Filter>) => void;
 
     readonly onDragStart: (event: React.DragEvent) => void;
     readonly onDragEnd: () => void;
@@ -202,7 +202,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
 
         // TODO: sort with Sorting.stableSort.
         const view = Mappers.create(data)
-            .map(current => AnnotationRepoFilters2.execute(current, filter))
+            .map(current => AnnotationRepoFilters.execute(current, filter))
             // .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
             .map(current => doSort(current))
             .collect();
@@ -427,7 +427,7 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             doExport(format);
         }
 
-        function setFilter(filter: Partial<AnnotationRepoFilters2.Filter>) {
+        function setFilter(filter: Partial<AnnotationRepoFilters.Filter>) {
 
             const store = storeProvider();
 
@@ -591,7 +591,7 @@ const AnnotationRepoStoreInner = React.memo(function AnnotationRepoStoreInner(pr
 
 });
 
-export const AnnotationRepoStore2 = React.memo((props: IProps) => {
+export const AnnotationRepoStore = React.memo((props: IProps) => {
 
     return (
         <AnnotationRepoStoreProvider>

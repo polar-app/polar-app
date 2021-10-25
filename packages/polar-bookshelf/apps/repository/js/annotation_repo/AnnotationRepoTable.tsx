@@ -2,133 +2,98 @@ import * as React from 'react';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TablePagination from "@material-ui/core/TablePagination";
-import Divider from "@material-ui/core/Divider";
-import isEqual from "react-fast-compare";
-import {useAnnotationRepoCallbacks, useAnnotationRepoStore} from './AnnotationRepoStore';
+import {IAnnotationRepoStore, useAnnotationRepoStore, useAnnotationRepoStoreReducer} from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
-import {MUINextIconButton} from "../../../../web/js/mui/icon_buttons/MUINextIconButton";
-import {DeviceRouter, DeviceRouters} from '../../../../web/js/ui/DeviceRouter';
-import {MUIPrevIconButton} from "../../../../web/js/mui/icon_buttons/MUIPrevIconButton";
+import {
+    BlockComponentProps,
+    HiddenBlockComponentProps,
+    IntersectionList,
+    VisibleComponentProps
+} from "../../../../web/js/intersection_list/IntersectionList";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {Numbers} from "polar-shared/src/util/Numbers";
+import {useFixedHeightAnnotationCalculator} from "./FixedHeightAnnotationPreview";
+import TableRow from '@material-ui/core/TableRow';
+import {IDStr} from "polar-shared/src/util/Strings";
 
-interface ToolbarProps {
-    readonly nrRows: number;
-    readonly page: number;
-    readonly rowsPerPage: number;
-    readonly onChangePage: (page: number) => void;
-    readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
+
+function useAnnotationSelected(id: IDStr): boolean {
+
+    function reducer(store: IAnnotationRepoStore) {
+        return store.selected.includes(id);
+    }
+
+    return useAnnotationRepoStoreReducer(reducer, {filter: (prev, next) => prev !== next});
+
 }
 
-// TODO: move to a dedicated component
-const Toolbar = React.memo(function Toolbar(props: ToolbarProps) {
+const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<IDocAnnotation>) {
 
-    // TODO: don't use props for callbacks...
+    const selected = useAnnotationSelected(props.value.id);
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        props.onChangePage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const rowsPerPage = parseInt(event.target.value, 10);
-        props.onChangeRowsPerPage(rowsPerPage);
-
-    };
+    const annotation = props.value;
+    const viewIndex = props.index;
 
     return (
-        <DeviceRouter.Desktop>
-            <>
-
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 50]}
-                    component="div"
-                    size="small"
-                    count={props.nrRows}
-                    rowsPerPage={props.rowsPerPage}
-                    style={{
-                        padding: 0,
-                        overflow: "hidden",
-                        minHeight: '4.5em',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end'
-                    }}
-                    // onDoubleClick={event => {
-                    //     event.stopPropagation();
-                    //     event.preventDefault();
-                    // }}
-                    page={props.page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-
-                <Divider orientation="horizontal"/>
-
-            </>
-        </DeviceRouter.Desktop>
+        <AnnotationRepoTableRow key={annotation.id}
+                                viewIndex={viewIndex}
+                                rowSelected={selected}
+                                annotation={annotation}/>
     );
 
-}, isEqual);
+});
 
-namespace Handheld {
+const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<IDocAnnotation>) {
 
-    export const PrevPage = React.memo(function PrevPage() {
+    const fixedHeightAnnotationCalculator = useFixedHeightAnnotationCalculator();
 
-        const {page} = useAnnotationRepoStore(['page']);
-        const {setPage} = useAnnotationRepoCallbacks();
+    const height = Numbers.sum(...props.values.map(current => fixedHeightAnnotationCalculator(current)));
 
-        if (page <= 0) {
-            return null;
-        }
+    return (
+        <TableBody ref={props.innerRef}
+                   style={{
+                       height,
+                       minHeight: height,
+                       flexGrow: 1
+                   }}>
+            {props.children}
+        </TableBody>
+    );
 
-        return (
-            <DeviceRouters.Handheld>
-                <MUIPrevIconButton color='secondary'
-                                   onClick={() => setPage(page - 1)}/>
-            </DeviceRouters.Handheld>
-        );
+});
 
-    });
+const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<IDocAnnotation>) {
 
-    export const NextPage = React.memo(function NextPage() {
+    const fixedHeightAnnotationCalculator = useFixedHeightAnnotationCalculator();
 
-        const {page, rowsPerPage, view} = useAnnotationRepoStore(['page', 'rowsPerPage', 'view']);
-        const {setPage} = useAnnotationRepoCallbacks();
+    const height = Numbers.sum(...props.values.map(current => fixedHeightAnnotationCalculator(current)));
 
-        const nrPages = view.length / rowsPerPage;
+    return (
+        <TableRow style={{
+                      minHeight: `${height}px`,
+                      height: `${height}px`,
+                  }}>
 
-        if (page === nrPages) {
-            return null;
-        }
+        </TableRow>
+    );
 
-        return (
-            <DeviceRouters.Handheld>
-                <MUINextIconButton color='secondary'
-                                   onClick={() => setPage(page + 1)}/>
-            </DeviceRouters.Handheld>
-        );
-
-    });
-
-}
+});
 
 export const [AnnotationRepoTableContextMenu, useAnnotationRepoTableContextMenu]
-    = createContextMenu(AnnotationRepoTableMenu, {name: 'annotation-repo'});
+    = createContextMenu(AnnotationRepoTableMenu, {name: 'annotation-repo2'});
 
-/**
- * @deprecated
- */
-export const AnnotationRepoTable = React.memo(function AnnotationRepoTable() {
+export const AnnotationRepoTable = React.memo(() => {
 
-    const {page, rowsPerPage, view, viewPage, selected} =
-        useAnnotationRepoStore(['page', 'rowsPerPage', 'view', 'viewPage', 'selected']);
+    const {view} = useAnnotationRepoStore(['view']);
 
-    const {setPage, setRowsPerPage} = useAnnotationRepoCallbacks();
+    const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 
     return (
 
-        <AnnotationRepoTableContextMenu>
+        <>
             <div className="AnnotationRepoTable2"
                  id="doc-repo-table"
                  style={{
@@ -137,12 +102,6 @@ export const AnnotationRepoTable = React.memo(function AnnotationRepoTable() {
                      minHeight: 0,
                      flexGrow: 1
                  }}>
-
-                <Toolbar nrRows={view.length}
-                         rowsPerPage={rowsPerPage}
-                         page={page}
-                         onChangePage={setPage}
-                         onChangeRowsPerPage={setRowsPerPage}/>
 
                 <div id="doc-table"
                      className="AnnotationRepoTable2.Body"
@@ -154,9 +113,8 @@ export const AnnotationRepoTable = React.memo(function AnnotationRepoTable() {
                          overflow: 'auto'
                      }}>
 
-                    <Handheld.PrevPage/>
-
-                    <TableContainer style={{
+                    <TableContainer ref={setRoot}
+                                    style={{
                                         flexGrow: 1,
                                         overflow: 'auto'
                                     }}>
@@ -171,32 +129,22 @@ export const AnnotationRepoTable = React.memo(function AnnotationRepoTable() {
                                size={'medium'}
                                aria-label="enhanced table">
 
-                            <TableBody>
-
-                                {viewPage.map((annotation, index) => {
-
-                                        const viewIndex = (page * rowsPerPage) + index;
-                                        const rowSelected = selected.includes(annotation.id);
-                                        return (
-                                            <AnnotationRepoTableRow key={annotation.id}
-                                                                    viewIndex={viewIndex}
-                                                                    rowSelected={rowSelected}
-                                                                    annotation={annotation}/>
-                                        );
-
-                                    })}
-
-                            </TableBody>
-
+                            <AnnotationRepoTableContextMenu>
+                                {root && (
+                                    <IntersectionList values={view}
+                                                      root={root}
+                                                      blockSize={10}
+                                                      BlockComponent={BlockComponent}
+                                                      HiddenBlockComponent={HiddenBlockComponent}
+                                                      VisibleComponent={VisibleComponent}/>)}
+                            </AnnotationRepoTableContextMenu>
                         </Table>
                     </TableContainer>
-
-                    <Handheld.NextPage/>
 
                 </div>
 
             </div>
-        </AnnotationRepoTableContextMenu>
+        </>
 
     );
 });

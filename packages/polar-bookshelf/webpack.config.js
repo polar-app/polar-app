@@ -196,8 +196,11 @@ function determineBundle() {
         case 'repository':
             return 'repository';
 
+        case 'both':
+            return 'body';
+
         default:
-            return null;
+            return 'body';
 
     }
 
@@ -246,6 +249,7 @@ function createEntries(bundle) {
                 "repository": "./apps/repository/js/entry.tsx",
             };
 
+        case 'both':
         default:
 
             return {

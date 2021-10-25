@@ -1,4 +1,4 @@
-import {UUIDs} from "../../../web/js/metadata/UUIDs";
+import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 
 export namespace DocViewerSnapshots {
 

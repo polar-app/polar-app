@@ -1,11 +1,12 @@
-import {DocMetas} from "./DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 
 xdescribe('DocMetasPerf', function() {
 
     this.timeout(10000);
 
     const fingerprint = '0x0001';
-    const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+    const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
     const json = JSON.stringify(docMeta);
 
     const count = 100000;

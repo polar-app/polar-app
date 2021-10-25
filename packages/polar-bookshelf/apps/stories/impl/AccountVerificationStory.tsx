@@ -3,6 +3,7 @@ import * as React from 'react';
 import {useAIFlashcardVerificationWarning} from "../../repository/js/ui/AIFlashcardVerifiedAction";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDialogController} from "../../../web/js/mui/dialogs/MUIDialogController";
+import {StoryHolder} from "../StoryHolder";
 
 const Inner = () => {
 
@@ -19,10 +20,10 @@ const Inner = () => {
 export const AccountVerificationStory = () => {
 
     return (
-        <div>
+        <StoryHolder>
             <MUIDialogController>
                 <Inner/>
             </MUIDialogController>
-        </div>
+        </StoryHolder>
     );
 }

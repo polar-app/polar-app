@@ -1,9 +1,9 @@
 import * as React from "react";
 import {useUserTagsDB} from "./UserTagsDataLoader";
 import {usePersistenceLayerContext, useRepoDocMetaManager, useTagsProvider} from "./PersistenceLayerApp";
-import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {AnnotationTypes} from "../../../../web/js/metadata/AnnotationTypes";
-import {TextHighlights} from "../../../../web/js/metadata/TextHighlights";
+import {TextHighlights} from "polar-shared/src/metadata/TextHighlights";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {Tag, Tags, TagStr} from "polar-shared/src/tags/Tags";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

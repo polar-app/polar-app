@@ -1,7 +1,7 @@
 import {PHZMigrationClient} from "polar-web-extension-api/src/PHZMigrationClient";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
-import {DocMetas} from "polar-bookshelf/web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace PHZMigrations {
