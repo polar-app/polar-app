@@ -25,6 +25,9 @@ export namespace ESLint {
                 "@typescript-eslint/no-floating-promises": "error",
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
 
+                // ? Import Rules
+                "unused-imports/no-unused-imports-ts": "error",
+
                 // ! Disabled Rules ///////////////////////////////////////////////////
 
                 // ? TS Rules
