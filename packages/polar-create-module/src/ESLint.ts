@@ -8,7 +8,7 @@ export namespace ESLint {
                 "project": "./tsconfig.json"
             },
             "extends": ["eslint:recommended", "standard", "plugin:@typescript-eslint/recommended", "prettier"],
-            "plugins": ["@typescript-eslint", "react", "react-hooks"],
+            "plugins": ["@typescript-eslint", "react", "react-hooks", "unused-imports"],
             "env": {
                 "es6": true,
                 "node": true
@@ -26,7 +26,7 @@ export namespace ESLint {
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
 
                 // ? Import Rules
-                "unused-imports/no-unused-imports-ts": "error",
+                "unused-imports/no-unused-imports": "error",
 
                 // ! Disabled Rules ///////////////////////////////////////////////////
 
@@ -35,10 +35,12 @@ export namespace ESLint {
                 "@typescript-eslint/no-namespace": "off",
                 "@typescript-eslint/ban-ts-comment": "off",
                 "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-explicit-any": "off",
                 "@typescript-eslint/no-var-requires": "off",
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-empty-interface": "off",
                 "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-non-null-assertion": "off",
                 "@typescript-eslint/explicit-module-boundary-types": "off",
                 
 
