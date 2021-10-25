@@ -18,20 +18,22 @@ export const StoryHolder = (props: IProps) => {
         <div style={{
                  display: 'flex',
                  width: '100%',
-                 height: '100%'
+                 height: '100%',
+                 padding: theme.spacing(2),
+                 background: lighten(theme.palette.background.default, 0.1),
              }}>
 
             <Paper elevation={2}
                    style={{
-                       background: lighten(theme.palette.background.default, 0.2),
+                       background: lighten(theme.palette.background.default, 0.0),
                        margin: 'auto',
                        minWidth: '450px',
                        minHeight: '450px',
                        display: 'flex',
-                       flexDirection: 'column'
+                       flexDirection: 'column',
                    }}>
 
-                <Box p={2}>
+                <Box p={2} m={2}>
                     {props.children}
                 </Box>
 

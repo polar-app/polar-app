@@ -19,7 +19,6 @@ import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
 import {ReactWindowStory} from "./impl/ReactWindowStory";
-import XGridStory from "./impl/XGridStory";
 import {IntersectionListStory} from './impl/IntersectionListStory';
 import {IntersectionListTableStory} from './impl/IntersectionListTableStory';
 import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
@@ -114,10 +113,6 @@ const stories = createStoryIndex([
         component: <WelcomeStory/>
     },
     {
-        name: "Active Keyboard Shortcuts",
-        component: <ActiveKeyboardShortcutsStory/>
-    },
-    {
         name: "Error Boundary",
         component: <ErrorBoundaryStory/>
     },
@@ -134,14 +129,6 @@ const stories = createStoryIndex([
         component: <EPUBThumbnailerStory/>
     },
     {
-        name: "Notes",
-        component: <NotesStory/>
-    },
-    {
-        name: "Notes Components",
-        component: <NotesComponentsStory/>
-    },
-    {
         name: "Reviewer",
         component: <ReviewerStory/>
     },
@@ -150,35 +137,12 @@ const stories = createStoryIndex([
         component: <DocCardStory/>
     },
     {
-        name: "Cached Snapshot",
-        component: <CachedSnapshotStory/>
-    },
-    {
-        name: "Side Nav",
-        component: <SideNavStory/>,
-        noMargin: true
-    },
-    {
-        name: "Elevations",
-        component: <ElevationsStory/>
-    },
-    {
         name: "DocColumnsSelector",
         component: <DocColumnsStory/>
     },
     {
         name: "Whats New",
         component: <WhatsNewStory/>
-    },
-    {
-        name: "React Window",
-        component: <ReactWindowStory/>,
-        noMargin: true
-    },
-    {
-        name: "XGrid",
-        component: <XGridStory/>,
-        noMargin: true
     },
     {
         name: "Intersection List",
@@ -209,10 +173,6 @@ const stories = createStoryIndex([
     {
         name: "HeightFitImgStory",
         component: <HeightFitImgStory/>
-    },
-    {
-        name: "Firebase Init",
-        component: <FirestoreInitStory/>
     },
     {
         name: "ActionMenuStory",
