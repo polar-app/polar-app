@@ -6,17 +6,21 @@ import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
 import Grid from '@material-ui/core/Grid';
 import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
 
-export const MigrationToBlockAnnotationsMainContent = () => {
+interface IProps {
+    readonly progress: number;
+}
 
-    const [progress, setProgress] = React.useState(10);
+export const MigrationToBlockAnnotationsMainContent = (props: IProps) => {
 
-    const StoriesCard = () => (
+    const {progress} = props;
+
+    return (
         <Grid item style={{flexGrow: 1, display: 'flex'}}>
-                <Box m={2} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
+            <Box m={2} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
                 <Box m={2}>
                     <LogoAndTextSideBySide/>
                 </Box>
-                
+
                 <Typography variant="body1">
                     <b>
                         Just a Minute
@@ -31,37 +35,16 @@ export const MigrationToBlockAnnotationsMainContent = () => {
                         <LinearProgressWithLabel value={progress}/>
                     </Box>
                 </Typography>
-                    
+
                 <Typography variant="caption">
                     <Box m={2} textAlign={'center'} justifyContent={'center'}>
-                        As part of Polar's Updates, we're migrating the backend which can take up to a 
-                        couple minutes, depending on the size of your repository. This is a one time migration. 
+                        As part of Polar's Updates, we're migrating the backend which can take up to a
+                        couple minutes, depending on the size of your repository. This is a one time migration.
                         <Link> Learn More</Link>
                     </Box>
                 </Typography>
             </Box>
         </Grid>
-    )
+    );
 
-    return (
-            <div style={{
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%'
-                }}>
-                    <Paper style={{
-                        margin: 'auto',
-                        maxWidth: '450px',
-                        minHeight: '450px',
-                        maxHeight: '650px',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-
-                    <StoriesCard/>
-
-                </Paper>
-            </div>
-    )
 }

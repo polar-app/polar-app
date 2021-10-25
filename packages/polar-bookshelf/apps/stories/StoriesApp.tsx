@@ -38,9 +38,10 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
-import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
-import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
+import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
+import {MigrationToBlockAnnotationsMainContentStory} from "./impl/MigrationToBlockAnnotationsMainContentStory";
+import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 
 interface IStory {
     readonly name: string;
@@ -64,9 +65,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+
     {
         name: "Migration Dialog 3.0",
-        component: <MigrationToBlockAnnotationsMainContent/>
+        component: <MigrationToBlockAnnotationsMainContentStory/>
     },
     {
         name: "Auth Hide on Scroll",
