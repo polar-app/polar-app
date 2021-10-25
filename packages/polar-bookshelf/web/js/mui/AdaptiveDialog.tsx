@@ -20,7 +20,8 @@ export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: Adaptive
                          height: '100%'
                      }}>
 
-                    <Paper style={{
+                    <Paper elevation={2}
+                           style={{
                                margin: 'auto',
                                maxWidth: '450px',
                                minHeight: '450px',

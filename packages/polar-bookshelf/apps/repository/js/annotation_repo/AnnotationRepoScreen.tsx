@@ -4,20 +4,27 @@ import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
-import {AnnotationListView2} from "./AnnotationListView2";
-import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
+import {AnnotationListView} from "./AnnotationListView";
+import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
+import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
-import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotationRepoTable';
+import {AnnotationRepoTable} from './AnnotationRepoTable';
+import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnotationInlineViewer';
+import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../doc/src/DocViewer';
+import {observer} from 'mobx-react-lite';
+import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
+import {trace} from 'mobx';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
@@ -40,7 +47,11 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     alignItems: 'center',
                     justifyContent: 'flex-end'
                 }}>
-                    <AnnotationRepoFilterBar2 />
+                    {
+                        NEW_NOTES_ANNOTATION_BAR_ENABLED
+                            ? <BlocksAnnotationRepoFilterBar />
+                            : <AnnotationRepoFilterBar />
+                    }
                     {handleRightDrawerToggle && (
                         <DeviceRouter phone={(
                             <IconButton onClick={handleRightDrawerToggle}>
@@ -90,10 +101,22 @@ namespace Phone {
         })
     );
 
-    export const Main: React.FC<IMainProps> = ({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
+    export const Main: React.FC<IMainProps> = observer(({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
         const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
         const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
-        const annotation = selected.length > 0 ? view.filter(current => current.id === selected[0])[0] : undefined;
+        const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
+
+
+        const annotation = React.useMemo(() => {
+            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                return blocksAnnotationRepoStore.activeBlock;
+            } else {
+                return selected.length > 0
+                    ? view.filter(current => current.id === selected[0])[0]
+                    : undefined;
+            }
+        }, [blocksAnnotationRepoStore.activeBlock, selected, view]);
+
         const classes = useStyles();
 
         React.useEffect(() => {
@@ -105,7 +128,10 @@ namespace Phone {
 
         return (
             <>
-                <AnnotationListView2/>
+                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                    ? <BlocksAnnotationRepoTable />
+                    : <AnnotationListView />
+                }
                 <SwipeableDrawer
                     anchor="right"
                     open={isAnnotationViewerOpen}
@@ -114,11 +140,14 @@ namespace Phone {
                     className={classes.drawer}
                     classes={{ root: classes.drawer, paper: classes.drawer }}
                 >
-                    <AnnotationInlineViewer2 />
+                    {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                        ? <BlocksAnnotationInlineViewer />
+                        : <AnnotationInlineViewer />
+                    }
                 </SwipeableDrawer>
             </>
         );
-    };
+    });
 
 }
 
@@ -137,13 +166,13 @@ namespace Tablet {
                     flexGrow: 1,
                     minHeight: 0,
                 },
-                component: <AnnotationRepoTable2 />,
+                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
                 width: 400
             },
             {
                 id: 'dock-panel-right',
                 type: 'grow',
-                component: <AnnotationInlineViewer2 />
+                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
             }
         ]}>
             <DockLayout.Main/>
@@ -186,7 +215,10 @@ namespace Desktop {
                                 flexDirection: 'column',
                                 minHeight: 0
                             }}>
-                                <AnnotationRepoTable2/>
+                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                    ? <BlocksAnnotationRepoTable />
+                                    : <AnnotationRepoTable />
+                                }
                             </div>,
                         width: 450
                     },
@@ -202,7 +234,10 @@ namespace Desktop {
                                               flexGrow: 1,
                                               display: 'flex'
                                           }}>
-                                <AnnotationInlineViewer2/>
+                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                    ? <BlocksAnnotationInlineViewer />
+                                    : <AnnotationInlineViewer />
+                                }
                             </MUIElevation>
 
                     }
@@ -313,7 +348,7 @@ namespace screen {
 
 }
 
-export const AnnotationRepoScreen2 = React.memo(() => (
+export const AnnotationRepoScreen = React.memo(() => (
 
     <>
 
