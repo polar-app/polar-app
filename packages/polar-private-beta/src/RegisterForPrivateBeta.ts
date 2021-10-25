@@ -31,7 +31,6 @@ export namespace RegisterForPrivateBeta {
         })
 
         // TODO: send them an email thanking them...
-        // TODO: no metadata yet...
 
         return {};
 
