@@ -44,6 +44,9 @@ export namespace PrivateBetaReqCollection {
 
     }
 
+    export function createID(email: EmailStr) {
+        return Hashcodes.createID(email);
+    }
 
     export async function set<SM = unknown>(firestore: IFirestore<SM>, init: IPrivateBetaReqInit): Promise<IPrivateBetaReq> {
 
@@ -51,7 +54,7 @@ export namespace PrivateBetaReqCollection {
 
         const doc: IPrivateBetaReq = {
             ...init,
-            id: Hashcodes.createID(init.email),
+            id: createID(init.email),
             created: now,
             updated: now,
         }
