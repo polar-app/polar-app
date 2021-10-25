@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) =>
 
 type IColorMenuProps = {
     onChange: (color: ColorStr) => void;
-    selected?: ColorStr;
+    selected?: ReadonlyArray<ColorStr> | ColorStr;
     withHints?: boolean;
     hintLimit?: number;
 };
@@ -70,7 +70,7 @@ export const ColorMenu = React.forwardRef<HTMLDivElement, IColorMenuProps>((prop
             {MAIN_HIGHLIGHT_COLORS.map((color, i) => (
                 <div className={classes.item} key={color}>
                     <IconButton
-                        className={clsx(classes.iconButton, { selected: selected === color })}
+                        className={clsx(classes.iconButton, { selected: Array.isArray(selected) ? selected.includes(color) : color === selected })}
                         disableRipple
                         onClick={() => onChange(color)}
                     >

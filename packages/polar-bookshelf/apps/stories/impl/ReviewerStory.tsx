@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
+import {StoryHolder} from "../StoryHolder";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -132,26 +133,28 @@ export const ReviewerStory = () => {
 
     return (
 
-        <BrowserRouter key="browser-router">
-            <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+        <StoryHolder>
+            <BrowserRouter key="browser-router">
+                <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-                <>
-                    {open && (
-                        <Reviewer reviewerProvider={reviewerProvider}/>)}
+                    <>
+                        {open && (
+                            <Reviewer reviewerProvider={reviewerProvider}/>)}
 
-                    <Button variant="contained"
-                            color="primary"
-                            size="large"
-                            onClick={() => setOpen(true)}>
-                        Start Review
-                    </Button>
+                        <Button variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={() => setOpen(true)}>
+                            Start Review
+                        </Button>
 
-                    <ReviewerStats/>
+                        <ReviewerStats/>
 
-                </>
+                    </>
 
-            </Switch>
-        </BrowserRouter>
+                </Switch>
+            </BrowserRouter>
+        </StoryHolder>
 
     );
 };

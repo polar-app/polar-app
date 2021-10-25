@@ -4,7 +4,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {AnnotationRepoGlobalHotKeys} from "./AnnotationRepoGlobalHotKeys";
 import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {RepoHeader} from "../repo_header/RepoHeader3";
-import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
+import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
 import {Helmet} from "react-helmet";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
@@ -31,7 +31,7 @@ export const AnnotationRepoRoutedComponents = React.memo(function AnnotationRepo
                     <>
 
                         <RepoHeader.Right>
-                            <AnnotationRepoFilterBar2/>
+                            <AnnotationRepoFilterBar/>
                         </RepoHeader.Right>
 
                     </>

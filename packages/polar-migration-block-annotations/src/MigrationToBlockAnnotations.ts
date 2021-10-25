@@ -2,24 +2,23 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {DocMetaHolder, RecordHolder} from "../groups/db/doc_annotations/DocAnnotations";
-import {IDUser} from "../util/IDUsers";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
-import {BlocksSnapshot} from "polar-migration-block-annotations/src/BlocksSnapshot";
+import {DocMetaBlockContents} from "./DocMetaBlockContents";
+import {BlocksSnapshot} from "./BlocksSnapshot";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {IDUser} from "polar-rpc/src/IDUser";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
-export namespace Polar3DocMetaMigrator {
+export namespace MigrationToBlockAnnotations {
 
     const OLD_DOC_META_COLLECTION_NAME = 'doc_meta';
     const NEW_DOC_META_COLLECTION_NAME = 'doc_meta2';
@@ -31,33 +30,28 @@ export namespace Polar3DocMetaMigrator {
         original: RecordHolder<DocMetaHolder>;
     }
 
-    export async function exec(userID: IDUser): Promise<void> {
-        const admin = FirebaseAdmin.app();
-        const firebase = FirebaseBrowser.init();
-        const userToken = await admin.auth().createCustomToken(userID.uid);
+    export async function exec(idUser: IDUser): Promise<void> {
 
-        await firebase.auth().signInWithCustomToken(userToken);
+        const firestore = FirestoreAdmin.getInstance();
 
-        const firestore = await FirestoreBrowserClient.getInstance();
-
-        const docMetas = await getDocMetas(firestore, userID);
+        const docMetas = await getDocMetas(firestore, idUser);
 
         // TODO: We're probably gonna change this to migrate one docMeta at a time per function call
-        await docMetas.reduce((promise, docMeta) => promise.then(() => migrateDocMeta(userID, firestore, docMeta)), Promise.resolve());
+        await docMetas.reduce((promise, docMeta) => promise.then(() => migrateDocMeta(idUser, firestore, docMeta)), Promise.resolve());
     }
 
     /**
      * Get all docMeta records for a specific user
      *
      * @param firestore Firestore instance
-     * @param userID UserID object @see IDUser
+     * @param idUser UserID object @see IDUser
      */
     async function getDocMetas(firestore: IFirestore<unknown>,
-                               userID: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
+                               idUser: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
 
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
-            .where('uid', '==', userID.uid)
+            .where('uid', '==', idUser.uid)
             .where('ver', '!=', 2);
 
         const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
@@ -94,8 +88,8 @@ export namespace Polar3DocMetaMigrator {
         await migrateAnnotationsToBlocks(userID, firestore, batch, createDocMetaClone(docMetaRecord));
         await bumpVersions(userID, firestore, batch, createDocMetaClone(docMetaRecord));
 
-        
-        // await batch.commit();
+
+        await batch.commit();
     }
 
     /**
@@ -165,7 +159,7 @@ export namespace Polar3DocMetaMigrator {
         const documentBlocksSnapshot = BlocksSnapshot
             .blockContentStructureToBlockSnapshot(userID.uid, [docContentStructure]);
 
-        
+
         const namedBlocksSnapshots = BlocksSnapshot
             .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
 
