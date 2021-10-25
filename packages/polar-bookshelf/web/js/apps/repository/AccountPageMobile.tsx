@@ -189,7 +189,7 @@ export const PreferencesButtons = React.memo(function PreferencesesButtons() {
 export const AccountPageMobile = React.memo(function AccountPageMobile() {
     return(
         <>
-            <AdaptivePageLayout title="Account">
+            <AdaptivePageLayout fullWidth title="Account">
                 <Box pt={2}>
                     <UserDetailsRow/>
                     <PlanDetailsContainer/>

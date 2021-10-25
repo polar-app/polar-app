@@ -10,7 +10,7 @@ export const PricingScreen = () => {
     return (
         <PricingStoreProvider>
             <DefaultChangePlanContextProvider>
-                <AdaptivePageLayout title="Pricing">
+                <AdaptivePageLayout fullWidth title="Pricing">
                     <FixedNav id="doc-repository">
 
                         <FixedNavBody className="container-fluid">

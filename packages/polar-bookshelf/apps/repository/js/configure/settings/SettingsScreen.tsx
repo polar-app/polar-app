@@ -68,7 +68,7 @@ const Main = () => {
 
     return (
         <>
-            <Box px="1" className={classes.root}>
+            <Box py={2} className={classes.root}>
 
                 <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
@@ -180,7 +180,7 @@ const Main = () => {
 export const SettingsScreen = React.memo(function SettingsScreen() {
 
     return (
-        <AdaptivePageLayout title="Settings">
+        <AdaptivePageLayout fullWidth title="Settings">
             <Main/>
         </AdaptivePageLayout>
     );
