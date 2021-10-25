@@ -374,8 +374,7 @@ const StoryViewRoute = deepMemo(function StoryViewRoute() {
     const story = matchingStories[0];
 
     return (
-        <Box m={story.noMargin ? 0 : 1}
-             style={{
+        <Box style={{
                  flexGrow: 1,
                  display: 'flex'
              }}>
