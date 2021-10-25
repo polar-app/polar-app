@@ -13,13 +13,11 @@ import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
 import {DocCardStory} from "./impl/DocCardStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
-import {WhatsNewStory} from "./impl/WhatsNewStory";
 import {IntersectionListStory} from './impl/IntersectionListStory';
 import {IntersectionListTableStory} from './impl/IntersectionListTableStory';
 import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
 import {MUITooltipStory} from "./impl/MUITooltipStory";
 import {MUIPaletteStory} from './impl/MUIPaletteStory';
-import {FirestoreSnapshotsStory} from './impl/FirestoreSnapshotsStory';
 import {HeightFitImgStory} from './impl/HeightFitImgStory';
 import {ActionMenuStory} from "./impl/ActionMenuStory";
 import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
@@ -29,16 +27,12 @@ import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import {UnmountComponentStory} from './impl/UnmountComponentStory';
 import {AbortedRenderStory} from './impl/AbortedRenderStory';
 import {ScratchStory} from "./impl/ScratchStory";
-import {ErrorBoundaryStory} from './impl/ErrorBoundaryStory';
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
-import {ProfileStory} from './impl/ProfileStory';
 import {AccountVerificationStory} from './impl/AccountVerificationStory';
-import {MobXStory} from "./impl/MobXStory";
 import {WelcomeStory} from "./impl/WelcomeStory";
 import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import {NestedContextStory} from './impl/NestedContextStory';
-import {CreateAccountStory} from "./impl/CreateAccountStory";
-import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
+import {CreateAccountScreenStory} from "./impl/CreateAccountScreenStory";
 import {MUICommandActionMenuStory} from './impl/MUICommandActionMenuStory';
 import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
@@ -75,7 +69,7 @@ const stories = createStoryIndex([
         component: <AutoHideOnScrollStory/>
     },
     {
-        name: "Vertical Dynamic Scroller",
+        name: "VerticalDynamicScroller",
         component: <VerticalDynamicScrollerStory/>
     },
     {
@@ -95,7 +89,7 @@ const stories = createStoryIndex([
         component: <WelcomeStory/>
     },
     {
-        name: "Doc Metadata Editor",
+        name: "DocMetadataEditor",
         component: <DocMetadataEditorStory/>
     },
     {
@@ -137,15 +131,15 @@ const stories = createStoryIndex([
         component: <MUITooltipStory/>
     },
     {
-        name: "MUIPaletteStory",
+        name: "MUIPalette",
         component: <MUIPaletteStory/>
     },
     {
-        name: "HeightFitImgStory",
+        name: "HeightFitImg",
         component: <HeightFitImgStory/>
     },
     {
-        name: "ActionMenuStory",
+        name: "ActionMenu",
         component: <ActionMenuStory/>
     },
     {
@@ -161,11 +155,11 @@ const stories = createStoryIndex([
         component: <ProgressButtonStory/>
     },
     {
-        name: 'FunctionalChildStory',
+        name: 'FunctionalChild',
         component: <FunctionalChildStory/>
     },
     {
-        name: 'UnmountComponentStory',
+        name: 'UnmountComponent',
         component: <UnmountComponentStory/>
     },
     {
@@ -181,19 +175,15 @@ const stories = createStoryIndex([
         component: <NestedContextStory/>
     },
     {
-        name: 'Create Account',
-        component: <CreateAccountStory/>
+        name: 'CreateAccountScreen',
+        component: <CreateAccountScreenStory/>
     },
     {
-        name: 'TextAreaMarkdownEditorStory',
-        component: <TextAreaMarkdownEditorStory/>
-    },
-    {
-        name: 'MUICommandActionMenuStory',
+        name: 'MUICommandActionMenu',
         component: <MUICommandActionMenuStory/>
     },
     {
-        name: 'ExportDefaultComponentStory',
+        name: 'ExportDefaultComponent',
         component: <ExportDefaultComponentStory/>
     },
     {
