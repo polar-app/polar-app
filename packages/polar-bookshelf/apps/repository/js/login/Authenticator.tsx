@@ -19,6 +19,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { AdaptiveDialog } from '../../../../web/js/mui/AdaptiveDialog';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -590,46 +591,6 @@ const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 interface AdaptiveDialogProps {
     readonly children: React.ReactNode;
 }
-
-/**
- * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
- */
-export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
-
-    return (
-        <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%'
-                }}>
-
-                    <Paper style={{
-                        margin: 'auto',
-                        maxWidth: '450px',
-                        minHeight: '450px',
-                        maxHeight: '650px',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-
-                        {props.children}
-
-                    </Paper>
-                </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-                <>
-                    {props.children}
-                </>
-            </DeviceRouters.Phone>
-        </>
-    );
-
-});
 
 // TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
 // PrivateBetaAuthenticator or CreateAccountAuthenticator
