@@ -14,7 +14,8 @@
     "@typescript-eslint",
     "react",
     "react-hooks",
-    "unused-imports"
+    "unused-imports",
+    "functional"
   ],
   "env": {
     "es6": true,
@@ -27,6 +28,7 @@
     "@typescript-eslint/no-misused-promises": "error",
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+    "functional/prefer-readonly-type": "error",
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-namespace": "off",
