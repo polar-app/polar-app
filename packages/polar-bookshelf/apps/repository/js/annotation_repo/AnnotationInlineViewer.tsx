@@ -80,7 +80,7 @@ const AnnotationSelected = React.memo(function AnnotationSelected(props : Annota
     );
 });
 
-export const AnnotationInlineViewer2 = React.memo(() => {
+export const AnnotationInlineViewer = React.memo(() => {
 
     const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
 

@@ -3,7 +3,7 @@ import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightC
 import * as React from "react";
 import {useAnnotationRepoCallbacks, useAnnotationRepoStore} from "./AnnotationRepoStore";
 import {AnnotationRepoTableDropdown2} from "./AnnotationRepoTableDropdown2";
-import {TextFilter2} from "./filter_bar/TextFilter2";
+import {TextFilter} from "./filter_bar/TextFilter";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export const AnnotationRepoFilterBar2 = () => {
+export const AnnotationRepoFilterBar = () => {
 
     const classes = useStyles();
     const {filter} = useAnnotationRepoStore(['filter']);
@@ -38,7 +38,7 @@ export const AnnotationRepoFilterBar2 = () => {
             </div>
 
             <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                <TextFilter2 onChange={text => setFilter({text})}/>
+                <TextFilter onChange={text => setFilter({text})}/>
             </div>
 
             <div className="ml-1 d-none-mobile mt-auto mb-auto">

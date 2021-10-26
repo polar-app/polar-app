@@ -1,5 +1,5 @@
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
+import {arrayStream} from "../util/ArrayStreams";
+import {IPageInfo} from "../metadata/IPageInfo";
 import {IDimensions} from "../util/IDimensions";
 
 export namespace DocAnnotationSorter {

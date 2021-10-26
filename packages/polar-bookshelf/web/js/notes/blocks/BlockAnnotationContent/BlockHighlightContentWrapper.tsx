@@ -50,9 +50,9 @@ export const useBlockTagsSectionStyles = makeStyles(() =>
             margin: '3px 0',
             display: 'flex',
             flexWrap: 'wrap', 
+            fontSize: 12,
             '& > a': {
                 marginRight: 4,
-                fontSize: 12,
                 whiteSpace: 'nowrap',
             }
         },

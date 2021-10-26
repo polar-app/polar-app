@@ -2,6 +2,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import * as React from 'react';
 import {BarMode, NoteFormatBar} from "../../../web/js/notes/NoteFormatBar";
+import {StoryHolder} from "../StoryHolder";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -20,9 +21,11 @@ export const ScratchStory = () => {
 
     return (
 
-        <div>
-            <NoteFormatBar mode={mode} setMode={setMode}/>
-        </div>
+        <StoryHolder>
+            <div>
+                <NoteFormatBar mode={mode} setMode={setMode}/>
+            </div>
+        </StoryHolder>
 
     );
 

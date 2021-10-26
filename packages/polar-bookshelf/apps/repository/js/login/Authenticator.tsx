@@ -20,6 +20,8 @@ import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { AdaptiveDialog } from '../../../../web/js/mui/AdaptiveDialog';
+import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
+import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -36,8 +38,6 @@ export const useStyles = makeStyles((theme) =>
 
         alert: {
             margin: theme.spacing(1),
-            // marginLeft: theme.spacing(3),
-            // marginRight: theme.spacing(3),
         },
 
         alternate: {
@@ -51,6 +51,7 @@ export const useStyles = makeStyles((theme) =>
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
         }
+        },
     }),
 );
 
@@ -122,15 +123,14 @@ const BackendProgress = (props: BackendProgressProps) => {
     return <BackendProgressInactive/>
 
 }
+interface IAlert {
+    readonly type: 'error' | 'success';
+    readonly message: string;
+}
 
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
-
-    interface IAlert {
-        readonly type: 'error' | 'success';
-        readonly message: string;
-    }
 
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
@@ -346,10 +346,12 @@ const EmailTokenAuthButton = () => {
     );
 };
 
-const RegisterForBetaButton = () => {
+export const RegisterForBetaButton = () => {
 
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
+    const [alert, setAlert] = React.useState<IAlert | undefined>();
+
     const emailRef = React.useRef("");
 
     const codeRef = React.useRef("");
@@ -361,7 +363,20 @@ const RegisterForBetaButton = () => {
         const request = {
             email: emailRef.current.trim(),
             tag: "initial_signup",
+        const email = emailRef.current.trim();
+
+        const request = {
+            email: email,
+            tag: codeRef.current || "initial_signup",
         };
+
+        if(EmailAddressParser.parse(email).length < 1){
+            setAlert({
+                type: 'error',
+                message: 'Unable to register email: The email address is improperly formatted.'
+            });
+            return;
+        }
 
         try {
 
@@ -394,6 +409,13 @@ const RegisterForBetaButton = () => {
             )}
 
             <BackendProgress pending={pending}/>
+
+            {alert && (
+                <Alert severity={alert.type} 
+                        className={classes.alert}>
+                    {alert.message}
+                </Alert>
+            )}
 
             {!isRegistered && (
                 <Box m={2}>

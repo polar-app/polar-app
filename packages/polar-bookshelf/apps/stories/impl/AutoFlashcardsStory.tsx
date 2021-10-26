@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 import AutoFlashcardRequest = AutoFlashcards.AutoFlashcardRequest;
 import AutoFlashcardResponse = AutoFlashcards.AutoFlashcardResponse;
+import {StoryHolder} from "../StoryHolder";
 
 export const AutoFlashcardsStory = () => {
 
@@ -35,39 +36,39 @@ export const AutoFlashcardsStory = () => {
     }, []);
 
     return (
-        <div>
+        <StoryHolder>
+            <>
+                <TextField id="standard-basic"
+                           label="Enter text"
+                           onChange={(event) => valueRef.current = event.currentTarget.value} />
 
-            <TextField id="standard-basic"
-                       label="Enter text"
-                       onChange={(event) => valueRef.current = event.currentTarget.value} />
+                <div style={{display: 'flex'}}>
 
-            <div style={{display: 'flex'}}>
+                    <Button size="large"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => doExec(valueRef.current).catch(err => console.error(err))}>
 
-                <Button size="large"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => doExec(valueRef.current).catch(err => console.error(err))}>
+                        Generate
 
-                    Generate
-
-                </Button>
-            </div>
-
-
-            {duration && (
-                <div>
-                    <b>duration: </b> {duration}
+                    </Button>
                 </div>
-            )}
 
-            {result && (
-                <div>
-                    <b>front: </b> {result.front} <br/>
-                    <b>back: </b> {result.back} <br/>
-                </div>
-            )}
 
-        </div>
+                {duration && (
+                    <div>
+                        <b>duration: </b> {duration}
+                    </div>
+                )}
+
+                {result && (
+                    <div>
+                        <b>front: </b> {result.front} <br/>
+                        <b>back: </b> {result.back} <br/>
+                    </div>
+                )}
+            </>
+        </StoryHolder>
     );
 
 }

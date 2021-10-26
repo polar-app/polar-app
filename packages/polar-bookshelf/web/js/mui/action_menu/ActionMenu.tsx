@@ -3,7 +3,7 @@ import List from "@material-ui/core/List";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {IActionMenuItem} from "./ActionStore";
+import {IActionMenuItem, useActionMenuStore} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -54,6 +54,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
     const classes = useStyles();
     const {onAction, onClose, items} = props;
+    const actionMenuStore = useActionMenuStore();
 
     const [index, setIndex] = React.useState<number | undefined>(undefined);
 
@@ -103,7 +104,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
                 if (delta === -1) {
                     // got to the end
-                    return undefined;
+                    return items.length - 1;
                 }
 
                 return 0;
@@ -117,7 +118,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             }
 
             if (newIndex >= items.length) {
-                return items.length - 1;
+                return undefined;
             }
 
             return newIndex;
@@ -145,7 +146,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
         // TODO: I don't think enter is handled?
 
-        if (event.key === 'Tab') {
+        if (event.key === 'Tab' ||  event.key === 'Enter') {
             if (index !== undefined) {
                 const command = items[index];
                 if (command) {
@@ -183,9 +184,19 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         );
     });
 
+    const handleClickAway = React.useCallback(() => {
+
+        if (actionMenuStore.reset) {
+            actionMenuStore.reset()
+        }
+
+        props.onClose('cancel')
+
+    }, [actionMenuStore, props])
+
     return (
 
-        <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
+        <ClickAwayListener onClickAway={handleClickAway}>
             <div style={{
                      display: 'flex',
                      flexDirection: 'column'

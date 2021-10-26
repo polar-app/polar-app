@@ -18,14 +18,19 @@ export namespace RegisterForPrivateBeta {
         const firestore = FirestoreAdmin.getInstance();
         const {challenge} = Challenges.create();
 
+        const id = PrivateBetaReqCollection.createID(request.email);
+
+        const record = await PrivateBetaReqCollection.get(firestore, id);
+
+        const tags = [...(record?.tags || []), request.tag];
+
         await PrivateBetaReqCollection.set(firestore, {
-            tags: [request.tag],
+            tags,
             email: request.email,
             challenge
         })
 
         // TODO: send them an email thanking them...
-        // TODO: no metadata yet...
 
         return {};
 

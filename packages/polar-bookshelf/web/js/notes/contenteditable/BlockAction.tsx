@@ -661,15 +661,24 @@ export const BlockAction: React.FC<IProps> = observer((props) => {
 
     }, [doCompleteOrReset, disabled]);
 
+
+    React.useEffect(() => {
+
+        actionStore.setReset(() => {
+            doReset(true);
+        });
+
+        return () => {
+            actionStore.clearReset();
+        }
+
+    });
+
     return (
-        <ClickAwayListener onClickAway={() => doReset(true)}>
-            <div
-                onKeyDown={handleKeyDown}
-                onClick={handleClick}
-            >
-                {props.children}
-            </div>
-        </ClickAwayListener>
+        <div onKeyDown={handleKeyDown}
+             onClick={handleClick}>
+            {props.children}
+        </div>
     );
 
 });

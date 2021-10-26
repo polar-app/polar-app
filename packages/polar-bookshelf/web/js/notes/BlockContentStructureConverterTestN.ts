@@ -1,7 +1,8 @@
 import {assert} from "chai";
 import {JSDOM} from "jsdom"
 import {BlockContentStructureConverter} from "./BlockContentStructureConverter";
-import {HTMLToBlocks, IBlockContentStructure} from "./HTMLToBlocks";
+import {HTMLToBlocks} from "./HTMLToBlocks";
+import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 
 describe('BlockContentStructureConverter', () => {
     beforeEach(() => {
@@ -25,9 +26,9 @@ describe('BlockContentStructureConverter', () => {
     describe('toHTML', () => {
         it('should convert basic blocks structure to html', async () => {
             const blockStructure: IBlockContentStructure[] = [
-                {content: HTMLToBlocks.createMarkdownContent('hello'), children: []},
-                {content: HTMLToBlocks.createMarkdownContent('world'), children: []},
-                {content: await HTMLToBlocks.createImageContent('dataurl:fhasdklhgdalsh'), children: []}
+                {id: '1', content: HTMLToBlocks.createMarkdownContent('hello'), children: []},
+                {id: '2', content: HTMLToBlocks.createMarkdownContent('world'), children: []},
+                {id: '3', content: await HTMLToBlocks.createImageContent('dataurl:fhasdklhgdalsh'), children: []}
             ];
 
             const output = BlockContentStructureConverter.toHTML(blockStructure);
@@ -37,22 +38,24 @@ describe('BlockContentStructureConverter', () => {
 
         it('should convert complex blocks structure to html', () => {
             const blockStructure: ReadonlyArray<IBlockContentStructure> = [
-                {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
+                {id: '0', content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {
+                    id: '1',
                     content: HTMLToBlocks.createMarkdownContent("[a link](https://www.google.com)"),
                     children: [
-                        {content: HTMLToBlocks.createMarkdownContent("hmm"), children: []},
+                        {id: '2', content: HTMLToBlocks.createMarkdownContent("hmm"), children: []},
                         {
+                            id: '3', 
                             content: HTMLToBlocks.createMarkdownContent("![image](https://link.to.image)"),
                             children: [
-                                {content: HTMLToBlocks.createMarkdownContent("potato"), children: []},
+                                {id: '4', content: HTMLToBlocks.createMarkdownContent("potato"), children: []},
                             ]
                         },
                     ]
                 },
-                {content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("Test bold italics [[Wiki]]"), children: []},
-                {content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
+                {id: '5', content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
+                {id: '6', content: HTMLToBlocks.createMarkdownContent("Test bold italics [[Wiki]]"), children: []},
+                {id: '7', content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
             ];
 
             const output = BlockContentStructureConverter.toHTML(blockStructure);

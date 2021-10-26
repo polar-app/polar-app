@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "polar-shared": "0.0.0",
-    "cli-select": "1.1.2"
+    "cli-select": "=1.1.2"
   },
   "author": "Polar",
   "license": "ISC",

@@ -1,5 +1,5 @@
 import React from "react";
-import {UserAvatar} from "./UserAvatar";
+import {UserAvatarControlled} from "./UserAvatar";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 
 interface IProps {
@@ -23,11 +23,11 @@ export const AccountAvatar = React.memo(function AccountAvatar(props: IProps) {
     const {userInfo} = userInfoContext;
 
     return (
-        <UserAvatar size={props.size}
-                    className={props.className}
-                    displayName={userInfo.displayName}
-                    style={props.style}
-                    photoURL={userInfo.photoURL}/>
+        <UserAvatarControlled size={props.size}
+                              className={props.className}
+                              displayName={userInfo.displayName}
+                              style={props.style}
+                              photoURL={userInfo.photoURL}/>
     );
 
 });
