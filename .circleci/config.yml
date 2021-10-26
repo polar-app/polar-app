@@ -446,11 +446,11 @@ executors:
   # ! Default Executor for most jobs
   xlarge:
     docker:
-      - image: circleci/node:14.16.0-buster
+      - image: circleci/node:14.17.0-buster
     resource_class: xlarge
   large:
     docker:
-      - image: circleci/node:14.16.0-buster
+      - image: circleci/node:14.17.0-buster
     resource_class: large
   android:
     docker:
