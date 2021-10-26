@@ -16,6 +16,8 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CheckIcon from '@material-ui/icons/Check';
 import {URLStr} from 'polar-shared/src/util/Strings';
+import {MUIBracketSvgIcon} from "../mui/MUIBracketSvgIcon";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -180,6 +182,10 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
     return (
         <>
 
+            <FormatButton>
+                <MUIBracketSvgIcon className={classes.icon}/>
+            </FormatButton>
+
             <FormatButton onClick={props.onBold}>
                 <FABoldIcon className={classes.icon}/>
             </FormatButton>
@@ -264,7 +270,7 @@ export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormat
     }, []);
 
     return (
-        <Paper className={classes.root}>
+        <Paper className={classes.root} square={! Devices.isDesktop()}>
             <MUIButtonBar onMouseDown={handleMouseEvent}
                           onMouseUp={handleMouseEvent}>
 

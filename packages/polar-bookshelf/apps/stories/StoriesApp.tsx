@@ -41,6 +41,7 @@ import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
+import {NoteFormatBarStory} from "./impl/NoteFormatBarStory";
 
 interface IStory {
     readonly name: string;
@@ -65,6 +66,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 
 const stories = createStoryIndex([
 
+    {
+        name: "NoteFormatBar",
+        component: <NoteFormatBarStory/>
+    },
     {
         name: "Auth Hide on Scroll",
         component: <AutoHideOnScrollStory/>

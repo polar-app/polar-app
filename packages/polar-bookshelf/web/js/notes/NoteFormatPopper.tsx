@@ -11,16 +11,23 @@ import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockPredicates} from './store/BlockPredicates';
 import {Selections} from "../highlights/text/selection/Selections";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        popper: {
+        popperDesktop: {
             position: 'absolute',
             paddingTop: '5px',
             paddingBottom: '5px',
-            zIndex: 10,
+            zIndex: 10000,
             transform: 'translateX(-50%)',
             userSelect: 'none',
+        },
+        popperHandheld: {
+            position: 'fixed',
+            zIndex: 10000,
+            userSelect: 'none',
+            width: '100%'
         },
         fakeRange: {
             position: 'absolute',
@@ -58,7 +65,22 @@ export interface IProps extends FormatBarActions {
 export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps) {
 
     const [mode, setMode] = React.useState<BarMode>('format');
+
+    const initialPosition = React.useMemo(() => {
+
+        if (Devices.isPhone() || Devices.isTablet()) {
+            return {
+                bottom: 0,
+                left: 0
+            }
+        }
+
+        return undefined;
+
+    }, [])
+
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
+
     const timeoutRef = React.useRef<number | undefined>(undefined);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const classes = useStyles();
@@ -83,6 +105,10 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
 
     // FIXME listen to selected in the store and if it's not empty then clear the popup..
+
+    const computePositionFromBRC = React.useCallback(() => {
+
+    }, []);
 
     const doPopup = React.useCallback((): boolean => {
 
@@ -245,10 +271,13 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
                 {isBlockEditable && position && (
                     <ClickAwayListener onClickAway={clearPopup}>
-                        <div className={classes.popper}
+
+                        <div className={Devices.isDesktop() ? classes.popperDesktop : classes.popperHandheld}
                              style={{
-                                 top: position.top,
-                                 left: position.left,
+                                 // top: position.top,
+                                 // left: position.left,
+                                 bottom: 0,
+                                 left: 0
                              }}>
 
                             <NoteFormatBar {...noteFormatHandlers}
@@ -269,6 +298,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 });
 
 const useRangeSaver = () => {
+
     const rangeRef = React.useRef<Range | undefined>();
     const save = React.useCallback((): boolean => {
         const selection = document.getSelection();

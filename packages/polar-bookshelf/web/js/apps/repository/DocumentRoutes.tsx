@@ -26,6 +26,7 @@ interface IDocumentsScreensProps {
 }
 
 const SidenavDocuments: React.FC<IDocumentsScreensProps> = (props) => {
+
     const { tabs } = useSideNavStore(['tabs']);
 
     return (
