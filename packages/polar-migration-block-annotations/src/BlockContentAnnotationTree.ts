@@ -12,12 +12,15 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export namespace BlockContentAnnotationTree {
 
     export type IAnnotationBase = {
         tags: ReadonlyArray<Tag>;
         children: ReadonlyArray<IAnnotation>;
+        created: ISODateTimeString;
+        updated: ISODateTimeString;
     };
 
     /**
@@ -104,7 +107,9 @@ export namespace BlockContentAnnotationTree {
                 color: annotation.color || 'yellow',
                 text: htmlToMarkdown(annotation.text),
                 revisedText: `${revisedText} ${wikiLinks}`,
-            }
+            },
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -133,6 +138,8 @@ export namespace BlockContentAnnotationTree {
                 order: annotation.order,
                 position: annotation.position,
             },
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -174,6 +181,8 @@ export namespace BlockContentAnnotationTree {
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -196,6 +205,8 @@ export namespace BlockContentAnnotationTree {
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }

@@ -1,4 +1,4 @@
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IMarkdownContent} from "./content/IMarkdownContent";
@@ -51,6 +51,8 @@ export type IBlockContentStructure<T = IBlockContent> = {
     id: BlockIDStr;
     content: T;
     children: ReadonlyArray<IBlockContentStructure>;
+    updated?: ISODateString;
+    created?: ISODateString;
 };
 
 export interface IBlockLink {
