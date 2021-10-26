@@ -48,7 +48,7 @@ describe('EPUBContent', () => {
 
         const content = await EPUBContent.get(path);
 
-        const parsedEpub = await EPUBContent.parseContent(path, content[1]);
+        const parsedEpub = await EPUBContent.parseContent(content[1]);
 
         assert.equal(parsedEpub[0].cfi, 'epubcfi(/6/8[chapter_001]!/4/2/2)');
 
@@ -86,10 +86,11 @@ describe('EPUBContent', () => {
 
         const content = {
             id: 'chapter_001',
+            sharedCfi: '/6/8[chapter_001]!',
             html: () => html()
         };
 
-        const parsedEpub = await EPUBContent.parseContent(path, content);
+        const parsedEpub = await EPUBContent.parseContent(content);
 
         assert.equal(parsedEpub[0].cfi, 'epubcfi(/6/8[chapter_001]!/4/2)');
         assert.equal(parsedEpub[0].text, 'first sentance.');
