@@ -5,25 +5,27 @@ import {ClearLogsButton} from './ClearLogsButton';
 import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Box from '@material-ui/core/Box';
+import { AdaptivePageLayout } from '../page_layout/AdaptivePageLayout';
 
 export const LogsScreen = () => (
+    <AdaptivePageLayout title="Logs">
+        <DefaultPageLayout>
+            <>
 
-    <DefaultPageLayout>
-        <>
+                <Box mb={1} mt={2}>
 
-            <Box mb={1} mt={1}>
+                    <MUIButtonBar>
+                        <CopyLogsToClipboardButton/>
+                        <ClearLogsButton/>
+                    </MUIButtonBar>
 
-                <MUIButtonBar>
-                    <CopyLogsToClipboardButton/>
-                    <ClearLogsButton/>
-                </MUIButtonBar>
+                </Box>
 
-            </Box>
+                <div>
+                    <LogsContent/>
+                </div>
+            </>
 
-            <div>
-                <LogsContent/>
-            </div>
-        </>
-
-    </DefaultPageLayout>
+        </DefaultPageLayout>
+    </AdaptivePageLayout>
 );

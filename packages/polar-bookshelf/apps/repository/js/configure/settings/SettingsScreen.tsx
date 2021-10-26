@@ -42,7 +42,6 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            // margin: '16px 0',
             '& h1, & h2, & h3, & h4, & h5': {
                 margin: 0,
             },
@@ -180,7 +179,7 @@ const Main = () => {
 export const SettingsScreen = React.memo(function SettingsScreen() {
 
     return (
-        <AdaptivePageLayout fullWidth title="Settings">
+        <AdaptivePageLayout title="Settings">
             <Main/>
         </AdaptivePageLayout>
     );
