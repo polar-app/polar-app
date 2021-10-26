@@ -83,7 +83,7 @@ const stories = createStoryIndex([
     
     {
         name: "Migration Dialog 3.0",
-        component: <MigrationToBlockAnnotationsMainContent/>
+        component: <MigrationToBlockAnnotationsMainContent progress={65}/>
     },
     {
         name: "Vertical Dynamic Scroller",
