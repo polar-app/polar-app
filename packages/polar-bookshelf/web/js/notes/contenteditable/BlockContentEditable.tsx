@@ -311,8 +311,8 @@ export function useUpdateCursorPosition() {
 }
 
 type IUseHandleLinkDeletionOpts = {
-    elem: HTMLElement | null;
-    blockID: BlockIDStr;
+    readonly elem: HTMLElement | null;
+    readonly blockID: BlockIDStr;
 };
 
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {

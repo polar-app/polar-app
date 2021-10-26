@@ -19,9 +19,9 @@ export class DecksSync {
 
     public deckNamesAndIdsClient: IDeckNamesAndIdsClient = new DeckNamesAndIdsClient();
 
-    private readonly missingDecks: string[] = [];
+    private readonly missingDecks: readonly string[] = [];
 
-    private readonly missingDeckDescriptors: DeckDescriptor[] = [];
+    private readonly missingDeckDescriptors: readonly DeckDescriptor[] = [];
 
     private readonly syncQueue: SyncQueue;
 
@@ -63,7 +63,7 @@ export class DecksSync {
         // now I just need to compute the set difference deckDescriptors / deckNamesAndIds
         // for all decks that are not in deckNamesAndIds
 
-        const currentDecks: string[] = Object.keys(deckNamesAndIds);
+        const currentDecks: readonly string[] = Object.keys(deckNamesAndIds);
         const expectedDecks = deckDescriptors.map(current => current.name);
 
         this.missingDecks.push(... SetArrays.difference(expectedDecks, currentDecks));

@@ -16,25 +16,25 @@ export class PageMeta extends SerializedObject implements IPageMeta {
 
     public readonly pageInfo: IPageInfo;
 
-    public readonly pagemarks: {[id: string]: IPagemark} = {};
+    public readonly pagemarks: {readonly [id: string]: IPagemark} = {};
 
-    public readonly notes: {[id: string]: INote} = {};
+    public readonly notes: {readonly [id: string]: INote} = {};
 
-    public readonly comments: {[id: string]: IComment} = {};
+    public readonly comments: {readonly [id: string]: IComment} = {};
 
-    public readonly questions: {[id: string]: IQuestion} = {};
+    public readonly questions: {readonly [id: string]: IQuestion} = {};
 
-    public readonly flashcards: {[id: string]: IFlashcard} = {};
+    public readonly flashcards: {readonly [id: string]: IFlashcard} = {};
 
-    public readonly textHighlights: {[id: string]: ITextHighlight} = {};
+    public readonly textHighlights: {readonly [id: string]: ITextHighlight} = {};
 
-    public readonly areaHighlights: {[id: string]: IAreaHighlight} = {};
+    public readonly areaHighlights: {readonly [id: string]: IAreaHighlight} = {};
 
-    public readonly screenshots: {[id: string]: IScreenshot} = {};
+    public readonly screenshots: {readonly [id: string]: IScreenshot} = {};
 
-    public readonly thumbnails: {[id: string]: IThumbnail} = {};
+    public readonly thumbnails: {readonly [id: string]: IThumbnail} = {};
 
-    public readonly readingProgress: {[id: string]: ReadingProgress} = {};
+    public readonly readingProgress: {readonly [id: string]: ReadingProgress} = {};
 
     constructor(val: any) {
 

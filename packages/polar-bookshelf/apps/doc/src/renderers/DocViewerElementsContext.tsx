@@ -60,7 +60,7 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
                 const docViewerElement = getDocViewerElement();
                 const elements = docViewerElement.querySelectorAll('.page');
-                return Array.from(elements) as HTMLElement[];
+                return Array.from(elements) as readonly HTMLElement[];
 
             }
 

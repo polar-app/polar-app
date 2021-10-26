@@ -103,7 +103,7 @@ export class AutoPagemarker {
 
     private readonly opts: AutoPagemarkerOpts;
 
-    constructor(private callback: CreatePagemarkCallback,
+    constructor(private readonly callback: CreatePagemarkCallback,
                 opts: Partial<AutoPagemarkerOpts> = {}) {
 
         this.opts = {

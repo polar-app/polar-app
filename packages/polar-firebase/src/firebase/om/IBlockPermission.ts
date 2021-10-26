@@ -11,7 +11,7 @@ import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings"
  */
 export type BlockPermissionRecordType = 'page' | 'nspace' | 'effective';
 
-export type BlockPermissionMap = {[uid in BlockPermissionUserIDStr]: IBlockPermissionEntry}
+export type BlockPermissionMap = { readonly[uid in BlockPermissionUserIDStr]: IBlockPermissionEntry}
 
 export interface IBlockPermission<T extends BlockPermissionRecordType> {
     readonly id: BlockIDStr | NamespaceIDStr;

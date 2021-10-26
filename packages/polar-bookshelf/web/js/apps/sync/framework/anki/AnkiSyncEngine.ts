@@ -43,7 +43,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
         console.log("Going to sync over N notes: " + noteDescriptors.length);
 
-        const deckDescriptors: DeckDescriptor[] = Array.from(deckNames)
+        const deckDescriptors: readonly DeckDescriptor[] = Array.from(deckNames)
             .map(deckName => {
                 return {name: deckName};
             });
@@ -161,7 +161,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
             const deckName = this.computeDeckName(deckNameStrategy, flashcardDescriptor.docMeta.docInfo);
 
-            const fields: {[name: string]: string} = {};
+            const fields: {readonly [name: string]: string} = {};
 
             // need to create the fields 'front' and 'back'
             Dictionaries.forDict(flashcardDescriptor.flashcard.fields, (key, value) => {

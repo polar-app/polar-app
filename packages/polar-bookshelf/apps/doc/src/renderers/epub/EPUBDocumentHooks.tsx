@@ -37,14 +37,14 @@ export namespace StylesheetMaps {
 }
 
 export interface IStylesheetMapRules {
-    [key: string]: string;
+    readonly [key: string]: string;
 }
 
 /**
  * Regular/standard stylesheet map without react property camelCase keys.
  */
 interface IStylesheetMap {
-    [key: string]: IStylesheetMapRules;
+    readonly [key: string]: IStylesheetMapRules;
 }
 
 export function useStylesheetURL() {

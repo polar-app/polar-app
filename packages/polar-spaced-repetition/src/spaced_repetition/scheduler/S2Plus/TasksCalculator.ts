@@ -46,7 +46,7 @@ export class TasksCalculator {
      */
     public static async calculate<A>(opts: CalculateOpts<A>): Promise<CalculatedTaskReps<A>> {
 
-        const resolvedTaskReps: TaskRep<A>[] = [];
+        const resolvedTaskReps: readonly TaskRep<A>[] = [];
 
         const jobs = opts.potential.map((current) => async () => {
             const taskRep = await opts.resolver(current);

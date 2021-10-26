@@ -101,7 +101,7 @@ class Note {
 
 class MyStore {
 
-    @observable readonly notes: Note[] = [];
+    @observable readonly notes: readonly Note[] = [];
 
     constructor() {
         makeAutoObservable(this);

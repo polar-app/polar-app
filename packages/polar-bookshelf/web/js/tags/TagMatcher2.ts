@@ -5,7 +5,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
  * We can filter anything that has tags.
  */
 export interface ITagged {
-    readonly tags?: Readonly<{[id: string]: Tag}>;
+    readonly tags?: Readonly<{readonly [id: string]: Tag}>;
 }
 
 export namespace TagMatcher2 {

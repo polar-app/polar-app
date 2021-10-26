@@ -8,9 +8,9 @@ import {BlockPredicates} from "../store/BlockPredicates";
 import {BlockAction} from "./BlockAction";
 
 interface IBlockActionProps {
-    id: BlockIDStr;
-    noteActionsProvider: ActionMenuItemsProvider;
-    disabled?: boolean;
+    readonly id: BlockIDStr;
+    readonly noteActionsProvider: ActionMenuItemsProvider;
+    readonly disabled?: boolean;
 }
 
 const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
@@ -67,12 +67,12 @@ const BlockActionComponentMap = {
     tags: TagsBlockAction,
 };
 
-type IBlockActionToggles = {
+type IBlockActionToggles = { readonly
     [Key in keyof typeof BlockActionComponentMap]?: boolean;
 };
 
 interface IBlockActionsProviderProps extends IBlockActionToggles {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props) => {

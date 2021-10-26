@@ -75,7 +75,7 @@ class UsersRecentlyContacted {
      */
     public static async filter(users: ReadonlyArray<UserRecord>) {
 
-        const result: UserRecord[] = [];
+        const result: readonly UserRecord[] = [];
 
         for (const user of users) {
 
@@ -145,7 +145,7 @@ export class UserInterviewer {
     public static async computeTargets(maxUsers: number,
                                        predicate: UserPredicate): Promise<ReadonlyArray<UserRecord>> {
 
-        const result: UserRecord[] = [];
+        const result: readonly UserRecord[] = [];
 
         const userPager = new UserPager();
 

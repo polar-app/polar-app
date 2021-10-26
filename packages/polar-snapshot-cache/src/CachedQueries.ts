@@ -31,7 +31,7 @@ export namespace CachedQueries {
 
     }
 
-    export function fromCache(snapshot: ICachedQuery, index: {[id: string]: ICachedDoc}): IQuerySnapshotClient {
+    export function fromCache(snapshot: ICachedQuery, index: {readonly [id: string]: ICachedDoc}): IQuerySnapshotClient {
 
 
 

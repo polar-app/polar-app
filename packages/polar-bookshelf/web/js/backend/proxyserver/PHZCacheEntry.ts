@@ -49,8 +49,8 @@ export class PHZCacheEntry extends CacheEntry implements IPHZCacheEntry {
 
 export interface IPHZCacheEntry extends ICacheEntry {
 
-    phzReader: CompressedReader;
+    readonly phzReader: CompressedReader;
 
-    resourceEntry: ResourceEntry;
+    readonly resourceEntry: ResourceEntry;
 
 }

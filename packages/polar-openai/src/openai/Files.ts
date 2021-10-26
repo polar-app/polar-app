@@ -10,7 +10,7 @@ export namespace Files {
 
     export interface IAnswerData {
         readonly text: string;
-        readonly metadata?: {[key: string]: string};
+        readonly metadata?: {readonly [key: string]: string};
     }
 
     export interface IUploadResponse {

@@ -18,17 +18,17 @@ function defaultToKey(value: any): string {
 }
 
 export interface TypedDictionary<T> {
-    [key: string]: T;
+    readonly [key: string]: T;
 }
 
-export type PartitionKey<K> = [string, K];
+export type PartitionKey<K> = readonly [string, K];
 
 export type ToPartitionKeyFunction<K, T> = (value: T) => PartitionKey<K>;
 
 export interface MutablePartition<K, V> {
     readonly id: string;
     readonly key: K;
-    readonly values: V[];
+    readonly values: readonly V[];
 }
 
 export interface Partition<K, V> {
@@ -37,7 +37,7 @@ export interface Partition<K, V> {
     readonly values: ReadonlyArray<V>;
 }
 
-export type PartitionMap<K, V> = Readonly<{[id: string]: MutablePartition<K, V>}>;
+export type PartitionMap<K, V> = Readonly<{readonly [id: string]: MutablePartition<K, V>}>;
 
 /**
  * Takes a value, and maps it in the index, which allows us to push it through
@@ -48,7 +48,7 @@ export interface IValueWithIndex<V> {
     readonly value: V;
 }
 
-export type ScanTuple<V> = [V, boolean]
+export type ScanTuple<V> = readonly [V, boolean]
 export type ScanHandler<T, V> = (record: T, index: number) => ScanTuple<V>;
 
 /**
@@ -61,7 +61,7 @@ export type ScanHandler<T, V> = (record: T, index: number) => ScanTuple<V>;
  */
 export class ArrayStream<T> {
 
-    constructor(private values: ReadonlyArray<T>) {
+    constructor(private readonly values: ReadonlyArray<T>) {
     }
 
     /**
@@ -84,7 +84,7 @@ export class ArrayStream<T> {
         // mapping there and then have a map function that maps and returns true
         // or false depending if we should continue
 
-        const result: V[] = [];
+        const result: readonly V[] = [];
 
         for(let idx = start; idx >= 0 && idx < this.values.length; idx = idx + delta) {
 
@@ -148,7 +148,7 @@ export class ArrayStream<T> {
 
     public unique(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<T> {
 
-        const set: {[key: string]: T} = {};
+        const set: {readonly [key: string]: T} = {};
 
         this.values.forEach((value, idx) => {
             const key = toKey(value, idx);
@@ -178,7 +178,7 @@ export class ArrayStream<T> {
      */
     public group(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<ReadonlyArray<T>> {
 
-        const map: {[key: string]: ReadonlyArray<T>} = {};
+        const map: {readonly [key: string]: ReadonlyArray<T>} = {};
 
         this.values.forEach((value, idx) => {
             const key = toKey(value, idx);
@@ -196,7 +196,7 @@ export class ArrayStream<T> {
      */
     public partition<K>(toPartitionKey: ToPartitionKeyFunction<K, T>): PartitionMap<K, T> {
 
-        const map: {[id: string]: MutablePartition<K, T>} = {};
+        const map: {readonly [id: string]: MutablePartition<K, T>} = {};
 
         for (const value of this.values) {
             const [id, key] = toPartitionKey(value);
@@ -267,7 +267,7 @@ export class ArrayStream<T> {
     // regular flatmap that doesn't need to convert the types.
     public flatMap<V>(mapper: (currentValue: T, index: number) => ReadonlyArray<V>): ArrayStream<V> {
 
-        const result: V[] = [];
+        const result: readonly V[] = [];
 
         for (let idx = 0; idx < this.values.length; ++idx) {
             const mapped = mapper(this.values[idx], idx);
@@ -333,9 +333,9 @@ export class ArrayStream<T> {
     }
 
     public toMap2<V>(toKey: (value: T, index: number) => string,
-                     toValue: (value: T, index: number) => V ): {[key: string]: V} {
+                     toValue: (value: T, index: number) => V ): {readonly [key: string]: V} {
 
-        const map: {[key: string]: V} = {};
+        const map: {readonly [key: string]: V} = {};
 
         this.values.forEach((current, idx) => {
             const key = toKey(current, idx);
@@ -359,7 +359,7 @@ export namespace ArrayStreams {
         return new ArrayStream<T>(values);
     }
 
-    export function ofMapValues<T>(values: {[key: string]: T} | null | undefined): ArrayStream<T> {
+    export function ofMapValues<T>(values: {readonly [key: string]: T} | null | undefined): ArrayStream<T> {
         return new ArrayStream<T>(Object.values(values || {}));
     }
 

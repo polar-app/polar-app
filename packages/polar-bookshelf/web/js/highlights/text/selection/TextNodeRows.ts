@@ -31,7 +31,7 @@ import createSiblings = Tuples.createSiblings;
  */
 export class TextRegion {
 
-    private textNodes: any[] = [];
+    private textNodes: readonly any[] = [];
 
     push(textNode: any) {
 
@@ -236,7 +236,7 @@ export class TextNodeRows {
      * without an element in between.
      *
      */
-    static computeTextRegions0(nodeArray: NodeArray, textRegions: TextRegion[]): ReadonlyArray<TextRegion> {
+    static computeTextRegions0(nodeArray: NodeArray, textRegions: readonly TextRegion[]): ReadonlyArray<TextRegion> {
 
         // TODO: pass textRegions as an array as it's being copied each time.
 
@@ -292,7 +292,7 @@ export class TextNodeRows {
      */
     static computeTextBlocks(textRegions: ReadonlyArray<TextRegion>): ReadonlyArray<TextBlock> {
 
-        const textBlocks: TextBlock[] = [];
+        const textBlocks: readonly TextBlock[] = [];
 
         textRegions.forEach(textRegion => {
 
@@ -349,7 +349,7 @@ export class TextNodeRows {
 
     static mergeTextBlocks(textBlocks: ReadonlyArray<TextBlock>): ReadonlyArray<MergedTextBlock> {
 
-        const result: MergedTextBlock[] = [];
+        const result: readonly MergedTextBlock[] = [];
 
         textBlocks.forEach(textBlock => {
 

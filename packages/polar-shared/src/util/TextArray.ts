@@ -6,7 +6,7 @@ export class TextArray {
     public readonly width: number;
     public readonly height: number;
 
-    private readonly backing: string[][] = [];
+    private readonly backing: readonly (readonly string[])[] = [];
 
     constructor(width: number, height: number) {
         this.width = width;
@@ -22,7 +22,7 @@ export class TextArray {
     /**
      * Create a given array of the length with the given default
      */
-    createArray(length: number, defaultValue: string = " "): string[] {
+    createArray(length: number, defaultValue: string = " "): readonly string[] {
         let result = new Array(length);
         result.fill(defaultValue);
         return result;

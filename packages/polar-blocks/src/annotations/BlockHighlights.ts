@@ -7,12 +7,12 @@ import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter
 export namespace BlockHighlights {
 
     export interface ISortableBlock<T extends IAnnotationHighlightContent> extends DocAnnotationSorter.ISortable {
-        content: T
+        readonly content: T
     }
 
     export interface IdentifiableBlockContent<T extends IAnnotationHighlightContent> {
-        id: BlockIDStr;
-        content: T;
+        readonly id: BlockIDStr;
+        readonly content: T;
     }
 
     export function toSortable<T extends IAnnotationHighlightContent>({ id, content }: IdentifiableBlockContent<T>): ISortableBlock<T> {

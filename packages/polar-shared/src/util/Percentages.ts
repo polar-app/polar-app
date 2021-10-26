@@ -18,7 +18,7 @@ export class Percentages {
      *
      * @param percentages
      */
-    public static sum(...percentages: number[]) {
+    public static sum(...percentages: readonly number[]) {
 
         let sum = 0;
 

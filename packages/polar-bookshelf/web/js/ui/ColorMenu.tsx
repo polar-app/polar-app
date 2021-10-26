@@ -55,10 +55,10 @@ const useStyles = makeStyles((theme) =>
 );
 
 type IColorMenuProps = {
-    onChange: (color: ColorStr) => void;
-    selected?: ReadonlyArray<ColorStr> | ColorStr;
-    withHints?: boolean;
-    hintLimit?: number;
+    readonly onChange: (color: ColorStr) => void;
+    readonly selected?: ReadonlyArray<ColorStr> | ColorStr;
+    readonly withHints?: boolean;
+    readonly hintLimit?: number;
 };
 
 export const ColorMenu = React.forwardRef<HTMLDivElement, IColorMenuProps>((props, ref) => {

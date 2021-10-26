@@ -30,7 +30,7 @@ function computePagemarkCoverageFromResize(box: ILTRect,
 
         const doc = browserContext.document;
 
-        const elements = Array.from(doc.querySelectorAll("*")) as HTMLElement[];
+        const elements = Array.from(doc.querySelectorAll("*")) as readonly HTMLElement[];
 
         function textElementPredicate(element: HTMLElement): boolean {
             return element.textContent !== null && element.textContent.trim() !== '';

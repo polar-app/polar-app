@@ -15,7 +15,7 @@
  */
 export class Channels {
 
-    public static create<T>(): [ChannelFunction<T>, ChannelCoupler<T>] {
+    public static create<T>(): readonly [ChannelFunction<T>, ChannelCoupler<T>] {
 
         let target: ChannelFunction<T> = (value: T) => {
             // noop by default and we do nothing with the value.

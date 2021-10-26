@@ -5,9 +5,9 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
  */
 export class DocMetaSet {
 
-    public readonly docMetas: IDocMeta[];
+    public readonly docMetas: readonly IDocMeta[];
 
-    public constructor(...docMetas: IDocMeta[]) {
+    public constructor(...docMetas: readonly IDocMeta[]) {
         this.docMetas = docMetas;
     }
 

@@ -44,7 +44,7 @@ export interface GroupDocInfoInit {
 
     // The user tags from this user for their version of this doc.  This
     // excludes special typed tags and folder tags
-    readonly tags?: {[id: string]: Tag};
+    readonly tags?: {readonly [id: string]: Tag};
 
     readonly published?: ISODateTimeString;
 

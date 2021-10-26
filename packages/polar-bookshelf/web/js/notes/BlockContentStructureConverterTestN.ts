@@ -25,7 +25,7 @@ describe('BlockContentStructureConverter', () => {
 
     describe('toHTML', () => {
         it('should convert basic blocks structure to html', async () => {
-            const blockStructure: IBlockContentStructure[] = [
+            const blockStructure: readonly IBlockContentStructure[] = [
                 {id: '1', content: HTMLToBlocks.createMarkdownContent('hello'), children: []},
                 {id: '2', content: HTMLToBlocks.createMarkdownContent('world'), children: []},
                 {id: '3', content: await HTMLToBlocks.createImageContent('dataurl:fhasdklhgdalsh'), children: []}

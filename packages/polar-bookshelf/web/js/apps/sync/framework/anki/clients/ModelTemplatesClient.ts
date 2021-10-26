@@ -2,7 +2,7 @@ import {AnkiConnectFetch} from '../AnkiConnectFetch';
 
 export class ModelTemplatesClient implements IModelTemplatesClient {
 
-    public async execute(modelName: string): Promise<string[]> {
+    public async execute(modelName: string): Promise<readonly string[]> {
 
         const body = {
             action: "modelTemplates",
@@ -14,7 +14,7 @@ export class ModelTemplatesClient implements IModelTemplatesClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <string[]> await AnkiConnectFetch.fetch(init);
+        return <readonly string[]> await AnkiConnectFetch.fetch(init);
 
     }
 
@@ -22,6 +22,6 @@ export class ModelTemplatesClient implements IModelTemplatesClient {
 
 export interface IModelTemplatesClient {
 
-    execute(modelName: string): Promise<string[]>;
+    execute(modelName: string): Promise<readonly string[]>;
 
 }

@@ -18,12 +18,12 @@ import {
 } from "../../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
 type BasicFrontBackForm = {
-    front: string;
-    back: string;
+    readonly front: string;
+    readonly back: string;
 }
 
 type ClozeForm = {
-    text: string;
+    readonly text: string;
 };
 
 

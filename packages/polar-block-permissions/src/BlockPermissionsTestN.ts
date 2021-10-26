@@ -249,7 +249,7 @@ describe("BlockPermissions", function() {
             readonly uid: string;
         }
 
-        async function getFirestoreBrowserClient(role: 'userA' | 'userB'): Promise<[IUser, IFirestoreClient]> {
+        async function getFirestoreBrowserClient(role: 'userA' | 'userB'): Promise<readonly [IUser, IFirestoreClient]> {
 
             async function authAsUserRecord() {
 

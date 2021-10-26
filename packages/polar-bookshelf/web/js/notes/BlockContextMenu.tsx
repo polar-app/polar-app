@@ -11,12 +11,12 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useLinkLoaderRef} from '../ui/util/LinkLoaderHook';
 
 type IBlockContextMenuOriginBase = {
-    blockID: BlockIDStr;
+    readonly blockID: BlockIDStr;
 };
 
 type IBlockContextMenuLinkOrigin = {
-    type: 'wiki-link';
-    href: string;
+    readonly type: 'wiki-link';
+    readonly href: string;
 };
 
 type IBlockContextMenuOrigin = IBlockContextMenuOriginBase & (IBlockContextMenuLinkOrigin);

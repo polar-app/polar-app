@@ -14,7 +14,7 @@ export namespace ComputeNextUserPriority {
     }
 
     interface IPriorityMap {
-        [key: string]: IPriority;
+        readonly [key: string]: IPriority;
     }
 
     export interface IPrivateBetaReqWithPriority extends IPrivateBetaReq {

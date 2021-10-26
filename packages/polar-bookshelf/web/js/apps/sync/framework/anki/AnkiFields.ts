@@ -17,4 +17,4 @@ export class AnkiFields {
 
 }
 
-interface FieldsMap {[key: string]: string}
+interface FieldsMap {readonly [key: string]: string}

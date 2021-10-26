@@ -19,7 +19,7 @@ function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K
  * Hook that allows us to just pick specific keys from the store.
  */
 function usePick<T, K extends keyof T>(useStoreHook: () => T,
-                                       keys: K[]): Pick<T, K> {
+                                       keys: readonly K[]): Pick<T, K> {
 
     const store = useStoreHook();
 
@@ -41,7 +41,7 @@ interface InternalObservableStore<V> {
      * and to update it each time so that on useObservableStore we can
      * return the current value.
      */
-    current: V;
+    readonly current: V;
 
 }
 
@@ -56,13 +56,13 @@ export interface ObservableStore<V> {
 }
 
 export type SetStore<V> = (value: V) => void;
-export type Store<V> = [V, SetStore<V>];
+export type Store<V> = readonly [V, SetStore<V>];
 
 interface IUseObservableStoreOpts<V, K extends keyof V, N> extends IUseStoreHookOpts<V, K, N> {
     readonly enableShallowEquals: boolean;
 }
 
-type Dict = {[key: string]: any};
+type Dict = {readonly [key: string]: any};
 
 namespace Equals {
 
@@ -189,9 +189,9 @@ export function useObservableStore<V, K extends keyof V, N>(context: React.Conte
 
 }
 
-export type InternalStoreContext<V> = [React.Context<ObservableStore<V>>, InternalObservableStore<V>];
+export type InternalStoreContext<V> = readonly [React.Context<ObservableStore<V>>, InternalObservableStore<V>];
 
-export type StoreContext<V> = [React.Context<ObservableStore<V>>, ObservableStore<V>];
+export type StoreContext<V> = readonly [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
 function createInternalObservableStore<V>(initialValue: V): InternalObservableStore<V> {
 
@@ -263,7 +263,7 @@ export interface IUseStoreHookOpts<V, K extends keyof V, N> {
     readonly mapper: UseStoreMapper<V, K, N>;
 }
 
-export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
+export type ObservableStoreTuple<V, M extends StoreMutator, C> = readonly [
     ObservableStoreProviderComponent<V>,
     // NOTE: it's not possible to use a type for this because V is defined in the tuple
     <K extends keyof V, N>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K, N>) => N,
@@ -327,7 +327,7 @@ export interface ObservableStoreOpts<V, M, C> {
 
 type ComponentCallbacksFactory<C> = () => C;
 
-type InitialContextValues<V, M, C> = [
+type InitialContextValues<V, M, C> = readonly [
     InternalObservableStore<V>,
     M,
     ComponentCallbacksFactory<C>,

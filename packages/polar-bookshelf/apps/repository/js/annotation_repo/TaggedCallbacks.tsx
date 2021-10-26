@@ -12,7 +12,7 @@ export namespace TaggedCallbacks {
     import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
     export interface ITagsHolder {
-        readonly tags?: Readonly<{[id: string]: Tag}> | undefined;
+        readonly tags?: Readonly<{readonly [id: string]: Tag}> | undefined;
     }
 
     export interface TaggedCallbacksOpts<T> {

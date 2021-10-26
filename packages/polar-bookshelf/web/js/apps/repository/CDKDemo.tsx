@@ -2,12 +2,12 @@ import * as React from "react";
 import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface RpcDemoRequest {
-    email: string,
-    tag?: string,
+    readonly email: string,
+    readonly tag?: string,
 }
 
 interface RpcDemoResponse {
-    [key: string]: unknown,
+    readonly [key: string]: unknown,
 }
 
 export function CDKDemo() {

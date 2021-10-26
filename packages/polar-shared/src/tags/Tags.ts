@@ -97,7 +97,7 @@ export namespace Tags {
      * Return true if all the tags are valid.  If no tags are given we return
      * true as the input set had no valid tags.
      */
-    export function tagsAreValid(...tags: Tag[]): boolean {
+    export function tagsAreValid(...tags: readonly Tag[]): boolean {
 
         return tags.map(tag => validateTag(tag).isPresent())
                    .reduce((acc, curr) => ! acc ? false : curr, true);
@@ -108,17 +108,17 @@ export namespace Tags {
      * Return tags that are invalid.
      * @param tags
      */
-    export function findInvalidTags(...tags: Tag[]): Tag[] {
+    export function findInvalidTags(...tags: readonly Tag[]): readonly Tag[] {
         return tags.filter(tag => ! validateTag(tag).isPresent());
     }
 
-    export function findValidTags(...tags: Tag[]): Tag[] {
+    export function findValidTags(...tags: readonly Tag[]): readonly Tag[] {
         return tags.filter(tag => validateTag(tag).isPresent());
     }
 
     export function toMap(tags: ReadonlyArray<Tag>) {
 
-        const result: { [id: string]: Tag } = {};
+        const result: { readonly [id: string]: Tag } = {};
 
         for (const tag of tags) {
             result[tag.id] = tag;
@@ -135,7 +135,7 @@ export namespace Tags {
      */
     export function union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
-        const result: { [id: string]: Tag } = {};
+        const result: { readonly [id: string]: Tag } = {};
 
         Dictionaries.putAll(Tags.toMap(a), result);
         Dictionaries.putAll(Tags.toMap(b), result);
@@ -217,7 +217,7 @@ export namespace Tags {
     export function computeRecordsTagged<R extends TaggedRecord>(records: ReadonlyArray<R>,
                                                                  tags: ReadonlyArray<TagStr>): ReadonlyArray<R> {
 
-        const index: {[id: string]: R} = {};
+        const index: {readonly [id: string]: R} = {};
 
         for (const record of records) {
 
@@ -266,7 +266,7 @@ export namespace Tags {
      */
     export type ComputeNewTagsStrategy = 'set' | 'add'
 
-    export function computeNewTags(currentTags: Readonly<{[id: string]: Tag}> | undefined,
+    export function computeNewTags(currentTags: Readonly<{readonly [id: string]: Tag}> | undefined,
                                    mutationTags: ReadonlyArray<Tag>,
                                    strategy: ComputeNewTagsStrategy): ReadonlyArray<Tag> {
 

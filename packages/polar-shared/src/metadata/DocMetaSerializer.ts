@@ -28,7 +28,7 @@ export namespace DocMetaSerializer {
 
         const docInfo = DocInfos.create(fingerprint, nrPages, filename);
 
-        const pageMetas: {[id: string]: IPageMeta} = {};
+        const pageMetas: {readonly [id: string]: IPageMeta} = {};
 
         for (let idx = 1; idx <= nrPages; ++idx) {
             const pageInfo = new PageInfo({num: idx});

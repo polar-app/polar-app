@@ -182,22 +182,22 @@ export interface TaskRep<A> extends ISpacedRep, Task<A> {
 
 export interface MutableStageCounts {
 
-    nrNew: number;
+    readonly nrNew: number;
 
     /**
      * The number of cards in learning stage.
      */
-    nrLearning: number;
+    readonly nrLearning: number;
 
     /**
      * The number of cards in review stage.
      */
-    nrReview: number;
+    readonly nrReview: number;
 
     /**
      * The number of cards in lapsed stage.
      */
-    nrLapsed: number;
+    readonly nrLapsed: number;
 
 }
 

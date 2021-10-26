@@ -9,7 +9,7 @@ interface RefTrackerProps {
 export type RefListenerCallback = (newRef: HTMLElement | null) => void;
 export type RefListenerComponent = (props: RefTrackerProps) => JSX.Element | null;
 
-export type RefListenerTuple = [RefListenerCallback, RefListenerComponent];
+export type RefListenerTuple = readonly [RefListenerCallback, RefListenerComponent];
 
 
 /**

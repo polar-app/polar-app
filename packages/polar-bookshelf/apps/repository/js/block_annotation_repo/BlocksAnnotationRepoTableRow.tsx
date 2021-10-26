@@ -78,7 +78,7 @@ export const HighlightPreviewParent: React.FC<IHighlightPreviewParentProps> = ({
 
 
 interface ITextHighlightPreviewProps {
-    content: ITextHighlightAnnotationContent | IFlashcardAnnotationContent | IMarkdownContent;
+    readonly content: ITextHighlightAnnotationContent | IFlashcardAnnotationContent | IMarkdownContent;
 }
 
 export const TextHighlightPreview: React.FC<ITextHighlightPreviewProps> = ({ content }) => {
@@ -94,7 +94,7 @@ export const TextHighlightPreview: React.FC<ITextHighlightPreviewProps> = ({ con
 
 
 interface IAreaHighlightPreviewProps {
-    content: IAreaHighlightAnnotationContent;
+    readonly content: IAreaHighlightAnnotationContent;
 }
 
 export const AreaHighlightPreview: React.FC<IAreaHighlightPreviewProps> = ({ content }) => {
@@ -126,7 +126,7 @@ export const AreaHighlightPreview: React.FC<IAreaHighlightPreviewProps> = ({ con
 
 
 interface IHighlightPreviewProps {
-    block: IBlock<IRepoAnnotationContent>;
+    readonly block: IBlock<IRepoAnnotationContent>;
 }
 
 export const HighlightPreview: React.FC<IHighlightPreviewProps> = ({ block }) => {

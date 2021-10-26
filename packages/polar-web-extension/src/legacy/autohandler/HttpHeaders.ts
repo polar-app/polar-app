@@ -4,7 +4,7 @@ class HttpHeaders {
     /**
      * Get an individual header.
      */
-    public static hdr(headers: chrome.webRequest.HttpHeader[] | undefined,
+    public static hdr(headers: readonly chrome.webRequest.HttpHeader[] | undefined,
                       headerName: string): chrome.webRequest.HttpHeader | undefined {
 
         if (! headers) {

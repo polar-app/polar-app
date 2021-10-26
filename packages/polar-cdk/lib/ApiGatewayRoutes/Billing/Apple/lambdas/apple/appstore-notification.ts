@@ -4,7 +4,7 @@ import {AppstoreNotificationRequest} from "./util/types/AppstoreNotificationRequ
 import downgradeToFree from "./util/downgradeToFree";
 
 export const handler = async (event: {
-    body: string,
+    readonly body: string,
 }) => {
 
     const appleRequest: AppstoreNotificationRequest = JSON.parse(event.body);

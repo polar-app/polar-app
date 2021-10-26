@@ -78,7 +78,7 @@ export class Descriptors {
 }
 
 export interface DocDimensions {
-    width: number;
-    minHeight: number;
+    readonly width: number;
+    readonly minHeight: number;
 
 }

@@ -4,16 +4,16 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Devices} from "polar-shared/src/util/Devices";
 
 export interface ColumnDescriptor {
-    disablePadding: boolean;
-    id: keyof IDocInfo;
-    label: string;
-    numeric: boolean;
-    width: string;
-    defaultOrder: Sorting.Order;
+    readonly disablePadding: boolean;
+    readonly id: keyof IDocInfo;
+    readonly label: string;
+    readonly numeric: boolean;
+    readonly width: string;
+    readonly defaultOrder: Sorting.Order;
 }
 
 export interface ColumnDescriptorMap {
-    [id: string]: ColumnDescriptor;
+    readonly [id: string]: ColumnDescriptor;
 }
 
 export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [

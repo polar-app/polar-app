@@ -12,7 +12,7 @@ export class Pagemark extends Annotation implements IPagemark {
     // have comments, notes, flashcards, etc?  Probably not but notes might
     // make sense.
 
-    public notes: {[id: string]: Note};
+    public notes: {readonly [id: string]: Note};
 
     public type: PagemarkType;
 

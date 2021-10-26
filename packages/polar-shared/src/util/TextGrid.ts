@@ -8,9 +8,9 @@ export namespace TextGrid {
     export type TextData = string | number | boolean;
 
     export interface ITextGrid {
-        headers: (...cols: ReadonlyArray<string>) => void;
-        row: (...cols: ReadonlyArray<TextData>) => void;
-        format: () => string;
+        readonly headers: (...cols: ReadonlyArray<string>) => void;
+        readonly row: (...cols: ReadonlyArray<TextData>) => void;
+        readonly format: () => string;
     }
 
     // TODO: change this to require the names of the headers and this way we
@@ -18,9 +18,9 @@ export namespace TextGrid {
     // of headers.
     export function create(nrColumns: number) {
 
-        let _rows: ReadonlyArray<TextData>[] = [];
+        let _rows: readonly ReadonlyArray<TextData>[] = [];
 
-        let _headers: string[] = [];
+        let _headers: readonly string[] = [];
 
         let col_padding = 2;
 

@@ -19,27 +19,27 @@ export class SafeLogger implements ILogger {
         this.name = 'safe-logger+' + delegate.name;
     }
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.notice(msg, ...args));
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.warn(msg, ...args));
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.error(msg, ...args));
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.info(msg, ...args));
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.verbose(msg, ...args));
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         this.withTryCatch(() => this.delegate.debug(msg, ...args));
     }
 

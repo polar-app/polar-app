@@ -1,5 +1,5 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
 
 export interface IAnnotationInfo {
-    lastAnnotated?: ISODateTimeString;
+    readonly lastAnnotated?: ISODateTimeString;
 }

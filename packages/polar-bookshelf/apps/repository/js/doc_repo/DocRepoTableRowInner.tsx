@@ -112,7 +112,7 @@ interface TableCellTagsProps {
     readonly contextMenuHandler: ContextMenuHandler;
     readonly selectRow: (viewID: IDStr, event: React.MouseEvent, type: SelectRowType) => void;
     readonly viewID: IDStr;
-    readonly tags?: Readonly<{[id: string]: Tag}>;
+    readonly tags?: Readonly<{readonly [id: string]: Tag}>;
 }
 
 export const TableCellTags = React.memo(function TableCellTags(props: TableCellTagsProps) {

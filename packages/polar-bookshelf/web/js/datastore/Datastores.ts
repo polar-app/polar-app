@@ -211,7 +211,7 @@ export class Datastores {
         let completed: number = 0;
         const total: number = docMetaFiles.length;
 
-        const work: AsyncFunction[] = [];
+        const work: readonly AsyncFunction[] = [];
 
         const asyncWorkQueue = new AsyncWorkQueue(work);
 
@@ -280,7 +280,7 @@ export class Datastores {
         const docMetaFiles = [...docMetaRefs]
             .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
 
-        const result: IDocInfo[] = [];
+        const result: readonly IDocInfo[] = [];
 
         for (const docMetaFile of docMetaFiles) {
             const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);

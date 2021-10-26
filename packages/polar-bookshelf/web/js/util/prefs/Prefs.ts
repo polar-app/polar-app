@@ -411,9 +411,9 @@ export class ListenablePersistentPrefs extends CompositePrefs implements IPersis
 }
 
 export interface StringToStringDict {
-    [key: string]: string;
+    readonly [key: string]: string;
 }
 
 export interface StringToPrefDict {
-    [key: string]: Pref;
+    readonly [key: string]: Pref;
 }

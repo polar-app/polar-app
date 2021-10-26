@@ -2,7 +2,7 @@ import {Reducers} from 'polar-shared/src/util/Reducers';
 
 export class GALoggers {
 
-    public static getError(args: any[]): Error | undefined {
+    public static getError(args: readonly any[]): Error | undefined {
 
         const error: Error | undefined =
             args.filter(arg => arg instanceof Error)

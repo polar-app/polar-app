@@ -12,7 +12,7 @@ export type AutoFlashcardHandlerState = 'idle' | 'waiting';
 
 export type AutoFlashcardHandler = () => Promise<void>;
 
-export type AutoFlashcardHandlerTuple = [AutoFlashcardHandlerState, AutoFlashcardHandler];
+export type AutoFlashcardHandlerTuple = readonly [AutoFlashcardHandlerState, AutoFlashcardHandler];
 
 export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlashcardHandlerTuple {
 

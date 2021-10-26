@@ -19,7 +19,7 @@ const log = Logger.create();
 
 interface ChartProps {
     readonly type: 'queue' | 'completed';
-    readonly lineData: Serie[];
+    readonly lineData: readonly Serie[];
 }
 
 const Chart = React.memo(function Chart(props: ChartProps) {
@@ -249,7 +249,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         };
 
-        const lineData: Serie[] = computeLineData();
+        const lineData: readonly Serie[] = computeLineData();
 
         const Main = () => {
 

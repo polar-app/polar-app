@@ -7,7 +7,7 @@ export class MediaContents {
 
     public static parse(content: string): MediaContent {
 
-        const mediaFiles: MediaFile[] = [];
+        const mediaFiles: readonly MediaFile[] = [];
 
         const re = /src=["'](data:image\/(gif|jpg|png);base64,[^"']+)/g;
 

@@ -18,7 +18,7 @@ export namespace AsyncCaches {
 
     export type CacheDelegateName = 'disk' | 'firestore' | 'google-cloud-storage';
 
-    export type AggregateCacheDelegateNameTuple = Readonly<[CacheDelegateName, CacheDelegateName]>;
+    export type AggregateCacheDelegateNameTuple = Readonly<readonly [CacheDelegateName, CacheDelegateName]>;
 
     export function create<K, V>(nspace: IDStr,
                                  delegateName: CacheDelegateName | AggregateCacheDelegateNameTuple,

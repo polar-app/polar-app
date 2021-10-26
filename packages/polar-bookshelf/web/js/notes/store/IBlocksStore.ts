@@ -43,17 +43,17 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
  */
 export interface IBlocksStore {
 
-    active: IActiveBlock | undefined;
-    dropSource: BlockIDStr | undefined;
-    dropTarget: IDropTarget | undefined;
-    reverse: ReverseIndex;
-    index: BlocksIndex;
-    indexByName: BlocksIndexByName;
-    indexByDocumentID: BlocksIndexByDocumentID;
-    selected: StringSetMap;
-    relatedTagsManager: RelatedTagsManager;
+    readonly active: IActiveBlock | undefined;
+    readonly dropSource: BlockIDStr | undefined;
+    readonly dropTarget: IDropTarget | undefined;
+    readonly reverse: ReverseIndex;
+    readonly index: BlocksIndex;
+    readonly indexByName: BlocksIndexByName;
+    readonly indexByDocumentID: BlocksIndexByDocumentID;
+    readonly selected: StringSetMap;
+    readonly relatedTagsManager: RelatedTagsManager;
 
-    hasSnapshot: boolean;
+    readonly hasSnapshot: boolean;
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;

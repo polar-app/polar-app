@@ -65,6 +65,6 @@ export interface IUpdateNoteFieldsClient {
 export interface UpdateNote {
 
     readonly id: number;
-    readonly fields: {[name: string]: string};
+    readonly fields: {readonly [name: string]: string};
 
 }

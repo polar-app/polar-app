@@ -23,8 +23,8 @@ const useStyles = makeStyles(() =>
 );
 
 interface IProps extends BlockEditorGenericProps {
-    docInfo: IDocInfo;
-    tagLinks: ReadonlyArray<IBlockLink>;
+    readonly docInfo: IDocInfo;
+    readonly tagLinks: ReadonlyArray<IBlockLink>;
 }
 
 

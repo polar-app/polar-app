@@ -7,19 +7,19 @@ export interface ListOptionType {
     /**
      * The ID of the option.
      */
-    id: string;
+    readonly id: string;
 
     /**
      * The label to show in the UI.
      */
-    label: string;
+    readonly label: string;
 
     /**
      * True when the option is selected by the user.
      */
-    selected: boolean;
+    readonly selected: boolean;
 
-    title?: string;
+    readonly title?: string;
 
 }
 

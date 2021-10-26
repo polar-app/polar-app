@@ -16,7 +16,7 @@ export class LogMessagesDataLoader extends React.Component<IProps, IState> {
 
         const provider = (onNext: (messages: LogData) => void) => {
 
-            let buffer: LogMessage[] = [];
+            let buffer: readonly LogMessage[] = [];
 
             const releasable = MemoryLogger.addEventListener(event => {
 

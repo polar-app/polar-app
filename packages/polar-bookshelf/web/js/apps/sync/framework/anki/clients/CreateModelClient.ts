@@ -3,7 +3,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 
 export class CreateModeClient implements ICreateModelClient {
 
-    public async execute(opts: ICreateModelOpts): Promise<string[]> {
+    public async execute(opts: ICreateModelOpts): Promise<readonly string[]> {
 
         const body = {
             action: "createModel",
@@ -15,7 +15,7 @@ export class CreateModeClient implements ICreateModelClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <string[]> await AnkiConnectFetch.fetch(init);
+        return <readonly string[]> await AnkiConnectFetch.fetch(init);
 
     }
 
@@ -38,6 +38,6 @@ export interface ICreateModelOpts {
 
 export interface ICreateModelClient {
 
-    execute(opts: ICreateModelOpts): Promise<string[]>;
+    execute(opts: ICreateModelOpts): Promise<readonly string[]>;
 
 }

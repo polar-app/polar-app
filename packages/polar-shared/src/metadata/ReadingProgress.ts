@@ -25,6 +25,6 @@ export interface ReadingProgress {
 }
 
 export interface ProgressByMode {
-    [id: string]: number;
+    readonly [id: string]: number;
 }
 

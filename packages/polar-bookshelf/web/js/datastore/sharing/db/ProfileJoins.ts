@@ -28,7 +28,7 @@ export class ProfileJoins {
 
     public static async join<T extends ProfileIDRecord>(values: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecord<T>>> {
 
-        const resolvedProfiles: {[id: string]: IProfile} = {};
+        const resolvedProfiles: {readonly [id: string]: IProfile} = {};
         const firestore = await FirestoreBrowserClient.getInstance();
 
         const promises = values.map(value => {

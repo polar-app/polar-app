@@ -5,6 +5,6 @@
  * This way we can ONLY index them by the declared properties and not any
  * arbitrary property and if you violate you will get compile time errors.
  */
-export type KeyValueMapping<T, V> = {
+export type KeyValueMapping<T, V> = { readonly
     [P in keyof T]: V;
 };

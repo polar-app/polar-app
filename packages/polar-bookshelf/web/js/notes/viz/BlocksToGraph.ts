@@ -5,14 +5,14 @@ import {IBlock} from "polar-blocks/src/blocks/IBlock";
 export namespace BlocksToGraph {
 
     export type IMetaType = {
-        createdAt: ISODateTimeString;
-        updatedAt: ISODateTimeString;
+        readonly createdAt: ISODateTimeString;
+        readonly updatedAt: ISODateTimeString;
     }
 
     export type INodeType = {
-        id: string;
-        label: string;
-        meta: IMetaType;
+        readonly id: string;
+        readonly label: string;
+        readonly meta: IMetaType;
     }
 
     export interface IGraphData {

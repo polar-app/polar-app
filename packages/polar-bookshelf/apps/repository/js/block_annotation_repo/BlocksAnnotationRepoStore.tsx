@@ -21,7 +21,7 @@ export type IRepoAnnotationTextContent = ITextHighlightAnnotationContent
 export class BlocksAnnotationRepoStore {
     private readonly _blocksStore: IBlocksStore;
 
-    @observable private _selected: Set<BlockIDStr> = new Set<BlockIDStr>();
+    @observable private _selected: ReadonlySet<BlockIDStr> = new Set<BlockIDStr>();
     @observable private _active: BlockIDStr | null = null;
     @observable private _filter: BlocksAnnotationRepoFilters.Filter = {};
 

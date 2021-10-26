@@ -15,7 +15,7 @@ function die(msg: string) {
     process.exit(1);
 }
 
-type DependencyMap = {[name: string]: string};
+type DependencyMap = {readonly [name: string]: string};
 
 interface PackageData {
     readonly dependencies: DependencyMap | null;

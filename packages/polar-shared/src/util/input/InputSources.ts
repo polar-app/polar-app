@@ -149,4 +149,4 @@ export class InputSources {
  */
 export type InputListener = (data: InputData | undefined, err: Error | undefined) => void;
 
-export type InputData = string | number[] | ArrayBuffer | Uint8Array;
+export type InputData = string | readonly number[] | ArrayBuffer | Uint8Array;

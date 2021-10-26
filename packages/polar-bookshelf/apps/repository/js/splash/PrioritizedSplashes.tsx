@@ -13,7 +13,7 @@ const log = Logger.create();
 
 const MIN_DELAY = TimeDurations.toMillis('15m');
 
-const prioritizedComponentRefs: PrioritizedComponentRef[] = [
+const prioritizedComponentRefs: readonly PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
     // new WhatsNewRef(),
     // new CrowdfundingRef(),

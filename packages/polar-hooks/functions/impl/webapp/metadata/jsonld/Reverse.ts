@@ -5,4 +5,4 @@ export interface IReverse {
 
 }
 
-export type ReverseMap = {[field: string]: IReverse};
+export type ReverseMap = {readonly [field: string]: IReverse};

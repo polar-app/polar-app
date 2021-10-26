@@ -18,8 +18,8 @@ class Styles {
 
 interface IProps {
 
-    onInvitedUserText: (text: string) => void;
-    onInvite: () => void;
+    readonly onInvitedUserText: (text: string) => void;
+    readonly onInvite: () => void;
 
 }
 

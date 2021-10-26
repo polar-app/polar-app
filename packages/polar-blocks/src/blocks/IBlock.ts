@@ -48,9 +48,9 @@ export type ITextContent = IEditableContent
 export type INamedContent = INameContent | IDateContent | IDocumentContent;
 
 export type IBlockContentStructure<T = IBlockContent> = {
-    id: BlockIDStr;
-    content: T;
-    children: ReadonlyArray<IBlockContentStructure>;
+    readonly id: BlockIDStr;
+    readonly content: T;
+    readonly children: ReadonlyArray<IBlockContentStructure>;
 };
 
 export interface IBlockLink {
@@ -74,7 +74,7 @@ export interface INewChildPosition {
     readonly pos: NewChildPos;
 }
 
-export type IBlockContentMap = {
+export type IBlockContentMap = { readonly
     [K in IBlockContent as K['type']]: K;
 };
 

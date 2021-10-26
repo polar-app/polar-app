@@ -144,19 +144,19 @@ export class Webserver implements WebRequestHandler {
         log.info("Stopping...done");
     }
 
-    public get(type: PathParams, ...handlers: RequestHandler[]): void {
+    public get(type: PathParams, ...handlers: readonly RequestHandler[]): void {
         this.app!.get(type, ...handlers);
     }
 
-    public options(type: PathParams, ...handlers: RequestHandler[]): void {
+    public options(type: PathParams, ...handlers: readonly RequestHandler[]): void {
         this.app!.options(type, ...handlers);
     }
 
-    public post(type: PathParams, ...handlers: RequestHandler[]): void {
+    public post(type: PathParams, ...handlers: readonly RequestHandler[]): void {
         this.app!.post(type, ...handlers);
     }
 
-    public put(type: PathParams, ...handlers: RequestHandler[]): void {
+    public put(type: PathParams, ...handlers: readonly RequestHandler[]): void {
         this.app!.put(type, ...handlers);
     }
 
@@ -295,9 +295,9 @@ export type ExpressRequestHandler = (req: express.Request, res: express.Response
 
 export interface WebRequestHandler {
 
-    get(type: PathParams, ...handlers: ExpressRequestHandler[]): void;
-    options(type: PathParams, ...handlers: ExpressRequestHandler[]): void;
-    post(type: PathParams, ...handlers: ExpressRequestHandler[]): void;
-    put(type: PathParams, ...handlers: ExpressRequestHandler[]): void;
+    get(type: PathParams, ...handlers: readonly ExpressRequestHandler[]): void;
+    options(type: PathParams, ...handlers: readonly ExpressRequestHandler[]): void;
+    post(type: PathParams, ...handlers: readonly ExpressRequestHandler[]): void;
+    put(type: PathParams, ...handlers: readonly ExpressRequestHandler[]): void;
 
 }

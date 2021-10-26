@@ -138,7 +138,7 @@ export interface UserGroup extends UserGroupInit {
 
 export class NullUserGroup implements UserGroup {
 
-    public constructor(public uid: UserIDStr) {
+    public constructor(public readonly uid: UserIDStr) {
 
     }
 

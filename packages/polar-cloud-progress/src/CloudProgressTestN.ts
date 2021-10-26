@@ -16,7 +16,7 @@ describe('CloudProgress', () => {
     it('can be marked as started', async () => {
         const cloudProgress = await CloudProgress.create(DOC_ID, UID).init(TASKS);
 
-        const testTypeKeys: Array<keyof CloudProgresCollection.IProgressStarted> = [
+        const testTypeKeys: ReadonlyArray<keyof CloudProgresCollection.IProgressStarted> = [
             'duration',
             'meta',
             'percentage',

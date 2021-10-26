@@ -50,12 +50,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 }
 
 interface RTDNRequest {
-    message: {
-        data: string,
-        messageId: string,
-        attributes: unknown,
+    readonly message: {
+        readonly data: string,
+        readonly messageId: string,
+        readonly attributes: unknown,
     },
-    subscription: string,
+    readonly subscription: string,
 }
 
 enum NOTIFICATION_TYPES {
@@ -75,19 +75,19 @@ enum NOTIFICATION_TYPES {
 }
 
 interface DeveloperNotification {
-    version: string,
-    packageName: string,
-    eventTimeMillis: number,
-    subscriptionNotification: {
-        version: string, // Always "1.0"
+    readonly version: string,
+    readonly packageName: string,
+    readonly eventTimeMillis: number,
+    readonly subscriptionNotification: {
+        readonly version: string, // Always "1.0"
 
-        notificationType: NOTIFICATION_TYPES,
+        readonly notificationType: NOTIFICATION_TYPES,
 
         // The token provided to the user's device when the subscription was purchased.
-        purchaseToken: string,
+        readonly purchaseToken: string,
 
         // The purchased subscription product ID
-        subscriptionId: "subscription_plan_plus" | "subscription_plan_pro",
+        readonly subscriptionId: "subscription_plan_plus" | "subscription_plan_pro",
     }
 }
 

@@ -1,15 +1,15 @@
 import React from "react";
 
 interface IUseFakePinchToZoomArgs {
-    elemRef: React.RefObject<HTMLElement>;
-    wrapperRef: React.RefObject<HTMLElement>;
-    onZoom: (scale: number) => void;
-    shouldUpdate: (scale: number) => boolean;
-    enabled?: boolean;
-    transformOriginOffset?: [number, number];
+    readonly elemRef: React.RefObject<HTMLElement>;
+    readonly wrapperRef: React.RefObject<HTMLElement>;
+    readonly onZoom: (scale: number) => void;
+    readonly shouldUpdate: (scale: number) => boolean;
+    readonly enabled?: boolean;
+    readonly transformOriginOffset?: readonly [number, number];
 }
 
-export type UsePinchMoveHandler = (arg: { delta: number, initial: [number, number] }) => void;
+export type UsePinchMoveHandler = (arg: { readonly delta: number, readonly initial: readonly [number, number] }) => void;
 
 export const useFakePinchToZoom = ({
     elemRef,
@@ -60,10 +60,10 @@ export const useFakePinchToZoom = ({
 };
 
 type UsePinchConfig = {
-    elemRef: React.RefObject<HTMLElement>;
-    onMove: UsePinchMoveHandler;
-    onFinish: () => void;
-    enabled?: boolean;
+    readonly elemRef: React.RefObject<HTMLElement>;
+    readonly onMove: UsePinchMoveHandler;
+    readonly onFinish: () => void;
+    readonly enabled?: boolean;
 };
 
 export const usePinch = ({ elemRef, onMove, onFinish, enabled = true }: UsePinchConfig) => {

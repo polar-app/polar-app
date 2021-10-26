@@ -14,7 +14,7 @@ export class Batcher {
 
     private readonly runnable: AsyncRunnable;
 
-    private tickets: Ticket[] = [];
+    private tickets: readonly Ticket[] = [];
 
     constructor(runnable: AsyncRunnable) {
         this.runnable = runnable;
@@ -113,15 +113,15 @@ export class ActiveBatch implements Batch  {
     /**
      * For each batch, the number of tickets executed within that batch.
      */
-    public ticketsPerBatch: number[] = [];
+    public ticketsPerBatch: readonly number[] = [];
 
-    private readonly tickets: Ticket[];
+    private readonly tickets: readonly Ticket[];
 
     private readonly runnable: AsyncRunnable;
 
     public readonly ticket: Ticket;
 
-    constructor(tickets: Ticket[], runnable: AsyncRunnable, ticket: Ticket) {
+    constructor(tickets: readonly Ticket[], runnable: AsyncRunnable, ticket: Ticket) {
         this.tickets = tickets;
         this.runnable = runnable;
         this.ticket = ticket;

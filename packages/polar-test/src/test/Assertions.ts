@@ -117,7 +117,7 @@ function sorted(dict: any): any {
 
     if (Array.isArray(dict)) {
 
-        const result: any[] = [];
+        const result: readonly any[] = [];
 
         for (let idx = 0; idx < dict.length; ++idx) {
             result[idx] = sorted(dict[idx]);

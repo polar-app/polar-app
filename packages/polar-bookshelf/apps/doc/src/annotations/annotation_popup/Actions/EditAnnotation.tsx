@@ -7,7 +7,7 @@ import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
 
 type EditAnnotationForm = {
-    body: string;
+    readonly body: string;
 };
 
 export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => {

@@ -29,7 +29,7 @@ export namespace PDFMetadata {
     /**
      * Index of the page number and the dimensions.
      */
-    export type PDFPageInfoIndex = {[pageNum: number]: IPDFPageInfo};
+    export type PDFPageInfoIndex = {readonly [pageNum: number]: IPDFPageInfo};
 
     export interface IPDFParsedDocMeta extends IParsedDocMeta {
         readonly pageInfoIndex: Readonly<PDFPageInfoIndex>;

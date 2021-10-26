@@ -34,7 +34,7 @@ export class StylesheetSerializer {
 
         const buff = new StringBuffer();
 
-        const imports: CSSStyleSheet[] = [];
+        const imports: readonly CSSStyleSheet[] = [];
 
         const rules = Array.from(styleSheet.rules);
         for (const rule of rules) {

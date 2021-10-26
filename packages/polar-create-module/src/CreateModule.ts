@@ -135,7 +135,7 @@ export async function getUserInput(property: string): Promise<string> {
 /**
  * ? Helper function to push answers and capture selection from user
  */
-export async function selectFromCli(question: string, answers: Array<string>) {
+export async function selectFromCli(question: string, answers: ReadonlyArray<string>) {
 
     console.log(question);
 
@@ -238,7 +238,7 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
 export async function workFlow(): Promise<void> {
 
     // $ Extract Cli Args
-    const cliargs: Array<string> = process.argv.slice(2);
+    const cliargs: ReadonlyArray<string> = process.argv.slice(2);
 
     // $ Start flow based on Args
     if (cliargs.length === 1 && cliargs[0] === '--update') {

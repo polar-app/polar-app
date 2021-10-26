@@ -26,16 +26,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-    title: string;
-    label: string;
-    description?: string;
-    defaultValue?: string;
-    placeholder?: string;
-    autoFocus?: boolean;
-    inputValidator?: InputValidator;
-    type?: 'email' | 'number' | 'search' | 'password'
-    onCancel: () => void;
-    onDone: (value: string) => void;
+    readonly title: string;
+    readonly label: string;
+    readonly description?: string;
+    readonly defaultValue?: string;
+    readonly placeholder?: string;
+    readonly autoFocus?: boolean;
+    readonly inputValidator?: InputValidator;
+    readonly type?: 'email' | 'number' | 'search' | 'password'
+    readonly onCancel: () => void;
+    readonly onDone: (value: string) => void;
 }
 
 interface IState {

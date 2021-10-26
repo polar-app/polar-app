@@ -39,5 +39,5 @@ interface CodedErrorResponse {
  * Keeps a map of value to format the error code in the UI for localization.
  */
 export interface ValueMap {
-    [key: string]: number | string;
+    readonly [key: string]: number | string;
 }

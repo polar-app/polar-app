@@ -52,7 +52,7 @@ export namespace MarkdownContentConverter {
     }
 
     export function getTextNodesIn(el: HTMLElement | Text | Node) {
-        const textNodes: Text[] = [];
+        const textNodes: readonly Text[] = [];
         if (el.nodeType === 3) {
             textNodes.push(el as Text);
         } else {
@@ -65,8 +65,8 @@ export namespace MarkdownContentConverter {
     }
 
     type WhitespaceCount = {
-        start: number;
-        end: number;
+        readonly start: number;
+        readonly end: number;
     };
 
     function getWhitespaceCount(el: HTMLElement): WhitespaceCount {

@@ -378,7 +378,7 @@ export class ContentCapture {
 
             let buff = "";
 
-            const imports: CSSStyleSheet[] = [];
+            const imports: readonly CSSStyleSheet[] = [];
 
             for (const rule of Array.from(styleSheet.rules)) {
 

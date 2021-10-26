@@ -72,7 +72,7 @@ export class Logging {
 
     public static async createTarget(level: LogLevel): Promise<ILogger> {
 
-        const loggers: ILogger[] = [];
+        const loggers: readonly ILogger[] = [];
 
         const electronContext = ElectronContextTypes.create();
 

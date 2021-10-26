@@ -10,7 +10,7 @@ export class Flashcard extends VersionedObject implements IFlashcard {
 
     public type: FlashcardType;
 
-    public fields: {[key: string]: Text} ;
+    public fields: {readonly [key: string]: Text} ;
 
     public archetype: string;
 
@@ -49,7 +49,7 @@ export class Flashcard extends VersionedObject implements IFlashcard {
                               created: ISODateTimeString,
                               lastUpdated: ISODateTimeString,
                               type: FlashcardType,
-                              fields: {[key: string]: Text},
+                              fields: {readonly [key: string]: Text},
                               archetype: string,
                               ref: Ref): Readonly<Flashcard> {
 

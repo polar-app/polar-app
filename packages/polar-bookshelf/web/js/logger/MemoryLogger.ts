@@ -18,27 +18,27 @@ export class MemoryLogger implements ILogger {
 
     public readonly name: string = 'memory-logger';
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage('notice', msg, args));
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage( 'info', msg, args));
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage( 'warn', msg, args));
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage( 'error', msg, args));
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage( 'verbose', msg, args));
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         buffer.write(createLogMessage( 'debug', msg, args));
     }
 

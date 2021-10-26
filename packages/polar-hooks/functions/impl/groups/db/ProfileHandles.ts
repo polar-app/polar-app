@@ -11,7 +11,7 @@ export class ProfileHandles {
 
     public static readonly COLLECTION = 'profile_handle';
 
-    public static doc(handle: HandleStr): [HandleStr, IDocumentReference<unknown>] {
+    public static doc(handle: HandleStr): readonly [HandleStr, IDocumentReference<unknown>] {
         const firestore = FirestoreAdmin.getInstance();
         const id = handle;
         const doc = firestore.collection(this.COLLECTION).doc(id);

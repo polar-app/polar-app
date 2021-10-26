@@ -25,10 +25,10 @@ export interface IBlockAreaHighlight {
      * screen.  This is the primary image for this highlight and not includes in
      * the images below which are optional / secondary images.
      */
-    image?: IImage;
+    readonly image?: IImage;
 
     /**
      * @see Position Documentation for this design is there.
      */
-    position?: Position;
+    readonly position?: Position;
 }

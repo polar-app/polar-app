@@ -42,21 +42,21 @@ export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean =
     event.ctrlKey || event.metaKey || event.altKey || (includeShift && event.shiftKey);
 
 type KeydownHandlerOpts = {
-    event: React.KeyboardEvent;
-    contentEditableElem: HTMLElement;
-    platform: Platform;
-    blocksTreeStore: BlocksTreeStore;
-    blockID: BlockIDStr;
-    readonly: boolean;
-    isMultilineNavEnabled: boolean;
+    readonly event: React.KeyboardEvent;
+    readonly contentEditableElem: HTMLElement;
+    readonly platform: Platform;
+    readonly blocksTreeStore: BlocksTreeStore;
+    readonly blockID: BlockIDStr;
+    readonly readonly: boolean;
+    readonly isMultilineNavEnabled: boolean;
 };
 
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
 type Modifier = 'ctrl' | 'alt' | 'shift';
 
-const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
-    const unpressed: Modifier[] = (['ctrl', 'alt', 'shift'] as Modifier[])
+const modifierPredicate = (pressed: readonly Modifier[], event: React.KeyboardEvent) => {
+    const unpressed: readonly Modifier[] = (['ctrl', 'alt', 'shift'] as readonly Modifier[])
         .filter(mod => pressed.indexOf(mod) === -1);
 
     const checkModifier = (modifier: Modifier) => {
@@ -315,14 +315,14 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
 
 type IUseBlockKeyDownHandlerOpts = {
-    contentEditableRef: React.RefObject<HTMLDivElement | null>,
-    blockID: BlockIDStr;
-    onKeyDown?: React.EventHandler<React.KeyboardEvent>;
-    readonly?: boolean;
+    readonly contentEditableRef: React.RefObject<HTMLDivElement | null>,
+    readonly blockID: BlockIDStr;
+    readonly onKeyDown?: React.EventHandler<React.KeyboardEvent>;
+    readonly readonly?: boolean;
 };
 
 type IUseBlockKeyDownHandlerBinds = {
-    onKeyDown: React.EventHandler<React.KeyboardEvent>;
+    readonly onKeyDown: React.EventHandler<React.KeyboardEvent>;
 };
 
 export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseBlockKeyDownHandlerBinds => {

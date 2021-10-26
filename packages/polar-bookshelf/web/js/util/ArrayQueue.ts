@@ -3,7 +3,7 @@
  */
 export class ArrayQueue<T> {
 
-    private backing: T[] = [];
+    private backing: readonly T[] = [];
 
     public push(value: T): void {
         this.backing.push(value);

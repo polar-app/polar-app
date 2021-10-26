@@ -1,7 +1,7 @@
 import {isPresent} from "../Preconditions";
 
 export interface InnerMap<V> {
-    [key: string]: V;
+    readonly [key: string]: V;
 }
 
 export type ToKeyFunction<V> = (value: V) => string;
@@ -13,7 +13,7 @@ export type ToKeyFunction<V> = (value: V) => string;
  */
 export class SetMultimap<K, V> {
 
-    private backing: {[key: string]: InnerMap<V>} = {};
+    private backing: {readonly [key: string]: InnerMap<V>} = {};
 
     constructor(private readonly keyToKey: ToKeyFunction<K>,
                 private readonly valueToKey: ToKeyFunction<V>) {

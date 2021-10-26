@@ -28,7 +28,7 @@ export class TagDescriptors {
 
         docTags = docTags || [];
 
-        const result: { [id: string]: TagDescriptor } = {};
+        const result: { readonly [id: string]: TagDescriptor } = {};
 
         Dictionaries.putAll(Tags.toMap(docTags), result);
 

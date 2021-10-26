@@ -47,7 +47,7 @@ export interface SubscriptionValue<T> {
 }
 
 type ErrorType = unknown;
-export type SnapshotTuple<T> = [T | undefined, ErrorType | undefined];
+export type SnapshotTuple<T> = readonly [T | undefined, ErrorType | undefined];
 
 /**
  * A null snapshot subscriber which can be used when you don't want to do

@@ -125,7 +125,7 @@ export namespace FluidElementPredicates {
                 const topDistance = Math.abs(elementRect.top - boxRectPointer);
                 const bottomDistance = Math.abs(elementRect.bottom - boxRectPointer);
 
-                function computeDistanceAndEdge(): [number, Edge] {
+                function computeDistanceAndEdge(): readonly [number, Edge] {
 
                     if (topDistance < bottomDistance) {
                         return [topDistance, 'top'];

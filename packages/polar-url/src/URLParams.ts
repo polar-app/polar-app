@@ -1,12 +1,12 @@
 import {URL} from 'whatwg-url';
 
 export interface URLParamDict {
-    [key: string]: string;
+    readonly [key: string]: string;
 }
 
 export class URLParamsIndex {
 
-    constructor(private backing: URLParamDict ) {
+    constructor(private readonly backing: URLParamDict ) {
     }
 
     public get(key: string): string | undefined {

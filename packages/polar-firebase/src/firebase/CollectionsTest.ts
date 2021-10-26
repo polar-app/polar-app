@@ -21,7 +21,7 @@ describe('Collections', function() {
             readonly [key: number]: string;
         }
 
-        const bar0: string[] = ['foo'];
+        const bar0: readonly string[] = ['foo'];
         const bar1: MyArray<string> = ['foo'];
 
         bar0.includes('foo');
@@ -67,7 +67,7 @@ describe('Collections', function() {
         // const MyCat0: FirestoreDict = cat;
 
         interface MyFoo {
-            name: string;
+            readonly name: string;
         }
 
         type T1 = keyof MyFoo;
@@ -77,7 +77,7 @@ describe('Collections', function() {
         // }
         //
 
-        type Partial<T> = {
+        type Partial<T> = { readonly
             [P in keyof T]: string;
         };
 

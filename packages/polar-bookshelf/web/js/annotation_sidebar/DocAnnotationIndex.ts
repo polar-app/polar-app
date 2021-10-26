@@ -142,7 +142,7 @@ export class DocAnnotationIndex {
 }
 
 export interface ParentMap {
-    [id: string]: string;
+    readonly [id: string]: string;
 }
 
 export type IDString = string;

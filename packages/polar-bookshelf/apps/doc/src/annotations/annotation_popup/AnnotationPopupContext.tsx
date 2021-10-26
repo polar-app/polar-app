@@ -52,19 +52,19 @@ export enum AnnotationPopupActionEnum {
 const AnnotationPopupContext = React.createContext<IAnnotationPopupContext | null>(null);
 
 type IAnnotationPopupProviderProps = {
-    docMeta: IDocMeta;
-    docScale: IDocScale;
+    readonly docMeta: IDocMeta;
+    readonly docScale: IDocScale;
 };
 
 type IAnnotationPopupContext = {
-    onCreateAnnotation: (color: ColorStr) => void;
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
-    selectionEvent?: ActiveSelectionEvent;
-    setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
-    aiFlashcardStatus: AutoFlashcardHandlerState,
-    activeAction?: AnnotationPopupActionEnum;
-    toggleAction: (action: AnnotationPopupActionEnum) => () => void;
-    clear: () => void;
+    readonly onCreateAnnotation: (color: ColorStr) => void;
+    readonly annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    readonly selectionEvent?: ActiveSelectionEvent;
+    readonly setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
+    readonly aiFlashcardStatus: AutoFlashcardHandlerState,
+    readonly activeAction?: AnnotationPopupActionEnum;
+    readonly toggleAction: (action: AnnotationPopupActionEnum) => () => void;
+    readonly clear: () => void;
 };
 
 const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): IDocAnnotation | undefined => {
@@ -83,7 +83,7 @@ export function computeTargets(fileType: FileType, docViewerElementProvider: () 
     const docViewerElement = docViewerElementProvider();
 
     function computeTargetsForPDF(): ReadonlyArray<HTMLElement> {
-        return Array.from(docViewerElement.querySelectorAll(".page")) as HTMLElement[];
+        return Array.from(docViewerElement.querySelectorAll(".page")) as readonly HTMLElement[];
     }
 
     function computeTargetsForEPUB(): ReadonlyArray<HTMLElement> {
@@ -329,7 +329,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             }
         };
 
-        const cleanupListeners: (() => void)[] = [];
+        const cleanupListeners: readonly (() => void)[] = [];
 
         for (const target of targets) {
             cleanupListeners.push(ActiveSelections.addEventListener(handleSelection, target));

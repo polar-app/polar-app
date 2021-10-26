@@ -91,7 +91,7 @@ export class SetArrays {
         return Sets.toArray(SetArrays.toSet(values));
     }
 
-    public static toSet<T>(arr: ReadonlyArray<T>): Set<T> {
+    public static toSet<T>(arr: ReadonlyArray<T>): ReadonlySet<T> {
 
         const set = new Set<T>();
 

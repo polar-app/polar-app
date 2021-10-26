@@ -6,7 +6,7 @@ export namespace Dictionaries {
     /**
      * Return JUST the data attributes (data-*) in a dictionary.
      */
-    export function dataAttributes(dict: Readonly<{[key: string]: any}>): Readonly<{[key: string]: string}> {
+    export function dataAttributes(dict: Readonly<{readonly [key: string]: any}>): Readonly<{readonly [key: string]: string}> {
 
         function predicate(key: string, value: any) {
             return key.startsWith('data-') && typeof value === 'string';
@@ -16,9 +16,9 @@ export namespace Dictionaries {
 
     }
 
-    export function filter<T>(dict: Readonly<{[key: string]: T}>, predicate: (key: string, value: T) => boolean): Readonly<{[key: string]: T}> {
+    export function filter<T>(dict: Readonly<{readonly [key: string]: T}>, predicate: (key: string, value: T) => boolean): Readonly<{readonly [key: string]: T}> {
 
-        const result: {[key: string]: T} = {};
+        const result: {readonly [key: string]: T} = {};
 
         for (const key of Object.keys(dict)) {
             const value = dict[key];
@@ -50,13 +50,13 @@ export namespace Dictionaries {
      * Convert a dictionary to number keys. In JS all dictionaries use string keys
      * but TS supports string keys.
      */
-    export function numberKeys<T>(dict: {[key: number]: T}): ReadonlyArray<number> {
+    export function numberKeys<T>(dict: {readonly [key: number]: T}): ReadonlyArray<number> {
         return Object.keys(dict).map(current => parseInt(current));
     }
 
-    export function values<T>(dict: {[key: string]: T} | undefined | null): T[] {
+    export function values<T>(dict: {readonly [key: string]: T} | undefined | null): readonly T[] {
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         if (!dict) {
             // TODO: this can go away once we migrate to typescript everywhere
@@ -67,7 +67,7 @@ export namespace Dictionaries {
 
     }
 
-    export function entries<V>(dict: {[key: string]: V} | undefined | null): ReadonlyArray<DictionaryEntry<V>> {
+    export function entries<V>(dict: {readonly [key: string]: V} | undefined | null): ReadonlyArray<DictionaryEntry<V>> {
 
         if (! dict) {
             return [];
@@ -90,7 +90,7 @@ export namespace Dictionaries {
      * @param dict
      * @param callback
      */
-    export function forDict<T>(dict: {[key: string]: T}, callback: ForDictCallbackFunction<T> ) {
+    export function forDict<T>(dict: {readonly [key: string]: T}, callback: ForDictCallbackFunction<T> ) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
@@ -132,7 +132,7 @@ export namespace Dictionaries {
 
         if (Array.isArray(dict)) {
 
-            const result: any[] = [];
+            const result: readonly any[] = [];
 
             for (let idx = 0; idx < dict.length; ++idx) {
                 result[idx] = sorted(dict[idx]);
@@ -259,9 +259,9 @@ export namespace Dictionaries {
     /**
      * Easily convert an array to a dict.
      */
-    export function toDict<V>(values: ReadonlyArray<V>, converter: (value: V) => string): {[key: string]: V} {
+    export function toDict<V>(values: ReadonlyArray<V>, converter: (value: V) => string): {readonly [key: string]: V} {
 
-        const result: { [key: string]: V } = {};
+        const result: { readonly [key: string]: V } = {};
 
         for (const value of values) {
             result[converter(value)] = value;
@@ -271,7 +271,7 @@ export namespace Dictionaries {
 
     }
 
-    export function countOf<V>(dict: {[key: string]: V} | null | undefined) {
+    export function countOf<V>(dict: {readonly [key: string]: V} | null | undefined) {
 
         return Optional.of(dict)
             .map(current => Object.keys(current).length)
@@ -279,7 +279,7 @@ export namespace Dictionaries {
 
     }
 
-    export function size<V>(dict: {[key: string]: V}) {
+    export function size<V>(dict: {readonly [key: string]: V}) {
         return Object.keys(dict).length;
     }
 
@@ -290,7 +290,7 @@ export namespace Dictionaries {
      * mapping function and enters it into this map unless undefined or null.
      *
      */
-    export function computeIfAbsent<V>(dict: {[key: string]: V},
+    export function computeIfAbsent<V>(dict: {readonly [key: string]: V},
                                      key: string,
                                      mappingFunction: (newKey: string) => V): V {
 
@@ -314,8 +314,8 @@ export namespace Dictionaries {
 
     }
 
-    export function putAll<V>(source: {[key: string]: V},
-                              target: {[key: string]: V} = {}) {
+    export function putAll<V>(source: {readonly [key: string]: V},
+                              target: {readonly [key: string]: V} = {}) {
 
         for (const key of Object.keys(source)) {
             target[key] = source[key];
@@ -333,7 +333,7 @@ export namespace Dictionaries {
      * Return true if the dictionary is empty and has no entries (null or
      * undefined too).
      */
-    export function empty(dict: {[key: string]: any} | null | undefined): boolean {
+    export function empty(dict: {readonly [key: string]: any} | null | undefined): boolean {
 
         if (! dict) {
             return true;
@@ -343,7 +343,7 @@ export namespace Dictionaries {
 
     }
 
-    export function clear(dict: {[key: string]: any} | null | undefined) {
+    export function clear(dict: {readonly [key: string]: any} | null | undefined) {
 
         if ( ! dict) {
             return;
@@ -378,5 +378,5 @@ export interface DictionaryEntry<V> {
  * Used as the type for Object literals using {}
  */
 export interface Dict<T> {
-    [index:string]: T;
+    readonly [index:string]: T;
 }

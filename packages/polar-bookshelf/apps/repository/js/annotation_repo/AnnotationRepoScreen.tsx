@@ -26,7 +26,7 @@ import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
 
 interface IToolbarProps {
-    handleRightDrawerToggle?: () => void;
+    readonly handleRightDrawerToggle?: () => void;
 }
 
 const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
@@ -87,8 +87,8 @@ const StartReviewHeader = () => {
 namespace Phone {
 
     interface IMainProps {
-        isAnnotationViewerOpen: boolean;
-        setIsAnnotationViewerOpen: (state: boolean) => void;
+        readonly isAnnotationViewerOpen: boolean;
+        readonly setIsAnnotationViewerOpen: (state: boolean) => void;
     }
 
     const useStyles = makeStyles(() =>

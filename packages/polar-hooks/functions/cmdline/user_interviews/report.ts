@@ -109,7 +109,7 @@ function computeMailSubject(firstName: string ) {
     return`Hey ${firstName}, can I interview you about Polar?`;
 }
 
-function handleUsers(users: admin.auth.UserRecord[], messageOpts: MessageOpts) {
+function handleUsers(users: readonly admin.auth.UserRecord[], messageOpts: MessageOpts) {
 
     for (const user of users) {
 

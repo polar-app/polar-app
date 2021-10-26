@@ -100,7 +100,7 @@ type Strategy = 'display' | 'visibility';
 
 interface IProps {
     readonly children: React.ReactElement;
-    readonly path: string | string[];
+    readonly path: string | readonly string[];
     readonly exact?: boolean;
     readonly strategy: Strategy;
 }

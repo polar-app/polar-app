@@ -5,8 +5,8 @@ import {GoogleEndpoints} from "./Google/GoogleEndpoints";
 
 export class Billing extends Construct {
 
-    constructor(scope: Construct, id: string, private props: {
-        rootResource: IResource,
+    constructor(scope: Construct, id: string, private readonly props: {
+        readonly rootResource: IResource,
     }) {
         super(scope, id);
         // eslint-disable-next-line no-new

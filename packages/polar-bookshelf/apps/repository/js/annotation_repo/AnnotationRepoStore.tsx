@@ -151,9 +151,9 @@ const initialStore: IAnnotationRepoStore = {
 
 interface Mutator {
 
-    doReduceAndUpdateState: (newStore: IAnnotationRepoStore) => void;
-    setDataProvider: (dataProvider: DataProvider) => void;
-    refresh: () => void;
+    readonly doReduceAndUpdateState: (newStore: IAnnotationRepoStore) => void;
+    readonly setDataProvider: (dataProvider: DataProvider) => void;
+    readonly refresh: () => void;
 
 }
 

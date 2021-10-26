@@ -44,7 +44,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         return Images.toImg(resolver, highlight.image);
     }, [persistenceLayerProvider, highlight.image]);
 
-    const actionsList: ISharedActionType[] = React.useMemo(() =>
+    const actionsList: readonly ISharedActionType[] = React.useMemo(() =>
         ['createFlashcard',  'changeColor', 'remove', 'open', 'editTags'], []);
 
     const actions = useSharedAnnotationBlockActions({

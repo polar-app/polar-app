@@ -37,7 +37,7 @@ export function useCreateTag() {
 }
 
 interface TagMap {
-    [id: string]: Tag;
+    readonly [id: string]: Tag;
 }
 
 const lookupTag = (tags: ReadonlyArray<Tag>, tag: TagStr): Tag => {
@@ -75,7 +75,7 @@ export function useDeleteTag(): DeleteTagAction {
 type TagMutationType = 'remove' | 'add';
 
 interface TagMutation extends Tag {
-    mutationType: TagMutationType;
+    readonly mutationType: TagMutationType;
 }
 
 const filterTagMutations = (mutations: ReadonlyArray<TagMutation>, type: TagMutationType): ReadonlyArray<Tag> =>
@@ -174,7 +174,7 @@ export function useRenameTag(): RenameTagAction  {
 
         const mergedDocIDs = ArrayStreams.create([...annotationsDocIDs, ...docIDs]).unique().collect();
 
-        const tagMutations: TagMutation[] = [{ ...oldTag, mutationType: 'remove' }];
+        const tagMutations: readonly TagMutation[] = [{ ...oldTag, mutationType: 'remove' }];
 
         userTags.delete(oldTag.id);
         if (newTag) {

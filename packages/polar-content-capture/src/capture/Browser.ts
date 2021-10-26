@@ -3,8 +3,8 @@ export interface Point {
 
     // Docs: http://electronjs.org/docs/api/structures/point
 
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
 }
 
 // borrowed from Electron
@@ -12,8 +12,8 @@ export interface Size {
 
     // Docs: http://electronjs.org/docs/api/structures/size
 
-    height: number;
-    width: number;
+    readonly height: number;
+    readonly width: number;
 }
 
 // borrowed from Electron
@@ -21,30 +21,30 @@ export interface DeviceEmulation {
     /**
      * Specify the screen type to emulate (default: desktop):
      */
-    screenPosition: ('desktop' | 'mobile');
+    readonly screenPosition: ('desktop' | 'mobile');
     /**
      * Set the emulated screen size (screenPosition == mobile).
      */
-    screenSize: Size;
+    readonly screenSize: Size;
     /**
      * Position the view on the screen (screenPosition == mobile) (default: { x: 0, y:
      * 0 }).
      */
-    viewPosition: Point;
+    readonly viewPosition: Point;
     /**
      * Set the device scale factor (if zero defaults to original device scale factor)
      * (default: 0).
      */
-    deviceScaleFactor: number;
+    readonly deviceScaleFactor: number;
     /**
      * Set the emulated view size (empty means no override)
      */
-    viewSize: Size;
+    readonly viewSize: Size;
     /**
      * Scale of emulated view inside available space (not in fit to view mode)
      * (default: 1).
      */
-    scale: number;
+    readonly scale: number;
 }
 
 export class Browser implements Readonly<IBrowser> {
@@ -80,23 +80,23 @@ export class Browser implements Readonly<IBrowser> {
 
 export interface IBrowser {
 
-    name: string;
+    readonly name: string;
 
-    title: string;
+    readonly title: string;
 
-    type: BrowserType;
+    readonly type: BrowserType;
 
-    description: string;
+    readonly description: string;
 
-    userAgent: string;
+    readonly userAgent: string;
 
-    deviceEmulation: DeviceEmulation;
+    readonly deviceEmulation: DeviceEmulation;
 
     /**
      * True if this is currently inactive for user selection.  IE just a test
      * profile.
      */
-    inactive: boolean;
+    readonly inactive: boolean;
 
 }
 

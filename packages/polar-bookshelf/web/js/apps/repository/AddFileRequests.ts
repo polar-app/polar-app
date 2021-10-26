@@ -45,7 +45,7 @@ export namespace AddFileRequests {
 
     }
 
-    export function computeDirectly(event: DragEvent): AddFileRequest[] {
+    export function computeDirectly(event: DragEvent): readonly AddFileRequest[] {
 
         if (event.dataTransfer && event.dataTransfer.files) {
             return computeFromFileList(Array.from(event.dataTransfer.files));
@@ -59,7 +59,7 @@ export namespace AddFileRequests {
         return FilePaths.hasExtension(name, 'pdf') || FilePaths.hasExtension(name, 'epub')
     }
 
-    export function computeFromFileList(files: ReadonlyArray<File>): AddFileRequest[] {
+    export function computeFromFileList(files: ReadonlyArray<File>): readonly AddFileRequest[] {
 
         function toAddFileRequest(file: File): AddFileRequest {
 
@@ -89,7 +89,7 @@ export namespace AddFileRequests {
 
     }
 
-    export async function computeRecursively(event: DragEvent): Promise<Optional<AddFileRequest[]>> {
+    export async function computeRecursively(event: DragEvent): Promise<Optional<readonly AddFileRequest[]>> {
 
         // if (AppRuntime.isElectron()) {
         //

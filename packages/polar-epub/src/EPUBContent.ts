@@ -33,7 +33,7 @@ interface IEPUBText {
 };
 export namespace EPUBContent {
     export async function get(filePath: string): Promise<ReadonlyArray<IEPUBContent>> {
-        const results: IEPUBContent[] = [];
+        const results: readonly IEPUBContent[] = [];
     
         const zip = EPUBMetadataUsingNode.getZip(filePath);
 
@@ -86,7 +86,7 @@ export namespace EPUBContent {
 
         const CFIXMLFragment = await generateCFIXMLFragment(rootFile, content.id);
 
-        const results: IEPUBText[] = [];
+        const results: readonly IEPUBText[] = [];
 
         let rootEvenIndex = 0;
 
@@ -108,7 +108,7 @@ export namespace EPUBContent {
      * and generates a CFI step relevant to it's parent
      * 
      */
-    function parseChildren(node: ChildNode, nodePath: string, results: IEPUBText[]): void {
+    function parseChildren(node: ChildNode, nodePath: string, results: readonly IEPUBText[]): void {
         if (node.hasChildNodes()) {
 
             let CFIEvenIndex = 0;

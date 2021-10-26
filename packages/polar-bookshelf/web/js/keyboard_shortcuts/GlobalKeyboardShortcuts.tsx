@@ -8,8 +8,8 @@ import {
 } from "./KeyboardShortcutsStore";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
-export type KeyMap = {[key: string]: IKeyboardShortcut};
-export type HandlerMap = {[key: string]: KeyboardShortcutEventHandler | null};
+export type KeyMap = {readonly [key: string]: IKeyboardShortcut};
+export type HandlerMap = {readonly [key: string]: KeyboardShortcutEventHandler | null};
 
 interface IProps {
     readonly keyMap: KeyMap;
@@ -58,7 +58,7 @@ export const GlobalKeyboardShortcuts = deepMemo(function GlobalKeyboardShortcuts
 export interface IKeyMapWithGroup {
     readonly group: string;
     readonly groupPriority?: number;
-    readonly keyMap: {[key: string]: IBaseKeyboardShortcut};
+    readonly keyMap: {readonly [key: string]: IBaseKeyboardShortcut};
 }
 
 export function keyMapWithGroup(opts: IKeyMapWithGroup): KeyMap {

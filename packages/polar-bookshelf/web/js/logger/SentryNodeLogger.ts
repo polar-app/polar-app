@@ -17,15 +17,15 @@ export class SentryNodeLogger implements ILogger {
 
     public readonly name: string = 'sentry-node-logger';
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         SentryNodeLogger.initWhenNecessary();
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         SentryNodeLogger.initWhenNecessary();
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
 
         SentryNodeLogger.initWhenNecessary();
 
@@ -50,15 +50,15 @@ export class SentryNodeLogger implements ILogger {
         }
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         SentryNodeLogger.initWhenNecessary();
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         SentryNodeLogger.initWhenNecessary();
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         SentryNodeLogger.initWhenNecessary();
     }
 

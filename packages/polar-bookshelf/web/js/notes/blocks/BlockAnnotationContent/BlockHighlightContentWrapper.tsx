@@ -4,7 +4,7 @@ import React from "react";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 
 interface IProps {
-    color?: ColorStr;
+    readonly color?: ColorStr;
 }
 
 export const useStyles = makeStyles(() =>
@@ -40,8 +40,8 @@ export const BlockHighlightContentWrapper: React.FC<IProps> = ({ color, children
 
 
 interface IBlockTagsSectionProps {
-    links: ReadonlyArray<IBlockLink>;
-    onClick?: React.MouseEventHandler<HTMLDivElement>;
+    readonly links: ReadonlyArray<IBlockLink>;
+    readonly onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export const useBlockTagsSectionStyles = makeStyles(() =>

@@ -4,12 +4,12 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
 export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
 
 export interface ClozeFields {
-    text: HTMLStr;
+    readonly text: HTMLStr;
 }
 
 export interface FrontAndBackFields {
-    front: HTMLStr;
-    back: HTMLStr;
+    readonly front: HTMLStr;
+    readonly back: HTMLStr;
 }
 
 export class FlashcardInputs {

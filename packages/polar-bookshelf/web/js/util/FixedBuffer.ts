@@ -6,7 +6,7 @@ import {EventListener, Releaseable} from '../reactor/EventListener';
 
 export class FixedBuffer<V> {
 
-    public readonly buffer: V[] = [];
+    public readonly buffer: readonly V[] = [];
 
     private readonly capacity: number;
 

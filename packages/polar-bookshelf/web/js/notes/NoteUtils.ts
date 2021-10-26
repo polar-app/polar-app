@@ -26,7 +26,7 @@ import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 
 type IUseNamedBlocksOpts = {
-    sort?: boolean;
+    readonly sort?: boolean;
 };
 
 /**
@@ -38,7 +38,7 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
     const { sort = false } = opts;
 	const blocksStore = useBlocksStore();
 	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
-	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
+	const prevNamedBlocksIDsRef = React.useRef<readonly BlockIDStr[] | null>(null);
 
 	React.useEffect(() => {
         const getBlockTypeScore = (block: Readonly<Block<NamedContent>>) => {
@@ -140,8 +140,8 @@ export const useBlockTagEditorDialog = () => {
 export namespace BlockContentUtils {
 
     export interface IHasLinksBlockTarget {
-        id: BlockIDStr;
-        content: HasLinks;
+        readonly id: BlockIDStr;
+        readonly content: HasLinks;
     };
 
     /**

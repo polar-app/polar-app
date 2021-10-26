@@ -145,7 +145,7 @@ export namespace ESShingleWriter {
                 return record;
             }
 
-            type BulkWriteTuple = [IIndexAction, IAnswerDigestRecord];
+            type BulkWriteTuple = readonly [IIndexAction, IAnswerDigestRecord];
 
             function toBulkWriteTuple(record: IAnswerDigestRecord): BulkWriteTuple {
                 return [

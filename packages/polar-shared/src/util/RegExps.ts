@@ -9,7 +9,7 @@ export namespace RegExps {
      */
     export function matches(re: RegExp, text: string): ReadonlyArray<RegExpExecArray> {
 
-        const result: RegExpExecArray[] = [];
+        const result: readonly RegExpExecArray[] = [];
 
         while(true) {
 

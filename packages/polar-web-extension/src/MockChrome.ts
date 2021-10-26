@@ -1,29 +1,29 @@
 export namespace MockChrome {
 
     export interface IOPChromeRuntimeSendMessageInteraction {
-        op: 'chrome.runtime.sendMessage',
-        message: any
+        readonly op: 'chrome.runtime.sendMessage',
+        readonly message: any
     }
 
     export interface IOPChromeTabsSendMessageInteraction {
-        op: 'chrome.tabs.sendMessage',
-        id: number,
-        message: any
+        readonly op: 'chrome.tabs.sendMessage',
+        readonly id: number,
+        readonly message: any
     }
 
     export interface IOPChromeTabsUpdateInteraction {
-        op: 'chrome.tabs.update',
-        id: number,
-        updateProperties: any
+        readonly op: 'chrome.tabs.update',
+        readonly id: number,
+        readonly updateProperties: any
     }
 
     export type IOPChromeInteraction = IOPChromeRuntimeSendMessageInteraction | IOPChromeTabsSendMessageInteraction | IOPChromeTabsUpdateInteraction;
 
     export type IChrome = any;
 
-    export function createChrome(): [ReadonlyArray<IOPChromeInteraction>, IChrome] {
+    export function createChrome(): readonly [ReadonlyArray<IOPChromeInteraction>, IChrome] {
 
-        const interactions: IOPChromeInteraction[] = [];
+        const interactions: readonly IOPChromeInteraction[] = [];
 
         const chrome = {
             runtime: {

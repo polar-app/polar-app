@@ -16,7 +16,7 @@ export async function mockAsyncFunction() {
 
 describe('AsyncWorkQueue', function() {
 
-    let inputs: AsyncFunction[] = [];
+    let inputs: readonly AsyncFunction[] = [];
 
     beforeEach(function() {
         mockValue = 0;
@@ -26,7 +26,7 @@ describe('AsyncWorkQueue', function() {
 
     it("Chained work", async function() {
 
-        const work: AsyncFunction[] = [];
+        const work: readonly AsyncFunction[] = [];
 
         async function firstJob() {
             return 1;
@@ -48,7 +48,7 @@ describe('AsyncWorkQueue', function() {
 
     it("With no work", async function() {
 
-        const work: AsyncFunction[] = [];
+        const work: readonly AsyncFunction[] = [];
 
         const asyncWorkQueue = new AsyncWorkQueue(work);
         await asyncWorkQueue.execute();
@@ -58,14 +58,14 @@ describe('AsyncWorkQueue', function() {
     });
 
     it("With work smaller than concurrency.", async function() {
-        const work: AsyncFunction[] = [mockAsyncFunction, mockAsyncFunction];
+        const work: readonly AsyncFunction[] = [mockAsyncFunction, mockAsyncFunction];
         const asyncWorkQueue = new AsyncWorkQueue(work, 10);
         await asyncWorkQueue.execute();
         assertJSON(work.sort(), []);
     });
 
     it("With work larger than concurrency.", async function() {
-        const work: AsyncFunction[] = [mockAsyncFunction, mockAsyncFunction, mockAsyncFunction];
+        const work: readonly AsyncFunction[] = [mockAsyncFunction, mockAsyncFunction, mockAsyncFunction];
         const asyncWorkQueue = new AsyncWorkQueue(work, 2);
         await asyncWorkQueue.execute();
         assertJSON(work.sort(), []);
@@ -76,7 +76,7 @@ describe('AsyncWorkQueue', function() {
 
         // test that we can add more work once we've started...
 
-        const work: AsyncFunction[] = [];
+        const work: readonly AsyncFunction[] = [];
 
         async function addMoreWork() {
             work.push(mockAsyncFunction);
@@ -95,7 +95,7 @@ describe('AsyncWorkQueue', function() {
 
     it("Verify that 'executing' lowers", async function() {
 
-        const latches: Array<Latch<boolean>> = [];
+        const latches: ReadonlyArray<Latch<boolean>> = [];
 
         latches.push(new Latch());
         latches.push(new Latch());
@@ -138,7 +138,7 @@ describe('AsyncWorkQueue', function() {
 
     it("Verify that 'executing' increases when the work expands", async function() {
 
-        const latches: Array<Latch<boolean>> = [];
+        const latches: ReadonlyArray<Latch<boolean>> = [];
 
         latches.push(new Latch());
         latches.push(new Latch());
@@ -203,7 +203,7 @@ describe('AsyncWorkQueue', function() {
 
     it("With verified concurrency", async function() {
 
-        const latches: Array<Latch<boolean>> = [];
+        const latches: ReadonlyArray<Latch<boolean>> = [];
 
         latches.push(new Latch());
         latches.push(new Latch());

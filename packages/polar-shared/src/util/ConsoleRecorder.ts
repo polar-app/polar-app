@@ -15,13 +15,13 @@ export namespace ConsoleRecorder {
 
     export type LogLevel = 'debug' | 'info' | 'error' | 'warn'
 
-    export let messages: IConsoleMessage[] = [];
+    export let messages: readonly IConsoleMessage[] = [];
 
     export interface IConsoleMessage {
         readonly created: ISODateTimeString;
         readonly level: LogLevel;
         readonly message?: any;
-        readonly params: any[];
+        readonly params: readonly any[];
     }
 
     const delegates = {
@@ -63,7 +63,7 @@ export namespace ConsoleRecorder {
 
         }
 
-        function recordMessage(level: LogLevel, message: any, ...optionalParams: any[]) {
+        function recordMessage(level: LogLevel, message: any, ...optionalParams: readonly any[]) {
 
             const created = ISODateTimeStrings.create();
 
@@ -78,27 +78,27 @@ export namespace ConsoleRecorder {
 
         }
 
-        console.debug = (message: any, ...optionalParams: any[]) => {
+        console.debug = (message: any, ...optionalParams: readonly any[]) => {
             recordMessage('debug', message, ...optionalParams);
             delegates.debug(message, ...optionalParams);
         }
 
-        console.log = (message: any, ...optionalParams: any[]) => {
+        console.log = (message: any, ...optionalParams: readonly any[]) => {
             recordMessage('info', message, ...optionalParams);
             delegates.log(message, ...optionalParams);
         }
 
-        console.info = (message: any, ...optionalParams: any[]) => {
+        console.info = (message: any, ...optionalParams: readonly any[]) => {
             recordMessage('info', message, ...optionalParams);
             delegates.info(message, ...optionalParams);
         }
 
-        console.warn = (message: any, ...optionalParams: any[]) => {
+        console.warn = (message: any, ...optionalParams: readonly any[]) => {
             recordMessage('warn', message, ...optionalParams);
             delegates.warn(message, ...optionalParams);
         }
 
-        console.error = (message: any, ...optionalParams: any[]) => {
+        console.error = (message: any, ...optionalParams: readonly any[]) => {
             recordMessage('error', message, ...optionalParams);
             delegates.error(message, ...optionalParams);
         }

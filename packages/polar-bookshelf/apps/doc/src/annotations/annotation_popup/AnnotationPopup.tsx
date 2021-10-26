@@ -78,7 +78,7 @@ const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
 });
 
 type IAnnotationPopupPDFRendererProps = {
-    rect: ILTRect;
+    readonly rect: ILTRect;
 };
 
 const AnnotationPopupPDFRenderer: React.FC<IAnnotationPopupPDFRendererProps> = ({ rect }) => {
@@ -102,7 +102,7 @@ const AnnotationPopupPDFRenderer: React.FC<IAnnotationPopupPDFRendererProps> = (
 };
 
 interface IAnnotationPopupRendererHandheldProps {
-    fileType: FileType;
+    readonly fileType: FileType;
 }
 
 const AnnotationPopupRendererHandheld: React.FC<IAnnotationPopupRendererHandheldProps> = () => {
@@ -131,7 +131,7 @@ const AnnotationPopupRendererHandheld: React.FC<IAnnotationPopupRendererHandheld
 };
 
 type IAnnotationPopupEPUBRendererProps = {
-    rect: ILTRect;
+    readonly rect: ILTRect;
 };
 
 const AnnotationPopupEPUBRenderer: React.FC<IAnnotationPopupEPUBRendererProps> = ({ rect }) => {

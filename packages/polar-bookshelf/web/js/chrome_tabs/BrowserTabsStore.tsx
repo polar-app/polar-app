@@ -163,10 +163,10 @@ function callbacksFactory(
         return tabs;
       }
 
-      function computeTabContents(): TabContentDescriptor[] {
+      function computeTabContents(): readonly TabContentDescriptor[] {
         // Determines tab panel index based on tabContentIndex
         const tabContentIndex = store.tabs[id].tabContentIndex;
-        const tabContents = [...store.tabContents] as any[];
+        const tabContents = [...store.tabContents] as readonly any[];
 
         // Set to undefined to remove iframe from DOM
         tabContents[tabContentIndex].url = undefined;

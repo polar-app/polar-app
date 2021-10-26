@@ -6,38 +6,38 @@ import {default as fetch} from "node-fetch";
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
 interface Response {
-    code: string,
-    success: boolean,
+    readonly code: string,
+    readonly success: boolean,
 }
 
 interface Request {
     // Base64 encoded Receipt, as received by Apple's In App Purchasing mechanism
-    receipt: string,
+    readonly receipt: string,
 
     // User's email
-    email: string,
+    readonly email: string,
 }
 
 interface AppleVerifyReceiptResponse {
-    status?: number, // returned only on error
-    environment: "Sandbox",
-    receipt: {
-        [key: string]: string | number | unknown[],
+    readonly status?: number, // returned only on error
+    readonly environment: "Sandbox",
+    readonly receipt: {
+        readonly [key: string]: string | number | readonly unknown[],
     },
     // eslint-disable-next-line camelcase
-    latest_receipt_info: {
+    readonly latest_receipt_info: readonly {
         // eslint-disable-next-line camelcase
-        product_id: "plan_plus" | "plan_pro",
+        readonly product_id: "plan_plus" | "plan_pro",
         // eslint-disable-next-line camelcase
-        transaction_id: string,
+        readonly transaction_id: string,
         // eslint-disable-next-line camelcase
-        original_transaction_id: string,
+        readonly original_transaction_id: string,
         // eslint-disable-next-line camelcase
-        purchase_date_ms: string,
+        readonly purchase_date_ms: string,
         // eslint-disable-next-line camelcase
-        expire_date_ms: string,
+        readonly expire_date_ms: string,
         // eslint-disable-next-line camelcase
-        in_app_ownership_type: "PURCHASED",
+        readonly in_app_ownership_type: "PURCHASED",
     }[],
 }
 

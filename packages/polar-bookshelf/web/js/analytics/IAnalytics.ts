@@ -66,11 +66,11 @@ export interface IAnalytics {
 export type UserIdentificationStr = string;
 
 export interface TraitsMap {
-    [key: string]: string;
+    readonly [key: string]: string;
 }
 
 export interface IEventArgs {
-    category: string;
-    action: string;
+    readonly category: string;
+    readonly action: string;
 }
 

@@ -158,9 +158,9 @@ const initialStore: IDocRepoStore = {
 }
 
 interface Mutator {
-    doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
-    setDataProvider: (dataProvider: DataProvider) => void;
-    refresh: () => void;
+    readonly doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
+    readonly setDataProvider: (dataProvider: DataProvider) => void;
+    readonly refresh: () => void;
 }
 
 type DataProvider = Provider<ReadonlyArray<RepoDocInfo>>;

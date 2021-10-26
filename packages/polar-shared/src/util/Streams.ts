@@ -10,7 +10,7 @@ export class LineSplitter {
 
     private data: string = "";
 
-    public constructor(private onLine: (line: string) => void) {
+    public constructor(private readonly onLine: (line: string) => void) {
     }
 
     public onData(str: string) {
@@ -75,7 +75,7 @@ export class Streams {
                 reject(new Error("Stream not readable"));
             }
 
-            const array: Uint8Array[] = [];
+            const array: readonly Uint8Array[] = [];
 
             stream.on('data', (chunk: Uint8Array) => {
                 array.push(chunk);

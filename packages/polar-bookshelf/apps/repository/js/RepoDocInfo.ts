@@ -27,16 +27,16 @@ export interface RepoDocInfo {
 
     readonly lastUpdated?: ISODateTimeString;
 
-    flagged: boolean;
+    readonly flagged: boolean;
 
-    archived: boolean;
+    readonly archived: boolean;
 
     readonly url?: string;
 
     // nrComments: number;
     // nrFlashcards: number;
 
-    readonly tags?: Readonly<{[id: string]: Tag}>;
+    readonly tags?: Readonly<{readonly [id: string]: Tag}>;
 
     readonly nrAnnotations: number;
 

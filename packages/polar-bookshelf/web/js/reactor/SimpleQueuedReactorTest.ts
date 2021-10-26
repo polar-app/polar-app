@@ -14,13 +14,13 @@ describe('SimpleQueuedReactor', function() {
         reactor.dispatchEvent('hello');
         reactor.dispatchEvent('world');
 
-        const messages: string[] = [];
+        const messages: readonly string[] = [];
 
         reactor.addEventListener((message) => {
             messages.push(message);
         });
 
-        const expected: string[] = ["hello", "world"];
+        const expected: readonly string[] = ["hello", "world"];
 
         assertJSON(messages, expected);
 

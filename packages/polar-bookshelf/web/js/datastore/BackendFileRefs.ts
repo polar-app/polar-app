@@ -55,7 +55,7 @@ export class BackendFileRefs {
      */
     public static toBackendFileRefs(either: LeftEither<IDocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
 
-        const result: BackendFileRef[] = [];
+        const result: readonly BackendFileRef[] = [];
 
         const fileRef = this.toBackendFileRef(either);
 

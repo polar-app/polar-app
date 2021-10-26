@@ -15,7 +15,7 @@ export class ProfileOwners {
 
     public static readonly COLLECTION = 'profile_owner';
 
-    public static doc(uid: UserIDStr): [HandleStr, IDocumentReference<unknown>] {
+    public static doc(uid: UserIDStr): readonly [HandleStr, IDocumentReference<unknown>] {
         const firestore = FirestoreAdmin.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(uid);
         return [uid, doc];

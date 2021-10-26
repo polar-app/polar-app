@@ -31,6 +31,6 @@ describe('Mutator', function() {
 });
 
 interface Name {
-    first: string;
-    last: string;
+    readonly first: string;
+    readonly last: string;
 }

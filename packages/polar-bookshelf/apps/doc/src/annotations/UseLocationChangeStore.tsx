@@ -9,7 +9,7 @@ interface IUseLocationChangeStore {
 }
 
 interface IUseLocationChangeCallbacks {
-    setInitialScrollLoader: (initialScrollLoader: InitialScrollLoader) => void;
+    readonly setInitialScrollLoader: (initialScrollLoader: InitialScrollLoader) => void;
 }
 
 const initialStore: IUseLocationChangeStore = {

@@ -7,7 +7,7 @@ export class ProfileOwnerCollection {
 
     public static readonly COLLECTION = 'profile_owner';
 
-    public static async doc<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<[HandleStr, IDocumentReference<SM>]> {
+    public static async doc<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<readonly [HandleStr, IDocumentReference<SM>]> {
         const doc = firestore.collection(this.COLLECTION).doc(uid);
         return [uid, doc];
     }

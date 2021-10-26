@@ -1,3 +1,3 @@
 export interface PDFProps {
-    [key: string]: string;
+    readonly [key: string]: string;
 }

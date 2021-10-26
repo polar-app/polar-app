@@ -13,7 +13,7 @@ import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
 
 interface INoteRootParams {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 };
 
 interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}

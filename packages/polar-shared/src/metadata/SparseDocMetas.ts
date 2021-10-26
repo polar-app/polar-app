@@ -168,7 +168,7 @@ export namespace SparsePageMetas {
 
 export namespace SparseDictionaries {
 
-    export function isSparse(dict: {[id: string]: any}) {
+    export function isSparse(dict: {readonly [id: string]: any}) {
         return Object.keys(dict || {}).length === 0;
     }
 
@@ -184,25 +184,25 @@ export interface ISparseDocMeta {
     /**
      * The DocInfo which includes information like title, nrPages, etc.
      */
-    docInfo: IDocInfo;
+    readonly docInfo: IDocInfo;
 
     /**
      * A sparse dictionary of page number to page metadata.
      */
-    pageMetas: { [id: number]: ISparsePageMeta | null | undefined };
+    readonly pageMetas: { readonly [id: number]: ISparsePageMeta | null | undefined };
 
     /**
      * The annotation info for this document including the last annotation
      * time, progress, etc.
      */
-    annotationInfo: IAnnotationInfo;
+    readonly annotationInfo: IAnnotationInfo;
 
     /**
      * The version of this DocMeta version.
      */
-    version: number;
+    readonly version: number;
 
-    attachments: { [id: string]: IAttachment };
+    readonly attachments: { readonly [id: string]: IAttachment };
 
 }
 
@@ -212,25 +212,25 @@ export interface ISparsePageMeta {
 
     readonly dim?: SDimensions;
 
-    readonly pagemarks?: { [id: string]: IPagemark } | null | undefined;
+    readonly pagemarks?: { readonly [id: string]: IPagemark } | null | undefined;
 
-    readonly notes?: { [id: string]: INote } | null | undefined;
+    readonly notes?: { readonly [id: string]: INote } | null | undefined;
 
-    readonly comments?: { [id: string]: IComment } | null | undefined;
+    readonly comments?: { readonly [id: string]: IComment } | null | undefined;
 
-    readonly questions?: { [id: string]: IQuestion } | null | undefined;
+    readonly questions?: { readonly [id: string]: IQuestion } | null | undefined;
 
     readonly flashcards?: IFlashcardMap | null | undefined;
 
-    readonly textHighlights?: { [id: string]: ITextHighlight } | null | undefined;
+    readonly textHighlights?: { readonly [id: string]: ITextHighlight } | null | undefined;
 
-    readonly areaHighlights?: { [id: string]: IAreaHighlight } | null | undefined;
+    readonly areaHighlights?: { readonly [id: string]: IAreaHighlight } | null | undefined;
 
-    readonly screenshots?: { [id: string]: IScreenshot } | null | undefined;
+    readonly screenshots?: { readonly [id: string]: IScreenshot } | null | undefined;
 
-    readonly thumbnails?: { [id: string]: IThumbnail } | null | undefined;
+    readonly thumbnails?: { readonly [id: string]: IThumbnail } | null | undefined;
 
-    readonly readingProgress?: { [id: string]: ReadingProgress } | null | undefined;
+    readonly readingProgress?: { readonly [id: string]: ReadingProgress } | null | undefined;
 
 }
 

@@ -4,18 +4,18 @@ import {Billing} from "polar-accounts/src/Billing";
 
 interface ChangePlanConfig {
     // Email of the customer
-    email: string,
+    readonly email: string,
 
     // The original transaction ID, which doesn't change across monthly billings for the same plan
-    customerId: string,
+    readonly customerId: string,
 
     // The plan code that was purchased
-    productId: "plus" | "pro",
+    readonly productId: "plus" | "pro",
 
-    paymentMethod?: "apple_iap" | "google_iap",
+    readonly paymentMethod?: "apple_iap" | "google_iap",
 
     // Unix timestamp after which the Plan should be no longer considered active
-    expiresAt?: number,
+    readonly expiresAt?: number,
 }
 
 export default async function changePlanForEmail(changePlanConfig: ChangePlanConfig) {

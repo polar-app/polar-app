@@ -69,7 +69,7 @@ export class Paths {
         return root + dir;
     }
 
-    private static splitPath(a: string): string[] {
+    private static splitPath(a: string): readonly string[] {
         const pathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
         return pathRe.exec(a)!.slice(1); // This will never be null
     }

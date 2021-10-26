@@ -29,7 +29,7 @@ export class Engine<F, H extends EventHandlers> {
      * @param eventHandlers The event handlers we should pass to rules.
      * @param externalEngineState Used for resuming engine state.
      */
-    constructor(private facts: F,
+    constructor(private readonly facts: F,
                 private readonly rules: RuleMap<F, H>,
                 private readonly eventHandlers: H,
                 private readonly externalEngineState?: ExternalEngineState<F, H>) {
@@ -105,7 +105,7 @@ export class Engine<F, H extends EventHandlers> {
 
 export class RuleMap<F, H extends EventHandlers> {
 
-    [name: string]: Rule<F, H, any>;
+    readonly [name: string]: Rule<F, H, any>;
 
 }
 
@@ -116,14 +116,14 @@ export type RuleKeys<F, H extends EventHandlers> = keyof RuleMap<F, H>;
  * keys order isn't defined reliably and I want to make sure we never have bugs
  * here.
  */
-export type RuleOrder<F, H extends EventHandlers> = [RuleKeys<F, H>];
+export type RuleOrder<F, H extends EventHandlers> = readonly [RuleKeys<F, H>];
 
 interface MutableEngineState<F, H extends EventHandlers> {
 
     /**
      * The states of the individual rules.
      */
-    ruleStates: {[id: string]: any};
+    readonly ruleStates: {readonly [id: string]: any};
 
 }
 
@@ -140,22 +140,22 @@ export interface ExternalEngineState<F, H extends EventHandlers> extends Readonl
 
 }
 
-export type MutableEventTimes<E extends EventHandlers> = {
+export type MutableEventTimes<E extends EventHandlers> = { readonly
     [name in keyof E]: ISODateTimeString | undefined;
 };
 
 export type EventTimes<E extends EventHandlers> = Readonly<MutableEventTimes<E>>;
 
 export interface MutableEvent {
-    handler: EventHandler;
-    lastExecuted: ISODateTimeString | undefined;
+    readonly handler: EventHandler;
+    readonly lastExecuted: ISODateTimeString | undefined;
 }
 
 export interface Event extends Readonly<MutableEvent> {
 
 }
 
-export type MutableEventMap<E extends EventHandlers> = {
+export type MutableEventMap<E extends EventHandlers> = { readonly
     [name in keyof E]: Event;
 };
 
@@ -216,14 +216,14 @@ export class EventMaps {
 
     public static earliestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
 
-        const times: Array<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
+        const times: ReadonlyArray<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
         return  times.reduce(Reducers.FIRST, undefined);
 
     }
 
     public static latestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
 
-        const times: Array<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
+        const times: ReadonlyArray<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
         const result = times.reduce(Reducers.LAST, undefined);
 
         return result;

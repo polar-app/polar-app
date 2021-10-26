@@ -8,7 +8,7 @@ import {Arrays} from "./Arrays";
  */
 export class HitMap {
 
-    private index: {[key: string]: HitEntry} = {};
+    private index: {readonly [key: string]: HitEntry} = {};
 
     public registerHit(key: string, delta: number = 1): number {
 
@@ -20,7 +20,7 @@ export class HitMap {
 
     }
 
-    public registerHits(...keys: string[]) {
+    public registerHits(...keys: readonly string[]) {
 
         for (const key of keys) {
             this.registerHit(key);
@@ -32,7 +32,7 @@ export class HitMap {
     /**
      * Return the hit index as a map.
      */
-    public toMap(): Readonly<{[key: string]: HitEntry}> {
+    public toMap(): Readonly<{readonly [key: string]: HitEntry}> {
         return Object.freeze({...this.index});
     }
 
@@ -146,8 +146,8 @@ export class SampledHitMap<V> {
 }
 
 interface HitEntry {
-    key: string;
-    value: number;
+    readonly key: string;
+    readonly value: number;
 }
 
 export interface PercRankedEntry {
@@ -162,6 +162,6 @@ export interface SampledPercRankedEntry<V> extends PercRankedEntry {
 }
 
 export interface LiteralMap {
-    [key: string]: number;
+    readonly [key: string]: number;
 }
 

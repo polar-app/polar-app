@@ -9,6 +9,6 @@ export interface MediaContent {
 
     readonly content: string;
 
-    readonly mediaFiles: MediaFile[];
+    readonly mediaFiles: readonly MediaFile[];
 
 }

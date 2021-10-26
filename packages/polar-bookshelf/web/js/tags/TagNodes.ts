@@ -90,7 +90,7 @@ export class TagNodes {
 
         const {tags} = opts;
 
-        const tagIndex: { [label: string]: TagDescriptor } = {};
+        const tagIndex: { readonly [label: string]: TagDescriptor } = {};
 
         for (const tag of tags) {
 
@@ -187,7 +187,7 @@ export interface CreateOpts {
 
 export class TagNodeIndex {
 
-    private index: {[path: string]: MutableTagNode<TagDescriptor>} = {};
+    private index: {readonly [path: string]: MutableTagNode<TagDescriptor>} = {};
 
     public register(path: string,
                     name: string,

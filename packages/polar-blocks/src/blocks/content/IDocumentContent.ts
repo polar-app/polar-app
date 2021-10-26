@@ -8,6 +8,6 @@ import {IHasLinksContent} from "./IHasLinksContent";
  * which contains details about a specific document including its annotations
  */
 export interface IDocumentContent extends IBaseContent, IHasLinksContent {
-    type: "document";
-    docInfo: IDocInfo;
+    readonly type: "document";
+    readonly docInfo: IDocInfo;
 }

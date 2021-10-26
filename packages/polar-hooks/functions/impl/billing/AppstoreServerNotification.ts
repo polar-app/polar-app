@@ -1,8 +1,8 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 interface Response {
-    code: string,
-    success: boolean,
+    readonly code: string,
+    readonly success: boolean,
 }
 
 interface Request {

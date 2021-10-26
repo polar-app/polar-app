@@ -7,10 +7,10 @@ import {IBlock} from "polar-blocks/src/blocks/IBlock";
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
 
-export type AbortedRenderIndex = Readonly<{[id: string /* NoteIDStr */]: IBlock}>;
-export type AbortedRenderIndexByName = Readonly<{[name: string /* NoteNameStr */]: IBlock}>;
+export type AbortedRenderIndex = Readonly<{readonly [id: string /* NoteIDStr */]: IBlock}>;
+export type AbortedRenderIndexByName = Readonly<{readonly [name: string /* NoteNameStr */]: IBlock}>;
 
-export type ReverseAbortedRenderIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
+export type ReverseAbortedRenderIndex = Readonly<{readonly [id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
 
 interface IAbortedRenderStore {
 

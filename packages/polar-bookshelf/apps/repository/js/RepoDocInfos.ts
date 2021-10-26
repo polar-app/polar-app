@@ -101,7 +101,7 @@ export class RepoDocInfos {
 
     }
 
-    public static toTags(repoDocInfo?: RepoDocInfo): Tag[] {
+    public static toTags(repoDocInfo?: RepoDocInfo): readonly Tag[] {
 
         if (repoDocInfo) {
             return Object.values(repoDocInfo.tags || {});

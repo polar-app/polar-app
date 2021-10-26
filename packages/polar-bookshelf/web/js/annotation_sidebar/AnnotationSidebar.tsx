@@ -10,7 +10,7 @@ import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer"
 import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
 
 type IAnnotationSidebarRendererProps = {
-    docFingerprint: string;
+    readonly docFingerprint: string;
 };
 
 const useStyles = makeStyles((theme) =>

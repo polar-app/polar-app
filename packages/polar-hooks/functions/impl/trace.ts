@@ -1,5 +1,5 @@
 
-export function trace(message?: any, ...optionalParams: any[]) {
+export function trace(message?: any, ...optionalParams: readonly any[]) {
 
     const enabled = true;
 

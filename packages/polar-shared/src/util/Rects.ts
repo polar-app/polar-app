@@ -274,7 +274,7 @@ export class Rects {
         a = Rects.validate(a);
         b = Rects.validate(b);
 
-        const keys: (keyof Rect)[] = ["left", "top", "right", "bottom", "width", "height"];
+        const keys: readonly (keyof Rect)[] = ["left", "top", "right", "bottom", "width", "height"];
 
         const result: any = {};
 
@@ -298,7 +298,7 @@ export class Rects {
         a = Rects.validate(a);
         b = Rects.validate(b);
 
-        const keys: (keyof Rect)[] = ["left", "top", "right", "bottom", "width", "height"];
+        const keys: readonly (keyof Rect)[] = ["left", "top", "right", "bottom", "width", "height"];
 
         const result: any = {};
 

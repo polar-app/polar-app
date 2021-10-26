@@ -95,9 +95,9 @@ export class ResourcePaths {
     /**
      * Get the basedir of the current webapp.
      */
-    protected static getBaseDirs(): string[] {
+    protected static getBaseDirs(): readonly string[] {
 
-        const baseDirs: string[] = [];
+        const baseDirs: readonly string[] = [];
 
         if (! isPresent(app)) {
             baseDirs.push(remote.app.getAppPath());

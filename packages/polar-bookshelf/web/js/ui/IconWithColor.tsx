@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly color: 'text.secondary';
-    readonly Component: React.FunctionComponent<{className?: string}>;
+    readonly Component: React.FunctionComponent<{readonly className?: string}>;
 }
 
 export const IconWithColor = React.memo(function IconWithColor(props: IProps) {

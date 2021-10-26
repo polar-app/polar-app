@@ -10,7 +10,7 @@ function die(msg: string) {
     process.exit(1);
 }
 
-type PackageReferenceMap = {[key: string]: string};
+type PackageReferenceMap = {readonly [key: string]: string};
 
 interface PackageData {
     readonly name: string;

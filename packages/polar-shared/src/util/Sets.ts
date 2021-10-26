@@ -1,6 +1,6 @@
 export class Sets {
 
-    public static mergedSets<T>(...sets: ReadonlyArray<Set<T>>): Set<T> {
+    public static mergedSets<T>(...sets: ReadonlyArray<ReadonlySet<T>>): ReadonlySet<T> {
 
         const result = new Set<T>();
 
@@ -14,7 +14,7 @@ export class Sets {
 
     }
 
-    public static mergedArrays<T>(...arrays: ReadonlyArray<ReadonlyArray<T>>): Set<T> {
+    public static mergedArrays<T>(...arrays: ReadonlyArray<ReadonlyArray<T>>): ReadonlySet<T> {
 
         const result = new Set<T>();
 
@@ -28,9 +28,9 @@ export class Sets {
 
     }
 
-    public static toArray<T>(set: Set<T>): ReadonlyArray<T> {
+    public static toArray<T>(set: ReadonlySet<T>): ReadonlyArray<T> {
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         for (const value of set.values()) {
             result.push(value);

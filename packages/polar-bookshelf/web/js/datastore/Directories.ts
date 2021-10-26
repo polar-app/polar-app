@@ -54,7 +54,7 @@ export class Directories {
 
     public static getDataDir(): DataDirConfig {
 
-        let dataDirs: DataDir[] = [
+        let dataDirs: readonly DataDir[] = [
             {
                 // configured via static.  I think we should deprecate this in the
                 // future as the env var seems more flexible and works across

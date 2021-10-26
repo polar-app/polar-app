@@ -10,11 +10,11 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class AbstractDocAnnotationsDelegate {
 
-    constructor(public collection: string, public parentColumnName: string) {
+    constructor(public readonly collection: string, public readonly parentColumnName: string) {
 
     }
 
-    public doc(record: BaseDocAnnotation): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
+    public doc(record: BaseDocAnnotation): readonly [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
 
         const firestore = FirestoreAdmin.getInstance();
         const parent = (<any> record) [this.parentColumnName];

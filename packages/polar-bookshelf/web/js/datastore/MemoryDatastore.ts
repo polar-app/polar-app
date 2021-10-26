@@ -42,9 +42,9 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     private readonly created: ISODateTimeString;
 
-    protected readonly docMetas: {[fingerprint: string]: string} = {};
+    protected readonly docMetas: {readonly [fingerprint: string]: string} = {};
 
-    protected readonly files: {[key: string]: FileData} = {};
+    protected readonly files: {readonly [key: string]: FileData} = {};
 
     private readonly prefs = new NonPersistentPrefs();
 
@@ -232,6 +232,6 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 }
 
 interface FileData {
-    buffer: Buffer;
-    meta: FileMeta;
+    readonly buffer: Buffer;
+    readonly meta: FileMeta;
 }

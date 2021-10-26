@@ -11,14 +11,14 @@ export interface Country {
 }
 
 export interface DomainNameToUniversityMap {
-    [name: string]: University;
+    readonly [name: string]: University;
 }
 
 export type UniversityName = string;
 export type UniversityDomain = DomainNameStr;
 export type UniversityDomains = ReadonlyArray<UniversityDomain>;
 
-export type UniversityTuple = [
+export type UniversityTuple = readonly [
     UniversityName,
     UniversityDomains,
     TwoLetterCountryCode,

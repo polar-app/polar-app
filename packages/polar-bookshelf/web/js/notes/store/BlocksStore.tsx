@@ -53,14 +53,14 @@ export const ENABLE_UNDO_TRACING = false;
 
 export type BlockNameStr = string;
 
-export type ActiveBlocksIndex = {[id: string /* BlockIDStr */]: IActiveBlock };
-export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
-export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
-export type BlocksIndexByDocumentID = {[docID: string /* IDStr */]: BlockIDStr};
+export type ActiveBlocksIndex = {readonly [id: string /* BlockIDStr */]: IActiveBlock };
+export type BlocksIndex = {readonly [id: string /* BlockIDStr */]: Block};
+export type BlocksIndexByName = {readonly [name: string /* BlockNameStr */]: BlockIDStr};
+export type BlocksIndexByDocumentID = {readonly [docID: string /* IDStr */]: BlockIDStr};
 
-export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
+export type ReverseBlocksIndex = {readonly [id: string /* BlockIDStr */]: readonly BlockIDStr[]};
 
-export type StringSetMap = {[key: string]: boolean};
+export type StringSetMap = {readonly [key: string]: boolean};
 
 export type BlockContent = (MarkdownContent
                             | NameContent
@@ -70,11 +70,11 @@ export type BlockContent = (MarkdownContent
                             | AnnotationContent) & IBaseBlockContent;
 
 export interface BlockContentMap extends AnnotationContentTypeMap {
-    'markdown': MarkdownContent,
-    'name': NameContent,
-    'image': ImageContent,
-    'date': DateContent,
-    'document': DocumentContent,
+    readonly 'markdown': MarkdownContent,
+    readonly 'name': NameContent,
+    readonly 'image': ImageContent,
+    readonly 'date': DateContent,
+    readonly 'document': DocumentContent,
 };
 
 export type BlockType = BlockContent['type'];
@@ -129,7 +129,7 @@ export interface ISplitBlock {
 }
 
 export interface ICreateBlockContentStructureOpts {
-    useNewIDs?: boolean;
+    readonly useNewIDs?: boolean;
 }
 
 export interface INewBlockOpts {
@@ -168,21 +168,21 @@ export interface NavOpts {
 }
 
 export interface IInsertBlocksContentStructureOpts {
-    ref?: BlockIDStr;
+    readonly ref?: BlockIDStr;
 }
 
 export type InterstitialTypes = 'image';
 
 export type Interstitial = {
-    position: IDropPosition;
-    blobURL: string;
-    type: InterstitialTypes;
-    id: string;
-    controller: WriteController;
-    progressTracker: ProgressTrackerManager<WriteFileProgress>;
+    readonly position: IDropPosition;
+    readonly blobURL: string;
+    readonly type: InterstitialTypes;
+    readonly id: string;
+    readonly controller: WriteController;
+    readonly progressTracker: ProgressTrackerManager<WriteFileProgress>;
 };
 
-export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
+export type InterstitialMap = { readonly [key: string]: readonly Interstitial[] | undefined };
 
 /**
  * The result of a createBlock operation.
@@ -278,19 +278,19 @@ export interface IComputeLinearTreeOpts {
     /*
      * Include the parent
      */
-    includeInitial?: boolean;
+    readonly includeInitial?: boolean;
 
     /*
      * Only include expanded blocks
      */
-    expanded?: boolean;
+    readonly expanded?: boolean;
 
     /*
      * A custom root block
      * This is useful when showing trees in the references section
      * Where we don't have the entire tree
      */
-    root?: BlockIDStr;
+    readonly root?: BlockIDStr;
 };
 
 export class BlocksStore implements IBlocksStore {
@@ -572,7 +572,7 @@ export class BlocksStore implements IBlocksStore {
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
 
-        const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
+        const toIDs = (structure: IBlockContentStructure): readonly BlockIDStr[] =>
                structure.children.reduce((acc, substructure) =>
                    [...acc, ...toIDs(substructure)], [structure.id]);
 
@@ -944,7 +944,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             return this.idsToBlocks(block.itemsAsArray)
-                .reduce<BlockIDStr[]>((result, item) => {
+                .reduce<readonly BlockIDStr[]>((result, item) => {
                     result.push(item.id);
                     result.push(...computeTree(item, expanded));
                     return result;
@@ -1244,7 +1244,7 @@ export class BlocksStore implements IBlocksStore {
      * by traversing parents all the way up the tree.
      */
     public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
-        const result: Block[] = [];
+        const result: readonly Block[] = [];
 
         let block = this._index[blockID];
 
@@ -2385,7 +2385,7 @@ export class BlocksStore implements IBlocksStore {
         const items = parent.itemsAsArray;
         const itemPositions = idsToPositionsMap(items);
         const orderedIds = ids
-            .map<[string, number]>(x => [x, itemPositions.get(x)!])
+            .map<readonly [string, number]>(x => [x, itemPositions.get(x)!])
             .sort(([, ai], [, bi]) => ai - bi)
             .map(([x]) => x);
 

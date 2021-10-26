@@ -7,11 +7,11 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {TagFilters} from "polar-shared/src/tags/TagFilters";
 
-export type TagDocsIndex = {[tag: string]: TagDocs};
+export type TagDocsIndex = {readonly [tag: string]: TagDocs};
 
-export type DocTagsIndex = {[docID: string]: DocTags};
+export type DocTagsIndex = {readonly [docID: string]: DocTags};
 
-export type TagsIndex = {[tag: string]: Tag};
+export type TagsIndex = {readonly [tag: string]: Tag};
 
 export interface IRelatedTagsData {
 
@@ -133,10 +133,10 @@ export class RelatedTagsManager {
     /**
      * Compute related tags for the given tags...
      */
-    public compute(tags: TagLiteral[], limit: number = 5): TagHit[] {
+    public compute(tags: readonly TagLiteral[], limit: number = 5): readonly TagHit[] {
 
         // keep a running index of the hits when computing the related tags.
-        const tagHits: {[tag: string]: TagHit} = {};
+        const tagHits: {readonly [tag: string]: TagHit} = {};
 
         const updateHits = (tag: TagLiteral) => {
 
@@ -232,7 +232,7 @@ export class RelatedTagsManager {
 }
 
 export interface DocIDSetMap {
-    [id: string]: boolean;
+    readonly [id: string]: boolean;
 }
 
 export interface TagDocs {
@@ -240,18 +240,18 @@ export interface TagDocs {
     readonly docs: DocIDSetMap;
 }
 
-type RefsRecord = { refs: number };
+type RefsRecord = { readonly refs: number };
 
-export type TagRefsRecord = {[tag: string]: RefsRecord };
+export type TagRefsRecord = {readonly [tag: string]: RefsRecord };
 
 export interface DocTags {
-    tagRefs: TagRefsRecord;
+    readonly tagRefs: TagRefsRecord;
 }
 
 export interface TagHit {
 
     readonly tag: TagLiteral;
-    hits: number;
+    readonly hits: number;
 
 }
 

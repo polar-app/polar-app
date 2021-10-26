@@ -51,12 +51,12 @@ export namespace OpenAICompletionCleanup {
         const sentences = await GCLSentenceSplitter.split(text);
 
         // the sentences that have been emitted so that we don't do any duplicate emits.
-        const emitted: { [sentence: string]: boolean } = {};
+        const emitted: { readonly [sentence: string]: boolean } = {};
 
         let modified = false;
 
         // the sentences we want to emit.
-        const emits: string[] = [];
+        const emits: readonly string[] = [];
 
         for(const sentence of Tuples.createSiblings(sentences)) {
 

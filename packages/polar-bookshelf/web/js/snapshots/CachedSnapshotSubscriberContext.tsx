@@ -37,7 +37,7 @@ interface ICachedSnapshotContext<V> {
      * and to update it each time so that on useObservableStore we can
      * return the current value.
      */
-    current: ISnapshot<V> | undefined;
+    readonly current: ISnapshot<V> | undefined;
 
 }
 
@@ -62,7 +62,7 @@ interface ProviderProps<V> {
 export type CacheProviderComponent<V> = (props: ProviderProps<V>) => JSX.Element | null;
 export type UseSnapshotHook<V> = () => ISnapshot<V>;
 
-export type CachedSnapshotTuple<V> = [
+export type CachedSnapshotTuple<V> = readonly [
     CacheProviderComponent<V>,
     UseSnapshotHook<V>
 ];

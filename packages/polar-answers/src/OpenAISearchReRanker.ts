@@ -49,7 +49,7 @@ export namespace OpenAISearchReRanker {
 
                     const documents = batch.map(current => toText(current));
 
-                    async function doAsync(): Promise<[IOpenAISearchResponse, ReadonlyArray<V>]> {
+                    async function doAsync(): Promise<readonly [IOpenAISearchResponse, ReadonlyArray<V>]> {
 
                         console.log("re-ranker batch  started: " + ISODateTimeStrings.create());
 

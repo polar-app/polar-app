@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly id?: string;
-    readonly icon?: React.FunctionComponent<{className?: string}>;
+    readonly icon?: React.FunctionComponent<{readonly className?: string}>;
     readonly text: string;
 
     readonly secondary?: string;

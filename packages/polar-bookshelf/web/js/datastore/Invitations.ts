@@ -15,7 +15,7 @@ export class Invitations {
      *
      * @param email
      */
-    public static async sendInvites(...emailAddresses: string[]) {
+    public static async sendInvites(...emailAddresses: readonly string[]) {
 
 
         try {

@@ -21,24 +21,24 @@ export const useStyles = makeStyles((theme) => {
 });
 
 export type FieldValues = Record<string, any>;
-export type FormState<T extends FieldValues = FieldValues> = {
+export type FormState<T extends FieldValues = FieldValues> = { readonly
     [K in keyof T]: T[K]
 };
 
-export type InputOption<T> = { placeholder?: string, initialValue?: T, rows?: number, ref?: React.Ref<HTMLInputElement> };
+export type InputOption<T> = { readonly placeholder?: string, readonly initialValue?: T, readonly rows?: number, readonly ref?: React.Ref<HTMLInputElement> };
 
-export type InputOptions<T extends FieldValues = FieldValues> = {
+export type InputOptions<T extends FieldValues = FieldValues> = { readonly
     [K in keyof T]: InputOption<T[K]>;
 };
 
 
 type ISimpleInputFormProps<T extends FieldValues = FieldValues> = {
-    inputs: InputOptions<T>;
-    onSubmit: (data: FormState<T>) => void;
-    onCancel?: () => void;
-    footer?: React.ReactElement;
-    className?: string;
-    style?: React.CSSProperties;
+    readonly inputs: InputOptions<T>;
+    readonly onSubmit: (data: FormState<T>) => void;
+    readonly onCancel?: () => void;
+    readonly footer?: React.ReactElement;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
 };
 
 export function SimpleInputForm<

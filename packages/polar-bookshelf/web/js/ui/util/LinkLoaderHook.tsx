@@ -12,7 +12,7 @@ interface ILocation {
 export type ILocationOrLink = ILocation | string;
 
 interface IHistory {
-    push: (location: ILocationOrLink) => void;
+    readonly push: (location: ILocationOrLink) => void;
 }
 
 export interface LinkLoaderOpts {

@@ -174,7 +174,7 @@ export class Groups {
      * which represents the provider (which is just a key'd dictionary) and a
      * provider which returns a group.
      */
-    public static async verifyPublic(id: {[key: string]: string},
+    public static async verifyPublic(id: {readonly [key: string]: string},
                                      provider: () => Promise<Group | undefined>): Promise<Group> {
 
         const group = await provider();

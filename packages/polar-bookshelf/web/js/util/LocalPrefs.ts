@@ -180,7 +180,7 @@ class LocalStorageBackend {
 
 export class MockStorageBackend {
 
-    private backing: {[key: string]: string} = {};
+    private backing: {readonly [key: string]: string} = {};
 
     public get(key: string): Optional<string> {
         return Optional.of(this.backing[key]);

@@ -9,17 +9,17 @@ import {BlockContent} from "./store/BlocksStore";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export type BlockContentStructure<T = BlockContent> = {
-    content: T;
-    children: ReadonlyArray<BlockContentStructure>;
+    readonly content: T;
+    readonly children: ReadonlyArray<BlockContentStructure>;
 };
 
 type IBlockContentMergableStructure<T = IBlockContent> = IBlockContentStructure<T> & {
-    mergable: boolean;
-    children: ReadonlyArray<IBlockContentMergableStructure>;
+    readonly mergable: boolean;
+    readonly children: ReadonlyArray<IBlockContentMergableStructure>;
 };
 
 type ParserState = {
-    withinList: boolean;
+    readonly withinList: boolean;
 };
 
 const INITIAL_STATE = {
@@ -83,7 +83,7 @@ export namespace HTMLToBlocks {
         state: ParserState = INITIAL_STATE
     ): Promise<ReadonlyArray<IBlockContentMergableStructure>> {
         const {withinList} = state;
-        let blocks: IBlockContentMergableStructure[] = [];
+        let blocks: readonly IBlockContentMergableStructure[] = [];
         let current: string = initialCurrent;
 
         const flush = (mergable: boolean) => {
@@ -225,9 +225,9 @@ export namespace HTMLToBlocks {
 
         const isEmpty = (block: IBlockContentStructure) => block.content.type === 'markdown' && block.content.data.trim().length === 0;
 
-        const flatten = (block: IBlockContentStructure[]): ReadonlyArray<IBlockContentStructure> => {
+        const flatten = (block: readonly IBlockContentStructure[]): ReadonlyArray<IBlockContentStructure> => {
             const siblings = Tuples.createSiblings(block);
-            const result: IBlockContentStructure[] = [];
+            const result: readonly IBlockContentStructure[] = [];
 
             for (let i = siblings.length - 1; i >= 0; i -= 1) {
                 const sibling = siblings[i];
@@ -249,7 +249,7 @@ export namespace HTMLToBlocks {
             return block;
         };
 
-        const purgeEmpty = (blocks: IBlockContentStructure[]) => {
+        const purgeEmpty = (blocks: readonly IBlockContentStructure[]) => {
             return blocks.flatMap(block => {
                 if (isEmpty(block)) {
                     return block.children;

@@ -5,8 +5,8 @@ export interface IMatches {
 
 
 export interface IFindOptsBase {
-    query: string;
-    caseSensitive: boolean;
+    readonly query: string;
+    readonly caseSensitive: boolean;
     // highlightAll: boolean;
     // findPrevious: boolean;
 
@@ -14,12 +14,12 @@ export interface IFindOptsBase {
      * True if we should use phrase search if this is a supported feature
      * with the finder.
      */
-    phraseSearch?: boolean;
+    readonly phraseSearch?: boolean;
 
 }
 
 export interface IFindOpts extends IFindOptsBase {
-    onMatches: (match: IMatches) => void;
+    readonly onMatches: (match: IMatches) => void;
 }
 
 interface IFindFeatures {
@@ -28,7 +28,7 @@ interface IFindFeatures {
 
 export interface Finder {
 
-    features: IFindFeatures;
+    readonly features: IFindFeatures;
 
     exec(opts: IFindOpts): FindHandler;
 

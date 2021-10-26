@@ -3,7 +3,7 @@ export namespace KeyHandlers {
 
     export type KeyHandler = (event: KeyboardEvent | undefined) => void;
 
-    export type KeyHandlerMap<V> = {[name: string]: KeyHandler};
+    export type KeyHandlerMap<V> = {readonly [name: string]: KeyHandler};
 
     export function withDefaultBehavior<V>(callbacks: KeyHandlerMap<V>) {
         const result = {...callbacks};

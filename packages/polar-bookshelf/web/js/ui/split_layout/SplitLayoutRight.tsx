@@ -48,6 +48,6 @@ interface IProps {
 }
 
 interface Margins {
-    bottom: 'auto' | undefined;
-    top: 'auto' | undefined;
+    readonly bottom: 'auto' | undefined;
+    readonly top: 'auto' | undefined;
 }

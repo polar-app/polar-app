@@ -4,20 +4,20 @@ export namespace KeyMaps {
 
     export interface SparseKeyMapOption {
 
-        sequences: MouseTrapKeySequence[];
+        readonly sequences: readonly MouseTrapKeySequence[];
 
         /**
          * Defaults to keydown when not specified.
          */
-        action?: KeyEventName;
+        readonly action?: KeyEventName;
 
-        name?: string;
+        readonly name?: string;
 
-        description?: string;
+        readonly description?: string;
 
     }
 
-    export type SparseKeyMap = { [key in ActionName]: SparseKeyMapOption };
+    export type SparseKeyMap = { readonly [key in ActionName]: SparseKeyMapOption };
 
     export interface IKeyMapOpts {
         readonly keyMap: SparseKeyMap;

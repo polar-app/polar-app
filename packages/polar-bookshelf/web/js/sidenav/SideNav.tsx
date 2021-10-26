@@ -370,7 +370,7 @@ const useSideCarStyles = makeStyles<Theme, IUseSideCarStylesProps>(() =>
 
 
 interface IUseSideCarStylesProps {
-    sidenavWidth: number;
+    readonly sidenavWidth: number;
 }
 
 export const SideCar: React.FC = ({ children }) => {

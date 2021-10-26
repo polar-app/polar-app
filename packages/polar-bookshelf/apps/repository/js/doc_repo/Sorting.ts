@@ -36,7 +36,7 @@ export namespace Sorting {
 
             if (orderBy === 'tags') {
 
-                type TagMap = {[id: string]: Tag};
+                type TagMap = {readonly [id: string]: Tag};
 
                 const tagMap: TagMap = value;
 
@@ -52,7 +52,7 @@ export namespace Sorting {
 
             function toDictionaryValue() {
 
-                const dict: {[key: string]: any} = value;
+                const dict: {readonly [key: string]: any} = value;
 
                 return Object.values(dict)
                     .map(current => current.toString().toLowerCase())

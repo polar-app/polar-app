@@ -120,7 +120,7 @@ const keyToColor = (key: string): ColorStr | undefined => {
 };
 
 type IHighlightColorShortcuts = {
-    annotation: IDocMetaAnnotation | IBlockAnnotation;
+    readonly annotation: IDocMetaAnnotation | IBlockAnnotation;
 };
 
 const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = ({ annotation }) => {

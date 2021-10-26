@@ -15,7 +15,7 @@ export interface Rule<F, H extends EventHandlers, S> {
 
 }
 
-export type RuleFactPair<F, S> = [F, S];
+export type RuleFactPair<F, S> = readonly [F, S];
 
 /**
  * Rule ID string.  All lowercase with hyphen supported.

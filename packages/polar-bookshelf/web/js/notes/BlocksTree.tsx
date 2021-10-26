@@ -9,8 +9,8 @@ type BlocksTreeContextData = BlocksTreeStore;
 const BlocksTreeContext = React.createContext<BlocksTreeContextData | undefined>(undefined);
 
 type IBlocksTreeProviderProps = {
-    root: BlockIDStr;
-    autoExpandRoot?: boolean;
+    readonly root: BlockIDStr;
+    readonly autoExpandRoot?: boolean;
 };
 
 export const BlocksTreeProvider: React.FC<IBlocksTreeProviderProps> = (props) => {

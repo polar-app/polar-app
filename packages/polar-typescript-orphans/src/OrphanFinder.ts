@@ -111,11 +111,11 @@ export namespace OrphanFinder {
     /**
      * Compute a map between the module path foo/bar/cat/ to the local FS path.
      */
-    export type MutableImportModuleToPathMap = {[path: string]: string}
+    export type MutableImportModuleToPathMap = {readonly [path: string]: string}
 
     function computeImportModuleToPathMap(sourceReferences: ReadonlyArray<ISourceReference>): Readonly<MutableImportModuleToPathMap> {
 
-        const map: {[path: string]: string} = {}
+        const map: {readonly [path: string]: string} = {}
 
         sourceReferences.forEach(sourceReference => map[`${sourceReference.module}/${sourceReference.modulePath}`] = sourceReference.fullPath);
 

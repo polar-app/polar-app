@@ -12,8 +12,8 @@ export namespace DOMTextIndexes {
         Preconditions.assertPresent(doc, 'doc');
         Preconditions.assertPresent(root, 'root');
 
-        const pointers: IPointer[] = [];
-        const nodeTexts: INodeText[] = [];
+        const pointers: readonly IPointer[] = [];
+        const nodeTexts: readonly INodeText[] = [];
 
         // TODO: we DO have to factor in iframe but we have to have a pointer
         // back to the element's view ... though I am not sure about that really

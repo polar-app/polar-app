@@ -54,7 +54,7 @@ export class DocPreviewsSitemapGenerator {
                                        .filter(current => current !== undefined)
                                        .map(current => current!);
 
-        const toXML = (sitemapURLs: SitemapURL[]) => {
+        const toXML = (sitemapURLs: readonly SitemapURL[]) => {
 
             console.log('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
 

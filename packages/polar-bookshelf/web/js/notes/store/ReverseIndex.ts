@@ -3,7 +3,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export class ReverseIndex {
 
-    @observable private index: { [key: string]: BlockIDStr[] } = {};
+    @observable private index: { readonly [key: string]: readonly BlockIDStr[] } = {};
 
     @computed get(target: BlockIDStr): ReadonlyArray<BlockIDStr> {
         return this.index[target] || [];

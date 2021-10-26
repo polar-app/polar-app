@@ -25,7 +25,7 @@ export namespace UserBackupCreator {
     }
 
     interface UserFileRef extends FileRef {
-        uid: string;
+        readonly uid: string;
     }
 
 
@@ -86,7 +86,7 @@ export namespace UserBackupCreator {
         };
     }
 
-    const mergeStreams = (...streams: any[]) => {
+    const mergeStreams = (...streams: readonly any[]) => {
         let pass = new PassThrough({
             objectMode: true,
         })
@@ -100,8 +100,8 @@ export namespace UserBackupCreator {
 
 
     async function createStreamFromCollection(config: {
-        collection: string,
-        uid: string,
+        readonly collection: string,
+        readonly uid: string,
     }) {
         return firebaseApp()
             .firestore()

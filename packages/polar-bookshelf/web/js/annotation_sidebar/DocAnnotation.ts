@@ -33,7 +33,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly guid: IDStr;
     readonly annotationType: AnnotationType;
     readonly html: HTMLString | undefined;
-    readonly fields?: {[name: string]: HTMLString};
+    readonly fields?: {readonly [name: string]: HTMLString};
     readonly pageNum: number;
     readonly position: Point;
     readonly created: ISODateTimeString;
@@ -70,7 +70,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      * The effective tags for this item including any inherited tags from parent
      * objects like flashcards, comments, etc.
      */
-    readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
+    readonly tags: Readonly<{readonly [id: string]: InheritedTag}> | undefined;
 
     readonly order: AnnotationOrder | undefined;
 
@@ -173,7 +173,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
     public readonly annotationType: AnnotationType;
     public readonly text: PlainTextStr | undefined;
     public readonly html: HTMLString | undefined;
-    public readonly fields?: {[name: string]: HTMLString};
+    public readonly fields?: {readonly [name: string]: HTMLString};
     public readonly pageNum: number;
     public readonly position: Point;
     public readonly created: ISODateTimeString;
@@ -200,7 +200,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly immutable: boolean;
 
-    public readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
+    public readonly tags: Readonly<{readonly [id: string]: InheritedTag}> | undefined;
 
     public readonly parent: IRef | undefined;
 
@@ -271,10 +271,10 @@ export class DefaultDocAnnotation implements DocAnnotation {
  * A map from ID to the actual DocAnnotation.
  */
 export interface DocAnnotationMap {
-    [id: string]: DefaultDocAnnotation;
+    readonly [id: string]: DefaultDocAnnotation;
 }
 
 /**
  * Annotations according to their position in the document.
  */
-export type SortedDocAnnotations = DocAnnotation[];
+export type SortedDocAnnotations = readonly DocAnnotation[];

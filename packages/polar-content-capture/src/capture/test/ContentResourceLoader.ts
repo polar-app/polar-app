@@ -34,5 +34,5 @@ export class ContentResourceLoader extends ResourceLoader {
 }
 
 export interface ContentMap {
-    [url: string]: string;
+    readonly [url: string]: string;
 }

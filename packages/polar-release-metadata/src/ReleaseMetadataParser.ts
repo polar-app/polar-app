@@ -16,7 +16,7 @@ export class ReleaseMetadataParser {
                    .map(file => FilePaths.join(dir, file));
         };
 
-        const result: ReleaseMetadata[] = [];
+        const result: readonly ReleaseMetadata[] = [];
 
         const markdownFiles = await computeMarkdownFiles();
 

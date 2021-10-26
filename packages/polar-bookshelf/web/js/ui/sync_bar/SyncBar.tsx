@@ -104,17 +104,17 @@ export class SyncBar extends React.Component<IProps, IState> {
 
 interface IProps {
 
-    progress?: IEventDispatcher<SyncBarProgress>;
+    readonly progress?: IEventDispatcher<SyncBarProgress>;
 
 }
 
 interface IState {
 
     // initially there is no progress to display
-    progress?: number;
+    readonly progress?: number;
 
     // the message to dispaly in the box.  If any.
-    message?: string;
+    readonly message?: string;
 
 }
 

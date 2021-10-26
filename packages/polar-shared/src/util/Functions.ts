@@ -8,12 +8,12 @@ export class Functions {
      * headless, etc.
      *
      */
-    public static functionToScript(func: (...args: any[]) => void, ...args: any[]): string {
+    public static functionToScript(func: (...args: readonly any[]) => void, ...args: readonly any[]): string {
         return this.toScript(func, ...args);
 
     }
 
-    public static toScript(func: (...args: any[]) => void, ...args: any[]): string {
+    public static toScript(func: (...args: readonly any[]) => void, ...args: readonly any[]): string {
 
         // TODO: this doesn't yet support lambda functions.
 
@@ -62,7 +62,7 @@ export class Functions {
      * @param dict
      * @param callback
      */
-    public static forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
+    public static forDict(dict: {readonly [key: string]: any}, callback: KeyValueCallback) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
@@ -84,7 +84,7 @@ export class Functions {
      * @param dict
      * @param callback
      */
-    public static async forOwnKeys(dict: {[key: string]: any}, callback: KeyValueCallback) {
+    public static async forOwnKeys(dict: {readonly [key: string]: any}, callback: KeyValueCallback) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
@@ -156,11 +156,11 @@ export class Functions {
 
 export type KeyValueCallback = (key: string, value: any) => void;
 
-export function forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
+export function forDict(dict: {readonly [key: string]: any}, callback: KeyValueCallback) {
     return Functions.forDict(dict, callback);
 }
 
-export function forOwnKeys(dict: {[key: string]: any}, callback: KeyValueCallback) {
+export function forOwnKeys(dict: {readonly [key: string]: any}, callback: KeyValueCallback) {
     return Functions.forOwnKeys(dict, callback);
 }
 

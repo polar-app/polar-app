@@ -323,7 +323,7 @@ export namespace Canvases {
 }
 
 export interface CanvasOpts {
-    canvas?: HTMLCanvasElement;
+    readonly canvas?: HTMLCanvasElement;
 }
 
 export interface ImageOpts {

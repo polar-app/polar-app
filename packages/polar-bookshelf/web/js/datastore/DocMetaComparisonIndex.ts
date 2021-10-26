@@ -13,7 +13,7 @@ import {DocUUID} from "./DocUUID";
  */
 export class DocMetaComparisonIndex {
 
-    private readonly backing: {[fingerprint: string]: DocUUID} = {};
+    private readonly backing: {readonly [fingerprint: string]: DocUUID} = {};
 
     public contains(fingerprint: string) {
         return isPresent(this.backing[fingerprint]);

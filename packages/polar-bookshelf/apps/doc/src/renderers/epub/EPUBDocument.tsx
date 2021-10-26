@@ -570,7 +570,7 @@ function useEPubZoom() {
             if (iframe?.contentDocument) {
                 iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
                 const images = iframe.contentDocument.querySelectorAll('img')
-                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+                const items: readonly HTMLImageElement[] = Array.prototype.slice.call(images)
 
                 items.forEach((item) => {
                     item.setAttribute('style', 'max-width: 100% !important; display: block')

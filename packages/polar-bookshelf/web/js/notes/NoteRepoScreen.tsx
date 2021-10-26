@@ -23,10 +23,10 @@ const dateCellFormatter: GridColDef['valueFormatter'] = ({ value }) => {
 };
 
 type TableRow = {
-    id: BlockIDStr;
-    title: string;
-    created: Date;
-    updated: Date;
+    readonly id: BlockIDStr;
+    readonly title: string;
+    readonly created: Date;
+    readonly updated: Date;
 };
 
 
@@ -74,7 +74,7 @@ export const [BlocksTableContextMenu, useBlocksTableContextMenu]
     = createContextMenu(RowActionsDropdownItems, {name: 'notes-repo'});
 const BlocksTableContextMenuContext = React.createContext<TableRow>(null!);
 
-const BlocksTableContextMenuProvider: React.FC<{ row: TableRow }> = ({ row, children }) => (
+const BlocksTableContextMenuProvider: React.FC<{ readonly row: TableRow }> = ({ row, children }) => (
     <BlocksTableContextMenuContext.Provider value={row}>
         <BlocksTableContextMenu>
             {children}
@@ -82,7 +82,7 @@ const BlocksTableContextMenuProvider: React.FC<{ row: TableRow }> = ({ row, chil
     </BlocksTableContextMenuContext.Provider>
 );
 
-const BLOCK_TABLE_COLUMNS: GridColDef[] = [
+const BLOCK_TABLE_COLUMNS: readonly GridColDef[] = [
     {
         field: 'title',
         headerName: 'Title',

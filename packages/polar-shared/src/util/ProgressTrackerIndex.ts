@@ -5,7 +5,7 @@ import {Arrays} from "./Arrays";
 
 export class ProgressTrackerIndex {
 
-    private index: { [key: number]: Progress } = {};
+    private index: { readonly [key: number]: Progress } = {};
 
     public update(progress: Progress) {
 

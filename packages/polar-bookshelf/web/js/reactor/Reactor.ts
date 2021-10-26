@@ -7,7 +7,7 @@ const log = Logger.create();
 
 export class Reactor<V> implements IReactor<V> {
 
-    private readonly events: {[name: string]: Event<V>} = {};
+    private readonly events: {readonly [name: string]: Event<V>} = {};
 
     public registerEvent(eventName: string): this {
 
@@ -30,7 +30,7 @@ export class Reactor<V> implements IReactor<V> {
         return isPresent(this.events[eventName]);
     }
 
-    public eventNames(): string[] {
+    public eventNames(): readonly string[] {
         return Object.keys(this.events);
     }
 
@@ -158,7 +158,7 @@ export interface IReactor<V> {
 export interface IMutableReactor<V> extends IReactor<V> {
     clearEvent(eventName: string): void;
     removeEventListener(eventName: string, listener: EventListener<V>): boolean;
-    getEventListeners(eventName: string): Array<EventListener<V>>;
+    getEventListeners(eventName: string): ReadonlyArray<EventListener<V>>;
     size(eventName: string): number;
 }
 

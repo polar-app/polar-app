@@ -7,9 +7,9 @@ describe('BrowserWindowRegistry', function() {
 
     class MockLiveWindowsProvider implements LiveWindowsProvider {
 
-        result: ID[] = [];
+        result: readonly ID[] = [];
 
-        getLiveWindowIDs(): ID[] {
+        getLiveWindowIDs(): readonly ID[] {
             return this.result;
         }
 

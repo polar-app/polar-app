@@ -11,7 +11,7 @@ export class AsyncWorkQueues {
     public static async awaitAsyncFunctions<T>(typedAsyncFunctions: ReadonlyArray<TypedAsyncFunction<T>>,
                                                concurrency: number = 25): Promise<ReadonlyArray<T>> {
 
-        const results: T[] = [];
+        const results: readonly T[] = [];
 
         const work = typedAsyncFunctions.map(current => async () => {
             const value = await current();

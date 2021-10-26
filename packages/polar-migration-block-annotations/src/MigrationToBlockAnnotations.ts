@@ -26,8 +26,8 @@ export namespace MigrationToBlockAnnotations {
     const BLOCK_COLLECTION_NAME = 'block';
 
     export type IDocMetaWOriginal = {
-        docMeta: IDocMeta;
-        original: RecordHolder<DocMetaHolder>;
+        readonly docMeta: IDocMeta;
+        readonly original: RecordHolder<DocMetaHolder>;
     }
 
     export async function exec(idUser: IDUser): Promise<void> {

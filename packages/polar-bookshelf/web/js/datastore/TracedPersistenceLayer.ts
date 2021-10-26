@@ -114,7 +114,7 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('writeDocMeta', () => this.delegate.writeDocMeta(docMeta, datastoreMutation));
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]): Promise<void> {
         return tracer.traceAsync('synchronizeDocs', () => this.delegate.synchronizeDocs(...docMetaRefs));
     }
 

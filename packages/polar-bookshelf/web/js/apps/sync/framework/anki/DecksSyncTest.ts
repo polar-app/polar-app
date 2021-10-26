@@ -40,7 +40,7 @@ describe('DecksSync', function() {
 
     it("basic sync", async function() {
 
-        const deckDescriptors: DeckDescriptor[] = [
+        const deckDescriptors: readonly DeckDescriptor[] = [
             {
                 name: "Test Deck"
             }

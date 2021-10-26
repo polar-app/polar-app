@@ -8,7 +8,7 @@ export class EmailAddressParser {
 
         let m: RegExpExecArray | null = null;
 
-        const result: string[] = [];
+        const result: readonly string[] = [];
 
         do {
 

@@ -44,12 +44,12 @@ export namespace BlockAreaHighlight {
     }
 
     export type CreateOpts = {
-        fingerprint: string,
-        pageNum: number,
-        docScale: IDocScale,
-        fileType: FileType,
-        rect: ILTRect,
-        docViewerElement: HTMLElement,
+        readonly fingerprint: string,
+        readonly pageNum: number,
+        readonly docScale: IDocScale,
+        readonly fileType: FileType,
+        readonly rect: ILTRect,
+        readonly docViewerElement: HTMLElement,
     };
 
     export async function create(opts: CreateOpts) {

@@ -6,8 +6,8 @@ import { STNode } from "./STNode";
  */
 export class STEdge {
 
-    constructor(private label: string,
-                private dest: STNode) {
+    constructor(private readonly label: string,
+                private readonly dest: STNode) {
     }
 
     public getLabel(): string {

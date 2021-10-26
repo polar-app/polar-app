@@ -3,7 +3,7 @@ import { ICachedQuery } from "./ICachedQuery";
 
 export type CacheKey = string;
 
-export type TCacheDocTupleWithID = [CacheKey, ICachedDoc];
+export type TCacheDocTupleWithID = readonly [CacheKey, ICachedDoc];
 
 export interface WriteDocRequest {
     readonly key: CacheKey;

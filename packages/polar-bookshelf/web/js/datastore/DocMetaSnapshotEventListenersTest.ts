@@ -23,7 +23,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
     let docMeta: IDocMeta;
 
-    let docMetaSnapshotEvents: DocMetaSnapshotEvent[] = [];
+    let docMetaSnapshotEvents: readonly DocMetaSnapshotEvent[] = [];
 
     let deduplicatedListener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION;
 
@@ -83,7 +83,7 @@ describe('DocMetaSnapshotEventListener', function() {
         return UUIDs.create();
     }
 
-    function computeEmittedDocMetaMutations(event: DocMetaSnapshotEvent[]) {
+    function computeEmittedDocMetaMutations(event: readonly DocMetaSnapshotEvent[]) {
 
         return docMetaSnapshotEvents.map(current => current.docMetaMutations.length)
             .reduce(Reducers.SUM, 0);

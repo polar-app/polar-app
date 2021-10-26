@@ -57,7 +57,7 @@ describe('Batcher', function() {
 
 class MockExecutor {
 
-    public readonly completions: Completion<void>[] = [];
+    public readonly completions: readonly Completion<void>[] = [];
 
     public resolve: boolean = false;
 

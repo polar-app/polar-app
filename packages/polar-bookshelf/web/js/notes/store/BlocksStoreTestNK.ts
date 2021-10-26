@@ -76,7 +76,7 @@ function assertBlocksStoreSnapshotsEqual(
     snapshot1: ReadonlyArray<IBlock<IBlockContent>>,
     snapshot2: ReadonlyArray<IBlock<IBlockContent>>,
 ) {
-    const toIds = (arr: IBlock<IBlockContent>[]) =>
+    const toIds = (arr: readonly IBlock<IBlockContent>[]) =>
         arr.sort((a, b) => a.id.localeCompare(b.id)).map(block => block.id);
 
     assert.deepEqual(
@@ -128,7 +128,7 @@ export function createUndoRunner(blocksStore: BlocksStore,
 
 }
 
-type BlockTree = ReadonlyArray<{id: BlockIDStr,  children: BlockTree}>;
+type BlockTree = ReadonlyArray<{readonly id: BlockIDStr,  readonly children: BlockTree}>;
 
 const assertBlockTree = (store: BlocksStore, blockTree: BlockTree, parent?: Block) => {
     for (const item of blockTree) {

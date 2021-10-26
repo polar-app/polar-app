@@ -20,11 +20,11 @@ export namespace Numbers {
         return '' + value;
     }
 
-    export function sum(...values: number[]) {
+    export function sum(...values: readonly number[]) {
         return values.reduce(Reducers.SUM, 0);
     }
 
-    export function max(...values: number[]) {
+    export function max(...values: readonly number[]) {
 
         let result = values[0];
 
@@ -38,7 +38,7 @@ export namespace Numbers {
 
     }
 
-    export function mean(...values: number[]) {
+    export function mean(...values: readonly number[]) {
 
         if (values.length === 0) {
             return NaN;

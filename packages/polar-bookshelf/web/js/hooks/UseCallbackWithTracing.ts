@@ -1,7 +1,7 @@
 import * as React from "react";
 import {DependencyList} from "react";
 
-export type ReactCallback<T> = (...args: any[]) => T;
+export type ReactCallback<T> = (...args: readonly any[]) => T;
 
 /**
  * Just like React.useCallback except we trace each time a new function is created and ALSO which one is executed
@@ -25,7 +25,7 @@ export function useCallbackWithTracing<T>(callbackName: string,
 
         console.log(`REACT CALLBACK CREATED: ${callbackName} with id: ${id}`);
 
-        return (...args: any[]): T => {
+        return (...args: readonly any[]): T => {
             console.log(`REACT CALLBACK EXECUTING: ${callbackName} with id: ${id}`);
             return delegate(...args);
         }

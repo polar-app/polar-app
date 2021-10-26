@@ -110,7 +110,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
             const docMetaRefs = await this.getDocMetaRefs();
 
-            const addedValues: string[] = [];
+            const addedValues: readonly string[] = [];
 
             for (const docMetaRef of docMetaRefs) {
 
@@ -413,7 +413,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const fingerprints = await Files.readdirAsync(this.dataDir);
 
-        const result: DocMetaRef[] = [];
+        const result: readonly DocMetaRef[] = [];
 
         for ( const fingerprint of fingerprints) {
 
@@ -735,7 +735,7 @@ export interface DirectorySet {
     /**
      * All paths that might exist.
      */
-    readonly paths: string[];
+    readonly paths: readonly string[];
 
     /**
      * The preferred path to use is none currently exist.
@@ -749,29 +749,29 @@ export interface DataDir {
     /**
      * The path to the data dir.
      */
-    path: string | undefined | null;
+    readonly path: string | undefined | null;
 
     /**
      * How the data dir was configured.
      */
-    strategy: DirStrategy;
+    readonly strategy: DirStrategy;
 
 }
 
 export interface DataDirConfig {
 
-    path: string;
+    readonly path: string;
 
     /**
      * How the data dir was configured.
      */
-    strategy: DirStrategy;
+    readonly strategy: DirStrategy;
 
 }
 
 export interface DiskDeleteResult extends DeleteResult {
 
-    docMetaFile: Readonly<FileDeleted>;
+    readonly docMetaFile: Readonly<FileDeleted>;
 
 }
 
@@ -780,13 +780,13 @@ type DirStrategy = 'env' | 'home' | 'manual';
 interface DiskFileReference {
 
     // the dir holding our files.
-    dir: string;
+    readonly dir: string;
 
     // the full path to the actual data file.
-    path: string;
+    readonly path: string;
 
     // the full path to the metadata file (file.meta)
-    metaPath: string;
+    readonly metaPath: string;
 
 }
 

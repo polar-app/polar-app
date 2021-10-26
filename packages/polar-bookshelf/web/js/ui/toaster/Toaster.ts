@@ -91,14 +91,14 @@ export class Toaster {
 export type ToasterRef = object;
 
 export interface ToasterOptions {
-    timeOut?: number;
-    extendedTimeOut?: number;
-    preventDuplicates?: boolean;
-    closeButton?: boolean;
-    debug?: boolean;
-    newestOnTop?: boolean;
-    requiresAcknowledgment?: boolean;
-    positionClass?: 'toast-top-center' | 'toast-top-right' | 'toast-top-left' | 'toast-top-full-width';
+    readonly timeOut?: number;
+    readonly extendedTimeOut?: number;
+    readonly preventDuplicates?: boolean;
+    readonly closeButton?: boolean;
+    readonly debug?: boolean;
+    readonly newestOnTop?: boolean;
+    readonly requiresAcknowledgment?: boolean;
+    readonly positionClass?: 'toast-top-center' | 'toast-top-right' | 'toast-top-left' | 'toast-top-full-width';
 }
 
 export enum ToasterMessageType {

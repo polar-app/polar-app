@@ -183,7 +183,7 @@ describe("calculate", () => {
 
         let review: ReviewState = init;
 
-        const schedules: Schedule[] = [];
+        const schedules: readonly Schedule[] = [];
 
         for (const answer of answers) {
 

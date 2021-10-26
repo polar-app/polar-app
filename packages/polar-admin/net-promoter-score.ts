@@ -20,7 +20,7 @@ const firestore = admin.firestore();
 // with ignored zeros...
 //
 
-async function fetchData(): Promise<UserFeedback[]> {
+async function fetchData(): Promise<readonly UserFeedback[]> {
 
     const snapshot = await firestore.collection("user_feedback").get();
 
@@ -28,7 +28,7 @@ async function fetchData(): Promise<UserFeedback[]> {
 
 }
 
-function partitionByWeek(userFeedbacks: UserFeedback[]) {
+function partitionByWeek(userFeedbacks: readonly UserFeedback[]) {
 
 }
 
@@ -40,7 +40,7 @@ async function computeStats() {
 
     const total = snapshot.docs.length;
 
-    const data: {[key: string]: UserFeedback} = {};
+    const data: {readonly [key: string]: UserFeedback} = {};
 
     for( const doc of snapshot.docs) {
 

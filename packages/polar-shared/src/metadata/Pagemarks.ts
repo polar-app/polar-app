@@ -155,7 +155,7 @@ export class Pagemarks {
 
         const start = opts.start || calculateStartPage();
 
-        const result: IPagemarkRef[] = [];
+        const result: readonly IPagemarkRef[] = [];
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
@@ -294,9 +294,9 @@ export class Pagemarks {
     /**
      *
      */
-    public static upgrade(pagemarks: {[id: string]: Pagemark}) {
+    public static upgrade(pagemarks: {readonly [id: string]: Pagemark}) {
 
-        const result: {[id: string]: Pagemark} = {};
+        const result: {readonly [id: string]: Pagemark} = {};
 
         Object.assign(result, pagemarks);
 
@@ -374,7 +374,7 @@ export class Pagemarks {
         const pagemarksToMutate = () => {
 
             // the pagemarks to mutate.
-            const result: PagemarkPageMetaRef[] = [];
+            const result: readonly PagemarkPageMetaRef[] = [];
 
             if (pagemarkPtr.ref) {
 
@@ -607,23 +607,23 @@ export interface PagemarkOptions {
     /**
      * The type of pagemark we're working with.
      */
-    type: PagemarkType;
+    readonly type: PagemarkType;
 
     /**
      */
-    rect: PagemarkRect;
+    readonly rect: PagemarkRect;
 
     /**
      */
-    percentage: number;
+    readonly percentage: number;
 
-    column: number;
+    readonly column: number;
 
-    batch?: string;
+    readonly batch?: string;
 
-    created?: string;
+    readonly created?: string;
 
-    mode?: PagemarkMode;
+    readonly mode?: PagemarkMode;
 
 }
 
@@ -652,27 +652,27 @@ export interface KeyPagemarkOptions {
     /**
      * The total number of key options.
      */
-    count: number;
+    readonly count: number;
 
     /**
      * True when we have the percentage.
      *
      */
-    hasPercentage: boolean;
+    readonly hasPercentage: boolean;
 
     /**
      * True when we have the rect.
      *
      */
-    hasRect: boolean;
+    readonly hasRect: boolean;
 
     /**
      */
-    rect: PagemarkRect;
+    readonly rect: PagemarkRect;
 
     /**
      */
-    percentage: number;
+    readonly percentage: number;
 
 }
 

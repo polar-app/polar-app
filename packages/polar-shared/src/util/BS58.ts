@@ -6,7 +6,7 @@ const encoder = basex(ALPHABET)
 
 export namespace BS58 {
 
-    export function encode(data: Buffer | number[] | Uint8Array ): string {
+    export function encode(data: Buffer | readonly number[] | Uint8Array ): string {
         return encoder.encode(data);
     }
 

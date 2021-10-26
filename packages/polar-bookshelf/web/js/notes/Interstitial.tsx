@@ -7,7 +7,7 @@ import {NoteButton} from "./NoteButton";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type IInterstitialProps = {
-    interstitial: InterstitialType;
+    readonly interstitial: InterstitialType;
 };
 
 const useImageInterstitialStyles = makeStyles(() =>

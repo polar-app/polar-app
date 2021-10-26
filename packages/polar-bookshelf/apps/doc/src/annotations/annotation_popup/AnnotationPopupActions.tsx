@@ -20,17 +20,17 @@ import {Block} from "../../../../../web/js/notes/store/Block";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 
 export type IDocMetaAnnotationProps = {
-    annotation: IDocAnnotation,
+    readonly annotation: IDocAnnotation,
 };
 
 export type IBlockAnnotationProps = {
-    annotation: Block<TextHighlightAnnotationContent>,
+    readonly annotation: Block<TextHighlightAnnotationContent>,
 };
 
 export type IAnnotationPopupActionProps = {
-    className?: string,
-    style?: React.CSSProperties,
-    annotation: IDocMetaAnnotation | IBlockAnnotation,
+    readonly className?: string,
+    readonly style?: React.CSSProperties,
+    readonly annotation: IDocMetaAnnotation | IBlockAnnotation,
 };
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {

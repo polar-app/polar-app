@@ -18,7 +18,7 @@ export class Sendgrid {
      * };
      *
      */
-    public static async send(msg: MailDataRequired): Promise<[ClientResponse, {}]> {
+    public static async send(msg: MailDataRequired): Promise<readonly [ClientResponse, {}]> {
 
         return MailService.send({
             ...msg,

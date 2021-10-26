@@ -11,7 +11,7 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
 
     private readonly delegate: Reactor<V>;
 
-    private readonly queue: {[name: string]: V[]} = {};
+    private readonly queue: {readonly [name: string]: readonly V[]} = {};
 
     constructor(delegate = new Reactor<V>()) {
         this.delegate = delegate;
@@ -116,7 +116,7 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
      * Clear the enqueued queue for this event name and return the data there
      * previously.
      */
-    private clearEnqueued(eventName: string): V[] {
+    private clearEnqueued(eventName: string): readonly V[] {
 
         if (isPresent(this.queue[eventName])) {
 

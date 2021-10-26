@@ -25,7 +25,7 @@ Sample request:
  */
 export class FindNotesClient implements IFindNotesClient {
 
-    public async execute(query: string): Promise<number[]> {
+    public async execute(query: string): Promise<readonly number[]> {
 
         const body = {
             action: "findNotes",
@@ -37,14 +37,14 @@ export class FindNotesClient implements IFindNotesClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <number[]> await AnkiConnectFetch.fetch(init);
+        return <readonly number[]> await AnkiConnectFetch.fetch(init);
 
     }
 
     /**
      * Create a mock that returns the given result.
      */
-    public static createMock(result: number[]) {
+    public static createMock(result: readonly number[]) {
         const client = TypeMoq.Mock.ofType<IFindNotesClient>();
         client.setup(x => x.execute(TypeMoq.It.isAny())).returns(() => Promise.resolve(result));
         return client.object;
@@ -54,6 +54,6 @@ export class FindNotesClient implements IFindNotesClient {
 
 export interface IFindNotesClient {
 
-    execute(query: string): Promise<number[]>;
+    execute(query: string): Promise<readonly number[]>;
 
 }

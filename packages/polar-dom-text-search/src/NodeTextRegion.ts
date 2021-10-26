@@ -1,12 +1,12 @@
 export interface MutableNodeTextRegion {
-    nodeID: number;
-    start: number;
+    readonly nodeID: number;
+    readonly start: number;
 
     /**
      * End of the region (inclusive)
      */
-    end: number;
-    node: Node;
+    readonly end: number;
+    readonly node: Node;
 }
 
 

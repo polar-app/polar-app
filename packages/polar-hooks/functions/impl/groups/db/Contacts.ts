@@ -185,26 +185,26 @@ export class Contacts {
 
 export interface MutableContactInit {
 
-    profileID?: EmailStr;
+    readonly profileID?: EmailStr;
 
-    email?: EmailStr;
+    readonly email?: EmailStr;
 
     /**
      * The label for this contact.  This is either the parsed 'name' that we
      * parsed from the email or it's going to be the profile name from their
      * profile metadata.
      */
-    label?: string;
+    readonly label?: string;
 
     /**
      * The relationship with this contact.
      */
-    rel: ContactRelArray;
+    readonly rel: ContactRelArray;
 
     /**
      * True if the user has me as a friend too.
      */
-    reciprocal: boolean;
+    readonly reciprocal: boolean;
 
 }
 

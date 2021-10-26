@@ -56,7 +56,7 @@ export namespace UndoQueues {
      */
     export function create(opts: ICreateOpts = {}): UndoQueue {
 
-        const actions: UndoAction[] = [];
+        const actions: readonly UndoAction[] = [];
 
         let ptr: number = -1;
         const limit = opts.limit || 25;

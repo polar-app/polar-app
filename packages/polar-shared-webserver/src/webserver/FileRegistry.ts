@@ -16,7 +16,7 @@ export class FileRegistry {
      * The registry of hashcodes to the file path it should be served from.
      *
      */
-    private readonly registry: {[key: string]: string} = {};
+    private readonly registry: {readonly [key: string]: string} = {};
 
     constructor(webserverConfig: WebserverConfig) {
 

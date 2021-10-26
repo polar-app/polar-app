@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {deepMemo} from "../../react/ReactUtils";
 
-export const LinearProgressWithLabel = deepMemo(function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+export const LinearProgressWithLabel = deepMemo(function LinearProgressWithLabel(props: LinearProgressProps & { readonly value: number }) {
 
     const rounded = Math.round(props.value);
 

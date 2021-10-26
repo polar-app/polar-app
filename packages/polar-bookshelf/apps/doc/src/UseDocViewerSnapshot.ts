@@ -87,7 +87,7 @@ export function useDocViewerSnapshot2(docID: IDStr | undefined): DocViewerSnapsh
 
 function useRepoDocInfo(docID: string | undefined): RepoDocInfo | undefined {
 
-    function reducer(store: {data: ReadonlyArray<RepoDocInfo>}) {
+    function reducer(store: {readonly data: ReadonlyArray<RepoDocInfo>}) {
         return Arrays.first(store.data.filter(current => current.docMeta.docInfo.fingerprint === docID))
     }
 

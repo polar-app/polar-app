@@ -21,7 +21,7 @@ export namespace Batcher {
     export function create<T>(delegate: (records: ReadonlyArray<T>) => Promise<void>,
                               interval = 50): IBatcher<T> {
 
-        let buff: T[] = []
+        let buff: readonly T[] = []
 
         async function write(record: T) {
 

@@ -16,13 +16,13 @@ describe('QueuedReactor', function() {
         reactor.dispatchEvent(eventName, 'hello');
         reactor.dispatchEvent(eventName, 'world');
 
-        const messages: string[] = [];
+        const messages: readonly string[] = [];
 
         reactor.addEventListener(eventName, (message) => {
             messages.push(message);
         });
 
-        const expected: string[] = ["hello", "world"];
+        const expected: readonly string[] = ["hello", "world"];
 
         assertJSON(messages, expected);
 

@@ -38,7 +38,7 @@ describe('Dictionaries', function() {
 
     it("numberKeys", async function () {
 
-        const dict: {[key: number]: string} = {
+        const dict: {readonly [key: number]: string} = {
             1: 'foo'
         };
 

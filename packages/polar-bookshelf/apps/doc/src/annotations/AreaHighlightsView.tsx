@@ -10,7 +10,7 @@ import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks"
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 
 interface IAreaHighlightsViewRenderer {
-    docMeta: IDocMeta;
+    readonly docMeta: IDocMeta;
 }
 
 export const BlockAreaHighlightsViewRenderer: React.FC<IAreaHighlightsViewRenderer> = ({ docMeta }) => {

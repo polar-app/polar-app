@@ -6,7 +6,7 @@ import {IPageMeta} from "./IPageMeta";
 
 export class PageMetas {
 
-    public static upgrade(pageMetas: {[key: number]: IPageMeta}) {
+    public static upgrade(pageMetas: {readonly [key: number]: IPageMeta}) {
 
         pageMetas = Object.assign({}, pageMetas);
 

@@ -24,8 +24,8 @@ const getBlockContent = (uploadedFile: UploadedFile) => {
 };
 
 type IUseDragDropHandlerOpts = {
-    id: BlockIDStr;
-    isRoot: boolean;
+    readonly id: BlockIDStr;
+    readonly isRoot: boolean;
 };
 
 export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
@@ -94,7 +94,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
             if (! upload) {
                 return;
             }
-            const getTargetBlock = (): { target: BlockIDStr, asChild: boolean } | undefined => {
+            const getTargetBlock = (): { readonly target: BlockIDStr, readonly asChild: boolean } | undefined => {
                 const block = blocksTreeStore.getBlock(id);
                 if (! block) {
                     return undefined;

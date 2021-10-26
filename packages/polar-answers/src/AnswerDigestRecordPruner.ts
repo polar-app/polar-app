@@ -72,7 +72,7 @@ export namespace AnswerDigestRecordPruner {
 
         let i = 0;
 
-        const result: IAnswerDigestRecord[] = [];
+        const result: readonly IAnswerDigestRecord[] = [];
 
         const siblings = Tuples.createSiblings(records);
         while(i < records.length) {

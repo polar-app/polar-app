@@ -109,7 +109,7 @@ export type AnnotationHighlightContent = TextHighlightAnnotationContent
 export type AnnotationContent = AnnotationHighlightContent | FlashcardAnnotationContent;
 
 export type AnnotationContentTypeMap = {
-    [AnnotationContentType.FLASHCARD]: FlashcardAnnotationContent,
-    [AnnotationContentType.TEXT_HIGHLIGHT]: TextHighlightAnnotationContent,
-    [AnnotationContentType.AREA_HIGHLIGHT]: AreaHighlightAnnotationContent,
+    readonly [AnnotationContentType.FLASHCARD]: FlashcardAnnotationContent,
+    readonly [AnnotationContentType.TEXT_HIGHLIGHT]: TextHighlightAnnotationContent,
+    readonly [AnnotationContentType.AREA_HIGHLIGHT]: AreaHighlightAnnotationContent,
 };

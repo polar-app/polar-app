@@ -86,26 +86,26 @@ export class Styles {
 
 }
 
-type PositioningIndex = {[key: string]: string | undefined}
+type PositioningIndex = {readonly [key: string]: string | undefined}
 
 export interface Positioning extends PositioningIndex {
-    left: string | undefined,
-    top: string | undefined,
-    right: string | undefined,
-    bottom: string | undefined,
-    width: string | undefined,
-    height: string | undefined,
+    readonly left: string | undefined,
+    readonly top: string | undefined,
+    readonly right: string | undefined,
+    readonly bottom: string | undefined,
+    readonly width: string | undefined,
+    readonly height: string | undefined,
 }
 
-type PositioningPXIndex = {[key: string]: number | undefined}
+type PositioningPXIndex = {readonly [key: string]: number | undefined}
 
 export interface PositioningPX extends PositioningPXIndex {
-    left: number | undefined,
-    top: number | undefined,
-    right: number | undefined,
-    bottom: number | undefined,
-    width: number | undefined,
-    height: number | undefined,
+    readonly left: number | undefined,
+    readonly top: number | undefined,
+    readonly right: number | undefined,
+    readonly bottom: number | undefined,
+    readonly width: number | undefined,
+    readonly height: number | undefined,
 }
 
 

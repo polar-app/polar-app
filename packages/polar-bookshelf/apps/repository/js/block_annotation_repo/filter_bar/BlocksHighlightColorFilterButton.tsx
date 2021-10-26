@@ -5,8 +5,8 @@ import {MUIPopper} from "../../../../../web/js/mui/menu/MUIPopper";
 import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
 
 interface IProps {
-    selected: ReadonlyArray<ColorStr>;
-    onSelected: (newSelected: ReadonlyArray<ColorStr>) => void;
+    readonly selected: ReadonlyArray<ColorStr>;
+    readonly onSelected: (newSelected: ReadonlyArray<ColorStr>) => void;
 }
 
 export const BlocksHighlightColorFilterButton = (props: IProps) => {

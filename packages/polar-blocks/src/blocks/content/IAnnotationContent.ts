@@ -14,9 +14,9 @@ export enum AnnotationContentType {
 export type IAnnotationContentValue = IBlockAreaHighlight | IBlockTextHighlight | IBlockFlashcard;
 
 export type IAnnotationContentTypeMap = {
-    [AnnotationContentType.FLASHCARD]: IFlashcardAnnotationContent,
-    [AnnotationContentType.TEXT_HIGHLIGHT]: ITextHighlightAnnotationContent,
-    [AnnotationContentType.AREA_HIGHLIGHT]: IAreaHighlightAnnotationContent,
+    readonly [AnnotationContentType.FLASHCARD]: IFlashcardAnnotationContent,
+    readonly [AnnotationContentType.TEXT_HIGHLIGHT]: ITextHighlightAnnotationContent,
+    readonly [AnnotationContentType.AREA_HIGHLIGHT]: IAreaHighlightAnnotationContent,
 };
 
 /**

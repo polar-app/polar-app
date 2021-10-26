@@ -1,6 +1,6 @@
 
 export interface ReadingOverview {
-    [timestamp: string /* ISODateTimeString */]: number;
+    readonly [timestamp: string /* ISODateTimeString */]: number;
 }
 
 /**

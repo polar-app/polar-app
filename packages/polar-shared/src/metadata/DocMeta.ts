@@ -15,11 +15,11 @@ import {IDocMeta} from "./IDocMeta";
 export class DocMeta extends SerializedObject implements IDocMeta {
 
     public docInfo: IDocInfo;
-    public pageMetas: {[id: string]: IPageMeta};
+    public pageMetas: {readonly [id: string]: IPageMeta};
     public annotationInfo = AnnotationInfos.create();
     public version = 2;
 
-    public attachments: {[id: string]: Attachment} = {};
+    public attachments: {readonly [id: string]: Attachment} = {};
 
     // constructor(template?: IDocMeta) {
     //
@@ -35,7 +35,7 @@ export class DocMeta extends SerializedObject implements IDocMeta {
     //
     // }
 
-    constructor(docInfo: IDocInfo, pageMetas: {[id: number]: IPageMeta}) {
+    constructor(docInfo: IDocInfo, pageMetas: {readonly [id: number]: IPageMeta}) {
         super();
         this.docInfo = docInfo;
         this.pageMetas = pageMetas;

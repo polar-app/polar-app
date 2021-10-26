@@ -5,9 +5,9 @@
  */
 export class StringBuffer {
 
-    private readonly backing: string[] = [];
+    private readonly backing: readonly string[] = [];
 
-    public append(...data: string[]): this {
+    public append(...data: readonly string[]): this {
         this.backing.push(...data);
         return this;
     }

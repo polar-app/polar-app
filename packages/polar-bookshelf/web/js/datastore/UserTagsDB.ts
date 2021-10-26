@@ -31,7 +31,7 @@ export interface UserTag extends Tag {
 
 
 export interface LoadedUserTags {
-    [tag: string]: UserTag;
+    readonly [tag: string]: UserTag;
 }
 
 export type PersistedUserTags = ReadonlyArray<UserTag>;

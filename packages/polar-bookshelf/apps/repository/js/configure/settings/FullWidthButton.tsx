@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IFullWidthButtonProps {
-    onClick?: React.MouseEventHandler;
-    icon?: JSX.Element;
+    readonly onClick?: React.MouseEventHandler;
+    readonly icon?: JSX.Element;
 }
 
 export const FullWidthButton: React.FC<IFullWidthButtonProps> = (props) => {

@@ -8,24 +8,24 @@ export interface IDocMeta {
     /**
      * The DocInfo which includes information like title, nrPages, etc.
      */
-    docInfo: IDocInfo;
+    readonly docInfo: IDocInfo;
 
     /**
      * A sparse dictionary of page number to page metadata.
      */
-    pageMetas: { [id: number]: IPageMeta };
+    readonly pageMetas: { readonly [id: number]: IPageMeta };
 
     /**
      * The annotation info for this document including the last annotation
      * time, progress, etc.
      */
-    annotationInfo: IAnnotationInfo;
+    readonly annotationInfo: IAnnotationInfo;
 
     /**
      * The version of this DocMeta version.
      */
-    version: number;
+    readonly version: number;
 
-    attachments: { [id: string]: IAttachment };
+    readonly attachments: { readonly [id: string]: IAttachment };
 
 }

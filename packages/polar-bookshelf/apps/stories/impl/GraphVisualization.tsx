@@ -23,8 +23,8 @@ const COLORS = {
 }
 
 type MetaType = {
-    createdAt: ISODateTimeString;
-    updatedAt: ISODateTimeString;
+    readonly createdAt: ISODateTimeString;
+    readonly updatedAt: ISODateTimeString;
 }
 
 // type NodeType = {
@@ -34,9 +34,9 @@ type MetaType = {
 // } & StateStyles
 
 type NodeType = {
-    id: string;
-    label: string;
-    meta: MetaType
+    readonly id: string;
+    readonly label: string;
+    readonly meta: MetaType
 }
 
 export interface IGraphData {

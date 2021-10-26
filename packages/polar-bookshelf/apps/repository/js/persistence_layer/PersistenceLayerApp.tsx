@@ -193,7 +193,7 @@ interface IPersistenceLayerAppDataProps {
 
 const PersistenceLayerAppData = React.memo(function PersistenceLayerAppData(props: IPersistenceLayerAppDataProps) {
 
-    const Component = (dataProps: {data: AppTags | undefined}) => (
+    const Component = (dataProps: {readonly data: AppTags | undefined}) => (
         <RepoDataLoaderData {...props} appTags={dataProps.data}>
             {props.children}
         </RepoDataLoaderData>
@@ -226,7 +226,7 @@ export interface IProps {
 
 export const PersistenceLayerApp = React.memo(function PersistenceLayerApp(props: IProps) {
 
-    const Component = (dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
+    const Component = (dataProps: {readonly persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
         <PersistenceLayerAppData {...props} persistenceLayerProvider={dataProps.persistenceLayerProvider}>
             {props.children}
         </PersistenceLayerAppData>

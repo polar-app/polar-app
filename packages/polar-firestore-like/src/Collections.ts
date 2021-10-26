@@ -30,7 +30,7 @@ export namespace Collections {
         limit(size: number): QueryLike;
     }
     export interface QuerySnapshotLike {
-        readonly docs: QueryDocumentSnapshotLike[];
+        readonly docs: readonly QueryDocumentSnapshotLike[];
     }
     export interface DocumentSnapshotLike {
         readonly exists: boolean;
@@ -45,7 +45,7 @@ export namespace Collections {
     }
     export type WhereFilterOpLike = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
 
-    export type DocumentDataLike = {[field: string]: any};
+    export type DocumentDataLike = {readonly [field: string]: any};
 
     export interface QueryLike {
         get(): Promise<QuerySnapshotLike>;
@@ -53,10 +53,10 @@ export namespace Collections {
         limit(limit: number): QueryLike;
         offset(offset: number): QueryLike;
         orderBy(fieldPath: string, directionStr?: TOrderByDirection): QueryLike;
-        startAt(...fieldValues: any[]): QueryLike;
-        startAfter(...fieldValues: any[]): QueryLike;
-        endAt(...fieldValues: any[]): QueryLike;
-        endBefore(...fieldValues: any[]): QueryLike;
+        startAt(...fieldValues: readonly any[]): QueryLike;
+        startAfter(...fieldValues: readonly any[]): QueryLike;
+        endAt(...fieldValues: readonly any[]): QueryLike;
+        endBefore(...fieldValues: readonly any[]): QueryLike;
     }
     export interface DocumentReferenceLike {
         get(): Promise<DocumentSnapshotLike>;
@@ -73,9 +73,9 @@ export namespace Collections {
 
     }
 
-    export type Clause = [string, TWhereFilterOp, any];
+    export type Clause = readonly [string, TWhereFilterOp, any];
 
-    export type OrderByClause = [string, TOrderByDirection | undefined];
+    export type OrderByClause = readonly [string, TOrderByDirection | undefined];
 
     export type ValueType = Record<string, unknown> | string | number;
 
@@ -100,7 +100,7 @@ export namespace Collections {
     export interface IterateOpts {
         readonly limit?: number;
         readonly offset?: number;
-        readonly startAfter?: any[];
+        readonly startAfter?: readonly any[];
         readonly startAt?: string;
         readonly endBefore?: string;
         readonly orderBy?: ReadonlyArray<OrderByClause>;
@@ -391,7 +391,7 @@ export namespace Collections {
 
         const limit = opts.limit || 100;
 
-        let startAfter: any[] | undefined;
+        let startAfter: readonly any[] | undefined;
 
         // we always have at least one page...
         let hasNext = true;
@@ -409,7 +409,7 @@ export namespace Collections {
 
                 const computeStartAfter = () => {
 
-                    const result: any[] = [];
+                    const result: readonly any[] = [];
 
                     for (const orderByClause of opts.orderBy || []) {
                         // FIXME: this isn't right?

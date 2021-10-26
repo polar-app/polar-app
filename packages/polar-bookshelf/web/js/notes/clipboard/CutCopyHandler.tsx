@@ -15,9 +15,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 namespace CopyUtils {
     type ICopyData = {
-        markdown: MarkdownStr;
-        html: HTMLStr;
-        polarBlocks: ReadonlyArray<IBlockContentStructure> | null;
+        readonly markdown: MarkdownStr;
+        readonly html: HTMLStr;
+        readonly polarBlocks: ReadonlyArray<IBlockContentStructure> | null;
     };
 
     export function extractContentsFromBlocksSelection(blocksStore: IBlocksStore): ICopyData {

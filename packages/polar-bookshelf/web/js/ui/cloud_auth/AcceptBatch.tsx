@@ -3,12 +3,12 @@ import React from "react";
 import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface IAcceptedUser {
-    uid: string,
-    email: string,
+    readonly uid: string,
+    readonly email: string,
 }
 
 export const AcceptBatch = function AcceptBatch() {
-    const [acceptedUsers, setAcceptedUsers] = React.useState<IAcceptedUser[]>([]);
+    const [acceptedUsers, setAcceptedUsers] = React.useState<readonly IAcceptedUser[]>([]);
     const [isAcceptInProgress, setIsAcceptInProgress] = React.useState<boolean>(false);
 
     if (isAcceptInProgress) {
@@ -28,7 +28,7 @@ export const AcceptBatch = function AcceptBatch() {
 
                     JSONRPC
                         .exec<{}, {
-                            accepted: IAcceptedUser[],
+                            readonly accepted: readonly IAcceptedUser[],
                         }>('private-beta/accept-batch', {})
                         .then(value => {
                             console.log(value);

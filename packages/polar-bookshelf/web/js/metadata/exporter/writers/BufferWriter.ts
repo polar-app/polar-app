@@ -5,7 +5,7 @@ import {Writer} from '../Exporters';
  */
 export class BufferWriter implements Writer {
 
-    private buffer: string[] = [];
+    private buffer: readonly string[] = [];
 
     public async init(): Promise<void> {
         // noop

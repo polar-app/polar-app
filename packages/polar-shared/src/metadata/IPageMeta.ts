@@ -16,11 +16,11 @@ import {IThumbnail} from "./IThumbnail";
 export type PageNumber = number;
 
 export interface IFlashcardMap {
-    [id: string]: IFlashcard;
+    readonly [id: string]: IFlashcard;
 }
 
 export interface ICommentMap {
-    [id: string]: IComment;
+    readonly [id: string]: IComment;
 }
 
 export interface IPageMeta {
@@ -36,22 +36,22 @@ export interface IPageMeta {
      * for keeping track of pagemarks.  The index is the pagemark column.
      *
      */
-    readonly pagemarks: { [id: string]: IPagemark };
+    readonly pagemarks: { readonly [id: string]: IPagemark };
 
     /**
      * The note for this annotation.
      */
-    readonly notes: { [id: string]: INote };
+    readonly notes: { readonly [id: string]: INote };
 
     /**
      * The note for this annotation.
      */
-    readonly comments: { [id: string]: IComment };
+    readonly comments: { readonly [id: string]: IComment };
 
     /**
      *
      */
-    readonly questions: { [id: string]: IQuestion };
+    readonly questions: { readonly [id: string]: IQuestion };
 
     /**
      *
@@ -62,14 +62,14 @@ export interface IPageMeta {
      * An index of test highlights for the page.
      *
      */
-    readonly textHighlights: { [id: string]: ITextHighlight };
+    readonly textHighlights: { readonly [id: string]: ITextHighlight };
 
 
     /**
      * An index of area highlights for the page.
      *
      */
-    readonly areaHighlights: { [id: string]: IAreaHighlight };
+    readonly areaHighlights: { readonly [id: string]: IAreaHighlight };
 
     /**
      * Screenshots we've taken of this page while performing annotations.
@@ -80,15 +80,15 @@ export interface IPageMeta {
      * plus we need to have the DocInfo be a smaller structure for the
      * representation of the doc itself.
      */
-    readonly screenshots: { [id: string]: IScreenshot };
+    readonly screenshots: { readonly [id: string]: IScreenshot };
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail
      * but there might be multiple.  If we want a specific noe we can just
      * look at the width and height.
      */
-    readonly thumbnails: { [id: string]: IThumbnail };
+    readonly thumbnails: { readonly [id: string]: IThumbnail };
 
-    readonly readingProgress: { [id: string]: ReadingProgress };
+    readonly readingProgress: { readonly [id: string]: ReadingProgress };
 
 }

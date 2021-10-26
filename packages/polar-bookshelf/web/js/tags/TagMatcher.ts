@@ -46,7 +46,7 @@ export class TagMatcher {
             return true;
         }
 
-        const index: {[path: string]: boolean} = {};
+        const index: {readonly [path: string]: boolean} = {};
 
         for (const docTagID of docTagIDs) {
             const pathEntries = TagPaths.createPathEntries(docTagID);

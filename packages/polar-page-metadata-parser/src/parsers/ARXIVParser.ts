@@ -9,7 +9,7 @@ export class ARXIVParser implements Parser {
 
         const description = doc.querySelector("meta[property='og:description']")?.getAttribute("content") || undefined
 
-        var authors : string[] = []
+        var authors : readonly string[] = []
 
         for (const metaInfo of Array.from(doc.querySelectorAll("meta[name='citation_author']"))) {
             const author = metaInfo.getAttribute("content")

@@ -59,7 +59,7 @@ export interface IFirestoreClient extends IFirestore<ISnapshotMetadata> {
  */
 export interface IFirestoreLib {
 
-    readonly FieldPath: (...fields: string[]) => IFieldPath;
+    readonly FieldPath: (...fields: readonly string[]) => IFieldPath;
 
     readonly FieldValue: IFieldValueFactory;
 
@@ -71,8 +71,8 @@ export interface IFieldPath {
 
 export interface IFieldValueFactory {
 
-    arrayUnion(...elements: any[]): IFieldValue;
-    arrayRemove(...elements: any[]): IFieldValue;
+    arrayUnion(...elements: readonly any[]): IFieldValue;
+    arrayRemove(...elements: readonly any[]): IFieldValue;
     delete(): IFieldValue;
 
 }

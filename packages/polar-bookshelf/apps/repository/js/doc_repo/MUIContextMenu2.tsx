@@ -151,7 +151,7 @@ export type ContextMenuProviderComponent = (props: IContextMenuProps) => JSX.Ele
 
 export type UseContextMenuHook = (opts?: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
 
-export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMenuHook];
+export type CreateContextMenuTuple = readonly [ContextMenuProviderComponent, UseContextMenuHook];
 
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
                                      opts: CreateContextMenuOpts<O>): CreateContextMenuTuple {

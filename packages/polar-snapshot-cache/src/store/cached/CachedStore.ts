@@ -375,16 +375,16 @@ export namespace CachedStore {
                 private readonly getter: GetHandler<IQuerySnapshotClient>;
                 private readonly snapshotter: SnapshotHandler<IQuerySnapshotClient>;
 
-                private readonly _clauses: IWhereClause[] = [];
+                private readonly _clauses: readonly IWhereClause[] = [];
 
-                private _startAt: string[] | undefined = undefined;
-                private _startAfter: string[] | undefined = undefined;
+                private _startAt: readonly string[] | undefined = undefined;
+                private _startAfter: readonly string[] | undefined = undefined;
 
                 private _limit: number | undefined = undefined;
 
                 private _offset: number | undefined = undefined;
 
-                private _order: IQueryOrderBy[] = [];
+                private _order: readonly IQueryOrderBy[] = [];
 
                 /**
                  *
@@ -590,13 +590,13 @@ export namespace CachedStore {
                     return this;
                 }
 
-                public startAt(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
+                public startAt(...fieldValues: readonly string[]): IQuery<ISnapshotMetadata> {
                     throw new Error("Not implemented");
                     // this._startAt = fieldValues;
                     // return this;
                 }
 
-                public startAfter(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
+                public startAfter(...fieldValues: readonly string[]): IQuery<ISnapshotMetadata> {
                     this._startAfter = fieldValues;
                     return this;
                 }
@@ -666,7 +666,7 @@ export namespace CachedStore {
 
             private _batch = delegate.batch();
 
-            private ops: BatchOp[] = [];
+            private ops: readonly BatchOp[] = [];
 
             create(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
                 throw new Error("not implemented");

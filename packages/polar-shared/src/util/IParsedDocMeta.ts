@@ -33,5 +33,5 @@ export interface IParsedDocMeta {
 
 
 export interface DocProps {
-    [key: string]: string;
+    readonly [key: string]: string;
 }

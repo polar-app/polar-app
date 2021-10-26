@@ -6,8 +6,8 @@ import {RetentionDays} from "@aws-cdk/aws-logs";
 
 export class GoogleEndpoints extends Construct {
 
-    constructor(scope: Construct, id: string, private props: {
-        rootResource: IResource,
+    constructor(scope: Construct, id: string, private readonly props: {
+        readonly rootResource: IResource,
     }) {
         super(scope, id);
 

@@ -13,7 +13,7 @@ import {IAnnotation} from "./IAnnotation";
 export type HighlightColor = NamedColor | RGBStr;
 
 export interface HighlightRects {
-    [key: string]: IRect;
+    readonly [key: string]: IRect;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface IBaseHighlight extends IAnnotation {
     /**
      * The rectangles where we need to place content for this highlights.
      */
-    rects: HighlightRects;
+    readonly rects: HighlightRects;
 
     /**
      * Optional image for this highlight taken when the highlight was created.
@@ -36,34 +36,34 @@ export interface IBaseHighlight extends IAnnotation {
      * screen.  This is the primary image for this highlight and not includes in
      * the images below which are optional / secondary images.
      */
-    image?: IImage;
+    readonly image?: IImage;
 
     /**
      * Images for this highlight.  By default there are none.
      */
-    images: {[key: string]: IImage};
+    readonly images: {readonly [key: string]: IImage};
 
     /**
      * The color of this highlight. Defaults to yellow if undefined.
      */
-    color?: HighlightColor;
+    readonly color?: HighlightColor;
 
     /**
      * @see Position Documentation for this design is there.
      */
-    position?: Position;
+    readonly position?: Position;
 
     /**
      * True if the user has flagged this highlight.  This can be used to call
      * to action that this annotation needs further editing, is important, etc.
      */
-    flagged?: boolean;
+    readonly flagged?: boolean;
 
     /**
      * Works with position to help place the annotations on the page but order
      * is approximate and this can also be used to reorder the sidebar manually.
      */
-    order?: AnnotationOrder;
+    readonly order?: AnnotationOrder;
 
 }
 

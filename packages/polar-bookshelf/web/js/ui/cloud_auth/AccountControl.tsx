@@ -104,7 +104,7 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
      * Return true if the provided email can accept users into the beta
      */
     function canAcceptBeta(email: EmailStr | undefined) {
-        const canAccept: string[] = [
+        const canAccept: readonly string[] = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
             'jonathan.graeupner@gmail.com',

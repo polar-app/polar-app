@@ -11,20 +11,20 @@ export class ExtendedAnnotation extends Annotation {
      * @Deprecated.  We're moving to attachments stored as pointers to keep
      * these object immutable.
      */
-    public notes: {[key: string]: Note} = {};
+    public notes: {readonly [key: string]: Note} = {};
 
     /**
      * The note for this annotation.
      * @Deprecated.  We're moving to attachments stored as pointers to keep
      * these object immutable.
      */
-    public questions: {[key: string]: Question} = {};
+    public questions: {readonly [key: string]: Question} = {};
 
     /**
      * @Deprecated.  We're moving to attachments stored as pointers to keep
      * these object immutable.
      */
-    public flashcards: {[key: string]: Flashcard} = {};
+    public flashcards: {readonly [key: string]: Flashcard} = {};
 
     constructor(val: any) {
 

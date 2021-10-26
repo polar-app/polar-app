@@ -38,7 +38,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private callback?: CallBackProps;
 
-    private steps: EnhancedStep[];
+    private steps: readonly EnhancedStep[];
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -93,7 +93,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     }
 
-    private createSteps(): EnhancedStep[] {
+    private createSteps(): readonly EnhancedStep[] {
 
         // TODO: show them how to use the rich text area including images,
         // HTML, etc.
@@ -115,7 +115,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         interface IconProps {
-            className: string;
+            readonly className: string;
         }
 
         const Icon = (props: IconProps) => {
@@ -130,7 +130,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             </div>;
         };
 
-        const steps: EnhancedStep[] = [
+        const steps: readonly EnhancedStep[] = [
 
             // TODO: we don't really give the user a tour through the annotations view
             // TODO: we don't realy give them a tour through capturing web pages.

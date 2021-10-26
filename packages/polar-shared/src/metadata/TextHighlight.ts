@@ -15,7 +15,7 @@ export class TextHighlight extends BaseHighlight implements ITextHighlight {
      * in the specific regions they selected.
      *
      */
-    public textSelections: {[id: number]: ITextRect} = {};
+    public textSelections: {readonly [id: number]: ITextRect} = {};
 
     /**
      * The text selections converted to a text string which may or may not be

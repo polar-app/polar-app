@@ -4,7 +4,7 @@ export abstract class CacheEntry implements ICacheEntry {
 
     public method: string;
     public url: string;
-    public headers: {[key: string]: string | string[]} = {};
+    public headers: {readonly [key: string]: string | readonly string[]} = {};
     public statusCode = 200;
     public statusMessage = "OK";
     public contentType = "text/html";
@@ -58,28 +58,28 @@ export interface DataCallback {
 
 export interface ICacheEntry {
 
-    method: string;
+    readonly method: string;
 
     /**
      * The URL to request.
      */
-    url: string;
+    readonly url: string;
 
     /**
      * The request headers.
      *
      */
-    headers: {[key: string]: string | string[]};
+    readonly headers: {readonly [key: string]: string | readonly string[]};
 
     /**
      * The status code for this cache entry.
      */
-    statusCode: number;
+    readonly statusCode: number;
 
     /**
      * The status message.
      */
-    statusMessage: string;
+    readonly statusMessage: string;
 
     /**
      *
@@ -88,23 +88,23 @@ export interface ICacheEntry {
      *
      * @type {string}
      */
-    contentType: string;
+    readonly contentType: string;
 
     /**
      * The decoded mine type. The contentType can include an encoding so
      * contentType can be broken down into mimeType + encoding.
      *
      */
-    mimeType: string;
+    readonly mimeType: string;
 
-    encoding: string;
+    readonly encoding: string;
 
     /**
      * The content length of the data, if known
      */
-    contentLength?: number;
+    readonly contentLength?: number;
 
-    docTypeFormat?: DocTypeFormat;
+    readonly docTypeFormat?: DocTypeFormat;
 
 }
 

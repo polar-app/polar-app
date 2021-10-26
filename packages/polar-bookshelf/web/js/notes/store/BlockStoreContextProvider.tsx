@@ -25,7 +25,7 @@ export const BlockStoreContextProvider = (props: IProps) => {
     );
 }
 
-export const BlockStoreDefaultContextProvider = (props: {children: JSX.Element}) => {
+export const BlockStoreDefaultContextProvider = (props: {readonly children: JSX.Element}) => {
 
     const userInfoContext = useUserInfoContext();
 

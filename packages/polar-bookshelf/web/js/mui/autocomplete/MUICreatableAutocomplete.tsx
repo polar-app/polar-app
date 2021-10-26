@@ -159,7 +159,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     }, [props, state]);
 
-    const handleChange = React.useCallback((newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
+    const handleChange = React.useCallback((newValues: InternalAutocompleteOption<T> | null | readonly InternalAutocompleteOption<T>[]) => {
 
         const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<ValueAutocompleteOption<T>> => {
 

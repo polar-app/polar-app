@@ -35,7 +35,7 @@ export interface RepoAnnotation {
 
     readonly created: ISODateTimeString;
 
-    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    readonly tags: Readonly<{readonly [id: string]: Tag}> | undefined;
 
     readonly color: HighlightColor | undefined;
 
@@ -54,5 +54,5 @@ export interface RepoAnnotation {
  * @Deprecated
  */
 export interface RepoHighlightInfo {
-    color?: HighlightColor;
+    readonly color?: HighlightColor;
 }

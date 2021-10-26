@@ -20,7 +20,7 @@ export class BaseDocAnnotations {
                                    docMeta: IDocMeta | undefined,
                                    visibility: Visibility): ReadonlyArray<BaseDocAnnotation> {
 
-        const result: BaseDocAnnotation[] = [];
+        const result: readonly BaseDocAnnotation[] = [];
 
         if (! docMeta) {
             // when there's no docMeta we have to return just an empty array since there's

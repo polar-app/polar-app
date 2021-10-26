@@ -3,86 +3,86 @@ import {AdBlockResult} from './AdBlocker';
 
 export interface Captured {
 
-    capturedDocuments: {[url: string]: CapturedDoc};
+    readonly capturedDocuments: {readonly [url: string]: CapturedDoc};
 
     /**
      * The type of this captured content.  Right now we only support PHZ but
      * there might be other formats in the future.
      */
-    type: 'phz';
+    readonly type: 'phz';
 
-    version: string;
+    readonly version: string;
 
-    title: string;
+    readonly title: string;
 
-    url: string;
+    readonly url: string;
 
     /**
      *
      * @deprecated Use scrollBox instead.
      */
-    scroll?: ScrollBox;
+    readonly scroll?: ScrollBox;
 
-    scrollBox?: ScrollBox;
+    readonly scrollBox?: ScrollBox;
 
     /**
      * This is added after the capture is complete but usually present in the
      * result.  Older formats did not have this field though.
      */
-    browser?: Browser;
+    readonly browser?: Browser;
 
 }
 
 export interface CapturedDoc {
 
-    title: string;
-    href: string;
-    url: string;
-    scrollHeight: number;
-    scrollBox: ScrollBox;
+    readonly title: string;
+    readonly href: string;
+    readonly url: string;
+    readonly scrollHeight: number;
+    readonly scrollBox: ScrollBox;
 
     /**
      * The content as an HTML string
      */
-    content: string;
+    readonly content: string;
 
     /**
      * The length of the content in number of characters.  This is NOT
      * the content length which would be the number of bytes.
      */
-    contentTextLength: number;
+    readonly contentTextLength: number;
 
-    mutations: Mutations;
+    readonly mutations: Mutations;
 
-    docTypeFormat?: DocTypeFormat;
+    readonly docTypeFormat?: DocTypeFormat;
 
     /**
      * The HTML content type from document.contentType
      */
-    contentType?: string;
+    readonly contentType?: string;
 
 }
 
 export interface ScrollBox {
 
-    width: number;
-    widthOverflow?: Overflow;
+    readonly width: number;
+    readonly widthOverflow?: Overflow;
 
-    height: number;
-    heightOverflow?: Overflow;
+    readonly height: number;
+    readonly heightOverflow?: Overflow;
 
 }
 
 export interface Mutations {
-    eventAttributesRemoved: number;
-    existingBaseRemoved: boolean;
-    baseAdded: boolean;
-    javascriptAnchorsRemoved: number;
-    cleanupRemoveScripts: any;
-    cleanupHead: any;
-    cleanupBase: any;
-    showAriaHidden: number;
-    adsBlocked?: AdBlockResult;
+    readonly eventAttributesRemoved: number;
+    readonly existingBaseRemoved: boolean;
+    readonly baseAdded: boolean;
+    readonly javascriptAnchorsRemoved: number;
+    readonly cleanupRemoveScripts: any;
+    readonly cleanupHead: any;
+    readonly cleanupBase: any;
+    readonly showAriaHidden: number;
+    readonly adsBlocked?: AdBlockResult;
 }
 
 export type Overflow = 'visible' | 'hidden';

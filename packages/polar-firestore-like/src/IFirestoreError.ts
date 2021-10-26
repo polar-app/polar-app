@@ -57,8 +57,8 @@ export type FirestoreErrorCode =
 
 /** An error returned by a Firestore operation. */
 export interface IFirestoreError {
-    code: FirestoreErrorCode;
-    message: string;
-    name: string;
-    stack?: string;
+    readonly code: FirestoreErrorCode;
+    readonly message: string;
+    readonly name: string;
+    readonly stack?: string;
 }

@@ -11,8 +11,8 @@ export namespace FirestoreAdmin {
         const client = app.firestore();
 
         const FieldValue: IFieldValueFactory = {
-            arrayUnion: (...elements: any[]) => _firestore.FieldValue.arrayUnion(...elements),
-            arrayRemove: (...elements: any[]) => _firestore.FieldValue.arrayRemove(...elements),
+            arrayUnion: (...elements: readonly any[]) => _firestore.FieldValue.arrayUnion(...elements),
+            arrayRemove: (...elements: readonly any[]) => _firestore.FieldValue.arrayRemove(...elements),
             delete: () => _firestore.FieldValue.delete(),
         }
 
@@ -21,7 +21,7 @@ export namespace FirestoreAdmin {
             batch: () => client.batch() as any,
             terminate: () => client.terminate(),
 
-            FieldPath: (...fields: string[]) => new _firestore.FieldPath(...fields),
+            FieldPath: (...fields: readonly string[]) => new _firestore.FieldPath(...fields),
             FieldValue
         }
 

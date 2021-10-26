@@ -18,7 +18,7 @@ export interface ISetOptions {
      * paths. Any field path that is not specified is ignored and remains
      * untouched.
      */
-    readonly mergeFields?: (string /* | FieldPath */)[];
+    readonly mergeFields?: readonly (string /* | FieldPath */)[];
 
 }
 

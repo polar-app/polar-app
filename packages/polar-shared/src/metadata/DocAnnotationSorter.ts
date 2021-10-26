@@ -18,7 +18,7 @@ export namespace DocAnnotationSorter {
 
     type SortFunction<D> = (data: ReadonlyArray<D>) => ReadonlyArray<D>
 
-    export type PageInfoIndex = {[pageNum: number]: IPageInfo};
+    export type PageInfoIndex = {readonly [pageNum: number]: IPageInfo};
 
     export function create<D extends ISortable>(pageMetaIndex: PageInfoIndex,
                                                 columnLayout: number): SortFunction<D> {

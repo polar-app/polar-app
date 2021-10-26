@@ -38,7 +38,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         const entryElements = doc.getElementsByTagName('entry');
 
-        const entries: search.Entry[] = [];
+        const entries: readonly search.Entry[] = [];
 
         for (const entryElement of Array.from(entryElements)) {
 
@@ -139,7 +139,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         const toLinks = (): ReadonlyArray<search.DocLink> => {
 
-            const links: search.DocLink[] = [];
+            const links: readonly search.DocLink[] = [];
 
             const linkElements = Array.from(entryElement.getElementsByTagName('link'));
 
@@ -172,7 +172,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         const toAuthors = (): ReadonlyArray<search.Author> => {
 
-            const authors: search.Author[] = [];
+            const authors: readonly search.Author[] = [];
 
             const authorElements = Array.from(entryElement.getElementsByTagName('author'));
 

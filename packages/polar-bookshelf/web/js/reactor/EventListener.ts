@@ -2,7 +2,7 @@ export type EventListener<V> = (value: V) => void;
 
 export interface RegisteredEventListener<V> extends Releaseable {
 
-    eventListener: EventListener<V>;
+    readonly eventListener: EventListener<V>;
 
     /**
      * Remove the listener after it's been registered..
@@ -25,7 +25,7 @@ export type ReleaseFunction = () => void;
  */
 export class Releaser implements Releaseable {
 
-    private releaseables: Releaseable[] = [];
+    private releaseables: readonly Releaseable[] = [];
 
     public released: boolean = false;
 

@@ -150,7 +150,7 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
         const tuples = Tuples.createSiblings(dockPanels.filter(current => ! current.disabled));
 
-        const result: JSX.Element[] = [];
+        const result: readonly JSX.Element[] = [];
 
         const createBaseStyle = (): React.CSSProperties => {
 
@@ -287,7 +287,7 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
  * Keeps a map from the ID to the width.
  */
 export interface FixedDocPanelStateMap {
-    [id: string]: FixedDocPanelState;
+    readonly [id: string]: FixedDocPanelState;
 }
 
 export interface FixedDocPanelState {

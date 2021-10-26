@@ -13,6 +13,6 @@ export interface IPageInfo {
      * of the page.  HTML pages can be VERY long so they form *logical* pages
      * as well once they are broken up into ~1000px height units.
      */
-    dimensions?: IDimensions;
+    readonly dimensions?: IDimensions;
 
 }

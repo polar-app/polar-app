@@ -75,11 +75,11 @@ export namespace EPUBThumbnailer {
         const rootFileData = await zip.entryData(rootFile);
 
         const rootFileAsJSON = getXmlToJSON(rootFileData.toString());
-        const coverXmlElement = rootFileAsJSON.package.metadata.meta.find((el: { [x: string]: string; }) => el['@_name'] === 'cover');
+        const coverXmlElement = rootFileAsJSON.package.metadata.meta.find((el: { readonly [x: string]: string; }) => el['@_name'] === 'cover');
         const coverId = coverXmlElement['@_content'];
 
         const coverPathRelativeToRootFile = rootFileAsJSON.package.manifest.item
-            .map((item: { [x: string]: any; }) => {
+            .map((item: { readonly [x: string]: any; }) => {
                 const id = item['@_id'];
                 const href = item['@_href'];
                 const properties = String(item['@_properties']);

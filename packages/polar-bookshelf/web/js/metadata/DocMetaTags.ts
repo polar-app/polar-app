@@ -8,9 +8,9 @@ export class DocMetaTags {
 
         class TagIndex {
 
-            private tags: {[id: string]: TagStr} = {};
+            private tags: {readonly [id: string]: TagStr} = {};
 
-            public registerTags(tags: {[id: string]: Tag} | undefined) {
+            public registerTags(tags: {readonly [id: string]: Tag} | undefined) {
 
                 if (! tags) {
                     return;
@@ -22,7 +22,7 @@ export class DocMetaTags {
 
             }
 
-            public registerAnnotations(annotations: {[id: string]: IAnnotation}) {
+            public registerAnnotations(annotations: {readonly [id: string]: IAnnotation}) {
 
                 for (const annotation of Object.values(annotations || {})) {
                     index.registerTags(annotation.tags);

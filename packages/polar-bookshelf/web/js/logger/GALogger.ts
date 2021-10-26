@@ -9,15 +9,15 @@ export class GALogger implements ILogger {
 
     public readonly name: string = 'ga-logger';
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         // noop
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         // noop
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
 
         const error = GALoggers.getError(args);
 
@@ -29,15 +29,15 @@ export class GALogger implements ILogger {
 
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         // noop
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         // noop
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         // noop
     }
 

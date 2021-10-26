@@ -41,7 +41,7 @@ export function useAIFlashcardVerificationWarning() {
     const dialogs = useDialogManager();
     const classes = useModalStyles();
 
-    return React.useCallback((props: {onAccept: () => void}) => {
+    return React.useCallback((props: {readonly onAccept: () => void}) => {
         dialogs.confirm({
             title: 'Boost Your Productivity With AI flashcards',
             acceptText: "Upgrade for AI Flashcards",

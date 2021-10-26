@@ -4,7 +4,7 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
 
 export type MarkdownStr = string;
 
-export type FrontMatter = { [key: string]: any };
+export type FrontMatter = { readonly [key: string]: any };
 
 export interface ParsedMarkdown {
     readonly html: HTMLStr;

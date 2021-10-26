@@ -40,7 +40,7 @@ export interface BlockEditorGenericProps {
 }
 
 type IUseBlockContentUpdaterOpts = {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {

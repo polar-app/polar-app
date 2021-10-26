@@ -89,7 +89,7 @@ export class TagIndex {
  */
 export class DataObjectIndex<D> {
 
-    private index: {[id: string]: D} = {};
+    private index: {readonly [id: string]: D} = {};
 
     private tagIndex = new TagIndex();
 

@@ -13,17 +13,17 @@ export interface ILogger {
      * these for important states of the application that should always be
      * shown to the user.
      */
-    notice(msg: string, ...args: any[]): void;
+    notice(msg: string, ...args: readonly any[]): void;
 
-    error(msg: string, ...args: any[]): void;
+    error(msg: string, ...args: readonly any[]): void;
 
-    warn(msg: string, ...args: any[]): void;
+    warn(msg: string, ...args: readonly any[]): void;
 
-    info(msg: string, ...args: any[]): void;
+    info(msg: string, ...args: readonly any[]): void;
 
-    verbose(msg: string, ...args: any[]): void;
+    verbose(msg: string, ...args: readonly any[]): void;
 
-    debug(msg: string, ...args: any[]): void;
+    debug(msg: string, ...args: readonly any[]): void;
 
     // /**
     //  * Trace an operation and always log the duration.  This is similar to

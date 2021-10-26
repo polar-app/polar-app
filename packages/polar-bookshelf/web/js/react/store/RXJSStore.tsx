@@ -29,7 +29,7 @@ interface InternalObservableStore<V> {
      * and to update it each time so that on useObservableStore we can
      * return the current value.
      */
-    current: V;
+    readonly current: V;
 
 }
 
@@ -47,7 +47,7 @@ function createInternalObservableStore<V>(initialValue: V): InternalObservableSt
 
 }
 
-export function createRXJSStore<V>(): [ProviderComponent<V>, UseSetStore<V>, UseStoreListener<V>] {
+export function createRXJSStore<V>(): readonly [ProviderComponent<V>, UseSetStore<V>, UseStoreListener<V>] {
 
     const Context = React.createContext<InternalObservableStore<any>>(null!);
 

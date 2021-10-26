@@ -40,8 +40,8 @@ export class WebserverConfigs {
 }
 
 export interface SSLConfig {
-    key: string | Buffer;
-    cert: string | Buffer;
+    readonly key: string | Buffer;
+    readonly cert: string | Buffer;
 }
 
 export interface IWebserverConfig {

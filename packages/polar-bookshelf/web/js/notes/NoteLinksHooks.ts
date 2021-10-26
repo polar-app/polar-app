@@ -55,7 +55,7 @@ export const useNoteWikiLinkIdentifierCreator = () => {
 
 
 type IUseLinkNavigationOpts = {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 };
 
 interface ILinkNavigationEvent {

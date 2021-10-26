@@ -1,10 +1,10 @@
 import React from "react";
 
 interface IMUIIconTextProps {
-    className?: string;
-    style?: React.CSSProperties;
-    icon?: JSX.Element;
-    margin?: number | string;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
+    readonly icon?: JSX.Element;
+    readonly margin?: number | string;
 }
 
 export const MUIIconText: React.FC<IMUIIconTextProps> = (props) => {

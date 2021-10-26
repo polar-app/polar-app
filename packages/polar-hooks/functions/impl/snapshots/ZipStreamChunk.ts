@@ -2,6 +2,6 @@ import {Readable} from "stream";
 import archiver from "archiver";
 
 export type ZipStreamChunk = {
-    source: string | Readable | Buffer
-    data?: archiver.EntryData | archiver.ZipEntryData | undefined
+    readonly source: string | Readable | Buffer
+    readonly data?: archiver.EntryData | archiver.ZipEntryData | undefined
 }

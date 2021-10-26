@@ -14,7 +14,7 @@ import NotesIcon from '@material-ui/icons/Notes';
 import {useFeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 type IUseStylesProps = {
-    show: boolean;
+    readonly show: boolean;
 };
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>

@@ -43,7 +43,7 @@ describe('ArrayStreams', function() {
     it("flatMap typed", function() {
 
         interface Animal {
-            name: string;
+            readonly name: string;
         }
 
         const animals: ReadonlyArray<ReadonlyArray<Animal>> = [

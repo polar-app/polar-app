@@ -40,7 +40,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
 
     private docMetaData: string | null = null;
     private docMeta: IDocMeta | undefined;
-    private docMetaRefs: DocMetaRef[] = [];
+    private docMetaRefs: readonly DocMetaRef[] = [];
     private backendFileRefs: ReadonlyArray<BackendFileRef> = [];
 
     public constructor(private readonly docMetaID: FirebaseDocMetaID,

@@ -5,7 +5,7 @@
  */
 export class RequestIndex {
 
-    private backing: {[id: string]: chrome.webRequest.WebRequestHeadersDetails} = {};
+    private backing: {readonly [id: string]: chrome.webRequest.WebRequestHeadersDetails} = {};
 
     public start() {
 

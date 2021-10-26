@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface IArrowRightProps {
-    style?: React.CSSProperties;
+    readonly style?: React.CSSProperties;
 }
 
 export const ArrowRight: React.FC<IArrowRightProps> = React.memo(function ArrowRight({ style = {} }) {

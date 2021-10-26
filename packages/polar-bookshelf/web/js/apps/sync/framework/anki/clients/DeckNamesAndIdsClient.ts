@@ -27,7 +27,7 @@ export class DeckNamesAndIdsClient implements IDeckNamesAndIdsClient {
 
 }
 
-export interface DeckNamesAndIds {[deck: string]: number}
+export interface DeckNamesAndIds {readonly [deck: string]: number}
 
 export interface IDeckNamesAndIdsClient {
 

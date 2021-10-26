@@ -3,15 +3,15 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 export class Cmdline {
 
-    static getDocArg(args: string[]) {
+    static getDocArg(args: readonly string[]) {
         return Cmdline.getArg(args, Cmdline.isDoc);
     }
 
-    static getURLArg(args: string[]) {
+    static getURLArg(args: readonly string[]) {
         return Cmdline.getArg(args, Cmdline.isURL);
     }
 
-    static getArg(args: string[], filter: (arg: string) => boolean) {
+    static getArg(args: readonly string[], filter: (arg: string) => boolean) {
 
         Preconditions.assertNotNull(filter, "filter");
 

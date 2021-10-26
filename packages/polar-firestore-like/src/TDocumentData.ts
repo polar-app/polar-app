@@ -1,1 +1,1 @@
-export type TDocumentData = { [field: string]: any };
+export type TDocumentData = { readonly [field: string]: any };

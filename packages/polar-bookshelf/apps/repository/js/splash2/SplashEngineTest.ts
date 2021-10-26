@@ -247,7 +247,7 @@ function testEngineInTheFuture(engine: SplashEngine, duration: Duration = '60d')
 
 export type CreateSnapshotFunction = () => any;
 
-function createEventHandlers(): [CreateSnapshotFunction, SplashEventHandlers] {
+function createEventHandlers(): readonly [CreateSnapshotFunction, SplashEventHandlers] {
 
     let whatsNewCalled: number = 0;
     let netPromoterCalled: number = 0;

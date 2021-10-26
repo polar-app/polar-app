@@ -12,8 +12,8 @@ export class SplashEngine {
 
     private engine: Engine<UserFacts, SplashEventHandlers>;
 
-    constructor(private facts: UserFacts,
-                private eventHandlers: SplashEventHandlers,
+    constructor(private readonly facts: UserFacts,
+                private readonly eventHandlers: SplashEventHandlers,
                 private readonly externalEngineState?: ExternalEngineState<UserFacts, SplashEventHandlers>) {
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
@@ -95,12 +95,12 @@ export interface MutableUserFacts {
     /**
      * The time the datastore was created.
      */
-    datastoreCreated: ISODateTimeString;
+    readonly datastoreCreated: ISODateTimeString;
 
     /**
      * The currently running version.
      */
-    version: string;
+    readonly version: string;
 
 }
 
@@ -165,7 +165,7 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
 
 interface WhatsNewState {
 
-    version: string;
+    readonly version: string;
 
 }
 

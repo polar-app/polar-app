@@ -13,7 +13,7 @@ export namespace ControlledAnnotationBars {
         const docViewerElement = docViewerElementProvider();
 
         function computeTargetsForPDF(): ReadonlyArray<HTMLElement> {
-            return Array.from(docViewerElement.querySelectorAll(".page")) as HTMLElement[];
+            return Array.from(docViewerElement.querySelectorAll(".page")) as readonly HTMLElement[];
         }
 
         function computeTargetsForEPUB(): ReadonlyArray<HTMLElement> {

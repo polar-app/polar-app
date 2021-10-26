@@ -93,7 +93,7 @@ export class RectArt {
      * @param rects {Array<Rect>}
      * @return {TextArray}
      */
-    static formatRects(rects: Rect[]): TextArray {
+    static formatRects(rects: readonly Rect[]): TextArray {
 
         let rectArts = rects.map(RectArt.createFromRect);
 

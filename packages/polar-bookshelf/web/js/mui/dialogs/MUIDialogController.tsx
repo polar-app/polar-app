@@ -15,13 +15,13 @@ import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
 import {InputCompletionType} from "../complete_listeners/InputCompleteListener";
 
 export interface DialogManager {
-    confirm: (props: ConfirmDialogProps) => void;
-    prompt: (promptDialogProps: PromptDialogProps) => void;
-    autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
-    snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
-    taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
-    dialog: (dialogProps: IDialogProps) => void;
-    select: <V>(selectProps: SelectDialogProps<V>) => void;
+    readonly confirm: (props: ConfirmDialogProps) => void;
+    readonly prompt: (promptDialogProps: PromptDialogProps) => void;
+    readonly autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
+    readonly snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
+    readonly taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
+    readonly dialog: (dialogProps: IDialogProps) => void;
+    readonly select: <V>(selectProps: SelectDialogProps<V>) => void;
 }
 
 function nullDialog() {

@@ -90,7 +90,7 @@ export class TextHighlights {
      */
     public static createMockTextHighlight() {
 
-        const rects: IRect[] = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
+        const rects: readonly IRect[] = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
         const textSelections = [new TextRect({text: "hello world"})];
         const text = "hello world";
 

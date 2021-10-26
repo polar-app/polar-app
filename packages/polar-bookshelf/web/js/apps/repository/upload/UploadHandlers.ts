@@ -54,7 +54,7 @@ export function useBatchUploader() {
 
         try {
 
-            const results: V[] = [];
+            const results: readonly V[] = [];
 
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 

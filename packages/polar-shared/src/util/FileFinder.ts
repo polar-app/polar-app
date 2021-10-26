@@ -13,7 +13,7 @@ export class FileFinder {
 
         const files = fs.readdirSync(dir);
 
-        const result: IFile[] = [];
+        const result: readonly IFile[] = [];
 
         for (const name of files) {
 

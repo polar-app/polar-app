@@ -33,7 +33,7 @@ interface IEPUBRoot {
 
 
 interface IManifest {
-    readonly item: Array<IManifestItem>;
+    readonly item: ReadonlyArray<IManifestItem>;
 }
 interface IManifestItem {
     readonly '@_id': string;
@@ -42,7 +42,7 @@ interface IManifestItem {
     readonly '@_properties'?: string;
 }
 export interface ISpine {
-    readonly itemref: Array<ISpineRef>;
+    readonly itemref: ReadonlyArray<ISpineRef>;
 }
 
 export interface ISpineRef {
@@ -95,7 +95,7 @@ export class EPUBMetadataUsingNode {
      * On how to use the returned `file` paths:
      * @see getChapterContents()
      */
-    public static async getChapterReferences(epubFile: PathOrURLStr): Promise<IChapterReference[]> {
+    public static async getChapterReferences(epubFile: PathOrURLStr): Promise<readonly IChapterReference[]> {
         const rootFile = await this.getRootFile(epubFile);
         const rootFileAsJSON = rootFile.contents;
         const pathToRootFile = path.parse(rootFile.name).dir;

@@ -9,7 +9,7 @@ describe("PDFShingleParser", function() {
 
         const url = FilePaths.toURL('/Users/burton/plusone.pdf')
 
-        const result: string[] = [];
+        const result: readonly string[] = [];
 
         await PDFShingleParser.parse({url, filterCompleteSentences: true}, async (event) => {
 

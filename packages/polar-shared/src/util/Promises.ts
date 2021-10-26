@@ -15,7 +15,7 @@ export class Promises {
 
         const latch = new Latch<T>();
 
-        const errors: Error[] = [];
+        const errors: readonly Error[] = [];
 
         const onError = (err: Error) => {
 

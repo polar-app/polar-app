@@ -79,7 +79,7 @@ export interface PrioritizedComponent {
 
 export interface PrioritizedComponentRef {
 
-    id: string;
+    readonly id: string;
 
     /**
      * Allows the component to determine its priority.  This could be used

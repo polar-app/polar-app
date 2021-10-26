@@ -72,9 +72,9 @@ export namespace DocAnnotations {
 
     export async function getAnnotationsForPage(docFileResolver: DocFileResolver,
                                                 docAnnotationIndex: DocAnnotationIndex,
-                                                docMeta: IDocMeta): Promise<IDocAnnotation[]> {
+                                                docMeta: IDocMeta): Promise<readonly IDocAnnotation[]> {
 
-        const result: IDocAnnotation[] = [];
+        const result: readonly IDocAnnotation[] = [];
 
         const pageMetas = Object.values(docMeta.pageMetas);
 
@@ -300,9 +300,9 @@ export namespace DocAnnotations {
 
     async function getAreaHighlights(docFileResolver: DocFileResolver,
                                      docMeta: IDocMeta,
-                                     pageMeta: IPageMeta): Promise<IDocAnnotation[]> {
+                                     pageMeta: IPageMeta): Promise<readonly IDocAnnotation[]> {
 
-        const result: IDocAnnotation[] = [];
+        const result: readonly IDocAnnotation[] = [];
 
         const areaHighlights = Object.values(pageMeta.areaHighlights);
 
@@ -350,7 +350,7 @@ export namespace DocAnnotations {
  * Properties present in most annotations that will be used the same.
  */
 interface DocAnnotationInit {
-    readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
+    readonly tags: Readonly<{readonly [id: string]: InheritedTag}> | undefined;
 }
 
 export class ITextConverters {

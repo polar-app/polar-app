@@ -5,7 +5,7 @@ import {Writer} from '../Exporters';
  */
 export class BlobWriter implements Writer {
 
-    private data: string[] = [];
+    private data: readonly string[] = [];
 
     public async init(): Promise<void> {
         // noop

@@ -18,7 +18,7 @@ type AsyncProvider<V> = () => Promise<ReadonlyArray<V>>;
 
 export class AsyncArrayStream<T> {
 
-    constructor(private provider: AsyncProvider<T>) {
+    constructor(private readonly provider: AsyncProvider<T>) {
     }
 
     public map<V>(mapper: Mapper<T, V>): AsyncArrayStream<V> {
@@ -27,7 +27,7 @@ export class AsyncArrayStream<T> {
 
             const values = await this.provider();
 
-            const mapped: V[] = [];
+            const mapped: readonly V[] = [];
 
             for (const value of values) {
                 const v = await mapper(value);
@@ -48,7 +48,7 @@ export class AsyncArrayStream<T> {
 
             const values = await this.provider();
 
-            const result: T[] = [];
+            const result: readonly T[] = [];
 
             for (const value of values) {
                 if (await predicate(value)) {
@@ -73,7 +73,7 @@ export class AsyncArrayStream<T> {
 
             const values = await this.provider();
 
-            const result: NonNullable<T>[] = [];
+            const result: readonly NonNullable<T>[] = [];
 
             for (const value of values) {
                 if (value !== null && value !== undefined) {

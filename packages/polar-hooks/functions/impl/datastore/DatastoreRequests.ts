@@ -11,7 +11,7 @@ export class DatastoreRequests {
             throw new Error("No query");
         }
 
-        const paramToStr = (value?: string | string[]): string => {
+        const paramToStr = (value?: string | readonly string[]): string => {
 
             if (! value) {
                 throw new Error("No param");

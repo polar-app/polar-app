@@ -28,7 +28,7 @@ export namespace FileSystemEntries {
 
     export async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystemEntry>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
 
-        const result: IWebkitFileSystemFileEntry[] = [];
+        const result: readonly IWebkitFileSystemFileEntry[] = [];
 
         for (const entry of entries) {
 

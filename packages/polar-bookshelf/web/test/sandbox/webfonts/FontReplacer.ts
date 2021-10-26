@@ -1,11 +1,11 @@
 import {StringBuffer} from 'polar-shared/src/util/StringBuffer';
 
 export interface StandardFontIndex {
-    [name: string]: FontType;
+    readonly [name: string]: FontType;
 }
 
 export interface FontType {
-    type: 'sans-serif' | 'serif' | 'monospace';
+    readonly type: 'sans-serif' | 'serif' | 'monospace';
 }
 
 export class FontReplacer {

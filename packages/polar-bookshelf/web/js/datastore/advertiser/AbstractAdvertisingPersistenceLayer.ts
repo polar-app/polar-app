@@ -159,7 +159,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
 
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]): Promise<void> {
         return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 

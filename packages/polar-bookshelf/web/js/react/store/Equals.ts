@@ -1,6 +1,6 @@
 import deepEquals from "react-fast-compare";
 
-type Dict = {[key: string]: any};
+type Dict = {readonly [key: string]: any};
 
 export namespace Equals {
 

@@ -16,7 +16,7 @@ export class PathToRegexps {
 
         pattern = RegExps.escape(pattern);
 
-        return pattern.replace(/(\/)(:[^/]+)/g, (subst, ...args: any[]): string => {
+        return pattern.replace(/(\/)(:[^/]+)/g, (subst, ...args: readonly any[]): string => {
             return args[0] + "([^/]+)";
         });
 

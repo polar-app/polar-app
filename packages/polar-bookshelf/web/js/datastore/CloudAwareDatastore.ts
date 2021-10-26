@@ -270,11 +270,11 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         return this.local.getDocMetaRefs();
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]) {
+    public async synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]) {
 
         log.info("CloudAwareDatastore: synchronizeDocs: ", docMetaRefs);
 
-        const clearDocMeta = (...docMetaRefs: DocMetaRef[]): DocMetaRef[] => {
+        const clearDocMeta = (...docMetaRefs: readonly DocMetaRef[]): readonly DocMetaRef[] => {
             return docMetaRefs.map(current => {
 
                 return {
@@ -473,7 +473,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             // TODO: we should have progress on this...
 
-            const docMetaFiles: DocMetaRef[] =
+            const docMetaFiles: readonly DocMetaRef[] =
                 docMetaSnapshotEvent.docMetaMutations.map(current => {
                     return {fingerprint: current.fingerprint};
                 });

@@ -2,7 +2,7 @@ import {ResourceEntry} from './ResourceEntry';
 
 export class Resources {
 
-    public entries: {[key: string]: ResourceEntry} = {};
+    public entries: {readonly [key: string]: ResourceEntry} = {};
 
     constructor() {
 

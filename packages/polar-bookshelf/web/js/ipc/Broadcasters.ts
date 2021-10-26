@@ -11,7 +11,7 @@ export class Broadcasters {
      * BrowserWindows.  If nothing is listening on that 'channel' the message
      * is ignored.
      */
-    public static send(channel: string, message: any, ...excluding: BrowserWindowReference[]) {
+    public static send(channel: string, message: any, ...excluding: readonly BrowserWindowReference[]) {
 
         const excludingIDs = excluding.map(current => current.id);
 

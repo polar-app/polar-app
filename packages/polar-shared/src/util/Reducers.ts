@@ -12,7 +12,7 @@ export class Reducers {
         (accumulator: number, currentValue: number) => currentValue > accumulator ? currentValue : accumulator
 
     public static MEAN =
-        <T> (previousValue: T, currentValue: T, currentIndex: number, array: number[]) => {
+        <T> (previousValue: T, currentValue: T, currentIndex: number, array: readonly number[]) => {
             return Numbers.mean(...array)
         };
 
@@ -22,7 +22,7 @@ export class Reducers {
      * entries and provide the default when no list entries are available.
      */
     public static FIRST =
-        <T> (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => {
+        <T> (previousValue: T, currentValue: T, currentIndex: number, array: readonly T[]) => {
 
             if (currentIndex === 0) {
                 return currentValue;

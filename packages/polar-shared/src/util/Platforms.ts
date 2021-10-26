@@ -52,7 +52,7 @@ export class Platforms {
         if (userAgent) {
 
             interface UserAgentMap {
-                [key: string]: Platform;
+                readonly [key: string]: Platform;
             }
 
             const userAgentMap: UserAgentMap = {

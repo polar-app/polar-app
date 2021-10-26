@@ -135,7 +135,7 @@ export type ForceMountRefCallback = (ref: HTMLElement | HTMLDivElement | null) =
 
 export type ForceMountMounted = boolean;
 
-export type ForceMountTuple = [ForceMountRefCallback, ForceMountMounted];
+export type ForceMountTuple = readonly [ForceMountRefCallback, ForceMountMounted];
 
 export function useForceMount(): ForceMountTuple {
 
@@ -150,8 +150,8 @@ export function useForceMount(): ForceMountTuple {
 }
 
 type IUseMutationsObserverOpts = {
-    elem: HTMLElement | null;
-    config: MutationObserverInit;
+    readonly elem: HTMLElement | null;
+    readonly config: MutationObserverInit;
 };
 
 export function useMutationObserver(callback: MutationCallback, opts: IUseMutationsObserverOpts): void {

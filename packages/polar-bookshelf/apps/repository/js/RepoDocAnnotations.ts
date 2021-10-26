@@ -10,7 +10,7 @@ export class RepoDocAnnotations {
     public static convert(persistenceLayerProvider: PersistenceLayerProvider,
                           docMeta: IDocMeta): ReadonlyArray<IDocAnnotation> {
 
-        const result: IDocAnnotation[] = [];
+        const result: readonly IDocAnnotation[] = [];
 
         const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
 
@@ -47,7 +47,7 @@ export class RepoDocAnnotations {
         return true;
     }
 
-    public static toTags(repoAnnotation: IDocAnnotationRef | undefined): Tag[] {
+    public static toTags(repoAnnotation: IDocAnnotationRef | undefined): readonly Tag[] {
 
         if (repoAnnotation) {
             return Object.values(repoAnnotation.tags || {});

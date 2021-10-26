@@ -13,7 +13,7 @@ export namespace ReadingProgressResume {
         readonly docMeta: IDocMeta;
     }
 
-    export function useReadingProgressResume(): [boolean, Callback] {
+    export function useReadingProgressResume(): readonly [boolean, Callback] {
 
         const {docMeta} = useDocViewerStore(['docMeta']);
         const jumpToAnnotationHandler = useJumpToAnnotationHandler();
@@ -51,7 +51,7 @@ export namespace ReadingProgressResume {
 
     function computePagemarks(docMeta: IDocMeta): ReadonlyArray<IPagemarkRef> {
 
-        const result: IPagemarkRef[] = [];
+        const result: readonly IPagemarkRef[] = [];
 
         // TODO: this would be better with arrayStream now...
         for (const pageMeta of Object.values(docMeta.pageMetas)) {

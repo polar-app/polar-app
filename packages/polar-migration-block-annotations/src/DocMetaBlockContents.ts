@@ -81,8 +81,8 @@ export namespace DocMetaBlockContents {
     import IAnnotation = BlockContentAnnotationTree.IAnnotation;
     
     type IDocMetaBlockContents = {
-        tagContentsStructure: ReadonlyArray<IBlockContentStructure<INameContent>>;
-        docContentStructure: IBlockContentStructure<IDocumentContent>;
+        readonly tagContentsStructure: ReadonlyArray<IBlockContentStructure<INameContent>>;
+        readonly docContentStructure: IBlockContentStructure<IDocumentContent>;
     };
 
     /**

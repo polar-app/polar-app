@@ -23,27 +23,27 @@ export class VersionAnnotatingLogger implements ILogger {
 
     }
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         this.delegate.notice(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         this.delegate.info(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         this.delegate.warn(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         this.delegate.error(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         this.delegate.verbose(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         this.delegate.debug(this.versionAnnotation + ` ${msg}`, ...args);
     }
 

@@ -7,7 +7,7 @@ export class Menus {
      * we have to do this by ourselves for the most part.
      *
      */
-    public static find(items: Electron.MenuItem[] | undefined, id: string): MenuItem | undefined {
+    public static find(items: readonly Electron.MenuItem[] | undefined, id: string): MenuItem | undefined {
 
         if (!items) {
             return undefined;
@@ -24,7 +24,7 @@ export class Menus {
      *
      * @param menuItem
      */
-    public static submenu(menuItem: MenuItem | undefined): MenuItem[] | undefined {
+    public static submenu(menuItem: MenuItem | undefined): readonly MenuItem[] | undefined {
 
         if (!menuItem) {
             return undefined;

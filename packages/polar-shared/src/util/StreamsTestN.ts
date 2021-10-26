@@ -27,7 +27,7 @@ describe('StreamsTest', function() {
 
         const init = {id: 'test', total: stat.size};
 
-        const callbacks: number[] = [];
+        const callbacks: readonly number[] = [];
 
         const progressStream = Streams.toProgressStream(stream, init, (progress) => {
             console.log("completed: ", progress.completed);
@@ -53,7 +53,7 @@ describe('StreamsTest', function() {
         const buff = new Buffer("hello\nworld\n");
         const stream = Buffers.toStream(buff);
 
-        const lines: string[] = [];
+        const lines: readonly string[] = [];
 
         const onLine = (line: string) => {
             lines.push(line);
@@ -100,7 +100,7 @@ describe('StreamsTest', function() {
 
         it("remaining data", async function() {
 
-            const lines: string[] = [];
+            const lines: readonly string[] = [];
 
             const lineSplitter = new LineSplitter(line => {
                 lines.push(line);
@@ -116,7 +116,7 @@ describe('StreamsTest', function() {
 
         it("multiple lines", async function() {
 
-            const lines: string[] = [];
+            const lines: readonly string[] = [];
 
             const lineSplitter = new LineSplitter(line => {
                 lines.push(line);
@@ -132,7 +132,7 @@ describe('StreamsTest', function() {
 
         it("between two chunks", async function() {
 
-            const lines: string[] = [];
+            const lines: readonly string[] = [];
 
             const lineSplitter = new LineSplitter(line => {
                 lines.push(line);
@@ -149,7 +149,7 @@ describe('StreamsTest', function() {
 
         it("multiple lines, empty lines, etc.", async function() {
 
-            const lines: string[] = [];
+            const lines: readonly string[] = [];
 
             const lineSplitter = new LineSplitter(line => {
                 lines.push(line);

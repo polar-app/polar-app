@@ -24,7 +24,7 @@ export class IDMaps {
     public static fetch<T extends IDRecord>(map: IDMap<T>,
                                             identifiers: ReadonlyArray<IDStr>): ReadonlyArray<T> {
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         for (const id of identifiers) {
             const rec = map[id];
@@ -44,7 +44,7 @@ export class IDMaps {
  * An ID map is a map of records that have an id property.
  */
 export interface IDMap<T extends IDRecord> {
-    [id: string]: T;
+    readonly [id: string]: T;
 }
 
 export interface IDRecord {

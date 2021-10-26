@@ -31,7 +31,7 @@ export class DocMetaSnapshotEventListeners {
 
         const listener = async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
-            const acceptedDocMetaMutations: DocMetaMutation[] = [];
+            const acceptedDocMetaMutations: readonly DocMetaMutation[] = [];
 
             for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
@@ -68,6 +68,6 @@ export interface EventDeduplicator {
 
     handleDocMetaMutation(docMetaMutation: DocMetaMutation, docInfo: IDocInfo): boolean;
 
-    listener: DocMetaSnapshotEventListener;
+    readonly listener: DocMetaSnapshotEventListener;
 
 }

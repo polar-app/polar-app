@@ -37,7 +37,7 @@ export class ReadingOverviews {
 
         const dates = [...mapping.keys()].sort();
 
-        const result: DatePerc[] = [];
+        const result: readonly DatePerc[] = [];
 
         for (const date of dates) {
 
@@ -58,7 +58,7 @@ export class ReadingOverviews {
 
         const tuples = Tuples.createSiblings(readingEntries);
 
-        const result: DatePercDelta[] = [];
+        const result: readonly DatePercDelta[] = [];
 
         for (const tuple of tuples) {
 

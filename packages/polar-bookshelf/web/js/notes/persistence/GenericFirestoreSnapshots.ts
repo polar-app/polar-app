@@ -9,7 +9,7 @@ import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 /**
  * tuple of field path, op, and value.
  */
-export type GenericClause = [string, TWhereFilterOp, any];
+export type GenericClause = readonly [string, TWhereFilterOp, any];
 
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,

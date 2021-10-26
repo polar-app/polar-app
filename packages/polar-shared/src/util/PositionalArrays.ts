@@ -38,7 +38,7 @@ export namespace PositionalArrays {
      */
     export type PositionalArrayKey = string;
 
-    export type PositionalArray<T> = {[position: string /* PositionalArrayPosition */]: T};
+    export type PositionalArray<T> = {readonly [position: string /* PositionalArrayPosition */]: T};
 
     export interface IPositionalArrayPosition<T> {
         readonly pos: number;
@@ -46,20 +46,20 @@ export namespace PositionalArrays {
     }
 
     export type PositionalArrayParsedKey = {
-        position: string;
-        host: string;
+        readonly position: string;
+        readonly host: string;
     };
 
     /**
      * An entry in the dictionary.
      */
     export type PositionalArrayEntry<T> = {
-        key: PositionalArrayParsedKey,
-        value: T
+        readonly key: PositionalArrayParsedKey,
+        readonly value: T
     };
     export type PositionalArrayRawEntry<T> = {
-        key: PositionalArrayKey,
-        value: T
+        readonly key: PositionalArrayKey,
+        readonly value: T
     };
 
     const KEY_PARTS_SEPARATOR = ":";

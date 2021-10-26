@@ -15,7 +15,7 @@ export class PHZReader implements CompressedReader {
 
     public resources: Resources = new Resources();
 
-    private cache: {[key: string]: any} = {};
+    private cache: {readonly [key: string]: any} = {};
 
     /**
      * Init must be called to load the entries which we can work with.

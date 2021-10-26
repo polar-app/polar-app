@@ -39,19 +39,19 @@ export class MockFetch {
 
 // we have to use a custom RequestInit to be compatible with node_fetch and window.fetch
 export interface RequestInit {
-    body?: BodyInit;
-    cache?: RequestCache;
-    credentials?: RequestCredentials;
-    headers?: {[key: string]: string};
-    integrity?: string;
-    keepalive?: boolean;
-    method?: string;
-    mode?: RequestMode;
-    redirect?: RequestRedirect;
-    referrer?: string;
-    referrerPolicy?: ReferrerPolicy;
+    readonly body?: BodyInit;
+    readonly cache?: RequestCache;
+    readonly credentials?: RequestCredentials;
+    readonly headers?: {readonly [key: string]: string};
+    readonly integrity?: string;
+    readonly keepalive?: boolean;
+    readonly method?: string;
+    readonly mode?: RequestMode;
+    readonly redirect?: RequestRedirect;
+    readonly referrer?: string;
+    readonly referrerPolicy?: ReferrerPolicy;
     // signal?: AbortSignal | null;
-    window?: any;
+    readonly window?: any;
 }
 
 export class Fetches {

@@ -12,7 +12,7 @@ export namespace URLs {
 
     interface CreateOpts {
         readonly base: URLStr;
-        readonly params?: {[name: string]: string};
+        readonly params?: {readonly [name: string]: string};
     }
 
     export function create(opts: CreateOpts): URLStr {

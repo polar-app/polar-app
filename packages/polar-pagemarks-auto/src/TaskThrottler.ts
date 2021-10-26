@@ -9,7 +9,7 @@ export class TaskThrottler {
 
     private pending: Callback | undefined;
 
-    constructor(private interval: number) {
+    constructor(private readonly interval: number) {
 
     }
 

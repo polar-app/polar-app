@@ -1,1 +1,1 @@
-export type TUpdateData = { [fieldPath: string]: any };
+export type TUpdateData = { readonly [fieldPath: string]: any };

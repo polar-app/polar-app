@@ -9,7 +9,7 @@ export interface IAnnotation extends IVersionedObject {
      * the tags on the docInfo but we can replace these with new / custom tags
      * for the doc if we want.
      */
-    readonly tags?: {[id: string]: Tag};
+    readonly tags?: {readonly [id: string]: Tag};
 
     /**
      * True if the user has flagged this annotation.

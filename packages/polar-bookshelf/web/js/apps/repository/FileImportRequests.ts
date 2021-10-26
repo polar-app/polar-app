@@ -24,7 +24,7 @@ export class FileImportRequests {
 
     }
 
-    public static fromURLs(urls: string[]): FileImportRequest {
+    public static fromURLs(urls: readonly string[]): FileImportRequest {
 
         const files = urls.map(url => AddFileRequests.fromURL(url));
 

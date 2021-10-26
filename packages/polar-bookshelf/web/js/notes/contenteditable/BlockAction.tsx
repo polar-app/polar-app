@@ -19,7 +19,7 @@ export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contentedit
 
 export type NoteActionReset = () => void;
 
-export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset];
+export type NoteActionsResultTuple = readonly [ReactKeyboardEventHandler, NoteActionReset];
 
 // TODO: need operations for bold, italics, and any other type of action we want
 // to perform here.

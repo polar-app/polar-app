@@ -63,7 +63,7 @@ export class DocInfoStatistics {
 }
 
 export interface DateStatMap {
-    [date: string]: DateStat;
+    readonly [date: string]: DateStat;
 }
 
 export type DateStats = ReadonlyArray<DateStat>;

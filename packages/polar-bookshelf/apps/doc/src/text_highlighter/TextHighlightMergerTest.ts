@@ -59,7 +59,7 @@ const TEST_DATA = [
     }
 ];
 
-const jsonToRects = (obj: string): Rect[] => JSON.parse(obj);
+const jsonToRects = (obj: string): readonly Rect[] => JSON.parse(obj);
 
 describe('TextHighlightMerger', () => {
     describe('canMergeX', () => {

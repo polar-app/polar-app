@@ -7,8 +7,8 @@ import {IFlashcard} from "./IFlashcard";
  */
 export interface IChildAnnotations {
 
-    readonly notes: { [key: string]: INote };
-    readonly questions: { [key: string]: IQuestion };
-    readonly flashcards: { [key: string]: IFlashcard };
+    readonly notes: { readonly [key: string]: INote };
+    readonly questions: { readonly [key: string]: IQuestion };
+    readonly flashcards: { readonly [key: string]: IFlashcard };
 
 }

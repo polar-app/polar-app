@@ -74,11 +74,11 @@ export const AreaHighlightCreator: React.FC = () => {
     return null;
 };
 
-type IUsePDFRectangleDrawerData = { pageNum: number, rect: ILTRect };
+type IUsePDFRectangleDrawerData = { readonly pageNum: number, readonly rect: ILTRect };
 type IUsePDFRectangleDrawerCallback = (data: IUsePDFRectangleDrawerData) => void;
 type IUsePDFRectangleDrawerOpts = {
-    threshold?: IPoint;
-    enabled?: boolean;
+    readonly threshold?: IPoint;
+    readonly enabled?: boolean;
 };
 
 const useStyles = makeStyles(() =>

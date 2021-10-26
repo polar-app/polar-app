@@ -22,10 +22,10 @@ interface IProps {
 }
 
 interface IExpandButtonProps {
-    expanded: boolean;
-    onToggle: () => void;
-    style?: React.CSSProperties;
-    className?: string;
+    readonly expanded: boolean;
+    readonly onToggle: () => void;
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
 }
 
 export const ExpandToggle: React.FC<IExpandButtonProps> = (props) => {

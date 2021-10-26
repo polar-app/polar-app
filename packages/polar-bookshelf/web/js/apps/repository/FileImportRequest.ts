@@ -5,6 +5,6 @@ export interface FileImportRequest {
     /**
      * The array of files to import.
      */
-    readonly files: AddFileRequest[];
+    readonly files: readonly AddFileRequest[];
 
 }

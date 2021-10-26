@@ -5,9 +5,9 @@ const log = Logger.create();
 
 export class Services {
 
-    public static async start(...services: StartableService[]) {
+    public static async start(...services: readonly StartableService[]) {
 
-        const promises: Promise<any>[] = [];
+        const promises: readonly Promise<any>[] = [];
 
         services.forEach(service => {
             log.info("Starting service: " + service.constructor.name);
@@ -18,7 +18,7 @@ export class Services {
 
     }
 
-    static stop(serviceReferences: {[name: string]: StoppableService}): void {
+    static stop(serviceReferences: {readonly [name: string]: StoppableService}): void {
 
         Object.entries(serviceReferences).forEach(serviceReference => {
 

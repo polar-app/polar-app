@@ -9,18 +9,18 @@ export namespace RingBuffers {
     export type RingDelta = number;
 
     export interface IRingBuffer<T> {
-        push: (value: T) => void;
-        fetch: (delta: RingDelta) => T | undefined;
-        prev: () => T | undefined;
-        peek: () => T | undefined;
-        size: () => number;
-        length: () => number;
+        readonly push: (value: T) => void;
+        readonly fetch: (delta: RingDelta) => T | undefined;
+        readonly prev: () => T | undefined;
+        readonly peek: () => T | undefined;
+        readonly size: () => number;
+        readonly length: () => number;
 
         /**
          * Reset the buffer to the default.
          */
-        reset: () => void;
-        toArray: () => ReadonlyArray<T>;
+        readonly reset: () => void;
+        readonly toArray: () => ReadonlyArray<T>;
     }
 
     /**
@@ -37,7 +37,7 @@ export namespace RingBuffers {
      */
     export function create<T>(maxLength: number): IRingBuffer<T> {
 
-        let _buffer: Holder<T>[] = [];
+        let _buffer: readonly Holder<T>[] = [];
 
         function push(value: T) {
 

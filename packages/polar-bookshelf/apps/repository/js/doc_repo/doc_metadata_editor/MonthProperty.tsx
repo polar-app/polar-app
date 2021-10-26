@@ -47,7 +47,7 @@ export const MonthProperty = deepMemo(function MonthProperty(props: IProps) {
 
     const [value, setValue] = React.useState<MonthSelect>(toMonthSelect(props.value));
 
-    const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleChange = React.useCallback((event: React.ChangeEvent<{ readonly value: unknown }>) => {
 
         function eventValue(): MonthSelect {
             return event.target.value as MonthSelect;

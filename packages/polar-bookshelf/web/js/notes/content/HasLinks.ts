@@ -31,7 +31,7 @@ export class HasLinks implements IHasLinksContent {
         return ! deepEqual(content.tagLinks, this.tagLinks);
     }
 
-    public getTags(): Tag[] {
+    public getTags(): readonly Tag[] {
         const toTag = ({ text, id }: IBlockLink): Tag => {
             const label = text.slice(1);
             return { label, id };

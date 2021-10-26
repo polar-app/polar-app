@@ -78,7 +78,7 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    public static async toSyncOrigin(datastore: Datastore, ...docMetaRefs: DocMetaRef[]): Promise<SyncOrigin> {
+    public static async toSyncOrigin(datastore: Datastore, ...docMetaRefs: readonly DocMetaRef[]): Promise<SyncOrigin> {
 
         const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docMetaRefs);
 
@@ -104,7 +104,7 @@ export class PersistenceLayers {
 
         const syncDocsMap: SyncDocMap = {};
 
-        const work: AsyncFunction[] = [];
+        const work: readonly AsyncFunction[] = [];
         const asyncWorkQueue = new AsyncWorkQueue(work);
 
         const init = {
@@ -394,15 +394,15 @@ export class PersistenceLayers {
 
 export interface TransferResult {
 
-    docMeta: TransferMetrics;
+    readonly docMeta: TransferMetrics;
 
-    files: TransferMetrics;
+    readonly files: TransferMetrics;
 
 }
 
 export interface TransferMetrics {
-    total: number;
-    writes: number;
+    readonly total: number;
+    readonly writes: number;
 }
 
 

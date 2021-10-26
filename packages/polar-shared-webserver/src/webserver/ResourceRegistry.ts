@@ -9,7 +9,7 @@ export class ResourceRegistry {
     /**
      * The registry of file paths and resources to serve.
      */
-    private readonly registry: {[appPath: string]: string} = {};
+    private readonly registry: {readonly [appPath: string]: string} = {};
 
     /**
      *

@@ -63,7 +63,7 @@ export interface LazyState extends LazyMap {
 }
 
 export interface LazyMap {
-    [key: string]: LazyType | undefined | null;
+    readonly [key: string]: LazyType | undefined | null;
 }
 
 

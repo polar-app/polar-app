@@ -21,7 +21,7 @@ type ProgressTrackerManagerListener<T> = (data: T) => void;
 
 export class ProgressTrackerManager<T = Percentage> {
     public progressListener: ProgressTrackerManagerListener<T>;
-    private progressCallbacks: ProgressTrackerManagerListener<T>[] = [];
+    private progressCallbacks: readonly ProgressTrackerManagerListener<T>[] = [];
 
     constructor() {
         this.progressListener = (progress) =>
@@ -39,7 +39,7 @@ export class ProgressTrackerManager<T = Percentage> {
 
 
 export class CloudStorage {
-    private pendingWrites: Map<string, Promise<DocFileMeta>> = new Map();
+    private pendingWrites: ReadonlyMap<string, Promise<DocFileMeta>> = new Map();
     private uid: string;
     private storage: firebase.storage.Storage = firebase.storage();
 

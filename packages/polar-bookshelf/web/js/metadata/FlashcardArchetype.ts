@@ -24,7 +24,7 @@ export class FlashcardArchetype {
      */
     public readonly description: string;
 
-    public readonly fields: {[key: string]: string};
+    public readonly fields: {readonly [key: string]: string};
 
     constructor(opts: any) {
 

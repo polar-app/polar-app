@@ -204,12 +204,12 @@ export class RendererAnalytics {
 }
 
 export interface IEventArgs {
-    category: string;
-    action: string;
+    readonly category: string;
+    readonly action: string;
 }
 
 export interface IFieldsObject {
-    [i: string]: any;
+    readonly [i: string]: any;
 }
 
 export interface Timer {

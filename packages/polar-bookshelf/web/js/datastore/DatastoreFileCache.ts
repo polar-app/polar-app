@@ -17,7 +17,7 @@ const log = Logger.create();
  */
 export class DatastoreFileCache {
 
-    private static readonly backing: {[key: string]: DocFileMeta} = {};
+    private static readonly backing: {readonly [key: string]: DocFileMeta} = {};
 
     public static writeFile(backend: Backend, ref: FileRef, meta: DocFileURLMeta) {
         const key = this.toKey(backend, ref);

@@ -24,7 +24,7 @@ export class Flashcards {
         return <Flashcard> {...flashcard};
     }
 
-    public static create(type: FlashcardType, fields: {[key: string]: Text}, archetype: string, ref: Ref) {
+    public static create(type: FlashcardType, fields: {readonly [key: string]: Text}, archetype: string, ref: Ref) {
 
         Preconditions.assertPresent(fields, "fields");
 
@@ -44,7 +44,7 @@ export class Flashcards {
 
         const archetype = this.CLOZE_ARCHETYPE;
 
-        const fields: {[key: string]: Text } = {};
+        const fields: {readonly [key: string]: Text } = {};
 
         fields.text = Texts.create(text, TextType[type]);
 
@@ -59,7 +59,7 @@ export class Flashcards {
 
         const archetype = this.FRONT_BACK_ARCHETYPE;
 
-        const fields: {[key: string]: Text } = {};
+        const fields: {readonly [key: string]: Text } = {};
 
         fields.front = Texts.create(front, TextType[type]);
         fields.back = Texts.create(back, TextType[type]);
@@ -68,9 +68,9 @@ export class Flashcards {
 
     }
 
-    public static convertFieldsToMap(fields: {[key: string]: Text } = {}, type: keyof Text = 'HTML') {
+    public static convertFieldsToMap(fields: {readonly [key: string]: Text } = {}, type: keyof Text = 'HTML') {
 
-        const result: {[name: string]: HTMLString} = {};
+        const result: {readonly [name: string]: HTMLString} = {};
 
         for (const key of Object.keys(fields)) {
             result[key] = fields[key][type] || '';

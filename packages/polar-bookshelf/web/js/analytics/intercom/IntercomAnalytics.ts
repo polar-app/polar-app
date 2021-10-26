@@ -103,7 +103,7 @@ export interface IIntercomDataForAnonymousUser {
     readonly app_id: string;
 
     // now arbitrary key / value pairs for attributes.
-    [key: string]: string | number;
+    readonly [key: string]: string | number;
 
 }
 

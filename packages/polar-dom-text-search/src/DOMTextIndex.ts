@@ -88,7 +88,7 @@ export class DOMTextIndex {
             return {id, regions};
         }
 
-        const result: DOMTextHit[] = [];
+        const result: readonly DOMTextHit[] = [];
 
         while(true) {
 

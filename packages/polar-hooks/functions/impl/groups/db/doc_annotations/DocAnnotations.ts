@@ -107,7 +107,7 @@ export class DocAnnotations {
          */
         const computeDocAnnotationRecords = (docRepresentation: DocRepresentation): ReadonlyArray<DocAnnotationRecord> => {
 
-            const result: DocAnnotationRecord[] = [];
+            const result: readonly DocAnnotationRecord[] = [];
 
             const {docMetaRecordHolder, docMeta, baseDocAnnotations} = docRepresentation;
 
@@ -184,7 +184,7 @@ export class DocAnnotations {
 
         const recordMutations = IDRecordMutations.mutations(prev.docAnnotationRecords, curr.docAnnotationRecords);
 
-        const result: DocAnnotationMutation[] = [];
+        const result: readonly DocAnnotationMutation[] = [];
 
         // *** now diff the two states and compute a set of changes which constructs the proper resulting state
         for (const recordMutation of recordMutations) {
@@ -263,5 +263,5 @@ export interface IDocumentSnapshot {
 }
 
 // tslint:disable-next-line:interface-over-type-literal
-export type IDocumentData = {[field: string]: any};
+export type IDocumentData = {readonly [field: string]: any};
 

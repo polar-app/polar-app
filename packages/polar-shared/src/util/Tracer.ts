@@ -6,7 +6,7 @@ export namespace Tracer {
     const WARN_THRESHOLD = 125;
 
     interface Timer {
-        stop: () => void;
+        readonly stop: () => void;
     }
 
     function createTimer(id: string): Timer {

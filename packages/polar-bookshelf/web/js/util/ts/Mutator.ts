@@ -21,7 +21,7 @@ export class Mutator {
 /**
  * The opposite of Object.frozen() or Readonly
  */
-type Mutatable<T> = {
+type Mutatable<T> = { readonly
     [P in keyof T]: T[P];
 };
 

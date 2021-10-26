@@ -22,7 +22,7 @@ export namespace NodeTextBoundingClientRects {
 
         const childNodes = Array.from(element.childNodes);
 
-        const result: INodeTextBoundingClientRect[] = [];
+        const result: readonly INodeTextBoundingClientRect[] = [];
 
         for (const childNode of childNodes) {
 

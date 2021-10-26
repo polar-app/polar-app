@@ -43,7 +43,7 @@ export namespace FilePaths {
      *
      * @param paths paths to join.
      */
-    export function join(...paths: string[]): string {
+    export function join(...paths: readonly string[]): string {
         return libpath.join(...paths);
     }
 
@@ -64,7 +64,7 @@ export namespace FilePaths {
      * @param pathSegments string paths to join.  Non-string arguments are
      *     ignored.
      */
-    export function resolve(...pathSegments: string[]) {
+    export function resolve(...pathSegments: readonly string[]) {
         return libpath.resolve(...pathSegments);
     }
 

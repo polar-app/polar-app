@@ -28,7 +28,7 @@ export class STNode {
      * it to int[] take less memory because indexes are stored using native
      * types.
      */
-    private data: number[];
+    private data: readonly number[];
 
     /**
      * Represents index of the last position used in the data int[] array.
@@ -40,7 +40,7 @@ export class STNode {
     /**
      * The set of edges starting from this node
      */
-    private edges: {[ch: string]: STEdge };
+    private edges: {readonly [ch: string]: STEdge };
     /**
      * The suffix link as described in Ukkonen's paper.
      * if str is the string denoted by the path from the root to this, this.suffix

@@ -49,7 +49,7 @@ export namespace BatchAcceptor {
             throw new Error('Not authorized');
         }
 
-        const accepted: IUserRecord[] = [];
+        const accepted: readonly IUserRecord[] = [];
 
         /**
          * Retrieve a prioritized list of waiting users

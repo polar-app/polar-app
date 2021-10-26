@@ -161,7 +161,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid);
 
-        type BatchIDMap = {
+        type BatchIDMap = { readonly
             [P in DatastoreConsistency]: number;
         };
 
@@ -442,7 +442,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * visibility settings are different.  Either that or stack them so that
      * the second (with different settings) is performed after the first.
      */
-    private pendingFileWrites: {[key: string]: Latch<DocFileMeta>} = {};
+    private pendingFileWrites: {readonly [key: string]: Latch<DocFileMeta>} = {};
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
@@ -924,7 +924,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             return [];
         }
 
-        const result: DocMetaRef[] = [];
+        const result: readonly DocMetaRef[] = [];
 
         for (const doc of snapshot.docs) {
 
@@ -1146,13 +1146,13 @@ interface Mutation {
 }
 
 interface PendingMutationIndex {
-    [id: string]: PendingMutation;
+    readonly [id: string]: PendingMutation;
 }
 
 interface PendingMutation {
 
-    id: string;
-    type: 'delete' | 'write';
+    readonly id: string;
+    readonly type: 'delete' | 'write';
 
 }
 

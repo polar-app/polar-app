@@ -16,11 +16,11 @@ export class Text implements IText {
 
 export interface IText {
 
-    TEXT?: string;
+    readonly TEXT?: string;
 
-    MARKDOWN?: string;
+    readonly MARKDOWN?: string;
 
-    HTML?: string;
+    readonly HTML?: string;
 
 }
 

@@ -202,7 +202,7 @@ export interface QueryOpts {
 
 }
 
-export type OrderByClause = [string, OrderByDirection | undefined];
+export type OrderByClause = readonly [string, OrderByDirection | undefined];
 
 export interface IDRecord {
     readonly id: string;
@@ -210,7 +210,7 @@ export interface IDRecord {
 
 export type ValueType = object | string | number;
 
-export type Clause = [string, WhereFilterOp, any];
+export type Clause = readonly [string, WhereFilterOp, any];
 
 export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
 

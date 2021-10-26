@@ -5,7 +5,7 @@ import {CacheEntry} from './CacheEntry';
 
 export class CacheEntriesHolder {
 
-    public cacheEntries: {[key: string]: CacheEntry} = {};
+    public cacheEntries: {readonly [key: string]: CacheEntry} = {};
 
     public metadata: any = {};
 

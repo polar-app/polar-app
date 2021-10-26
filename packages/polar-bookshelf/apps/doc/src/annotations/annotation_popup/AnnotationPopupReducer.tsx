@@ -7,28 +7,28 @@ import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
 
 
 export type IDocMetaAnnotation = {
-    type: 'docMeta';
-    annotation: IDocAnnotation;
+    readonly type: 'docMeta';
+    readonly annotation: IDocAnnotation;
 };
 
 export type IBlockAnnotation = {
-    type: 'block',
-    annotation: Block<TextHighlightAnnotationContent>
+    readonly type: 'block',
+    readonly annotation: Block<TextHighlightAnnotationContent>
 };
 
 type IAnnotationPopupState = {
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
-    selectionEvent?: ActiveSelectionEvent;
-    type?: "selection" | "annotation";
-    annotationId?: string;
-    activeAction?: AnnotationPopupActionEnum;
-    pendingAction?: AnnotationPopupActionEnum;
-    aiFlashcardStatus: AutoFlashcardHandlerState;
+    readonly annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    readonly selectionEvent?: ActiveSelectionEvent;
+    readonly type?: "selection" | "annotation";
+    readonly annotationId?: string;
+    readonly activeAction?: AnnotationPopupActionEnum;
+    readonly pendingAction?: AnnotationPopupActionEnum;
+    readonly aiFlashcardStatus: AutoFlashcardHandlerState;
 };
 
 type Action<K, T> = {
-    type: K;
-    payload: T;
+    readonly type: K;
+    readonly payload: T;
 };
 
 export const ACTIONS = {

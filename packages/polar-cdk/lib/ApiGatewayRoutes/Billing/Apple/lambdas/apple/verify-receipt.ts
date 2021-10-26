@@ -6,8 +6,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     console.log(event);
 
     const request: {
-        email: string,
-        receipt: string,
+        readonly email: string,
+        readonly receipt: string,
     } = JSON.parse(event.body || '{}');
 
     const email = request.email;

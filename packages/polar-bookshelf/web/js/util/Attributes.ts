@@ -18,7 +18,7 @@ export class Attributes {
      */
     static dataToPrimitiveMap(element: HTMLElement) {
 
-        let result: {[key: string]: string | number | boolean} = {};
+        let result: {readonly [key: string]: string | number | boolean} = {};
 
         Preconditions.assertNotNull(element, "element");
 
@@ -43,7 +43,7 @@ export class Attributes {
      */
     static dataToStringMap(element: HTMLElement) {
 
-        let result: {[key: string]: string} = {};
+        let result: {readonly [key: string]: string} = {};
 
         Preconditions.assertNotNull(element, "element");
 

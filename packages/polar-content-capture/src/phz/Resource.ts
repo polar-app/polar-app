@@ -67,7 +67,7 @@ export class Resource {
     /**
      *
      */
-    public headers: {[key: string]: string | string[]} = {};
+    public headers: {readonly [key: string]: string | readonly string[]} = {};
 
     public docTypeFormat?: DocTypeFormat;
 

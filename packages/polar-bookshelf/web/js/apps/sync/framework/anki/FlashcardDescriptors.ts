@@ -10,9 +10,9 @@ const log = Logger.create();
 
 export class FlashcardDescriptors {
 
-    public static async toFlashcardDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<FlashcardDescriptor[]> {
+    public static async toFlashcardDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<readonly FlashcardDescriptor[]> {
 
-        const result: FlashcardDescriptor[] = [];
+        const result: readonly FlashcardDescriptor[] = [];
 
         for (const docMetaSupplier of docMetaSupplierCollection) {
 
@@ -24,7 +24,7 @@ export class FlashcardDescriptors {
 
                     // collect all flashcards for the current page.
 
-                    const flashcards: IFlashcard[] = [];
+                    const flashcards: readonly IFlashcard[] = [];
 
                     flashcards.push(... Dictionaries.values(pageMeta.flashcards));
 

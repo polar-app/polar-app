@@ -15,8 +15,8 @@ export const isModifier = (key: string): key is Modifier => ['shift', 'alt', 'co
 
 export type Modifier = 'ctrl' | 'alt' | 'shift' | 'command';
 
-export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent | React.KeyboardEvent) => {
-    const unpressed: Modifier[] = (['ctrl', 'alt', 'shift', 'command'] as Modifier[])
+export const modifierPredicate = (pressed: readonly Modifier[], event: KeyboardEvent | React.KeyboardEvent) => {
+    const unpressed: readonly Modifier[] = (['ctrl', 'alt', 'shift', 'command'] as readonly Modifier[])
         .filter(mod => pressed.indexOf(mod) === -1);
 
     const isModifierPressed = (modifier: Modifier) => {
@@ -105,7 +105,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
     return false;
 
 }
-type SequenceToKeyboardEventHandlerPredicate = [IKeyboardShortcutWithHandler, KeyBinding, KeyboardEventHandlerPredicate];
+type SequenceToKeyboardEventHandlerPredicate = readonly [IKeyboardShortcutWithHandler, KeyBinding, KeyboardEventHandlerPredicate];
 
 export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 

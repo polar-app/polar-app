@@ -6,7 +6,7 @@ require('firebase/auth');
 
 const log = Logger.create();
 
-const PROJECTS: {[project: string]: any} = {
+const PROJECTS: {readonly [project: string]: any} = {
 
     "polar-test2": {
         apiKey: "AIzaSyByrYfWcYQAFaBRroM-M96lWCyX0cp3SKg",

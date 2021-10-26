@@ -5,7 +5,7 @@ export namespace MainAppMenus {
 
         const isMac = process.platform === 'darwin'
 
-        const template: (MenuItemConstructorOptions | MenuItem)[] = [
+        const template: readonly (MenuItemConstructorOptions | MenuItem)[] = [
             { role: 'appMenu' },
             // ...(isMac ? [{
             //     label: app.name,

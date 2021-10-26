@@ -10,7 +10,7 @@ export interface IVersionedObject {
      * that we can reference it easily.  The ID should represent the immutable
      * form of this object. If the object is mutated the id should change.
      */
-    id: IDStr;
+    readonly id: IDStr;
 
     /**
      * When an object is created it has an id just like every other annotation
@@ -31,27 +31,27 @@ export interface IVersionedObject {
      * id: 10102, guid: 10101
      *
      */
-    guid: IDStr;
+    readonly guid: IDStr;
 
     /**
      * The time this object was created
      *
      */
-    created: ISODateTimeString;
+    readonly created: ISODateTimeString;
 
     /**
      * The last time this annotation was updated (note changed, moved, etc).
      */
-    lastUpdated: ISODateTimeString;
+    readonly lastUpdated: ISODateTimeString;
 
     /**
      * The author who created this object.
      */
-    author?: IAuthor;
+    readonly author?: IAuthor;
 
     /**
      * A reference to the parent annotation (if any).
      */
-    ref?: Ref;
+    readonly ref?: Ref;
 
 }

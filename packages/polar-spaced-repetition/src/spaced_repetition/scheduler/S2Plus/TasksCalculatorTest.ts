@@ -635,7 +635,7 @@ export interface PendingTaskRep {
 }
 
 export interface PendingTaskRepMap {
-    [id: string]: PendingTaskRep;
+    readonly [id: string]: PendingTaskRep;
 }
 
 function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<TestTaskAction> {

@@ -25,7 +25,7 @@ export class GroupDocs {
         return Hashcodes.createID({docID, profileID, groupID}, 20);
     }
 
-    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
+    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): readonly [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
         const firestore = FirestoreAdmin.getInstance();
         const id = this.createID(docID, profileID, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);

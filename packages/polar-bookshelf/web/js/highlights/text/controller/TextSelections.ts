@@ -6,7 +6,7 @@ export class TextSelections {
 
     public static compute(selectedContent: ISelectedContent): ReadonlyArray<TextRect> {
 
-        const result: TextRect[] = [
+        const result: readonly TextRect[] = [
 
         ];
 

@@ -27,7 +27,7 @@ export class GroupMemberInvitations {
 
     public static async listByGroupID(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const clauses: Clause[] = [
+        const clauses: readonly Clause[] = [
             ['groupID' , '==', groupID],
         ];
         const firestore = await FirestoreBrowserClient.getInstance();
@@ -39,7 +39,7 @@ export class GroupMemberInvitations {
     public static async listByGroupIDAndProfileID(groupID: GroupIDStr,
                                                   profileID: ProfileIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const clauses: Clause[] = [
+        const clauses: readonly Clause[] = [
             ['groupID' , '==', groupID],
             ['from.profileID' , '==', profileID]
         ];

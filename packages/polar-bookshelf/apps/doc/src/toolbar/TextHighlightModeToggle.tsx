@@ -11,7 +11,7 @@ import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {usePersistentRouteContext} from "../../../../web/js/apps/repository/PersistentRoute";
 
 type IUseStylesProps = {
-    textHighlightColor?: ColorStr;
+    readonly textHighlightColor?: ColorStr;
 }
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>

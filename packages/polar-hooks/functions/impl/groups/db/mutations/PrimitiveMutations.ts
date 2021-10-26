@@ -13,7 +13,7 @@ export class PrimitiveMutations {
                             curr: ReadonlyArray<PrimitiveType>): ReadonlyArray<PrimitiveMutation> {
 
         interface PrimitiveMap {
-            [key: string]: string;
+            readonly [key: string]: string;
         }
 
         const toPrimitiveMap = (values: ReadonlyArray<PrimitiveType>): PrimitiveMap => {
@@ -31,7 +31,7 @@ export class PrimitiveMutations {
         const prevMap = toPrimitiveMap(prev);
         const currMap = toPrimitiveMap(curr);
 
-        const result: PrimitiveMutation[] = [];
+        const result: readonly PrimitiveMutation[] = [];
 
         const values = SetArrays.union(curr, prev);
 

@@ -1,16 +1,16 @@
 export interface MutableTagNode<V> {
 
-    id: string;
+    readonly id: string;
 
-    name: string;
+    readonly name: string;
 
-    path: string;
+    readonly path: string;
 
-    children: Array<MutableTagNode<V>>;
+    readonly children: ReadonlyArray<MutableTagNode<V>>;
 
-    value: V;
+    readonly value: V;
 
-    count: number;
+    readonly count: number;
 
 }
 

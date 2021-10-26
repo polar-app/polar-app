@@ -9,7 +9,7 @@ import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly Component: React.FunctionComponent<{persistenceLayerProvider: ListenablePersistenceLayerProvider}>;
+    readonly Component: React.FunctionComponent<{readonly persistenceLayerProvider: ListenablePersistenceLayerProvider}>;
 }
 
 export interface IState {

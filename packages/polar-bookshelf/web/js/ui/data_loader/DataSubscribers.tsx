@@ -12,7 +12,7 @@ export namespace DataSubscribers {
 
     export type DataProvider = (props: DataProviderProps) => React.ReactElement;
 
-    export type DataSubscriberTuple<D> = [DataProvider, React.Context<D>];
+    export type DataSubscriberTuple<D> = readonly [DataProvider, React.Context<D>];
 
     export function useDataSubscriber<D>(snapshotSubscriber: SnapshotSubscriber<D>) {
 

@@ -74,25 +74,25 @@ export interface UpdatableDocDetails {
     /**
      * The title for the document.
      */
-    title?: string;
+    readonly title?: string;
 
-    subtitle?: string;
+    readonly subtitle?: string;
 
-    description?: string;
+    readonly description?: string;
 
     /**
      * The network URL for the document where we originally fetched it.
      */
-    url?: string;
+    readonly url?: string;
 
     /**
      * The filename of this doc in the .stash directory.
      */
-    filename?: string;
+    readonly filename?: string;
 
     /**
      * The number of pages in this document.
      */
-    nrPages?: number;
+    readonly nrPages?: number;
 
 }

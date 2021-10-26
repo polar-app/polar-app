@@ -9,7 +9,7 @@ import clsx from "clsx";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 interface IBlockItemsStylesProps {
-    indent: boolean;
+    readonly indent: boolean;
 }
 
 const useStyles = makeStyles<Theme, IBlockItemsStylesProps>(() =>

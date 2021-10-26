@@ -9,7 +9,7 @@ describe('Optional', function() {
         // of the type and that we can map it without any type issues.
 
         interface State {
-            zip: string;
+            readonly zip: string;
         }
 
         const state: State | null = {
@@ -117,7 +117,7 @@ describe('Optional', function() {
         it("basic", function() {
 
             interface Address {
-                state: string | undefined;
+                readonly state: string | undefined;
             }
 
             const test: Address = {

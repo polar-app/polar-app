@@ -14,7 +14,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 
 interface IProps {
-    readonly shortcuts: {[binding: string]: ShortcutEntry};
+    readonly shortcuts: {readonly [binding: string]: ShortcutEntry};
 }
 
 export const ActiveKeyboardShortcutsTable = (props: IProps) => {

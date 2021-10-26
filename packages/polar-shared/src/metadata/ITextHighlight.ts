@@ -13,7 +13,7 @@ export interface ITextHighlight extends IBaseHighlight, IChildAnnotations {
      */
     readonly type?: 'text-only';
 
-    readonly textSelections: { [id: number]: ITextRect };
+    readonly textSelections: { readonly [id: number]: ITextRect };
 
     readonly text: Text | string;
 

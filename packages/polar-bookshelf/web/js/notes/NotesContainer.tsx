@@ -15,7 +15,7 @@ const useContainerStyles = makeStyles(() =>
 );
 
 type IUseInnerContainerStylesProps = {
-    flushed: boolean;
+    readonly flushed: boolean;
 };
 
 const useInnerContainerStyles = makeStyles<Theme, IUseInnerContainerStylesProps>(() =>

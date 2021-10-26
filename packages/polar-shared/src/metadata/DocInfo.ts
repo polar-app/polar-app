@@ -29,13 +29,13 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public url?: string;
     public lastOpened?: ISODateTimeString;
     public lastUpdated?: ISODateTimeString;
-    public properties: {[id: string]: string} = {};
+    public properties: {readonly [id: string]: string} = {};
     public archived: boolean = false;
     public flagged: boolean = false;
     public backend?: Backend;
     public filename?: string;
     public added?: ISODateTimeString;
-    public tags?: {[id: string]: Tag} = {};
+    public tags?: {readonly [id: string]: Tag} = {};
     public nrComments?: number;
     public nrNotes?: number;
     public nrFlashcards?: number;
@@ -47,7 +47,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public bytes?: number;
     public referrer?: string;
     public shareStrategy?: ShareStrategy;
-    public storedResources?: Set<StoredResource>;
+    public storedResources?: ReadonlySet<StoredResource>;
     public mutating?: DocMutating;
     public published?: ISODateString | ISODateTimeString;
     public publisher?: string;
@@ -55,9 +55,9 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public pmid?: string;
     public readingPerDay?: ReadingOverview;
     public visibility?: Visibility;
-    public attachments: {[id: string]: Attachment} = {};
+    public attachments: {readonly [id: string]: Attachment} = {};
     public authors?: ReadonlyArray<IDocAuthor>;
-    public thumbnails?: { [id: string]: IThumbnail };
+    public thumbnails?: { readonly [id: string]: IThumbnail };
     public summary?: IText;
     public webCapture?: boolean;
 

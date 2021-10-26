@@ -138,7 +138,7 @@ export class Hashcodes {
      * The, when given, should be always a constant so that the hashcode output
      * is namespaced.
      */
-    public static createRandomID2(seed?: string | number[]) {
+    public static createRandomID2(seed?: string | readonly number[]) {
 
         // provide more randomness to the secure ID generation.
 

@@ -4,8 +4,8 @@ import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
 export interface IKeyboardShortcutEvent {
-    preventDefault: () => void;
-    stopPropagation: () => void;
+    readonly preventDefault: () => void;
+    readonly stopPropagation: () => void;
 }
 
 export type KeyboardShortcutEventHandler = (event: IKeyboardShortcutEvent) => void;
@@ -56,8 +56,8 @@ export interface IKeyboardShortcutWithHandler extends IKeyboardShortcut {
 }
 
 export type ShortcutEntry = {
-    registered: IKeyboardShortcutWithHandler[],
-    active: IKeyboardShortcutWithHandler,
+    readonly registered: readonly IKeyboardShortcutWithHandler[],
+    readonly active: IKeyboardShortcutWithHandler,
 };
 
 interface IKeyboardShortcutsStore {
@@ -66,7 +66,7 @@ interface IKeyboardShortcutsStore {
      * The current keyboard bindings.
      */
     readonly shortcuts: {
-        [binding: string]: ShortcutEntry;
+        readonly [binding: string]: ShortcutEntry;
     };
 
     /**

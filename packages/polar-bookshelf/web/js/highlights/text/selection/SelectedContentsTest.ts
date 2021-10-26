@@ -86,7 +86,7 @@ const TEST_DATA  = [
 ];
 
 const jsonToRectTexts = (str: string): ReadonlyArray<RectText> => (
-    (JSON.parse(str) as any[])
+    (JSON.parse(str) as readonly any[])
         .map(({ text, boundingClientRect, selectionRange }) => ({
             text,
             selectionRange,

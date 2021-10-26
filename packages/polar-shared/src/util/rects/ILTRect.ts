@@ -1,9 +1,9 @@
 
 export interface MutableILTRect {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
+    readonly left: number;
+    readonly top: number;
+    readonly width: number;
+    readonly height: number;
 }
 
 /**

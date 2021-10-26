@@ -10,7 +10,7 @@ import {fade} from '@material-ui/core/styles/colorManipulator';
 
 
 type UseArrowStylesProps = {
-    direction: "up" | "down";
+    readonly direction: "up" | "down";
 };
 const useArrowStyles = makeStyles<Theme, UseArrowStylesProps>((theme) => createStyles({
     arrowOuter({ direction }) {
@@ -45,8 +45,8 @@ const useArrowStyles = makeStyles<Theme, UseArrowStylesProps>((theme) => createS
 }));
 
 type ScrollArrowProps = {
-    direction: "up" | "down";
-    onClick: React.MouseEventHandler<HTMLDivElement>;
+    readonly direction: "up" | "down";
+    readonly onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const ScrollArrow: React.FC<ScrollArrowProps> = ({ direction, onClick }) => {
@@ -99,9 +99,9 @@ const getNewScroll = (parentHeight: number, height: number, newScroll: number) =
 };
 
 export type VerticalDynamicScrollerProps = {
-    clickScrollAmount ?: number;
-    style ?: React.CSSProperties;
-    className ?: string;
+    readonly clickScrollAmount ?: number;
+    readonly style ?: React.CSSProperties;
+    readonly className ?: string;
 };
 
 export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (props) => {

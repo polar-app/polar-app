@@ -54,7 +54,7 @@ export class GroupsSelector extends React.Component<IProps, IState> {
 
         const emailAddresses = EmailAddresses.parseList(text);
 
-        const newContacts: GroupOption[] = emailAddresses.map(current => {
+        const newContacts: readonly GroupOption[] = emailAddresses.map(current => {
 
             return {
                 value: current.address,

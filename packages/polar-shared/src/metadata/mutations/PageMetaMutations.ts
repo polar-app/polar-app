@@ -19,7 +19,7 @@ export interface IPageMetaMutationRef extends IIDRef, IPageRef {
 
 export namespace PageMetaMutations {
 
-    export function convert(map: {[id: string]: IIDRef} | null | undefined, pageNum: PageNumber): Readonly<{[id: string]: IPageMetaMutationRef}> {
+    export function convert(map: {readonly [id: string]: IIDRef} | null | undefined, pageNum: PageNumber): Readonly<{readonly [id: string]: IPageMetaMutationRef}> {
 
         function toPageMetaMutationRef(current: IIDRef): IPageMetaMutationRef {
             return {
@@ -37,7 +37,7 @@ export namespace PageMetaMutations {
 }
 
 export interface IDValueMap<V extends IIDRef> {
-    [id: string]: V;
+    readonly [id: string]: V;
 }
 
 export type ValueCallback<V extends IIDRef> = (pageMeta: IPageMeta, values: IDValueMap<V>) => boolean;
@@ -110,7 +110,7 @@ export abstract class MutatorDelegate<V extends IIDRef> {
 
         const ref = Refs.createFromAnnotationType(annotationRef.id, annotationRef.annotationType);
 
-        const deleteChildren = (children: {[id: string]: IVersionedObject}) => {
+        const deleteChildren = (children: {readonly [id: string]: IVersionedObject}) => {
 
             const dependencies = Object.values(children || {})
                 .filter(current => current.ref === ref);

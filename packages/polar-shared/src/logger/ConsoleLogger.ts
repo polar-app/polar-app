@@ -7,27 +7,27 @@ export class ConsoleLogger implements ILogger {
 
     public readonly name: string = 'console-logger';
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         console.log(msg, ...args);
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         console.log(msg, ...args);
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         console.warn(msg, ...args);
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         console.error(msg, ...args);
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         console.log(msg, ...args);
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
 
         // TODO: we might want to make this call console.debug and not
         // console.log so that we can turn it off but it's also nice to disable

@@ -11,7 +11,7 @@ export namespace SentenceShingler {
                                                   width = 4,
                                                   jump = 2): ReadonlyArray<ISentenceShingle> {
 
-        const result: ISentenceShingle[] = [];
+        const result: readonly ISentenceShingle[] = [];
 
         const pending = [...sentences];
 

@@ -18,7 +18,7 @@ const log = Logger.create();
  */
 export class SyncQueue {
 
-    private readonly pending: SyncTask[] = [];
+    private readonly pending: readonly SyncTask[] = [];
 
     /**
      * The total number of tasks that have been submitted.
@@ -52,7 +52,7 @@ export class SyncQueue {
     /**
      * Add tasks that need executing.
      */
-    public add(...task: SyncTask[]) {
+    public add(...task: readonly SyncTask[]) {
         this.pending.push(...task);
         ++this.total;
     }

@@ -31,12 +31,12 @@ type IUseHighlightBlocks<T extends IHighlightContentType> = {
     /**
      * The ID of the document that the highlights belong to.
      */
-    docID: string;
+    readonly docID: string;
 
     /**
      * The type of the highlights we want to fetch @see IHighlightContentType
      */
-    type?: T;
+    readonly type?: T;
 };
 
 const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
@@ -174,14 +174,14 @@ export const useAnnotationBlockManager = () => {
     }, [blocksStore, getBlock]);
 
     type FrontBackFlashcardContent = {
-        type: FlashcardType.BASIC_FRONT_BACK,
-        front: string,
-        back: string,
+        readonly type: FlashcardType.BASIC_FRONT_BACK,
+        readonly front: string,
+        readonly back: string,
     };
 
     type ClozeFlashcardContent = {
-        type: FlashcardType.CLOZE,
-        text: string,
+        readonly type: FlashcardType.CLOZE,
+        readonly text: string,
     };
 
     type FlashcardContent = FrontBackFlashcardContent | ClozeFlashcardContent;
@@ -222,45 +222,45 @@ type IBlockAreaHighlightOpts = {
     /**
      * The position of the area highlight within the page @see ILTRect
      */
-    rect: ILTRect,
+    readonly rect: ILTRect,
 
     /**
      * The page that the highlight was created under.
      */
-    pageNum: number,
+    readonly pageNum: number,
 
     /**
      * The root element of the document viewer.
      */
-    docViewerElement: HTMLElement,
+    readonly docViewerElement: HTMLElement,
 
     /**
      * The file type of the document that the highlight belongs to @see FileType
      */
-    fileType: FileType,
+    readonly fileType: FileType,
 
     /**
      * The current scale (zoom) level of the document @see IDocScale
      */
-    docScale: IDocScale,
+    readonly docScale: IDocScale,
 };
 
 type ICreateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
-    type: 'create',
+    readonly type: 'create',
 
     /**
      * The ID of the document that the created areahighlight will belong to.
      */
-    docID: DocIDStr,
+    readonly docID: DocIDStr,
 };
 
 type IUpdateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
-    type: 'update',
+    readonly type: 'update',
 
     /**
      * The id of the block to be updated
      */
-    blockID: BlockIDStr,
+    readonly blockID: BlockIDStr,
 };
 
 export const useBlockAreaHighlight = () => {

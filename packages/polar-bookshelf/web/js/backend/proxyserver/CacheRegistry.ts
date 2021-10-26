@@ -10,7 +10,7 @@ const log = Logger.create();
 
 export class CacheRegistry {
 
-    private readonly registry: {[url: string]: CacheEntry} = {};
+    private readonly registry: {readonly [url: string]: CacheEntry} = {};
 
     /**
      *

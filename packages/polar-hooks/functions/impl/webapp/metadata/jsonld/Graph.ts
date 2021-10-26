@@ -5,7 +5,7 @@ import {SparseArray, SparseArrays} from "polar-shared/src/util/Arrays";
 /**
  */
 export interface IGraphInit {
-    "@graph": ReadonlyArray<BaseType | ReverseMap>,
+    readonly "@graph": ReadonlyArray<BaseType | ReverseMap>,
 }
 
 export interface IGraph extends IGraphInit {

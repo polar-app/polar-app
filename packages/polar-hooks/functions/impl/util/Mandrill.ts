@@ -21,7 +21,7 @@ export class Mandrill {
     private static async send(from: EmailAddress,
                               to: ReadonlyArray<EmailAddress>,
                               templateName: string,
-                              globalMergeVars: {[name: string]: string}) {
+                              globalMergeVars: {readonly [name: string]: string}) {
 
         // need a way for the user to disable emails... s
 

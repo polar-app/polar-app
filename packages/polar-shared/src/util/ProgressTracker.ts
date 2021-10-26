@@ -128,18 +128,18 @@ export type ProgressListener = (progress: Progress) => void;
 export type UnixTimeMS = number;
 
 export interface MutableProgress {
-    task: TaskID;
-    completed: number;
-    total: number;
-    duration: number;
-    progress: Percentage;
-    id: string;
-    timestamp: UnixTimeMS;
+    readonly task: TaskID;
+    readonly completed: number;
+    readonly total: number;
+    readonly duration: number;
+    readonly progress: Percentage;
+    readonly id: string;
+    readonly timestamp: UnixTimeMS;
 
     /**
      *  An optional human readable name for the task being completed.
      */
-    name?: string;
+    readonly name?: string;
 
 }
 

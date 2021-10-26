@@ -225,11 +225,11 @@ export namespace SaveToPolarHandler {
 }
 
 interface ITab {
-    id?: number;
+    readonly id?: number;
 }
 
 interface IMessageSender {
-    tab?: ITab
+    readonly tab?: ITab
 }
 
 function createProgressListener(sender: IMessageSender): WriteFileProgressListener {

@@ -1,27 +1,27 @@
 // & Interfaces
 export interface IPackageManifest {
-    name: string;
-    version: string;
-    description: string;
-    author: string;
-    license: string;
-    scripts?: Scripts;
-    devDependencies?: Record<string, unknown>;
-    dependencies?: Record<string, unknown>;
+    readonly name: string;
+    readonly version: string;
+    readonly description: string;
+    readonly author: string;
+    readonly license: string;
+    readonly scripts?: Scripts;
+    readonly devDependencies?: Record<string, unknown>;
+    readonly dependencies?: Record<string, unknown>;
 }
 
 export interface Scripts {
-    test?: string;
-    citest?: string;
-    mocha?: string;
-    cimocha?: string;
-    karma?: string;
-    eslint?: string;
-    eslintfix?: string;
-    compile?: string;
-    watch?: string;
-    tsc?: string;
-    tscwatch?: string;
+    readonly test?: string;
+    readonly citest?: string;
+    readonly mocha?: string;
+    readonly cimocha?: string;
+    readonly karma?: string;
+    readonly eslint?: string;
+    readonly eslintfix?: string;
+    readonly compile?: string;
+    readonly watch?: string;
+    readonly tsc?: string;
+    readonly tscwatch?: string;
 }
 
 export interface ICreateModuleConfig {

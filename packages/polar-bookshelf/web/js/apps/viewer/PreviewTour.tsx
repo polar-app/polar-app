@@ -49,7 +49,7 @@ export class PreviewTour extends React.Component<IProps, IState> {
             return <div style={{fontSize: '22px'}}>{props.children}</div>;
         };
 
-        const steps: Step[] = [
+        const steps: readonly Step[] = [
             // {
             //     target: '.polar-sidebar',
             //     content: <div>

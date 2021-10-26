@@ -136,7 +136,7 @@ function withPointerEvents<T>(element: HTMLElement,
 
     const elements = Array.from(element.querySelectorAll("." + className)) as ReadonlyArray<HTMLElement>;
 
-    const elementStyleRestores: ElementStyleRestore[] = [];
+    const elementStyleRestores: readonly ElementStyleRestore[] = [];
 
     for (const element of elements) {
 
@@ -170,7 +170,7 @@ function selectedElements(pageElement: HTMLElement,
     return withPointerEvents(pageElement, className, () => {
 
         const doc = pageElement.ownerDocument;
-        const elements = doc.elementsFromPoint(point.x, point.y) as HTMLElement[];
+        const elements = doc.elementsFromPoint(point.x, point.y) as readonly HTMLElement[];
 
         return elements.filter(element => element.classList.contains(className));
 
@@ -213,7 +213,7 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     function computeContextPageMeta(): ContextPageMeta {
 
-        function computePageElementWithFileType(): [HTMLElement, FileType] {
+        function computePageElementWithFileType(): readonly [HTMLElement, FileType] {
 
             const pageElement = Elements.untilRoot(target, ".page");
 

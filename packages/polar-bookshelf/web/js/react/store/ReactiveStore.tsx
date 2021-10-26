@@ -9,7 +9,7 @@ export type ReactiveStoreProviderComponent<T> = React.FunctionComponent<IReactiv
 
 export type StoreProvider<T> = () => T;
 
-export type ReactiveStoreTuple<T> = [
+export type ReactiveStoreTuple<T> = readonly [
     ReactiveStoreProviderComponent<T>,
     StoreProvider<T>
 ];

@@ -145,7 +145,7 @@ export interface AreaHighlightWriteOpts {
 
 export interface AreaHighlightWriter {
 
-    prepare(): [AreaHighlight, AreaHighlightCommitter];
+    prepare(): readonly [AreaHighlight, AreaHighlightCommitter];
 
 }
 
@@ -156,7 +156,7 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
         Preconditions.assertPresent(opts.capturedScreenshot, 'opts.capturedScreenshot');
     }
 
-    public prepare(): [AreaHighlight, AreaHighlightCommitter] {
+    public prepare(): readonly [AreaHighlight, AreaHighlightCommitter] {
 
         const {docMeta, capturedScreenshot, pageMeta, areaHighlight, areaHighlightRect, position} = this.opts;
 

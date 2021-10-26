@@ -22,7 +22,7 @@ export namespace RegressionEngines {
      */
     export type ResultStatus = 'pass' | 'fail' | 'unknown';
 
-    export type RegressionMetadata =  Readonly<{[key: string]: string | number | boolean | undefined | null}>;
+    export type RegressionMetadata =  Readonly<{readonly [key: string]: string | number | boolean | undefined | null}>;
 
     export interface IRegressionTestResultPass<R extends ResultType> {
 
@@ -69,7 +69,7 @@ export namespace RegressionEngines {
         (IRegressionTestResultError<E> & IRegressionTestName) |
         (IRegressionTestResultError<ErrorType> & IRegressionTestName);
 
-    export type RegressionSummary = Readonly<{[key: string]: number}>
+    export type RegressionSummary = Readonly<{readonly [key: string]: number}>
 
     /**
      * A summarizer to the report function to include counts of features in the regression metadtaa.
@@ -138,7 +138,7 @@ export namespace RegressionEngines {
             readonly test: RegressionTest<R, E>;
         }
 
-        let regressions: IRegressionTestEntry[] = [];
+        let regressions: readonly IRegressionTestEntry[] = [];
 
         function register(testName: string, test: RegressionTest<R, E>) {
             regressions.push({testName, test});
@@ -158,7 +158,7 @@ export namespace RegressionEngines {
 
                 console.log("=== Running regression tests...");
 
-                const results: IRegressionTestResultExecuted<R, E>[] = [];
+                const results: readonly IRegressionTestResultExecuted<R, E>[] = [];
 
                 for (const testEntry of regressions) {
 

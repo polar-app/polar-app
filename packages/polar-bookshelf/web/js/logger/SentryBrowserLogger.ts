@@ -8,15 +8,15 @@ export class SentryBrowserLogger implements ILogger {
 
     public readonly name: string = 'sentry-browser-logger';
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         SentryBrowser.initWhenNecessary();
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         SentryBrowser.initWhenNecessary();
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
 
         SentryBrowser.initWhenNecessary();
 
@@ -38,15 +38,15 @@ export class SentryBrowserLogger implements ILogger {
 
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         SentryBrowser.initWhenNecessary();
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         SentryBrowser.initWhenNecessary();
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         SentryBrowser.initWhenNecessary();
     }
 

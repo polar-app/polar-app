@@ -10,7 +10,7 @@ import {FlashcardFieldType} from './FlashcardFieldType';
  */
 export class FlashcardRegistry {
 
-    private readonly registry: {[id: string]: FlashcardArchetype} = {};
+    private readonly registry: {readonly [id: string]: FlashcardArchetype} = {};
 
     public register(flashcardArchetype: FlashcardArchetype) {
         Preconditions.assertNotNull(flashcardArchetype.id, "id");

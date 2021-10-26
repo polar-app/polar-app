@@ -93,7 +93,7 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
         );
     }
 
-    private onTags(tags: Tag[]) {
+    private onTags(tags: readonly Tag[]) {
         this.formData.tags = tags.map(current => current.label);
     }
 
@@ -132,9 +132,9 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 }
 
 export interface FormData {
-    name: string;
-    description: string;
-    tags: ReadonlyArray<TagStr>;
+    readonly name: string;
+    readonly description: string;
+    readonly tags: ReadonlyArray<TagStr>;
 }
 
 export interface IProps {

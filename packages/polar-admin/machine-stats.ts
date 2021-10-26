@@ -14,7 +14,7 @@ admin.initializeApp({
 
 const firestore = admin.firestore();
 
-function recent(machineDatastores: MachineDatastore[]) {
+function recent(machineDatastores: readonly MachineDatastore[]) {
 
     const now = Date.now();
 
@@ -66,7 +66,7 @@ async function computeStats() {
 
     const total = snapshot.docs.length;
 
-    const data: {[key: string]: MachineDatastore} = {};
+    const data: {readonly [key: string]: MachineDatastore} = {};
 
     for( const doc of snapshot.docs) {
 

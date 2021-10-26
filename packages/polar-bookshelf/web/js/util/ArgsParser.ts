@@ -22,9 +22,9 @@ export class ArgsParser {
 
     }
 
-    static parse(argv: any[]) {
+    static parse(argv: readonly any[]) {
 
-        let result: {[name: string]: any} = {};
+        let result: {readonly [name: string]: any} = {};
 
         argv.forEach((arg) => {
 

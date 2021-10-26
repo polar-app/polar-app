@@ -6,7 +6,7 @@ describe('Either', function() {
 
     it("basic", function() {
 
-        const values: any[] = [];
+        const values: readonly any[] = [];
 
         const myFunction = (either: Either<string, number>) => {
 

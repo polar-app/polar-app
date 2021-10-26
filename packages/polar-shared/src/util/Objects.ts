@@ -72,9 +72,9 @@ export class Objects {
         return result;
     }
 
-    public static typedKeys<T>(obj: T): Array<(keyof T)> {
+    public static typedKeys<T>(obj: T): ReadonlyArray<(keyof T)> {
         // type cast should be safe because that's what really Object.keys() does
-        return Object.keys(obj) as Array<(keyof T)>;
+        return Object.keys(obj) as ReadonlyArray<(keyof T)>;
     }
 
     public static toObjectSTR(obj: string | object | undefined): string {

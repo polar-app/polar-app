@@ -38,7 +38,7 @@ import * as TypeMoq from "typemoq";
  * */
 export class CanAddNotesClient implements ICanAddNotesClient {
 
-    public async execute(notes: Note[]): Promise<boolean[]> {
+    public async execute(notes: readonly Note[]): Promise<readonly boolean[]> {
 
         const body = {
             action: "canAddNotes",
@@ -50,14 +50,14 @@ export class CanAddNotesClient implements ICanAddNotesClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <boolean[]> await AnkiConnectFetch.fetch(init);
+        return <readonly boolean[]> await AnkiConnectFetch.fetch(init);
 
     }
 
     /**
      * Create a mock that returns the given result.
      */
-    public static createMock(result: boolean[]) {
+    public static createMock(result: readonly boolean[]) {
         const client = TypeMoq.Mock.ofType<ICanAddNotesClient>();
         client.setup(x => x.execute(TypeMoq.It.isAny())).returns(() => Promise.resolve(result));
         return client.object;
@@ -69,13 +69,13 @@ export interface Note {
 
     readonly deckName: string;
     readonly modelName: string;
-    readonly fields: {[name: string]: string};
-    readonly tags: string[];
+    readonly fields: {readonly [name: string]: string};
+    readonly tags: readonly string[];
 
 }
 
 export interface ICanAddNotesClient {
 
-    execute(notes: Note[]): Promise<boolean[]>;
+    execute(notes: readonly Note[]): Promise<readonly boolean[]>;
 
 }

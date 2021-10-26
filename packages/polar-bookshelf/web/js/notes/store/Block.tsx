@@ -13,7 +13,7 @@ import PositionalArray = PositionalArrays.PositionalArray;
 import PositionalArrayKey = PositionalArrays.PositionalArrayKey;
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
-const NON_EDITABLE_BLOCK_TYPES: BlockType[] = [
+const NON_EDITABLE_BLOCK_TYPES: readonly BlockType[] = [
     'date',
     'image',
     'document',

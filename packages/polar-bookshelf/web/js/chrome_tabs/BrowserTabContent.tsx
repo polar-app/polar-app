@@ -1,9 +1,9 @@
 import React from "react";
 
 interface BrowserTabContent {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
+  readonly children?: React.ReactNode;
+  readonly index: any;
+  readonly value: any;
 }
 
 export function BrowserTabContent(props: BrowserTabContent) {

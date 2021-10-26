@@ -2,16 +2,16 @@ import {APIGatewayProxyHandler} from 'aws-lambda';
 import {Firebase} from "polar-admin/Firebase";
 
 interface GoogleReceipt {
-    orderId: string,
-    packageName: "io.getpolarized.polar",
-    productId: "subscription_plan_plus" | "subscription_plan_pro",
-    purchaseTime: number, // unix timestamp
-    purchaseToken: string, // stays the same through lifetime of Subscription
+    readonly orderId: string,
+    readonly packageName: "io.getpolarized.polar",
+    readonly productId: "subscription_plan_plus" | "subscription_plan_pro",
+    readonly purchaseTime: number, // unix timestamp
+    readonly purchaseToken: string, // stays the same through lifetime of Subscription
 }
 
 interface VerifyReceiptRequest {
-    email: string,
-    receipt: string, // JSON encoded object
+    readonly email: string,
+    readonly receipt: string, // JSON encoded object
 }
 
 export const handler: APIGatewayProxyHandler = async (event) => {

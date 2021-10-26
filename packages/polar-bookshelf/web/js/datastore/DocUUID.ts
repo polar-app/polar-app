@@ -5,6 +5,6 @@ import {UUID} from "polar-shared/src/metadata/UUID";
  * may not have a doc but in practice almost all docs will have a UUID.
  */
 export interface DocUUID {
-    fingerprint: string;
-    uuid?: UUID;
+    readonly fingerprint: string;
+    readonly uuid?: UUID;
 }

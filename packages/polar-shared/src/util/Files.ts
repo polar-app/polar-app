@@ -38,7 +38,7 @@ class Promised {
 
 }
 
-const WRITE_FILE_MUTEXES: {[path: string]: Latch<boolean>} = {};
+const WRITE_FILE_MUTEXES: {readonly [path: string]: Latch<boolean>} = {};
 
 export class Files {
 
@@ -111,8 +111,8 @@ export class Files {
         // TODO: provide a listener too so that we can monitor progress in the
         // UI as well..
 
-        const files: string[] = [];
-        const dirs: SnapshotFiles[] = [];
+        const files: readonly string[] = [];
+        const dirs: readonly SnapshotFiles[] = [];
 
         const result = Object.freeze({path, files, dirs});
 
@@ -170,8 +170,8 @@ export class Files {
 
     public static async removeDirectoryRecursivelyAsync(path: string): Promise<RemovedFiles> {
 
-        const files: string[] = [];
-        const dirs: RemovedFiles[] = [];
+        const files: readonly string[] = [];
+        const dirs: readonly RemovedFiles[] = [];
 
         if (! await this.existsAsync(path)) {
             // this isn't a failure as the file is already absent
@@ -589,7 +589,7 @@ export class Files {
         return this.withProperException(() => this.promised.linkAsync(existingPath, newPath));
     }
 
-    public static async readdirAsync(path: string): Promise<string[]> {
+    public static async readdirAsync(path: string): Promise<readonly string[]> {
         return this.withProperException(() => this.promised.readdirAsync(path));
     }
 
@@ -681,9 +681,9 @@ export class Files {
 }
 
 export interface CreateDirResult {
-    dir: string;
-    exists?: boolean;
-    created?: boolean;
+    readonly dir: string;
+    readonly exists?: boolean;
+    readonly created?: boolean;
 }
 
 export interface WriteFileAsyncOptions {
@@ -709,39 +709,39 @@ export interface WriteFileAsyncOptions {
 }
 
 export interface AppendFileOptions {
-    encoding?: BufferEncoding | null;
-    mode: number;
-    flag: string;
+    readonly encoding?: BufferEncoding | null;
+    readonly mode: number;
+    readonly flag: string;
 }
 
 export interface FileDeleted {
 
-    path: string;
+    readonly path: string;
 
-    deleted: boolean;
+    readonly deleted: boolean;
 
 }
 
 export type CreateReadStreamOptions = BufferEncoding | {
-    flags?: string;
-    encoding?: BufferEncoding;
-    fd?: number;
-    mode?: number;
-    autoClose?: boolean;
-    start?: number;
-    end?: number;
-    highWaterMark?: number;
+    readonly flags?: string;
+    readonly encoding?: BufferEncoding;
+    readonly fd?: number;
+    readonly mode?: number;
+    readonly autoClose?: boolean;
+    readonly start?: number;
+    readonly end?: number;
+    readonly highWaterMark?: number;
 };
 
 export type CreateWriteStreamOptions = BufferEncoding | {
-    flags?: string | undefined;
-    encoding?: BufferEncoding | undefined;
-    fd?: number | undefined;
-    mode?: number | undefined;
-    autoClose?: boolean | undefined;
-    start?: number | undefined;
-    end?: number | undefined;
-    highWaterMark?: number | undefined;
+    readonly flags?: string | undefined;
+    readonly encoding?: BufferEncoding | undefined;
+    readonly fd?: number | undefined;
+    readonly mode?: number | undefined;
+    readonly autoClose?: boolean | undefined;
+    readonly start?: number | undefined;
+    readonly end?: number | undefined;
+    readonly highWaterMark?: number | undefined;
 };
 
 
@@ -749,7 +749,7 @@ export type CreateWriteStreamOptions = BufferEncoding | {
  * Reference to a local file.
  */
 export interface FileHandle {
-    path: string;
+    readonly path: string;
 }
 
 export class FileHandles {
@@ -796,7 +796,7 @@ export class Aborter {
 
     private aborted: boolean = false;
 
-    constructor(private provider: AbortionProvider) {
+    constructor(private readonly provider: AbortionProvider) {
     }
 
     protected hasAborted(): boolean {

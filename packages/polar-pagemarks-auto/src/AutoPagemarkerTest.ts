@@ -54,7 +54,7 @@ const createViewVisibility = (viewport: Viewport,
 };
 
 interface TestResult {
-    extendPagemark: ExtendPagemark;
+    readonly extendPagemark: ExtendPagemark;
 }
 
 type Tester = (viewport: Viewport, expected: any) => TestResult;

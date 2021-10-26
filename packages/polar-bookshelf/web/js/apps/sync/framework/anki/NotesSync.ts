@@ -169,8 +169,8 @@ export class NotesSync {
 
     private normalize(noteDescriptor: NoteDescriptor): NormalizedNote {
 
-        const mediaFiles: MediaFile[] = [];
-        let fields: {[name: string]: string} = {};
+        const mediaFiles: readonly MediaFile[] = [];
+        let fields: {readonly [name: string]: string} = {};
 
         Dictionaries.forDict(noteDescriptor.fields, (key, value) => {
             const mediaContent = MediaContents.parse(value);
@@ -209,7 +209,7 @@ export interface NormalizedNote {
 
     readonly noteDescriptor: NoteDescriptor;
 
-    readonly mediaFiles: MediaFile[];
+    readonly mediaFiles: readonly MediaFile[];
 
 }
 
@@ -239,6 +239,6 @@ export class Tag implements ITag {
 
 export interface NotesSynchronized {
 
-    readonly created: NoteDescriptor[];
+    readonly created: readonly NoteDescriptor[];
 
 }

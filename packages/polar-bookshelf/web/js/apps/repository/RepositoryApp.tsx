@@ -81,8 +81,8 @@ interface IProps {
 }
 
 interface IUseRouteContainerStylesProps {
-    isSidenavOpen: boolean;
-    sidenavWidth: number;
+    readonly isSidenavOpen: boolean;
+    readonly sidenavWidth: number;
 }
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>

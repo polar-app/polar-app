@@ -44,7 +44,7 @@ export class GroupDocCollection {
                                                              fingerprint: string,
                                                              handler: SnapshotListener<DocumentChange<SM>> ) {
 
-        const clauses: Clause[] = [
+        const clauses: readonly Clause[] = [
             ['groupID', '==', groupID],
             ['fingerprint', '==', fingerprint],
         ];

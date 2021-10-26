@@ -7,7 +7,7 @@ export namespace CloudProgresCollection {
     export const COLLECTION_NAME = "cloud_progress";
 
     export interface ICloudProgressMeta {
-        [key: string]: string | number | boolean;
+        readonly [key: string]: string | number | boolean;
     };
 
     export type IProgressStarted = {

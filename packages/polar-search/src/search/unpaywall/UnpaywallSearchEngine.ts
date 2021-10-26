@@ -40,7 +40,7 @@ export class UnpaywallSearchEngine implements search.Engine {
 
         const toLinks = (): ReadonlyArray<search.DocLink> => {
 
-            const result: search.DocLink[] = [];
+            const result: readonly search.DocLink[] = [];
             // eslint-disable-next-line camelcase
             for (const current of response.oa_locations) {
                 // eslint-disable-next-line camelcase

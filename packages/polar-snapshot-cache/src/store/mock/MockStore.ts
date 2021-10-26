@@ -10,9 +10,9 @@ import { IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentRefer
  */
 export namespace MockStore {
 
-    type CollectionData = {[id: string]: TDocumentData}
+    type CollectionData = {readonly [id: string]: TDocumentData}
 
-    const collections: {[name: string]: CollectionData} = {};
+    const collections: {readonly [name: string]: CollectionData} = {};
 
     function requireCollection(collectionName: string) {
 

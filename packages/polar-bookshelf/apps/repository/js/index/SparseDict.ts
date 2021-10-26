@@ -7,7 +7,7 @@ export type Predicate<V> = (value: V) => boolean;
  */
 export class SparseDict<K, V> {
 
-    private backing: { [key: string]: V } = {};
+    private backing: { readonly [key: string]: V } = {};
 
     constructor(private readonly toKey: ToKeyFunction<K>,
                 private readonly newValue: (key: K) => V) {

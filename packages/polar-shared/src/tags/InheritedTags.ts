@@ -2,7 +2,7 @@ import {arrayStream} from "../util/ArrayStreams";
 import {Tag} from "./Tags";
 
 export interface ITagMap {
-    [id: string]: Tag;
+    readonly [id: string]: Tag;
 }
 
 export interface InheritedTag extends Tag {
@@ -21,7 +21,7 @@ export function isInheritedTag(tag: Tag | InheritedTag): tag is InheritedTag {
 }
 
 export interface IInheritedTagMap {
-    [id: string]: InheritedTag;
+    readonly [id: string]: InheritedTag;
 }
 
 export function toSelfInheritedTags(tags: ITagMap | undefined | null): IInheritedTagMap {

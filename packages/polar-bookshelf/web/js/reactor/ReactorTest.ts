@@ -12,7 +12,7 @@ describe('Reactor', function() {
             message: 'hello world'
         };
 
-        let events: MessageEvent[] = [];
+        let events: readonly MessageEvent[] = [];
 
         assert.notEqual(reactor.registerEvent("hello"), undefined);
 
@@ -34,7 +34,7 @@ describe('Reactor', function() {
 
         const reactor = new Reactor<string>();
 
-        const sources: string[] = [];
+        const sources: readonly string[] = [];
 
         assert.notEqual(reactor.registerEvent("messages"), undefined);
 

@@ -270,7 +270,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]): Promise<void> {
         return this.datastore.synchronizeDocs(...docMetaRefs);
     }
 

@@ -6,7 +6,7 @@ export interface LambdaWrapperOpts {
     /**
      * If auth is required, the Authorization header will have to have a valid Firebase JWT token
      */
-    authRequired: boolean,
+    readonly authRequired: boolean,
 }
 
 export type FuncWithAuth<REQ, RES> = (idUser: IDUser, request: REQ) => Promise<RES>;

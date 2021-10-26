@@ -79,7 +79,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
      *
      * https://github.com/summernote/react-summernote/issues/38
      */
-    public onImageUpload(images: any[], insertImage: (arg: any) => void) {
+    public onImageUpload(images: readonly any[], insertImage: (arg: any) => void) {
 
         log.debug('onImageUpload', images);
         /* FileList does not support ordinary array methods */

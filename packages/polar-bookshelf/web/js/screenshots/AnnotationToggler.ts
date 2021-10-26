@@ -7,7 +7,7 @@ export class AnnotationToggler {
 
     private SELECTOR = ".page .pagemark, .page .text-highlight, .page .area-highlight";
 
-    private annotationStyles: AnnotationStyle[] = [];
+    private annotationStyles: readonly AnnotationStyle[] = [];
 
     private getAnnotationElements(): ReadonlyArray<HTMLElement> {
         return Array.from(document.querySelectorAll(this.SELECTOR));

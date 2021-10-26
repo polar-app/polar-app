@@ -19,7 +19,7 @@ describe('SyncQueueTest', function() {
 
     it("basic test", async function () {
 
-        const results: number[] = [];
+        const results: readonly number[] = [];
 
         syncQueue.add(async() => {
             results.push(0);
@@ -35,7 +35,7 @@ describe('SyncQueueTest', function() {
 
     it("with one level of generators", async function () {
 
-        const results: number[] = [];
+        const results: readonly number[] = [];
 
         syncQueue.add(async () => {
             results.push(0);

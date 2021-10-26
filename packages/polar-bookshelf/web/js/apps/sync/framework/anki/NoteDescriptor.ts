@@ -11,8 +11,8 @@ export interface NoteDescriptor {
     readonly guid: string;
     readonly deckName: string;
     readonly modelName: string;
-    readonly fields: {[name: string]: string};
-    readonly tags: string[];
+    readonly fields: {readonly [name: string]: string};
+    readonly tags: readonly string[];
 
 }
 

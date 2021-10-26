@@ -19,7 +19,7 @@ export namespace Benchmark {
 
         let runtime = 0;
 
-        const durations: number[] = [];
+        const durations: readonly number[] = [];
 
         for(const idx of Numbers.range(1, count)) {
             const before = Date.now();

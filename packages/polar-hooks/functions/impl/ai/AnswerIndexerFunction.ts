@@ -4,8 +4,8 @@ import {SentryReporters} from "../reporters/SentryReporter";
 import {AnswerIndexer} from "polar-answers/src/AnswerIndexer";
 
 interface AnswerIndexerRequest {
-    docID: string,
-    url: string,
+    readonly docID: string,
+    readonly url: string,
 }
 
 interface AnswerIndexerResponse {

@@ -24,19 +24,19 @@ export interface IDocInfo extends IDocBibMutable {
     /**
      * The number of pages in this document.
      */
-    nrPages: number;
+    readonly nrPages: number;
 
     /**
      * A fingerprint for the document created from PDF.js
      */
-    fingerprint: string;
+    readonly fingerprint: string;
 
     /**
      * The progress of this document (until completion) from 0 to 100.
      *
      * By default the document is zero percent complete.
      */
-    progress: number;
+    readonly progress: number;
 
     /**
      * Specify the pagemark type we should use to render this document.
@@ -45,107 +45,107 @@ export interface IDocInfo extends IDocBibMutable {
      * double or single column - especially research PDFs.
      *
      */
-    pagemarkType: PagemarkType;
+    readonly pagemarkType: PagemarkType;
 
     /**
      * The title for the document.
      */
-    title?: string;
+    readonly title?: string;
 
     /**
      * The subtitle for the document.
      */
-    subtitle?: string;
+    readonly subtitle?: string;
 
     /**
      * The description for the document.
      */
-    description?: string;
+    readonly description?: string;
 
     /**
      * The network URL for the document where we originally fetched it.
      */
-    url?: string;
+    readonly url?: string;
 
     /**
      * The URL type for this document.  By default it is 'download' when not
      * specified which was the previous default file format.
      */
-    urlType?: URLType;
+    readonly urlType?: URLType;
 
     /**
      * The last time this document was opened or null if it's never been
      * opened.
      */
-    lastOpened?: ISODateTimeString;
+    readonly lastOpened?: ISODateTimeString;
 
     /**
      * The last time this document was opened or null if it's never been
      * opened.
      */
-    lastUpdated?: ISODateTimeString;
+    readonly lastUpdated?: ISODateTimeString;
 
     /**
      * Arbitrary name/value properties set by 3rd party extensions for this
      * document.  Anki, etc may set these properties directly.
      */
-    properties: {[id: string]: string};
+    readonly properties: {readonly [id: string]: string};
 
     /**
      * True if this document is marked 'archived'.  The user has completed
      * reading it and no longer wants it to appear front and center in the
      * repository UI.
      */
-    archived: boolean;
+    readonly archived: boolean;
 
     /**
      * True if this document was starred for prioritization.
      */
-    flagged: boolean;
+    readonly flagged: boolean;
 
     /**
      * The backend of the doc. We assume STASH by default but it could be PUBLIC
      * for example docs.
      */
-    backend?: Backend;
+    readonly backend?: Backend;
 
     /**
      * The filename of this doc in the .stash directory.
      */
-    filename?: string;
+    readonly filename?: string;
 
     /**
      * The time this document was added to the repository.
      */
-    added?: ISODateTimeString;
+    readonly added?: ISODateTimeString;
 
     /**
      * Singular key/value pairs where the id is the lowercase representation
      * of a tag and value is the human/string representation.
      */
-    tags?: {[id: string]: Tag};
+    readonly tags?: {readonly [id: string]: Tag};
 
     /**
      * The number of comments in the document.
      */
-    nrComments?: number;
+    readonly nrComments?: number;
 
-    nrNotes?: number;
+    readonly nrNotes?: number;
 
     /**
      * The number of flashcards in the document.
      */
-    nrFlashcards?: number;
+    readonly nrFlashcards?: number;
 
-    nrTextHighlights?: number;
+    readonly nrTextHighlights?: number;
 
-    nrAreaHighlights?: number;
+    readonly nrAreaHighlights?: number;
 
     /**
      * The total number of annotations (comments + notes + flashcards, +
      * highlights, etc).
      */
-    nrAnnotations?: number;
+    readonly nrAnnotations?: number;
 
     /**
      * A unique uuid  for this document representing the unique document
@@ -154,29 +154,29 @@ export interface IDocInfo extends IDocBibMutable {
      * being written to allow us to de-duplicate documents and skip writes that
      * have already been applied.
      */
-    uuid?: UUID;
+    readonly uuid?: UUID;
 
     /**
      * The hashcode of the PDF or PHZ file to detect potential data corruption
      * of the original imported data.
      */
-    hashcode?: Hashcode;
+    readonly hashcode?: Hashcode;
 
     /**
      * The number of bytes used by the document (PDF, EPUB, etc).
      */
-    bytes?: number;
+    readonly bytes?: number;
 
     /**
      * If this document was found and shared from the web we can include the
      * 'referer' that this page was found from.  Usually this is going to be
      * google news, hacker news, reddit, etc.
      */
-    referrer?: string;
+    readonly referrer?: string;
 
-    shareStrategy?: ShareStrategy;
+    readonly shareStrategy?: ShareStrategy;
 
-    storedResources?: Set<StoredResource>;
+    readonly storedResources?: ReadonlySet<StoredResource>;
 
     /**
      * When true, we're mutating this entire DocMeta as a batch.  Setting it to
@@ -184,7 +184,7 @@ export interface IDocInfo extends IDocBibMutable {
      * try/finally block when updating this because if it's not set back to
      * false then writes will be lost.
      */
-    mutating?: DocMutating;
+    readonly mutating?: DocMutating;
 
     /**
      * The time this document was originally published according to the
@@ -192,38 +192,38 @@ export interface IDocInfo extends IDocBibMutable {
      * and for a HTML page this might be extracted from HTML microdata or
      * opengraph information.
      */
-    published?: ISODateString | ISODateTimeString;
+    readonly published?: ISODateString | ISODateTimeString;
 
-    readingPerDay?: ReadingOverview;
+    readonly readingPerDay?: ReadingOverview;
 
     /**
      * The visibility of this document (private or public).  The default is
      * private.
      */
-    visibility?: Visibility;
+    readonly visibility?: Visibility;
 
-    attachments: {[id: string]: IAttachment};
+    readonly attachments: {readonly [id: string]: IAttachment};
 
     /**
      * Thumbnails for the document which allow for preview.
      */
-    thumbnails?: { [id: string]: IThumbnail };
+    readonly thumbnails?: { readonly [id: string]: IThumbnail };
 
     /**
      * Summary of the document provided by the user.
      */
-    summary?: IText;
+    readonly summary?: IText;
 
     /**
      * True if this is a web capture document.
      */
-    webCapture?: boolean;
+    readonly webCapture?: boolean;
 
     /**
      * Specify the number of columns that this this document uses (1, 2, 3, etc).
      *
      */
-    columnLayout?: number;
+    readonly columnLayout?: number;
 
 }
 

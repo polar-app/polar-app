@@ -303,7 +303,7 @@ export abstract class AbstractDatastore {
                           docInfo: IDocInfo,
                           opts?: WriteOpts): Promise<void>;
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]): Promise<void> {
         // noop
     }
 
@@ -381,7 +381,7 @@ interface WritableDatastore {
      * Make sure the docs with the given fingerprints are synchronized with
      * this datastore. Only implemented in cloud datastores.
      */
-    synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void>;
+    synchronizeDocs(...docMetaRefs: readonly DocMetaRef[]): Promise<void>;
 
     createBackup(): Promise<void>;
 
@@ -603,7 +603,7 @@ export interface FileMeta {
     // TODO: I should also include the StorageSettings from Firebase here to
     // give it a set of standardized fields like contentType as screenshots
     // needs to be added with a file type.
-    [key: string]: string;
+    readonly [key: string]: string;
 
 }
 
@@ -871,7 +871,7 @@ export interface SnapshotResult {
 }
 
 export interface SyncDocMap {
-    [fingerprint: string]: SyncDoc;
+    readonly [fingerprint: string]: SyncDoc;
 
 }
 

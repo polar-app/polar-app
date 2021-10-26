@@ -43,13 +43,13 @@ export class JSONRPC {
 
     private static async execWithFirebase<R, V>(opts: {
         // Path within the AWS API Gateway
-        path: string;
+        readonly path: string;
 
         // The request payload
-        request: R;
+        readonly request: R;
 
         // Firebase token of the current user
-        idToken?: string,
+        readonly idToken?: string,
     }) {
         if (!opts.idToken) {
             throw new Error("User not authenticated");
@@ -91,13 +91,13 @@ export class JSONRPC {
      */
     private static async execWithAWS<R, V>(opts: {
         // Path within the AWS API Gateway
-        path: string;
+        readonly path: string;
 
         // The request payload
-        request: R;
+        readonly request: R;
 
         // Firebase token of the current user
-        idToken?: string,
+        readonly idToken?: string,
     }) {
         const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
 

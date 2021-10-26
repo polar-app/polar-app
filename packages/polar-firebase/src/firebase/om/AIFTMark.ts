@@ -53,7 +53,7 @@ export namespace AIFTMark {
 
     // TODO: move this to Collections
     export type MultiMapType = {
-        [id: string]: IAIFTMark
+        readonly [id: string]: IAIFTMark
     }
 
     // TODO: move this to Collections

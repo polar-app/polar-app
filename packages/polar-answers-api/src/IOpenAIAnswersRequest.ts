@@ -1,6 +1,6 @@
 import {AIModel} from "./AIModel";
 
-export type QuestionAnswerPair = [string, string];
+export type QuestionAnswerPair = readonly [string, string];
 
 export interface IOpenAIAnswersRequest {
 

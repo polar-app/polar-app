@@ -5,15 +5,15 @@ import {PathStr, URLStr} from '../Strings';
  */
 export interface InputSource {
 
-    type: InputSourceType;
+    readonly type: InputSourceType;
 
-    value: InputSourceValue;
+    readonly value: InputSourceValue;
 
     /**
      * An optional basename of this resource.  For example if this was a URL like
      * http://example.com/mybook.pdf the basename would be mybook.pdf.
      */
-    basename?: string;
+    readonly basename?: string;
 
 }
 

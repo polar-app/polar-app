@@ -34,14 +34,14 @@ export namespace DependencyIndex {
 
         readonly path: string;
         readonly type: SourceType;
-        readonly mainRefs: {[path: string]: true};
-        readonly testRefs: {[path: string]: true};
+        readonly mainRefs: {readonly [path: string]: true};
+        readonly testRefs: {readonly [path: string]: true};
 
     }
 
     export function create(): IDependencyIndex {
 
-        const index: {[key: string]: IDependencyIndexEntry} = {};
+        const index: {readonly [key: string]: IDependencyIndexEntry} = {};
 
         function register(importer: PathStr, type: SourceType) {
             index[importer] = {

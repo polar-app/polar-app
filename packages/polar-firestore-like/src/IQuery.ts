@@ -58,8 +58,8 @@ export interface IQuery<SM> {
     // order:
     orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery<SM>;
 
-    startAt(...fieldValues: any[]): IQuery<SM>;
-    startAfter(...fieldValues: any[]): IQuery<SM>;
+    startAt(...fieldValues: readonly any[]): IQuery<SM>;
+    startAfter(...fieldValues: readonly any[]): IQuery<SM>;
 
 }
 

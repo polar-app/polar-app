@@ -111,9 +111,9 @@ export const AnnotationPopupBar: React.FC = () => {
 };
 
 type IColorChangerProps = {
-    onToggle: () => void;
-    isOpen: boolean;
-    active?: boolean;
+    readonly onToggle: () => void;
+    readonly isOpen: boolean;
+    readonly active?: boolean;
 }
 
 const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
@@ -151,8 +151,8 @@ const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
 
 
 type IActionButtonProps = {
-    action: AnnotationPopupActionEnum;
-    tooltip: string;
+    readonly action: AnnotationPopupActionEnum;
+    readonly tooltip: string;
 };
 
 export const ActionButton: React.FC<IActionButtonProps> = (props) => {

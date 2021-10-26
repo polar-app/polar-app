@@ -6,7 +6,7 @@ export class TagPaths {
 
         let buff: string = '';
 
-        const result: PathEntry[] = [];
+        const result: readonly PathEntry[] = [];
 
         let parent: PathEntry | undefined;
 

@@ -23,7 +23,7 @@ describe('AsyncSerializer', function() {
         const latch = new Latch();
         const queue = new AsyncSerializer();
 
-        const order: number[] = [];
+        const order: readonly number[] = [];
 
         const latch0 = new Latch();
         const latch1 = new Latch();
@@ -55,7 +55,7 @@ describe('AsyncSerializer', function() {
         const latch = new Latch();
         const queue = new AsyncSerializer();
 
-        const order: number[] = [];
+        const order: readonly number[] = [];
 
         const latch0 = new Latch();
         const latch1 = new Latch();

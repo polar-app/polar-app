@@ -31,7 +31,7 @@ interface IReviewerStore {
      */
     readonly taskRep?: TaskRep<any>;
 
-    readonly pending: TaskRep<any>[];
+    readonly pending: readonly TaskRep<any>[];
 
     readonly finished: number;
 

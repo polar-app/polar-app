@@ -15,39 +15,39 @@ export class FilteredLogger implements ILogger {
 
     private readonly delegate: ILogger;
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         this.delegate.notice(msg, ...args);
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         if (this.level < LogLevel.DEBUG) {
             return;
         }
         this.delegate.debug(msg, ...args);
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         if (this.level < LogLevel.VERBOSE) {
             return;
         }
         this.delegate.verbose(msg, ...args);
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         if (this.level < LogLevel.INFO) {
             return;
         }
         this.delegate.info(msg, ...args);
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         if (this.level < LogLevel.WARN) {
             return;
         }
         this.delegate.warn(msg, ...args);
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         if (this.level < LogLevel.ERROR) {
             return;
         }

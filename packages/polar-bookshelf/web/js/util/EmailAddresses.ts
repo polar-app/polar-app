@@ -18,7 +18,7 @@ export class EmailAddresses {
             return [];
         }
 
-        const result: EmailAddress[] = [];
+        const result: readonly EmailAddress[] = [];
 
         for (const current of parsed) {
 

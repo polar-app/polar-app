@@ -75,7 +75,7 @@ export namespace MainAppBrowserWindowFactory {
             readonly defaultValue?: number;
         }
 
-        const dimensionMappings: DimensionMapping[] = [
+        const dimensionMappings: readonly DimensionMapping[] = [
 
             {original: 'minHeight', dimension: 'height', defaultValue: 400},
             {original: 'minWidth', dimension: 'width', defaultValue: 300},
@@ -179,7 +179,7 @@ export namespace MainAppBrowserWindowFactory {
 }
 
 interface Position {
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
 }
 

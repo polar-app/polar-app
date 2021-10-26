@@ -34,7 +34,7 @@ export class Styles {
 
 }
 
-function useSteps(): EnhancedStep[] {
+function useSteps(): readonly EnhancedStep[] {
 
     // TODO: show them how to use the rich text area including images,
     // HTML, etc.
@@ -56,7 +56,7 @@ function useSteps(): EnhancedStep[] {
     };
 
     interface IconProps {
-        className: string;
+        readonly className: string;
     }
 
     const Icon = (props: IconProps) => {
@@ -71,7 +71,7 @@ function useSteps(): EnhancedStep[] {
         </div>;
     };
 
-    const steps: EnhancedStep[] = [
+    const steps: readonly EnhancedStep[] = [
 
         // TODO: we don't really give the user a tour through the annotations view
         // TODO: we don't realy give them a tour through capturing web pages.

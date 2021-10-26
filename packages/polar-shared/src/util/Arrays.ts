@@ -6,22 +6,22 @@ export type PrimitiveArray = ReadonlyArray<string | number | boolean>;
  * A type that can be converted to an array.
  */
 export type ToArrayLike<T> = ReadonlyArray<T> |
-                            {[key: string]: T} |
-                            {[key: number]: T} |
+                            {readonly [key: string]: T} |
+                            {readonly [key: number]: T} |
                             undefined |
                             null;
 
 interface IArrayLike<T> {
-    [key: number]: T,
+    readonly [key: number]: T,
     readonly length: number;
 }
 
 interface GroupedDict<V> {
-    [key: string]: ReadonlyArray<V>;
+    readonly [key: string]: ReadonlyArray<V>;
 }
 
 interface MutableGroupedDict<V> {
-    [key: string]: V[];
+    readonly [key: string]: readonly V[];
 }
 
 
@@ -113,7 +113,7 @@ export namespace Arrays {
      * Take N samples from the given input.
      * @param values
      */
-    export function sample<T>(values: T[], count: number) {
+    export function sample<T>(values: readonly T[], count: number) {
 
         if (count === 0) {
             return [];
@@ -124,7 +124,7 @@ export namespace Arrays {
             return values;
         }
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         const gap = Math.floor(values.length / count);
 
@@ -139,7 +139,7 @@ export namespace Arrays {
     /**
      * Convert an array to a dictionary.
      */
-    export function toDict(val: {} | any[]): {[key: string]: any} {
+    export function toDict(val: {} | readonly any[]): {readonly [key: string]: any} {
 
         const isObject = typeof val === "object";
         const isArray = val instanceof Array;
@@ -160,9 +160,9 @@ export namespace Arrays {
             throw new Error("Not an array");
         }
 
-        const result: {[key: string]: any} = {};
+        const result: {readonly [key: string]: any} = {};
 
-        const arrayVal: any[] = <any[]> val;
+        const arrayVal: readonly any[] = <readonly any[]> val;
 
         for (let idx = 0; idx < arrayVal.length; ++idx) {
             result[idx] = arrayVal[idx];
@@ -183,11 +183,11 @@ export namespace Arrays {
      * partial. This is the last few if they don't equal the size.
      *
      */
-    export function createBatches<T>(input: ReadonlyArray<T>, batchSize: number): T[][] {
+    export function createBatches<T>(input: ReadonlyArray<T>, batchSize: number): readonly (readonly T[])[] {
 
-        const result: T[][] = [];
+        const result: readonly (readonly T[])[] = [];
 
-        let batch: T[] = [];
+        let batch: readonly T[] = [];
 
         input.forEach(current => {
 
@@ -211,7 +211,7 @@ export namespace Arrays {
     /**
      * Like forEach but sequentially executes each function.
      */
-    export async function asyncForEach<T>(items: T[], callback: AsyncCallback<T>) {
+    export async function asyncForEach<T>(items: readonly T[], callback: AsyncCallback<T>) {
 
         for (const item of items) {
             await callback(item);
@@ -222,7 +222,7 @@ export namespace Arrays {
     /**
      * Shuffle the input as a new array.
      */
-    export function shuffle<T>(...input: T[]): T[] {
+    export function shuffle<T>(...input: readonly T[]): readonly T[] {
 
         const arr = Object.assign([], input);
 
@@ -247,7 +247,7 @@ export namespace Arrays {
         // adjust the limit so we never fetch too many values.
         limit = Math.min(limit, input.length);
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         for (let idx = 0; idx < limit; ++idx) {
             result.push(input[idx]);
@@ -262,7 +262,7 @@ export namespace Arrays {
         // adjust the limit so we never fetch too many values.
         limit = Math.min(limit, input.length);
 
-        const result: T[] = [];
+        const result: readonly T[] = [];
 
         for (let idx = input.length - limit; idx < input.length; ++idx) {
             result.push(input[idx]);

@@ -105,7 +105,7 @@ function toPasteItem(item: DataTransferItem): PasteItem {
 }
 
 type PasteType = PasteItem['kind'];
-type PasteTypesMap = { [K in PasteItem as K['kind']]: K };
+type PasteTypesMap = { readonly [K in PasteItem as K['kind']]: K };
 
 const getPasteItem = <T extends PasteType>(xs: ReadonlyArray<PasteItem>, type: T) =>
     xs.find((item): item is PasteTypesMap[T] => item.kind === type)
@@ -113,8 +113,8 @@ const getPasteItem = <T extends PasteType>(xs: ReadonlyArray<PasteItem>, type: T
 
 
 type PasteHandler = {
-    type: PasteType;
-    handler: () => Promise<void>;
+    readonly type: PasteType;
+    readonly handler: () => Promise<void>;
 };
 
 const executePasteHandlers = async (

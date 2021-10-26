@@ -7,8 +7,8 @@ import {useFakePinchToZoom} from "../../PinchHooks";
 import {ScaleLevelTuple, ScaleLevelTuples} from "../../ScaleLevels";
 
 type UseElemWidthChangedOpts = {
-    threshold?: number;
-    elemRef: React.RefObject<HTMLElement>;
+    readonly threshold?: number;
+    readonly elemRef: React.RefObject<HTMLElement>;
 };
 
 export const useElemWidthChanged = (callback: () => void, opts: UseElemWidthChangedOpts) => {
@@ -42,8 +42,8 @@ export const useResizeObserver = (callback: UseResizeObserverCallback, elemRef: 
 };
 
 interface IUsePDFPinchToZoomArgs {
-    containerRef: React.RefObject<HTMLElement>; 
-    wrapperRef: React.RefObject<HTMLElement>; 
+    readonly containerRef: React.RefObject<HTMLElement>; 
+    readonly wrapperRef: React.RefObject<HTMLElement>; 
 }
 
 export const usePDFPinchToZoom = ({ containerRef, wrapperRef }: IUsePDFPinchToZoomArgs) => {

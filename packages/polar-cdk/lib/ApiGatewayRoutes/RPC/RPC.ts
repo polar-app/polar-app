@@ -3,7 +3,7 @@ import {NodejsFunction} from "@aws-cdk/aws-lambda-nodejs";
 import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
 
-const lambdas: AWSLambda[] = [
+const lambdas: readonly AWSLambda[] = [
     {
         name: 'test',
         path: path.resolve(__dirname, 'lambdas/test.ts'),
@@ -37,11 +37,11 @@ export class RPC extends Construct {
 }
 
 type AWSLambda = {
-    name: string,
-    path: string,
-    timeoutSeconds?: number,
+    readonly name: string,
+    readonly path: string,
+    readonly timeoutSeconds?: number,
 }
 
 type RPCProps = {
-    rootResource: IResource,
+    readonly rootResource: IResource,
 }

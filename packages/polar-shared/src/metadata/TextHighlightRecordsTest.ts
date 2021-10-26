@@ -19,8 +19,8 @@ describe('TextHighlightRecords', function() {
 
         it("basic", function () {
 
-            const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100})];
-            const textSelections: ITextRect[] = [{text: "hello world", rect: rects[0]}];
+            const rects: readonly Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100})];
+            const textSelections: readonly ITextRect[] = [{text: "hello world", rect: rects[0]}];
             const text = "hello world";
 
             // create a basic TextHighlight object..

@@ -95,7 +95,7 @@ export class ClozeParser {
             return [result];
         }
 
-        const result: Region[] = [];
+        const result: readonly Region[] = [];
 
         const tuples = Tuples.createSiblings(clozeRegions);
 
@@ -127,7 +127,7 @@ export class ClozeParser {
 
         let m;
 
-        const matches: RegExpExecArray[] = [];
+        const matches: readonly RegExpExecArray[] = [];
 
         do {
             m = re.exec(text);

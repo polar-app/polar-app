@@ -10,12 +10,12 @@ export interface Discount {
 const DISCOUNTS: ReadonlyArray<Discount> = [];
 
 export interface DiscountMap {
-    [key: string]: Discount;
+    readonly [key: string]: Discount;
 }
 
 export class Discounts {
 
-    constructor(private delegate: DiscountMap = {}) {
+    constructor(private readonly delegate: DiscountMap = {}) {
 
     }
 

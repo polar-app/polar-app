@@ -35,7 +35,7 @@ import * as TypeMoq from "typemoq";
  */
 export class NotesInfoClient implements INotesInfoClient {
 
-    public async execute(notes: number[]): Promise<NoteInfo[]> {
+    public async execute(notes: readonly number[]): Promise<readonly NoteInfo[]> {
 
         const body = {
             action: "notesInfo",
@@ -47,14 +47,14 @@ export class NotesInfoClient implements INotesInfoClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <NoteInfo[]> await AnkiConnectFetch.fetch(init);
+        return <readonly NoteInfo[]> await AnkiConnectFetch.fetch(init);
 
     }
 
     /**
      * Create a mock that returns the given result.
      */
-    public static createMock(result: NoteInfo[]) {
+    public static createMock(result: readonly NoteInfo[]) {
         const client = TypeMoq.Mock.ofType<INotesInfoClient>();
         client.setup(x => x.execute(TypeMoq.It.isAny())).returns(() => Promise.resolve(result));
         return client.object;
@@ -64,19 +64,19 @@ export class NotesInfoClient implements INotesInfoClient {
 
 export interface INotesInfoClient {
 
-    execute(notes: number[]): Promise<NoteInfo[]>;
+    execute(notes: readonly number[]): Promise<readonly NoteInfo[]>;
 
 }
 
 interface NoteInfo {
-    noteId: number;
-    modelName: string;
-    tags: string[];
-    fields: {[name: string]: Field};
+    readonly noteId: number;
+    readonly modelName: string;
+    readonly tags: readonly string[];
+    readonly fields: {readonly [name: string]: Field};
 }
 
 interface Field {
-    value: string;
-    order: number;
+    readonly value: string;
+    readonly order: number;
 }
 

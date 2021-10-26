@@ -128,7 +128,7 @@ export namespace CursorPositions {
      */
     export function computeCursorLookupArray(node: Node): CursorLookupArray {
 
-        const lookup: ICursorPosition[] = [];
+        const lookup: readonly ICursorPosition[] = [];
 
         function doBuild(offset: number, node: Node) {
 

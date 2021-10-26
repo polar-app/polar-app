@@ -11,7 +11,7 @@ export namespace ShortHeadCalculator {
      * A point type.  This could be a tuple too but it's less well documented
      * this way.
      */
-    export type Point = {x: number, y: number};
+    export type Point = {readonly x: number, readonly y: number};
 
     /**
      * Regular vector of numbers.

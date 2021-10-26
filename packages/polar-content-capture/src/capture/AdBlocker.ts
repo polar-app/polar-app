@@ -38,7 +38,7 @@ export interface AdBlockResult {
 }
 
 export interface IDomMutations {
-    elementsRemoved: number;
+    readonly elementsRemoved: number;
 }
 
 export class DomMutations implements IDomMutations {

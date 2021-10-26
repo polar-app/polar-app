@@ -16,8 +16,8 @@ const caret: React.CSSProperties = {
 };
 
 type IMUIDropdownCaretProps = {
-    className?: string;
-    style?: React.CSSProperties;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
 }
 
 export const MUIDropdownCaret: React.FC<IMUIDropdownCaretProps> = ({ className = "", style = {} }) => (

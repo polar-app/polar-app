@@ -88,8 +88,8 @@ export namespace FileTombstone {
 export namespace DocumentDataUpdater {
 
     type IDocMutation = {
-        type: 'added' | 'removed' | 'modified',
-        block: IBlock<IDocumentContent>,
+        readonly type: 'added' | 'removed' | 'modified',
+        readonly block: IBlock<IDocumentContent>,
     };
 
     function getDocMutation(mutation: IBlocksStoreMutation): IDocMutation | null {

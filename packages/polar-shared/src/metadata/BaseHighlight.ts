@@ -9,7 +9,7 @@ export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight 
 
     public image?: IImage;
 
-    public images: {[key: string]: IImage} = {};
+    public images: {readonly [key: string]: IImage} = {};
 
     public color?: HighlightColor;
 

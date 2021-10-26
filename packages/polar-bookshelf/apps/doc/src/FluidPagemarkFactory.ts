@@ -32,7 +32,7 @@ export interface FluidPagemarkFactory {
     /**
      * Create a fluid pagemark or undefined if one can't be created.
      */
-    create: (opts: FluidPagemarkCreateOpts) => IFluidPagemark | undefined;
+    readonly create: (opts: FluidPagemarkCreateOpts) => IFluidPagemark | undefined;
 
 }
 

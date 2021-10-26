@@ -23,8 +23,8 @@ describe('HTMLToBlocks', () => {
     });
 
     type INoIDBlockContentStructure = {
-        content: IBlockContent,
-        children: ReadonlyArray<INoIDBlockContentStructure>,
+        readonly content: IBlockContent,
+        readonly children: ReadonlyArray<INoIDBlockContentStructure>,
     };
 
     const omitContentStructureIds = (structureArr: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<INoIDBlockContentStructure> =>
@@ -48,7 +48,7 @@ describe('HTMLToBlocks', () => {
 
             const result = omitContentStructureIds(await HTMLToBlocks.parse(input));
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {content: HTMLToBlocks.createMarkdownContent("Fsadf"), children: []},
                 {content: HTMLToBlocks.createMarkdownContent("Item1"), children: []},
                 {content: HTMLToBlocks.createMarkdownContent("Item2"), children: []},
@@ -62,7 +62,7 @@ describe('HTMLToBlocks', () => {
         it('should parse nested lists (from google docs)', async () => {
             const input = `<meta http-equiv="content-type" content="text/html; charset=utf-8"><meta charset="utf-8"><b id="docs-internal-guid-b23c597f-7fff-6ccf-5013-28c0685ab31e"><ol ltr" aria-level="1"><p dir="ltr" role="presentation"><span >item1</span></p></li><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span >item2</span></p></li><ol ><li dir="ltr" aria-level="2"><p dir="ltr" role="presentation"><span >hmm</span></p></li><li dir="ltr" aria-level="2"><p dir="ltr" role="presentation"><span >world</span></p></li><ol ><li dir="ltr" aria-level="3"><p dir="ltr" role="presentation"><span >potato</span></p></li></ol></ol><li dir="ltr"  aria-level="1"><p dir="ltr" role="presentation"><span >item3</span></p></li></ol></b>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {
                     content: HTMLToBlocks.createMarkdownContent("item2"),
@@ -90,7 +90,7 @@ describe('HTMLToBlocks', () => {
                 <span>Hello</span>
                 <b>Whatever<span>potato</span>
                 </b>`;
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("world? Hello Whateverpotato"),
                     children: []
@@ -118,7 +118,7 @@ function myFunction() {
     document.write(5 + 6);
 }
 &lt;/script&gt;</code></pre>`;
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("```\n<button>Press Me!</button>\n```"),
                     children: []
@@ -141,7 +141,7 @@ function myFunction() {
         it('should parse links and convert them into markdown links (from google docs)', async () => {
       const input = `<meta http-equiv="content-type" content="text/html; charset=utf-8"><meta charset="utf-8"><b id="docs-internal-guid-bf74c453-7fff-a6a9-9923-9698855409e5"><p dir="ltr" ><span >What i</span><a href="https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png" ><span >s happening?</span></a></p><p dir="ltr" ><span >Hello world</span></p></b><br class="Apple-interchange-newline">`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("What i[s happening?](https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png)"),
                     children: []
@@ -160,7 +160,7 @@ function myFunction() {
         it('should ignore links with javascript code', async () => {
             const input = `<a href="jAvAsCrIpT:alert(0)>hello</a>`;
 
-            const output: IBlockContentStructure[] = [];
+            const output: readonly IBlockContentStructure[] = [];
 
             assert.deepEqual(await HTMLToBlocks.parse(input), output);
         });
@@ -168,7 +168,7 @@ function myFunction() {
         it('should parse images that have urls as their source and convert them into markdown blocks', async () => {
             const input = `an image <img src="https://preview.redd.it/bwc59363iym41.gif?format=png8&s=a7e97b88b22e3d4386aaed90bdd8cdcd5edec80d"></img>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("an image ![](https://preview.redd.it/bwc59363iym41.gif?format=png8&s=a7e97b88b22e3d4386aaed90bdd8cdcd5edec80d)"),
                     children: []
@@ -184,7 +184,7 @@ function myFunction() {
             const dataurl = "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7";
             const input = `an image <img src="${dataurl}"></img>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent('an image'),
                     children: []
@@ -203,7 +203,7 @@ function myFunction() {
         it('should work with google docs content (random 1)', async () => {
             const input = `<meta http-equiv="content-type" content="text/html; charset=utf-8"><meta charset="utf-8"><b id="docs-internal-guid-b8b2d479-7fff-d99e-d523-77699661a072"><ol ><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span>item1</span></p></li><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span >item2</span></p></li><ol><li dir="ltr" aria-level="2"><p dir="ltr" role="presentation"><span >hmm</span></p></li><li dir="ltr" aria-level="2"><p dir="ltr" role="presentation"><span >world</span></p></li><ol ><li dir="ltr" aria-level="3"><p dir="ltr" role="presentation"><span >potato</span></p></li></ol></ol><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span>item3</span></p></li></ol><br /><p dir="ltr"><span >Test </span><span>bold </span><span></span><span>italics </span><span></span><span>linethrough</span><span> underline</span></p><p dir="ltr"><span>What is going on right now</span></p><br /><br /><br /><ul ><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span>Hello</span></p></li><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span >World</span></p></li><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span>Foo</span></p></li><li dir="ltr" aria-level="1"><p dir="ltr" role="presentation"><span >bar</span></p></li></ul></b>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {
                     content: HTMLToBlocks.createMarkdownContent("item2"),
@@ -234,7 +234,7 @@ function myFunction() {
         it('should work with nested lists that have <ul>s inside of <li>s (our own block to html converter)', async () => {
             const input = `<ul><li>What i<a href=\"https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png\">s happening?</a><ul><ul><ul><li>Foo</li></ul><li>Bar<ul><ul><li>5ffasdfas</li></ul><li>World<ul><li>foo</li></ul></li></ul></li></ul><li>Dude</li></ul></li></ul>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("What i[s happening?](https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png)"),
                     children: [
@@ -304,7 +304,7 @@ function myFunction() {
             </body>
             </html>`;
 
-            const output: INoIDBlockContentStructure[] = [
+            const output: readonly INoIDBlockContentStructure[] = [
                 {
                     content: HTMLToBlocks.createMarkdownContent("cs linethroughunderline"),
                     children: [

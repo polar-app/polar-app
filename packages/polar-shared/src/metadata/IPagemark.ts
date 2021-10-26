@@ -33,13 +33,13 @@ export interface IPagemark extends IAnnotation {
     /**
      * The note for this annotation.
      */
-    notes: { [id: string]: INote };
+    readonly notes: { readonly [id: string]: INote };
 
     /**
      * The type of pagemark.
      *
      */
-    type: PagemarkType;
+    readonly type: PagemarkType;
 
     /**
      * The total percentage of the page that is covered with the page mark.
@@ -47,14 +47,14 @@ export interface IPagemark extends IAnnotation {
      * page and is the raw percentage value of the page.
      *
      */
-    percentage: number;
+    readonly percentage: number;
 
     /**
      * The column number on which this pagemark is rendered.  This is mostly
      * metadata and we should be migrating to PagemarkRect and PagemarkRange
      * which supports raw rendering of the pagemarks.
      */
-    column: number;
+    readonly column: number;
 
     /**
      * The PagemarkRect for this pagemark. When not specified we use a box of
@@ -64,12 +64,12 @@ export interface IPagemark extends IAnnotation {
      * or the whole page.
      *
      */
-    rect: IPagemarkRect;
+    readonly rect: IPagemarkRect;
 
     /**
      * The mode of this pagemark (read, ignored, etc).
      */
-    mode: PagemarkMode;
+    readonly mode: PagemarkMode;
 
     /**
      * A batch is used when creating multiple pagemarks over multiple pages.
@@ -78,8 +78,8 @@ export interface IPagemark extends IAnnotation {
      * is created with one unique operation across several pages.
      *
      */
-    batch?: string;
+    readonly batch?: string;
 
-    range?: IPagemarkRange;
+    readonly range?: IPagemarkRange;
 
 }

@@ -9,7 +9,7 @@ import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
 import {MarkdownContent} from "../../../../../../web/js/notes/content/MarkdownContent";
 
 type CreateCommentForm = {
-    body: string;
+    readonly body: string;
 };
 
 const FORM_INPUTS: InputOptions<CreateCommentForm> = {

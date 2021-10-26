@@ -10,7 +10,7 @@ import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {PageAnnotations} from "./PageAnnotations";
 
 interface ITextHighlightsViewRendererProps {
-    docMeta: IDocMeta;
+    readonly docMeta: IDocMeta;
 }
 
 export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRendererProps> = ({ docMeta }) => {

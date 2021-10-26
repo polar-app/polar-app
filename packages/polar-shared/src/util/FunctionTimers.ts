@@ -5,7 +5,7 @@ export namespace FunctionTimers {
 
     export type DurationMS = number;
 
-    export type ExecTuple<T> = Readonly<[T, DurationMS]>;
+    export type ExecTuple<T> = Readonly<readonly [T, DurationMS]>;
 
     export function exec<T>(func: () => T): ExecTuple<T> {
         const before = Date.now();

@@ -15,7 +15,7 @@ export class IDRecordMutations {
         const prevMap = IDMaps.create(prev);
         const currMap = IDMaps.create(curr);
 
-        const result: Array<IDRecordMutation<V>> = [];
+        const result: ReadonlyArray<IDRecordMutation<V>> = [];
 
         const identifiers = SetArrays.union(IDMaps.toIdentifiers(curr), IDMaps.toIdentifiers(prev));
 

@@ -19,9 +19,9 @@ import {getAnnotationData} from "./AnnotationPopupContext";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 export type ActiveHighlightData = {
-    highlightID: string,
-    type: (IDocMetaAnnotation | IBlockAnnotation)['type'],
-    pageNum: number,
+    readonly highlightID: string,
+    readonly type: (IDocMetaAnnotation | IBlockAnnotation)['type'],
+    readonly pageNum: number,
 };
 
 namespace AnnotationPositionCalculator {
@@ -163,8 +163,8 @@ namespace AnnotationPositionCalculator {
 }
 
 type IUsePopupBarPositionOpts = {
-    selectionEvent?: ActiveSelectionEvent;
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    readonly selectionEvent?: ActiveSelectionEvent;
+    readonly annotation?: IDocMetaAnnotation | IBlockAnnotation;
 };
 export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | undefined => {
     const {selectionEvent, annotation} = opts;
@@ -212,7 +212,7 @@ const constrainToContainer = (
     scrollElem: HTMLElement | Window,
     popup: HTMLElement,
     rect: ILTRect
-): { rect: ILTRect, isTop: boolean } => {
+): { readonly rect: ILTRect, readonly isTop: boolean } => {
     const containerRect = container.getBoundingClientRect();
     const popupRect = popup.getBoundingClientRect();
     const scrollY = isWindow(scrollElem) ? scrollElem.scrollY : scrollElem.scrollTop;
@@ -237,10 +237,10 @@ const constrainToContainer = (
 };
 
 type IUseAnnotationPopupPositionUpdaterProps = {
-    boundsElement: HTMLElement | null;
-    scrollElement: HTMLElement | Window | null;
-    rect: ILTRect;
-    noScroll?: boolean;
+    readonly boundsElement: HTMLElement | null;
+    readonly scrollElement: HTMLElement | Window | null;
+    readonly rect: ILTRect;
+    readonly noScroll?: boolean;
 };
 
 const isWindow = (x: any): x is Window => {

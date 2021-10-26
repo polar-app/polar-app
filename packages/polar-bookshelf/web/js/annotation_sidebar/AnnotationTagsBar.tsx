@@ -6,7 +6,7 @@ import {deepMemo} from "../react/ReactUtils";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
 interface IProps {
-    readonly tags?: {[id: string]: Tag};
+    readonly tags?: {readonly [id: string]: Tag};
 }
 
 export const AnnotationTagsBar = deepMemo(function AnnotationTagsBar(props: IProps) {

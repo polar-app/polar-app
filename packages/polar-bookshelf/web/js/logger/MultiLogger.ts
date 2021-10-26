@@ -11,9 +11,9 @@ export class MultiLogger implements ILogger {
 
     public readonly name: string ;
 
-    private readonly delegates: ILogger[];
+    private readonly delegates: readonly ILogger[];
 
-    constructor(...delegates: ILogger[]) {
+    constructor(...delegates: readonly ILogger[]) {
 
         // Make the delegates use safe loggers so that if any one fails the
         // exceptions are handled gracefully and don't choke other loggers.
@@ -25,27 +25,27 @@ export class MultiLogger implements ILogger {
             + this.delegates.map(delegate => delegate.name).join("+");
     }
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.notice(msg, ...args));
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.warn(msg, ...args));
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.error(msg, ...args));
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.info(msg, ...args));
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.verbose(msg, ...args));
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         this.delegates.forEach(delegate => delegate.debug(msg, ...args));
     }
 
@@ -57,7 +57,7 @@ export class MultiLogger implements ILogger {
 
     }
 
-    private static toSafeLoggers(delegates: ILogger[]) {
+    private static toSafeLoggers(delegates: readonly ILogger[]) {
 
         return delegates.map(current => {
             if (current instanceof SafeLogger) {

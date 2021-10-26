@@ -47,7 +47,7 @@ xdescribe('NotesSync', function() {
         notesSync.storeMediaFileClient = StoreMediaFileClient.createMock();
         notesSync.findNotesClient = FindNotesClient.createMock([]);
 
-        const noteDescriptors: NoteDescriptor[] = [
+        const noteDescriptors: readonly NoteDescriptor[] = [
             {
                 guid: "101",
                 deckName: "test",
@@ -73,7 +73,7 @@ xdescribe('NotesSync', function() {
         notesSync.addNoteClient = AddNoteClient.createMock(1);
         notesSync.findNotesClient = FindNotesClient.createMock([1]);
 
-        const noteDescriptors: NoteDescriptor[] = [
+        const noteDescriptors: readonly NoteDescriptor[] = [
             {
                 guid: "101",
                 deckName: "test",

@@ -32,7 +32,7 @@ class MUILogger extends ConsoleLogger {
         super();
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
 
         super.error(msg, ...args);
 

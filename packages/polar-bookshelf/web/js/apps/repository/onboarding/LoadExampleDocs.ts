@@ -169,9 +169,9 @@ export class LoadExampleDocs {
         return {id, label: label || id};
     }
 
-    private createTags(...labels: string[]): {[id: string]: Tag} {
+    private createTags(...labels: readonly string[]): {readonly [id: string]: Tag} {
 
-        const result: {[id: string]: Tag} = {};
+        const result: {readonly [id: string]: Tag} = {};
 
         for (const label of labels) {
             const id = label;
@@ -402,7 +402,7 @@ interface DocOpts {
 
     readonly pagemarkEnd?: number;
 
-    readonly tags?: {[id: string]: Tag};
+    readonly tags?: {readonly [id: string]: Tag};
 
     readonly added?: ISODateTimeString;
 

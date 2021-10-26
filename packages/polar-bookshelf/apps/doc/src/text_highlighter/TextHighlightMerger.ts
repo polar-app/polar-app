@@ -1,6 +1,6 @@
 import {IRect} from "polar-shared/src/util/rects/IRect";
 
-export type IThresholds = [number, number];
+export type IThresholds = readonly [number, number];
 
 export namespace TextHighlightMerger {
     // The following values are based on the average height
@@ -63,7 +63,7 @@ export namespace TextHighlightMerger {
         }
 
         let last          = [items[0]];
-        let groups: T[][] = [last];
+        let groups: readonly (readonly T[])[] = [last];
 
         for (let i = 1; i < items.length; i += 1) {
             if (fn(items[i - 1], items[i])) {

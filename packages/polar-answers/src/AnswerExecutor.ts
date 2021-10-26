@@ -75,7 +75,7 @@ export namespace AnswerExecutor {
         readonly duration: number;
     }
 
-    export type ResultWithDurationTuple<V> = [V, number];
+    export type ResultWithDurationTuple<V> = readonly [V, number];
 
     export async function executeWithDuration<V>(delegate: (() => Promise<V>) | Promise<V>): Promise<ResultWithDurationTuple<V>> {
 

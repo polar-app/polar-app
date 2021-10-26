@@ -12,7 +12,7 @@ export class AnnotationHolders {
 
     public static fromDocMeta(docMeta: IDocMeta): ReadonlyArray<AnnotationHolder> {
 
-        const result: AnnotationHolder[] = [];
+        const result: readonly AnnotationHolder[] = [];
 
         for (const pageMeta of Object.values(docMeta.pageMetas || {})) {
 

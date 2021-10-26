@@ -23,7 +23,7 @@ export class HackerNewsContents {
 
     public static parse(content: string): ReadonlyArray<HackerNewsContent> {
 
-        const result: HackerNewsContent[] = [];
+        const result: readonly HackerNewsContent[] = [];
 
         const jsdom = new JSDOM(content);
         const doc = jsdom.window.document;

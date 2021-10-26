@@ -6,7 +6,7 @@ export class Dicts {
      * @param dict
      * @param callback
      */
-    static ownKeys<V>(dict: {[key: string]: V} , callback: OwnKeysCallback<V>) {
+    static ownKeys<V>(dict: {readonly [key: string]: V} , callback: OwnKeysCallback<V>) {
 
         for(const key in dict) {
 

@@ -80,9 +80,9 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
 
 
 interface ISectionExpandToggleProps {
-    style?: React.CSSProperties;
-    expanded: boolean;
-    onToggleExpand: () => void;
+    readonly style?: React.CSSProperties;
+    readonly expanded: boolean;
+    readonly onToggleExpand: () => void;
 }
 
 export const SectionExpandToggle: React.FC<ISectionExpandToggleProps> = (props) => {

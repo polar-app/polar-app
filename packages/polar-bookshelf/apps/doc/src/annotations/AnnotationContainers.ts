@@ -12,7 +12,7 @@ export namespace AnnotationContainers {
 
         function createLookup(): ReadonlyArray<AnnotationContainer | undefined> {
 
-            const result: AnnotationContainer[] = [];
+            const result: readonly AnnotationContainer[] = [];
 
             for (const annotationContainer of annotationContainers) {
                 result[annotationContainer.pageNum] = annotationContainer;

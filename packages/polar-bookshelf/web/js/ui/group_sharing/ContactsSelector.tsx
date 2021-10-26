@@ -58,7 +58,7 @@ export class ContactsSelector extends React.Component<IProps, IState> {
 
         const emailAddresses = EmailAddresses.parseList(text);
 
-        const newContacts: ContactOption[] = emailAddresses.map(current => {
+        const newContacts: readonly ContactOption[] = emailAddresses.map(current => {
 
             return {
                 value: current.address,

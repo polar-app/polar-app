@@ -87,7 +87,7 @@ export class CannyAnalytics implements IAnalytics {
 
 declare var window: any;
 
-export type ICannyCustomFields = {[key: string]: string | number | Date};
+export type ICannyCustomFields = {readonly [key: string]: string | number | Date};
 
 export interface ICannyUserData {
     readonly name?: string;
@@ -98,8 +98,8 @@ export interface ICannyUserData {
 }
 
 export interface ICannyData {
-    appID: string;
-    user: ICannyUserData
+    readonly appID: string;
+    readonly user: ICannyUserData
 }
 
 export interface ICannyClient {

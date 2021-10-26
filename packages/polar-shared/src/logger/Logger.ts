@@ -44,27 +44,27 @@ class DelegatedLogger implements ILogger {
     // think we should compromise on our design.  We should fix the problem
     // with spectron instead of hacking it here.
 
-    public notice(msg: string, ...args: any[]) {
+    public notice(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().notice(msg, ...args);
     }
 
-    public info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().info(msg, ...args);
     }
 
-    public warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().warn(msg, ...args);
     }
 
-    public error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().error(msg, ...args);
     }
 
-    public verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().verbose(msg, ...args);
     }
 
-    public debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: readonly any[]) {
         LoggerDelegate.get().debug(msg, ...args);
     }
 
@@ -75,7 +75,7 @@ class DelegatedLogger implements ILogger {
     /**
      *
      */
-    private apply(logFunction: LogFunction, msg: string, ...args: any[]) {
+    private apply(logFunction: LogFunction, msg: string, ...args: readonly any[]) {
 
         // msg = "[" + this.caller + "] " + msg;
 
@@ -93,4 +93,4 @@ class DelegatedLogger implements ILogger {
 
 }
 
-type LogFunction = (msg: string, ...args: any[]) => void;
+type LogFunction = (msg: string, ...args: readonly any[]) => void;

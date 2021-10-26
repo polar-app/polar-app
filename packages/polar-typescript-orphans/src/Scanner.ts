@@ -20,7 +20,7 @@ export namespace Scanner {
 
         const srcDir = module.srcDir;
 
-        const references: ISourceReference[] = [];
+        const references: readonly ISourceReference[] = [];
 
         if (! await Files.existsAsync(srcDir)) {
             throw new Error("Dir does not exist: " + srcDir);

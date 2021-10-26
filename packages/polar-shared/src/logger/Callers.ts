@@ -57,6 +57,6 @@ export class Callers {
 }
 
 export interface Caller {
-    filename: string;
+    readonly filename: string;
 }
 

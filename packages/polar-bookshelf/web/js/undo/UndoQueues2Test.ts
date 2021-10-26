@@ -5,7 +5,7 @@ import IUndoQueueEntry = UndoQueues2.IUndoQueueAction;
 
 describe('UndoQueues2', function() {
 
-    type StoreData = {[id: string]: string};
+    type StoreData = {readonly [id: string]: string};
 
     interface IStore {
         readonly value: () => StoreData;

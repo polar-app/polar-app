@@ -9,7 +9,7 @@ import { Files } from "polar-shared/src/util/Files";
 
 class PDFIndex {
 
-    private data: {[key: string]: HackerNewsContent} = {};
+    private data: {readonly [key: string]: HackerNewsContent} = {};
 
     public doIndex(content: string) {
         const hackerNewsContents = HackerNewsContents.parse(content);

@@ -3,11 +3,11 @@ import {Tags} from 'polar-shared/src/tags/Tags';
 import {TagMatcherFactory} from './TagMatcher';
 
 
-function createTags(...tags: string[]) {
+function createTags(...tags: readonly string[]) {
     return tags.map(current => Tags.create(current));
 }
 
-function runMatcher(queryTagStrs: string[], docTagsStrs: string[]) {
+function runMatcher(queryTagStrs: readonly string[], docTagsStrs: readonly string[]) {
 
     const queryTags = createTags(...queryTagStrs);
     const docTags = createTags(...docTagsStrs);

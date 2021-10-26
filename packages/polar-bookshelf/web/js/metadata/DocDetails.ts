@@ -17,7 +17,7 @@ export class DocDetails {
 
             const targetDocDetails: UpdatableDocDetails = docInfo;
 
-            const typedKeys: Array<keyof UpdatableDocDetails>
+            const typedKeys: ReadonlyArray<keyof UpdatableDocDetails>
                 = ['title', 'subtitle', 'description', 'url', 'filename'];
 
             const sourceDocDetails: UpdatableDocDetails = docDetail;

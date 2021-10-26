@@ -15,7 +15,7 @@ export namespace UserTraits {
 
     }
 
-    export type UserTraitMap = {[key: string]: string};
+    export type UserTraitMap = {readonly [key: string]: string};
 
     export async function write(traits: UserTraitMap) {
 

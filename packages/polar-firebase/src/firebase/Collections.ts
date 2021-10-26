@@ -161,7 +161,7 @@ export class Collections {
 
         const limit = opts.limit || 100;
 
-        let startAfter: any[] | undefined;
+        let startAfter: readonly any[] | undefined;
 
         // we always have at least one page...
         let hasNext: boolean = true;
@@ -179,7 +179,7 @@ export class Collections {
 
                 const computeStartAfter = () => {
 
-                    const result: any[] = [];
+                    const result: readonly any[] = [];
 
                     for (const orderByClause of opts.orderBy || []) {
                         result.push(last.get(orderByClause[0]));
@@ -239,19 +239,19 @@ export interface Cursor<T> {
 export interface IterateOpts {
     readonly limit?: number;
     readonly offset?: number;
-    readonly startAfter?: any[];
-    readonly startAt?: any[];
+    readonly startAfter?: readonly any[];
+    readonly startAt?: readonly any[];
     readonly orderBy?: ReadonlyArray<OrderByClause>;
 }
 
-export type OrderByClause = [string, OrderByDirectionLike | undefined];
+export type OrderByClause = readonly [string, OrderByDirectionLike | undefined];
 
 export interface ListOpts extends IterateOpts {
 }
 
 export type ValueType = object | string | number;
 
-export type Clause = [string, WhereFilterOpLike, ValueType];
+export type Clause = readonly [string, WhereFilterOpLike, ValueType];
 
 export class Clauses {
 
@@ -329,7 +329,7 @@ export interface CollectionReferenceLike {
     limit(size: number): QueryLike;
 }
 
-export type DocumentDataLike = {[field: string]: any};
+export type DocumentDataLike = {readonly [field: string]: any};
 
 export interface QueryLike {
     get(): Promise<QuerySnapshotLike>;
@@ -338,17 +338,17 @@ export interface QueryLike {
     offset(offset: number): QueryLike;
     orderBy(fieldPath: string, directionStr?: OrderByDirectionLike): QueryLike;
     // orderByKey(): QueryLike;
-    startAt(...fieldValues: any[]): QueryLike;
-    startAfter(...fieldValues: any[]): QueryLike;
-    endAt(...fieldValues: any[]): QueryLike;
-    endBefore(...fieldValues: any[]): QueryLike;
+    startAt(...fieldValues: readonly any[]): QueryLike;
+    startAfter(...fieldValues: readonly any[]): QueryLike;
+    endAt(...fieldValues: readonly any[]): QueryLike;
+    endBefore(...fieldValues: readonly any[]): QueryLike;
 }
 export type WhereFilterOpLike = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
 
 export type OrderByDirectionLike = 'desc' | 'asc';
 
 export interface QuerySnapshotLike {
-    readonly docs: QueryDocumentSnapshotLike[];
+    readonly docs: readonly QueryDocumentSnapshotLike[];
 
 }
 export interface QueryDocumentSnapshotLike {

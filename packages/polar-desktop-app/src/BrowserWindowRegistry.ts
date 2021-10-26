@@ -16,13 +16,13 @@ export class BrowserWindowMeta {
  */
 export interface LiveWindowsProvider {
 
-    getLiveWindowIDs(): ID[];
+    getLiveWindowIDs(): readonly ID[];
 
 }
 
 export class DefaultLiveWindowsProvider implements LiveWindowsProvider {
 
-    public getLiveWindowIDs(): ID[] {
+    public getLiveWindowIDs(): readonly ID[] {
         return BrowserWindow.getAllWindows().map(current => current.id);
     }
 
@@ -42,7 +42,7 @@ export class BrowserWindowRegistry {
     // note that internally Typescript maps the numbers to strings but this
     // really breaks the APIs for dealing with Keys so we're just going to
     // give up and use a string for now.
-    private static registry: {[id: string]: BrowserWindowMeta} = {};
+    private static registry: {readonly [id: string]: BrowserWindowMeta} = {};
 
     private static liveWindowsProvider: LiveWindowsProvider = new DefaultLiveWindowsProvider();
 
@@ -75,10 +75,10 @@ export class BrowserWindowRegistry {
     /**
      * Find a window ID with the given tag.
      */
-    public static tagged(tag: BrowserWindowTag): ID[] {
+    public static tagged(tag: BrowserWindowTag): readonly ID[] {
         this.gc();
 
-        const result: ID[] = [];
+        const result: readonly ID[] = [];
 
         Dictionaries.forDict(this.registry, (id, meta) => {
 
@@ -95,7 +95,7 @@ export class BrowserWindowRegistry {
     /**
      * Get a copy of the current registry.
      */
-    public static dump(): Readonly<{[id: string]: BrowserWindowMeta}> {
+    public static dump(): Readonly<{readonly [id: string]: BrowserWindowMeta}> {
         return Object.freeze(Object.assign({}, this.registry));
     }
 
@@ -118,11 +118,11 @@ export class BrowserWindowRegistry {
 }
 
 // noinspection TsLint
-export type TagMap = {[name: string]: string};
+export type TagMap = {readonly [name: string]: string};
 
 export interface BrowserWindowTag {
-    name: string;
-    value: string;
+    readonly name: string;
+    readonly value: string;
 }
 
 

@@ -63,7 +63,7 @@ export const NoteBreadcrumbLink = React.memo(function NoteBreadcrumbLink(props: 
 });
 
 interface INoteBreadcrumbLinksProps {
-    blocks: ReadonlyArray<Block<TextContent>>;
+    readonly blocks: ReadonlyArray<Block<TextContent>>;
 }
 
 const useNoteBreadcrumbLinksStyles = makeStyles(() =>

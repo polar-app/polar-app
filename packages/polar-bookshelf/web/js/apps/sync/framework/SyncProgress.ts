@@ -13,19 +13,19 @@ export interface SyncProgress {
     /**
      * The completion percentage over the interval [0,100]
      */
-    percentage: number;
+    readonly percentage: number;
 
-    state: SyncState;
+    readonly state: SyncState;
 
     /**
      * The error for the sync when the status is failed.
      */
-    error?: ErrorType;
+    readonly error?: ErrorType;
 
     /**
      * An optional task result from the last task executed.
      */
-    taskResult: Optional<SyncTaskResult>;
+    readonly taskResult: Optional<SyncTaskResult>;
 
     // TODO: not sure if we should expose this.
     //

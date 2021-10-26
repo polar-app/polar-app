@@ -3,7 +3,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {Devices} from "polar-shared/src/util/Devices";
 
 type IUseStylesProps = {
-    flushed: boolean;
+    readonly flushed: boolean;
 };
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>

@@ -46,7 +46,7 @@ export namespace search {
         /**
          * A unique id for the search engine.
          */
-        id: EngineIDStr;
+        readonly id: EngineIDStr;
 
         /**
          * Run a search and provide a results object to allow us to iterate
@@ -186,7 +186,7 @@ export namespace search {
 
         public readonly pagination: Pagination;
 
-        constructor(public entries: ReadonlyArray<Entry>) {
+        constructor(public readonly entries: ReadonlyArray<Entry>) {
 
             this.pagination = {
                 total: entries.length,

@@ -91,7 +91,7 @@ export interface ProfileIDRecord {
     readonly profileID?: ProfileIDStr;
 }
 
-export type ProfileRecordTuple<T> = [T, IProfile | undefined];
+export type ProfileRecordTuple<T> = readonly [T, IProfile | undefined];
 
 export namespace ProfileCollection {
 
@@ -105,7 +105,7 @@ export namespace ProfileCollection {
         return await Collections.get(firestore, COLLECTION, id);
     }
 
-    export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<[string, IDocumentReference<unknown>]> {
+    export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<readonly [string, IDocumentReference<unknown>]> {
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }

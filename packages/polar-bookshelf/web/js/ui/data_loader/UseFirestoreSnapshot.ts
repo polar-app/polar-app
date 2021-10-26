@@ -18,7 +18,7 @@ interface IFirestoreSnapshotOpts {
     readonly where?: ReadonlyArray<IWhereClause>;
 }
 
-export type IFirestoreSnapshotTuple<SM = unknown> = [IQuerySnapshot<SM>| undefined, IFirestoreError | undefined];
+export type IFirestoreSnapshotTuple<SM = unknown> = readonly [IQuerySnapshot<SM>| undefined, IFirestoreError | undefined];
 
 /**
  * Get a snapshot from Firestore but also allow the user to subscribe by types
@@ -65,7 +65,7 @@ export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IF
 
 }
 
-export type IFirestoreConvertedSnapshotTuple<T, SM = unknown,> = [IFirestoreTypedQuerySnapshot<T> | undefined, IFirestoreError | undefined];
+export type IFirestoreConvertedSnapshotTuple<T, SM = unknown,> = readonly [IFirestoreTypedQuerySnapshot<T> | undefined, IFirestoreError | undefined];
 
 export function useFirestoreSnapshotSubscriber<SM extends unknown, T>(subscriber: FirestoreSnapshotSubscriber<IQuerySnapshot<SM>>,
                                                                       converter: FirestoreSnapshotConverter<T>): IFirestoreConvertedSnapshotTuple<T, SM> {

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 export interface MutableStandardProps {
-    id?: string;
-    className?: string;
-    style?: React.CSSProperties;
+    readonly id?: string;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
 }
 
 export interface StandardProps extends Readonly<MutableStandardProps> {

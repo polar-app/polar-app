@@ -49,7 +49,7 @@ export const useStyles = makeStyles(() =>
 );
 
 interface IBlockAnnotationActionsWrapperProps {
-    actions: React.ReactElement<IBlockAnnotationActionProps>[];
+    readonly actions: readonly React.ReactElement<IBlockAnnotationActionProps>[];
 }
 
 export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrapperProps> = (props) => {
@@ -86,8 +86,8 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
 
 
 interface IBlockAnnotationActionProps {
-    icon: React.ReactElement;
-    onClick?: React.MouseEventHandler<HTMLDivElement>;
+    readonly icon: React.ReactElement;
+    readonly onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export const useBlockAnnotationActionStyles = makeStyles((theme) =>
@@ -135,7 +135,7 @@ export const useColorIconStyles = makeStyles((theme) =>
 );
 
 interface IColorIconProps {
-    color?: ColorStr;
+    readonly color?: ColorStr;
 }
 
 const ColorIcon: React.FC<IColorIconProps> = ({ color = 'yellow' }) => {
@@ -147,8 +147,8 @@ const ColorIcon: React.FC<IColorIconProps> = ({ color = 'yellow' }) => {
 };
 
 interface IBlockAnnotationColorPickerActionProps {
-    color?: ColorStr;
-    onChange: (color: ColorStr) => void;
+    readonly color?: ColorStr;
+    readonly onChange: (color: ColorStr) => void;
 }
 
 export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPickerActionProps> = (props) => {
@@ -187,18 +187,18 @@ export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPic
 };
 
 interface IUseSharedAnnotationBlockActionsOpts {
-    id: BlockIDStr;
-    annotation: AnnotationContent;
-    actions?: ISharedActionType[];
+    readonly id: BlockIDStr;
+    readonly annotation: AnnotationContent;
+    readonly actions?: readonly ISharedActionType[];
 }
 
 export type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open' | 'editTags';
 
-type ISharedActionMap = {
+type ISharedActionMap = { readonly
     [key in ISharedActionType]: React.FC;
 }
 
-export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): React.ReactElement[] => {
+export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): readonly React.ReactElement[] => {
     const { annotation, id, actions = ['createFlashcard',  'changeColor', 'remove', 'open'] } = opts;
     const blocksTreeStore = useBlocksTreeStore();
     const { getBlock, createFlashcard } = useAnnotationBlockManager();
