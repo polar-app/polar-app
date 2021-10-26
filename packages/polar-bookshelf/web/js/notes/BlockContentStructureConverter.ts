@@ -53,7 +53,6 @@ export namespace BlockContentStructureConverter {
         switch (content.type) {
             case 'date':
             case 'name':
-            case 'document':
                 const titleMarkdown = BlockTextContentUtils.getTextContentMarkdown(content)
                 return `# ${titleMarkdown}`;
 
