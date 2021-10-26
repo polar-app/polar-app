@@ -24,7 +24,6 @@ import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnno
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../doc/src/DocViewer';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
-import {trace} from 'mobx';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;

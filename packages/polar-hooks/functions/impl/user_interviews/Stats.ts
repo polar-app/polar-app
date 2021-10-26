@@ -1,5 +1,5 @@
 import {UserPager} from "./UserPager";
-import {UserPredicate, UserPredicates} from "./UserInterviewer";
+import { UserPredicates} from "./UserInterviewer";
 
 export class Stats {
 

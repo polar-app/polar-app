@@ -3,7 +3,7 @@ import {PathOrURLStr, Strings, URLStr} from "./Strings";
 import {ArrayBuffers} from "./ArrayBuffers";
 import {Blobs} from "./Blobs";
 import {Files} from "./Files";
-import {BrowserContext, FilePaths} from "./FilePaths";
+import { FilePaths} from "./FilePaths";
 import { Logger } from "../logger/Logger";
 
 const log = Logger.create();

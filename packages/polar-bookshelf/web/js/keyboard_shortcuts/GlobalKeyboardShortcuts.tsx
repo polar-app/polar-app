@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 import {
     IBaseKeyboardShortcut,

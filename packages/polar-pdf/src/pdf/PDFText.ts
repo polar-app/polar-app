@@ -1,6 +1,6 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import {PageViewport, TextContent, Transform, Util} from "pdfjs-dist";
+import {PageViewport, Util} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 import {ISibling} from "polar-shared/src/util/Tuples";
 import {Numbers} from "polar-shared/src/util/Numbers";

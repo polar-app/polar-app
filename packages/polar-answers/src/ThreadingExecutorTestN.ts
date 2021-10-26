@@ -1,4 +1,3 @@
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {ThreadingExecutor} from "./ThreadingExecutor";
 import {AnswerTests} from "./AnswerTests";
 import getUID = AnswerTests.getUID;

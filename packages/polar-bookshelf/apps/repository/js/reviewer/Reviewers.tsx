@@ -1,4 +1,3 @@
-import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";

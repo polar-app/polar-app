@@ -2,8 +2,6 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {default as fetch} from "node-fetch";
-import {Accounts} from "../stripe/Accounts";
-import {Billing} from "polar-accounts/src/Billing";
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 

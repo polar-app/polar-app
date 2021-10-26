@@ -5,7 +5,6 @@
 import {Diffs} from "./Diffs";
 
 import {assert} from 'chai';
-import * as Assert from "assert";
 
 export interface ToJSONOpts {
     readonly ignoreWhitespace?: boolean;

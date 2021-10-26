@@ -1,6 +1,5 @@
 import {ISODateString, ISODateTimeString, ISODateTimeStrings} from "../metadata/ISODateTimeStrings";
 import {ArrayListMultimap} from "./Multimap";
-import {Arrays} from "./Arrays";
 
 export interface DataPoint {
     readonly created: ISODateString;

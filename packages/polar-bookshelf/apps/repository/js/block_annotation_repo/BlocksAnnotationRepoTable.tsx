@@ -1,6 +1,5 @@
 import {Box, createStyles, makeStyles, Table, TableBody, TableContainer, TableRow} from "@material-ui/core";
 import {observer} from "mobx-react-lite";
-import {IAnnotationHighlightContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import React from "react";

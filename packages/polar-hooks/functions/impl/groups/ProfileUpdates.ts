@@ -2,7 +2,6 @@ import {IDUser} from '../util/IDUsers';
 import {ProfileOwners} from './db/ProfileOwners';
 import {ProfileHandles} from './db/ProfileHandles';
 import {TagsValidator} from './rpc/TagsValidator';
-import * as admin from 'firebase-admin';
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {
     IProfileUpdate,

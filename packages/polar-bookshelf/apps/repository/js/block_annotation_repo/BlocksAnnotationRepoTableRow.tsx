@@ -1,11 +1,9 @@
 import {Box, createStyles, makeStyles, TableCell, TableRow, Theme, useTheme} from "@material-ui/core";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {AnnotationContentType, IAnnotationHighlightContent, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {DocFileResolvers} from "../../../../web/js/datastore/DocFileResolvers";
 import {Images} from "../../../../web/js/metadata/Images";
-import {ResponsiveImg} from "../../../../web/js/annotation_sidebar/ResponsiveImg";
 import {MarkdownContentConverter} from "../../../../web/js/notes/MarkdownContentConverter";
 import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates";
 import {ColorStr} from "../../../../web/js/ui/colors/ColorSelectorBox";
