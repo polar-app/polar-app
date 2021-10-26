@@ -1,10 +1,10 @@
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInputs';
 import {IDocAnnotation} from '../../DocAnnotation';
-import {Flashcard} from '../../../metadata/Flashcard';
+import {Flashcard} from 'polar-shared/src/metadata/Flashcard';
 import {IRef, Refs} from 'polar-shared/src/metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
-import {DocMetas} from '../../../metadata/DocMetas';
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDStr} from "polar-shared/src/util/Strings";

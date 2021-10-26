@@ -13,11 +13,15 @@
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "compile:watch": "npx tsc --watch",
     "dist": "yarn run compile",
-    "mocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
-    "karma": "echo no karma"
+    "karma": "echo no karma",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;",
+    "tscwatch": "tsc --watch",
+    "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "cimocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
   },
   "dependencies": {
     "@amplitude/node": "=1.8.0",
@@ -55,6 +59,9 @@
     "polar-private-beta": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-firebase-admin": "0.0.0",
+    "polar-firebase-browser": "0.0.0",
+    "polar-migration-block-annotations": "0.0.0",
+    "polar-blocks": "0.0.0",
     "polar-firestore-like": "0.0.0",
     "polar-html": "0.0.0",
     "polar-pdf": "0.0.0",
@@ -90,6 +97,7 @@
     "polar-karma": "0.0.0",
     "polar-test": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0"
+    "polar-webpack": "0.0.0",
+    "polar-firebase-users": "0.0.0"
   }
 }

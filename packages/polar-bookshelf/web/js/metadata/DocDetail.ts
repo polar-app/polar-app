@@ -2,8 +2,8 @@
  * Details about a document that was loaded which can be incorporated into
  * DocInfo if necessary.
  */
-import {Image} from './Image';
-import {Author} from './Author';
+import {Image} from 'polar-shared/src/metadata/Image';
+import {Author} from 'polar-shared/src/metadata/Author';
 import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 import {IText} from "polar-shared/src/metadata/Text";

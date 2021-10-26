@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -13,12 +14,14 @@ import Alert from '@material-ui/lab/Alert';
 import {useHistory} from 'react-router-dom';
 import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {Analytics, useAnalytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
+import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -35,8 +38,6 @@ export const useStyles = makeStyles((theme) =>
 
         alert: {
             margin: theme.spacing(1),
-            // marginLeft: theme.spacing(3),
-            // marginRight: theme.spacing(3),
         },
 
         alternate: {
@@ -50,6 +51,7 @@ export const useStyles = makeStyles((theme) =>
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
         }
+        },
     }),
 );
 
@@ -121,15 +123,14 @@ const BackendProgress = (props: BackendProgressProps) => {
     return <BackendProgressInactive/>
 
 }
+interface IAlert {
+    readonly type: 'error' | 'success';
+    readonly message: string;
+}
 
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
-
-    interface IAlert {
-        readonly type: 'error' | 'success';
-        readonly message: string;
-    }
 
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
@@ -159,7 +160,7 @@ const EmailTokenAuthButton = () => {
             }
 
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -203,7 +204,7 @@ const EmailTokenAuthButton = () => {
                 setPending(false);
             }
 
-        } catch(err) {
+        } catch (err) {
             setAlert({
                 type: 'error',
                 message: (err as any).message
@@ -266,6 +267,7 @@ const EmailTokenAuthButton = () => {
         <>
         <Box m={2}>
             <div style={{
+            <Box px={2} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 flexGrow: 1
@@ -293,7 +295,7 @@ const EmailTokenAuthButton = () => {
                                            style={{
                                                textAlign: 'center',
                                                flexGrow: 1,
-                                           }} />
+                                           }}/>
 
                                 <div className={classes.alternate}>
                                     <Button onClick={handleEmailProvided}>Resend Email</Button>
@@ -313,7 +315,7 @@ const EmailTokenAuthButton = () => {
                             </>
                         )}
 
-                        {! triggered && (
+                        {!triggered && (
                             <TextField autoFocus={true}
                                        className={classes.email}
                                        onChange={event => emailRef.current = event.target.value}
@@ -336,31 +338,45 @@ const EmailTokenAuthButton = () => {
                 {!triggered && (
                     <AuthButton onClick={handleClick}
                                 strategy="Email"
-                                startIcon={<EmailIcon />}/>
+                                startIcon={<EmailIcon/>}/>
                 )}
             </div>
         </Box>
-            
+            </Box>
         </>
     );
 };
 
-const RegisterForBetaButton = () => {
+export const RegisterForBetaButton = () => {
 
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
+    const [alert, setAlert] = React.useState<IAlert | undefined>();
+
     const emailRef = React.useRef("");
+    const codeRef = React.useRef("");
 
     const codeRef = React.useRef("");
 
     const classes = useStyles();
 
+    const analytics = useAnalytics();
+
     const handleClick = React.useCallback(() => {
+        const email = emailRef.current.trim();
 
         const request = {
-            email: emailRef.current.trim(),
-            tag: "initial_signup",
+            email: email,
+            tag: codeRef.current || "initial_signup",
         };
+
+        if(EmailAddressParser.parse(email).length < 1){
+            setAlert({
+                type: 'error',
+                message: 'Unable to register email: The email address is improperly formatted.'
+            });
+            return;
+        }
 
         try {
 
@@ -368,8 +384,11 @@ const RegisterForBetaButton = () => {
 
             async function doAsync() {
 
-                await JSONRPC.exec<unknown, any>('private-beta/register', request);
+                await JSONRPC.exec<unknown, unknown>('private-beta/register', request);
                 setIsRegistered(true);
+
+                // @TODO also store the Referral code, once we start capturing it during signup
+                analytics.event2("private_beta_joined", {});
 
                 console.log("Registered now!");
 
@@ -382,7 +401,7 @@ const RegisterForBetaButton = () => {
             setPending(false);
         }
 
-    }, [setPending]);
+    }, [setPending, analytics]);
 
     return (
         <>
@@ -393,6 +412,13 @@ const RegisterForBetaButton = () => {
             )}
 
             <BackendProgress pending={pending}/>
+
+            {alert && (
+                <Alert severity={alert.type} 
+                        className={classes.alert}>
+                    {alert.message}
+                </Alert>
+            )}
 
             {!isRegistered && (
                 <Box m={2}>
@@ -412,6 +438,22 @@ const RegisterForBetaButton = () => {
                                 variant="outlined"/>
 
                                 <TextField autoFocus={true}
+                <Box component='div' px={2} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                    <TextField autoFocus={true}
+                               className={classes.email}
+                               onChange={event => codeRef.current = event.target.value}
+                               placeholder="Referral code (optional)"
+                               InputProps={{
+                                   startAdornment: (
+                                       <EmailIcon style={{margin: '8px'}}/>
+                                   )
+                               }}
+                               variant="outlined"/>
+
+                    <TextField autoFocus={true}
                                className={classes.email}
                                onChange={event => codeRef.current = event.target.value}
                                placeholder="Referral code (optional)"
@@ -429,6 +471,13 @@ const RegisterForBetaButton = () => {
                             Get Started
                         </Button>
                     </div>
+                    <Button variant="contained"
+                            size="large"
+                            color="primary"
+                            className={classes.button}
+                            onClick={handleClick}>
+                        Join
+                    </Button>
                 </Box>
             )}
         </>
@@ -495,7 +544,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
         <>
             <div className="AuthContent"
                  style={{
-                     height:"100vh",
+                     height: "100vh",
                      textAlign: 'center',
                      flexGrow: 1,
                      display: 'flex',
@@ -533,8 +582,9 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                 <div style={{flexGrow: 1}}/>
 
-                <AuthLegalDisclaimer/>
-
+                <Box px={2}>
+                    <AuthLegalDisclaimer/>
+                </Box>
             </div>
         </>
     );

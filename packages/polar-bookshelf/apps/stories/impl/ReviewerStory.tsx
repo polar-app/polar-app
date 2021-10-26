@@ -5,7 +5,6 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {FlashcardTaskAction} from "../../repository/js/reviewer/cards/FlashcardTaskAction";
-import {MockDocMetas} from "../../../web/js/metadata/DocMetas";
 import {Flashcards} from "../../../web/js/metadata/Flashcards";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {FlashcardTaskActions} from "../../repository/js/reviewer/cards/FlashcardTaskActions";
@@ -14,6 +13,8 @@ import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
+import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
+import {StoryHolder} from "../StoryHolder";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -132,26 +133,28 @@ export const ReviewerStory = () => {
 
     return (
 
-        <BrowserRouter key="browser-router">
-            <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+        <StoryHolder>
+            <BrowserRouter key="browser-router">
+                <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-                <>
-                    {open && (
-                        <Reviewer reviewerProvider={reviewerProvider}/>)}
+                    <>
+                        {open && (
+                            <Reviewer reviewerProvider={reviewerProvider}/>)}
 
-                    <Button variant="contained"
-                            color="primary"
-                            size="large"
-                            onClick={() => setOpen(true)}>
-                        Start Review
-                    </Button>
+                        <Button variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={() => setOpen(true)}>
+                            Start Review
+                        </Button>
 
-                    <ReviewerStats/>
+                        <ReviewerStats/>
 
-                </>
+                    </>
 
-            </Switch>
-        </BrowserRouter>
+                </Switch>
+            </BrowserRouter>
+        </StoryHolder>
 
     );
 };

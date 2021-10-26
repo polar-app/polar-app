@@ -5,6 +5,7 @@ import {DataURLs} from "polar-shared/src/util/DataURLs";
 import Box from "@material-ui/core/Box";
 import {IThumbnail} from "polar-shared/src/util/Thumbnailer";
 import {MUILoading} from "../../../web/js/mui/MUILoading";
+import {StoryHolder} from "../StoryHolder";
 
 const url = 'https://storage.googleapis.com/polar-32b0f.appspot.com/stash/1PwtutApP6pbC1SszLuEzjBpU8V14EZDAnUfGmPN.pdf';
 
@@ -54,17 +55,17 @@ export const PDFThumbnailerStory = () => {
     }
 
     return (
-        <div>
+        <StoryHolder>
+            <>
+                <b>type: </b> {thumbnail.type} <br/>
+                <b>format: </b> {thumbnail.format} <br/>
+                <b>nativeDimensions: </b> {thumbnail.nativeDimensions.width}x{thumbnail.nativeDimensions.height} <br/>
+                <b>scaledDimensions: </b> {thumbnail.scaledDimensions.width}x{thumbnail.scaledDimensions.height} <br/>
 
-            <b>type: </b> {thumbnail.type} <br/>
-            <b>format: </b> {thumbnail.format} <br/>
-            <b>nativeDimensions: </b> {thumbnail.nativeDimensions.width}x{thumbnail.nativeDimensions.height} <br/>
-            <b>scaledDimensions: </b> {thumbnail.scaledDimensions.width}x{thumbnail.scaledDimensions.height} <br/>
-
-            <Box mt={1} mb={1}>
-                <Thumbnail {...thumbnail}/>
-            </Box>
-
-        </div>
+                <Box mt={1} mb={1}>
+                    <Thumbnail {...thumbnail}/>
+                </Box>
+            </>
+        </StoryHolder>
     );
 }

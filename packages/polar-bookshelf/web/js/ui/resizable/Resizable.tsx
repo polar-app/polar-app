@@ -3,8 +3,8 @@ import {deepMemo} from "../../react/ReactUtils";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {VerticalLine} from './VerticalLine';
 import {HorizontalLine} from "./HorizontalLine";
-import {IPoint} from "../../Point";
-import {Rects} from "../../Rects";
+import {IPoint} from "polar-shared/src/util/Point";
+import {Rects} from "polar-shared/src/util/Rects";
 import {ILTBRRects} from "polar-shared/src/util/rects/ILTBRRects";
 
 export type ResizableBounds = 'parent';

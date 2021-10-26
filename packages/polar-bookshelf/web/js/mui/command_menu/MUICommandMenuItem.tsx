@@ -51,12 +51,16 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
 
     const classes = useStyles();
 
+    const handleClick = React.useCallback(() => {
+        props.onSelected()
+    }, [props])
+
     return (
         <ListItem disableGutters
                   button
                   className={clsx(props.className, classes.root, props.selected && classes.selected)}
                   selected={props.selected}
-                  onClick={props.onSelected}>
+                  onClick={handleClick}>
 
             {props.icon && (
                 <ListItemIcon>

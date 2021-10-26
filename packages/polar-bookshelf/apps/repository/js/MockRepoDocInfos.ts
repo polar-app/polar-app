@@ -5,7 +5,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {RepoDocInfos} from "./RepoDocInfos";
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
 const now = new Date();
 const today = ISODateTimeStrings.create();

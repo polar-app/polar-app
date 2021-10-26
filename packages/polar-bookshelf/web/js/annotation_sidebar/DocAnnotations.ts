@@ -2,7 +2,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {createChildren, IDocAnnotation, IDocAnnotationRef} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcards} from '../metadata/Flashcards';
-import {Point} from '../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";

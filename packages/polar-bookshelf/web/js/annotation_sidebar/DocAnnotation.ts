@@ -1,5 +1,5 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Point} from '../Point';
+import {Point} from 'polar-shared/src/util/Point';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {IRef, Ref, Refs} from 'polar-shared/src/metadata/Refs';

@@ -64,7 +64,8 @@ export namespace BlockAreaHighlight {
 
         const {
             capturedScreenshot: screenshot,
-            areaHighlight: { rects, color, order, position },
+            areaHighlight: { rects, color, order },
+            position,
         } = await AreaHighlightRenderers.createAreaHighlightFromEvent(
             pageNum,
             rect,

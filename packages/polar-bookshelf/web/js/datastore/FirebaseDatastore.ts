@@ -15,7 +15,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     FileMeta,
-    GroupIDStr,
     InitResult,
     MutationType,
     SnapshotResult,
@@ -36,13 +35,13 @@ import 'firebase/storage';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DocMetas} from "../metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {FirebaseBrowser, UserID} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -62,6 +61,9 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
 
 const log = Logger.create();
 
@@ -1126,41 +1128,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 }
 
 type FirestoreSource = 'default' | 'server' | 'cache';
-
-export interface RecordPermission {
-
-    // the visibility of this record.
-    readonly visibility: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr> | null;
-
-}
-
-/**
- * Holds a data object literal by value. This contains the high level
- * information about a document including the ID and the visibility.  The value
- * object points to a more specific object which hold the actual data we need.
- */
-export interface RecordHolder<T> extends RecordPermission {
-
-    // the owner of this record.
-    readonly uid: UserID;
-
-    readonly id: string;
-
-    readonly value: T;
-
-}
-
-export interface DocMetaHolder {
-
-    // expose the high level DocInfo on this object which allows us to search by
-    // URL, tags, etc.
-    readonly docInfo: IDocInfo;
-
-    readonly value: string;
-
-}
 
 export enum DatastoreCollection {
 

@@ -1,6 +1,6 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Rects} from '../Rects';
-import {Rect} from '../Rect';
+import {Rects} from 'polar-shared/src/util/Rects';
+import {Rect} from 'polar-shared/src/util/Rect';
 
 const $ = require('jquery');
 

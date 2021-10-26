@@ -291,8 +291,8 @@ export interface IStartTokenAuthResponse {
 }
 
 export interface IStartTokenErrorResponse {
-    readonly code: 'unable-to-send-email';
-    readonly status: 'unable-to-send-email';
+    readonly code: 'unable-to-send-email' | 'registrations-disabled';
+    readonly status: 'unable-to-send-email' | 'registrations-disabled';
     readonly message: string;
     readonly email: string;
 }
@@ -314,6 +314,8 @@ export function useTriggerStartTokenAuth() {
                 throw getErrorFromCloudFunctionResponse(response);
             case 'unable-to-send-email':
                 throw new Error(`Unable to send email: ${response.message}`);
+            case 'registrations-disabled':
+                throw new Error(`Hmmmm... looks like we haven't seen you here before. Go ahead and sign up then to start using Polar`);
             default:
                 return response;
         }

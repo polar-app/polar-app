@@ -6,6 +6,7 @@ import {NamedContent} from "./BlocksStore";
 import {
     AnnotationContent,
     AnnotationHighlightContent,
+    AreaHighlightAnnotationContent,
     FlashcardAnnotationContent,
     TextHighlightAnnotationContent
 } from "../content/AnnotationContent";
@@ -57,13 +58,21 @@ export namespace BlockPredicates {
         return [
             'markdown',
             AnnotationContentType.TEXT_HIGHLIGHT,
-            AnnotationContentType.AREA_HIGHLIGHT,
         ].indexOf(block.content.type) > -1;
     }
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
         return Object.values(AnnotationContentType).some(type => block.content.type === type);
     }
+
+    export function isAnnotationTextHighlightBlock(block: Readonly<Block>): block is Block<TextHighlightAnnotationContent> {
+        return block.content.type === AnnotationContentType.TEXT_HIGHLIGHT;
+    }
+
+    export function isAnnotationAreaHighlightBlock(block: Readonly<Block>): block is Block<AreaHighlightAnnotationContent> {
+        return block.content.type === AnnotationContentType.AREA_HIGHLIGHT;
+    }
+
 
     export function isAnnotationHighlightBlock(block: Readonly<Block>): block is Block<AnnotationHighlightContent> {
         return [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT]

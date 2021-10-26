@@ -3,7 +3,7 @@ import {DOMTextIndex} from "polar-dom-text-search/src/DOMTextIndex";
 import {IDocScale, useDocViewerStore} from "../../DocViewerStore";
 import {IDocViewerElements, useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
 import {TextHighlightMerger} from "../../text_highlighter/TextHighlightMerger";
-import {Point} from "../../../../../web/js/Point";
+import {Point} from "polar-shared/src/util/Point";
 import {Highlights} from "../../../../../web/js/dom_highlighter/Highlights";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
@@ -154,7 +154,7 @@ namespace AnnotationPositionCalculator {
         const scale = docScale.scaleValue;
 
         return {
-            left: rect.left * scale + pageRect.left - viewerRect.left + border.left, 
+            left: rect.left * scale + pageRect.left - viewerRect.left + border.left,
             top: rect.top * scale + pageRect.top - viewerRect.top + border.top,
             width: rect.width * scale,
             height: rect.height * scale,
