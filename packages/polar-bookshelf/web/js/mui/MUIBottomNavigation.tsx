@@ -123,9 +123,27 @@ export const MUIBottomNavigation = ()  => {
         return () => elem.removeEventListener('transitionend', onTransitioned);
     }, [bottomNavRef, isSidenavOpenRef]);
 
+    const noBottomNavPage = React.useCallback(() => {
 
-    if (location.pathname.startsWith('/doc/')) {
-        // hack to disable when opening up docs.
+        if (location.pathname.startsWith('/doc/')) {
+            return true;
+        }
+
+        if (location.pathname === '/notes') {
+            return true;
+        }
+
+        if (location.pathname.startsWith('/notes')) {
+            return true;
+        }
+
+        return false;
+
+    }, [location]);
+
+    if (noBottomNavPage()) {
+        // right now we can't show this on every page but it's a bit of a hack
+        // to just return null here.
         return null;
     }
 
