@@ -1,6 +1,5 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -19,9 +18,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { AdaptiveDialog } from '../../../../web/js/mui/AdaptiveDialog';
-import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
-import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
+import { LogoAndTextSideBySide } from '../Logo/LogoText';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -38,6 +35,8 @@ export const useStyles = makeStyles((theme) =>
 
         alert: {
             margin: theme.spacing(1),
+            // marginLeft: theme.spacing(3),
+            // marginRight: theme.spacing(3),
         },
 
         alternate: {
@@ -51,7 +50,6 @@ export const useStyles = makeStyles((theme) =>
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
         }
-        },
     }),
 );
 
@@ -123,14 +121,15 @@ const BackendProgress = (props: BackendProgressProps) => {
     return <BackendProgressInactive/>
 
 }
-interface IAlert {
-    readonly type: 'error' | 'success';
-    readonly message: string;
-}
 
 const EmailTokenAuthButton = () => {
 
     const classes = useStyles();
+
+    interface IAlert {
+        readonly type: 'error' | 'success';
+        readonly message: string;
+    }
 
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
@@ -346,12 +345,10 @@ const EmailTokenAuthButton = () => {
     );
 };
 
-export const RegisterForBetaButton = () => {
+const RegisterForBetaButton = () => {
 
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
-    const [alert, setAlert] = React.useState<IAlert | undefined>();
-
     const emailRef = React.useRef("");
 
     const codeRef = React.useRef("");
@@ -363,20 +360,7 @@ export const RegisterForBetaButton = () => {
         const request = {
             email: emailRef.current.trim(),
             tag: "initial_signup",
-        const email = emailRef.current.trim();
-
-        const request = {
-            email: email,
-            tag: codeRef.current || "initial_signup",
         };
-
-        if(EmailAddressParser.parse(email).length < 1){
-            setAlert({
-                type: 'error',
-                message: 'Unable to register email: The email address is improperly formatted.'
-            });
-            return;
-        }
 
         try {
 
@@ -409,13 +393,6 @@ export const RegisterForBetaButton = () => {
             )}
 
             <BackendProgress pending={pending}/>
-
-            {alert && (
-                <Alert severity={alert.type} 
-                        className={classes.alert}>
-                    {alert.message}
-                </Alert>
-            )}
 
             {!isRegistered && (
                 <Box m={2}>
@@ -480,25 +457,6 @@ const OrCreateNewAccountButton = () => {
             </Button>
         </div>
     );
-}
-
-const LogoAndTextSideBySide = () => {
-    return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1}>
-                        <PolarSVGIcon width={100} height={100}/>
-                    </Box>
-                    <Box m={1}>
-                        <Typography variant="h2" component="div">
-                            POLAR
-                        </Typography>
-                    </Box>
-                </div>
-            </div>
-        </div>
-    )
 }
 
 interface AuthContentProps {
@@ -613,6 +571,44 @@ const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 interface AdaptiveDialogProps {
     readonly children: React.ReactNode;
 }
+
+/**
+ * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
+ */
+export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
+
+    return (
+        <>
+            <DeviceRouters.NotPhone>
+                <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%'
+                }}>
+
+                    <Paper style={{
+                        margin: 'auto',
+                        maxWidth: '450px',
+                        minHeight: '450px',
+                        maxHeight: '650px',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+
+                    </Paper>
+                </div>
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+                <>
+                    {props.children}
+                </>
+            </DeviceRouters.Phone>
+        </>
+    );
+
+});
 
 // TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
 // PrivateBetaAuthenticator or CreateAccountAuthenticator
