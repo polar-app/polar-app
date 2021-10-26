@@ -65,10 +65,10 @@ describe('EPUBContent', () => {
                 </head>
                 <body>
                     <div> 
-                        first sentance.
+                        first sentence.
 
                         <div>
-                            second nested sentance.
+                            second nested sentence.
 
                             <div>
                                 <div>
@@ -77,7 +77,7 @@ describe('EPUBContent', () => {
                             </div>
                         </div>
 
-                        last sentance.
+                        last sentence.
                     </div>
                 </body>
             </html>
