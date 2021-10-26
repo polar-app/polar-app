@@ -28,7 +28,21 @@ import {faLink} from "@fortawesome/free-solid-svg-icons/faLink";
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
 
-library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faGoogle, faDiscord, faStickyNote, faFilePdf);
+library.add(faCheckSquare,
+            faCoffee,
+            faTag,
+            faPlus,
+            faCheckSquare,
+            faDatabase,
+            faTimesCircle,
+            faSquare,
+            faChrome,
+            faGoogle,
+            faDiscord,
+            faStickyNote,
+            faFilePdf,
+            // faBrackets
+            );
 
 // to minimize size we have to:
 // https://github.com/FortAwesome/react-fontawesome/issues/70
@@ -73,3 +87,4 @@ export const FAStrikethroughIcon = createIcon(faStrikethrough);
 export const FASubscriptIcon = createIcon(faSubscript);
 export const FASuperscriptIcon = createIcon(faSuperscript);
 export const FALinkIcon = createIcon(faLink);
+
