@@ -7,13 +7,11 @@ import {Texts} from "polar-shared/src/metadata/Texts";
 import {Text} from "polar-shared/src/metadata/Text";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import Turndown from "turndown";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
-
-const turndownService = new Turndown();
+import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 
 export namespace BlockContentAnnotationTree {
 
@@ -89,8 +87,8 @@ export namespace BlockContentAnnotationTree {
                                               annotation: ITextHighlight): ITextHighlightAnnotation {
 
         const revisedText = annotation.revisedText
-                    ? textToMarkdown(annotation.revisedText)
-                    : textToMarkdown(annotation.text);
+                    ? htmlToMarkdown(annotation.revisedText)
+                    : htmlToMarkdown(annotation.text);
 
         const wikiLinks = tagsToWikiLinksStr(annotation.tags);
 
@@ -104,7 +102,7 @@ export namespace BlockContentAnnotationTree {
                 order: annotation.order,
                 rects: annotation.rects,
                 color: annotation.color || 'yellow',
-                text: textToMarkdown(annotation.text),
+                text: htmlToMarkdown(annotation.text),
                 revisedText: `${revisedText} ${wikiLinks}`,
             }
         };
@@ -155,14 +153,14 @@ export namespace BlockContentAnnotationTree {
             if (annotation.type === FlashcardType.CLOZE) {
                 return {
                     type: annotation.type,
-                    fields: { text: textToMarkdown(annotation.fields.text) },
+                    fields: { text: htmlToMarkdown(annotation.fields.text) },
                 };
             } else {
                 return {
                     type: annotation.type,
                     fields: {
-                        front: textToMarkdown(annotation.fields.front),
-                        back: textToMarkdown(annotation.fields.back),
+                        front: htmlToMarkdown(annotation.fields.front),
+                        back: htmlToMarkdown(annotation.fields.back),
                     },
                 };
             }
@@ -194,7 +192,7 @@ export namespace BlockContentAnnotationTree {
         return {
             type: 'comment',
             pageNum,
-            content: textToMarkdown(annotation.content),
+            content: htmlToMarkdown(annotation.content),
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
@@ -244,8 +242,8 @@ export namespace BlockContentAnnotationTree {
      *
      * @param text A Text instance or a string to be converted
      */
-    export function textToMarkdown(text: Text | string) {
-        return Texts.isText(text) ? turndownService.turndown(Texts.toHTML(text) || '') : text;
+    export function htmlToMarkdown(text: Text | string) {
+        return Texts.isText(text) ? HTMLToMarkdown.html2markdown(Texts.toHTML(text) || '') : text;
     };
 
     /**
