@@ -3,7 +3,7 @@ import {AccountActions} from "../../../../web/js/accounts/AccountActions";
 import {useAsyncActionTaskbar} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import PaymentIcon from '@material-ui/icons/Payment';
-import {FullWidthButton} from '../configure/settings/FullWidthButton';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 export const ManageSubscriptionButton = React.memo(function ManageSubscriptionButton() {
 
@@ -25,8 +25,11 @@ export const ManageSubscriptionButton = React.memo(function ManageSubscriptionBu
     }
 
     return (
-        <FullWidthButton onClick={handleClick} icon={<PaymentIcon />}>
-            Manage Subscription
-        </FullWidthButton>
+        <ListItem button onClick={handleClick}>
+            <ListItemIcon>
+            <PaymentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Manage Subscription" />
+        </ListItem> 
     );
 });

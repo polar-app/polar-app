@@ -64,7 +64,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     };
 
     return (
-        <Box mx={3}>
+        <Box mx={2}>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
                 <MUIIconText style={{ flex: 1 }} icon={props.icon}>
