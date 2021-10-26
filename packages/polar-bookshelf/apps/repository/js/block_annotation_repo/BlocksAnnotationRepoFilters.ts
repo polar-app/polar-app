@@ -1,11 +1,9 @@
-import {Strings} from "polar-shared/src/util/Strings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IBlock, IBlockLink} from 'polar-blocks/src/blocks/IBlock';
 import {IRepoAnnotationContent, IRepoAnnotationTextContent} from './BlocksAnnotationRepoStore';
 import {IBlockPredicates} from '../../../../web/js/notes/store/IBlockPredicates';
-import {AnnotationContentType, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from 'polar-blocks/src/blocks/content/IAnnotationContent';
-import {IMarkdownContent} from 'polar-blocks/src/blocks/content/IMarkdownContent';
+import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
 import {BlockLinksMatcher, BlockTextContentUtils} from '../../../../web/js/notes/NoteUtils';
 
 

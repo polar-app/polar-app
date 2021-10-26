@@ -1,4 +1,4 @@
-import {app, shell, Menu, MenuItem, MenuItemConstructorOptions} from 'electron'
+import { shell, Menu, MenuItem, MenuItemConstructorOptions} from 'electron'
 
 export namespace MainAppMenus {
     export function setup() {

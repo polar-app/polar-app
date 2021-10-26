@@ -1,5 +1,4 @@
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {PersistenceLayers} from './PersistenceLayers';
 import {MemoryDatastore} from './MemoryDatastore';
 import {PersistenceLayer} from './PersistenceLayer';
 import {TestingTime} from "polar-shared/src/test/TestingTime";

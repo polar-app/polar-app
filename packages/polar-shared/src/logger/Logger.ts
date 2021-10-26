@@ -3,7 +3,6 @@
 import {Callers} from './Callers';
 import {LoggerDelegate} from './LoggerDelegate';
 import {ILogger} from './ILogger';
-import {ConsoleLogger} from "./ConsoleLogger";
 
 export class Logger {
 

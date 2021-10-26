@@ -1,6 +1,3 @@
-import {BaseType} from "./BaseType";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {IPerson} from "./Person";
 
 export interface IReverse {
 

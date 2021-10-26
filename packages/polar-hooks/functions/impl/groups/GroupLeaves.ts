@@ -5,7 +5,6 @@ import {GroupMembers} from './db/GroupMembers';
 import {UserGroups} from './db/UserGroups';
 import {GroupDocs} from './db/GroupDocs';
 import {GroupDocActions} from './db/GroupDocActions';
-import {WriteBatch} from '@google-cloud/firestore';
 import {GroupMemberInvitations} from './db/GroupMemberInvitations';
 import {UserProfile} from './db/UserRefs';
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";

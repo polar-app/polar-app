@@ -1,4 +1,3 @@
-import * as admin from 'firebase-admin';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Group, GroupIDStr, Groups} from './Groups';
 import {Image} from './Users';

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Tag} from "polar-shared/src/tags/Tags";
 import {ValueAutocompleteOption} from "../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 

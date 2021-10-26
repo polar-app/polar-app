@@ -1,7 +1,5 @@
 import {IDUser} from '../util/IDUsers';
 import {SentryReporters} from "../reporters/SentryReporter";
-import {IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
-import {BlockPermissions} from "polar-block-permissions/src/BlockPermissions";
 import {FirestoreAdmin} from 'polar-firebase-admin/src/FirestoreAdmin';
 import {NSpaceCollection} from "polar-firebase/src/firebase/om/NSpaceCollection";
 import {NSpaces} from "polar-block-permissions/src/NSpaces";

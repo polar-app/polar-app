@@ -1,4 +1,4 @@
-import {IOpenAIAnswersResponse, IOpenAIAnswersResponseWithPrompt} from "polar-answers-api/src/IOpenAIAnswersResponse";
+import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
 import {OpenAIRequests} from "./OpenAIRequests";
 import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
 

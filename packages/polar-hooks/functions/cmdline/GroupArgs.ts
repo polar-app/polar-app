@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import {Stderr} from "./Stderr";
-import {GroupRef, Groups} from "../impl/groups/db/Groups";
+import {GroupRef} from "../impl/groups/db/Groups";
 
 
 export class GroupArgs {

@@ -1,4 +1,4 @@
-import {StripeStudentDiscountFunctions, StudentDiscountUniversities} from "./StripeStudentDiscountFunctions";
+import { StudentDiscountUniversities} from "./StripeStudentDiscountFunctions";
 import {assert} from 'chai';
 
 describe('StripeStudentDiscountFunctions', function() {

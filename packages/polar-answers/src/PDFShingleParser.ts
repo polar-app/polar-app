@@ -2,7 +2,7 @@ import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
-import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
+import {Progress} from "polar-shared/src/util/ProgressTracker";
 
 /**
  * Parse a PDF into shingles and trigger a callback for each batch.

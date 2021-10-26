@@ -1,4 +1,3 @@
-import React from 'react';
 import {CallbacksFactory, createObservableStore, ObservableStore, SetStore} from "../ObservableStore";
 import {useTagStore} from './TagStoreDemo';
 

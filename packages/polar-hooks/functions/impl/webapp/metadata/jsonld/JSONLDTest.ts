@@ -1,6 +1,6 @@
 import { Graphs } from "./Graph";
 import { Articles } from "./Article";
-import { Comments, IComment } from "./Comment";
+import { Comments } from "./Comment";
 import {Persons} from "./Person";
 
 describe('JSONLD', function() {

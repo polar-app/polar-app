@@ -1,4 +1,3 @@
-import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
 import {IScrollTarget} from "./ScrollIntoViewUsingLocation";

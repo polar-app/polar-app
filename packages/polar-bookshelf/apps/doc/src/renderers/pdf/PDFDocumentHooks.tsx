@@ -1,4 +1,3 @@
-import React from 'react';
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
 import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
 
