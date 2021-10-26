@@ -45,8 +45,12 @@ export type IEditableContent = IMarkdownContent
 export type ITextContent = IEditableContent
                            | IDocumentContent;
 
-export type IBlockContentMap = {
-    [K in IBlockContent as K['type']]: K;
+export type INamedContent = INameContent | IDateContent | IDocumentContent;
+
+export type IBlockContentStructure<T = IBlockContent> = {
+    id: BlockIDStr;
+    content: T;
+    children: ReadonlyArray<IBlockContentStructure>;
 };
 
 export interface IBlockLink {
@@ -62,6 +66,17 @@ export interface IBlockLink {
     readonly text: string;
 
 }
+
+export type NewChildPos = 'before' | 'after';
+
+export interface INewChildPosition {
+    readonly ref: BlockIDStr;
+    readonly pos: NewChildPos;
+}
+
+export type IBlockContentMap = {
+    [K in IBlockContent as K['type']]: K;
+};
 
 export interface IBlock<C extends IBlockContent = IBlockContent> {
 

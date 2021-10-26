@@ -575,6 +575,7 @@ workflows:
           firebase_hosting_target: polar-webapp
           requires:
             - approve-deploy
+            - build-polar-app
             - mocha
             - karma
             # - cypress-desktop-firefox
@@ -607,5 +608,5 @@ workflows:
 
       - IOS:
           requires:
-            - Approve-Android
+            - Approve-IOS
             - build-setup

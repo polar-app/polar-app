@@ -3,10 +3,9 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
 import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
-import {DocRepoTableToolbar} from '../../../../apps/repository/js/doc_repo/DocRepoTableToolbar';
 import {useHistory} from 'react-router-dom';
+import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
-
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -59,8 +58,7 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
     }, [addFileImporter, history]);
 
     return(
-        <>
-            <DocRepoTableToolbar/>
+        <AdaptivePageLayout title="Add">
 
             <div className={classes.root}>
                 <label htmlFor={id} className={classes.container}>
@@ -77,6 +75,6 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
                         onChange={handleUpload}
                         type="file"/>
             </div>
-        </>
+        </AdaptivePageLayout>
     );
 });

@@ -1,23 +1,21 @@
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {AnnotationContentType, IAnnotationHighlightContent} from "../blocks/content/IAnnotationContent";
+import {BlockIDStr, INewChildPosition} from "../blocks/IBlock";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {DocAnnotationSorter} from "../annotation_sidebar/DocAnnotationSorter";
-import {AnnotationHighlightContent} from "./content/AnnotationContent";
-import {INewChildPosition} from "./store/BlocksStore";
+import {DocAnnotationSorter} from "polar-shared/src/metadata/DocAnnotationSorter";
 
 export namespace BlockHighlights {
 
-    export interface ISortableBlock<T extends AnnotationHighlightContent> extends DocAnnotationSorter.ISortable {
+    export interface ISortableBlock<T extends IAnnotationHighlightContent> extends DocAnnotationSorter.ISortable {
         content: T
     }
 
-    export interface IdentifiableBlockContent<T extends AnnotationHighlightContent> {
+    export interface IdentifiableBlockContent<T extends IAnnotationHighlightContent> {
         id: BlockIDStr;
         content: T;
     }
 
-    export function toSortable<T extends AnnotationHighlightContent>({ id, content }: IdentifiableBlockContent<T>): ISortableBlock<T> {
+    export function toSortable<T extends IAnnotationHighlightContent>({ id, content }: IdentifiableBlockContent<T>): ISortableBlock<T> {
         const rect = content.value.rects[0] || { left: 0, top: 0 };
 
         const position = content.type === AnnotationContentType.AREA_HIGHLIGHT
@@ -26,7 +24,7 @@ export namespace BlockHighlights {
 
         return {
             content,
-            id: id,
+            id,
             pageNum: content.pageNum,
             order: content.value.order,
             position: position || { x: rect.left, y: rect.top },
@@ -34,7 +32,7 @@ export namespace BlockHighlights {
     };
 
     export function sortByPositionInDocument<
-        T extends AnnotationHighlightContent,
+        T extends IAnnotationHighlightContent,
         U extends IdentifiableBlockContent<T>,
     >(
         docMeta: IDocMeta,
@@ -69,8 +67,8 @@ export namespace BlockHighlights {
     }
 
     export const calculateHighlightBlockPosition = (
-        blocks: ReadonlyArray<IdentifiableBlockContent<AnnotationHighlightContent>>,
-        block: IdentifiableBlockContent<AnnotationHighlightContent>,
+        blocks: ReadonlyArray<IdentifiableBlockContent<IAnnotationHighlightContent>>,
+        block: IdentifiableBlockContent<IAnnotationHighlightContent>,
         docMeta: IDocMeta
     ): INewChildPosition | 'unshift' => {
 

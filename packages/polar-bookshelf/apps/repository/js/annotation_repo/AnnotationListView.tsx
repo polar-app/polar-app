@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {AnnotationRepoTable2} from './AnnotationRepoTable2';
+import {AnnotationRepoTable} from './AnnotationRepoTable';
 
 /**
  * Deprecated MUI no longer needed
  */
-export const AnnotationListView2 = React.memo(() => (
+export const AnnotationListView = React.memo(() => (
     <div style={{
              display: 'flex',
              flexGrow: 1,
@@ -12,7 +12,7 @@ export const AnnotationListView2 = React.memo(() => (
              minHeight: 0
          }}>
 
-        <AnnotationRepoTable2/>
+        <AnnotationRepoTable/>
 
     </div>
 ));

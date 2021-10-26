@@ -38,7 +38,7 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
                        type="search"
                        autoFocus={props.autoFocus}
                        id={props.id}
-                       style={{ ...props.style, height: 40 }}
+                       style={{ ...props.style, height: 33 }}
                        label={props.label}
                        value={props.value}
                        defaultValue={props.initialValue}
