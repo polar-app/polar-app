@@ -66,10 +66,11 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const [mode, setMode] = React.useState<BarMode>('format');
 
-    const initialPosition = React.useMemo(() => {
+    const initialPosition = React.useMemo((): INoteFormatBarPosition | undefined => {
 
         if (Devices.isPhone() || Devices.isTablet()) {
             return {
+                top: 0,
                 bottom: 0,
                 left: 0
             }
@@ -79,7 +80,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [])
 
-    const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
+    const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(initialPosition);
 
     const timeoutRef = React.useRef<number | undefined>(undefined);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -171,6 +172,11 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const doPopupWithTimeout = React.useCallback(() => {
 
+        if (position) {
+            // already up...
+            return;
+        }
+
         clearPopupTimeout();
 
         timeoutRef.current = window.setTimeout(() => doPopup(), 100);
@@ -220,13 +226,14 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         });
 
         return () => dispose();
+
     }, [blocksTreeStore, clearPopup, props.id]);
 
     React.useEffect(() => {
 
-        if (blocksTreeStore.hasSelected()) {
-            clearPopup();
-        }
+        // if (blocksTreeStore.hasSelected()) {
+        //     clearPopup();
+        // }
 
     }, [clearPopup, selected, blocksTreeStore]);
 
