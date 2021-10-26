@@ -11,8 +11,7 @@ export const LogsScreen = () => (
     <AdaptivePageLayout title="Logs">
         <DefaultPageLayout>
             <>
-
-                <Box mb={1} mt={2}>
+                <Box my={2} mx={2}>
 
                     <MUIButtonBar>
                         <CopyLogsToClipboardButton/>
@@ -20,10 +19,7 @@ export const LogsScreen = () => (
                     </MUIButtonBar>
 
                 </Box>
-
-                <div>
-                    <LogsContent/>
-                </div>
+                <LogsContent/>
             </>
 
         </DefaultPageLayout>
