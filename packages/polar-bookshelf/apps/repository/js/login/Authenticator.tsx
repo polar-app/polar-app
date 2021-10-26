@@ -1,10 +1,12 @@
 import React from 'react';
+import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Typography} from '@material-ui/core';
+import {Box, Divider, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -16,7 +18,7 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -47,7 +49,7 @@ export const useStyles = makeStyles((theme) =>
             height: theme.spacing(1),
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
-        },
+        }
     }),
 );
 
@@ -262,6 +264,7 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
+        <Box m={2}>
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -336,6 +339,8 @@ const EmailTokenAuthButton = () => {
                                 startIcon={<EmailIcon />}/>
                 )}
             </div>
+        </Box>
+            
         </>
     );
 };
@@ -345,6 +350,8 @@ const RegisterForBetaButton = () => {
     const [isRegistered, setIsRegistered] = React.useState<boolean>(false);
     const [pending, setPending] = React.useState(false);
     const emailRef = React.useRef("");
+
+    const codeRef = React.useRef("");
 
     const classes = useStyles();
 
@@ -388,28 +395,41 @@ const RegisterForBetaButton = () => {
             <BackendProgress pending={pending}/>
 
             {!isRegistered && (
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                }}>
-                    <TextField autoFocus={true}
+                <Box m={2}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1
+                    }}>
+                        <TextField autoFocus={true}
+                                className={classes.email}
+                                onChange={event => emailRef.current = event.target.value}
+                                placeholder="Enter your email address"
+                                InputProps={{
+                                    startAdornment: (
+                                        <EmailIcon style={{margin: '8px'}}/>
+                                    )}}
+                                variant="outlined"/>
+
+                                <TextField autoFocus={true}
                                className={classes.email}
-                               onChange={event => emailRef.current = event.target.value}
-                               placeholder="Enter your email address"
+                               onChange={event => codeRef.current = event.target.value}
+                               placeholder="Referral code (optional)"
                                InputProps={{
                                    startAdornment: (
-                                       <EmailIcon style={{margin: '8px'}}/>
+                                       <VpnKeyIcon style={{margin: '8px'}}/>
                                    )}}
                                variant="outlined"/>
 
-                    <Button variant="contained"
-                            size="large"
-                            color="primary"
-                            className={classes.button}
-                            onClick={handleClick}>
-                        Join
-                    </Button>
-                </div>
+                        <Button variant="contained"
+                                size="large"
+                                color="primary"
+                                className={classes.button}
+                                onClick={handleClick}>
+                            Get Started
+                        </Button>
+                    </div>
+                </Box>
             )}
         </>
     )
@@ -469,6 +489,8 @@ interface AuthContentProps {
  */
 const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
+    const classes = useStyles();
+
     return (
         <>
             <div className="AuthContent"
@@ -487,12 +509,21 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <LogoAndTextSideBySide/>
+                        
                     </div>
+
+                    <Box display={'flex'} flexGrow={1} alignItems={'center'} justifyContent={'center'}>
+                        <LogoAndTextSideBySide/>
+                    </Box>
 
                     <h2>
                         {props.title}
                     </h2>
+
+                    <Box m={1}>
+                        <Divider/>
+                    </Box>
+                    
 
                     {props.children}
 
@@ -555,6 +586,48 @@ interface IProps {
 }
 
 const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
+
+interface AdaptiveDialogProps {
+    readonly children: React.ReactNode;
+}
+
+/**
+ * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
+ */
+export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
+
+    return (
+        <>
+            <DeviceRouters.NotPhone>
+                <div style={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%'
+                }}>
+
+                    <Paper style={{
+                        margin: 'auto',
+                        maxWidth: '450px',
+                        minHeight: '450px',
+                        maxHeight: '650px',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+
+                    </Paper>
+                </div>
+            </DeviceRouters.NotPhone>
+
+            <DeviceRouters.Phone>
+                <>
+                    {props.children}
+                </>
+            </DeviceRouters.Phone>
+        </>
+    );
+
+});
 
 // TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
 // PrivateBetaAuthenticator or CreateAccountAuthenticator
