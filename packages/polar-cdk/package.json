@@ -46,6 +46,7 @@
     "polar-private-beta-api": "0.0.0",
     "polar-shared": "0.0.0",
     "polar-firebase-admin": "0.0.0",
+    "polar-answers": "0.0.0",
     "source-map-support": "=0.5.19",
     "@elastic/elasticsearch": "=7.13.0"
   }
