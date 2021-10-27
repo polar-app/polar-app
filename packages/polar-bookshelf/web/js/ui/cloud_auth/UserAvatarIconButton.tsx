@@ -6,11 +6,11 @@ interface UserAvatarIconButtonProps extends UserAvatarProps {
 }
 
 export const UserAvatarIconButton = React.memo(function UserAvatarIconButton(props: UserAvatarIconButtonProps) {
-    const oldProps = {...props};
-    delete oldProps['onClick'];
+    const newProps = {...props};
+    delete newProps['onClick'];
     return (
         <IconButton onClick={props.onClick} className={props.className} style={props.style}>
-            <UserAvatar {...oldProps}/>
+            <UserAvatar {...newProps}/>
         </IconButton>
     )
 
