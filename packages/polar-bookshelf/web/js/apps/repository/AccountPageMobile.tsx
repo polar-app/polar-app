@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {UserAvatar} from '../../ui/cloud_auth/UserAvatar';
-import {Box, Button, Collapse, createStyles, makeStyles, Paper} from '@material-ui/core';
+import {Box, Collapse, createStyles, List, ListItem, ListItemText, ListItemIcon, makeStyles, Paper, Divider} from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import HelpIcon from '@material-ui/icons/Help';
@@ -44,33 +44,8 @@ const useStyles = makeStyles((theme) =>
             flexDirection: 'column',
             padding: theme.spacing(2),
         },
-        sizeRow:{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto'
-        },
-        collapsableRow:{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            width:'100%',
-            borderTop: '1px solid grey',
-            borderBottom: '1px solid grey',
-            padding: theme.spacing(2),
-        },
-        IconAndTitle:{
-            display: 'flex',
-            alignContent: 'center'
-        },
-        collapseIcon:{
-            marginLeft: 'auto'
-        }
     })
 );
-
-interface IPrefButton {
-    readonly title: string;
-    readonly icon: any;
-    readonly goToUrl: React.MouseEventHandler;
-}
 /**
  * The user details row: avatar, name and email and the user's plan
  */
@@ -102,84 +77,70 @@ export const PlanDetailsContainer = React.memo(function PlanDetailsContainer(){
         </Box>
     );
 });
-/**
- * a component that we should reuse,
- * responsible for showing a button/menu items and exapnds/collapses on click
- */
-export const CollapsibleHelpSection = React.memo(function Collapsible() {
-    const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
-
-    return(
-        <>
-            <Button className={classes.collapsableRow} onClick={() => setOpen(!open)}>
-                <div style={{display: 'flex', alignContent: 'center'}}>
-                    <HelpIcon/>
-                    <Box component='span' ml={3}>Help</Box>
-                </div>
-                <div className={classes.collapseIcon} aria-label="expand row">
-                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </div>
-            </Button>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <Paper>
-                    <Chat/>
-                    <Documentation/>
-                    <RequestFeatures/>
-                </Paper>
-            </Collapse>
-        </>
-    );
-});
-/**
- * a unit component from the preference buttons section
- */
-export const PreferencesButton = React.memo(function PreferencesButton(props: IPrefButton) {
-    const classes = useStyles();
-
-    return(
-        <Button className={classes.collapsableRow} onClick={props.goToUrl}>
-            {props.icon}
-            <Box component='span' ml={3}>{props.title}</Box>
-        </Button>
-    );
-});
 
 /**
  * Includes: Settings page, Pricing page, Redirecting information (collapsible)
  * and Logout option
  */
-export const PreferencesButtons = React.memo(function PreferencesesButtons() {
-    const history = useHistory();
+export const PreferencesListItems = React.memo(function PreferencesListItems() {
+    const [open, setOpen] = React.useState(false);
 
+    const history = useHistory();
     const logoutAction = useLogoutAction();
     const popperController = usePopperController();
-
+    
+    const handleClick = () => {
+        setOpen(!open);
+    };
     function handleLogout() {
         popperController.dismiss();
         logoutAction();
     }
 
     return(
-        <>
-            <PreferencesButton
-                    title={'Settings'}
-                    goToUrl={() => history.push(RoutePathNames.SETTINGS)}
-                    icon={<SettingsIcon/>}    />
-
-            <PreferencesButton
-                title={'Upgrade Plan'}
-                goToUrl={() => history.push(RoutePathNames.PLANS)}
-                icon={<MonetizationOnIcon/>}   />
-
-            <CollapsibleHelpSection/>
-
-            <PreferencesButton
-                    title={'Log out'}
-                    goToUrl={ () => handleLogout()}
-                    icon={<ExitToAppIcon />}   />
-
-        </>
+        <List>      
+            <Divider />
+            <ListItem button onClick={() => history.push(RoutePathNames.SETTINGS_MOBILE)}>
+                <ListItemIcon>
+                <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+            </ListItem>
+            <Divider />
+            <ListItem button onClick={() => history.push(RoutePathNames.PLAN_MOBILE)}>
+                <ListItemIcon>
+                <MonetizationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Upgrade Plan" />
+            </ListItem>
+            <Divider />
+            <ListItem button onClick={handleClick}>
+                <ListItemIcon>
+                <HelpIcon />
+                </ListItemIcon>
+                <ListItemText primary="Help" />
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </ListItem>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <Paper style={{width: '100%'}}>
+                        <Chat/>
+                        <Divider />
+                        <Documentation/>
+                        <Divider />
+                        <RequestFeatures/>
+                    </Paper>
+                </List>
+            </Collapse>
+            <Divider />
+            <ListItem button onClick={() => handleLogout()}>
+                <ListItemIcon>
+                <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Log out" />
+            </ListItem>
+            <Divider />
+        </List>
     );
 });
 
@@ -193,7 +154,7 @@ export const AccountPageMobile = React.memo(function AccountPageMobile() {
                 <Box pt={2}>
                     <UserDetailsRow/>
                     <PlanDetailsContainer/>
-                    <PreferencesButtons/>
+                    <PreferencesListItems/>
                 </Box>
             </AdaptivePageLayout>
         </>

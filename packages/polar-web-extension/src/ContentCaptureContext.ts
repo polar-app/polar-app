@@ -2,7 +2,6 @@ import {SaveToPolarHandler} from "./services/SaveToPolarHandler";
 import {UploadProgressApp} from "./ui/capture/UploadProgressApp";
 import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
 import SaveToPolarRequestWithPDF = SaveToPolarHandler.SaveToPolarRequestWithPDF;
-import {Tabs} from "./chrome/Tabs";
 
 /**
  * Run the content capture functionality.

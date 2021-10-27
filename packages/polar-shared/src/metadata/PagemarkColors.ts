@@ -1,4 +1,3 @@
-import {PagemarkMode} from "./PagemarkMode";
 import {IPagemark} from "./IPagemark";
 
 export namespace PagemarkColors {

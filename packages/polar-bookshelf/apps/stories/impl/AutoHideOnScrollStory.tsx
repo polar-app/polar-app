@@ -1,9 +1,8 @@
 import Slide from '@material-ui/core/Slide';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import React, {useRef} from 'react';
-import {FixedNav} from "../../repository/js/FixedNav";
+import React from 'react';
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
-import {AppBar, Box, Fab, Toolbar, Zoom} from "@material-ui/core";
+import {AppBar, Fab, Toolbar, Zoom} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";

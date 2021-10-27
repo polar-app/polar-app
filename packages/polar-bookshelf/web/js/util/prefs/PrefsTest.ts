@@ -1,4 +1,4 @@
-import {DictionaryPrefs, Prefs} from "./Prefs";
+import {DictionaryPrefs} from "./Prefs";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assertJSON} from "../../test/Assertions";
 

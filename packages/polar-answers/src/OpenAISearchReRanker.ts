@@ -2,8 +2,6 @@ import {AIModel} from "polar-answers-api/src/AIModel";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {OpenAISearchClient} from "./OpenAISearchClient";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import { Reducers } from "polar-shared/src/util/Reducers";
-import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 import {FunctionTimers} from "polar-shared/src/util/FunctionTimers";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 

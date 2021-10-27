@@ -10,7 +10,6 @@ import {
     DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 import {SendToQueue} from "./SendToQueue";
 import {isPresent} from "polar-shared/src/Preconditions";

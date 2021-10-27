@@ -2,7 +2,6 @@ import {StripeCustomers} from "./StripeCustomers";
 import {StripeUtils} from "./StripeUtils";
 import Stripe from "stripe";
 import {Billing} from "polar-accounts/src/Billing";
-import {StripePlanIDs} from "./StripePlanIDs";
 
 export namespace StripeTesting {
 

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useContext} from 'react';
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import Divider from '@material-ui/core/Divider';
 import {SettingToggle} from './SettingToggle';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
@@ -11,7 +10,8 @@ import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {ExportDataButton} from "../../premium/ExportDataButton";
-import {createStyles, makeStyles} from "@material-ui/core";
+import {createStyles, makeStyles, List, ListItem, ListItemIcon, ListItemText, Divider} from "@material-ui/core";
+import { ListItemProps } from '@material-ui/core/ListItem';
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
@@ -20,7 +20,6 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import {FullWidthButton} from './FullWidthButton';
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 import { DeviceRouters } from '../../../../../web/js/ui/DeviceRouter';
 
@@ -143,37 +142,41 @@ const Main = () => {
                                 preview={true}/>
 
                 <Divider/>
-
-                <Box mt={1} mx={1}>
+                <List>
                     <ViewDeviceInfoButton/>
                     <Divider/>
-
                     <DeviceRouters.Desktop>
                         <>
                             <CancelSubscriptionButton/>
+                            <Divider/>
                             <ManageSubscriptionButton/>
+                            <Divider/>
                         </>
                     </DeviceRouters.Desktop>
 
                     <ExportDataButton/>
                     <Divider/>
-
-                    <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/privacy-policy">
-                        <FullWidthButton icon={<DescriptionIcon />}>
-                            Privacy Policy
-                        </FullWidthButton>
-                    </a>
+                    <ListItemLink href="https://getpolarized.io/privacy-policy">
+                        <ListItemIcon>
+                        <DescriptionIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Privacy Policy" />
+                    </ListItemLink>
                     <Divider/>
-                    <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/terms">
-                        <FullWidthButton icon={<VerifiedUserIcon />}>
-                            Terms of Service
-                        </FullWidthButton>
-                    </a>
-                </Box>
+                    <ListItemLink href="https://getpolarized.io/terms">
+                        <ListItemIcon>
+                        <VerifiedUserIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Terms of Service" />
+                    </ListItemLink>
+                </List>
 
             </Box>
         </>
     );
+}
+function ListItemLink(props: ListItemProps<'a', { button?: true }>) {
+    return <ListItem button component="a" {...props} />;
 }
 
 export const SettingsScreen = React.memo(function SettingsScreen() {

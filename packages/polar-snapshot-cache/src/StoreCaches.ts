@@ -4,7 +4,7 @@ import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import { CacheKeyCalculators } from "./CacheKeyCalculators";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {CachedStore} from "./store/cached/CachedStore";
-import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import { IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 /**
  * The general design here is that we have a snapshot interface that mimics

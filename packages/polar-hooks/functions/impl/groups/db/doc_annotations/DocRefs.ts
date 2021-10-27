@@ -1,7 +1,5 @@
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DocIDStr, DocRef} from "polar-shared/src/groups/DocRef";
-import {Tag} from "polar-shared/src/tags/Tags";
-import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export class DocRefs {
 

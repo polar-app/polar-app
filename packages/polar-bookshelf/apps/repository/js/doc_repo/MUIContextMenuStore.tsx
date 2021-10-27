@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {createReactiveStore} from "../../../../web/js/react/store/ReactiveStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";

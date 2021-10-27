@@ -1,5 +1,4 @@
 import {TextStr} from "polar-shared/src/util/Strings";
-import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
 
 export namespace SentenceShingler {

@@ -5,7 +5,6 @@ import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu
 import {ContentEditables} from "../ContentEditables";
 import {useBlockContentEditableElement} from "./BlockContentEditable";
 import {observer} from "mobx-react-lite"
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";

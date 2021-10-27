@@ -3,7 +3,7 @@ import {RoutePathNames} from "../../apps/repository/RoutePathNames";
 import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
-import {BlockContentStructureConverter} from "../BlockContentStructureConverter";
+import {BlockContentStructureHTMLConverter} from "../BlockContentStructureHTMLConverter";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
@@ -24,7 +24,7 @@ namespace CopyUtils {
         const selectedIDs = blocksStore.selectedIDs();
         const polarBlocks = blocksStore.createBlockContentStructure(selectedIDs, { useNewIDs: true });
 
-        const rawHTML = BlockContentStructureConverter.toHTML(polarBlocks);
+        const rawHTML = BlockContentStructureHTMLConverter.toHTML(polarBlocks);
         const div = document.createElement('div');
         div.innerHTML = rawHTML;
         convertWikiLinksToFullURLs(div);

@@ -1,4 +1,4 @@
-import {CacheKey, CacheProvider, TCacheDocTupleWithID, WriteDocRequest} from "./CacheProvider";
+import { CacheProvider, WriteDocRequest} from "./CacheProvider";
 import {StoreCaches} from "./StoreCaches";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQuery} from "./ICachedQuery";

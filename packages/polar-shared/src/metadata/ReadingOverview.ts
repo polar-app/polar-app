@@ -1,4 +1,3 @@
-import {ISODateTimeString} from './ISODateTimeStrings';
 
 export interface ReadingOverview {
     [timestamp: string /* ISODateTimeString */]: number;

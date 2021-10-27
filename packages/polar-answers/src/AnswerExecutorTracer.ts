@@ -1,8 +1,6 @@
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
-import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
-import {AnswerExecutor} from "./AnswerExecutor";
 
 export namespace AnswerExecutorTracer {
 

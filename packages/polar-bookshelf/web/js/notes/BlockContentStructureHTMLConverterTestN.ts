@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import {JSDOM} from "jsdom"
-import {BlockContentStructureConverter} from "./BlockContentStructureConverter";
+import {BlockContentStructureHTMLConverter} from "./BlockContentStructureHTMLConverter";
 import {HTMLToBlocks} from "./HTMLToBlocks";
 import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 
@@ -31,9 +31,9 @@ describe('BlockContentStructureConverter', () => {
                 {id: '3', content: await HTMLToBlocks.createImageContent('dataurl:fhasdklhgdalsh'), children: []}
             ];
 
-            const output = BlockContentStructureConverter.toHTML(blockStructure);
+            const output = BlockContentStructureHTMLConverter.toHTML(blockStructure);
 
-            assert.equal(output, '<ul><li>hello</li><li>world</li><li><img src="dataurl:fhasdklhgdalsh" /></li></ul>');
+            assert.equal(output, '<ul><li><div>hello</div></li><li><div>world</div></li><li><div><img src="dataurl:fhasdklhgdalsh" /></div></li></ul>');
         });
 
         it('should convert complex blocks structure to html', () => {
@@ -55,12 +55,12 @@ describe('BlockContentStructureConverter', () => {
                 },
                 {id: '5', content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
                 {id: '6', content: HTMLToBlocks.createMarkdownContent("Test bold italics [[Wiki]]"), children: []},
-                {id: '7', content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
+                {id: '7', content: HTMLToBlocks.createMarkdownContent("**Hello**"), children: []},
             ];
 
-            const output = BlockContentStructureConverter.toHTML(blockStructure);
+            const output = BlockContentStructureHTMLConverter.toHTML(blockStructure);
 
-            assert.equal(output, '<ul><li>item1</li><li><a href="https://www.google.com">a link</a><ul><li>hmm</li><li><img src="https://link.to.image" alt="image"/><ul><li>potato</li></ul></li></ul></li><li>item3</li><li>Test bold italics <a contenteditable="false" class="note-link" href="#Wiki">Wiki</a></li><li>Hello</li></ul>');
+            assert.equal(output, '<ul><li><div>item1</div></li><li><div><a href="https://www.google.com">a link</a></div><ul><li><div>hmm</div></li><li><div><img src="https://link.to.image" alt="image"/></div><ul><li><div>potato</div></li></ul></li></ul></li><li><div>item3</div></li><li><div>Test bold italics <a contenteditable="false" class="note-link" href="#Wiki">Wiki</a></div></li><li><div><b>Hello</b></div></li></ul>');
         });
     });
 });

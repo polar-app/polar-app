@@ -1,4 +1,3 @@
-import {BackgroundListener} from "./BackgroundListener";
 
 describe('BackgroundListener', function() {
 

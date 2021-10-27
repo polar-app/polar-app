@@ -20,7 +20,7 @@ export const JumpToNoteKeyboardCommand = observer(() => {
             return { id: text, text };
         }
 
-        return [...namedBlocks].sort().map(toCommand);
+        return namedBlocks.map(toCommand);
 
     }, [namedBlocks]);
 

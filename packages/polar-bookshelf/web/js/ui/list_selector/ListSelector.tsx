@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {IDMap} from "polar-shared/src/util/IDMaps";
 
 export type ListOptionTypeMap = IDMap<ListOptionType>;

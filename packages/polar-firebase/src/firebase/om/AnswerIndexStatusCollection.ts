@@ -1,5 +1,5 @@
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {IDStr, JSONStr} from "polar-shared/src/util/Strings";
+import {IDStr} from "polar-shared/src/util/Strings";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UserIDStr} from "../Collections";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
