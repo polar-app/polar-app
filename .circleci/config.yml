@@ -116,7 +116,7 @@ commands:
           name: ESLINT new Code
           no_output_timeout: 30m
           command: |
-            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' **/.eslintrc.json
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
             lerna run eslint --no-bail >> branchoutput.txt
             git checkout master
             git pull
