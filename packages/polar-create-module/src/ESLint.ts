@@ -30,11 +30,11 @@ export namespace ESLint {
                 "@typescript-eslint/no-floating-promises": "error",
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
 
-                // ? Functional Rules
-                "functional/prefer-readonly-type": "error",
-
                 // ? Import Rules
                 "unused-imports/no-unused-imports": "error",
+
+                // ? Functional Rules (Off Locally but gets enabled for new code in CI)
+                "functional/prefer-readonly-type": "off",
 
                 // ! Disabled Rules ///////////////////////////////////////////////////
 
