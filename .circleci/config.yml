@@ -109,7 +109,20 @@ commands:
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link
+            lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link
+
+      # ! Diff Eslint Runs
+      - run:
+          name: ESLINT new Code
+          no_output_timeout: 30m
+          command: |
+            lerna exec sed -i "s/prefer-readonly-type": \"off\"/prefer-readonly-type": \"error\"/g"
+            lerna run eslint --no-bail >> branchoutput.txt
+            git checkout master
+            git pull
+            lerna run eslint --no-bail >> masteroutput.txt
+            join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+            git checkout -
 
       # ? Debug step for checking if there are any duplicate packages
       - run:
@@ -476,10 +489,6 @@ workflows:
       ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
-          executor: large
-
-      # @ Run Code Quality Stage
-      - Code-Quality:
           executor: large
 
       ## ^ Chrome Extension Sub-Workflow
