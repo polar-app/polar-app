@@ -1,7 +1,6 @@
 import {Construct, RemovalPolicy} from "@aws-cdk/core";
 import {Domain} from "@aws-cdk/aws-elasticsearch";
 import {ElasticsearchVersion} from "@aws-cdk/aws-elasticsearch/lib/domain";
-import {EbsDeviceVolumeType} from "@aws-cdk/aws-ec2";
 
 export class ElasticSearch extends Construct {
 

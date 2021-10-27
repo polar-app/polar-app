@@ -68,4 +68,7 @@ import {UUIDs} from "polar-shared/src/metadata/UUIDs";
     } catch (e) {
         console.error(e);
     }
-})()
+})().catch(e => {
+    console.error(e);
+    process.exit(1);
+});

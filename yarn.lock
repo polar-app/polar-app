@@ -7332,13 +7332,6 @@ aws-cdk@=1.121.0:
     yaml "1.10.2"
     yargs "^16.2.0"
 
-aws-elasticsearch-connector@=9.0.3:
-  version "9.0.3"
-  resolved "https://verdaccio.getpolarized.io/aws-elasticsearch-connector/-/aws-elasticsearch-connector-9.0.3.tgz#106f8ea41c4ea79178a35c3f805589a7f23c98e4"
-  integrity sha512-jnzTHp3cIe1VxnQAO0t6sUIZ19WFe+LtXnX0FnHeoJUvOnrKSI5ooGGlZPCud2jmqVPK4L4c0w8XtiBjHyTk6g==
-  dependencies:
-    aws4 "^1.11.0"
-
 aws-sdk@^2.848.0:
   version "2.960.0"
   resolved "https://verdaccio.getpolarized.io/aws-sdk/-/aws-sdk-2.960.0.tgz#7f5fba5de9b284c0d7e77c11ae7e64a4bf085de7"
@@ -7374,7 +7367,7 @@ aws-sign2@~0.7.0:
   resolved "https://verdaccio.getpolarized.io/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
   integrity sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
 
-aws4@^1.11.0, aws4@^1.8.0:
+aws4@^1.8.0:
   version "1.11.0"
   resolved "https://verdaccio.getpolarized.io/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
