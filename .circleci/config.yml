@@ -116,7 +116,7 @@ commands:
           name: ESLINT new Code
           no_output_timeout: 30m
           command: |
-            lerna exec -- sed -i "s/prefer-readonly-type": \"off\"/prefer-readonly-type": \"error\"/g"
+            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' **/.eslintrc.json
             lerna run eslint --no-bail >> branchoutput.txt
             git checkout master
             git pull
