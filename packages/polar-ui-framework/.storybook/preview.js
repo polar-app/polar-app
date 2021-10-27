@@ -8,10 +8,12 @@ export const parameters = {
     },
   },
   darkMode: {
+    current: 'light',
+
     // Override the default dark theme
-    dark: { ...themes.dark, appBg: 'black' },
+    dark: { ...themes.dark, appBg: '#c6c6c6' },
     // Override the default light theme
-    light: { ...themes.normal, appBg: 'red' }
+    light: { ...themes.normal, appBg: 'white' }
   }
 }
 
