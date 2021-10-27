@@ -18,6 +18,7 @@ export interface Scripts {
     karma?: string;
     eslint?: string;
     eslintfix?: string;
+    cieslint?: string;
     compile?: string;
     watch?: string;
     tsc?: string;
