@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from './TriggerPopupEvent';
 import {PopupStateEvent} from './PopupStateEvent';

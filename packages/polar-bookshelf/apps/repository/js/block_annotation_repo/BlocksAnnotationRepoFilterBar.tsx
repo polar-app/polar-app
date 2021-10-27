@@ -5,11 +5,13 @@ import {BlocksAnnotationTypeSelector} from "./filter_bar/BlocksAnnotationTypeSel
 import {observer} from "mobx-react-lite";
 import {BlocksHighlightColorFilterButton} from "./filter_bar/BlocksHighlightColorFilterButton";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
+import {BlocksExportDropdown} from "./filter_bar/BlocksExportDropdown";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
+            alignItems: 'center',
             color: theme.palette.text.secondary,
             '& > * + *': {
                 marginLeft: 5,
@@ -37,6 +39,8 @@ export const BlocksAnnotationRepoFilterBar = observer(function BlocksAnnotationR
             <MUISearchBox2 id="filter_title"
                            placeholder="Filter by text"
                            onChange={text => blocksAnnotationRepoStore.setFilter({ text })}/>
+
+            <BlocksExportDropdown />
         </div>
     );
 

@@ -1,9 +1,3 @@
-import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
-import {GroupProvisionFunctions, GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
-import {IDUsers} from '../impl/util/IDUsers';
-import {GroupJoinFunctions, GroupJoinRequest} from '../impl/groups/GroupJoinFunction';
-import {GroupIDStr} from '../impl/groups/db/Groups';
-import {UserRefs} from '../impl/groups/db/UserRefs';
 
 const FIREBASE_USER1 = "getpolarized.test+test@gmail.com";
 const FIREBASE_USER2 = "getpolarized.test+test1@gmail.com";

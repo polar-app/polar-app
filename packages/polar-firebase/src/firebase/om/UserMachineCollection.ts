@@ -1,5 +1,5 @@
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
-import { UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
+import { UserIDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";

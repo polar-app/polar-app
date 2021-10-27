@@ -1,5 +1,5 @@
 import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
-import {Slugs, SlugStr} from "polar-shared/src/util/Slugs";
+import { SlugStr} from "polar-shared/src/util/Slugs";
 
 // export interface DocPreviewURLWithHashcode {
 //     readonly id: IDStr;

@@ -24,6 +24,7 @@ import {useRefWithUpdates} from "../hooks/ReactHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
+import {Comparators} from "polar-shared/src/util/Comparators";
 
 type IUseNamedBlocksOpts = {
     sort?: boolean;
@@ -41,22 +42,44 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
 	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
 
 	React.useEffect(() => {
-        const getBlockTypeScore = (block: Readonly<Block<NamedContent>>) => {
-            switch (block.content.type) {
-                case 'date':
-                    return 100;
-                default:
-                    return 10;
-            }
-        };
 
-        const sorter = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+        const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+
+            function toInt(block: Readonly<Block<NamedContent>>) {
+
+                if (block.content.type === 'name' && block.content.data.startsWith("/")) {
+                    // push this down to the end.
+                    return 3;
+                }
+
+                switch (block.content.type) {
+
+                    case "document":
+                    case "name":
+                        // documents and named notes have real names
+                        return 1;
+                    case "date":
+                        // ten sort by date
+                        return 2;
+
+                }
+
+            }
+
+            return toInt(a) - toInt(b);
+
+        }
+
+        const sortByContentComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+
             const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
             const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
 
-            return (getBlockTypeScore(a) - getBlockTypeScore(b)) // Block type
-                   + (strA.localeCompare(strB)); // Block name
-        };
+            return strA.localeCompare(strB);
+
+        }
+
+        const comparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
 
 	    const disposer = autorun(() => {
             const namedBlocksIDs = Object.values(blocksStore.indexByName);
@@ -64,7 +87,12 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
                 const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
                 prevNamedBlocksIDsRef.current = namedBlocksIDs;
 
-                setNamedBlocks(sort ? [...namedBlocks].sort(sorter) : namedBlocks);
+                function doSort() {
+                    return [...namedBlocks].sort(comparator);
+                }
+
+                setNamedBlocks(sort ? doSort() : namedBlocks);
+
             }
 	    });
 
@@ -329,7 +357,7 @@ export namespace BlockLinksMatcher {
 
     export function filter<T extends IBlock>(list: ReadonlyArray<T>,
                                              filterLinks: ReadonlyArray<IBlockLink>): ReadonlyArray<T> {
-        
+
         const filterLinksMap = arrayStream(filterLinks).toMap(({ id }) => id);
 
         function predicate(item: IBlock): boolean {

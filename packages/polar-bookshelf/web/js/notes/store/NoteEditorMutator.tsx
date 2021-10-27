@@ -1,4 +1,3 @@
-import * as React from "react";
 
 export type CursorPosition = 'start' | 'end' | 'within';
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Logging} from '../../../web/js/logger/Logging';
 import {Repository} from "../../../web/js/apps/repository/Repository";
 

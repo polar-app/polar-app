@@ -49,9 +49,11 @@ export namespace Scrollers {
 
         const throttler = new TaskThrottler(250);
 
-        container!.addEventListener('scroll', (event) => {
-            throttler.schedule(() => handleScroll());
-        });
+        if (container && container.addEventListener) {
+            container.addEventListener('scroll', (event) => {
+                throttler.schedule(() => handleScroll());
+            });
+        }
 
     }
 

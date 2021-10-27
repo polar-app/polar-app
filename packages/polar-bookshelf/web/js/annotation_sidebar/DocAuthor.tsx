@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
-import {UserAvatar, UserAvatarControlled} from '../ui/cloud_auth/UserAvatar';
+import { UserAvatarControlled} from '../ui/cloud_auth/UserAvatar';
 import isEqual from "react-fast-compare";
 
 interface IProps {

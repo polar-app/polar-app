@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 
 describe('StoreCaches', function() {
 

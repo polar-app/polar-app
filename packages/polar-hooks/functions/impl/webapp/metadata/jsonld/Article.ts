@@ -1,10 +1,9 @@
 import {BaseType, BaseTypeInit} from "./BaseType";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {ILogo, ILogoInit} from "./Logo";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IPerson} from "./Person";
 import {IOrganization} from "./Organization";
-import {IImageObject, ImageObjects} from "./ImageObject";
+import {IImageObject} from "./ImageObject";
 
 /**
  * https://schema.org/Article

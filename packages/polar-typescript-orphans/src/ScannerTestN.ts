@@ -1,5 +1,3 @@
-import {Scanner} from "./Scanner";
-import {assertJSON} from "polar-test/src/test/Assertions";
 
 xdescribe("Scanner", function() {
 

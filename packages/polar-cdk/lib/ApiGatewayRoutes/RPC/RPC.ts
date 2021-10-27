@@ -1,5 +1,5 @@
 import {IResource, LambdaIntegration} from "@aws-cdk/aws-apigateway";
-import {NodejsFunction, SourceMapMode} from "@aws-cdk/aws-lambda-nodejs";
+import {NodejsFunction} from "@aws-cdk/aws-lambda-nodejs";
 import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
 
