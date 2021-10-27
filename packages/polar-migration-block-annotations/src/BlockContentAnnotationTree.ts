@@ -93,7 +93,7 @@ export namespace BlockContentAnnotationTree {
                     ? htmlToMarkdown(annotation.revisedText)
                     : htmlToMarkdown(annotation.text);
 
-        const wikiLinks = tagsToTagWikiLinksStr(annotation.tags);
+        const tagWikiLinks = tagsToTagWikiLinksStr(annotation.tags);
 
         return {
             type: AnnotationContentType.TEXT_HIGHLIGHT,
@@ -106,7 +106,7 @@ export namespace BlockContentAnnotationTree {
                 rects: annotation.rects,
                 color: annotation.color || 'yellow',
                 text: htmlToMarkdown(annotation.text),
-                revisedText: `${revisedText} ${wikiLinks}`,
+                revisedText: `${revisedText} ${tagWikiLinks}`,
             },
             created: annotation.created,
             updated: annotation.lastUpdated,
@@ -198,10 +198,12 @@ export namespace BlockContentAnnotationTree {
                                         pageNum: number,
                                         annotation: IComment): ICommentAnnotation {
 
+        const tagWikiLinks = tagsToTagWikiLinksStr(annotation.tags);
+
         return {
             type: 'comment',
             pageNum,
-            content: htmlToMarkdown(annotation.content),
+            content: `${htmlToMarkdown(annotation.content)} ${tagWikiLinks}`,
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
