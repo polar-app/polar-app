@@ -426,7 +426,9 @@ module.exports = {
         //     // // and generally waste space and CPU
         //     // // cache: ".terser-webpack-plugin",
         //     // terserOptions: {
-        //     //     output: {ascii_only: true},
+        //     //     // ecma: undefined,
+        //     //     //output: {ascii_only: true},
+        //     //     ascii_only: true
         //     // }
         // })
         // ]
