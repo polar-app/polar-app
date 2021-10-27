@@ -515,8 +515,10 @@ workflows:
       - setting-up:
           executor: large
 
+      # @ Check Code Quality
       - Code-Quality:
           executor: large
+
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
       - build-chrome-extension:
