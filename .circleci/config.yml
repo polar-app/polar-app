@@ -478,6 +478,15 @@ workflows:
       - setting-up:
           executor: large
 
+      # @ Run Code Quality Stage
+      - Code-Quality:
+          executor: large
+          steps:
+            - run:
+              name: test inline
+              command: |
+                echo "hello world"
+
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
       - build-chrome-extension:
