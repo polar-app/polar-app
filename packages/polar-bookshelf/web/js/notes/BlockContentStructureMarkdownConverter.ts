@@ -2,7 +2,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {IBlockContentStructurePredicates} from "./store/IBlockContentStructurePredicates";
 
@@ -32,7 +32,7 @@ export namespace BlockContentStructureMarkdownConverter {
 
             case AnnotationContentType.AREA_HIGHLIGHT:
                 const { image } = content.value;
-                
+
                 if (! image) {
                     return `<b>AREA HIGHLIGHT</b>: Missing image`;
                 }
