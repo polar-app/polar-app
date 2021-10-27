@@ -105,12 +105,6 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     }, [setMode, save, containerRef, getPosition]);
 
 
-    // FIXME listen to selected in the store and if it's not empty then clear the popup..
-
-    const computePositionFromBRC = React.useCallback(() => {
-
-    }, []);
-
     const doPopup = React.useCallback((): boolean => {
 
         if (blocksTreeStore.hasSelected()) {
@@ -128,7 +122,9 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         if (range.collapsed) {
 
             if (range) {
-                setPosition(undefined);
+                if (Devices.isDesktop()) {
+                    setPosition(undefined);
+                }
             }
 
             return false;
@@ -136,11 +132,13 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
         const bcr = range.getBoundingClientRect();
 
-        setPosition({
-            top: bcr.bottom,
-            bottom: bcr.top,
-            left: bcr.left + bcr.width / 2,
-        });
+        if (Devices.isDesktop()) {
+            setPosition({
+                top: bcr.bottom,
+                bottom: bcr.top,
+                left: bcr.left + bcr.width / 2,
+            });
+        }
 
         return true;
 
@@ -149,7 +147,11 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const clearPopup = React.useCallback(() => {
 
         setMode('format');
-        setPosition(undefined);
+
+        if (Devices.isDesktop()) {
+            setPosition(undefined);
+        }
+
         setFakeRangePosition(undefined);
 
     }, []);
