@@ -124,11 +124,11 @@ commands:
       # ! Compile all Typescript Packages
       - run:
           name: lerna run compile
-          command: npx lerna run compile
+          command: lerna run compile
 
       - run:
           name: lerna run eslint
-          command: npx lerna run eslint
+          command: lerna run eslint
 
       # ! Save Cache
       - save_cache:
@@ -481,11 +481,6 @@ workflows:
       # @ Run Code Quality Stage
       - Code-Quality:
           executor: large
-          steps:
-            - run:
-              name: test inline
-              command: |
-                echo "hello world"
 
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
