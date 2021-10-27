@@ -93,7 +93,7 @@ export namespace BlockContentAnnotationTree {
                     ? htmlToMarkdown(annotation.revisedText)
                     : htmlToMarkdown(annotation.text);
 
-        const wikiLinks = tagsToWikiLinksStr(annotation.tags);
+        const wikiLinks = tagsToTagWikiLinksStr(annotation.tags);
 
         return {
             type: AnnotationContentType.TEXT_HIGHLIGHT,
@@ -262,9 +262,9 @@ export namespace BlockContentAnnotationTree {
      *
      * @param tagsMap Tags map
      */
-    export function tagsToWikiLinksStr(tagsMap?: Record<string, Tag>): string {
+    export function tagsToTagWikiLinksStr(tagsMap?: Record<string, Tag>): string {
         return tagsMap
-            ? Object.values(tagsMap).map(tag => `[[${tag.label}]]`).join(' ')
+            ? Object.values(tagsMap).map(tag => `[[#${tag.label}]]`).join(' ')
             : '';
     }
 
