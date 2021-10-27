@@ -45,11 +45,10 @@ export class ElasticSearch extends Construct {
                 masterUserName: 'admin',
             },
 
+            useUnsignedBasicAuth: true,
+
             // require that all traffic to the domain arrive over HTTPS.
             enforceHttps: true,
-
-            encryptionAtRest: {enabled: true},
-            nodeToNodeEncryption: true,
 
             // This requires an even number of "data nodes", so 2, 4, 6, etc
             // zoneAwareness: {enabled: true},

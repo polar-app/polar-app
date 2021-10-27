@@ -2295,6 +2295,16 @@
   resolved "https://verdaccio.getpolarized.io/@discoveryjs%2fjson-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
+"@elastic/elasticsearch@=7.13.0":
+  version "7.13.0"
+  resolved "https://verdaccio.getpolarized.io/@elastic%2felasticsearch/-/elasticsearch-7.13.0.tgz#6dcf511dfa91187e22c81e54f41f4bd0fd96b4d6"
+  integrity sha512-WgwLWo2p9P2tdqzBGX9fHeG8p5IOTXprXNTECQG2mJ7z9n93N5AFBJpEw4d35tWWeCWi9jI13A2wzQZH7XZ/xw==
+  dependencies:
+    debug "^4.3.1"
+    hpagent "^0.1.1"
+    ms "^2.1.3"
+    secure-json-parse "^2.4.0"
+
 "@electron/get@^1.0.1":
   version "1.12.4"
   resolved "https://verdaccio.getpolarized.io/@electron%2fget/-/get-1.12.4.tgz#a5971113fc1bf8fa12a8789dc20152a7359f06ab"
@@ -7322,6 +7332,13 @@ aws-cdk@=1.121.0:
     yaml "1.10.2"
     yargs "^16.2.0"
 
+aws-elasticsearch-connector@=9.0.3:
+  version "9.0.3"
+  resolved "https://verdaccio.getpolarized.io/aws-elasticsearch-connector/-/aws-elasticsearch-connector-9.0.3.tgz#106f8ea41c4ea79178a35c3f805589a7f23c98e4"
+  integrity sha512-jnzTHp3cIe1VxnQAO0t6sUIZ19WFe+LtXnX0FnHeoJUvOnrKSI5ooGGlZPCud2jmqVPK4L4c0w8XtiBjHyTk6g==
+  dependencies:
+    aws4 "^1.11.0"
+
 aws-sdk@^2.848.0:
   version "2.960.0"
   resolved "https://verdaccio.getpolarized.io/aws-sdk/-/aws-sdk-2.960.0.tgz#7f5fba5de9b284c0d7e77c11ae7e64a4bf085de7"
@@ -7357,7 +7374,7 @@ aws-sign2@~0.7.0:
   resolved "https://verdaccio.getpolarized.io/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
   integrity sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
 
-aws4@^1.8.0:
+aws4@^1.11.0, aws4@^1.8.0:
   version "1.11.0"
   resolved "https://verdaccio.getpolarized.io/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
@@ -15174,6 +15191,11 @@ hpack.js@^2.1.6:
     readable-stream "^2.0.1"
     wbuf "^1.1.0"
 
+hpagent@^0.1.1:
+  version "0.1.2"
+  resolved "https://verdaccio.getpolarized.io/hpagent/-/hpagent-0.1.2.tgz#cab39c66d4df2d4377dbd212295d878deb9bdaa9"
+  integrity sha512-ePqFXHtSQWAFXYmj+JtOTHr84iNrII4/QRlAAPPE+zqnKy4xJo7Ie1Y4kC7AdB+LxLxSTTzBMASsEcy0q8YyvQ==
+
 hsl-regex@^1.0.0:
   version "1.0.0"
   resolved "https://verdaccio.getpolarized.io/hsl-regex/-/hsl-regex-1.0.0.tgz#d49330c789ed819e276a4c0d272dffa30b18fe6e"
@@ -19789,7 +19811,7 @@ ms@2.1.2:
   resolved "https://verdaccio.getpolarized.io/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-ms@2.1.3, ms@^2.0.0, ms@^2.1.1:
+ms@2.1.3, ms@^2.0.0, ms@^2.1.1, ms@^2.1.3:
   version "2.1.3"
   resolved "https://verdaccio.getpolarized.io/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
@@ -24089,6 +24111,11 @@ section-matter@^1.0.0:
   dependencies:
     extend-shallow "^2.0.1"
     kind-of "^6.0.0"
+
+secure-json-parse@^2.4.0:
+  version "2.4.0"
+  resolved "https://verdaccio.getpolarized.io/secure-json-parse/-/secure-json-parse-2.4.0.tgz#5aaeaaef85c7a417f76271a4f5b0cc3315ddca85"
+  integrity sha512-Q5Z/97nbON5t/L/sH6mY2EacfjVGwrCcSi5D3btRO2GZ8pf1K1UN7Z9H5J57hjVU2Qzxr1xO+FmBhOvEkzCMmg==
 
 seek-bzip@^1.0.5:
   version "1.0.6"
