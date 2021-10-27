@@ -1,4 +1,5 @@
 import React from 'react';
+import {StoryAppRoot} from "../StoryAppRoot/StoryAppRoot";
 
 export interface LogoProps {
 
@@ -6,6 +7,9 @@ export interface LogoProps {
 
 export const Logo = (props: LogoProps) => {
     return (
-        <div>this is a fake logo</div>
+        <StoryAppRoot>
+            this is a fake logo
+        </StoryAppRoot>
     );
 }
+

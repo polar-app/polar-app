@@ -47,7 +47,8 @@
   "dependencies": {
     "polar-mui": "0.0.0",
     "polar-react": "0.0.0",
-    "storybook": "=6.3.12"
+    "storybook": "=6.3.12",
+    "polar-shared": "0.0.0"
   },
   "files": [
     "**/*.js",
