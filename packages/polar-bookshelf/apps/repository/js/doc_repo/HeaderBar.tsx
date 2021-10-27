@@ -15,7 +15,7 @@ export const HeaderBar = React.memo(function HeaderBar(props: IProps) {
     const history = useHistory();
 
     return(
-        <AppBar position="sticky">
+        <AppBar color={"inherit"} position="sticky">
             <Toolbar>
                 <IconButton onClick={()=>history.goBack()}>
                     <ArrowBackIcon/>

@@ -149,7 +149,7 @@ const PlanBox = (props: PlanBoxProps) => {
   return (
       <Paper elevation={1} style={{margin: '1rem'}}>
 
-        <Box className={classes.pricePlanMobile}>
+        <Box className={classes.pricePlanMobile} px={2} py={1}>
           <Box className={classes.pricing}>{props.name}</Box>
           <Box className={classes.subtitleMobile}>
             {props.subtitle}
@@ -219,10 +219,11 @@ export const PricingContentForMobile = () => {
         alignItems: "center",
         justifyContent: "center",
         flexWrap: "wrap",
+        width:'100%',
         marginBottom: "40px",
       }}>
 
-      <div style={{margin: '1em auto 1em auto'}}>
+      <div style={{margin: '1em auto'}}>
         <PlanIntervalToggle/>
       </div>
 

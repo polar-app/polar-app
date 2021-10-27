@@ -135,7 +135,7 @@ namespace Device {
         const {closeCurrentTab} = useSideNavCallbacks();
 
         return (
-            <AppBar position="static">
+            <AppBar color={"inherit"} position="static">
                 <Toolbar>
                     <div style={{
                              display: 'flex',
