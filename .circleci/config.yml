@@ -117,11 +117,15 @@ commands:
           no_output_timeout: 30m
           command: |
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run eslint --no-bail >> branchoutput.txt
+            lerna run eslint --no-bail >> branchoutput.txt | true
             git checkout master
             git pull
-            lerna run eslint --no-bail >> masteroutput.txt
+            lerna run eslint --no-bail >> masteroutput.txt | true
             join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+            echo "###############################################################################################"
+            cat masteroutput.txt
+            echo "###############################################################################################"
+            cat branchoutput.txt
             git checkout -
 
       # ? Debug step for checking if there are any duplicate packages
