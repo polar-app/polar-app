@@ -85,11 +85,13 @@ export const SwitchScreen = () => {
                     {orderedTabsByRecency.length > 0 ?
                         <>
                             {orderedTabsByRecency.map( column =>
-                                <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
-                                    <TableCell key={column.uuid} className={classes.th}>
-                                        {column.title}
-                                    </TableCell>
-                                </TableRow>
+                                <TableHead key={column.uuid}>
+                                    <TableRow onClick={()=>history.push('/doc/'+column.fingerprint)}>
+                                        <TableCell key={column.uuid} className={classes.th}>
+                                            {column.title}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
                             )}
                         </>
                         :

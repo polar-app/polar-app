@@ -100,14 +100,14 @@ export const PreferencesListItems = React.memo(function PreferencesListItems() {
     return(
         <List>      
             <Divider />
-            <ListItem button onClick={() => history.push(RoutePathNames.SETTINGS)}>
+            <ListItem button onClick={() => history.push(RoutePathNames.SETTINGS_MOBILE)}>
                 <ListItemIcon>
                 <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
             <Divider />
-            <ListItem button onClick={() => history.push(RoutePathNames.PLANS)}>
+            <ListItem button onClick={() => history.push(RoutePathNames.PLAN_MOBILE)}>
                 <ListItemIcon>
                 <MonetizationOnIcon />
                 </ListItemIcon>

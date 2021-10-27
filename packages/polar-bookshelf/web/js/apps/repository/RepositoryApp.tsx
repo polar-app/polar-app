@@ -364,8 +364,16 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
 
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.SETTINGS_MOBILE}>
+                                    <SettingsScreen/>
+                                </PersistentRoute>
+
                                 <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
                                     <SwitchScreen/>
+                                </PersistentRoute>
+
+                                <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
+                                    <PricingScreen/>
                                 </PersistentRoute>
 
                                 <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
