@@ -112,23 +112,25 @@ commands:
             lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link
 
       # ! Diff Eslint Runs
-      - run:
-          name: ESLINT new Code
-          no_output_timeout: 30m
-          command: |
-            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run eslint --no-bail >> branchoutput.txt || true
-            git reset --hard
-            git checkout master
-            git pull
-            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run eslint --no-bail >> masteroutput.txt || true
-            join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
-            echo "###############################################################################################"
-            cat masteroutput.txt
-            echo "###############################################################################################"
-            cat branchoutput.txt
-            git checkout -
+      # - run:
+      #     name: ESLINT new Code
+      #     no_output_timeout: 30m
+      #     command: |
+      #       find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+      #       lerna run eslint --no-bail >> branchoutput.txt || true
+      #       git reset --hard
+      #       git checkout master
+      #       git pull
+      #       find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+      #       lerna run eslint --no-bail >> masteroutput.txt || true
+      #       sed -i '/^\//!d' masteroutput.txt
+      #       sed -i '/^\//!d' branchoutput.txt
+      #       join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+      #       echo "###############################################################################################"
+      #       cat masteroutput.txt
+      #       echo "###############################################################################################"
+      #       cat branchoutput.txt
+      #       git checkout -
 
       # ? Debug step for checking if there are any duplicate packages
       - run:
