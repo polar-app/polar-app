@@ -47,12 +47,12 @@
     "polar-test": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-webpack": "0.0.0",
-    "chromatic": "=6.0.4"
+    "chromatic": "=6.0.4",
+    "storybook": "=6.3.12"
   },
   "dependencies": {
     "polar-mui": "0.0.0",
     "polar-react": "0.0.0",
-    "storybook": "=6.3.12",
     "polar-shared": "0.0.0"
   },
   "files": [
