@@ -420,16 +420,16 @@ module.exports = {
     ].filter(Boolean),
     optimization: {
         minimize: !isDev,
-        minimizer: [new TerserPlugin({
-            // disable caching to:  node_modules/.cache/terser-webpack-plugin/
-            // because intellij will index this data and lock up my machine
-            // and generally waste space and CPU
-            // cache: ".terser-webpack-plugin",
-            terserOptions: {
-                output: {ascii_only: true},
-            }
-        })
-        ],
+        // minimizer: [new TerserPlugin({
+        //     // // disable caching to:  node_modules/.cache/terser-webpack-plugin/
+        //     // // because intellij will index this data and lock up my machine
+        //     // // and generally waste space and CPU
+        //     // // cache: ".terser-webpack-plugin",
+        //     // terserOptions: {
+        //     //     output: {ascii_only: true},
+        //     // }
+        // })
+        // ]
         // usedExports: true,
         // removeAvailableModules: true,
         // removeEmptyChunks: true,
