@@ -95,7 +95,6 @@
     "dtsmake": "0.0.10",
     "install": "=0.12.2",
     "jsdom": "=16.7.0",
-    "mini-css-extract-plugin": "=0.11.3",
     "mocha": "=9.1.1",
     "node-sass": "=4.14.1",
     "polar-eslint": "0.0.0",
