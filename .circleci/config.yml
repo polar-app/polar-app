@@ -678,5 +678,5 @@ workflows:
 
       - IOS:
           requires:
-            - Approve-Android
+            - Approve-IOS
             - build-setup

@@ -34,7 +34,8 @@
     "polar-firebase-admin": "0.0.0",
     "polar-firestore-like": "0.0.0",
     "polar-blocks": "0.0.0",
-    "polar-rpc": "0.0.0"
+    "polar-rpc": "0.0.0",
+    "polar-markdown-parser": "0.0.0"
   },
   "files": [
     "**/*.js",

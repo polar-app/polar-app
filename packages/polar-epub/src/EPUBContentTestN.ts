@@ -48,7 +48,7 @@ describe('EPUBContent', () => {
 
         const content = await EPUBContent.get(path);
 
-        const parsedEpub = await EPUBContent.parseContent(path, content[1]);
+        const parsedEpub = await EPUBContent.parseContent(content[1]);
 
         assert.equal(parsedEpub[0].cfi, 'epubcfi(/6/8[chapter_001]!/4/2/2)');
 
@@ -65,10 +65,10 @@ describe('EPUBContent', () => {
                 </head>
                 <body>
                     <div> 
-                        first sentance.
+                        first sentence.
 
                         <div>
-                            second nested sentance.
+                            second nested sentence.
 
                             <div>
                                 <div>
@@ -77,7 +77,7 @@ describe('EPUBContent', () => {
                             </div>
                         </div>
 
-                        last sentance.
+                        last sentence.
                     </div>
                 </body>
             </html>
@@ -86,21 +86,22 @@ describe('EPUBContent', () => {
 
         const content = {
             id: 'chapter_001',
+            sharedCfi: '/6/8[chapter_001]!',
             html: () => html()
         };
 
-        const parsedEpub = await EPUBContent.parseContent(path, content);
+        const parsedEpub = await EPUBContent.parseContent(content);
 
         assert.equal(parsedEpub[0].cfi, 'epubcfi(/6/8[chapter_001]!/4/2)');
-        assert.equal(parsedEpub[0].text, 'first sentance.');
+        assert.equal(parsedEpub[0].text, 'first sentence.');
 
         assert.equal(parsedEpub[1].cfi, 'epubcfi(/6/8[chapter_001]!/4/2/2)');
-        assert.equal(parsedEpub[1].text, 'second nested sentance.');
+        assert.equal(parsedEpub[1].text, 'second nested sentence.');
 
         assert.equal(parsedEpub[2].cfi, 'epubcfi(/6/8[chapter_001]!/4/2/2/2/2)');
         assert.equal(parsedEpub[2].text, 'rolling in the deep.');
 
         assert.equal(parsedEpub[3].cfi, 'epubcfi(/6/8[chapter_001]!/4/2)');
-        assert.equal(parsedEpub[3].text, 'last sentance.');
+        assert.equal(parsedEpub[3].text, 'last sentence.');
     });
 });
