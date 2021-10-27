@@ -2,54 +2,11 @@ import {ESCredentials} from "./ESCredentials";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {ESSecrets} from "./ESSecrets";
 import {ESRequestsCache} from "./ESRequestsCache";
-
-export type EsProvider = "elastic.co" | "aws-elasticsearch";
-
-class EsProvidersAdapter {
-    private credentials?: ESCredentials.IESCredentials;
-
-    constructor() {
-        ESSecrets.init();
-
-        // Set the provider to be elastic.co by default for now (until we are confident enough in AWS ES)
-        this.reset();
-    }
-
-    switchTo(provider: EsProvider) {
-        switch (provider) {
-            case "elastic.co":
-                this.reset();
-                break;
-            case "aws-elasticsearch":
-                this.credentials = {
-                    endpoint: 'https://search-polar-m-elasti-7da1alsug7eb-ark26m65fe3ke5q4xpbl647jfa.us-east-1.es.amazonaws.com',
-                    user: 'admin',
-                    pass: 'IW+,5H7,0B;Zbc$vJg4Q/-6t1Sje_J2H',
-                };
-                break;
-            default:
-                throw new Error(`Can not switch to unsupported ElasticSearch provider: ${provider}`);
-        }
-    }
-
-    getCredentials(): ESCredentials.IESCredentials {
-        return this.credentials!;
-    }
-
-    private reset() {
-        this.credentials = ESCredentials.get();
-    }
-}
+import * as crypto from 'crypto';
 
 export namespace ESRequests {
 
     const cache = ESRequestsCache.create();
-
-    /**
-     * Allow to easily switch between ElasticSearch providers by calling EsRequests.provider.switchTo(provider);
-     * The change is reflected in any subsequent ES calls
-     */
-    export const provider = new EsProvidersAdapter();
 
     import IESRequestCacheKey = ESRequestsCache.IESRequestCacheKey;
 
@@ -75,39 +32,25 @@ export namespace ESRequests {
         readonly hits: IElasticSearchHits<T>;
     }
 
-    export async function doPut(url: string, body: any) {
-
-        const esCredentials = provider.getCredentials();
-
-        const authorization = Buffer.from(`${esCredentials.user}:${esCredentials.pass}`).toString('base64');
-
-        const response = await Fetches.fetch(`${esCredentials.endpoint}${url}`, {
-            method: 'PUT',
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${authorization}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-
-        throw new Error(`PUT to ${url} failed: ${response.status}: ${response.statusText}`);
-
-    }
-
     async function doRequest(url: string, method: 'PUT' | 'GET' | 'POST' | 'DELETE', body: Record<string, unknown> | undefined) {
 
-        const esCredentials = provider.getCredentials();
+        ESSecrets.init();
+
+        const esCredentials = ESCredentials.get();
 
         const authorization = Buffer.from(`${esCredentials.user}:${esCredentials.pass}`).toString('base64');
+
+        // Make sure changes to ES credentials produce a "cache miss"
+        const credentialsHash = crypto
+            .createHash("sha256")
+            .update(JSON.stringify(esCredentials), "binary")
+            .digest("base64");
 
         const cacheKey: IESRequestCacheKey = {
             url,
             body: body || {},
-            method: 'PUT'
+            method,
+            credentialsHash,
         }
 
         if (await cache.containsKey(cacheKey)) {
@@ -135,6 +78,10 @@ export namespace ESRequests {
 
         throw new Error(`${method} to ${url} failed: ${response.status}: ${response.statusText}`);
 
+    }
+
+    export async function doPut(url: string, body: any) {
+        return await doRequest(url, 'PUT', body);
     }
 
     export async function doPost(url: string, body: any) {

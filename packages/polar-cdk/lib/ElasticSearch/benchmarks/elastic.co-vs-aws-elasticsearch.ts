@@ -1,13 +1,27 @@
-import {EsProvider, ESRequests} from "polar-answers/src/ESRequests";
+import {ESRequests} from "polar-answers/src/ESRequests";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 
 (async () => {
 
-    async function runBenchmark(provider: "elastic.co" | "aws-elasticsearch", iterationsCount: number) {
+    type EsProvider = "elastic.co" | "aws-elasticsearch";
+
+    async function runBenchmark(provider: EsProvider, iterationsCount: number) {
 
         console.log(`Indexing ${iterationsCount} documents with provider ${provider}...`);
 
-        ESRequests.provider.switchTo(provider);
+        switch (provider) {
+            case "aws-elasticsearch":
+                process.env.ES_ENDPOINT = 'https://search-polar-m-elasti-7da1alsug7eb-ark26m65fe3ke5q4xpbl647jfa.us-east-1.es.amazonaws.com';
+                process.env.ES_USER = 'admin'
+                process.env.ES_PASS = 'IW+,5H7,0B;Zbc$vJg4Q/-6t1Sje_J2H';
+                break;
+            case "elastic.co":
+                // EsSecrets.init() will take care of populating these before the request
+                process.env.ES_ENDPOINT = '';
+                process.env.ES_USER = '';
+                process.env.ES_PASS = '';
+                break;
+        }
 
         // Create a unique ES index name for this test iteration
         const tmpIndexName = `test-index-${new Date().getTime().toFixed(0)}`;
@@ -46,10 +60,10 @@ import {UUIDs} from "polar-shared/src/metadata/UUIDs";
         ];
 
         for (let provider of providers) {
-            const iterationsCount = 100;
+            const iterationsCount = 10;
             const {benchmarkTimeInSeconds} = await runBenchmark(provider, iterationsCount);
             console.log(`Time it took to index ${iterationsCount} items with provider ${provider}: ${benchmarkTimeInSeconds} seconds`);
-            console.log(`Averaged at ${benchmarkTimeInSeconds / iterationsCount} seconds per item`)
+            console.log(`Averaged at ${(benchmarkTimeInSeconds / iterationsCount).toPrecision(2)} seconds per item`)
         }
     } catch (e) {
         console.error(e);
