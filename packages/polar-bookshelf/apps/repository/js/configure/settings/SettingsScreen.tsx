@@ -22,7 +22,6 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 import { DeviceRouters } from '../../../../../web/js/ui/DeviceRouter';
-import { useHistory } from 'react-router-dom';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -56,7 +55,7 @@ const Main = () => {
     const classes = useStyles();
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
-    
+
     const handleDarkModeToggle = (enabled: boolean) => {
 
         const theme = enabled ? 'dark' : 'light';
@@ -143,8 +142,8 @@ const Main = () => {
                                 preview={true}/>
 
                 <Divider/>
-                <List> 
-                    <ViewDeviceInfoButton/>     
+                <List>
+                    <ViewDeviceInfoButton/>
                     <Divider/>
                     <DeviceRouters.Desktop>
                         <>
