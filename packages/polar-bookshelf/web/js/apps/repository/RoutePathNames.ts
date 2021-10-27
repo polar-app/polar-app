@@ -1,5 +1,3 @@
-import {Devices} from "polar-shared/src/util/Devices";
-
 // const IS_HANDHELD = ! Devices.isDesktop();
 
 // const createHybrid = (pathname: string) => {

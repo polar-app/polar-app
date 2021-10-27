@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {TopTagsChart} from './TopTagsChart';
 import {FixedNav} from '../FixedNav';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
