@@ -318,7 +318,7 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
-        isDevServer && new ReactRefreshWebpackPlugin(),
+        // isDevServer && new ReactRefreshWebpackPlugin(),
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
