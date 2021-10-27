@@ -180,6 +180,19 @@ jobs:
       - save_yarn_cache
       - persist_workspace
 
+  # @ Run Code-Quality Steps
+  Code-Quality:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: Check the code Code-Quality
+    steps:
+      - global_modules_setup
+      - checkout
+      - restore_yarn_cache
+      - bootstrap
+
   # @ Run Karma Test Suite
   karma:
     parameters:
@@ -502,11 +515,14 @@ workflows:
       - setting-up:
           executor: large
 
+      - Code-Quality:
+          executor: large
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
       - build-chrome-extension:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       ## ^ Polar App Sub-Workflow Below Here
@@ -514,17 +530,20 @@ workflows:
       - karma:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       - mocha:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       # @ Build Polar app
       - build-polar-app:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
