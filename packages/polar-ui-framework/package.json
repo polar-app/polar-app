@@ -15,7 +15,8 @@
     "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "cimocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=8408551551bf"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/react": "^6.3.12",
+    "storybook-dark-mode": "=1.0.8",
     "@types/chai": "4.2.11",
     "@types/mocha": "=9.0.0",
     "babel-loader": "^8.2.3",
@@ -42,7 +44,8 @@
     "polar-karma": "0.0.0",
     "polar-test": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0"
+    "polar-webpack": "0.0.0",
+    "chromatic": "=6.0.4"
   },
   "dependencies": {
     "polar-mui": "0.0.0",
