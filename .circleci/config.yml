@@ -158,6 +158,30 @@ commands:
           paths:
             - project
 
+  # & Check new Eslint Rules on New Code
+  eslint_diff:
+    description: diff eslint output from master
+    steps:
+      - run:
+          name: Diff Eslint
+          no_output_timeout: 30m
+          command: |
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            lerna run eslint --no-bail >> branchoutput.txt || true
+            git reset --hard
+            git checkout master
+            git pull
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            lerna run eslint --no-bail >> masteroutput.txt || true
+            sed -i '/^\//!d' masteroutput.txt
+            sed -i '/^\//!d' branchoutput.txt
+            join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+            echo "###############################################################################################"
+            cat masteroutput.txt
+            echo "###############################################################################################"
+            cat branchoutput.txt
+            git checkout -
+
 # ~ Workflow Building Blocks
 jobs:
   # ^ Webapp Workflow Jobs
@@ -192,6 +216,7 @@ jobs:
       - checkout
       - restore_yarn_cache
       - bootstrap
+      - check_duplicates
 
   # @ Run Karma Test Suite
   karma:
