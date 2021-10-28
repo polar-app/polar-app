@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) =>
         },
         textField: {
             padding: theme.spacing(1),
-
-            fontSize: '1.2rem !important'
+            fontSize: '1.2rem !important',
+            flexGrow: 1,
+            display: 'flex'
         },
         item: {
             fontSize: '1.2rem !important',
@@ -237,7 +238,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                  }}
                  className={props.className}>
 
-                <Box pt={1} pb={1}>
+                <Box pt={1} pb={1} flex flexGrow={1}>
                     <>
                         {props.title && (
                             <div className={classes.title}>
