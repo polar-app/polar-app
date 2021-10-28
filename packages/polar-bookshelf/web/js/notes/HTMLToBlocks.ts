@@ -243,8 +243,10 @@ export namespace HTMLToBlocks {
         }
         const trim = (block: IBlockContentStructure) => {
             if (block.content.type === 'markdown' && block.children.length === 0) {
-                block.content = createMarkdownContent(block.content.data.trim())
-                return block;
+                return {
+                    ...block,
+                    content: createMarkdownContent(block.content.data.trim()),
+                };
             }
             return block;
         };
