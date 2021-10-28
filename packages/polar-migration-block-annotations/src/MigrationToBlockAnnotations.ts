@@ -18,7 +18,7 @@ import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
-import {Objects} from "polar-shared/src/util/Objects";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace MigrationToBlockAnnotations {
 
@@ -215,7 +215,7 @@ export namespace MigrationToBlockAnnotations {
             .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
 
         const writeToBatch = (block: IBlock) => {
-            const data = Objects.purgeUndefinedRecursive(block);
+            const data = Dictionaries.onlyDefinedProperties(block);
             batch.set(blockCollection.doc(block.id), data);
         };
 

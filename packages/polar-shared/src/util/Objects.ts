@@ -91,27 +91,6 @@ export class Objects {
 
     }
 
-    /**
-     * Remove undefined properties from an object recursively
-     *
-     * @param obj a javascript object
-     */
-    public static purgeUndefinedRecursive<T extends Record<string, any>>(obj: T): T {
-        if (obj === null || typeof obj === 'function' || typeof obj !== 'object' ) {
-            return obj;
-        }
-
-        Object.keys(obj).forEach(key => {
-            if (obj[key] === undefined) {
-                delete obj[key];
-                return;
-            }
-
-            this.purgeUndefinedRecursive(obj[key]);
-        });
-
-        return obj;
-    }
 }
 
 /**
