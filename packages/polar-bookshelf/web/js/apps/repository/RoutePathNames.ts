@@ -7,9 +7,9 @@
 
 const HOME = "/";
 const ANNOTATIONS = "/annotations";
+const DAILY = "/daily";
 const NOTES = "/notes";
-const NOTES_REPO = "/notes/repo";
-const NOTE = (id: string) => `${NOTES}/${id}`;
+const NOTE = (id: string) => `${DAILY}/${id}`;
 const ANKI_SYNC = "/sync";
 
 const SETTINGS = ("/settings");
@@ -33,6 +33,7 @@ const SWITCH = "/switch";
 export const RoutePathNames = {
     HOME,
     ANNOTATIONS,
+    DAILY,
     NOTES,
     NOTE,
     ADD_MOBILE,
@@ -51,5 +52,4 @@ export const RoutePathNames = {
     FEATURE_REQUESTS,
     ENABLE_FEATURE_TOGGLE,
     SUPPORT,
-    NOTES_REPO,
 };

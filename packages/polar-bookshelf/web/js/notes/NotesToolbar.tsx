@@ -104,8 +104,8 @@ const DesktopNotesToolbar = () => {
             <div className={classes.root}>
                 <div className={classes.left}>
                     <SidenavTriggerIconButton />
-                    <Link style={{ textDecoration: 'none' }} to={RoutePathNames.NOTES_REPO}>
-                        <Button variant="outlined" disableElevation>All Notes</Button>
+                    <Link style={{ textDecoration: 'none' }} to={RoutePathNames.DAILY}>
+                        <Button variant="outlined" disableElevation>Daily Notes</Button>
                     </Link>
                     {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
                         <Button
@@ -160,16 +160,16 @@ const HandheldNotesToolbar = () => {
 
     const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
 
-    const handleAllNotesNavigation = React.useCallback(() =>
-        history.push(RoutePathNames.NOTES_REPO), [history]);
+    const handleDailyNotesNavigation = React.useCallback(() =>
+        history.push(RoutePathNames.DAILY), [history]);
 
     return (
         <>
             <div className={classes.root}>
                 <div>
                     <SidenavTriggerIconButton />
-                    <Tooltip title="All Notes">
-                        <IconButton size="small" onClick={handleAllNotesNavigation}>
+                    <Tooltip title="Daily Notes">
+                        <IconButton size="small" onClick={handleDailyNotesNavigation}>
                             <BorderAllIcon />
                         </IconButton>
                     </Tooltip>
