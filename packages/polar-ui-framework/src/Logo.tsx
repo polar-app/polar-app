@@ -1,5 +1,5 @@
 import React from 'react';
-import {StoryAppRoot} from "../StoryAppRoot/StoryAppRoot";
+import {StoryAppRoot} from "./StoryAppRoot";
 
 export interface LogoProps {
 
