@@ -37,11 +37,11 @@ export const AdaptiveSafeAreaView = (props: IProps) => {
 const styles = StyleSheet.create({
     ios: {
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#303030',
     },
     android: {
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#303030',
         paddingTop: hasNotch ? StatusBar.currentHeight : 0,
     },
     other: {
