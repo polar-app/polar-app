@@ -5,25 +5,32 @@ import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenu
 import {ShortcutEntry, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
+import {useNamedBlocks} from "../notes/NoteUtils";
+import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 function useDocInfos() {
     const {data} = useDocRepoStore(['data']);
     return data;
 }
 
+function useShortcuts() {
+    const {shortcuts} = useKeyboardShortcutsStore(['shortcuts']);
+    return Object.values(shortcuts);
+}
+
 export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
-    const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
-
+    const shortcuts = useShortcuts();
     const docInfos = useDocInfos();
+    const blocks = useNamedBlocks({ sort : false });
 
     interface ICommandWithType extends ICommand {
-        readonly type: 'keyboard-shortcut' | 'doc';
+        readonly type: 'keyboard-shortcut' | 'doc' | 'block';
     }
 
     const commandsProvider: CommandsProvider<ICommandWithType> = React.useCallback((): ReadonlyArray<ICommandWithType> => {
 
-        function toKeyboardShortcut(shortcut: ShortcutEntry, idx: number): ICommandWithType {
+        function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandWithType {
             return {
                 id: `${idx}`,
                 type: 'keyboard-shortcut',
@@ -34,7 +41,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
             }
         }
 
-        function toDoc(repoDocInfo: RepoDocInfo, idx: number): ICommandWithType {
+        function toDocCommand(repoDocInfo: RepoDocInfo): ICommandWithType {
             return {
                 id: `${repoDocInfo.id}`,
                 type: 'doc',
@@ -45,16 +52,37 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
             }
         }
 
-        const keyboardShortcutCommands = Object.values(shortcuts).map(toKeyboardShortcut);
-        const docCommands = docInfos.map(toDoc);
+        function toBlockCommand(block: IBlock<INamedContent>): ICommandWithType {
 
-        return [...keyboardShortcutCommands, ...docCommands];
+            function computeText(): string {
+                switch (block.content.type) {
+                    case "name":
+                    case "date":
+                        return block.content.data;
+                    case "document":
+                        return block.content.docInfo.title || 'Untitled';
+                }
+            }
 
-    }, [docInfos, shortcuts]);
+
+            return {
+                id: `${block.id}`,
+                type: 'block',
+                text: computeText(),
+                group: 'Block'
+            }
+        }
+
+
+        const keyboardShortcutCommands = shortcuts.map(toKeyboardShortcutCommand);
+        const docCommands = docInfos.map(toDocCommand);
+        const blockCommands = blocks.map(toBlockCommand);
+
+        return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+
+    }, [blocks, docInfos, shortcuts]);
 
     const handleCommand = React.useCallback((command: ICommandWithType) => {
-
-
 
     }, []);
 

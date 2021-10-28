@@ -68,6 +68,7 @@ import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {ActiveKeyboardShortcuts2} from "../../hotkeys/ActiveKeyboardShortcuts2";
 
 interface IProps {
     readonly app: App;
@@ -285,6 +286,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                         <div className={classes.root}>
 
                             <Initializers/>
+
+                            <ActiveKeyboardShortcuts2/>
 
                             <SideNav/>
                             <DeviceRouters.NotDesktop>

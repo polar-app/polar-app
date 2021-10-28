@@ -8,6 +8,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Input from "@material-ui/core/Input";
 import {Box} from "@material-ui/core";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 
 const useStyles = makeStyles((theme) =>
@@ -16,7 +17,8 @@ const useStyles = makeStyles((theme) =>
             padding: theme.spacing(1),
             color: theme.palette.text.hint,
             fontWeight: 'bold',
-            fontSize: '1.0rem !important'
+            fontSize: '1.0rem !important',
+            userSelect: 'none'
         },
         textField: {
             padding: theme.spacing(1),
@@ -109,7 +111,23 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
         return filter === undefined || command.text.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     }, [filter]);
 
-    const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
+    const hasActiveFilter = React.useCallback(() => {
+        return filter !== undefined && filter.trim() !== '';
+    }, [filter]);
+
+    const commandsFiltered = React.useMemo(() => {
+
+        if (hasActiveFilter()) {
+            return arrayStream(commands)
+                       .filter(filterPredicate)
+                       .head(50)
+                       .sort((a, b) => a.text.localeCompare(b.text))
+                       .collect();
+        } else {
+            return [];
+        }
+
+    }, [commands, filterPredicate, hasActiveFilter]);
 
     const handleCommandExecuted = React.useCallback((command: C) => {
 
