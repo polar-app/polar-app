@@ -59,22 +59,38 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
 
     return(
         <AdaptivePageLayout title="Add">
+            <>
+                <div className={classes.root}>
 
-            <div className={classes.root}>
-                <label htmlFor={id} className={classes.container}>
-                    <img src={addFile} className={classes.image} alt={'Add Files..'} />
-                    <div className={classes.textfield}>
-                        <h2>Add files</h2>
-                        <span>PDF and EPUB supported</span>
-                    </div>
-                </label>
-                <input  className={classes.input}
-                        accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
-                        id={id}
-                        multiple
-                        onChange={handleUpload}
-                        type="file"/>
-            </div>
+                    <label htmlFor={id} className={classes.container}>
+                        <img src={addFile} className={classes.image} alt={'Add Files..'} />
+                        <div className={classes.textfield}>
+                            <h2>Add files</h2>
+                            <span>PDF and EPUB supported</span>
+                        </div>
+                    </label>
+                    <input  className={classes.input}
+                            accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
+                            id={id}
+                            multiple
+                            onChange={handleUpload}
+                            type="file"/>
+
+                    <label htmlFor={id} className={classes.container}>
+                        <img src={addFile} className={classes.image} alt={'Add Notes..'} />
+                        <div className={classes.textfield}>
+                            <h2>Add Notes</h2>
+                            <span>PDF and EPUB supported</span>
+                        </div>
+                    </label>
+                    <input  className={classes.input}
+                            accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
+                            id={id}
+                            multiple
+                            onChange={handleUpload}
+                            type="file"/>
+                </div>
+            </>
         </AdaptivePageLayout>
     );
 });
