@@ -9,7 +9,7 @@ const HOME = "/";
 const ANNOTATIONS = "/annotations";
 const DAILY = "/daily";
 const NOTES = "/notes";
-const NOTE = (id: string) => `${DAILY}/${id}`;
+const NOTE = (id: string) => `/notes/${id}`;
 const ANKI_SYNC = "/sync";
 
 const SETTINGS = ("/settings");
