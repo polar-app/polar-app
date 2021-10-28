@@ -10,7 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 
 const isDevServer = process.argv.includes('serve');
