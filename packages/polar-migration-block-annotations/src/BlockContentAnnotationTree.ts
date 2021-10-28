@@ -17,10 +17,10 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 export namespace BlockContentAnnotationTree {
 
     export type IAnnotationBase = {
-        tags: ReadonlyArray<Tag>;
-        children: ReadonlyArray<IAnnotation>;
-        created: ISODateTimeString;
-        updated: ISODateTimeString;
+        readonly tags: ReadonlyArray<Tag>;
+        readonly children: ReadonlyArray<IAnnotation>;
+        readonly created: ISODateTimeString;
+        readonly updated: ISODateTimeString;
     };
 
     /**
@@ -31,10 +31,10 @@ export namespace BlockContentAnnotationTree {
     export type IAreaHighlightAnnotation = Omit<IAreaHighlightAnnotationContent, 'links'> & IAnnotationBase;
     export type IFlashcardAnnotation = Omit<IFlashcardAnnotationContent, 'links'> & IAnnotationBase;
     export type ICommentAnnotation = {
-        type: 'comment',
-        docID: DocIDStr;
-        pageNum: number;
-        content: MarkdownStr,
+        readonly type: 'comment',
+        readonly docID: DocIDStr;
+        readonly pageNum: number;
+        readonly content: MarkdownStr,
     } & IAnnotationBase;
 
     export type IAnnotation = ITextHighlightAnnotation

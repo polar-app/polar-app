@@ -48,11 +48,11 @@ export type ITextContent = IEditableContent
 export type INamedContent = INameContent | IDateContent | IDocumentContent;
 
 export type IBlockContentStructure<T = IBlockContent> = {
-    id: BlockIDStr;
-    content: T;
+    readonly id: BlockIDStr;
+    readonly content: T;
+    readonly updated?: ISODateString;
+    readonly created?: ISODateString;
     children: ReadonlyArray<IBlockContentStructure>;
-    updated?: ISODateString;
-    created?: ISODateString;
 };
 
 export interface IBlockLink {

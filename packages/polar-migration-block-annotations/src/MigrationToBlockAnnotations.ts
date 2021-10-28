@@ -74,7 +74,6 @@ export namespace MigrationToBlockAnnotations {
 
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
-            .where('uid', '==', idUser.uid)
             .where('id', '==', docMetaID);
 
         const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
@@ -82,10 +81,16 @@ export namespace MigrationToBlockAnnotations {
 
         const records = await query.get();
 
-        return arrayStream(records.docs)
+        const docMeta = arrayStream(records.docs)
             .map(toDocMeta)
             .filterPresent()
             .first();
+
+        if (docMeta && docMeta.uid === idUser.uid) {
+            return docMeta;
+        }
+        
+        return undefined;
     }
 
     /**
