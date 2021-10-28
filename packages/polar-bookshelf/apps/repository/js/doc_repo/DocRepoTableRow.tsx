@@ -64,8 +64,6 @@ const Delegate = React.memo(function Delegate(props: IProps) {
             draggable
             onDragStart={callbacks.onDragStart}
             onDragEnd={callbacks.onDragEnd}
-            // tabIndex={1}
-            // onFocus={() => setSelected([viewIndex])}
             onDoubleClick={callbacks.onOpen}
             selected={selected}>
 
