@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {createStyles, makeStyles, Theme, Button} from '@material-ui/core';
 import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
 import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
 import {useHistory} from 'react-router-dom';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
+import { useCreateNoteDialog } from '../../../../web/js/notes/NotesToolbar';
 
 const useStyles = makeStyles<Theme>((theme) =>
     createStyles({
@@ -48,6 +49,7 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
     const addFileImporter = useAddFileImporter();
     const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);
     const history = useHistory();
+    const handleCreateNote = useCreateNoteDialog();
 
     const handleUpload = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const uploads = Uploads.fromFiles(event.target.files);
@@ -76,19 +78,13 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
                             onChange={handleUpload}
                             type="file"/>
 
-                    <label htmlFor={id} className={classes.container}>
+                    <label className={classes.container} onClick={handleCreateNote}>
                         <img src={addFile} className={classes.image} alt={'Add Notes..'} />
                         <div className={classes.textfield}>
                             <h2>Add Notes</h2>
                             <span>PDF and EPUB supported</span>
                         </div>
                     </label>
-                    <input  className={classes.input}
-                            accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
-                            id={id}
-                            multiple
-                            onChange={handleUpload}
-                            type="file"/>
                 </div>
             </>
         </AdaptivePageLayout>
