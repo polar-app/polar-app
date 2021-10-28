@@ -197,7 +197,7 @@ export const BlockInner = observer((props: IProps) => {
                                  }}>
 
 
-                                {hasItems && !noExpand && (
+                                {hasItems && ! noExpand && (
                                     <BlockExpandToggleButton id={id}/>
                                 )}
 
@@ -217,8 +217,8 @@ export const BlockInner = observer((props: IProps) => {
                         <Divider style={{ margin: '4px 0 8px 0' }} />
                     }
 
-                    {(expanded || (isRoot && noExpand)) && (
-                        <BlockItems parent={id} notes={items} indent={!withHeader} />
+                    {(expanded || noExpand) && (
+                        <BlockItems parent={id} notes={items} indent={! withHeader} />
                     )}
                 </>
             </BlockDragIndicator>
