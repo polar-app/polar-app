@@ -155,11 +155,13 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
         blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
     }, [blocksAnnotationRepoStore, block.id]);
 
+    /*
     const onContextMenu = React.useCallback((event: IMouseEvent) => {
         blocksAnnotationRepoStore.selectItem(block.id, event, 'context');
     }, [blocksAnnotationRepoStore, block.id]);
 
     const contextMenuCallbacks = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
+     */
 
     return (
         <TableRow role="checkbox"
@@ -167,8 +169,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
                   selected={blocksAnnotationRepoStore.isSelected(block.id)}
                   style={{ userSelect: 'none' }}
                   draggable
-                  hover
-                  {...contextMenuCallbacks}>
+                  hover>
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>

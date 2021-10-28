@@ -80,15 +80,13 @@ export const BlocksAnnotationRepoTable = React.memo(observer(function BlocksAnno
                        size="medium"
                        aria-label="enhanced table">
 
-                    <AnnotationRepoTableContextMenu>
-                        {root && (
-                            <IntersectionList values={highlightBlocks}
-                                              root={root}
-                                              blockSize={10}
-                                              BlockComponent={BlockComponent}
-                                              HiddenBlockComponent={HiddenBlockComponent}
-                                              VisibleComponent={VisibleComponent}/>)}
-                    </AnnotationRepoTableContextMenu>
+                    {root && (
+                        <IntersectionList values={highlightBlocks}
+                                          root={root}
+                                          blockSize={10}
+                                          BlockComponent={BlockComponent}
+                                          HiddenBlockComponent={HiddenBlockComponent}
+                                          VisibleComponent={VisibleComponent}/>)}
                 </Table>
             </TableContainer>
 
