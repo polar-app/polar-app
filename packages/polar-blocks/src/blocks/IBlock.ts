@@ -1,4 +1,4 @@
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateString, ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IMarkdownContent} from "./content/IMarkdownContent";
@@ -48,8 +48,10 @@ export type ITextContent = IEditableContent
 export type INamedContent = INameContent | IDateContent | IDocumentContent;
 
 export type IBlockContentStructure<T = IBlockContent> = {
-    id: BlockIDStr;
-    content: T;
+    readonly id: BlockIDStr;
+    readonly content: T;
+    readonly updated?: ISODateString;
+    readonly created?: ISODateString;
     children: ReadonlyArray<IBlockContentStructure>;
 };
 
