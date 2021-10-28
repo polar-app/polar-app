@@ -40,7 +40,6 @@ import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
 import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
-import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
 
@@ -70,6 +69,7 @@ const stories = createStoryIndex([
     {
         name: "Migration Dialog 3.0",
         component: <MigrationToBlockAnnotationsMainContent progress={65}/>
+    },
 
     {
         name: "Auth Hide on Scroll",

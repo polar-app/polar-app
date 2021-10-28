@@ -3,7 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -51,7 +50,6 @@ export const useStyles = makeStyles((theme) =>
             // marginLeft: theme.spacing(3),
             // marginRight: theme.spacing(3),
         }
-        },
     }),
 );
 
@@ -267,10 +265,6 @@ const EmailTokenAuthButton = () => {
         <>
         <Box m={2}>
             <div style={{
-            <Box px={2} style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flexGrow: 1
             }}>
                 {active && (
                     <>
@@ -342,7 +336,6 @@ const EmailTokenAuthButton = () => {
                 )}
             </div>
         </Box>
-            </Box>
         </>
     );
 };
@@ -354,8 +347,6 @@ export const RegisterForBetaButton = () => {
     const [alert, setAlert] = React.useState<IAlert | undefined>();
 
     const emailRef = React.useRef("");
-    const codeRef = React.useRef("");
-
     const codeRef = React.useRef("");
 
     const classes = useStyles();
@@ -427,21 +418,18 @@ export const RegisterForBetaButton = () => {
                         flexDirection: 'column',
                         flexGrow: 1
                     }}>
-                        <TextField autoFocus={true}
-                                className={classes.email}
-                                onChange={event => emailRef.current = event.target.value}
-                                placeholder="Enter your email address"
-                                InputProps={{
-                                    startAdornment: (
-                                        <EmailIcon style={{margin: '8px'}}/>
-                                    )}}
-                                variant="outlined"/>
+                    <TextField autoFocus={true}
+                            className={classes.email}
+                            onChange={event => emailRef.current = event.target.value}
+                            placeholder="Enter your email address"
+                            InputProps={{
+                                startAdornment: (
+                                    <EmailIcon style={{margin: '8px'}}/>
+                                )}}
+                            variant="outlined"/>
 
-                                <TextField autoFocus={true}
-                <Box component='div' px={2} style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
+                    <TextField autoFocus={true}/>
+
                     <TextField autoFocus={true}
                                className={classes.email}
                                onChange={event => codeRef.current = event.target.value}
@@ -640,44 +628,6 @@ const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 interface AdaptiveDialogProps {
     readonly children: React.ReactNode;
 }
-
-/**
- * Dialog that adapts itself to phones by not having itself wrapped in a 'paper' dialog.
- */
-export const AdaptiveDialog = React.memo(function AdaptiveDialog(props: AdaptiveDialogProps) {
-
-    return (
-        <>
-            <DeviceRouters.NotPhone>
-                <div style={{
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%'
-                }}>
-
-                    <Paper style={{
-                        margin: 'auto',
-                        maxWidth: '450px',
-                        minHeight: '450px',
-                        maxHeight: '650px',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-
-                    </Paper>
-                </div>
-            </DeviceRouters.NotPhone>
-
-            <DeviceRouters.Phone>
-                <>
-                    {props.children}
-                </>
-            </DeviceRouters.Phone>
-        </>
-    );
-
-});
 
 // TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
 // PrivateBetaAuthenticator or CreateAccountAuthenticator

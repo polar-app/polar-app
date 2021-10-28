@@ -39,7 +39,7 @@ import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeat
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
-import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
+import {DocMetaBlockContents} from "../../../../polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useAnnotationBlockManager} from "../../../web/js/notes/HighlightBlocksHooks";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
