@@ -10,7 +10,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 
 const isDevServer = process.argv.includes('serve');
@@ -318,7 +317,6 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
-        isDevServer && new ReactRefreshWebpackPlugin(),
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
