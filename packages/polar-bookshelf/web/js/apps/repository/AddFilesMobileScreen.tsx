@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Theme, Button} from '@material-ui/core';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
 import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
