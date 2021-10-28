@@ -317,7 +317,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
     const contextMenuAnchorPos = Devices.isDesktop() || Devices.isTablet() ?
         { top: props.mouseY, left: props.mouseX}
         :
-        { top: window.innerHeight, left: 0 };
+        { top: window.innerHeight , left: 0 };
 
     const useStyles = makeStyles(theme => ({
         root: { "& .MuiPopover-paper": {
@@ -328,7 +328,6 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             }}}));
 
     const classes = useStyles();
-
     return (
         <Menu
             transitionDuration={Devices.isDesktop() ? 0 : undefined}
@@ -336,12 +335,13 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             className={ Devices.isPhone() ? classes.root : undefined }
             anchorEl={props.anchorEl}
             open={true}
-            style={{padding:0}}
+            style={{bottom:0}}
             onClose={handleCloseFromHook}
             onClick={handleClose}
             BackdropProps={backdrops}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             onContextMenu={handleContextMenu}
-            anchorReference="anchorPosition"
+            anchorReference="none"
             anchorPosition={contextMenuAnchorPos}>
 
             <div>
