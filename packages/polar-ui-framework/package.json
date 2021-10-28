@@ -1,7 +1,7 @@
 {
   "name": "polar-ui-framework",
   "version": "0.0.0",
-  "description": "Finds dead/stale code",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
