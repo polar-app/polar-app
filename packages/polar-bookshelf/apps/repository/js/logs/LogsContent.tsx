@@ -99,18 +99,29 @@ export const LogsContent = () => {
 
         const doRenderArgs = argsRequireRender(current.params);
 
+        function formatMessage(message: any) {
+
+            if (typeof message === 'string') {
+                return message;
+            }
+
+            return "";
+
+        }
+
         return (
             <div style={Styles.LogMessage} className={className} key={idx}>
 
                 <div style={Styles.LogFieldTimestamp}>{current.created}</div>
                 <div style={Styles.Level}>{current.level}</div>
-                <div style={Styles.LogFieldMsg}>{current.message}</div>
+                <div style={Styles.LogFieldMsg}>{formatMessage(current.message)}</div>
 
                 {doRenderArgs && current.params.map((current: any, idx: number) => (
                     <RenderParam key={idx} value={current}/>))}
 
             </div>
         );
+
    });
 
    return (

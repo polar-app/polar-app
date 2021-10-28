@@ -8,4 +8,5 @@ export interface DocMetaHolder {
 
     readonly value: string;
 
+    readonly ver?: number;
 }

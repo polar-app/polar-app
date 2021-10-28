@@ -28,7 +28,7 @@ export const AdaptivePageLayout = React.memo(function AdaptivePageLayout(props: 
             <DeviceRouter.Handheld>
 
                 <>
-                    <AppBar position="static">
+                    <AppBar color={"inherit"} position="static">
                         <Toolbar>
                             <div style={{display: 'flex', alignItems: 'center'}}>
 

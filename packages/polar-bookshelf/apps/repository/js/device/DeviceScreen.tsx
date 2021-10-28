@@ -6,7 +6,7 @@ import {FullWidthButton} from '../configure/settings/FullWidthButton';
 import {RoutePathNames} from '../../../../web/js/apps/repository/RoutePathNames';
 import SubjectIcon from '@material-ui/icons/Subject';
 import {Divider} from '@material-ui/core';
-
+import { AdaptivePageLayout } from '../page_layout/AdaptivePageLayout';
 
 const LogsButton = () => {
 
@@ -27,28 +27,26 @@ const LogsButton = () => {
 
 export const DeviceScreen = React.memo(function DeviceScreen() {
     return (
+        <AdaptivePageLayout title="Device Info">
+            <DefaultPageLayout>
 
-        <DefaultPageLayout>
+                <div className="text-lg" style={{ margin: 16 }}>
 
-            <div className="text-lg" style={{ margin: 16 }}>
+                    <div>
+                        <p>
+                            Information about the user's current device.
+                        </p>
 
-                <div>
-                    <p>
-                        Information about the user's current device.
-                    </p>
-
-                    <div className="mt-1">
-                        <ExtendedDeviceInfo/>
+                        <div className="mt-1">
+                            <ExtendedDeviceInfo/>
+                        </div>
                     </div>
 
-
                 </div>
+                <Divider style={{ margin: '16px 0' }} />
+                <LogsButton/>
 
-            </div>
-            <Divider style={{ margin: '16px 0' }} />
-            <LogsButton/>
-
-        </DefaultPageLayout>
-
+            </DefaultPageLayout>
+        </AdaptivePageLayout>
     );
 });

@@ -268,8 +268,14 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         window.addEventListener('resize', resizeDebouncer, {passive: true});
 
-        document.getElementById("viewerContainer")!
-            .addEventListener("resize", resizeDebouncer);
+        const viewerContainer = document.getElementById("viewerContainer");
+
+        if (viewerContainer) {
+            viewerContainer.addEventListener("resize", resizeDebouncer);
+        } else {
+            log.warn("No viewer container");
+            return;
+        }
 
         setResizer(resizeDebouncer);
 

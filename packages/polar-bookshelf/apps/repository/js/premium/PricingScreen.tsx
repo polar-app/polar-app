@@ -3,28 +3,29 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {PricingStoreProvider} from './PricingStore';
 import {PricingContent} from "./PricingContent";
 import {DefaultChangePlanContextProvider} from "./actions/DefaultChangePlanContextProvider";
-import {HeaderBar} from '../doc_repo/HeaderBar';
+import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
 export const PricingScreen = () => {
 
     return (
         <PricingStoreProvider>
             <DefaultChangePlanContextProvider>
-                <HeaderBar title={'Pricing'}/>
-                <FixedNav id="doc-repository">
+                <AdaptivePageLayout fullWidth title="Pricing">
+                    <FixedNav id="doc-repository">
 
-                    <FixedNavBody className="container-fluid">
+                        <FixedNavBody className="container-fluid">
 
-                        <div className="row">
+                            <div className="row">
 
-                            <div className="col-lg-12 w-100 pt-4">
-                                <PricingContent/>
+                                <div className="col-lg-12 w-100 pt-4">
+                                    <PricingContent/>
+                                </div>
                             </div>
-                        </div>
 
-                    </FixedNavBody>
+                        </FixedNavBody>
 
-                </FixedNav>
+                    </FixedNav>
+                </AdaptivePageLayout>
             </DefaultChangePlanContextProvider>
         </PricingStoreProvider>
 
