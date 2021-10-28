@@ -69,6 +69,7 @@ import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
+import {DailyNotesScreen} from "../../notes/DailyNotesScreen";
 
 interface IProps {
     readonly app: App;
@@ -335,14 +336,16 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                         <>
 
                                             <PersistentRoute path={RoutePathNames.NOTES}
+                                                             exact
                                                              strategy="display">
                                                 <NotesRepoScreen/>
                                             </PersistentRoute>
 
-                                            <PersistentRoute path={RoutePathNames.DAILY}
-                                                             strategy="display">
-                                                <NotesScreen/>
-                                            </PersistentRoute>
+                                            <Route path={RoutePathNames.DAILY}
+                                                   component={DailyNotesScreen}/>
+
+                                            <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                   component={NotesScreen}/>
 
                                         </>
 
