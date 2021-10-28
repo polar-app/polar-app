@@ -4,7 +4,6 @@ import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import React from "react";
 import {BlockComponentProps, HiddenBlockComponentProps, IntersectionList, VisibleComponentProps} from "../../../../web/js/intersection_list/IntersectionList";
-import {AnnotationRepoTableContextMenu} from "../annotation_repo/AnnotationRepoTable";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {BlocksAnnotationRepoTableMenu} from "./BlocksAnnotationRepoContextMenu";
 import {IRepoAnnotationContent, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";

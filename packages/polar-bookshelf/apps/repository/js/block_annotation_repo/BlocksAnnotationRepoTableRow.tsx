@@ -12,8 +12,6 @@ import {usePersistenceLayerContext} from "../persistence_layer/PersistenceLayerA
 import {calculateTextPreviewHeight} from "../annotation_repo/FixedHeightAnnotationPreview";
 import {IRepoAnnotationContent, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
-import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 
