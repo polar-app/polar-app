@@ -341,7 +341,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             BackdropProps={backdrops}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             onContextMenu={handleContextMenu}
-            anchorReference="none"
+            anchorReference={!Devices.isPhone() ? "anchorPosition" : "none"}
             anchorPosition={contextMenuAnchorPos}>
 
             <div>
