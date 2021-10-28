@@ -41,7 +41,7 @@ const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComp
 
 });
 
-const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<RepoDocInfo>) {
+const DocRepoBlockComponent = React.memo(function DocRepoBlockComponent(props: BlockComponentProps<RepoDocInfo>) {
 
     const height = Numbers.sum(...props.values.map(current => HEIGHT));
 
@@ -120,7 +120,7 @@ export const DocRepoTable2 = deepMemo(() => {
                                 <IntersectionList values={view}
                                                   root={root}
                                                   blockSize={25}
-                                                  BlockComponent={BlockComponent}
+                                                  BlockComponent={DocRepoBlockComponent}
                                                   HiddenBlockComponent={HiddenBlockComponent}
                                                   VisibleComponent={VisibleComponent}/>)}
                         </DocRepoContextMenu>
