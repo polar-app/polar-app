@@ -69,6 +69,7 @@ import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {ActiveKeyboardShortcuts2} from "../../hotkeys/ActiveKeyboardShortcuts2";
+import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 
 interface IProps {
     readonly app: App;
@@ -288,6 +289,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <Initializers/>
 
                             <ActiveKeyboardShortcuts2/>
+                            <JumpToNoteKeyboardCommand />
 
                             <SideNav/>
                             <DeviceRouters.NotDesktop>
