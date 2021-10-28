@@ -9,8 +9,9 @@ export namespace ESRequestsCache {
 
     export interface IESRequestCacheKey {
         readonly url: string;
-        readonly method: 'GET' | 'POST' | 'PUT',
+        readonly method: 'GET' | 'POST' | 'PUT' | 'DELETE',
         readonly body: Req;
+        readonly credentialsHash: string;
     }
 
     export function create() {
