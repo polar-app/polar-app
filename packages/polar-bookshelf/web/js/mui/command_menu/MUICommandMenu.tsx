@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) =>
  * Provide a list of action items we should execute and provide a prompt to
  * filter the results such that the set of actions is applicable to the prompt.
  */
-export type CommandsProvider = () => ReadonlyArray<ICommand>;
+export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
 
 export interface ICommand {
 
@@ -65,7 +65,7 @@ export interface ICommand {
 
 }
 
-interface IProps {
+interface IProps<C extends ICommand> {
 
     readonly title?: string;
 
@@ -77,7 +77,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: ICommand) => void;
+    readonly onCommand: (command: C) => void;
 
     /**
      * Called when the command menu should be closed.
@@ -87,7 +87,7 @@ interface IProps {
     /**
      * A provider for resolving the items that the user can select form their input.
      */
-    readonly commandsProvider: CommandsProvider;
+    readonly commandsProvider: CommandsProvider<C>;
 
     readonly className?: string;
 
@@ -95,7 +95,7 @@ interface IProps {
 
 }
 
-export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) {
+export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const classes = useStyles();
     const {commandsProvider, onCommand, onClose} = props;
@@ -111,7 +111,7 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
 
     const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
 
-    const handleCommandExecuted = React.useCallback((command: ICommand) => {
+    const handleCommandExecuted = React.useCallback((command: C) => {
 
         onCommand(command);
         onClose('executed');
@@ -259,4 +259,4 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
 
     );
 
-});
+};
