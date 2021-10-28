@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) =>
             maxHeight: 'min(80vh, 500px)',
             minWidth: 'min(80vw, 700px)',
             maxWidth: 'min(80vw, 700px)',
-            margin: theme.spacing(1)
         },
     }),
 );
