@@ -1,5 +1,4 @@
 import * as ReactDOM from 'react-dom';
-import * as React from 'react';
 
 /**
  * Ability to inject a small react app on a page without much hassle.

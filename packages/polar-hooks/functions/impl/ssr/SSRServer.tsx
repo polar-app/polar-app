@@ -1,9 +1,7 @@
 import React from 'react';
-import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { Strings } from 'polar-shared/src/util/Strings';
 // import { HelloServerSideRender } from 'polar-bookshelf/web/js/ssr/HelloServerSideRender';
-import { Files } from 'polar-shared/src/util/Files';
 
 // TODO:
 //

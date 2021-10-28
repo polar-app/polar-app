@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {GPTContentFilters} from "./GPTContentFilters";
-import {Numbers} from "polar-shared/src/util/Numbers";
 import {Benchmark} from "polar-shared/src/util/Benchmark";
 
 xdescribe('GPTContentFilters', function() {

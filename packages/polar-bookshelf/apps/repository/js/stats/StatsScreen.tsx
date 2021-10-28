@@ -1,12 +1,10 @@
 import * as React from 'react';
-import {TopTagsChart} from './TopTagsChart';
 import {FixedNav} from '../FixedNav';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
@@ -152,70 +150,16 @@ const Desktop = (props: ReviewerProps) => {
 
                 <ReviewerStats isReviewer={props.isReviewer}/>
 
-                <PremiumFeature required='plus'
+                {/* <PremiumFeature required='plus'
                                 feature="statistics"
                                 size="lg">
                     <TopTagsChart docInfos={docInfos}/>
-                </PremiumFeature>
+                </PremiumFeature> */}
 
             </div>
 
         </div>
     );
-
-                {/*<Container maxWidth="md">*/}
-
-
-                {/*<SectionHeader>*/}
-                {/*    <h1>Statistics</h1>*/}
-
-                {/*    <SectionText>*/}
-                {/*        Polar keeps track of statistics of your document repository so you can better understand*/}
-                {/*        your reading habits and what types of documents are stored in your repository.*/}
-                {/*    </SectionText>*/}
-                {/*</SectionHeader>*/}
-
-                {/*<ReviewerStats isReviewer={this.state.isReviewer}/>*/}
-
-                {/*<SectionHeader>*/}
-                {/*    <h2>Reading</h2>*/}
-
-                {/*    <SectionText>*/}
-                {/*            Polar keeps track of your reading progress by counting pagemarks and number of pages*/}
-                {/*        you've read per day so you can focus setting a reading/study goal.*/}
-                {/*    </SectionText>*/}
-                {/*</SectionHeader>*/}
-
-                {/*<div className="row mt-2">*/}
-
-                {/*    <div className="col-lg-12">*/}
-                {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
-                {/*            <ReadingProgressTable docInfos={docInfos}/>*/}
-                {/*        </PremiumFeature>*/}
-                {/*    </div>*/}
-
-                {/*</div>*/}
-
-                {/*<SectionHeader>*/}
-                {/*    <h2>Documents</h2>*/}
-
-                {/*    <SectionText>*/}
-                {/*        Statistics on the number and type of documents you've added to your repository.*/}
-                {/*    </SectionText>*/}
-                {/*</SectionHeader>*/}
-
-                {/*<div className="row mt-2">*/}
-
-                {/*    <div className="col-lg-12">*/}
-                {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
-                {/*            <NewDocumentRateChart docInfos={docInfos}/>*/}
-                {/*        </PremiumFeature>*/}
-                {/*    </div>*/}
-
-                {/*</div>*/}
-
-                {/*</Container>*/}
-    // );
 
 };
 
@@ -274,19 +218,13 @@ export const StatsScreen = React.memo(function StatsScreen() {
 
     })
 
-    const desktop = <Desktop {...state}/>;
-    const phoneAndTablet = <PhoneAndTablet {...state}/>;
-
     return (
 
         <>
             <Helmet>
                 <title>Polar: Statistics</title>
             </Helmet>
-
-            <DeviceRouter desktop={desktop}
-                          phone={phoneAndTablet}
-                          tablet={phoneAndTablet}/>
+            <Desktop {...state}/>
         </>
     );
 

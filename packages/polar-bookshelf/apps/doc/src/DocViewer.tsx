@@ -33,8 +33,6 @@ import {SidenavTriggerIconButton} from "../../../web/js/sidenav/SidenavTriggerIc
 import {SideCar} from "../../../web/js/sidenav/SideNav";
 import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
-import {useFirestore} from "../../repository/js/FirestoreProvider";
-import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
@@ -49,8 +47,6 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
-import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
-import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
 
@@ -135,7 +131,7 @@ namespace Device {
         const {closeCurrentTab} = useSideNavCallbacks();
 
         return (
-            <AppBar position="static">
+            <AppBar color={"inherit"} position="static">
                 <Toolbar>
                     <div style={{
                              display: 'flex',
@@ -342,71 +338,6 @@ const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
     </div>
 ));
 
-const useDocumentBlockMigrator = () => {
-    const { docMeta } = useDocViewerStore(['docMeta']);
-    const { firestore, user } = useFirestore();
-    const blocksStore = useBlocksStore();
-    const migratedRef = React.useRef(false);
-    const dialogs = useDialogManager();
-    const { persistenceLayerProvider } = usePersistenceLayerContext();
-    const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-    const annotationBlockManager = useAnnotationBlockManager();
-
-    React.useEffect(() => {
-        if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
-            return;
-        }
-
-        migratedRef.current = true;
-
-        const fingerprint = docMeta.docInfo.fingerprint;
-
-        const blockExists = async () => {
-            const { size } = await firestore
-                .collection('block')
-                .where('content.type', '==', 'document')
-                .where('content.docInfo.fingerprint', '==', fingerprint)
-                .where('nspace', '==', user.uid)
-                .get();
-
-            return size !== 0;
-        };
-
-        const migrate = async () => {
-            const exists = await blockExists();
-
-            if (! exists) {
-                const namedBlocksIDs = Object.values(blocksStore.indexByName);
-                const namedBlocks = blocksStore
-                    .createSnapshot(namedBlocksIDs)
-                    .filter((block): block is IBlock<INamedContent> =>
-                        ['document', 'name', 'date'].indexOf(block.content.type) > -1);
-
-                const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
-                    .getFromDocMeta(docMeta, namedBlocks);
-
-                const documentBlockID = blocksStore.createNewNamedBlock({
-                    content: new DocumentContent(docContentStructure.content),
-                });
-
-                blocksStore.insertFromBlockContentStructure(
-                    docContentStructure.children,
-                    { ref: documentBlockID }
-                );
-
-                blocksStore.insertFromBlockContentStructure(tagContentsStructure);
-
-                dialogs.snackbar({
-                    message: "Migrating your annotations to the new format. This may take some time!",
-                    type: "info",
-                });
-            }
-        };
-
-        migrate()
-            .catch(console.error);
-    }, [docMeta, user, blocksStore, dialogs, docFileResolver, firestore, migratedRef, annotationBlockManager]);
-};
 
 export const DocViewer = deepMemo(function DocViewer() {
 
@@ -414,7 +345,6 @@ export const DocViewer = deepMemo(function DocViewer() {
     const {setDocMeta} = useDocViewerCallbacks();
     const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
     const [exists, setExists, existsRef] = useStateRef<boolean | undefined>(undefined);
-    useDocumentBlockMigrator();
 
     const snapshot = useDocViewerSnapshot(parsedURL?.id);
 

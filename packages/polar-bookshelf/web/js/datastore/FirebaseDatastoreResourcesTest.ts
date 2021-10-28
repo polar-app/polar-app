@@ -1,4 +1,3 @@
-import {FirebaseDatastoreResources} from './FirebaseDatastoreResources';
 
 describe('FirebaseDatastoreResources', function() {
     //

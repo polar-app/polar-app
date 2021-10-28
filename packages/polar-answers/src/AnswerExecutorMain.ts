@@ -1,4 +1,3 @@
-import {AnswerExecutor} from "./AnswerExecutor";
 //
 // async function exec(question: string) {
 //     await AnswerExecutor.exec(question);

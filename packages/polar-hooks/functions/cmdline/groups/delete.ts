@@ -1,5 +1,4 @@
 import {Groups} from "../../impl/groups/db/Groups";
-import {Preconditions} from "polar-shared/src/Preconditions";
 import {GroupDeletes} from "../../impl/groups/GroupDeletes";
 import yargs from 'yargs';
 import prompts from 'prompts';

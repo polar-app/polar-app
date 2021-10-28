@@ -1,5 +1,5 @@
 import {DateLike, Days} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {Duration, DurationStr, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {Duration, TimeDurations} from "polar-shared/src/util/TimeDurations";
 
 const milliPerDay = 1000 * 60 * 60 * 24;
 

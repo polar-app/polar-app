@@ -1,5 +1,4 @@
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {AnswerIndexer} from "./AnswerIndexer";
 import * as path from "path";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";

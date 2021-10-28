@@ -9,7 +9,7 @@ export const UserAvatarIconButton = React.memo(function UserAvatarIconButton(pro
 
     return (
         <IconButton onClick={props.onClick} className={props.className} style={props.style}>
-            <UserAvatar {...props}/>
+            <UserAvatar size={props.size} className={props.className} style={props.style}/>
         </IconButton>
     )
 

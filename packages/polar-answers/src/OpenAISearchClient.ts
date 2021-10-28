@@ -1,7 +1,5 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
 import {OpenAIRequests} from "./OpenAIRequests";
-import {OpenAICostEstimator} from "./OpenAICostEstimator";
-import {ICostEstimation, ICostEstimationHolder} from "polar-answers-api/src/ICostEstimation";
 
 /**
  * Create search

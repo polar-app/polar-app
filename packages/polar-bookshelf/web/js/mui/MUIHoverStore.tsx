@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {createRXJSStore} from "../react/store/RXJSStore";
 
 export const [MUIHoverStoreProvider, useSetStore, useListener] =

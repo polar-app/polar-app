@@ -2,7 +2,7 @@ import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
-import {IAnswersCostEstimation, ICostEstimation, ICostEstimationHolder} from "./ICostEstimation";
+import {IAnswersCostEstimation, ICostEstimation} from "./ICostEstimation";
 
 export interface IAnswerExecutorTimings {
 

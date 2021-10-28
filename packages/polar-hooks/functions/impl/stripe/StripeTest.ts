@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {StripeUtils} from './StripeUtils';
-import Stripe from 'stripe';
 import {StripeCustomers} from "./StripeCustomers";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanFree = Billing.V2PlanFree;

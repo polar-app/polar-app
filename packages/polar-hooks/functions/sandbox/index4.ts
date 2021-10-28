@@ -4,9 +4,7 @@
 
 import * as functions from 'firebase-functions';
 import express from 'express';
-import * as cors from 'cors';
 import * as admin from 'firebase-admin';
-import {default as fetch} from 'node-fetch';
 import * as https from 'https';
 import {Response, NextFunction} from 'express';
 

@@ -11,10 +11,9 @@ import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockConte
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDStr} from "polar-shared/src/util/Strings";
-import isNil from "lodash/isNil";
-import omitBy from "lodash/omitBy";
 import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {HasLinks} from "./HasLinks";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export abstract class AnnotationContentBase<T extends IAnnotationContent> extends HasLinks implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
     @observable private readonly _type: T['type'];
@@ -75,8 +74,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
 
     private valueToJSON(value: T['value']): T['value'] {
         const serialized = JSON.parse(JSON.stringify(toJS(value)));
-        omitBy(serialized, isNil);
-        return { ...serialized };
+        return Dictionaries.onlyDefinedProperties(serialized);
     }
 
     public toJSON(): T {

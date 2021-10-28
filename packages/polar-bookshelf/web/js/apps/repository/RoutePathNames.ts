@@ -1,11 +1,9 @@
-import {Devices} from "polar-shared/src/util/Devices";
+// const IS_HANDHELD = ! Devices.isDesktop();
 
-const IS_HANDHELD = ! Devices.isDesktop();
-
-const createHybrid = (pathname: string) => {
-    const stripped = pathname.startsWith('/') ? pathname.slice(1) : pathname;
-    return `${IS_HANDHELD ? '#' : '/'}${stripped}`;
-};
+// const createHybrid = (pathname: string) => {
+//     const stripped = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+//     return `${IS_HANDHELD ? '#' : '/'}${stripped}`;
+// };
 
 const HOME = "/";
 const ANNOTATIONS = "/annotations";
@@ -14,24 +12,22 @@ const NOTES_REPO = "/notes/repo";
 const NOTE = (id: string) => `${NOTES}/${id}`;
 const ANKI_SYNC = "/sync";
 
-const SETTINGS = createHybrid("/settings");
-const STATISTICS = createHybrid("/stats");
+const SETTINGS = ("/settings");
+const STATISTICS = ("/stats");
 
-const WHATS_NEW = createHybrid("/whats-new");
-const INVITE = createHybrid("/invite");
-const PLANS = createHybrid("/plans");
-const PREMIUM = createHybrid("/premium");
-const LOGS = createHybrid("/logs");
-const DEVICE_INFO = createHybrid("/device");
-const FEATURE_REQUESTS = createHybrid("/feature-requests");
-const SUPPORT = createHybrid("/support");
+const WHATS_NEW = ("/whats-new");
+const INVITE = ("/invite");
+const PLANS = ("/plans");
+const PREMIUM = ("/premium");
+const LOGS = ("/logs");
+const DEVICE_INFO = ("/device");
+const FEATURE_REQUESTS = ("/feature-requests");
+const SUPPORT = ("/support");
 const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
-const ADD_MOBILE = '/addmobile';
+const ADD_MOBILE = '/add';
 const ACCOUNT = "#account";
-const ACCOUNT_MOBILE = "/accountmobile";
-const SETTINGS_MOBILE = "/settingsmobile";
-const PLAN_MOBILE = "/planmobile";
+const ACCOUNT_MOBILE = "/account";
 const SWITCH = "/switch";
 
 export const RoutePathNames = {
@@ -45,8 +41,6 @@ export const RoutePathNames = {
     STATISTICS,
     ACCOUNT_MOBILE,
     ACCOUNT,
-    PLAN_MOBILE,
-    SETTINGS_MOBILE,
     SWITCH,
     WHATS_NEW,
     INVITE,

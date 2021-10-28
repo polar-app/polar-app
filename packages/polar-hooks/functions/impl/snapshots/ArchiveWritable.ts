@@ -1,7 +1,7 @@
 /* tslint:disable:no-console */
 
 import archiver from 'archiver';
-import {Readable, Writable, WritableOptions} from 'stream'
+import { Writable, WritableOptions} from 'stream'
 import {ZipStreamChunk} from './ZipStreamChunk';
 
 /** Creates an archive stream that can be used to zip up and write data to the given out stream.
