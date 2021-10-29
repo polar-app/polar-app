@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
@@ -150,6 +151,18 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
         <SideNavHistoryButton title="Annotations"
                               path={RoutePathNames.ANNOTATIONS}>
             <NoteIcon className={classes.secondaryIcon}/>
+        </SideNavHistoryButton>
+    )
+});
+
+const DailyNotesButton = React.memo(function AnnotationsButton() {
+
+    const classes = useStyles();
+
+    return (
+        <SideNavHistoryButton title="Daily Notes"
+                              path={RoutePathNames.DAILY}>
+            <CalendarTodayIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });
@@ -330,6 +343,9 @@ export const SideNav = React.memo(function SideNav() {
                                 </FeatureToggleEnabled>
 
                                 <DeviceRouter desktop={<StatsButton/>} />
+
+                                <SideNavDivider/>
+                                <DailyNotesButton/>
 
                                 {tabs.length > 0 && (
                                     <SideNavDivider/>
