@@ -146,6 +146,7 @@ module.exports = {
         new ForkTsCheckerWebpackPlugin({}),
         new CopyPlugin({
             patterns: [
+                // we could copmute this path via require.resolve
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
                 { from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
