@@ -116,6 +116,9 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
         return filter !== undefined && filter.trim() !== '';
     }, [filter]);
 
+    // TODO if there is no active filter, then I need to restore a previous
+    // history of commands.
+
     const commandsFiltered = React.useMemo(() => {
 
         // if (hasActiveFilter()) {
