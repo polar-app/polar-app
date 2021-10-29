@@ -3,11 +3,11 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../ratings/RatingButtons";
-import {ReadingTaskAction} from "./ReadingTaskAction";
 import {CardPaper} from "./CardPaper";
+import {DocAnnotationReadingTaskAction} from '../DocAnnotationReviewerTasks';
 
 export interface IProps {
-    readonly taskRep: TaskRep<ReadingTaskAction>;
+    readonly taskRep: TaskRep<DocAnnotationReadingTaskAction>;
 }
 export const ReadingCard = (props: IProps) => {
 
@@ -21,9 +21,9 @@ export const ReadingCard = (props: IProps) => {
 
                 <CardPaper>
                     <AnnotationPreview id={id}
-                                       text={action.docAnnotation.text}
-                                       img={action.docAnnotation.img}
-                                       lastUpdated={action.docAnnotation.lastUpdated}
+                                       text={action.original.text}
+                                       img={action.original.img}
+                                       lastUpdated={action.original.lastUpdated}
                                        created={created}
                                        color={color}/>
                 </CardPaper>

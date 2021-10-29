@@ -12,11 +12,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-interface IProps {
-    readonly children: React.ReactElement;
-}
-
-export const CardPaper = (props: IProps) => {
+export const CardPaper: React.FC = (props) => {
 
     const classes = useStyles();
 
