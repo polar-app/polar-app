@@ -328,43 +328,45 @@ export const SideNav = React.memo(function SideNav() {
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
-                {Devices.isDesktop() && <ZenModeActiveContainer>
-                    <div className={classes.root} style={{ height: '100%' }}>
+                {Devices.isDesktop() && (
+                    <ZenModeActiveContainer>
+                        <div className={classes.root} style={{ height: '100%' }}>
 
-                                <PolarButton/>
+                            <PolarButton/>
 
-                                <SideNavDividerTop/>
+                            <SideNavDividerTop/>
 
-                                <HomeButton/>
-                                <AnnotationsButton/>
+                            <HomeButton/>
+                            <AnnotationsButton/>
 
-                                <FeatureToggleEnabled featureName="notes-enabled">
-                                    <NotesButton/>
-                                </FeatureToggleEnabled>
+                            <FeatureToggleEnabled featureName="notes-enabled">
+                                <NotesButton/>
+                            </FeatureToggleEnabled>
 
-                                <DeviceRouter desktop={<StatsButton/>} />
+                            <DeviceRouter desktop={<StatsButton/>} />
 
+                            <SideNavDivider/>
+                            <DailyNotesButton/>
+
+                            {tabs.length > 0 && (
                                 <SideNavDivider/>
-                                <DailyNotesButton/>
+                            )}
 
-                                {tabs.length > 0 && (
-                                    <SideNavDivider/>
-                                )}
+                            <VerticalDynamicScroller className={classes.buttons}>
+                                {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                            </VerticalDynamicScroller>
 
-                                <VerticalDynamicScroller className={classes.buttons}>
-                                    {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
-                                </VerticalDynamicScroller>
+                            <div style={{marginBottom: '5px'}}>
+                                <SideNavDivider/>
+                                <DeviceRouter desktop={<SyncButton/>}/>
+                                <AccountButton/>
 
-                                <div style={{marginBottom: '5px'}}>
-                                    <SideNavDivider/>
-                                    <DeviceRouter desktop={<SyncButton/>}/>
-                                    <AccountButton/>
-
-                                    <SideNavQuestionButton/>
-                                    <SettingsButton/>
-                                </div>
-                    </div>
-                </ZenModeActiveContainer>}
+                                <SideNavQuestionButton/>
+                                <SettingsButton/>
+                            </div>
+                        </div>
+                    </ZenModeActiveContainer>
+                )}
                 <Divider orientation="vertical" />
                 <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>
