@@ -116,20 +116,16 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
         return filter !== undefined && filter.trim() !== '';
     }, [filter]);
 
-    // TODO if there is no active filter, then I need to restore a previous
-    // history of commands.
-
     const commandsFiltered = React.useMemo(() => {
 
-        // if (hasActiveFilter()) {
-            return arrayStream(commands)
-                       .filter(filterPredicate)
-                       .head(50)
-                       .sort((a, b) => a.text.localeCompare(b.text))
-                       .collect();
-        // } else {
-        //     return [];
-        // }
+        // TODO if there is no active filter, then I need to restore a previous
+        // history of commands.
+
+        return arrayStream(commands)
+                   .filter(filterPredicate)
+                   .head(50)
+                   .sort((a, b) => a.text.localeCompare(b.text))
+                   .collect();
 
     }, [commands, filterPredicate]);
 
