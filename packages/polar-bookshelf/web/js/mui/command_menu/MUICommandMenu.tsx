@@ -196,7 +196,10 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
             setIndex(newIndex);
         }
 
-        if (event.key === 'ArrowDown') {
+        // we have to manually handle scrolling here because it WILL scroll only
+        // it will do so by small little deltas...
+
+        if (event.key === 'ArrowDown' || event.key === 'Tab') {
             stopHandlingEvent();
             handleNewIndex(1);
         }

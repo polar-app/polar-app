@@ -101,25 +101,11 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
         props.onSelected()
     }, [props])
 
-    const doScroll = React.useCallback((element: HTMLElement, dir: 'up' | 'down') => {
-
-        const opts = dir === 'up' ? {block: 'start'} : {block: 'end'}
-
-        element.scrollIntoView(opts);
-
-    }, [])
-
     React.useEffect(() => {
 
         if (props.selected) {
             if (elementRef.current) {
-
-                if (! elementVisibleWithinContainer(elementRef.current, elementScrollParent(elementRef.current)!)) {
-                    console.log("FIXME: scrolling into view... ")
-                    elementRef.current.scrollIntoView();
-                } else {
-                    console.log("FIXME: NOT scrolling into view... ")
-                }
+                elementRef.current.focus();
             }
         }
 
@@ -129,6 +115,7 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
         <ListItem disableGutters
                   ref={ref => elementRef.current = ref}
                   button
+                  tabIndex={0}
                   className={clsx(props.className, classes.root, props.selected && classes.selected)}
                   selected={props.selected}
                   onClick={handleClick}>
