@@ -38,7 +38,7 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
-import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
+import { MigrationToBlockAnnotationsMainContent } from '../../web/js/apps/repository/MigrationToBlockAnnotationContent';
 import { AdaptivePageLayoutStory } from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';

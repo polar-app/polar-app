@@ -1,10 +1,10 @@
 import { Link} from '@material-ui/core';
 import * as React from 'react';
 import {Box, Typography} from '@material-ui/core';
-import { LinearProgressWithLabel } from '../../../web/js/ui/dialogs/LinearProgressWithLabel';
-import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
+import { LinearProgressWithLabel } from '../../../../web/js/ui/dialogs/LinearProgressWithLabel';
+import { LogoAndTextSideBySide } from '../../../../apps/repository/js/login/Authenticator';
 import Grid from '@material-ui/core/Grid';
-import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
+import { AdaptiveDialog } from '../../../../web/js/mui/AdaptiveDialog';
 
 interface IProps {
     readonly progress: number;
