@@ -170,12 +170,8 @@ const DailyNotesButton = React.memo(function AnnotationsButton() {
 const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
 
-    const pathCanonicalizer = React.useCallback(path =>
-        path.startsWith(RoutePathNames.NOTES) ? RoutePathNames.NOTES : path, []);
-
     return (
         <SideNavHistoryButton title="Notes"
-                              canonicalizer={pathCanonicalizer}
                               path={RoutePathNames.NOTES}>
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
