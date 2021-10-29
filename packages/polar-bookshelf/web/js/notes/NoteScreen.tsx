@@ -63,9 +63,9 @@ export const NotesScreen: React.FC = observer(() => {
                     <div style={{ padding: 12 }}>Empty for now</div>
                 </SideCar>
                 <Switch>
-                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
                     <Route path={RoutePathNames.DAILY} component={DailyNotesScreen} />
+                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>
