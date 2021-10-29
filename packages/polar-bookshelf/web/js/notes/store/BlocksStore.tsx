@@ -502,7 +502,10 @@ export class BlocksStore implements IBlocksStore {
                 continue;
             }
 
-            console.log("FIXME: blockData: ", blockData);
+            if ((blockData as any)?.content?.data?.MARKDOWN || (blockData as any)?.content?.MARKDOWN) {
+                console.log("FIXME OMG this is broken: blockData: ", blockData);
+            }
+
             const block = new Block(blockData);
             // this._index[blockData.id] = block;
 
