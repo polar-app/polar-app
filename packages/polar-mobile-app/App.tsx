@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Alert, Linking, StyleSheet, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
@@ -9,9 +9,15 @@ const App = () => {
     const billing = new Billing();
 
     // @TODO useEffect
-    billing.init().then(() => {
-        console.log('Billing initialized');
-    });
+    useEffect(() => {
+        billing.init()
+            .then(() => {
+                console.log('Billing initialized');
+            })
+            .catch(reason => {
+                alert(reason);
+            })
+    }, [billing]);
 
     return (
         <AdaptiveSafeAreaView>
