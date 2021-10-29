@@ -385,16 +385,10 @@ const useDocumentBlockMigrator = () => {
                 const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
                     .getFromDocMeta(docMeta, namedBlocks);
 
-                const documentBlockID = blocksStore.createNewNamedBlock({
-                    content: new DocumentContent(docContentStructure.content),
-                });
-
-                blocksStore.insertFromBlockContentStructure(
-                    docContentStructure.children,
-                    { ref: documentBlockID }
-                );
-
-                blocksStore.insertFromBlockContentStructure(tagContentsStructure);
+                blocksStore.insertFromBlockContentStructure([
+                    docContentStructure,
+                    ...tagContentsStructure,
+                ]);
 
                 dialogs.snackbar({
                     message: "Migrating your annotations to the new format. This may take some time!",
