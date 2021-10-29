@@ -2,9 +2,10 @@ import React from 'react';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Divider, Typography} from '@material-ui/core';
+import {Box, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -16,7 +17,6 @@ import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom
 import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
 
@@ -45,9 +45,7 @@ export const useStyles = makeStyles((theme) =>
         },
         progress: {
             height: theme.spacing(1),
-            // marginLeft: theme.spacing(3),
-            // marginRight: theme.spacing(3),
-        }
+        },
     }),
 );
 
@@ -261,8 +259,10 @@ const EmailTokenAuthButton = () => {
 
     return (
         <>
-        <Box m={2}>
-            <div style={{
+            <Box px={2} style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1
             }}>
                 {active && (
                     <>
@@ -332,8 +332,7 @@ const EmailTokenAuthButton = () => {
                                 strategy="Email"
                                 startIcon={<EmailIcon/>}/>
                 )}
-            </div>
-        </Box>
+            </Box>
         </>
     );
 };
@@ -410,28 +409,14 @@ export const RegisterForBetaButton = () => {
             )}
 
             {!isRegistered && (
-                <Box m={2}>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1
-                    }}>
-                    <TextField autoFocus={true}
-                            className={classes.email}
-                            onChange={event => emailRef.current = event.target.value}
-                            placeholder="Enter your email address"
-                            InputProps={{
-                                startAdornment: (
-                                    <EmailIcon style={{margin: '8px'}}/>
-                                )}}
-                            variant="outlined"/>
-
-                    <TextField autoFocus={true}/>
-
+                <Box component='div' px={2} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
                     <TextField autoFocus={true}
                                className={classes.email}
-                               onChange={event => codeRef.current = event.target.value}
-                               placeholder="Referral code (optional)"
+                               onChange={event => emailRef.current = event.target.value}
+                               placeholder="Enter your email address"
                                InputProps={{
                                    startAdornment: (
                                        <EmailIcon style={{margin: '8px'}}/>
@@ -449,14 +434,6 @@ export const RegisterForBetaButton = () => {
                                    )}}
                                variant="outlined"/>
 
-                        <Button variant="contained"
-                                size="large"
-                                color="primary"
-                                className={classes.button}
-                                onClick={handleClick}>
-                            Get Started
-                        </Button>
-                    </div>
                     <Button variant="contained"
                             size="large"
                             color="primary"
@@ -494,7 +471,7 @@ const OrCreateNewAccountButton = () => {
     );
 }
 
-export const LogoAndTextSideBySide = () => {
+const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
@@ -513,6 +490,26 @@ export const LogoAndTextSideBySide = () => {
     )
 }
 
+const FlexLayoutForm = () => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+
+                <EmailTokenAuthButton/>
+
+            </div>
+
+        </div>
+    )
+}
+
 interface AuthContentProps {
     readonly title: string;
     readonly children: React.ReactNode;
@@ -523,8 +520,6 @@ interface AuthContentProps {
  * Auth content wrapper which adds the logo, any title text.
  */
 const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
-
-    const classes = useStyles();
 
     return (
         <>
@@ -544,21 +539,12 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        
-                    </div>
-
-                    <Box display={'flex'} flexGrow={1} alignItems={'center'} justifyContent={'center'}>
                         <LogoAndTextSideBySide/>
-                    </Box>
+                    </div>
 
                     <h2>
                         {props.title}
                     </h2>
-
-                    <Box m={1}>
-                        <Divider/>
-                    </Box>
-                    
 
                     {props.children}
 
@@ -622,10 +608,6 @@ interface IProps {
 }
 
 const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
-
-interface AdaptiveDialogProps {
-    readonly children: React.ReactNode;
-}
 
 // TODO: get rid of the 'mode' in props and make a SignInAuthenticator and an
 // PrivateBetaAuthenticator or CreateAccountAuthenticator
