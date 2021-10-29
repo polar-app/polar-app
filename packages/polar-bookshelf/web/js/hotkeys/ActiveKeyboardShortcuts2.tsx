@@ -37,10 +37,12 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 text: shortcut.active.name,
                 icon: shortcut.active.icon,
                 description: shortcut.active.description,
-                group: shortcut.active.group
+                group: shortcut.active.group,
+                sequences: shortcut.active.sequences
             }
         }
 
+        // TODO: docs conflict with named notes... which is mildly annoying.
         function toDocCommand(repoDocInfo: RepoDocInfo): ICommandWithType {
             return {
                 id: `${repoDocInfo.id}`,
@@ -78,11 +80,16 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
         const docCommands = docInfos.map(toDocCommand);
         const blockCommands = blocks.map(toBlockCommand);
 
-        return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        // return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        return [...keyboardShortcutCommands];
 
     }, [blocks, docInfos, shortcuts]);
 
     const handleCommand = React.useCallback((command: ICommandWithType) => {
+
+        // TODO: resolve the command by type, then execute it...
+        // TODO: all the commands need to have UNIQUE IDs in a larger global map...
+        // TODO: handle executing the commands.
 
     }, []);
 

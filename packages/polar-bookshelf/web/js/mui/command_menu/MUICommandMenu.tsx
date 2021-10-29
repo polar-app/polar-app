@@ -118,15 +118,14 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const commandsFiltered = React.useMemo(() => {
 
-        // if (hasActiveFilter()) {
-            return arrayStream(commands)
-                       .filter(filterPredicate)
-                       .head(50)
-                       .sort((a, b) => a.text.localeCompare(b.text))
-                       .collect();
-        // } else {
-        //     return [];
-        // }
+        // TODO if there is no active filter, then I need to restore a previous
+        // history of commands.
+
+        return arrayStream(commands)
+                   .filter(filterPredicate)
+                   .head(50)
+                   .sort((a, b) => a.text.localeCompare(b.text))
+                   .collect();
 
     }, [commands, filterPredicate]);
 
@@ -193,7 +192,10 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
             setIndex(newIndex);
         }
 
-        if (event.key === 'ArrowDown') {
+        // we have to manually handle scrolling here because it WILL scroll only
+        // it will do so by small little deltas...
+
+        if (event.key === 'ArrowDown' || event.key === 'Tab') {
             stopHandlingEvent();
             handleNewIndex(1);
         }
@@ -238,7 +240,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                  }}
                  className={props.className}>
 
-                <Box pt={1} pb={1} flex>
+                <Box pt={1} pb={1}>
                     <>
                         {props.title && (
                             <div className={classes.title}>
