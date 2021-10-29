@@ -6,6 +6,7 @@ import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {ReviewRatingGlobalHotKeys} from "./ReviewRatingGlobalHotKeys";
+import {DocAnnotationTaskAction} from '../DocAnnotationReviewerTasks';
 
 const BUTTONS: ReadonlyArray<IRatingOption> = [
     {
@@ -27,20 +28,19 @@ const BUTTONS: ReadonlyArray<IRatingOption> = [
 ]
 
 
-export interface IProps<A> {
+export interface IProps {
 
-    readonly taskRep: TaskRep<A>;
+    readonly taskRep: TaskRep<DocAnnotationTaskAction>;
     readonly stage: Stage;
 
 }
 
-export const ReviewRatingButtons = deepMemo(function <A>(props: IProps<A>) {
+export const ReviewRatingButtons = deepMemo(function ReviewRatingButtons(props: IProps) {
 
     return (
         <>
             <ReviewRatingGlobalHotKeys/>
-            <RatingButtonSet taskRep={props.taskRep}
-                                options={BUTTONS}/>
+            <RatingButtonSet taskRep={props.taskRep} options={BUTTONS} />
         </>
     );
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../ratings/RatingButtons";
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
@@ -10,10 +9,11 @@ import {CardPaper} from "./CardPaper";
 import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
+import {TaskAction} from '../ReviewerTasks';
 
 namespace card {
 
-    export const Body = (props: any) => {
+    export const Body: React.FC = (props) => {
 
         return (
             <CardPaper>
@@ -22,7 +22,7 @@ namespace card {
         );
     };
 
-    export const Parent = (props: any) => (
+    export const Parent: React.FC = (props) => (
         <div className="mt-3 pl-3 pr-3 flashcard-parent"
              style={{
                  width: '100%',
@@ -71,11 +71,11 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<FlashcardTaskAction>;
+    readonly taskRep: TaskRep<TaskAction>;
 
-    readonly front: React.ReactElement<any>;
+    readonly front: React.ReactElement;
 
-    readonly back: React.ReactElement<any>;
+    readonly back: React.ReactElement;
 
 }
 
@@ -137,7 +137,7 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
             case 'back':
                 return (
                     <RatingButtons taskRep={taskRep}
-                                      stage={taskRep.stage}/>
+                                   stage={taskRep.stage}/>
                 );
             default:
                 throw new Error("Invalid side: " + side);
