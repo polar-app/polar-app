@@ -1,6 +1,5 @@
 import * as React from "react";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
-import {ActiveKeyboardShortcuts} from "../hotkeys/ActiveKeyboardShortcuts";
 import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
 import {BrowserTabsStoreProvider} from "../browser_tabs/BrowserTabsStore";
 import {MUIAppRoot} from "./MUIAppRoot";
@@ -17,7 +16,6 @@ export const MUIRepositoryRoot = React.memo(function MUIRepositoryRoot(props: IP
             <SideNavStoreProvider>
                 <BrowserTabsStoreProvider>
                     <>
-                        <ActiveKeyboardShortcuts/>
 
                         <FirestoreProvider>
                             <UserInfoProvider>

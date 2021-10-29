@@ -49,7 +49,6 @@ import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
-import {NotesScreen} from '../../notes/NoteScreen';
 import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
@@ -68,6 +67,10 @@ import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
+import {NotesScreen} from "../../notes/NoteScreen";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
+import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 
 interface IProps {
     readonly app: App;
@@ -286,6 +289,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <Initializers/>
 
+                            <ActiveKeyboardShortcuts/>
+                            <JumpToNoteKeyboardCommand />
+
                             <SideNav/>
                             <DeviceRouters.NotDesktop>
                                 <MUIBottomNavigation/>
@@ -330,8 +336,23 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                            component={EnableFeatureToggle}/>
 
                                     <FeatureToggleEnabled featureName="notes-enabled">
-                                        <Route path={RoutePathNames.NOTES}
-                                               component={NotesScreen}/>
+
+                                        <>
+
+                                            <PersistentRoute path={RoutePathNames.NOTES}
+                                                             exact
+                                                             strategy="display">
+                                                <NotesRepoScreen/>
+                                            </PersistentRoute>
+
+                                            <Route path={RoutePathNames.DAILY}
+                                                   component={NotesScreen}/>
+
+                                            <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                   component={NotesScreen}/>
+
+                                        </>
+
                                     </FeatureToggleEnabled>
 
                                     <Route path="/hello-ssr"

@@ -46,7 +46,7 @@ export const BlockInner = observer((props: IProps) => {
     const {id, parent, withHeader = false, noExpand = false, noBullet = false} = props;
     const {root} = blocksTreeStore;
     const isRoot = id === root;
-    const dragDropBinds = useDragDropHandler({ id, isRoot });
+    const dragDropCallbacks = useDragDropHandler({ id, isRoot });
 
     const classes = useStyles();
     const undoQueue = useUndoQueue();
@@ -168,11 +168,13 @@ export const BlockInner = observer((props: IProps) => {
 
     const hasItems = items.length > 0;
 
+    // TODO: on the root element below (Block), add the drag and drop handlers.
+    // For now it doesn't work and we disabled it for now.
     return (
         <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
              className={clsx('Block', { [classes.selected]: selected }) }
-             {...dragDropBinds}>
+             >
 
             {topInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
             <BlockDragIndicator id={id}>
@@ -197,7 +199,7 @@ export const BlockInner = observer((props: IProps) => {
                                  }}>
 
 
-                                {hasItems && !noExpand && (
+                                {hasItems && ! noExpand && (
                                     <BlockExpandToggleButton id={id}/>
                                 )}
 
@@ -217,8 +219,8 @@ export const BlockInner = observer((props: IProps) => {
                         <Divider style={{ margin: '4px 0 8px 0' }} />
                     }
 
-                    {(expanded || (isRoot && noExpand)) && (
-                        <BlockItems parent={id} notes={items} indent={!withHeader} />
+                    {(expanded || noExpand) && (
+                        <BlockItems parent={id} notes={items} indent={! withHeader} />
                     )}
                 </>
             </BlockDragIndicator>

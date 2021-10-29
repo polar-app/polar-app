@@ -8,6 +8,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Input from "@material-ui/core/Input";
 import {Box} from "@material-ui/core";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 
 const useStyles = makeStyles((theme) =>
@@ -16,12 +17,14 @@ const useStyles = makeStyles((theme) =>
             padding: theme.spacing(1),
             color: theme.palette.text.hint,
             fontWeight: 'bold',
-            fontSize: '1.0rem !important'
+            fontSize: '1.0rem !important',
+            userSelect: 'none'
         },
         textField: {
             padding: theme.spacing(1),
-
-            fontSize: '1.2rem !important'
+            fontSize: '1.2rem !important',
+            flexGrow: 1,
+            display: 'flex'
         },
         item: {
             fontSize: '1.2rem !important',
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme) =>
  * Provide a list of action items we should execute and provide a prompt to
  * filter the results such that the set of actions is applicable to the prompt.
  */
-export type CommandsProvider = () => ReadonlyArray<ICommand>;
+export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
 
 export interface ICommand {
 
@@ -65,7 +68,7 @@ export interface ICommand {
 
 }
 
-interface IProps {
+interface IProps<C extends ICommand> {
 
     readonly title?: string;
 
@@ -77,7 +80,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: ICommand) => void;
+    readonly onCommand: (command: C) => void;
 
     /**
      * Called when the command menu should be closed.
@@ -87,7 +90,7 @@ interface IProps {
     /**
      * A provider for resolving the items that the user can select form their input.
      */
-    readonly commandsProvider: CommandsProvider;
+    readonly commandsProvider: CommandsProvider<C>;
 
     readonly className?: string;
 
@@ -95,7 +98,7 @@ interface IProps {
 
 }
 
-export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) {
+export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const classes = useStyles();
     const {commandsProvider, onCommand, onClose} = props;
@@ -109,9 +112,25 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
         return filter === undefined || command.text.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     }, [filter]);
 
-    const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
+    const hasActiveFilter = React.useCallback(() => {
+        return filter !== undefined && filter.trim() !== '';
+    }, [filter]);
 
-    const handleCommandExecuted = React.useCallback((command: ICommand) => {
+    const commandsFiltered = React.useMemo(() => {
+
+        // if (hasActiveFilter()) {
+            return arrayStream(commands)
+                       .filter(filterPredicate)
+                       .head(50)
+                       .sort((a, b) => a.text.localeCompare(b.text))
+                       .collect();
+        // } else {
+        //     return [];
+        // }
+
+    }, [commands, filterPredicate]);
+
+    const handleCommandExecuted = React.useCallback((command: C) => {
 
         onCommand(command);
         onClose('executed');
@@ -219,7 +238,7 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
                  }}
                  className={props.className}>
 
-                <Box pt={1} pb={1}>
+                <Box pt={1} pb={1} flex>
                     <>
                         {props.title && (
                             <div className={classes.title}>
@@ -259,4 +278,4 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
 
     );
 
-});
+};

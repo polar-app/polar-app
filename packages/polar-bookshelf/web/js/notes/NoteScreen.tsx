@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Route, RouteComponentProps, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {createStyles, LinearProgress, makeStyles} from '@material-ui/core';
 import {useBlocksStore} from './store/BlocksStore';
-import {JumpToNoteKeyboardCommand} from './JumpToNoteKeyboardCommand';
 import {observer} from 'mobx-react-lite';
 import {NotesContainer} from './NotesContainer';
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
@@ -10,7 +9,7 @@ import {NoteStyle} from "./NoteStyle";
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import {NoteRepoScreen} from './NoteRepoScreen';
+import {NotesRepoScreen} from './NotesRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
 import {SideCar} from '../sidenav/SideNav';
@@ -47,7 +46,8 @@ export const NoteProviders: React.FC = ({ children }) => {
     );
 };
 
-export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
+export const NotesScreen: React.FC = observer(() => {
+
     const blocksStore = useBlocksStore();
 
     if (! blocksStore.hasSnapshot) {
@@ -62,11 +62,10 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
                 <SideCar>
                     <div style={{ padding: 12 }}>Empty for now</div>
                 </SideCar>
-                <JumpToNoteKeyboardCommand />
                 <Switch>
-                    <Route path={RoutePathNames.NOTES_REPO} component={NoteRepoScreen} />
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
-                    <Route path={RoutePathNames.NOTES} component={DailyNotesScreen} />
+                    <Route path={RoutePathNames.DAILY} component={DailyNotesScreen} />
+                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>
