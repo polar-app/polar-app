@@ -157,7 +157,7 @@ const useStyles = makeStyles((theme) =>
     })
 );
 
-export const NoteRepoScreen: React.FC = () => {
+export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
     const classes = useStyles();
     const blocksStore = useBlocksStore();
     const namedBlocks = useNamedBlocks({ sort: true });
