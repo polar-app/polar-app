@@ -36,7 +36,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {BlockContentAnnotationTree} from "../../../../../../polar-migration-block-annotations/src/BlockContentAnnotationTree";
+import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 
 export enum AnnotationPopupActionEnum {

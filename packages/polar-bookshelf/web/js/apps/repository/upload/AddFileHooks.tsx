@@ -20,7 +20,7 @@ import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
 import {useBlocksStore} from "../../../notes/store/BlocksStore";
 import {IBlockPredicates} from "../../../notes/store/IBlockPredicates";
-import {DocMetaBlockContents} from "../../../../../../polar-migration-block-annotations/src/DocMetaBlockContents";
+import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace AddFileHooks {
