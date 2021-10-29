@@ -20,7 +20,7 @@ type IUseStylesProps = {
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     createStyles({
         root: ({ show }) => ({
-            transition: 'all 200ms ease-in-out',
+            transition: 'all 0ms ease-in-out',
             position: 'relative',
             width: '100%',
             bottom: 0,
@@ -139,6 +139,8 @@ export const MUIBottomNavigation = ()  => {
 
                 {bottomNavLocations.map(current => (
                     <BottomNavigationAction key={current.id}
+                                            disableRipple={true}
+                                            disableTouchRipple={true}
                                             label={current.label}
                                             value={current.href}
                                             icon={current.icon}

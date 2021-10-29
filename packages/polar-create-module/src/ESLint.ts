@@ -7,8 +7,13 @@ export namespace ESLint {
             "parserOptions": {
                 "project": "./tsconfig.json"
             },
-            "extends": ["eslint:recommended", "standard", "plugin:@typescript-eslint/recommended", "prettier"],
-            "plugins": ["@typescript-eslint", "react", "react-hooks", "unused-imports"],
+            "extends": [
+                "eslint:recommended", 
+                "standard", 
+                "plugin:@typescript-eslint/recommended", 
+                "prettier"
+            ],
+            "plugins": ["@typescript-eslint", "react", "react-hooks", "unused-imports", "functional"],
             "env": {
                 "es6": true,
                 "node": true
@@ -27,6 +32,9 @@ export namespace ESLint {
 
                 // ? Import Rules
                 "unused-imports/no-unused-imports": "error",
+
+                // ? Functional Rules (Off Locally but gets enabled for new code in CI)
+                "functional/prefer-readonly-type": "off",
 
                 // ! Disabled Rules ///////////////////////////////////////////////////
 

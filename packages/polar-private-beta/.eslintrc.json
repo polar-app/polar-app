@@ -14,7 +14,8 @@
     "@typescript-eslint",
     "react",
     "react-hooks",
-    "unused-imports"
+    "unused-imports",
+    "functional"
   ],
   "env": {
     "es6": true,
@@ -28,6 +29,7 @@
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
     "unused-imports/no-unused-imports": "error",
+    "functional/prefer-readonly-type": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/ban-ts-comment": "off",
