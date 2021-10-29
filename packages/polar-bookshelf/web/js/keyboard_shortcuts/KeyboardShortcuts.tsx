@@ -142,11 +142,10 @@ export function useKeyboardShortcutHandlers(): OnKeyDown  {
 
     const keyToHandlers = useRefProvider(() =>  computeKeyToHandlers());
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent | KeyboardEvent): boolean => {
+    const handleKeyDown = React.useCallback((event: KeyboardEventLike): boolean => {
 
         if (! activeRef.current) {
             // key bindings are deactivated.
-            console.log("FIXME 101")
             return false;
         }
 
@@ -156,7 +155,6 @@ export function useKeyboardShortcutHandlers(): OnKeyDown  {
             if (predicate(event)) {
 
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
-                    console.log("FIXME 102")
                     return false;
                 }
 
