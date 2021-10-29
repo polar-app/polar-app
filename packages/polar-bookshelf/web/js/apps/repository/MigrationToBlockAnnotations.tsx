@@ -57,7 +57,6 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     return (
         <AdaptiveDialog>
-
             <div style={{
                      display: 'flex',
                      justifyContent: 'center'
@@ -77,7 +76,6 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
                     </Typography>
 
                 </Box>
-
             </div>
         </AdaptiveDialog>
     )
