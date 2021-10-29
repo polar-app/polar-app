@@ -241,7 +241,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                  }}
                  className={props.className}>
 
-                <Box pt={1} pb={1} flex>
+                <Box pt={1} pb={1}>
                     <>
                         {props.title && (
                             <div className={classes.title}>

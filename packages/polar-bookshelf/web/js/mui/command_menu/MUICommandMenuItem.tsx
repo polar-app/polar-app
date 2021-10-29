@@ -47,6 +47,50 @@ interface IProps {
 
 }
 
+function elementScrolledIntoView(el: HTMLElement) {
+    const rect = el.getBoundingClientRect();
+    const elemTop = rect.top;
+    const elemBottom = rect.bottom;
+
+    console.log("FIXME: ", rect);
+
+    // Only completely visible elements return true:
+    const isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+
+    // Partially visible elements return true:
+    // isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+    return isVisible;
+}
+
+function elementVisibleWithinContainer(el: HTMLElement, container: HTMLElement) {
+    const eleTop = el.offsetTop;
+    const eleBottom = eleTop + el.clientHeight;
+
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+
+    // The element is fully visible in the container
+    return (
+        (eleTop >= containerTop && eleBottom <= containerBottom) ||
+        // Some part of the element is visible in the container
+        (eleTop < containerTop && containerTop < eleBottom) ||
+        (eleTop < containerBottom && containerBottom < eleBottom)
+    );
+}
+
+function elementScrollParent(node: HTMLElement | null | undefined): HTMLElement | undefined {
+
+    if (! node) {
+        return undefined;
+    }
+
+    if (node.scrollHeight > node.clientHeight) {
+        return node;
+    } else {
+        return elementScrollParent(node.parentElement);
+    }
+}
+
 export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: IProps) {
 
     const classes = useStyles();
@@ -57,12 +101,25 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
         props.onSelected()
     }, [props])
 
+    const doScroll = React.useCallback((element: HTMLElement, dir: 'up' | 'down') => {
+
+        const opts = dir === 'up' ? {block: 'start'} : {block: 'end'}
+
+        element.scrollIntoView(opts);
+
+    }, [])
+
     React.useEffect(() => {
 
         if (props.selected) {
             if (elementRef.current) {
-                console.log("FIXME: scrolling into view... ")
-                elementRef.current?.scrollIntoView();
+
+                if (! elementVisibleWithinContainer(elementRef.current, elementScrollParent(elementRef.current)!)) {
+                    console.log("FIXME: scrolling into view... ")
+                    elementRef.current.scrollIntoView();
+                } else {
+                    console.log("FIXME: NOT scrolling into view... ")
+                }
             }
         }
 
