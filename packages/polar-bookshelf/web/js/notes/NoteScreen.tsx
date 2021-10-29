@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {createStyles, LinearProgress, makeStyles} from '@material-ui/core';
 import {useBlocksStore} from './store/BlocksStore';
-import {JumpToNoteKeyboardCommand} from './JumpToNoteKeyboardCommand';
 import {observer} from 'mobx-react-lite';
 import {NotesContainer} from './NotesContainer';
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
@@ -63,7 +62,6 @@ export const NotesScreen: React.FC = observer(() => {
                 <SideCar>
                     <div style={{ padding: 12 }}>Empty for now</div>
                 </SideCar>
-                <JumpToNoteKeyboardCommand />
                 <Switch>
                     <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />

@@ -46,7 +46,7 @@ const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleCompon
 
 });
 
-const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<IDocAnnotation>) {
+const AnnotationRepoBlockComponent = React.memo(function AnnotationRepoBlockComponent(props: BlockComponentProps<IDocAnnotation>) {
 
     const fixedHeightAnnotationCalculator = useFixedHeightAnnotationCalculator();
 
@@ -134,7 +134,7 @@ export const AnnotationRepoTable = React.memo(() => {
                                     <IntersectionList values={view}
                                                       root={root}
                                                       blockSize={10}
-                                                      BlockComponent={BlockComponent}
+                                                      BlockComponent={AnnotationRepoBlockComponent}
                                                       HiddenBlockComponent={HiddenBlockComponent}
                                                       VisibleComponent={VisibleComponent}/>)}
                             </AnnotationRepoTableContextMenu>
