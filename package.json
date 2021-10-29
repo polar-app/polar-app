@@ -20,7 +20,7 @@
     "**/@types/pdfjs-dist": "2.1.71-polar.2",
     "**/@types/jest": "^26.0.24",
     "**/@types/mocha": "*",
-    "**/@typescript-eslint/eslint-plugin": "*",
+    "**/@typescript-eslint/eslint-plugin": "=4.31.0",
     "**/@typescript-eslint/parser": "*",
     "**/eslint-config-standard-with-typescript": "*",
     "**/eslint": "*",
