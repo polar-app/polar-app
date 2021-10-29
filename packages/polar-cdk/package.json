@@ -34,6 +34,7 @@
   "dependencies": {
     "@aws-cdk/aws-apigateway": "=1.121.0",
     "@aws-cdk/aws-lambda-nodejs": "=1.121.0",
+    "@aws-cdk/aws-elasticsearch": "=1.121.0",
     "@aws-cdk/core": "=1.121.0",
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
@@ -46,6 +47,8 @@
     "polar-private-beta-api": "0.0.0",
     "polar-shared": "0.0.0",
     "polar-firebase-admin": "0.0.0",
-    "source-map-support": "=0.5.19"
+    "polar-answers": "0.0.0",
+    "source-map-support": "=0.5.19",
+    "@elastic/elasticsearch": "=7.13.0"
   }
 }

@@ -21,9 +21,9 @@ import {BlockContentAnnotationTree} from "./BlockContentAnnotationTree";
  *
  * This is where this class comes into play. An important thing to note is that when performing the migration
  * document & annotation tags are converted into `name` blocks
- * So in this case bob already has 3 `name` blocks, but one of them conflicts with one of the tags that are about to migrated,
- * and that's why at first we index all of the existing 'name' blocks & keep track of their ads, this way we can keep track of
- * 1. documents using the same tag
+ * So in this case bob already has 3 `name` blocks, but one of them conflicts with one of the tags that are about to migrate,
+ * and that's why at first we index all of the existing 'name' blocks & keep track of their IDs, this way we can keep track of
+ * 1. multiple documents using the same tag
  * 2. documents using a tag with a label that already exists in the blocks system as a `name` block
  *
  */
@@ -86,9 +86,10 @@ export namespace DocMetaBlockContents {
     };
 
     /**
-     * Convert block tag links into name blocks
+     * Convert a IDocMeta object into blocks
      *
-     * @param tagLinks tag wiki links objects
+     * @param docMeta The IDocMeta object to convert
+     * @param existingNamedBlocks The existing named blocks that the user has
      */
     export function getFromDocMeta(docMeta: IDocMeta,
                                    existingNamedBlocks: ReadonlyArray<IBlock<INamedContent>>): IDocMetaBlockContents {
@@ -108,10 +109,36 @@ export namespace DocMetaBlockContents {
                 id: Hashcodes.createRandomID(),
                 content: documentContent,
                 children: sortedAnnotationContentStructure,
+                created: docMeta.docInfo.added,
+                updated: docMeta.docInfo.lastUpdated,
             },
             tagContentsStructure: tagLinksToIdentifiableContentStructure(linkTracker.getTagLinks()),
         };
 
+    }
+
+
+    /**
+     * Convert a IDocInfo object into blocks
+     *
+     * @param docInfo The IDocInfo object to convert
+     * @param existingNamedBlocks The existing named blocks that the user has
+     */
+    export function getFromDocInfo(docInfo: IDocInfo,
+                                   existingNamedBlocks: ReadonlyArray<IBlock<INamedContent>>): IDocMetaBlockContents {
+
+        const linkTracker = new BlockTagLinkTracker(existingNamedBlocks);
+
+        const documentContent = getDocumentBlockContent(linkTracker, docInfo);
+
+        return {
+            docContentStructure: {
+                id: Hashcodes.createRandomID(),
+                content: documentContent,
+                children: [],
+            },
+            tagContentsStructure: tagLinksToIdentifiableContentStructure(linkTracker.getTagLinks()),
+        };
     }
 
     /**
@@ -164,6 +191,8 @@ export namespace DocMetaBlockContents {
             id: Hashcodes.createRandomID(),
             content: blockAnnotationToBlockAnnotationContent(linkTracker, annotation),
             children: annotation.children.map(toAnnotationContentStructure),
+            created: annotation.created,
+            updated: annotation.updated,
         });
 
 

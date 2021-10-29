@@ -580,12 +580,13 @@ export class BlocksStore implements IBlocksStore {
         // mutates the blocks that belong to these ids in the same order specified here
         // The reason why we have to reverse them is because when undoing this operation
         // requires deleting all of the inserted blocks, and in order for that to happen
-        // we have to list children ids first before their parents, because doDelete
+        // we have to list the childrens ids before their parents, because doDelete
         // doesn't like deleting blocks that have no parents
         const ids = blocks.flatMap(blockStructure => toIDs(blockStructure).reverse());
 
         const redo = () => {
-            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref?: BlockIDStr, isParent: boolean = false) => {
+            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>,
+                                 ref?: BlockIDStr, isParent: boolean = false) => {
                 [...blocks]
                     .reverse()
                     .forEach(({ children, content, id }) => {

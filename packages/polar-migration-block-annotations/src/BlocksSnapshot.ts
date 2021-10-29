@@ -13,10 +13,12 @@ export namespace BlocksSnapshot {
     export function blockContentStructureToBlockSnapshot(uid: UIDStr,
                                                          contentStructure: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<IBlock> {
 
-        const toBlock = ({ id, content, children }: IBlockContentStructure,
+        const toBlocks = ({ id, content, children, created, updated }: IBlockContentStructure,
                          parent: IBlock | null = null): ReadonlyArray<IBlock> => {
 
             const now = ISODateTimeStrings.create();
+            const createdTs = created || now;
+            const updatedTs = updated || now;
 
             const directChildrenIDs = children.map(({ id }) => id);
 
@@ -28,13 +30,13 @@ export namespace BlocksSnapshot {
                 uid,
                 root: parent ? parent.root : id,
                 content,
-                created: now,
-                updated: now,
+                created: createdTs,
+                updated: updatedTs,
                 items: PositionalArrays.create(directChildrenIDs),
                 mutation: 0,
             };
 
-            const childrenBlocks = children.flatMap(childStructure => toBlock(childStructure, block));
+            const childrenBlocks = children.flatMap(childStructure => toBlocks(childStructure, block));
 
             return [
                 block,
@@ -42,7 +44,7 @@ export namespace BlocksSnapshot {
             ];
         };
 
-        return contentStructure.flatMap(structure => toBlock(structure));
+        return contentStructure.flatMap(structure => toBlocks(structure));
 
     }
 

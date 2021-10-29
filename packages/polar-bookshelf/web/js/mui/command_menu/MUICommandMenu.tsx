@@ -7,6 +7,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Input from "@material-ui/core/Input";
+import {Box} from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) =>
@@ -218,19 +219,23 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
                  }}
                  className={props.className}>
 
-                {props.title && (
-                    <div className={classes.title}>
-                        {props.title}
-                    </div>
-                )}
+                <Box pt={1} pb={1}>
+                    <>
+                        {props.title && (
+                            <div className={classes.title}>
+                                {props.title}
+                            </div>
+                        )}
 
-                <Input autoFocus={true}
-                       disableUnderline={true}
-                       className={classes.textField}
-                       placeholder="Type a command or search ..."
-                       onChange={event => setFilter(event.target.value) }/>
+                        <Input autoFocus={true}
+                               disableUnderline={true}
+                               className={classes.textField}
+                               placeholder="Type a command or search ..."
+                               onChange={event => setFilter(event.target.value) }/>
+                    </>
+                </Box>
 
-                <List component="nav">
+                <List component="nav" style={{overflow: 'auto', margin: 0}}>
 
                     {commandsFiltered.map((command, idx) => {
 

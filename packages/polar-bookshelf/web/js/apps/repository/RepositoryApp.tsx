@@ -49,7 +49,6 @@ import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
-import {NotesScreen} from '../../notes/NoteScreen';
 import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
@@ -61,15 +60,15 @@ import {DocRepoSidebarTagStore} from '../../../../apps/repository/js/doc_repo/Do
 import {Devices} from 'polar-shared/src/util/Devices';
 import {useSideNavCallbacks, useSideNavStore} from '../../sidenav/SideNavStore';
 import {RoutePathNames} from './RoutePathNames';
-import {CSSTransition} from "react-transition-group";
-import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
-import {DeviceRouter, DeviceRouters} from "../../ui/DeviceRouter";
+import {DeviceRouters} from "../../ui/DeviceRouter";
 import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
+import {NotesScreen} from "../../notes/NoteScreen";
 
 interface IProps {
     readonly app: App;
@@ -127,78 +126,24 @@ const FeatureRequestsScreen = () => {
 };
 
 const SHARED_ROUTES = [
-    {path: RoutePathNames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen)},
-    {path: RoutePathNames.INVITE, component: withMobilePopup(InviteScreen)},
-    {path: RoutePathNames.PLANS, component: withMobilePopup(PricingScreen)},
-    {path: RoutePathNames.PREMIUM, component: withMobilePopup(PricingScreen)},
-    {path: RoutePathNames.SUPPORT, component: withMobilePopup(SupportScreen)},
-    {path: RoutePathNames.STATISTICS, component: withMobilePopup(StatsScreen)},
-    {path: RoutePathNames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings")},
-    {path: RoutePathNames.LOGS, component: withMobilePopup(LogsScreen, "Logs")},
-    {path: RoutePathNames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info")},
-    {path: RoutePathNames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen)},
+    {path: RoutePathNames.WHATS_NEW, component: (WhatsNewScreen)},
+    {path: RoutePathNames.INVITE, component: (InviteScreen)},
+    {path: RoutePathNames.PLANS, component: (PricingScreen)},
+    {path: RoutePathNames.PREMIUM, component: (PricingScreen)},
+    {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
+    {path: RoutePathNames.STATISTICS, component: (StatsScreen)},
+    {path: RoutePathNames.SETTINGS, component: (SettingsScreen)},
+    {path: RoutePathNames.LOGS, component: (LogsScreen)},
+    {path: RoutePathNames.DEVICE_INFO, component: (DeviceScreen)},
+    {path: RoutePathNames.FEATURE_REQUESTS, component: (FeatureRequestsScreen)},
 ];
 
-const useSharedRoutesStyles = makeStyles(() =>
-    createStyles({
-        page: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 1000,
-        },
-        pageEnter: {
-            top: '100%',
-        },
-        pageEnterActive: {
-            transition: 'top 300ms ease-in-out',
-            top: 0,
-        },
-        pageExit: {
-            zIndex: 999,
-            top: 0,
-        },
-    })
-);
-
 const SharedRoutes: React.FC = () => {
-    const classes = useSharedRoutesStyles();
-    const location = Devices.isDesktop()
-        ? ReactRouters.createLocationWithPathOnly()
-        : ReactRouters.createLocationWithHashOnly();
-
-    if (Devices.isDesktop()) {
-        return (
-            <>
-                {SHARED_ROUTES.map((props) => <Route key={props.path} exact location={location} {...props} />)}
-            </>
-        );
-    }
+    const location = ReactRouters.createLocationWithPathOnly()
 
     return (
         <>
-            {SHARED_ROUTES.map(({path, component: Component}) => (
-                <Route location={location} key={path} exact path={path}>
-                    {({match}) => (
-                        <CSSTransition
-                            in={match != null}
-                            timeout={300}
-                            classNames={{
-                                enter: classes.pageEnter,
-                                enterActive: classes.pageEnterActive,
-                                exit: classes.pageExit,
-                            }}
-                            unmountOnExit
-                        >
-                            <div className={classes.page}>
-                                <Component/>
-                            </div>
-                        </CSSTransition>
-                    )}
-                </Route>
-            ))}
+            {SHARED_ROUTES.map((props) => <Route key={props.path} exact location={location} {...props} />)}
         </>
     );
 };
@@ -364,16 +309,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <RenderAnnotationRepoScreen/>
                                 </PersistentRoute>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.SETTINGS_MOBILE}>
-                                    <SettingsScreen/>
-                                </PersistentRoute>
-
                                 <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
                                     <SwitchScreen/>
-                                </PersistentRoute>
-
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.PLAN_MOBILE}>
-                                    <PricingScreen/>
                                 </PersistentRoute>
 
                                 <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
@@ -394,8 +331,21 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                            component={EnableFeatureToggle}/>
 
                                     <FeatureToggleEnabled featureName="notes-enabled">
-                                        <Route path={RoutePathNames.NOTES}
-                                               component={NotesScreen}/>
+
+                                        <>
+
+                                            <PersistentRoute path={RoutePathNames.NOTES}
+                                                             strategy="display">
+                                                <NotesRepoScreen/>
+                                            </PersistentRoute>
+
+                                            <PersistentRoute path={RoutePathNames.DAILY}
+                                                             strategy="display">
+                                                <NotesScreen/>
+                                            </PersistentRoute>
+
+                                        </>
+
                                     </FeatureToggleEnabled>
 
                                     <Route path="/hello-ssr"
@@ -403,7 +353,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 </Switch>
 
-                                <DeviceRouter desktop={<SharedRoutes/>}/>
+                                <SharedRoutes/>
                             </RouteContainer>
                         </div>
 
@@ -420,8 +370,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <AddFileDropzoneScreen/>
                                 </PersistenceLayerContext.Provider>
                             </Route>
-
-                            <DeviceRouter handheld={<SharedRoutes/>}/>
 
                         </Switch>
 

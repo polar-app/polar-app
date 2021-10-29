@@ -16,14 +16,24 @@ const keyMap: KeyMap = {
         name: 'Show Keyboard Shortcuts',
         description: "Show active keyboard shortcuts",
         sequences: [
+            // {
+            //     keys: "shift+?",
+            //     platforms: ['macos', 'linux', 'windows']
+            // },
+            // {
+            //     keys: '/',
+            //     platforms: ['macos', 'linux', 'windows']
+            // },
             {
-                keys: "shift+?",
-                platforms: ['macos', 'linux', 'windows']
+                keys: 'ctrl+k',
+                platforms: ['linux', 'windows']
             },
             {
-                keys: '/',
-                platforms: ['macos', 'linux', 'windows']
+                keys: 'command+k',
+                platforms: ['macos']
             }
+
+
         ],
         priority: -1
     }

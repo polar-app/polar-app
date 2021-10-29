@@ -88,7 +88,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
             </DeviceRouter.Desktop>
 
             <DeviceRouter.Handheld>
-                <AppBar position="static">
+                <AppBar color={"inherit"} position="static">
                     <Toolbar>
                         <DocRepoTableToolbarMain/>
                     </Toolbar>

@@ -93,8 +93,12 @@ export namespace BlocksAnnotationRepoFilters {
                 return block.content.type !== AnnotationContentType.AREA_HIGHLIGHT;
             };
 
-            const matchesFilter = (block: IBlock<IRepoAnnotationTextContent>): boolean =>
-                BlockTextContentUtils.getTextContentMarkdown(block.content).indexOf(normalizedFilterText) >= 0;
+            const matchesFilter = (block: IBlock<IRepoAnnotationTextContent>): boolean => {
+                const normalizedAnnotationText = BlockTextContentUtils
+                    .getTextContentMarkdown(block.content)
+                    .toLowerCase();
+                return normalizedAnnotationText.indexOf(normalizedFilterText) >= 0;
+            };
 
             return blockAnnotations
                 .filter(hasText)
