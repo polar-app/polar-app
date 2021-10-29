@@ -22,16 +22,16 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IProps {
+interface IProps<C extends ICommand> {
     readonly group: string;
     readonly name: string;
     readonly description: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
-    readonly commandsProvider: CommandsProvider;
-    readonly onCommand: (command: ICommand) => void;
+    readonly commandsProvider: CommandsProvider<C>;
+    readonly onCommand: (command: C) => void;
 }
 
-export const MUICommandMenuKeyboardShortcut = React.memo((props: IProps) => {
+export const MUICommandMenuKeyboardShortcut = <C extends ICommand>(props: IProps<C>) => {
 
     const classes = useStyles();
 
@@ -70,16 +70,15 @@ export const MUICommandMenuKeyboardShortcut = React.memo((props: IProps) => {
                        className={classes.dialog}
                        maxWidth="md">
 
-                <MUICommandMenu onCommand={props.onCommand}
-                                title={props.name}
-                                className={classes.commandMenu}
-                                onClose={() => setActive(false)}
-                                commandsProvider={props.commandsProvider}/>
+                <MUICommandMenu<C> onCommand={props.onCommand}
+                                   title={props.name}
+                                   className={classes.commandMenu}
+                                   onClose={() => setActive(false)}
+                                   commandsProvider={props.commandsProvider}/>
 
             </MUIDialog>
 
         </>
     );
 
-});
-
+}

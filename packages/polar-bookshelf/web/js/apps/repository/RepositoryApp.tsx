@@ -69,7 +69,8 @@ import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
-import {DailyNotesScreen} from "../../notes/DailyNotesScreen";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
+import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 
 interface IProps {
     readonly app: App;
@@ -288,6 +289,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <Initializers/>
 
+                            <ActiveKeyboardShortcuts/>
+                            <JumpToNoteKeyboardCommand />
+
                             <SideNav/>
                             <DeviceRouters.NotDesktop>
                                 <MUIBottomNavigation/>
@@ -342,7 +346,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             </PersistentRoute>
 
                                             <Route path={RoutePathNames.DAILY}
-                                                   component={DailyNotesScreen}/>
+                                                   component={NotesScreen}/>
 
                                             <Route path={`${RoutePathNames.NOTES}/:id`}
                                                    component={NotesScreen}/>
