@@ -69,7 +69,6 @@ import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
-import {DailyNotesScreen} from "../../notes/DailyNotesScreen";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 
