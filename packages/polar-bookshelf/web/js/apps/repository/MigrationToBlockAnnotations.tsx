@@ -57,26 +57,28 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     return (
         <AdaptiveDialog>
-            <>
-                <div style={{
-                        display: 'flex',
-                        justifyContent: 'center'
-                    }}>
-                    <Box m={1}>
-                        <Typography variant="h2">
-                            We're migrating your data!
-                        </Typography>
-                    </Box>
 
-                    <Box m={1}>
+            <div style={{
+                     display: 'flex',
+                     justifyContent: 'center'
+                 }}>
 
-                        <Typography variant="h4">
-                            Just a moment please.  We're migrating your data to enable
-                            some really cool new features.
-                        </Typography>
-                    </Box>
-                </div>
-            </>
+                <Box m={1}>
+                    <Typography variant="h2">
+                        We're migrating your data!
+                    </Typography>
+                </Box>
+
+                <Box m={1}>
+
+                    <Typography variant="h4">
+                        Just a moment please.  We're migrating your data to enable
+                        some really cool new features.
+                    </Typography>
+
+                </Box>
+
+            </div>
         </AdaptiveDialog>
     )
 });
