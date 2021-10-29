@@ -111,11 +111,14 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
 
     }, [props.selected]);
 
+    // FIXME: there is no way that the primary text area can keep the focus.
+
     return (
         <ListItem disableGutters
                   ref={ref => elementRef.current = ref}
                   button
                   tabIndex={0}
+                  // autoFocus={false}
                   className={clsx(props.className, classes.root, props.selected && classes.selected)}
                   selected={props.selected}
                   onClick={handleClick}>
