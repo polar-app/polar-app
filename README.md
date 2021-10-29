@@ -12,7 +12,7 @@
   <a href="https://app.circleci.com/pipelines/github/polar-app/polar-app">
     <img src="https://circleci.com/gh/polar-app/polar-app.svg?style=shield&circle-token=63bfce3eab16480a00d0dc51fcbb21261d38d31c">
   </a>
-  <img src="https://img.shields.io/badge/node-14.14.0-brightgreen"
+  <img src="https://img.shields.io/badge/node-14.17.0-brightgreen"
       alt="Node Version" />
   <img src="https://img.shields.io/badge/npm-7.19.1-green"
       alt="Node Version" />

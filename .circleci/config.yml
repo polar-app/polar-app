@@ -50,36 +50,35 @@ commands:
             sudo yarn global add firebase-tools@9.16.0
             sudo yarn global add semver
 
-  # & Publishing setup steps
-  build_setup:
-    description: setup the build for commands
+  # & Download/Restore yarn.lock cache
+  restore_yarn_cache:
+    description: Restore all bootstraped module
     steps:
-      - checkout
-
-      # ! Download and cache dependencies
       - restore_cache:
           keys:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
-      # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
+  # & Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
+  install_linux_dependencies:
+    description: Download/Install all our linux Dependencies/Binaries
+    steps:
       - run:
           name: Required Linux packages
           command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt update -y && sudo apt install libvips libvips-dev pngquant -y; fi
 
+  # & output debug info
+  debug_installed:
+    description: Debug installed libraries/modules
+    steps:
       # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
       - run:
           name: DEBUG(Node, NPM, Yarn, Lerna & Firebase Versions)
           command: |
-            echo -n "Node version: "
-            node --version
-            echo -n "NPM version: "
-            npm --version
-            echo -n "Yarn version: "
-            yarn --version
-            echo -n "Lerna version: "
-            lerna --version
-            echo -n "firebase version: "
-            firebase --version
+            echo -e "Node version: $(node --version) \n"
+            echo -e "NPM version: $(npm --version) \n"
+            echo -e "Yarn version: $(yarn --version) \n"
+            echo -e "Lerna version: $(lerna --version) \n"
+            echo -e "firebase version: $(firebase --version) \n"
 
       # ? Debug Step for OS version
       - run:
@@ -96,51 +95,92 @@ commands:
             cat ~/.npmrc
             echo "npm ping: ======"
             npm ping
-            echo "npm config list: ======"
-            npm config list
             echo "npm config ls -l: ======"
             npm config ls -l
             echo "yarn config list: ======"
             yarn config list
 
-      # ! Hoist all Dependencies
+  # & Hoist all dependencies
+  bootstrap:
+    description: Hoist all dependencies
+    steps:
       - run:
           name: lerna bootstrap
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link
+            lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link
 
-      # ? Debug step for checking if there are any duplicate packages
+  # & Compile all lerna modules
+  compile:
+    description: compile all lerna modules
+    steps:
       - run:
-          name: DEBUG(Check if duplicate packages with different versions exist)
+          name: lerna run compile
+          command: lerna run compile
+
+  # & lint all lerna modules
+  eslint:
+    description: lint all lerna modules
+    steps:
+      - run:
+          name: lerna run eslint
+          command: lerna run eslint
+
+  # & Save Cache
+  save_yarn_cache:
+    description: save hoisted modules
+    steps:
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+  # & Persist Workspace
+  persist_workspace:
+    description: persist files to the next jobs
+    steps:
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - project
+
+  # & Check new Eslint Rules on New Code
+  eslint_diff:
+    description: diff eslint output from master
+    steps:
+      - run:
+          name: Diff Eslint
+          no_output_timeout: 30m
+          command: |
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            lerna run eslint --no-bail >> branchoutput.txt || true
+            git reset --hard
+            git checkout master
+            git pull
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            lerna run eslint --no-bail >> masteroutput.txt || true
+            sed -i '/^\//!d' masteroutput.txt
+            sed -i '/^\//!d' branchoutput.txt
+            join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+            echo "###############################################################################################"
+            cat masteroutput.txt
+            echo "###############################################################################################"
+            cat branchoutput.txt
+            git checkout -
+
+  # & Check for duplicate packages
+  check_duplicates:
+    description: Check for duplicate packages
+    steps:
+      - run:
+          name: Check if duplicate packages with different versions exist
           command: |
             (cd packages/polar-shared && yarn run compile)
             (cd packages/polar-npm && yarn run compile)
             DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
             lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
-
-      # ! Compile all Typescript Packages
-      - run:
-          name: lerna run compile
-          command: npx lerna run compile
-
-      - run:
-          name: lerna run eslint
-          command: npx lerna run eslint
-
-      # ! Save Cache
-      - save_cache:
-          paths:
-            - ~/.cache/yarn
-          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-
-      # ! Persist the files to carry over to the next stage
-      - persist_to_workspace:
-          root: /home/circleci/
-          paths:
-            - project
 
 # ~ Workflow Building Blocks
 jobs:
@@ -154,7 +194,29 @@ jobs:
     description: build the application for all the following steps
     steps:
       - global_modules_setup
-      - build_setup
+      - checkout
+      - restore_yarn_cache
+      - install_linux_dependencies
+      - debug_installed
+      - bootstrap
+      - eslint
+      - compile
+      - save_yarn_cache
+      - persist_workspace
+
+  # @ Run Code-Quality Steps
+  Code-Quality:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: Check the code Code-Quality
+    steps:
+      - global_modules_setup
+      - checkout
+      - restore_yarn_cache
+      - bootstrap
+      - check_duplicates
 
   # @ Run Karma Test Suite
   karma:
@@ -446,11 +508,11 @@ executors:
   # ! Default Executor for most jobs
   xlarge:
     docker:
-      - image: circleci/node:14.16.0-buster
+      - image: circleci/node:14.17.0-buster
     resource_class: xlarge
   large:
     docker:
-      - image: circleci/node:14.16.0-buster
+      - image: circleci/node:14.17.0-buster
     resource_class: large
   android:
     docker:
@@ -478,11 +540,16 @@ workflows:
       - setting-up:
           executor: large
 
+      # @ Check Code Quality
+      - Code-Quality:
+          executor: large
+
       ## ^ Chrome Extension Sub-Workflow
       # @ Setup the repo for the subsquent stages
       - build-chrome-extension:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       ## ^ Polar App Sub-Workflow Below Here
@@ -490,17 +557,20 @@ workflows:
       - karma:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       - mocha:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       # @ Build Polar app
       - build-polar-app:
           executor: large
           requires:
+            - Code-Quality
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
