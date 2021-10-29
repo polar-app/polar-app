@@ -49,7 +49,19 @@ export function useBlockContentEditableElement() {
  */
 export const BlockContentEditable = (props: IProps) => {
 
-    const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
+    const [content] = React.useState((): string => {
+
+        const type = typeof props.content;
+
+        if (type !== 'string') {
+            console.warn(`Content with id=${props.id} is not a string: ${type}: `, props.content);
+            return "";
+        }
+
+        return MarkdownContentConverter.toHTML(props.content);
+
+    });
+
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const blocksTreeStore = useBlocksTreeStore();
@@ -125,7 +137,7 @@ export const BlockContentEditable = (props: IProps) => {
             // TODO: This is sort of a hack because we're changing the links in the in-memory version
             // of the block and then expecting `handleChange` to persist the new data
             block.content.links.forEach(link => existingBlock.content.addLink(link));
-            handleChange(); 
+            handleChange();
         } else {
             blocksTreeStore.insertFromBlockContentStructure(blocks, { ref: active.id });
         }
@@ -158,10 +170,11 @@ export const BlockContentEditable = (props: IProps) => {
             const currPosition = blocksTreeStore.cursorOffsetCapture();
 
             if (focusedBlock && currPosition) {
-                div.innerHTML = MarkdownContentConverter.toHTML(newContent);
+                // FIXME: div.innerHTML = MarkdownContentConverter.toHTML(newContent);
                 updateCursorPosition(focusedBlock, currPosition, true);
             }
         }
+
     }, [blocksTreeStore, getCurrentContent, props, updateCursorPosition]);
 
     const handlePaste = usePasteHandler({
@@ -216,7 +229,7 @@ export const BlockContentEditable = (props: IProps) => {
                     div.blur();
                 }
 
-                div.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                // div.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 ContentEditables.insertEmptySpacer(div);
 
                 if (isActive && focusedBlock && currPosition) {

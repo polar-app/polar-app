@@ -502,8 +502,9 @@ export class BlocksStore implements IBlocksStore {
                 continue;
             }
 
+            console.log("FIXME: blockData: ", blockData);
             const block = new Block(blockData);
-            this._index[blockData.id] = block;
+            // this._index[blockData.id] = block;
 
             if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
                 const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
@@ -600,7 +601,7 @@ export class BlocksStore implements IBlocksStore {
                             }
                         } else {
                             if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
-                                
+
                                 const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
 
                                 if (savedBlockID) {

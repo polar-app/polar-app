@@ -146,6 +146,14 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setContent(content: C | IBlockContent) {
 
+        function doBroken() {
+            if ((content as any).MARKDOWN) {
+                console.error("FIXME: broken content", new Error("FIXME: IS BROKEN!!!"));
+            }
+        }
+
+        doBroken();
+
         if (this._content.type !== content.type) {
             throw new Error(`Can not change content types from ${this._content.type} to ${content.type}`);
         }
