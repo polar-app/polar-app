@@ -1,6 +1,6 @@
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {Block} from "../../../../../web/js/notes/store/Block";
-import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
@@ -23,7 +23,7 @@ type IAnnotationPopupState = {
     annotationId?: string;
     activeAction?: AnnotationPopupActionEnum;
     pendingAction?: AnnotationPopupActionEnum;
-    aiFlashcardStatus: AutoFlashcardHandlerState;
+    aiFlashcardStatus: IAutoFlashcardHandlerState;
 };
 
 type Action<K, T> = {
@@ -48,7 +48,7 @@ type ISelectionCreatedAction  = Action<typeof ACTIONS.SELECTION_CREATED, ActiveS
 type ISelectionDestroyed      = Action<typeof ACTIONS.SELECTION_DESTROYED, undefined>
 type IActionToggledAction     = Action<typeof ACTIONS.ACTION_TOGGLED, AnnotationPopupActionEnum | undefined>;
 type IAnnotationSetAction     = Action<typeof ACTIONS.ANNOTATION_SET, IBlockAnnotation | IDocMetaAnnotation | undefined>;
-type IUpdateAIFlashcardStatus = Action<typeof ACTIONS.UPDATE_AI_FLASHCARD_STATUS, AutoFlashcardHandlerState>;
+type IUpdateAIFlashcardStatus = Action<typeof ACTIONS.UPDATE_AI_FLASHCARD_STATUS, IAutoFlashcardHandlerState>;
 type IResetAction             = Action<typeof ACTIONS.RESET, undefined>;
 
 
