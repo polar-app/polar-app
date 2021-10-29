@@ -37,7 +37,9 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 text: shortcut.active.name,
                 icon: shortcut.active.icon,
                 description: shortcut.active.description,
-                group: shortcut.active.group
+                group: shortcut.active.group,
+                // FIXME this shows too many sequences.  They're not platform specific
+                sequences: shortcut.active.sequences
             }
         }
 
@@ -78,7 +80,8 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
         const docCommands = docInfos.map(toDocCommand);
         const blockCommands = blocks.map(toBlockCommand);
 
-        return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        // return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        return [...keyboardShortcutCommands];
 
     }, [blocks, docInfos, shortcuts]);
 
