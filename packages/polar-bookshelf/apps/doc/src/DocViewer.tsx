@@ -49,7 +49,6 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
-import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');

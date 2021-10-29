@@ -1,15 +1,16 @@
 import React from "react";
 import {useAIFlashcardVerifiedAction} from "../../../../../repository/js/ui/AIFlashcardVerifiedAction";
-import {useAutoFlashcardHandler} from "../../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {useAutoFlashcardBlockCreator, useAutoFlashcardCreator} from "../../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 
 export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
     const {clear, setAiFlashcardStatus} = useAnnotationPopup();
 
     const DocMetaCreateAIFlashcard: React.FC<IDocMetaAnnotationProps> = ({ annotation }) => {
-        const [_, handler] = useAutoFlashcardHandler(annotation);
+        const [_, handler] = useAutoFlashcardCreator(annotation);
         const dialogs = useDialogManager();
 
         const verifiedAction = useAIFlashcardVerifiedAction();
@@ -33,10 +34,26 @@ export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = ({ annot
         return <div />;
     };
 
-    const BlockCreateAIFlashcard: React.FC<IBlockAnnotationProps> = () => {
+    const BlockCreateAIFlashcard: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
+        const dialogs = useDialogManager();
+        const [_, handler] = useAutoFlashcardBlockCreator();
+
+        const verifiedAction = useAIFlashcardVerifiedAction();
 
         React.useEffect(() => {
             clear();
+
+            verifiedAction(() => {
+                setAiFlashcardStatus("waiting");
+                handler(annotation.id, BlockTextHighlights.toText(annotation.content.value))
+                    .then(() => {
+                        dialogs.snackbar({ message: "AI Flashcard created successfully!" });
+                        setAiFlashcardStatus("idle");
+                    }).catch((e) => {
+                        console.error("Could not handle verified action: ", e);
+                        setAiFlashcardStatus("idle");
+                    });
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
