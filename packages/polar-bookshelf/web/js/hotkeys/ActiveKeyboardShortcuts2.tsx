@@ -19,7 +19,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
     const shortcuts = useShortcuts();
 
-    type CommandType = 'keyboard-shortcut' | 'doc' | 'block';;
+    type CommandType = 'keyboard-shortcut' | 'doc' | 'block';
 
     interface ICommandExtended extends ICommandWithHandler {
         readonly type: CommandType
