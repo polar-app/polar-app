@@ -1,10 +1,9 @@
 import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {CommandsProvider, ICommand} from "../mui/command_menu/MUICommandMenu";
+import {CommandsProvider, ICommandWithHandler} from "../mui/command_menu/MUICommandMenu";
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 import {
     GenericInputEvent,
-    IKeyboardShortcutEvent,
     ShortcutEntry,
     useKeyboardShortcutsStore
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
@@ -30,9 +29,8 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
     const docInfos = useDocInfos();
     const blocks = useNamedBlocks({ sort : false });
 
-    interface ICommandExtended extends ICommand {
+    interface ICommandExtended extends ICommandWithHandler {
         readonly type: 'keyboard-shortcut' | 'doc' | 'block';
-        readonly handler: (event: IKeyboardShortcutEvent) => void;
     }
 
     const commands = React.useMemo((): ReadonlyArray<ICommandExtended> => {
@@ -106,9 +104,6 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
     const handleCommand = React.useCallback((command: ICommandExtended, event: GenericInputEvent) => {
         command.handler(event);
-        // TODO: all the commands need to have UNIQUE IDs in a larger global map...
-        // TODO: handle executing the commands.
-
     }, []);
 
     return (

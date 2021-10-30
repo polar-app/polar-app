@@ -1,7 +1,7 @@
 import * as React from "react";
 import List from "@material-ui/core/List";
 import {IMUICommandMenuItemBaseProps, MUICommandMenuItem} from "./MUICommandMenuItem";
-import {GenericInputEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {GenericInputEvent, IKeyboardShortcutEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -65,6 +65,10 @@ export interface ICommand {
      */
     readonly description?: string;
 
+}
+
+export interface ICommandWithHandler extends ICommand {
+    readonly handler: (event: IKeyboardShortcutEvent) => void;
 }
 
 interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
