@@ -88,7 +88,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
         return [...keyboardShortcutCommands, ...docCommands, ...noteCommands];
 
-    }, [shortcuts, docInfos, blocks]);
+    }, [shortcuts, docInfos, blocks, noteCommandsProvider]);
 
     const commandsProvider: CommandsProvider<ICommandExtended> = React.useCallback((): ReadonlyArray<ICommandExtended> => {
         return commands;

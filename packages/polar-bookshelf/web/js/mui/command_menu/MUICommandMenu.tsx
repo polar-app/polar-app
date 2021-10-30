@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
  */
 export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
 
-export type OnCommandHandler<C extends ICommand> = (command: C, event: GenericInputEvent) => void;;
+export type OnCommandHandler<C extends ICommand> = (command: C, event: GenericInputEvent) => void;
 
 export interface ICommand {
 
@@ -135,9 +135,6 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
     }, [commands, filterPredicate]);
 
     const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
-
-        event.preventDefault();
-        event.stopPropagation();
 
         onCommand(command, event);
         onClose('executed');
