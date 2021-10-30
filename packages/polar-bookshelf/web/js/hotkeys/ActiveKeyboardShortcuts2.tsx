@@ -12,7 +12,6 @@ import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
 import {useNamedBlocks} from "../notes/NoteUtils";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 function useDocInfos() {
@@ -36,11 +35,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
         readonly handler: (event: IKeyboardShortcutEvent) => void;
     }
 
-    interface ICommandWithTypeMap {
-        [key: string]: ICommandExtended
-    }
-
-    const commandsMap = React.useMemo((): Readonly<ICommandWithTypeMap> => {
+    const commands = React.useMemo((): ReadonlyArray<ICommandExtended> => {
 
         function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandExtended {
 
@@ -101,13 +96,9 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
         const blockCommands = blocks.map(toBlockCommand);
 
 
-        return arrayStream([...keyboardShortcutCommands, ...docCommands, ...blockCommands])
-                .toMap2(current => current.id, current => current)
-                ;
+        return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
 
     }, [shortcuts, docInfos, blocks]);
-
-    const commands = React.useMemo(() => Object.values(commandsMap), [commandsMap]);
 
     const commandsProvider: CommandsProvider<ICommandExtended> = React.useCallback((): ReadonlyArray<ICommandExtended> => {
         return commands;
