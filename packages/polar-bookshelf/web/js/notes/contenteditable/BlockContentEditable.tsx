@@ -8,9 +8,8 @@ import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {BlockEditorGenericProps} from '../BlockEditor';
-import {IBlockContentStructure} from 'polar-blocks/src/blocks/IBlock';
+import {BlockIDStr, IBlockContentStructure} from 'polar-blocks/src/blocks/IBlock';
 import {useBlocksTreeStore} from '../BlocksTree';
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
@@ -125,7 +124,7 @@ export const BlockContentEditable = (props: IProps) => {
             // TODO: This is sort of a hack because we're changing the links in the in-memory version
             // of the block and then expecting `handleChange` to persist the new data
             block.content.links.forEach(link => existingBlock.content.addLink(link));
-            handleChange(); 
+            handleChange();
         } else {
             blocksTreeStore.insertFromBlockContentStructure(blocks, { ref: active.id });
         }
@@ -257,6 +256,7 @@ export const BlockContentEditable = (props: IProps) => {
                              onClick={props.onClick}
                              onMouseDown={props.onMouseDown}
                              contentEditable={true}
+                             data-content-editable-type={"block"}
                              spellCheck={props.spellCheck}
                              data-id={props.id}
                              className={props.className}
