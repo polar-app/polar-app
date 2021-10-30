@@ -97,10 +97,15 @@ function isIgnorableKeyboardEvent(event: KeyboardEventLike): boolean {
         // if (event.target.getAttribute('isContentEditable') === 'true') {
         //     return true;
         // }
-        //
-        // if (event.target.getAttribute('contenteditable') === 'true') {
-        //     return true;
-        // }
+
+        if (event.target.getAttribute('contenteditable') === 'true') {
+
+            if (event.target.getAttribute('data-content-editable-type') !== 'block') {
+                // only when this is not a block because we have to accept all key actions here.
+                return true;
+            }
+
+        }
 
     }
 
@@ -161,7 +166,7 @@ export function useKeyboardShortcutHandlers(): OnKeyDown  {
                 event.stopPropagation();
                 event.preventDefault();
 
-                console.log("Executing handler for sequence: " + seq);
+                console.log("Executing handler for sequence: ", seq);
                 setTimeout(() => shortcut.handler(event), 1);
                 return true;
             }
