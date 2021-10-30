@@ -43,14 +43,25 @@ export const NotesContainer: React.FC = deepMemo(function NotesContainer(props) 
 
 });
 
-export const NotesInnerContainer: React.FC = ({ children }) => {
+interface INotesInnerContainerProps {
+    className?: string;
+    style?: React.CSSProperties;
+    children: React.ReactNode;
+}
+
+export const NotesInnerContainer = React.forwardRef<HTMLDivElement, INotesInnerContainerProps>((props, ref) => {
+    const { children, className, style } = props;
 
     const isHandHeld = React.useMemo(() => ! Devices.isDesktop(), []);
     const classes = useInnerContainerStyles({ flushed: isHandHeld });
 
     return (
-        <div className={classes.noteContentOuter}>
+        <div ref={ref}
+             className={clsx(classes.noteContentOuter, className)}
+             style={style}>
+
             {children}
+
         </div>
     );
-};
+});
