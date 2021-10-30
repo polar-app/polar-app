@@ -7,15 +7,8 @@ import {
     ShortcutEntry,
     useKeyboardShortcutsStore
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
-import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
-import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useJumpToNoteKeyboardCommands} from "../notes/JumpToNoteKeyboardCommand";
-
-function useDocInfos() {
-    const {data} = useDocRepoStore(['data']);
-    return data;
-}
+import {useJumpToDocumentKeyboardCommands} from "../notes/JumpToDocumentKeyboardCommand";
 
 function useShortcuts() {
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts']);
@@ -25,13 +18,15 @@ function useShortcuts() {
 export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
     const shortcuts = useShortcuts();
-    const docInfos = useDocInfos();
+
+    type CommandType = 'keyboard-shortcut' | 'doc' | 'block';;
 
     interface ICommandExtended extends ICommandWithHandler {
-        readonly type: 'keyboard-shortcut' | 'doc' | 'block';
+        readonly type: CommandType
     }
 
     const [noteCommandsProvider] = useJumpToNoteKeyboardCommands();
+    const [documentCommandsProvider] = useJumpToDocumentKeyboardCommands();
 
     const commands = React.useMemo((): ReadonlyArray<ICommandExtended> => {
 
@@ -51,42 +46,32 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
             }
         }
 
-        function toDocCommand(repoDocInfo: RepoDocInfo): ICommandExtended {
-
-            const type = 'doc';
-
-            return {
-                id: `${type}:${repoDocInfo.id}`,
-                type,
-                text: repoDocInfo.title,
-                // icon: shortcut.active.icon,
-                description: repoDocInfo.docInfo.description,
-                // group: 'Documents',
-                handler: NULL_FUNCTION
-            }
-        }
-
-        function toNoteCommand(current: ICommandWithHandler): ICommandExtended {
-
-            const type = 'block';
-
+        function toCommand(type: CommandType, current: ICommandWithHandler) {
             return {
                 id: `${type}:${current.id}`,
                 type,
                 text: current.text,
+                description: current.description,
                 // group: 'Block',
                 handler: current.handler
             }
+        }
 
+        function toDocCommand(current: ICommandWithHandler): ICommandExtended {
+            return toCommand('doc', current);
+        }
+
+        function toNoteCommand(current: ICommandWithHandler): ICommandExtended {
+            return toCommand('block', current);
         }
 
         const keyboardShortcutCommands = shortcuts.map(toKeyboardShortcutCommand);
-        const docCommands = docInfos.map(toDocCommand);
+        const docCommands = documentCommandsProvider().map(toDocCommand);
         const noteCommands = noteCommandsProvider().map(toNoteCommand);
 
         return [...keyboardShortcutCommands, ...docCommands, ...noteCommands];
 
-    }, [shortcuts, docInfos, noteCommandsProvider]);
+    }, [shortcuts, documentCommandsProvider, noteCommandsProvider]);
 
     const commandsProvider: CommandsProvider<ICommandExtended> = React.useCallback((): ReadonlyArray<ICommandExtended> => {
         return commands;
