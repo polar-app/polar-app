@@ -10,8 +10,8 @@ import {
 import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
 import {useNamedBlocks} from "../notes/NoteUtils";
-import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useJumpToNoteKeyboardCommands} from "../notes/JumpToNoteKeyboardCommand";
 
 function useDocInfos() {
     const {data} = useDocRepoStore(['data']);
@@ -32,6 +32,8 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
     interface ICommandExtended extends ICommandWithHandler {
         readonly type: 'keyboard-shortcut' | 'doc' | 'block';
     }
+
+    const [noteCommandsProvider] = useJumpToNoteKeyboardCommands();
 
     const commands = React.useMemo((): ReadonlyArray<ICommandExtended> => {
 
@@ -66,35 +68,25 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
             }
         }
 
-        function toBlockCommand(block: IBlock<INamedContent>): ICommandExtended {
-
-            function computeText(): string {
-                switch (block.content.type) {
-                    case "name":
-                    case "date":
-                        return block.content.data;
-                    case "document":
-                        return block.content.docInfo.title || 'Untitled';
-                }
-            }
+        function toNoteCommand(current: ICommandWithHandler): ICommandExtended {
 
             const type = 'block';
 
             return {
-                id: `${type}:${block.id}`,
+                id: `${type}:${current.id}`,
                 type,
-                text: computeText(),
+                text: current.text,
                 group: 'Block',
-                handler: NULL_FUNCTION
+                handler: current.handler
             }
+
         }
 
         const keyboardShortcutCommands = shortcuts.map(toKeyboardShortcutCommand);
         const docCommands = docInfos.map(toDocCommand);
-        const blockCommands = blocks.map(toBlockCommand);
+        const noteCommands = noteCommandsProvider().map(toNoteCommand);
 
-
-        return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        return [...keyboardShortcutCommands, ...docCommands, ...noteCommands];
 
     }, [shortcuts, docInfos, blocks]);
 
