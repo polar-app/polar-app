@@ -39,6 +39,7 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
 };
 
 const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
+
     const { children, id, noteActionsProvider, disabled } = props;
 
     const computeLinkActionInputText = React.useCallback((str: string): string => {
