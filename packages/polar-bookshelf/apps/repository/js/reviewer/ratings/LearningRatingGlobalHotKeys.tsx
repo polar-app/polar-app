@@ -4,7 +4,7 @@ import {
     keyMapWithGroup
 } from "../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {useDocAnnotationReviewerStore} from "../ReviewerStore";
+import {useReviewerStore} from "../ReviewerStore";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Ratings",
@@ -47,7 +47,7 @@ const globalKeyMap = keyMapWithGroup({
 
 export const LearningRatingGlobalHotKeys = React.memo(function LearningRatingGlobalHotKeys() {
 
-    const store = useDocAnnotationReviewerStore();
+    const store = useReviewerStore();
 
     const handleRating = React.useCallback((rating: Rating) => {
 
