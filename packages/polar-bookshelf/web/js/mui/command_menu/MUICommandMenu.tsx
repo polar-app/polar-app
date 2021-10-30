@@ -1,7 +1,7 @@
 import * as React from "react";
 import List from "@material-ui/core/List";
 import {IMUICommandMenuItemBaseProps, MUICommandMenuItem} from "./MUICommandMenuItem";
-import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {GenericInputEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -79,7 +79,7 @@ interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: C) => void;
+    readonly onCommand: (command: C, event: GenericInputEvent) => void;
 
     /**
      * Called when the command menu should be closed.
@@ -128,9 +128,9 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     }, [commands, filterPredicate]);
 
-    const handleCommandExecuted = React.useCallback((command: C) => {
+    const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
 
-        onCommand(command);
+        onCommand(command, event);
         onClose('executed');
 
     }, [onClose, onCommand]);
@@ -213,7 +213,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
             stopHandlingEvent();
             if (index !== undefined) {
                 const command = commandsFiltered[index];
-                handleCommandExecuted(command);
+                handleCommandExecuted(command, event);
             }
         }
 
@@ -270,7 +270,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                                                 sequences={command.sequences}
                                                 enableIcons={props.enableIcons || false}
                                                 enableKeyboardShortcuts={props.enableKeyboardShortcuts || false}
-                                                onSelected={() => handleCommandExecuted(command)}/>
+                                                onSelected={(event) => handleCommandExecuted(command, event)}/>
                         );
                     })}
 

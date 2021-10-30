@@ -2,12 +2,18 @@ import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {CommandsProvider, ICommand} from "../mui/command_menu/MUICommandMenu";
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
-import {ShortcutEntry, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
+import {
+    GenericInputEvent,
+    IKeyboardShortcutEvent,
+    ShortcutEntry,
+    useKeyboardShortcutsStore
+} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
 import {useNamedBlocks} from "../notes/NoteUtils";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 function useDocInfos() {
     const {data} = useDocRepoStore(['data']);
@@ -25,17 +31,18 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
     const docInfos = useDocInfos();
     const blocks = useNamedBlocks({ sort : false });
 
-    interface ICommandWithType extends ICommand {
+    interface ICommandExtended extends ICommand {
         readonly type: 'keyboard-shortcut' | 'doc' | 'block';
+        readonly handler: (event: IKeyboardShortcutEvent) => void;
     }
 
     interface ICommandWithTypeMap {
-        [key: string]: ICommandWithType
+        [key: string]: ICommandExtended
     }
 
     const commandsMap = React.useMemo((): Readonly<ICommandWithTypeMap> => {
 
-        function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandWithType {
+        function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandExtended {
 
             const type = 'keyboard-shortcut';
 
@@ -46,11 +53,12 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 icon: shortcut.active.icon,
                 description: shortcut.active.description,
                 group: shortcut.active.group,
-                sequences: shortcut.active.sequences
+                sequences: shortcut.active.sequences,
+                handler: (event) => shortcut.active.handler(event)
             }
         }
 
-        function toDocCommand(repoDocInfo: RepoDocInfo): ICommandWithType {
+        function toDocCommand(repoDocInfo: RepoDocInfo): ICommandExtended {
 
             const type = 'doc';
 
@@ -60,11 +68,12 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 text: repoDocInfo.title,
                 // icon: shortcut.active.icon,
                 description: repoDocInfo.docInfo.description,
-                group: 'Documents'
+                group: 'Documents',
+                handler: NULL_FUNCTION
             }
         }
 
-        function toBlockCommand(block: IBlock<INamedContent>): ICommandWithType {
+        function toBlockCommand(block: IBlock<INamedContent>): ICommandExtended {
 
             function computeText(): string {
                 switch (block.content.type) {
@@ -82,7 +91,8 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 id: `${type}:${block.id}`,
                 type,
                 text: computeText(),
-                group: 'Block'
+                group: 'Block',
+                handler: NULL_FUNCTION
             }
         }
 
@@ -99,15 +109,12 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
     const commands = React.useMemo(() => Object.values(commandsMap), [commandsMap]);
 
-    const commandsProvider: CommandsProvider<ICommandWithType> = React.useCallback((): ReadonlyArray<ICommandWithType> => {
+    const commandsProvider: CommandsProvider<ICommandExtended> = React.useCallback((): ReadonlyArray<ICommandExtended> => {
         return commands;
     }, [blocks, docInfos, shortcuts]);
 
-    const handleCommand = React.useCallback((command: ICommandWithType) => {
-
-
-
-        // TODO: resolve the command by type, then execute it...
+    const handleCommand = React.useCallback((command: ICommandExtended, event: GenericInputEvent) => {
+        command.handler(event);
         // TODO: all the commands need to have UNIQUE IDs in a larger global map...
         // TODO: handle executing the commands.
 
