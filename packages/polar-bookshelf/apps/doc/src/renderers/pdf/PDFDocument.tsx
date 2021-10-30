@@ -472,15 +472,18 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
                     console.log("Terminating PDF loading task...")
 
-                    await loadingTaskRef.current.destroy()
+                    try {
+                        await loadingTaskRef.current.destroy()
+                        console.log("Terminating PDF loading task...done")
+                    } finally {
 
-                    console.log("Terminating PDF loading task...done")
+                        if (progressTrackerRef.current) {
+                            console.log("Terminating PDF progress tracker.")
+                            ProgressMessages.broadcast(progressTrackerRef.current.terminate());
+                        } else {
+                            console.warn("No PDF progress tracker to terminate");
+                        }
 
-                    if (progressTrackerRef.current) {
-                        console.log("Terminating PDF progress tracker.")
-                        ProgressMessages.broadcast(progressTrackerRef.current.terminate());
-                    } else {
-                        console.warn("No PDF progress tracker to terminate");
                     }
 
                 } else {
