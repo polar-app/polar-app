@@ -18,8 +18,9 @@ export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICom
 
         function toCommand(block: Block<NamedContent>): ICommandWithHandler {
 
-            const id = block.id;
             const text = BlockTextContentUtils.getTextContentMarkdown(block.content);
+            // these are ALL named notes so we should just use the text to jump to them.
+            const id = text;
 
             const handler = (event: IKeyboardShortcutEvent) => {
                 noteLinkLoader(id);
