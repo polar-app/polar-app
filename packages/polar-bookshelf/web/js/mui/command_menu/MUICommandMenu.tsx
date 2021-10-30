@@ -136,6 +136,9 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
 
+        event.preventDefault();
+        event.stopPropagation();
+
         onCommand(command, event);
         onClose('executed');
 
