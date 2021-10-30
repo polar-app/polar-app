@@ -1,15 +1,14 @@
 import * as React from "react";
 import List from "@material-ui/core/List";
-import {MUICommandMenuItem} from "./MUICommandMenuItem";
+import {IMUICommandMenuItemBaseProps, MUICommandMenuItem} from "./MUICommandMenuItem";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Input from "@material-ui/core/Input";
 import {Box} from "@material-ui/core";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -68,7 +67,7 @@ export interface ICommand {
 
 }
 
-interface IProps<C extends ICommand> {
+interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
 
     readonly title?: string;
 
@@ -248,11 +247,10 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                             </div>
                         )}
 
-                        <Input autoFocus={true}
-                               disableUnderline={true}
-                               className={classes.textField}
-                               placeholder="Type a command or search ..."
-                               onChange={event => setFilter(event.target.value) }/>
+                        <TextField autoFocus={true}
+                                   className={classes.textField}
+                                   placeholder="Type a command or search ..."
+                                   onChange={event => setFilter(event.target.value) }/>
                     </>
                 </Box>
 
@@ -270,6 +268,8 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                                                 icon={command.icon}
                                                 selected={selected}
                                                 sequences={command.sequences}
+                                                enableIcons={props.enableIcons || false}
+                                                enableKeyboardShortcuts={props.enableKeyboardShortcuts || false}
                                                 onSelected={() => handleCommandExecuted(command)}/>
                         );
                     })}

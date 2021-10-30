@@ -7,6 +7,7 @@ import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
 import {useNamedBlocks} from "../notes/NoteUtils";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 function useDocInfos() {
     const {data} = useDocRepoStore(['data']);
@@ -28,12 +29,19 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
         readonly type: 'keyboard-shortcut' | 'doc' | 'block';
     }
 
-    const commandsProvider: CommandsProvider<ICommandWithType> = React.useCallback((): ReadonlyArray<ICommandWithType> => {
+    interface ICommandWithTypeMap {
+        [key: string]: ICommandWithType
+    }
+
+    const commandsMap = React.useMemo((): Readonly<ICommandWithTypeMap> => {
 
         function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandWithType {
+
+            const type = 'keyboard-shortcut';
+
             return {
-                id: `${idx}`,
-                type: 'keyboard-shortcut',
+                id: `${type}:${idx}`,
+                type,
                 text: shortcut.active.name,
                 icon: shortcut.active.icon,
                 description: shortcut.active.description,
@@ -42,11 +50,13 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
             }
         }
 
-        // TODO: docs conflict with named notes... which is mildly annoying.
         function toDocCommand(repoDocInfo: RepoDocInfo): ICommandWithType {
+
+            const type = 'doc';
+
             return {
-                id: `${repoDocInfo.id}`,
-                type: 'doc',
+                id: `${type}:${repoDocInfo.id}`,
+                type,
                 text: repoDocInfo.title,
                 // icon: shortcut.active.icon,
                 description: repoDocInfo.docInfo.description,
@@ -66,26 +76,36 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 }
             }
 
+            const type = 'block';
 
             return {
-                id: `${block.id}`,
-                type: 'block',
+                id: `${type}:${block.id}`,
+                type,
                 text: computeText(),
                 group: 'Block'
             }
         }
 
-
         const keyboardShortcutCommands = shortcuts.map(toKeyboardShortcutCommand);
         const docCommands = docInfos.map(toDocCommand);
         const blockCommands = blocks.map(toBlockCommand);
 
-        // return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
-        return [...keyboardShortcutCommands];
 
+        return arrayStream([...keyboardShortcutCommands, ...docCommands, ...blockCommands])
+                .toMap2(current => current.id, current => current)
+                ;
+
+    }, [shortcuts, docInfos, blocks]);
+
+    const commands = React.useMemo(() => Object.values(commandsMap), [commandsMap]);
+
+    const commandsProvider: CommandsProvider<ICommandWithType> = React.useCallback((): ReadonlyArray<ICommandWithType> => {
+        return commands;
     }, [blocks, docInfos, shortcuts]);
 
     const handleCommand = React.useCallback((command: ICommandWithType) => {
+
+
 
         // TODO: resolve the command by type, then execute it...
         // TODO: all the commands need to have UNIQUE IDs in a larger global map...
