@@ -45,7 +45,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 text: shortcut.active.name,
                 icon: shortcut.active.icon,
                 description: shortcut.active.description,
-                group: shortcut.active.group,
+                // group: shortcut.active.group,
                 sequences: shortcut.active.sequences,
                 handler: (event) => shortcut.active.handler(event)
             }
@@ -61,7 +61,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 text: repoDocInfo.title,
                 // icon: shortcut.active.icon,
                 description: repoDocInfo.docInfo.description,
-                group: 'Documents',
+                // group: 'Documents',
                 handler: NULL_FUNCTION
             }
         }
@@ -74,7 +74,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
                 id: `${type}:${current.id}`,
                 type,
                 text: current.text,
-                group: 'Block',
+                // group: 'Block',
                 handler: current.handler
             }
 
@@ -93,6 +93,7 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
     }, [commands]);
 
     const handleCommand = React.useCallback((command: ICommandExtended, event: GenericInputEvent) => {
+        console.log("Executing handler for id: " + command.id);
         command.handler(event);
     }, []);
 

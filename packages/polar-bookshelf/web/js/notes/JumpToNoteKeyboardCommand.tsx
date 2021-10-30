@@ -25,6 +25,7 @@ export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICom
             const id = text;
 
             const handler = (event: IKeyboardShortcutEvent) => {
+                console.log("Executing handler to load note: " + id);
                 noteLinkLoader(id);
             };
 
