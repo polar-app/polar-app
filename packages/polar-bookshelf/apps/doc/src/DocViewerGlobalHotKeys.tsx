@@ -40,7 +40,7 @@ const globalKeyMap = keyMapWithGroup({
         },
         HIGHLIGHT: {
             name: "Area Highlight Mode",
-            description: "Toggle area higlight mode",
+            description: "Toggle area highlight mode",
             sequences: [
                 {
                     keys: "a",
