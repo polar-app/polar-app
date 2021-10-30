@@ -12,6 +12,8 @@ export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICom
 
     const noteLinkLoader = useNoteLinkLoader();
 
+    // TODO this needs to be sorted by we should really have our OWN sort
+    // handler that we can inject into the commands system
     const namedBlocks = useNamedBlocks({ sort : true });
 
     const commandsProvider = React.useCallback((): ReadonlyArray<ICommandWithHandler> => {
@@ -32,7 +34,7 @@ export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICom
 
         return namedBlocks.map(toCommand);
 
-    }, [namedBlocks]);
+    }, [namedBlocks, noteLinkLoader]);
 
     const handleCommand = React.useCallback((command: ICommandWithHandler, event: IKeyboardShortcutEvent) => {
         command.handler(event);

@@ -9,7 +9,6 @@ import {
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
-import {useNamedBlocks} from "../notes/NoteUtils";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useJumpToNoteKeyboardCommands} from "../notes/JumpToNoteKeyboardCommand";
 
@@ -27,7 +26,6 @@ export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
     const shortcuts = useShortcuts();
     const docInfos = useDocInfos();
-    const blocks = useNamedBlocks({ sort : false });
 
     interface ICommandExtended extends ICommandWithHandler {
         readonly type: 'keyboard-shortcut' | 'doc' | 'block';
