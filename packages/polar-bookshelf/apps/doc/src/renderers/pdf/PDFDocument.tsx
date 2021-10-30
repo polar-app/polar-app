@@ -463,18 +463,31 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     }, [doLoad, log, props.docMeta.docInfo.fingerprint]);
 
     React.useEffect(() => {
+
         return () => {
 
             async function doAsync() {
 
                 if (loadingTaskRef.current) {
 
-                    await loadingTaskRef.current.destroy()
+                    console.log("Terminating PDF loading task...")
 
-                    if (progressTrackerRef.current) {
-                        ProgressMessages.broadcast(progressTrackerRef.current.terminate());
+                    try {
+                        await loadingTaskRef.current.destroy()
+                        console.log("Terminating PDF loading task...done")
+                    } finally {
+
+                        if (progressTrackerRef.current) {
+                            console.log("Terminating PDF progress tracker.")
+                            ProgressMessages.broadcast(progressTrackerRef.current.terminate());
+                        } else {
+                            console.warn("No PDF progress tracker to terminate");
+                        }
+
                     }
 
+                } else {
+                    console.warn("No PDF loading task to terminate.");
                 }
 
             }

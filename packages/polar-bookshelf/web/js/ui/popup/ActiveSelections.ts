@@ -162,10 +162,10 @@ export class ActiveSelections {
             onMouseUp(event, element)
         };
 
-        target.addEventListener('mousedown', handleMouseDown);
-        target.addEventListener('touchstart', handleTouchStart);
+        target.addEventListener('mousedown', handleMouseDown, {passive: true});
+        target.addEventListener('touchstart', handleTouchStart, {passive: true});
         if (IS_HANDHELD) {
-            target.addEventListener('contextmenu', handleContextMenu);
+            target.addEventListener('contextmenu', handleContextMenu, {passive: true});
         }
 
         return () => {
