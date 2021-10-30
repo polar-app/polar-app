@@ -347,8 +347,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 <NotesRepoScreen/>
                                             </PersistentRoute>
 
-                                            <Route path={RoutePathNames.DAILY}
-                                                   component={NotesScreen}/>
+                                            <PersistentRoute path={RoutePathNames.DAILY}
+                                                             strategy="display"
+                                                             exact>
+                                                <NotesScreen/>
+                                            </PersistentRoute>
 
                                             <Route path={`${RoutePathNames.NOTES}/:id`}
                                                    component={NotesScreen}/>
