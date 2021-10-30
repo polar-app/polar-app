@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) =>
  */
 export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
 
+export type OnCommandHandler<C extends ICommand> = (command: C, event: GenericInputEvent) => void;;
+
 export interface ICommand {
 
     /**
@@ -83,7 +85,7 @@ interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: C, event: GenericInputEvent) => void;
+    readonly onCommand: OnCommandHandler<C>;
 
     /**
      * Called when the command menu should be closed.
