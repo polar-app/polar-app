@@ -4,11 +4,11 @@ import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {LearningRatingButtons} from "./LearningRatingButtons";
 import {ReviewRatingButtons} from "./ReviewRatingButtons";
-import {DocAnnotationTaskAction} from '../DocAnnotationReviewerTasks';
+import {ITaskAction} from '../ReviewerTasks';
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<DocAnnotationTaskAction>;
+    readonly taskRep: TaskRep<ITaskAction>;
     readonly stage: Stage;
 
 }

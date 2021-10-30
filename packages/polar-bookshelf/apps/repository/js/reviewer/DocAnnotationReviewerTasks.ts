@@ -1,7 +1,7 @@
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {ReadingTaskAction} from "./cards/ReadingTaskAction";
+import {IReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Strings} from "polar-shared/src/util/Strings";
-import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
+import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
@@ -9,39 +9,36 @@ import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT, ReviewerTasks, TasksBuilder} from "./ReviewerTasks";
 import {CalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 
-export type DocAnnotationReadingTaskAction = ReadingTaskAction<IDocAnnotation>;
-export type DocAnnotationFlashcardTaskAction = FlashcardTaskAction<IDocAnnotation>;
+export type IDocAnnotationReadingTaskAction = IReadingTaskAction<IDocAnnotation>;
+export type IDocAnnotationFlashcardTaskAction = IFlashcardTaskAction<IDocAnnotation>;
 
-export type DocAnnotationTaskAction = DocAnnotationReadingTaskAction | DocAnnotationFlashcardTaskAction;
+export type IDocAnnotationTaskAction = IDocAnnotationReadingTaskAction | IDocAnnotationFlashcardTaskAction;
 
-
-export namespace DocAnnotationTaskActionPredicates {
-    export function isReadingTaskRep(taskRep: TaskRep<DocAnnotationTaskAction>): taskRep is TaskRep<DocAnnotationReadingTaskAction> {
-        return taskRep.action.type === 'reading';
-    }
-
-    export function isFlashcardTaskRep(taskRep: TaskRep<DocAnnotationTaskAction>): taskRep is TaskRep<DocAnnotationFlashcardTaskAction> {
-        return taskRep.action.type === 'flashcard';
-    }
-}
-
+/**
+ * @deprecated
+ */
 export class DocAnnotationReviewerTasks {
 
     public static async createReadingTasks(data: ReadonlyArray<IDocAnnotation>,
-                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<CalculatedTaskReps<DocAnnotationReadingTaskAction>> {
+                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<CalculatedTaskReps<IDocAnnotationReadingTaskAction>> {
 
         const mode = 'reading';
 
-        const taskBuilder: TasksBuilder<IDocAnnotation, DocAnnotationReadingTaskAction> = (docAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<DocAnnotationReadingTaskAction>> => {
+        const taskBuilder: TasksBuilder<IDocAnnotation, IDocAnnotationReadingTaskAction> = (docAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<IDocAnnotationReadingTaskAction>> => {
 
-            const toTask = (docAnnotation: IDocAnnotation): Task<DocAnnotationReadingTaskAction> => {
+            const toTask = (docAnnotation: IDocAnnotation): Task<IDocAnnotationReadingTaskAction> => {
                 const color = HighlightColors.withDefaultColor(docAnnotation.color);
                 return {
                     id: docAnnotation.guid || docAnnotation.id,
                     action: {
                         type: 'reading',
+                        created: docAnnotation.created,
+                        img: docAnnotation.img,
+                        text: docAnnotation.text,
+                        updated: docAnnotation.lastUpdated,
                         original: docAnnotation,
                     },
                     created: docAnnotation.created,
@@ -75,15 +72,15 @@ export class DocAnnotationReviewerTasks {
     }
 
     public static async createFlashcardTasks(data: ReadonlyArray<IDocAnnotation>,
-                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<CalculatedTaskReps<DocAnnotationFlashcardTaskAction>> {
+                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<CalculatedTaskReps<IDocAnnotationFlashcardTaskAction>> {
 
         const mode = 'flashcard';
 
-        const taskBuilder: TasksBuilder<IDocAnnotation, DocAnnotationFlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<FlashcardTaskAction<IDocAnnotation>>> => {
+        const taskBuilder: TasksBuilder<IDocAnnotation, IDocAnnotationFlashcardTaskAction> = (repoDocAnnotations) => {
 
-            const toTasks = (docAnnotation: IDocAnnotation): ReadonlyArray<Task<DocAnnotationFlashcardTaskAction>> => {
+            const toTasks = (docAnnotation: IDocAnnotation): ReadonlyArray<Task<IDocAnnotationFlashcardTaskAction>> => {
 
-                const toTask = (action: DocAnnotationFlashcardTaskAction): Task<FlashcardTaskAction<IDocAnnotation>> => {
+                const toTask = (action: IDocAnnotationFlashcardTaskAction): Task<IFlashcardTaskAction<IDocAnnotation>> => {
 
                     return {
                         id: docAnnotation.guid || docAnnotation.id,
@@ -94,7 +91,10 @@ export class DocAnnotationReviewerTasks {
 
                 };
 
-                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original, docAnnotation);
+                const blockFlashcard = BlockContentAnnotationTree
+                    .annotationToBlockFlashcard(<IFlashcard> docAnnotation.original);
+
+                const actions = FlashcardTaskActions.create(blockFlashcard, docAnnotation);
 
                 return actions.map(toTask);
 
@@ -118,7 +118,7 @@ export class DocAnnotationReviewerTasks {
 
     public static async createTasks(data: ReadonlyArray<IDocAnnotation>,
                                     mode: RepetitionMode,
-                                    limit?: number): Promise<CalculatedTaskReps<DocAnnotationTaskAction>> {
+                                    limit?: number): Promise<CalculatedTaskReps<IDocAnnotationTaskAction>> {
         switch (mode) {
             case 'flashcard':
                 return this.createFlashcardTasks(data, limit);
