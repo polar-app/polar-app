@@ -136,8 +136,11 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
 
-        onCommand(command, event);
+        // do the close first so that the menu vanishes as the command might
+        // take a while to execute and we want the UI to appear timely/fast.
         onClose('executed');
+
+        onCommand(command, event);
 
     }, [onClose, onCommand]);
 
@@ -265,10 +268,9 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                     {commandsFiltered.map((command, idx) => {
 
                         const selected = index === idx;
-                        const key = (command.group || '') + ':' + command.text + ':' + selected;
 
                         return (
-                            <MUICommandMenuItem key={key}
+                            <MUICommandMenuItem key={command.id}
                                                 className={classes.item}
                                                 text={command.text}
                                                 icon={command.icon}
