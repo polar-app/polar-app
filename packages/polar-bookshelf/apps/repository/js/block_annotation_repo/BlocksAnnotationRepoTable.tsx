@@ -74,19 +74,20 @@ export const BlocksAnnotationRepoTable = React.memo(observer(function BlocksAnno
 
             <TableContainer className={classes.table} ref={setRoot}>
 
-                <Table stickyHeader
-                       aria-labelledby="tableTitle"
-                       size="medium"
-                       aria-label="enhanced table">
+                {root && (
+                    <Table stickyHeader
+                           aria-labelledby="tableTitle"
+                           size="medium"
+                           aria-label="enhanced table">
 
-                    {root && (
-                        <IntersectionList values={highlightBlocks}
-                                          root={root}
-                                          blockSize={10}
-                                          BlockComponent={BlockComponent}
-                                          HiddenBlockComponent={HiddenBlockComponent}
-                                          VisibleComponent={VisibleComponent}/>)}
-                </Table>
+                            <IntersectionList values={highlightBlocks}
+                                              root={root}
+                                              blockSize={10}
+                                              BlockComponent={BlockComponent}
+                                              HiddenBlockComponent={HiddenBlockComponent}
+                                              VisibleComponent={VisibleComponent} />
+                    </Table>
+                )}
             </TableContainer>
 
         </Box>

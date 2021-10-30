@@ -1,9 +1,8 @@
 import React from "react";
-import moment from "moment";
 import {GridCellParams, GridColDef, GridRowParams, MuiEvent, XGrid} from '@material-ui/x-grid';
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {createStyles, fade, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
+import {createStyles, LinearProgress, fade, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
@@ -15,11 +14,10 @@ import {Block} from "./store/Block";
 import {NotesToolbar} from "./NotesToolbar";
 import {Devices} from "polar-shared/src/util/Devices";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
+import {DocAnnotationMoment} from "../annotation_sidebar/DocAnnotationMoment";
 
-const DATE_FORMAT = 'MMMM Do, YYYY';
-
-const dateCellFormatter: GridColDef['valueFormatter'] = ({ value }) => {
-    return moment(value as string).format(DATE_FORMAT);
+const DateCellRenderer: GridColDef['renderCell'] = ({ value }) => {
+    return <DocAnnotationMoment created={value as string} />;
 };
 
 type TableRow = {
@@ -94,13 +92,13 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
                 field: 'created',
                 headerName: 'Added',
                 flex: 1,
-                valueFormatter: dateCellFormatter,
+                renderCell: DateCellRenderer,
             },
             {
                 field: 'updated',
                 headerName: 'Updated',
                 flex: 1,
-                valueFormatter: dateCellFormatter,
+                renderCell: DateCellRenderer,
             },
         ] : []
     ),
@@ -152,7 +150,11 @@ const useStyles = makeStyles((theme) =>
             },
             '&.MuiDataGrid-root, &.MuiDataGrid-root .MuiDataGrid-cell': {
                 border: 'none',
-            }
+                userSelect: 'none',
+            },
+            '&.MuiDataGrid-root .MuiDataGrid-columnSeparator': {
+                display: 'none',
+            },
         }
     })
 );
@@ -195,17 +197,22 @@ export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
     return (
         <>
             <NotesToolbar />
-            <XGrid
-                hideFooterSelectedRowCount={true}
-                hideFooterRowCount={true}
-                hideFooter={true}
-                className={classes.root}
-                columns={BLOCK_TABLE_COLUMNS}
-                rows={rows}
-                onRowDoubleClick={handleDoubleClick}
-                onRowClick={handleClick}
-                checkboxSelection
-            />
+            {blocksStore.hasSnapshot
+                ? (
+                    <XGrid
+                        hideFooterSelectedRowCount={true}
+                        hideFooterRowCount={true}
+                        disableColumnResize
+                        hideFooter={true}
+                        className={classes.root}
+                        columns={BLOCK_TABLE_COLUMNS}
+                        rows={rows}
+                        onRowDoubleClick={handleDoubleClick}
+                        onRowClick={handleClick}
+                        checkboxSelection
+                    />
+                ) : <LinearProgress />
+            }
         </>
     );
 };
