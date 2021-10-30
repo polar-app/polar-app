@@ -334,6 +334,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 persistenceLayerManager={props.persistenceLayerManager}/>
 
                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
+
                                     <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
