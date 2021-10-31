@@ -1,44 +1,46 @@
 import {useAnnotationRepoStore} from "../annotation_repo/AnnotationRepoStore";
+import {observer} from "mobx-react-lite";
 import {Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {ReviewerScreen} from "./ReviewerScreen";
+import {BlockReviewerScreen, DocAnnotationReviewerScreen} from "./ReviewerScreen";
 import * as React from "react";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useBlocksAnnotationRepoStore} from "../block_annotation_repo/BlocksAnnotationRepoStore";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../../apps/doc/src/DocViewer";
 
-export const ReviewRouter = () => {
+export const BlocksReviewRouter = observer(() => {
+    const store = useBlocksAnnotationRepoStore();
 
-    // <MUIAsyncLoader provider={provider} render={Foo}/>
+    return (
+        <Switch location={ReactRouters.createLocationWithHashOnly()}>
+            <Route path='#review-flashcards'>
+                <BlockReviewerScreen mode="flashcard"
+                                     blocks={store.view}/>
+            </Route>
 
+            <Route path='#review-reading'>
+                <BlockReviewerScreen mode="reading"
+                                     blocks={store.view}/>
+            </Route>
+        </Switch>
+    );
+});
+
+export const DocAnnotationReviewRouter = () => {
     const store = useAnnotationRepoStore(['view']);
 
     return (
 
         <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-            {/*<main.Folders {...props}/>*/}
-
-            <Route path='#folders'
-                   render={() => (
-                       <LeftSidebar onClose={NULL_FUNCTION}>
-                           <>
-                           </>
-                       </LeftSidebar>
-                   )}/>
-
-            {/*<Route path='#mobile-review'*/}
-            {/*       render={() => <StartReviewBottomSheet*/}
-            {/*                        onReading={NULL_FUNCTION}*/}
-            {/*                        onFlashcards={NULL_FUNCTION}/>}/>*/}
 
             <Route path='#review-flashcards'>
-                <ReviewerScreen mode="flashcard"
-                                annotations={store.view}/>
+                <DocAnnotationReviewerScreen mode="flashcard"
+                                             annotations={store.view}/>
             </Route>
 
             <Route path='#review-reading'>
-                <ReviewerScreen mode="reading"
-                                annotations={store.view}/>
+                <DocAnnotationReviewerScreen mode="reading"
+                                             annotations={store.view}/>
             </Route>
 
         </Switch>
@@ -46,3 +48,10 @@ export const ReviewRouter = () => {
     );
 };
 
+export const ReviewRouter = () => {
+    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        return <BlocksReviewRouter />
+    }
+
+    return <DocAnnotationReviewRouter />
+};

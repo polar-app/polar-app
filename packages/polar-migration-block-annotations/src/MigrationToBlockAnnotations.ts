@@ -17,6 +17,8 @@ import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace MigrationToBlockAnnotations {
 
@@ -30,38 +32,66 @@ export namespace MigrationToBlockAnnotations {
         original: RecordHolder<DocMetaHolder>;
     }
 
-    export async function exec(idUser: IDUser): Promise<void> {
+    export type IRequest = {
+        readonly docMetaID?: string;
+    };
+
+    export async function exec(idUser: IDUser, request: IRequest): Promise<void> {
+
+        const { docMetaID } = request;
+
+        if (! docMetaID) {
+            throw new Error('You must provide a docMetaID that contains the ID of the docMeta object to be migrated');
+        }
 
         const firestore = FirestoreAdmin.getInstance();
 
-        const docMetas = await getDocMetas(firestore, idUser);
+        const docMeta = await getDocMetaByID(firestore, idUser, docMetaID);
 
-        // TODO: We're probably gonna change this to migrate one docMeta at a time per function call
-        await docMetas.reduce((promise, docMeta) => promise.then(() => migrateDocMeta(idUser, firestore, docMeta)), Promise.resolve());
+
+        if (! docMeta) {
+            throw new Error(`A docMeta object with the ID: ${docMetaID} was not found!`);
+        }
+
+        const documentBlock = await getDocumentBlockByFingerprint(idUser, firestore, docMeta.value.docInfo.fingerprint);
+
+        if (docMeta.value.ver === 3 || documentBlock) {
+            throw new Error(`docMeta object with the ID: ${docMetaID} has already been migrated`);
+        }
+
+        await migrateDocMeta(idUser, firestore, docMeta);
     }
 
     /**
      * Get all docMeta records for a specific user
      *
      * @param firestore Firestore instance
-     * @param idUser UserID object @see IDUser
+     * @param idUser UserID object that the docMeta belongs to @see IDUser
+     * @param docMetaID The id of the docMeta document to be fetched
      */
-    async function getDocMetas(firestore: IFirestore<unknown>,
-                               idUser: IDUser): Promise<ReadonlyArray<RecordHolder<DocMetaHolder>>> {
+    async function getDocMetaByID(firestore: IFirestore<unknown>,
+                                  idUser: IDUser,
+                                  docMetaID: string): Promise<RecordHolder<DocMetaHolder> | undefined> {
 
         const query = firestore
             .collection(OLD_DOC_META_COLLECTION_NAME)
-            .where('uid', '==', idUser.uid)
-            .where('ver', '!=', 2);
+            .where('id', '==', docMetaID);
 
         const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
             snapshot.data() as RecordHolder<DocMetaHolder>;
 
         const records = await query.get();
-        return arrayStream(records.docs)
+
+        const docMeta = arrayStream(records.docs)
             .map(toDocMeta)
             .filterPresent()
-            .collect();
+            .first();
+
+        if (docMeta && docMeta.uid === idUser.uid) {
+            return docMeta;
+        }
+        
+        return undefined;
     }
 
     /**
@@ -111,9 +141,30 @@ export namespace MigrationToBlockAnnotations {
         const docMetaDoc = docMetaCollection.doc(data.original.id);
         const docInfoDoc = docInfoCollection.doc(data.original.id);
 
-        batch.update(docMetaDoc, { ver: 2 });
-        batch.update(docInfoDoc, { ver: 2 });
+        batch.update(docMetaDoc, { 'value.ver': 3 });
+        batch.update(docInfoDoc, { 'value.ver': 3 });
     }
+
+    async function getDocumentBlockByFingerprint(idUser: IDUser,
+                                                 firestore: IFirestore<unknown>,
+                                                 fingerprint: string): Promise<IBlock<IDocumentContent> | undefined> {
+        const query = firestore
+            .collection(BLOCK_COLLECTION_NAME)
+            .where('uid', '==', idUser.uid)
+            .where('content.type', '==', 'document')
+            .where('content.docInfo.fingerprint', '==', fingerprint);
+
+        const toDocumentBlock = (snapshot: IQueryDocumentSnapshot<unknown>): IBlock<IDocumentContent> =>
+            snapshot.data() as IBlock<IDocumentContent>;
+
+        const records = await query.get();
+
+        return arrayStream(records.docs)
+            .map(toDocumentBlock)
+            .filterPresent()
+            .first();
+    }
+
 
     /**
      * Backup the old docMeta document before performing the migration
@@ -130,10 +181,10 @@ export namespace MigrationToBlockAnnotations {
 
         const { original } = data;
 
-        const newDocMetaCollection = firestore.collection(OLD_DOC_META_COLLECTION_NAME);
+        const newDocMetaCollection = firestore.collection(NEW_DOC_META_COLLECTION_NAME);
         const newDoc = newDocMetaCollection.doc(original.id);
 
-        batch.set(newDoc, original);
+        batch.create(newDoc, original);
     }
 
     /**
@@ -163,9 +214,11 @@ export namespace MigrationToBlockAnnotations {
         const namedBlocksSnapshots = BlocksSnapshot
             .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
 
+        const writeToBatch = (block: IBlock) => {
+            const data = Dictionaries.onlyDefinedProperties(block);
+            batch.set(blockCollection.doc(block.id), data);
+        };
 
-        const writeToBatch = (block: IBlock) =>
-            batch.set(blockCollection.doc(block.id), block);
 
         documentBlocksSnapshot.map(writeToBatch);
         namedBlocksSnapshots.map(writeToBatch);
@@ -188,7 +241,7 @@ export namespace MigrationToBlockAnnotations {
 
         const { docMeta, original } = data;
 
-        const oldDocMetaCollection = firestore.collection(NEW_DOC_META_COLLECTION_NAME);
+        const oldDocMetaCollection = firestore.collection(OLD_DOC_META_COLLECTION_NAME);
 
         const oldDoc = oldDocMetaCollection.doc(original.id);
 
@@ -210,7 +263,7 @@ export namespace MigrationToBlockAnnotations {
 
         const placeholder = createPlaceholderTextHighlight();
 
-        newDocMeta.pageMetas[0].textHighlights[placeholder.id] = placeholder;
+        newDocMeta.pageMetas[1].textHighlights[placeholder.id] = placeholder;
 
         batch.update(oldDoc, 'value.value', DocMetas.serialize(newDocMeta));
     }
@@ -251,7 +304,7 @@ export namespace MigrationToBlockAnnotations {
                                           firestore: IFirestore<unknown>): Promise<ReadonlyArray<IBlock<INamedContent>>> {
 
         const existingNamedBlocksQuery = await firestore
-            .collection(OLD_DOC_META_COLLECTION_NAME)
+            .collection(BLOCK_COLLECTION_NAME)
             .where('uid', '==', userID.uid)
             .where('content.type', 'in', ['name', 'date', 'document'])
             .get()
@@ -261,5 +314,6 @@ export namespace MigrationToBlockAnnotations {
 
         return existingNamedBlocks;
     }
+
 }
 

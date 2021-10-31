@@ -40,6 +40,8 @@ import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
+import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
+import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
 import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
 
 interface IStory {
@@ -181,6 +183,18 @@ const stories = createStoryIndex([
     {
         name: 'CreateAccountScreen',
         component: <CreateAccountScreenStory/>
+    },
+    {
+        name: "RegisterForBetaMain",
+        component: <PBEmailAndReferral/>
+    },
+    {
+        name: "RegisterForBetaPending",
+        component: <RegisterForBetaPending/>
+    },
+    {
+        name: "RegisterForBetaError",
+        component: <RegisterForBetaError/>
     },
     {
         name: 'MUICommandActionMenu',

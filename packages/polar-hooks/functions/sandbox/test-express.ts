@@ -2,13 +2,7 @@
 // FIXME: we need to include the firebase-admin code and then lookup the token
 // and the final URL and send access denied if the token does not exist.
 
-import * as functions from 'firebase-functions';
 import express from 'express';
-import * as cors from 'cors';
-import * as admin from 'firebase-admin';
-import {default as fetch} from 'node-fetch';
-import * as https from 'https';
-import {Response, NextFunction} from 'express';
 
 const app = express();
 

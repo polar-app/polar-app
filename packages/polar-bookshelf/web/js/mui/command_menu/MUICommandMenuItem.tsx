@@ -51,12 +51,25 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
 
     const classes = useStyles();
 
+    const elementRef = React.useRef<HTMLElement | null>(null);
+
     const handleClick = React.useCallback(() => {
         props.onSelected()
     }, [props])
 
+    React.useEffect(() => {
+
+        if (props.selected) {
+            if (elementRef.current) {
+                elementRef.current?.scrollIntoView({block: 'nearest'});
+            }
+        }
+
+    }, [props.selected]);
+
     return (
         <ListItem disableGutters
+                  ref={ref => elementRef.current = ref}
                   button
                   className={clsx(props.className, classes.root, props.selected && classes.selected)}
                   selected={props.selected}

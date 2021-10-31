@@ -49,7 +49,6 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
-import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
@@ -135,7 +134,7 @@ namespace Device {
         const {closeCurrentTab} = useSideNavCallbacks();
 
         return (
-            <AppBar position="static">
+            <AppBar color={"inherit"} position="static">
                 <Toolbar>
                     <div style={{
                              display: 'flex',
@@ -343,6 +342,7 @@ const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
 ));
 
 const useDocumentBlockMigrator = () => {
+
     const { docMeta } = useDocViewerStore(['docMeta']);
     const { firestore, user } = useFirestore();
     const blocksStore = useBlocksStore();
@@ -353,6 +353,7 @@ const useDocumentBlockMigrator = () => {
     const annotationBlockManager = useAnnotationBlockManager();
 
     React.useEffect(() => {
+
         if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
             return;
         }
@@ -385,16 +386,10 @@ const useDocumentBlockMigrator = () => {
                 const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
                     .getFromDocMeta(docMeta, namedBlocks);
 
-                const documentBlockID = blocksStore.createNewNamedBlock({
-                    content: new DocumentContent(docContentStructure.content),
-                });
-
-                blocksStore.insertFromBlockContentStructure(
-                    docContentStructure.children,
-                    { ref: documentBlockID }
-                );
-
-                blocksStore.insertFromBlockContentStructure(tagContentsStructure);
+                blocksStore.insertFromBlockContentStructure([
+                    docContentStructure,
+                    ...tagContentsStructure,
+                ]);
 
                 dialogs.snackbar({
                     message: "Migrating your annotations to the new format. This may take some time!",

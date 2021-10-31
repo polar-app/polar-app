@@ -22,7 +22,7 @@ import {
 } from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {ACTIONS, DEFAULT_STATE, IBlockAnnotation, IDocMetaAnnotation, reducer} from "./AnnotationPopupReducer";
-import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 import {FileType} from "../../../../../web/js/apps/main/file_loaders/FileType";
@@ -60,8 +60,8 @@ type IAnnotationPopupContext = {
     onCreateAnnotation: (color: ColorStr) => void;
     annotation?: IDocMetaAnnotation | IBlockAnnotation;
     selectionEvent?: ActiveSelectionEvent;
-    setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
-    aiFlashcardStatus: AutoFlashcardHandlerState,
+    setAiFlashcardStatus: (status: IAutoFlashcardHandlerState) => void;
+    aiFlashcardStatus: IAutoFlashcardHandlerState,
     activeAction?: AnnotationPopupActionEnum;
     toggleAction: (action: AnnotationPopupActionEnum) => () => void;
     clear: () => void;

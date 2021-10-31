@@ -2,9 +2,9 @@ import {ICachedQuery} from "./ICachedQuery";
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
-import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
-import {IQueryDocumentSnapshot, IQueryDocumentSnapshotClient} from "polar-firestore-like/src/IQueryDocumentSnapshot";
-import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import { IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import { IQueryDocumentSnapshotClient} from "polar-firestore-like/src/IQueryDocumentSnapshot";
+import { IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 
 export namespace CachedQueries {
 

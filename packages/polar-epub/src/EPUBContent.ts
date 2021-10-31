@@ -9,6 +9,11 @@ interface IEPUBContent {
     readonly id: string;
 
     /**
+     * Shared part of the CFI string that is generated from the XML root file
+     * for each page.
+     */
+    readonly sharedCfi: string;
+    /**
      * HTML string of the page
      */
     readonly html: () => Promise<string>;
@@ -43,6 +48,7 @@ export namespace EPUBContent {
             for (const ref of refs) {
                 results.push({
                     id: ref.id,
+                    sharedCfi: await generateCFIXMLFragment(filePath, ref.id),
                     html: () => extractChapterHtml(filePath, ref)
                 });
             }
@@ -80,11 +86,8 @@ export namespace EPUBContent {
      * parse html content of an EPUB page/chapter
      * 
      */
-    export async function parseContent(rootFile: string,
-                                       content: IEPUBContent): Promise<ReadonlyArray<IEPUBText>> {
+    export async function parseContent(content: IEPUBContent): Promise<ReadonlyArray<IEPUBText>> {
         const dom = new JSDOM(await content.html());
-
-        const CFIXMLFragment = await generateCFIXMLFragment(rootFile, content.id);
 
         const results: IEPUBText[] = [];
 
@@ -94,7 +97,7 @@ export namespace EPUBContent {
             if (node.nodeType === node.ELEMENT_NODE) {
                 rootEvenIndex += 2;
                 if (node.nodeName !== 'HEAD') {
-                    parseChildren(node,`${CFIXMLFragment}/${rootEvenIndex}`, results);
+                    parseChildren(node,`${content.sharedCfi}/${rootEvenIndex}`, results);
                 }
             }
         });

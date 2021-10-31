@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Objects} from "./Objects";
 

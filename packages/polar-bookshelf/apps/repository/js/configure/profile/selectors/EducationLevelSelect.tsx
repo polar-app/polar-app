@@ -1,4 +1,3 @@
-import * as React from "react";
 import {EducationLevel, educationLevels} from "polar-shared/src/util/EducationLevels";
 
 export interface IOption<T> {

@@ -17,8 +17,6 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Provider} from "polar-shared/src/util/Providers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
-import {Either} from "../../../../web/js/util/Either";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
@@ -40,9 +38,8 @@ import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
-import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
+import {useDocLoaderForDocInfo} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
-import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {useAnnotationMutationCallbacksFactory} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
@@ -252,7 +249,7 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                             repoDocMetaManager: RepoDocMetaManager,
                             log: ILogger): IAnnotationRepoCallbacks => {
 
-    const docLoader = useDocLoader();
+    const docLoader = useDocLoaderForDocInfo();
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
 
     return React.useMemo(() => {
@@ -299,19 +296,7 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         }
 
         function doOpen(docInfo: IDocInfo): void {
-
-            const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
-
-            const docLoadRequest: LoadDocRequest = {
-                fingerprint: docInfo.fingerprint,
-                title: docInfo.title || 'Untitled',
-                backendFileRef,
-                newWindow: true,
-                url: docInfo.url
-            }
-
-            docLoader(docLoadRequest);
-
+            docLoader(docInfo);
         }
 
         function selectRow(selectedID: IDStr,

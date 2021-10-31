@@ -12,12 +12,16 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 
 export namespace BlockContentAnnotationTree {
 
     export type IAnnotationBase = {
-        tags: ReadonlyArray<Tag>;
-        children: ReadonlyArray<IAnnotation>;
+        readonly tags: ReadonlyArray<Tag>;
+        readonly children: ReadonlyArray<IAnnotation>;
+        readonly created: ISODateTimeString;
+        readonly updated: ISODateTimeString;
     };
 
     /**
@@ -28,10 +32,10 @@ export namespace BlockContentAnnotationTree {
     export type IAreaHighlightAnnotation = Omit<IAreaHighlightAnnotationContent, 'links'> & IAnnotationBase;
     export type IFlashcardAnnotation = Omit<IFlashcardAnnotationContent, 'links'> & IAnnotationBase;
     export type ICommentAnnotation = {
-        type: 'comment',
-        docID: DocIDStr;
-        pageNum: number;
-        content: MarkdownStr,
+        readonly type: 'comment',
+        readonly docID: DocIDStr;
+        readonly pageNum: number;
+        readonly content: MarkdownStr,
     } & IAnnotationBase;
 
     export type IAnnotation = ITextHighlightAnnotation
@@ -90,7 +94,7 @@ export namespace BlockContentAnnotationTree {
                     ? htmlToMarkdown(annotation.revisedText)
                     : htmlToMarkdown(annotation.text);
 
-        const wikiLinks = tagsToWikiLinksStr(annotation.tags);
+        const tagWikiLinks = tagsToTagWikiLinksStr(annotation.tags);
 
         return {
             type: AnnotationContentType.TEXT_HIGHLIGHT,
@@ -103,8 +107,10 @@ export namespace BlockContentAnnotationTree {
                 rects: annotation.rects,
                 color: annotation.color || 'yellow',
                 text: htmlToMarkdown(annotation.text),
-                revisedText: `${revisedText} ${wikiLinks}`,
-            }
+                revisedText: `${revisedText} ${tagWikiLinks}`,
+            },
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -133,6 +139,8 @@ export namespace BlockContentAnnotationTree {
                 order: annotation.order,
                 position: annotation.position,
             },
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -147,35 +155,41 @@ export namespace BlockContentAnnotationTree {
     export function toFlashcardAnnotation(docMeta: IDocMeta,
                                           pageNum: number,
                                           annotation: IFlashcard): IFlashcardAnnotation {
-
-        const getFlashcard = () => {
-
-            if (annotation.type === FlashcardType.CLOZE) {
-                return {
-                    type: annotation.type,
-                    fields: { text: htmlToMarkdown(annotation.fields.text) },
-                };
-            } else {
-                return {
-                    type: annotation.type,
-                    fields: {
-                        front: htmlToMarkdown(annotation.fields.front),
-                        back: htmlToMarkdown(annotation.fields.back),
-                    },
-                };
-            }
-
-        };
-
         return {
             type: AnnotationContentType.FLASHCARD,
             pageNum,
-            value: { ...getFlashcard(), archetype: annotation.archetype },
+            value: annotationToBlockFlashcard(annotation),
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
+    }
+
+    /**
+     * Convert an IDocMeta flashcard object into a block flashcard object
+     *
+     * @param annotation IDocMeta flashcard object
+     */
+    export function annotationToBlockFlashcard(annotation: IFlashcard): IBlockFlashcard {
+        if (annotation.type === FlashcardType.CLOZE) {
+            return {
+                archetype: annotation.archetype,
+                type: annotation.type,
+                fields: { text: htmlToMarkdown(annotation.fields.text) },
+            };
+        } else {
+            return {
+                archetype: annotation.archetype,
+                type: annotation.type,
+                fields: {
+                    front: htmlToMarkdown(annotation.fields.front),
+                    back: htmlToMarkdown(annotation.fields.back),
+                },
+            };
+        }
     }
 
     /**
@@ -189,13 +203,17 @@ export namespace BlockContentAnnotationTree {
                                         pageNum: number,
                                         annotation: IComment): ICommentAnnotation {
 
+        const tagWikiLinks = tagsToTagWikiLinksStr(annotation.tags);
+
         return {
             type: 'comment',
             pageNum,
-            content: htmlToMarkdown(annotation.content),
+            content: `${htmlToMarkdown(annotation.content)} ${tagWikiLinks}`,
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
+            created: annotation.created,
+            updated: annotation.lastUpdated,
         };
 
     }
@@ -251,9 +269,9 @@ export namespace BlockContentAnnotationTree {
      *
      * @param tagsMap Tags map
      */
-    export function tagsToWikiLinksStr(tagsMap?: Record<string, Tag>): string {
+    export function tagsToTagWikiLinksStr(tagsMap?: Record<string, Tag>): string {
         return tagsMap
-            ? Object.values(tagsMap).map(tag => `[[${tag.label}]]`).join(' ')
+            ? Object.values(tagsMap).map(tag => `[[#${tag.label}]]`).join(' ')
             : '';
     }
 

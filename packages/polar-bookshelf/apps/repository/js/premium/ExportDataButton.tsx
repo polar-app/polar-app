@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {FullWidthButton} from '../configure/settings/FullWidthButton';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 export const ExportDataButton = React.memo(function ExportDataButton() {
 
@@ -38,8 +38,11 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
     }, [dialogManager, onExport]);
 
     return (
-        <FullWidthButton onClick={handleClick} icon={<GetAppIcon />}>
-            Export Data
-        </FullWidthButton>
+        <ListItem button onClick={handleClick}>
+            <ListItemIcon>
+            <GetAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Export Data" />
+        </ListItem> 
     );
 });

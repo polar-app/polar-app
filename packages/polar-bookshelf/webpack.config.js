@@ -10,7 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 
 const isDevServer = process.argv.includes('serve');
@@ -318,7 +318,7 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
-        isDevServer && new ReactRefreshWebpackPlugin(),
+        // isDevServer && new ReactRefreshWebpackPlugin(),
         // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
@@ -420,16 +420,18 @@ module.exports = {
     ].filter(Boolean),
     optimization: {
         minimize: !isDev,
-        minimizer: [new TerserPlugin({
-            // disable caching to:  node_modules/.cache/terser-webpack-plugin/
-            // because intellij will index this data and lock up my machine
-            // and generally waste space and CPU
-            // cache: ".terser-webpack-plugin",
-            terserOptions: {
-                output: {ascii_only: true},
-            }
-        })
-        ],
+        // minimizer: [new TerserPlugin({
+        //     // // disable caching to:  node_modules/.cache/terser-webpack-plugin/
+        //     // // because intellij will index this data and lock up my machine
+        //     // // and generally waste space and CPU
+        //     // // cache: ".terser-webpack-plugin",
+        //     // terserOptions: {
+        //     //     // ecma: undefined,
+        //     //     //output: {ascii_only: true},
+        //     //     ascii_only: true
+        //     // }
+        // })
+        // ]
         // usedExports: true,
         // removeAvailableModules: true,
         // removeEmptyChunks: true,

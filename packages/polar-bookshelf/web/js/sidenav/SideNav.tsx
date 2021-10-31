@@ -31,6 +31,7 @@ import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
+import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -154,15 +155,23 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
     )
 });
 
+const DailyNotesButton = React.memo(function AnnotationsButton() {
+
+    const classes = useStyles();
+
+    return (
+        <SideNavHistoryButton title="Daily Notes"
+                              path={RoutePathNames.DAILY}>
+            <MUICalendarMonthDayIcon className={classes.secondaryIcon}/>
+        </SideNavHistoryButton>
+    )
+});
+
 const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
 
-    const pathCanonicalizer = React.useCallback(path =>
-        path.startsWith(RoutePathNames.NOTES) ? RoutePathNames.NOTES : path, []);
-
     return (
         <SideNavHistoryButton title="Notes"
-                              canonicalizer={pathCanonicalizer}
                               path={RoutePathNames.NOTES}>
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
@@ -315,40 +324,45 @@ export const SideNav = React.memo(function SideNav() {
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
-                {Devices.isDesktop() && <ZenModeActiveContainer>
-                    <div className={classes.root} style={{ height: '100%' }}>
+                {Devices.isDesktop() && (
+                    <ZenModeActiveContainer>
+                        <div className={classes.root} style={{ height: '100%' }}>
 
-                                <PolarButton/>
+                            <PolarButton/>
 
-                                <SideNavDividerTop/>
+                            <SideNavDividerTop/>
 
-                                <HomeButton/>
-                                <AnnotationsButton/>
+                            <HomeButton/>
+                            <AnnotationsButton/>
 
-                                <FeatureToggleEnabled featureName="notes-enabled">
-                                    <NotesButton/>
-                                </FeatureToggleEnabled>
+                            <FeatureToggleEnabled featureName="notes-enabled">
+                                <NotesButton/>
+                            </FeatureToggleEnabled>
 
-                                <DeviceRouter desktop={<StatsButton/>} />
+                            <DeviceRouter desktop={<StatsButton/>} />
 
-                                {tabs.length > 0 && (
-                                    <SideNavDivider/>
-                                )}
+                            <SideNavDivider/>
+                            <DailyNotesButton/>
 
-                                <VerticalDynamicScroller className={classes.buttons}>
-                                    {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
-                                </VerticalDynamicScroller>
+                            {tabs.length > 0 && (
+                                <SideNavDivider/>
+                            )}
 
-                                <div style={{marginBottom: '5px'}}>
-                                    <SideNavDivider/>
-                                    <DeviceRouter desktop={<SyncButton/>}/>
-                                    <AccountButton/>
+                            <VerticalDynamicScroller className={classes.buttons}>
+                                {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                            </VerticalDynamicScroller>
 
-                                    <SideNavQuestionButton/>
-                                    <SettingsButton/>
-                                </div>
-                    </div>
-                </ZenModeActiveContainer>}
+                            <div style={{marginBottom: '5px'}}>
+                                <SideNavDivider/>
+                                <DeviceRouter desktop={<SyncButton/>}/>
+                                <AccountButton/>
+
+                                <SideNavQuestionButton/>
+                                <SettingsButton/>
+                            </div>
+                        </div>
+                    </ZenModeActiveContainer>
+                )}
                 <Divider orientation="vertical" />
                 <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>

@@ -1,4 +1,4 @@
-import {File, Storage, GetSignedUrlConfig} from '@google-cloud/storage';
+import {File, Storage} from '@google-cloud/storage';
 
 const conf = {
 

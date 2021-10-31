@@ -2,7 +2,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {MUIAppRoot} from "polar-bookshelf/web/js/mui/MUIAppRoot";
 import {SignInScreen} from "polar-bookshelf/apps/repository/js/login/SignInScreen";
-import {BrowserRouter, Route, RouteProps, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {CreateAccountScreen} from "polar-bookshelf/apps/repository/js/login/CreateAccountScreen";
 
 export class LoginApp {

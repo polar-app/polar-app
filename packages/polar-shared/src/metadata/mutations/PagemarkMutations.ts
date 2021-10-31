@@ -1,6 +1,5 @@
 import {IPageMeta} from "../IPageMeta";
 import {IDValueMap, MutatorDelegate} from "./PageMetaMutations";
-import {IAreaHighlight} from "../IAreaHighlight";
 import {IPagemark} from "../IPagemark";
 
 class Delegate extends MutatorDelegate<IPagemark> {

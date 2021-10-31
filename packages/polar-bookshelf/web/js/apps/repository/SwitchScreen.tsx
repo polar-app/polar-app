@@ -73,7 +73,7 @@ export const SwitchScreen = () => {
     const classes = useStyles();
     const history = useHistory();
 
-    const orderedTabsByRecency = useSortedDocInfos();
+    const sortedDocInfos = useSortedDocInfos();
 
     return (
         <AdaptivePageLayout title="Recent Documents" fullWidth noBack>
@@ -82,14 +82,16 @@ export const SwitchScreen = () => {
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table">
 
-                    {orderedTabsByRecency.length > 0 ?
+                    {sortedDocInfos.length > 0 ?
                         <>
-                            {orderedTabsByRecency.map( column =>
-                                <TableRow key={column.uuid} onClick={()=>history.push('/doc/'+column.fingerprint)}>
-                                    <TableCell key={column.uuid} className={classes.th}>
-                                        {column.title}
-                                    </TableCell>
-                                </TableRow>
+                            {sortedDocInfos.map( column =>
+                                <TableHead key={column.uuid}>
+                                    <TableRow onClick={()=>history.push('/doc/'+column.fingerprint)}>
+                                        <TableCell key={column.uuid} className={classes.th}>
+                                            {column.title}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
                             )}
                         </>
                         :

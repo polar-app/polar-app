@@ -1,5 +1,4 @@
 import {Box, Typography} from "@material-ui/core";
-import {trace} from "mobx";
 import {observer} from "mobx-react-lite";
 import React from "react";
 import {Block} from "../../../../web/js/notes/Block";

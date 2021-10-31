@@ -1,27 +1,29 @@
 import * as React from "react";
-import {ReadingTaskAction} from "./ReadingTaskAction";
+import {IReadingTaskAction} from "./ReadingTaskAction";
 import {ReadingCard} from "./ReadingCard";
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
+import {IFlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardCard} from "./FlashcardCard";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
+import {ITaskAction, TaskActionPredicates} from "../ReviewerTasks";
 
-interface ReviewerCardProps {
-    readonly taskRep: TaskRep<any>;
+interface IDoReadingCardProps {
+    readonly taskRep: TaskRep<IReadingTaskAction>;
 }
 
-const DoReadingCard = deepMemo(function DoReadingCard(props: ReviewerCardProps) {
-    const {taskRep} = props;
-    const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
+const DoReadingCard = deepMemo(function DoReadingCard(props: IDoReadingCardProps) {
+    const {taskRep: readingTaskRep} = props;
 
     return <ReadingCard taskRep={readingTaskRep}/>;
 
 });
 
-const DoFlashcardCard = deepMemo(function DoFlashcardCard(props: ReviewerCardProps) {
-    const {taskRep} = props;
+interface IDoFlashcardCardProps {
+    readonly taskRep: TaskRep<IFlashcardTaskAction>;
+}
 
-    const flashcardTaskRep = taskRep as any as TaskRep<FlashcardTaskAction>;
+const DoFlashcardCard: React.FC<IDoFlashcardCardProps> = deepMemo(function DoFlashcardCard(props) {
+    const {taskRep: flashcardTaskRep} = props;
 
     const flashcardTaskAction = flashcardTaskRep.action;
     const front = flashcardTaskAction.front;
@@ -32,12 +34,19 @@ const DoFlashcardCard = deepMemo(function DoFlashcardCard(props: ReviewerCardPro
                           back={back}/>;
 });
 
-export const ReviewerCard = (props: ReviewerCardProps) => {
 
-    if (props.taskRep!.mode === 'reading') {
-        return <DoReadingCard {...props}/>;
-    } else {
-        return <DoFlashcardCard {...props}/>;
+interface IReviewerCardProps {
+    readonly taskRep: TaskRep<ITaskAction>;
+}
+
+export const ReviewerCard: React.FC<IReviewerCardProps> = (props) => {
+    const { taskRep } = props;
+
+    if (TaskActionPredicates.isReadingTaskRep(taskRep)) {
+        return <DoReadingCard taskRep={taskRep} />;
+    } else if (TaskActionPredicates.isFlashcardTaskRep(taskRep)) {
+        return <DoFlashcardCard taskRep={taskRep} />;
     }
 
+    return null;
 };

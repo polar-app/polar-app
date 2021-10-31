@@ -1,5 +1,3 @@
-import * as React from "react";
-import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {
@@ -16,37 +14,31 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {IFirestoreContext} from "../FirestoreProvider";
 
 const log = Logger.create();
 
-export const DEFAULT_LIMIT = 10;
-
 export namespace Reviewers {
 
-    export interface IReviewer {
-        readonly taskReps: ReadonlyArray<TaskRep<any>>;
+    export interface IReviewer<T> {
+        readonly taskReps: ReadonlyArray<TaskRep<T>>;
         readonly doFinished: () => Promise<void>;
-        readonly doSuspended: (taskRep: TaskRep<any>) => Promise<void>;
-        readonly doRating: (taskRep: TaskRep<any>, rating: Rating) => Promise<void>;
+        readonly doSuspended: (taskRep: TaskRep<T>) => Promise<void>;
+        readonly doRating: (taskRep: TaskRep<T>, rating: Rating) => Promise<void>;
     }
 
-    export interface IReviewerCreateOpts {
+    export interface IReviewerCreateOpts<T> {
         readonly firestore: IFirestoreContext;
-        readonly annotations: ReadonlyArray<IDocAnnotation>;
+        readonly data: CalculatedTaskReps<T>;
         readonly mode: RepetitionMode;
         readonly onClose?: Callback;
-        readonly limit?: number;
     }
 
-    export async function create(opts: IReviewerCreateOpts): Promise<IReviewer> {
+    export async function create<T>(opts: IReviewerCreateOpts<T>): Promise<IReviewer<T>> {
 
-        const {annotations, mode, firestore} = opts;
-        const limit = opts.limit || DEFAULT_LIMIT;
+        const {data, mode, firestore} = opts;
         const onClose = opts.onClose || NULL_FUNCTION;
 
         Preconditions.assertPresent(mode, 'mode');
@@ -57,18 +49,8 @@ export namespace Reviewers {
             throw new Error("Not logged in");
         }
 
-        const calculateTaskReps = async (): Promise<CalculatedTaskReps<any>> => {
-            switch (mode) {
-                case "flashcard":
-                    return await ReviewerTasks.createFlashcardTasks(annotations, limit);
-                case "reading":
-                    return await ReviewerTasks.createReadingTasks(annotations, limit);
-            }
-        };
 
-
-        const calculatedTaskReps = await calculateTaskReps();
-        const {taskReps} = calculatedTaskReps;
+        const {taskReps} = data;
 
         const doWriteQueueStageCounts = async () => {
 
@@ -76,7 +58,7 @@ export namespace Reviewers {
                 created: ISODateTimeStrings.create(),
                 type: 'queue',
                 mode,
-                ...calculatedTaskReps.stageCounts
+                ...data.stageCounts
             };
 
             await SpacedRepStatCollection.write(firestore.firestore, uid, spacedRepStats);
@@ -89,7 +71,7 @@ export namespace Reviewers {
 
         const completedStageCounts = StageCountsCalculator.createMutable();
 
-        const incrCompletedStageCounts = (taskRep: TaskRep<any>) => {
+        const incrCompletedStageCounts = (taskRep: TaskRep<T>) => {
 
             switch (taskRep.stage) {
                 case "new":
@@ -123,7 +105,7 @@ export namespace Reviewers {
 
         };
 
-        const doWriteSuspendedCounts = async (taskRep: TaskRep<ReadingTaskAction>) => {
+        const doWriteSuspendedCounts = async (taskRep: TaskRep<T>) => {
 
             const convertedSpacedRep = SpacedRepCollection.convertFromTaskRep(uid, taskRep);
             const spacedRep: SpacedRep = {
@@ -146,11 +128,11 @@ export namespace Reviewers {
 
         };
 
-        const doSuspended = async (taskRep: TaskRep<any>) => {
+        const doSuspended = async (taskRep: TaskRep<T>) => {
             await doWriteSuspendedCounts(taskRep);
         };
 
-        const doRating = async (taskRep: TaskRep<any>, rating: Rating) => {
+        const doRating = async (taskRep: TaskRep<T>, rating: Rating) => {
 
             console.log("Saving rating... ");
 

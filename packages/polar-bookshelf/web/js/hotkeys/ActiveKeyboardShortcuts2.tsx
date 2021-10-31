@@ -1,96 +1,114 @@
-import {useActiveKeyboardShortcutsCallbacks, useActiveKeyboardShortcutsStore} from "./ActiveKeyboardShortcutsStore";
-import {IKeyboardShortcutWithHandler} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {GlobalKeyboardShortcuts, KeyMap} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import {ActiveKeyboardShortcutsTable2} from "./ActiveKeyboardShortcutsTable2";
+import {CommandsProvider, ICommand} from "../mui/command_menu/MUICommandMenu";
+import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
+import {ShortcutEntry, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
+import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
+import {useNamedBlocks} from "../notes/NoteUtils";
+import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
-
-const keyMap: KeyMap = {
-    SHOW_ALL_HOTKEYS: {
-        name: 'Show Keyboard Shortcuts',
-        description: "Show active keyboard shortcuts",
-        sequences: [
-            {
-                keys: "shift+?",
-                platforms: ['macos', 'linux', 'windows']
-            },
-            {
-                keys: '/',
-                platforms: ['macos', 'linux', 'windows']
-            }
-        ],
-        priority: -1
-    }
-};
-
-interface ActiveKeyboardShortcutsDialogProps {
-    readonly onClose: () => void;
-    readonly onExecute: (event: React.MouseEvent | React.KeyboardEvent, shortcut: IKeyboardShortcutWithHandler) => void;
+function useDocInfos() {
+    const {data} = useDocRepoStore(['data']);
+    return data;
 }
 
-export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardShortcutsDialog(props: ActiveKeyboardShortcutsDialogProps) {
-
-    return (
-        <Dialog fullWidth={true}
-                transitionDuration={50}
-                maxWidth="md"
-                open={true}
-                onClose={props.onClose}>
-            <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
-            <DialogContent>
-                <ActiveKeyboardShortcutsTable2 onExecute={props.onExecute}/>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={props.onClose}
-                        size="large"
-                        color="primary"
-                        variant="contained">
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-
-});
-
+function useShortcuts() {
+    const {shortcuts} = useKeyboardShortcutsStore(['shortcuts']);
+    return Object.values(shortcuts);
+}
 
 export const ActiveKeyboardShortcuts2 = deepMemo(() => {
 
-    const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
-    const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks();
+    const shortcuts = useShortcuts();
+    const docInfos = useDocInfos();
+    const blocks = useNamedBlocks({ sort : false });
 
-    const handleClose = React.useCallback(() => {
-        setShowActiveShortcuts(false);
-    }, [setShowActiveShortcuts]);
+    interface ICommandWithType extends ICommand {
+        readonly type: 'keyboard-shortcut' | 'doc' | 'block';
+    }
 
-    const handleExecute = React.useCallback((event: React.MouseEvent | React.KeyboardEvent,
-                                             shortcut: IKeyboardShortcutWithHandler) => {
-        handleClose();
-        shortcut.handler(event);
+    const commandsProvider: CommandsProvider<ICommandWithType> = React.useCallback((): ReadonlyArray<ICommandWithType> => {
 
-    }, [handleClose]);
+        function toKeyboardShortcutCommand(shortcut: ShortcutEntry, idx: number): ICommandWithType {
+            return {
+                id: `${idx}`,
+                type: 'keyboard-shortcut',
+                text: shortcut.active.name,
+                icon: shortcut.active.icon,
+                description: shortcut.active.description,
+                group: shortcut.active.group,
+                sequences: shortcut.active.sequences
+            }
+        }
 
-    const handlers = {
-        SHOW_ALL_HOTKEYS: () => setShowActiveShortcuts(true)
-    };
+        // TODO: docs conflict with named notes... which is mildly annoying.
+        function toDocCommand(repoDocInfo: RepoDocInfo): ICommandWithType {
+            return {
+                id: `${repoDocInfo.id}`,
+                type: 'doc',
+                text: repoDocInfo.title,
+                // icon: shortcut.active.icon,
+                description: repoDocInfo.docInfo.description,
+                group: 'Documents'
+            }
+        }
 
-    // FIXME: setFilter and setIndex undefined on mount...
+        function toBlockCommand(block: IBlock<INamedContent>): ICommandWithType {
+
+            function computeText(): string {
+                switch (block.content.type) {
+                    case "name":
+                    case "date":
+                        return block.content.data;
+                    case "document":
+                        return block.content.docInfo.title || 'Untitled';
+                }
+            }
+
+
+            return {
+                id: `${block.id}`,
+                type: 'block',
+                text: computeText(),
+                group: 'Block'
+            }
+        }
+
+
+        const keyboardShortcutCommands = shortcuts.map(toKeyboardShortcutCommand);
+        const docCommands = docInfos.map(toDocCommand);
+        const blockCommands = blocks.map(toBlockCommand);
+
+        // return [...keyboardShortcutCommands, ...docCommands, ...blockCommands];
+        return [...keyboardShortcutCommands];
+
+    }, [blocks, docInfos, shortcuts]);
+
+    const handleCommand = React.useCallback((command: ICommandWithType) => {
+
+        // TODO: resolve the command by type, then execute it...
+        // TODO: all the commands need to have UNIQUE IDs in a larger global map...
+        // TODO: handle executing the commands.
+
+    }, []);
 
     return (
-        <>
-            <GlobalKeyboardShortcuts keyMap={keyMap}
-                                     handlerMap={handlers}/>
-
-            {showActiveShortcuts && <ActiveKeyboardShortcutsDialog onClose={handleClose}
-                                                                   onExecute={handleExecute}/>}
-
-        </>
+        <MUICommandMenuKeyboardShortcut group="Commands"
+                                        name="Execute a command"
+                                        description="Execute a command by name"
+                                        sequences={[
+                                            {
+                                                keys: 'ctrl+k',
+                                                platforms: ['linux', 'windows']
+                                            },
+                                            {
+                                                keys: 'command+k',
+                                                platforms: ['macos']
+                                            }
+                                        ]}
+                                        onCommand={handleCommand}
+                                        commandsProvider={commandsProvider}/>
     );
 
 });

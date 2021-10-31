@@ -5,33 +5,44 @@ import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import {NamedContent, useBlocksStore} from '../store/BlocksStore';
+import {NamedContent} from '../store/BlocksStore';
 import {MUIDialog} from '../../ui/dialogs/MUIDialog';
 import {ICommand, MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
 import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import {Block} from "../store/Block";
 import CloseIcon from '@material-ui/icons/Close';
+import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const SearchForNote: React.FC = observer(() => {
-    const blocksStore = useBlocksStore();
+
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedBlocks = blocksStore.getNamedBlocks();
-
-    const sortedNamedBlocks = React.useMemo(() => {
-        return [...namedBlocks].sort((a, b) => a.localeCompare(b));
-    }, [namedBlocks]);
+    const namedBlocks = useNamedBlocks({sort: true});
 
     const [inputValue, setInputValue] = React.useState('');
+
+    const toLabel = React.useCallback((block: IBlock<INamedContent>): string => {
+        switch (block.content.type) {
+            case "name":
+            case "date":
+                return block.content.data;
+            case "document":
+                return block.content.docInfo.title || 'Untitled'
+        }
+    }, []);
+
+    const sortedNamedBlocks = React.useMemo(() => {
+        return namedBlocks.map(toLabel);
+    }, [namedBlocks, toLabel]);
 
     return (
         <Autocomplete
             size="medium"
             options={sortedNamedBlocks}
-            getOptionLabel={(option) => option}
+            getOptionLabel={option => option}
+            fullWidth
             inputValue={inputValue}
-            value=""
             blurOnSelect={true}
             onInputChange={(_, nextInputValue) => {
                 setInputValue(nextInputValue);

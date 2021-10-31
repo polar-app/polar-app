@@ -7,8 +7,13 @@ export namespace ESLint {
             "parserOptions": {
                 "project": "./tsconfig.json"
             },
-            "extends": ["eslint:recommended", "standard", "plugin:@typescript-eslint/recommended", "prettier"],
-            "plugins": ["@typescript-eslint", "react", "react-hooks"],
+            "extends": [
+                "eslint:recommended", 
+                "standard", 
+                "plugin:@typescript-eslint/recommended", 
+                "prettier"
+            ],
+            "plugins": ["@typescript-eslint", "react", "react-hooks", "unused-imports", "functional"],
             "env": {
                 "es6": true,
                 "node": true
@@ -25,6 +30,12 @@ export namespace ESLint {
                 "@typescript-eslint/no-floating-promises": "error",
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
 
+                // ? Import Rules
+                "unused-imports/no-unused-imports": "error",
+
+                // ? Functional Rules (Off Locally but gets enabled for new code in CI)
+                "functional/prefer-readonly-type": "off",
+
                 // ! Disabled Rules ///////////////////////////////////////////////////
 
                 // ? TS Rules
@@ -32,10 +43,12 @@ export namespace ESLint {
                 "@typescript-eslint/no-namespace": "off",
                 "@typescript-eslint/ban-ts-comment": "off",
                 "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-explicit-any": "off",
                 "@typescript-eslint/no-var-requires": "off",
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-empty-interface": "off",
                 "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-non-null-assertion": "off",
                 "@typescript-eslint/explicit-module-boundary-types": "off",
                 
 

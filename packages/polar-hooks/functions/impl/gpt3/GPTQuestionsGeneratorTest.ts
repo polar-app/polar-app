@@ -1,4 +1,3 @@
-import {GPTCompletionPrompts} from "./GPTCompletionPrompts";
 import { GPTCompletions } from "./GPTCompletions";
 
 describe("GPTQuestionsGenerator", function() {

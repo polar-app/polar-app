@@ -63,7 +63,7 @@ export const SettingSelect = (props: IProps) => {
         <div>
             <div>
 
-                <Box mx={3}>
+                <Box mx={2}>
                     <Box pt={2}>
                         <MUIIconText style={{ flex: 1}} icon={props.icon}>
                                 <h3><b>{props.title}</b></h3>

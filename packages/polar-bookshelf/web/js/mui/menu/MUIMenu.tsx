@@ -42,7 +42,6 @@ export interface IButtonProps {
 interface IProps {
     readonly id?: string;
     readonly button: IButtonProps;
-    readonly children: React.ReactElement;
     readonly placement?: PopperPlacementType;
     readonly caret?: boolean;
     readonly disabled?: boolean;
@@ -51,7 +50,7 @@ interface IProps {
 
 // TODO: move this to MUIPopper
 
-export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
+export const MUIMenu: React.FC<IProps> = React.memo(React.forwardRef((props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);

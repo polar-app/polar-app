@@ -1,9 +1,8 @@
-import {TUpdateData} from "../TUpdateData";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
-import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {ICollectionReference, ICollectionReferenceClient} from "polar-firestore-like/src/ICollectionReference";
-import {IWriteBatch, IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
-import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import { IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import { ICollectionReferenceClient} from "polar-firestore-like/src/ICollectionReference";
+import { IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
+import { IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 /**
  * This is a mock store that works just like Firestore but runs out of RAM so that

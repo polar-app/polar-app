@@ -13,7 +13,6 @@ import {IDocDescriptor, IDocScale, useDocViewerCallbacks,} from "../../DocViewer
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
-
 import 'pdfjs-dist/web/pdf_viewer.css';
 import './PDFDocument.css';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -217,6 +216,35 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     }, [setScale, setStoreScale]);
 
+    interface IDocumentLoadingProgress {
+        loaded: number;
+        total: number;
+    }
+
+    type DocumentLoadingProgressCallback = (
+        documentLoadingProgress: IDocumentLoadingProgress
+    ) => void;
+
+    interface IPDFDocumentLoadingTask {
+        destroy(): Promise<void>;
+        onProgress: DocumentLoadingProgressCallback | null;
+        promise: Promise<PDFDocumentProxy>;
+
+    }
+
+    const loadingTaskRef = React.useRef<IPDFDocumentLoadingTask | undefined>();
+
+    const createProgressTracker = React.useCallback((total: number) => {
+
+        return new ProgressTracker({
+            id: 'pdf-download-' + props.docMeta.docInfo.fingerprint,
+            total: total
+        })
+
+    }, [props.docMeta.docInfo.fingerprint]);
+
+    const progressTrackerRef = React.useRef<ProgressTracker | undefined>(undefined);
+
     const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
         if (! docViewer.containerElement) {
@@ -226,27 +254,23 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             return;
         }
 
-        const loadingTask = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
+        loadingTaskRef.current = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
 
-        let progressTracker: ProgressTracker | undefined;
-        loadingTask.onProgress = (progress) => {
+        loadingTaskRef.current.onProgress = (progress) => {
 
-            if (! progressTracker) {
-                progressTracker = new ProgressTracker({
-                    id: 'pdf-download',
-                    total: progress.total
-                });
+            if (! progressTrackerRef.current) {
+                progressTrackerRef.current = createProgressTracker(progress.total);
             }
 
             if (progress.loaded > progress.total) {
                 return;
             }
 
-            ProgressMessages.broadcast(progressTracker!.abs(progress.loaded));
+            ProgressMessages.broadcast(progressTrackerRef.current!.abs(progress.loaded));
 
         };
 
-        docRef.current = await loadingTask.promise;
+        docRef.current = await loadingTaskRef.current.promise;
 
         const page = await docRef.current.getPage(1);
 
@@ -258,9 +282,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
-
-            // PageContextMenus.start()
-
             onPagesInit();
         });
 
@@ -268,8 +289,14 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         window.addEventListener('resize', resizeDebouncer, {passive: true});
 
-        document.getElementById("viewerContainer")!
-            .addEventListener("resize", resizeDebouncer);
+        const viewerContainer = document.getElementById("viewerContainer");
+
+        if (viewerContainer) {
+            viewerContainer.addEventListener("resize", resizeDebouncer);
+        } else {
+            log.warn("No viewer container");
+            return;
+        }
 
         setResizer(resizeDebouncer);
 
@@ -415,10 +442,9 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         onLoaded()
 
-    }, [dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
-        onPagesInit, pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler,
-        setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator,
-        setResizer, setScaleLeveler]);
+    }, [createProgressTracker, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded, onPagesInit,
+        pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler, setDocScale, setFinder,
+        setOutline, setOutlineNavigator, setPageNavigator, setResizer, setScaleLeveler]);
 
     React.useEffect(() => {
 
@@ -435,6 +461,42 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
     }, [doLoad, log, props.docMeta.docInfo.fingerprint]);
+
+    React.useEffect(() => {
+
+        return () => {
+
+            async function doAsync() {
+
+                if (loadingTaskRef.current) {
+
+                    console.log("Terminating PDF loading task...")
+
+                    try {
+                        await loadingTaskRef.current.destroy()
+                        console.log("Terminating PDF loading task...done")
+                    } finally {
+
+                        if (progressTrackerRef.current) {
+                            console.log("Terminating PDF progress tracker.")
+                            ProgressMessages.broadcast(progressTrackerRef.current.terminate());
+                        } else {
+                            console.warn("No PDF progress tracker to terminate");
+                        }
+
+                    }
+
+                } else {
+                    console.warn("No PDF loading task to terminate.");
+                }
+
+            }
+
+            doAsync()
+                .catch(err => console.error("Unable to destroy loading task: ", err));
+
+        }
+    }, []);
 
     useDocumentViewerVisibleElemFocus(
         props.docMeta.docInfo.fingerprint,
