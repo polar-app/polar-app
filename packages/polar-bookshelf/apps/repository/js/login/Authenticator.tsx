@@ -471,7 +471,7 @@ const OrCreateNewAccountButton = () => {
     );
 }
 
-export const LogoAndTextSideBySide = () => {
+const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
@@ -486,6 +486,26 @@ export const LogoAndTextSideBySide = () => {
                     </Box>
                 </div>
             </div>
+        </div>
+    )
+}
+
+const FlexLayoutForm = () => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+
+                <EmailTokenAuthButton/>
+
+            </div>
+
         </div>
     )
 }

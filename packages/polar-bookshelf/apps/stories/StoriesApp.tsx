@@ -38,11 +38,10 @@ import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
+import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
-import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
-import { MigrationToBlockAnnotationsMainContent } from './impl/MigrationToBlockAnnotations';
 
 interface IStory {
     readonly name: string;
@@ -66,6 +65,7 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+
     {
         name: "Migration Dialog 3.0",
         component: <MigrationToBlockAnnotationsMainContent/>

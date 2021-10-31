@@ -1,14 +1,18 @@
-import { Link, Paper } from '@material-ui/core';
+import { Link} from '@material-ui/core';
 import * as React from 'react';
 import {Box, Typography} from '@material-ui/core';
-import { LinearProgressWithLabel } from '../../../web/js/ui/dialogs/LinearProgressWithLabel';
-import { LogoAndTextSideBySide } from '../../repository/js/login/Authenticator';
+import { LinearProgressWithLabel } from '../../../../web/js/ui/dialogs/LinearProgressWithLabel';
+import { LogoAndTextSideBySide } from '../../../../apps/repository/js/login/Authenticator';
 import Grid from '@material-ui/core/Grid';
-import { AdaptiveDialog } from '../../../web/js/mui/AdaptiveDialog';
+import { AdaptiveDialog } from '../../../../web/js/mui/AdaptiveDialog';
 
-export const MigrationToBlockAnnotationsMainContent = () => {
+interface IProps {
+    readonly progress: number;
+}
 
-    const [progress, setProgress] = React.useState(10);
+export const MigrationToBlockAnnotationsMainContent = (props: IProps) => {
+
+    const {progress} = props;
 
     const StoriesCard = () => (
         <Grid item style={{flexGrow: 1, display: 'flex'}}>
@@ -44,24 +48,8 @@ export const MigrationToBlockAnnotationsMainContent = () => {
     )
 
     return (
-            <div style={{
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%'
-                }}>
-                    <Paper style={{
-                        margin: 'auto',
-                        maxWidth: '450px',
-                        minHeight: '450px',
-                        maxHeight: '650px',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-
-                    <StoriesCard/>
-
-                </Paper>
-            </div>
+        <AdaptiveDialog>
+            <StoriesCard/>
+        </AdaptiveDialog>
     )
 }
