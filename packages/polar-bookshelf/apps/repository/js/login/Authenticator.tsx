@@ -471,7 +471,7 @@ const OrCreateNewAccountButton = () => {
     );
 }
 
-const LogoAndTextSideBySide = () => {
+export const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
