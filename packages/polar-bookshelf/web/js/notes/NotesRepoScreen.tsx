@@ -2,7 +2,7 @@ import React from "react";
 import {GridCellParams, GridColDef, GridRowParams, MuiEvent, XGrid} from '@material-ui/x-grid';
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {createStyles, LinearProgress, fade, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
+import {createStyles, fade, LinearProgress, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
@@ -91,13 +91,13 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
             {
                 field: 'created',
                 headerName: 'Added',
-                flex: 1,
+                width: 120,
                 renderCell: DateCellRenderer,
             },
             {
                 field: 'updated',
                 headerName: 'Updated',
-                flex: 1,
+                width: 120,
                 renderCell: DateCellRenderer,
             },
         ] : []
@@ -106,6 +106,7 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
         field: 'actions',
         headerName: ' ',
         resizable: false,
+        width: 50,
         align: 'right' as const,
         renderCell({ row }: GridCellParams) {
             return (
