@@ -13,8 +13,8 @@ import {DocFileResolvers} from "../../../../web/js/datastore/DocFileResolvers";
 import {Images} from "../../../../web/js/metadata/Images";
 import {usePersistenceLayerContext} from '../persistence_layer/PersistenceLayerApp';
 import {IImage} from 'polar-shared/src/metadata/IImage';
-import {IBlock} from 'polar-blocks/src/blocks/IBlock';
-import {IRepoAnnotationContent} from '../block_annotation_repo/BlocksAnnotationRepoStore';
+import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
+import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
 
 
 /**
@@ -66,15 +66,16 @@ export const DocAnnotationReviewerScreen: React.FC<IDocAnnotationReviewerScreenP
 });
 
 export interface IBlockReviewerScreenProps {
-    readonly blocks: ReadonlyArray<IBlock<IRepoAnnotationContent>>;
+    readonly blockIDs: ReadonlyArray<BlockIDStr>;
     readonly mode: RepetitionMode;
     readonly onClose?: () => void;
     readonly limit?: number;
 }
 
 export const BlockReviewerScreen: React.FC<IBlockReviewerScreenProps> = deepMemo(function BlockReviewerScreen(props) {
-    const { blocks, mode, onClose, limit } = props;
+    const { blockIDs, mode, onClose, limit } = props;
     const { persistenceLayerProvider } = usePersistenceLayerContext();
+    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
 
     const imageResolver = React.useCallback((image: IImage) => {
         const resolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
@@ -82,8 +83,9 @@ export const BlockReviewerScreen: React.FC<IBlockReviewerScreenProps> = deepMemo
     }, [persistenceLayerProvider]);
 
     const dataProvider = React.useCallback(async (): Promise<CalculatedTaskReps<IBlockTaskAction>> => {
+        const blocks = blocksAnnotationRepoStore.idsToRepoAnnotationBlocks(blockIDs);
         return BlockReviewerTasks.createTasks(blocks, mode, imageResolver, limit);
-    }, [blocks, mode, limit, imageResolver]);
+    }, [blockIDs, mode, limit, imageResolver, blocksAnnotationRepoStore]);
 
     const store = useReviewerStoreProvider({
         mode,
