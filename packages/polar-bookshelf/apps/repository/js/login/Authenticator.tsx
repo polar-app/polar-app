@@ -18,7 +18,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
-import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
+import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -402,7 +402,7 @@ export const RegisterForBetaButton = () => {
             <BackendProgress pending={pending}/>
 
             {alert && (
-                <Alert severity={alert.type} 
+                <Alert severity={alert.type}
                         className={classes.alert}>
                     {alert.message}
                 </Alert>

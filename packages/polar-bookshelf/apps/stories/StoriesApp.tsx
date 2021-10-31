@@ -40,7 +40,8 @@ import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
-import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
+import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
+import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
 
 interface IStory {
     readonly name: string;
@@ -65,6 +66,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 
 const stories = createStoryIndex([
 
+    {
+        name: "MigrationToBlockAnnotationsMain",
+        component: <MigrationToBlockAnnotationsMainStory/>
+    },
     {
         name: "Auth Hide on Scroll",
         component: <AutoHideOnScrollStory/>
