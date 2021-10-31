@@ -10,16 +10,20 @@ import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../../apps/doc/src/DocView
 export const BlocksReviewRouter = observer(() => {
     const store = useBlocksAnnotationRepoStore();
 
+    const blockIDs = React.useMemo(() => {
+        return store.view.map(({ id }) => id);
+    }, [store.view]);
+
     return (
         <Switch location={ReactRouters.createLocationWithHashOnly()}>
             <Route path='#review-flashcards'>
                 <BlockReviewerScreen mode="flashcard"
-                                     blocks={store.view}/>
+                                     blockIDs={blockIDs}/>
             </Route>
 
             <Route path='#review-reading'>
                 <BlockReviewerScreen mode="reading"
-                                     blocks={store.view}/>
+                                     blockIDs={blockIDs}/>
             </Route>
         </Switch>
     );

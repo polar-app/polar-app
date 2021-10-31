@@ -1,32 +1,36 @@
 import {Box, createStyles, makeStyles, Table, TableBody, TableContainer, TableRow} from "@material-ui/core";
 import {observer} from "mobx-react-lite";
-import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import React from "react";
-import {BlockComponentProps, HiddenBlockComponentProps, IntersectionList, VisibleComponentProps} from "../../../../web/js/intersection_list/IntersectionList";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {BlockComponentProps, HiddenBlockComponentProps, IntersectionList, ListValue, VisibleComponentProps} from "../../../../web/js/intersection_list/IntersectionList";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {BlocksAnnotationRepoTableMenu} from "./BlocksAnnotationRepoContextMenu";
-import {IRepoAnnotationContent, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
+import {useAnnotationRepoViewBlockIDs, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
 import {BlocksAnnotationRepoTableRow, useFixedHeightBlockAnnotationCalculator} from "./BlocksAnnotationRepoTableRow";
 
 
-const VisibleComponent = (props: VisibleComponentProps<IBlock<IRepoAnnotationContent>>) => {
+const VisibleComponent = (props: VisibleComponentProps<ListValue>) => {
     const { index, value } = props;
 
     return (
         <BlocksAnnotationRepoTableRow key={value.id}
                                       viewIndex={index}
                                       rowSelected={true}
-                                      block={value} />
+                                      blockID={value.id} />
     );
 
 };
 
-const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<IBlock<IRepoAnnotationContent>>) {
+const BlockComponent = deepMemo(function BlockComponent(props: BlockComponentProps<ListValue>) {
 
     const fixedHeightAnnotationCalculator = useFixedHeightBlockAnnotationCalculator();
+    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
 
-    const height = Numbers.sum(...props.values.map(current => fixedHeightAnnotationCalculator(current)));
+    const height = React.useMemo(() => {
+        const blocks = blocksAnnotationRepoStore.idsToRepoAnnotationBlocks(props.values.map(({ id }) => id));
+        return Numbers.sum(...blocks.map(current => fixedHeightAnnotationCalculator(current)));
+    }, [props.values, blocksAnnotationRepoStore, fixedHeightAnnotationCalculator]);
 
     return (
         <TableBody ref={props.innerRef}
@@ -36,15 +40,20 @@ const BlockComponent = React.memo(function BlockComponent(props: BlockComponentP
 
 });
 
-const HiddenBlockComponent = (props: HiddenBlockComponentProps<IBlock<IRepoAnnotationContent>>) => {
+const HiddenBlockComponent = deepMemo((props: HiddenBlockComponentProps<ListValue>) => {
 
     const fixedHeightAnnotationCalculator = useFixedHeightBlockAnnotationCalculator();
+    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
 
-    const height = Numbers.sum(...props.values.map(current => fixedHeightAnnotationCalculator(current)));
+    const height = React.useMemo(() => {
+        const blocks = blocksAnnotationRepoStore.idsToRepoAnnotationBlocks(props.values.map(({ id }) => id));
+        return Numbers.sum(...blocks.map(current => fixedHeightAnnotationCalculator(current)));
+    }, [props.values, blocksAnnotationRepoStore, fixedHeightAnnotationCalculator]);
+
 
     return <TableRow style={{ minHeight: `${height}px`, height: `${height}px` }} />;
 
-};
+});
 
 export const [BlocksAnnotationRepoTableContextMenu, useBlocksAnnotationRepoTableContextMenu]
     = createContextMenu(BlocksAnnotationRepoTableMenu, {name: 'annotation-repo2'});
@@ -61,13 +70,12 @@ const useBlocksAnnotationRepoTableStyles = makeStyles(() =>
     }),
 );
 
-export const BlocksAnnotationRepoTable = React.memo(observer(function BlocksAnnotationRepoTable() {
+export const BlocksAnnotationRepoTable = observer(function BlocksAnnotationRepoTable() {
 
     const [root, setRoot] = React.useState<HTMLDivElement | null>(null);
     const classes = useBlocksAnnotationRepoTableStyles();
-    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
 
-    const highlightBlocks = blocksAnnotationRepoStore.view;
+    const highlightBlockIDs = useAnnotationRepoViewBlockIDs();
 
     return (
         <Box display="flex" flexDirection="column" className={classes.root}>
@@ -80,7 +88,7 @@ export const BlocksAnnotationRepoTable = React.memo(observer(function BlocksAnno
                            size="medium"
                            aria-label="enhanced table">
 
-                            <IntersectionList values={highlightBlocks}
+                            <IntersectionList values={highlightBlockIDs}
                                               root={root}
                                               blockSize={10}
                                               BlockComponent={BlockComponent}
@@ -92,4 +100,4 @@ export const BlocksAnnotationRepoTable = React.memo(observer(function BlocksAnno
 
         </Box>
     );
-}));
+});
