@@ -132,7 +132,7 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
             <Switch>
 
                 <Route path="/">
-                    <div className={clsx('PersistentRoute', className)}>
+                    <div className={clsx('PersistentRoute', className)} data-path={props.path}>
                         {props.children}
                     </div>
                 </Route>
