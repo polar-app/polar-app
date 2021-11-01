@@ -151,7 +151,7 @@ export namespace CapturedContentEPUBGenerator {
 
         const images = ENABLE_LOCAL_IMAGES ? convertDocumentToLocalImages(localImages) : [];
 
-        const coverImage = localImages.find(img => img.src == capture.image);
+        const coverImage = localImages.find(img => img.src === capture.image);
 
         const localContent = contentDoc.documentElement.outerHTML;
         const data = XHTMLWrapper.wrap({title, content: localContent});
