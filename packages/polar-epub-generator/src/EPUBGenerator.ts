@@ -161,7 +161,7 @@ export namespace EPUBGenerator {
 
                 function toManifestItem(image: EPUBImage): IManifestItem {
 
-                    if (image.id == doc.coverImageID) {
+                    if (image.id === doc.coverImageID) {
                         return {
                             id: image.id,
                             href: image.src,
