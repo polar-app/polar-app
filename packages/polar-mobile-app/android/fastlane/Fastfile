@@ -35,7 +35,7 @@ platform :android do
     version = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
     track_code = google_play_track_version_codes(track: 'production')
     version_code = increment_version_code(version_code: track_code[0]+1)
-    android_set_version_name(version_name: "#{version}")
+    android_set_version_name(version_name: version.to_str)
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'production')
   end
