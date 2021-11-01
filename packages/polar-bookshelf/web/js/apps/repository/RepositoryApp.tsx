@@ -69,8 +69,9 @@ import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
-import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 
 interface IProps {
     readonly app: App;
@@ -288,8 +289,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <Initializers/>
 
-                                <ActiveKeyboardShortcuts/>
-                                <JumpToNoteKeyboardCommand />
+                            <ActiveKeyboardShortcuts/>
+                            <JumpToNoteKeyboardCommand/>
+                            <JumpToDocumentKeyboardCommand/>
 
                                 <SideNav/>
                                 <DeviceRouters.NotDesktop>
