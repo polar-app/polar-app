@@ -342,6 +342,7 @@ const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
 ));
 
 const useDocumentBlockMigrator = () => {
+
     const { docMeta } = useDocViewerStore(['docMeta']);
     const { firestore, user } = useFirestore();
     const blocksStore = useBlocksStore();
@@ -352,6 +353,7 @@ const useDocumentBlockMigrator = () => {
     const annotationBlockManager = useAnnotationBlockManager();
 
     React.useEffect(() => {
+
         if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
             return;
         }

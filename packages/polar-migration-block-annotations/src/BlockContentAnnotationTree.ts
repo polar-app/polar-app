@@ -13,6 +13,7 @@ import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnota
 import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 
 export namespace BlockContentAnnotationTree {
 
@@ -154,30 +155,10 @@ export namespace BlockContentAnnotationTree {
     export function toFlashcardAnnotation(docMeta: IDocMeta,
                                           pageNum: number,
                                           annotation: IFlashcard): IFlashcardAnnotation {
-
-        const getFlashcard = () => {
-
-            if (annotation.type === FlashcardType.CLOZE) {
-                return {
-                    type: annotation.type,
-                    fields: { text: htmlToMarkdown(annotation.fields.text) },
-                };
-            } else {
-                return {
-                    type: annotation.type,
-                    fields: {
-                        front: htmlToMarkdown(annotation.fields.front),
-                        back: htmlToMarkdown(annotation.fields.back),
-                    },
-                };
-            }
-
-        };
-
         return {
             type: AnnotationContentType.FLASHCARD,
             pageNum,
-            value: { ...getFlashcard(), archetype: annotation.archetype },
+            value: annotationToBlockFlashcard(annotation),
             tags: Object.values(annotation.tags || {}),
             children: [],
             docID: docMeta.docInfo.fingerprint,
@@ -185,6 +166,30 @@ export namespace BlockContentAnnotationTree {
             updated: annotation.lastUpdated,
         };
 
+    }
+
+    /**
+     * Convert an IDocMeta flashcard object into a block flashcard object
+     *
+     * @param annotation IDocMeta flashcard object
+     */
+    export function annotationToBlockFlashcard(annotation: IFlashcard): IBlockFlashcard {
+        if (annotation.type === FlashcardType.CLOZE) {
+            return {
+                archetype: annotation.archetype,
+                type: annotation.type,
+                fields: { text: htmlToMarkdown(annotation.fields.text) },
+            };
+        } else {
+            return {
+                archetype: annotation.archetype,
+                type: annotation.type,
+                fields: {
+                    front: htmlToMarkdown(annotation.fields.front),
+                    back: htmlToMarkdown(annotation.fields.back),
+                },
+            };
+        }
     }
 
     /**

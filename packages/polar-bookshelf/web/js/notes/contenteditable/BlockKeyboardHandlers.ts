@@ -368,8 +368,6 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             abortEvent(event);
         }
 
-        console.log("FIXME: here at least");
-
         if (globalKeyboardShortcutHandler(event)) {
             abortEvent(event);
             return;

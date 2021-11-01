@@ -9,8 +9,9 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IBlocksStore} from "./IBlocksStore";
 import {BlockPredicates} from "./BlockPredicates";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocumentContent} from "../content/DocumentContent";
+import moment from "moment";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 
 export namespace BlocksStoreUndoQueues {
@@ -720,7 +721,8 @@ export namespace BlocksStoreUndoQueues {
         const update = (block: Block<DocumentContent>) => {
             const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
 
-            const getNewContent = (): IDocumentContent | null => {
+            
+            const getUpdatedDocumentContent = (): IDocumentContent | null => {
                 const deltaRecord = deltaMap.get(block.id);
                 const content = block.content.toJSON();
                 let updated = false;
@@ -757,16 +759,20 @@ export namespace BlocksStoreUndoQueues {
                 return content;
             };
 
-            block.withMutation(() => {
-                const updatedContent = getNewContent();
 
-                if (updatedContent) {
-                    block.setContent(updatedContent);
-                }
+            const shouldUpdateTimestamps = moment(opts.updated).diff(block.updated, 'minutes') >= 1; // Check if 1 minute had passed since the last update
+            const updatedDocumentContent = getUpdatedDocumentContent();
 
-            }, opts);
+            if (shouldUpdateTimestamps || updatedDocumentContent) {
+                block.withMutation(() => {
+                    if (updatedDocumentContent) {
+                        block.setContent(updatedDocumentContent);
+                    }
+                }, opts);
 
-            blocksStore.doPut([block]);
+                blocksStore.doPut([block]);
+            }
+
         };
 
         blocksStore.idsToBlocks(identifiers).filter(BlockPredicates.isDocumentBlock).forEach(update);

@@ -4,10 +4,10 @@ import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../ratings/RatingButtons";
 import {CardPaper} from "./CardPaper";
-import {DocAnnotationReadingTaskAction} from '../DocAnnotationReviewerTasks';
+import {IReadingTaskAction} from './ReadingTaskAction';
 
 export interface IProps {
-    readonly taskRep: TaskRep<DocAnnotationReadingTaskAction>;
+    readonly taskRep: TaskRep<IReadingTaskAction<unknown>>;
 }
 export const ReadingCard = (props: IProps) => {
 
@@ -21,9 +21,9 @@ export const ReadingCard = (props: IProps) => {
 
                 <CardPaper>
                     <AnnotationPreview id={id}
-                                       text={action.original.text}
-                                       img={action.original.img}
-                                       lastUpdated={action.original.lastUpdated}
+                                       text={action.text}
+                                       img={action.img}
+                                       lastUpdated={action.updated}
                                        created={created}
                                        color={color}/>
                 </CardPaper>

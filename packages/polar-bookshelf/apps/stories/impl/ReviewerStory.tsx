@@ -12,12 +12,14 @@ import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 import {StoryHolder} from "../StoryHolder";
-import {DocAnnotationFlashcardTaskAction, DocAnnotationTaskAction} from '../../repository/js/reviewer/DocAnnotationReviewerTasks';
+import {IDocAnnotationFlashcardTaskAction} from '../../repository/js/reviewer/DocAnnotationReviewerTasks';
 import {ReviewerRunner} from "../../repository/js/reviewer/ReviewerRunner";
 import {Reviewers} from "../../repository/js/reviewer/Reviewers";
-import {DocAnnotationReviewerStoreContext, ReviewerStore, useDocAnnotationReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
+import {ReviewerStore, ReviewerStoreContext, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
-import {observer} from 'mobx-react-lite';
+import {observer} from "mobx-react-lite";
+import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
+import {ITaskAction} from "../../repository/js/reviewer/ReviewerTasks";
 
 //
 // const createFlashcardTaskReps = async () => {
@@ -35,7 +37,7 @@ import {observer} from 'mobx-react-lite';
 // };
 
 
-const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<DocAnnotationFlashcardTaskAction>> => {
+const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<IDocAnnotationFlashcardTaskAction>> => {
 
     const docMeta = MockDocMetas.createMockDocMeta();
     const pageMeta = Object.values(docMeta.pageMetas)[0];
@@ -44,19 +46,23 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<DocAnnotationFlashcard
     const createFrontAndBackAction = (front: string, back: string) => {
 
         const flashcard = Flashcards.createFrontBack(front, back, ref);
+        const blockFlashcard = BlockContentAnnotationTree
+            .annotationToBlockFlashcard(flashcard);
         const docAnnotation = DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta);
-        const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        const flashcardTaskActions = FlashcardTaskActions.create(blockFlashcard, docAnnotation);
         return flashcardTaskActions[0];
     };
 
     const createClozeAction = (text: HTMLStr) => {
         const flashcard = Flashcards.createCloze(text, ref);
+        const blockFlashcard = BlockContentAnnotationTree
+            .annotationToBlockFlashcard(flashcard);
         const docAnnotation = DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta);
-        const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        const flashcardTaskActions = FlashcardTaskActions.create(blockFlashcard, docAnnotation);
         return flashcardTaskActions[0];
     };
 
-    const tasks: ReadonlyArray<Task<DocAnnotationFlashcardTaskAction>> = [
+    const tasks: ReadonlyArray<Task<IDocAnnotationFlashcardTaskAction>> = [
         {
             id: "10102",
             action: createClozeAction('The capital of California is {{c1::Sacramento}}.'),
@@ -96,7 +102,7 @@ const taskReps = createFlashcardTaskReps();
 
 const ReviewerStats = observer(() => {
 
-    const store = useDocAnnotationReviewerStore();
+    const store = useReviewerStore();
 
     return (
         <div>
@@ -112,21 +118,21 @@ export const ReviewerStory = () => {
     const [open, setOpen] = React.useState(false);
     const dialogManager = useDialogManager();
 
-    const doRating: Reviewers.IReviewer<DocAnnotationTaskAction>['doRating'] = React.useCallback(async (taskRep, rating) => {
+    const doRating: Reviewers.IReviewer<ITaskAction>['doRating'] = React.useCallback(async (taskRep, rating) => {
         console.log("onRating: ", { taskRep, rating });
     }, []);
 
-    const doSuspended: Reviewers.IReviewer<DocAnnotationTaskAction>['doSuspended'] = React.useCallback(async (taskRep) => {
+    const doSuspended: Reviewers.IReviewer<ITaskAction>['doSuspended'] = React.useCallback(async (taskRep) => {
         console.log("onSuspended: ", { taskRep });
     }, []);
 
-    const doFinished: Reviewers.IReviewer<DocAnnotationTaskAction>['doFinished'] = React.useCallback(async () => {
+    const doFinished: Reviewers.IReviewer<ITaskAction>['doFinished'] = React.useCallback(async () => {
         console.log("onFinished: ");
     }, []);
 
 
     const store = React.useMemo(() => {
-        return new ReviewerStore<DocAnnotationTaskAction>({
+        return new ReviewerStore<ITaskAction>({
             taskReps,
             doSuspended,
             doFinished,
@@ -140,7 +146,7 @@ export const ReviewerStory = () => {
         <StoryHolder>
             <BrowserRouter key="browser-router">
                 <Switch location={ReactRouters.createLocationWithPathAndHash()}>
-                    <DocAnnotationReviewerStoreContext.Provider value={store}>
+                    <ReviewerStoreContext.Provider value={store}>
                         {open && (
                             <ReviewerRunner store={store} />)}
 
@@ -153,7 +159,7 @@ export const ReviewerStory = () => {
 
                         <ReviewerStats/>
 
-                    </DocAnnotationReviewerStoreContext.Provider>
+                    </ReviewerStoreContext.Provider>
                 </Switch>
             </BrowserRouter>
         </StoryHolder>

@@ -6,7 +6,7 @@ import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {ReviewRatingGlobalHotKeys} from "./ReviewRatingGlobalHotKeys";
-import {DocAnnotationTaskAction} from '../DocAnnotationReviewerTasks';
+import {ITaskAction} from '../ReviewerTasks';
 
 const BUTTONS: ReadonlyArray<IRatingOption> = [
     {
@@ -30,7 +30,7 @@ const BUTTONS: ReadonlyArray<IRatingOption> = [
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<DocAnnotationTaskAction>;
+    readonly taskRep: TaskRep<ITaskAction>;
     readonly stage: Stage;
 
 }

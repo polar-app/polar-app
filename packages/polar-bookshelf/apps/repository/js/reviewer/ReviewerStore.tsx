@@ -4,18 +4,17 @@ import {CalculatedTaskReps, TaskRep} from "polar-spaced-repetition/src/spaced_re
 import {Rating, RepetitionMode, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Reviewers} from "./Reviewers";
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
-import {DocAnnotationTaskAction} from "./DocAnnotationReviewerTasks";
 import {useFirestore} from "../FirestoreProvider";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
-import {TaskAction} from "./ReviewerTasks";
+import {ITaskAction} from "./ReviewerTasks";
 
 
 interface IReviewerStoreInitOpts<T> extends Reviewers.IReviewer<T> {
     dialogManager: DialogManager;
 }
 
-export class ReviewerStore<T = TaskAction> {
+export class ReviewerStore<T = ITaskAction> {
     @observable currentTaskRep: TaskRep<T> | undefined = undefined;
     @observable pending: ReadonlyArray<TaskRep<T>>;
     @observable finished: number;
@@ -105,29 +104,29 @@ export class ReviewerStore<T = TaskAction> {
 
 }
 
-export const DocAnnotationReviewerStoreContext = React.createContext<ReviewerStore<DocAnnotationTaskAction> | undefined>(undefined);
+export const ReviewerStoreContext = React.createContext<ReviewerStore<ITaskAction> | undefined>(undefined);
 
-export const useDocAnnotationReviewerStore = (): ReviewerStore<DocAnnotationTaskAction> => {
-    const value = React.useContext(DocAnnotationReviewerStoreContext);
+export const useReviewerStore = (): ReviewerStore<ITaskAction> => {
+    const value = React.useContext(ReviewerStoreContext);
 
     if (! value) {
-        throw new Error("useDocAnnotationReviewerStore can only be called from within a component that's wrapped in DocAnnotationReviewerStoreProvider");
+        throw new Error("useReviewerStore can only be called from within a component that's wrapped in ReviewerStoreProvider");
     }
 
     return value;
 };
 
-interface IDocAnnotationReviewerStoreProviderOpts {
+interface IReviewerStoreProviderOpts {
     readonly mode: RepetitionMode;
-    readonly dataProvider: () => Promise<CalculatedTaskReps<DocAnnotationTaskAction>>;
+    readonly dataProvider: () => Promise<CalculatedTaskReps<ITaskAction>>;
     readonly onClose?: () => void;
 }
 
-export const useDocAnnotationReviewerStoreProvider = (opts: IDocAnnotationReviewerStoreProviderOpts): ReviewerStore<DocAnnotationTaskAction> | undefined => {
+export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore<ITaskAction> | undefined => {
     const { dataProvider, mode, onClose } = opts;
     const firestoreContext = useFirestore();
     const dialogManagerRef = useRefWithUpdates(useDialogManager())
-    const [store, setStore] = React.useState<ReviewerStore<DocAnnotationTaskAction>>();
+    const [store, setStore] = React.useState<ReviewerStore<ITaskAction>>();
 
     React.useEffect(() => {
         const createStore = async () => {
