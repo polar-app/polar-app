@@ -74,7 +74,7 @@ export namespace EPUBGenerator {
 
         readonly authors?: ReadonlyArray<AuthorStr>;
 
-        readonly cover?: RawData;
+        readonly coverImageID?: RawData;
 
         readonly lang?: LangStr;
 
@@ -161,6 +161,14 @@ export namespace EPUBGenerator {
 
                 function toManifestItem(image: EPUBImage): IManifestItem {
 
+                    if (image.id == doc.coverImageID) {
+                        return {
+                            id: image.id,
+                            href: image.src,
+                            mediaType: image.mediaType,
+                            properties: ['cover-image']
+                        };
+                    }
                     return {
                         id: image.id,
                         href: image.src,

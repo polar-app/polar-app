@@ -151,12 +151,15 @@ export namespace CapturedContentEPUBGenerator {
 
         const images = ENABLE_LOCAL_IMAGES ? convertDocumentToLocalImages(localImages) : [];
 
+        const coverImage = localImages.find(img => img.src == capture.image);
+
         const localContent = contentDoc.documentElement.outerHTML;
         const data = XHTMLWrapper.wrap({title, content: localContent});
 
         const doc: EPUBGenerator.EPUBDocument = {
             url,
             title,
+            coverImageID: coverImage?.id,
             conversion: ISODateTimeStrings.create(),
             contents: [
                 {
