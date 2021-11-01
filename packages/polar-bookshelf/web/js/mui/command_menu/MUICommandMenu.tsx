@@ -1,15 +1,14 @@
 import * as React from "react";
 import List from "@material-ui/core/List";
-import {MUICommandMenuItem} from "./MUICommandMenuItem";
-import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {IMUICommandMenuItemBaseProps, MUICommandMenuItem} from "./MUICommandMenuItem";
+import {GenericInputEvent, IKeyboardShortcutEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Input from "@material-ui/core/Input";
 import {Box} from "@material-ui/core";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -40,6 +39,8 @@ const useStyles = makeStyles((theme) =>
  */
 export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
 
+export type OnCommandHandler<C extends ICommand> = (command: C, event: GenericInputEvent) => void;
+
 export interface ICommand {
 
     /**
@@ -68,7 +69,11 @@ export interface ICommand {
 
 }
 
-interface IProps<C extends ICommand> {
+export interface ICommandWithHandler extends ICommand {
+    readonly handler: (event: IKeyboardShortcutEvent) => void;
+}
+
+interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
 
     readonly title?: string;
 
@@ -80,7 +85,7 @@ interface IProps<C extends ICommand> {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: C) => void;
+    readonly onCommand: OnCommandHandler<C>;
 
     /**
      * Called when the command menu should be closed.
@@ -129,10 +134,13 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     }, [commands, filterPredicate]);
 
-    const handleCommandExecuted = React.useCallback((command: C) => {
+    const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
 
-        onCommand(command);
+        // do the close first so that the menu vanishes as the command might
+        // take a while to execute and we want the UI to appear timely/fast.
         onClose('executed');
+
+        onCommand(command, event);
 
     }, [onClose, onCommand]);
 
@@ -214,7 +222,7 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
             stopHandlingEvent();
             if (index !== undefined) {
                 const command = commandsFiltered[index];
-                handleCommandExecuted(command);
+                handleCommandExecuted(command, event);
             }
         }
 
@@ -248,11 +256,10 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                             </div>
                         )}
 
-                        <Input autoFocus={true}
-                               disableUnderline={true}
-                               className={classes.textField}
-                               placeholder="Type a command or search ..."
-                               onChange={event => setFilter(event.target.value) }/>
+                        <TextField autoFocus={true}
+                                   className={classes.textField}
+                                   placeholder="Type a command or search ..."
+                                   onChange={event => setFilter(event.target.value) }/>
                     </>
                 </Box>
 
@@ -261,16 +268,17 @@ export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
                     {commandsFiltered.map((command, idx) => {
 
                         const selected = index === idx;
-                        const key = (command.group || '') + ':' + command.text + ':' + selected;
 
                         return (
-                            <MUICommandMenuItem key={key}
+                            <MUICommandMenuItem key={command.id}
                                                 className={classes.item}
                                                 text={command.text}
                                                 icon={command.icon}
                                                 selected={selected}
                                                 sequences={command.sequences}
-                                                onSelected={() => handleCommandExecuted(command)}/>
+                                                enableIcons={props.enableIcons || false}
+                                                enableKeyboardShortcuts={props.enableKeyboardShortcuts || false}
+                                                onSelected={(event) => handleCommandExecuted(command, event)}/>
                         );
                     })}
 

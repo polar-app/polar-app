@@ -5,9 +5,9 @@ import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {Devices} from "polar-shared/src/util/Devices";
-import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {GenericInputEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         dialog: {
             fontSize: '1.3rem',
@@ -28,7 +28,7 @@ interface IProps<C extends ICommand> {
     readonly description: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
     readonly commandsProvider: CommandsProvider<C>;
-    readonly onCommand: (command: C) => void;
+    readonly onCommand: (command: C, event: GenericInputEvent) => void;
 }
 
 export const MUICommandMenuKeyboardShortcut = <C extends ICommand>(props: IProps<C>) => {

@@ -5,8 +5,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import * as React from "react";
 import {KeySequences} from "../../hotkeys/KeySequences";
-import {MUIListItemRight} from "./MUIListItemRight";
-import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {GenericInputEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,7 +28,24 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IProps {
+export interface IMUICommandMenuItemBaseProps {
+
+    /**
+     * When true, we enable icons to the left. This way we require every action
+     * to have an icon but only if enabled.
+     */
+    readonly enableIcons?: boolean;
+
+    /**
+     * When true, we show the keyboard shortcuts to the right.  This has to be
+     * enabled as a hint so that every item is given an empty block if there are
+     * no shortcuts.
+     */
+    readonly enableKeyboardShortcuts?: boolean;
+
+}
+
+interface IProps extends Required<IMUICommandMenuItemBaseProps> {
 
     readonly icon?: React.ReactNode;
 
@@ -41,7 +58,7 @@ interface IProps {
 
     readonly sequences?: ReadonlyArray<KeyBinding>;
 
-    readonly onSelected: () => void;
+    readonly onSelected: (event: GenericInputEvent) => void;
 
     readonly className?: string;
 
@@ -53,8 +70,8 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
 
     const elementRef = React.useRef<HTMLElement | null>(null);
 
-    const handleClick = React.useCallback(() => {
-        props.onSelected()
+    const handleClick = React.useCallback((event: GenericInputEvent) => {
+        props.onSelected(event)
     }, [props])
 
     React.useEffect(() => {
@@ -73,21 +90,23 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
                   button
                   className={clsx(props.className, classes.root, props.selected && classes.selected)}
                   selected={props.selected}
-                  onClick={handleClick}>
+                  onClick={event => handleClick(event)}>
 
-            {props.icon && (
+            {props.enableIcons && props.icon && (
                 <ListItemIcon>
                     {props.icon}
                 </ListItemIcon>)}
 
             {props.text}
 
-            <MUIListItemRight>
-                <>
-                    {props.sequences && (
-                        <KeySequences sequences={props.sequences}/>)}
-                </>
-            </MUIListItemRight>
+            {props.enableKeyboardShortcuts && (
+                <ListItemSecondaryAction>
+                    <>
+                        {props.sequences && (
+                            <KeySequences sequences={props.sequences}/>)}
+                    </>
+                </ListItemSecondaryAction>
+            )}
 
         </ListItem>
     );
