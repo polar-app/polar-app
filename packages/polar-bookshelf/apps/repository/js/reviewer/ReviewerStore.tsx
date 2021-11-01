@@ -1,249 +1,156 @@
-import * as React from 'react';
-import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
-import {Provider} from "polar-shared/src/util/Providers";
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Rating, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {action, makeObservable, observable} from "mobx";
+import React from "react";
+import {CalculatedTaskReps, TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {Rating, RepetitionMode, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Reviewers} from "./Reviewers";
+import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
+import {useFirestore} from "../FirestoreProvider";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
+import {ITaskAction} from "./ReviewerTasks";
 
-/**
- * Called when we're finished all the tasks.
- *
- * @param cancelled true if the user explicitly cancelled the review.
- */
-export type FinishedCallback = () => Promise<void>;
 
-export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => Promise<void>;
+interface IReviewerStoreInitOpts<T> extends Reviewers.IReviewer<T> {
+    dialogManager: DialogManager;
+}
 
-/**
- * Called when we're finished all the tasks.
- *
- * @param cancelled true if the user explicitly cancelled the review.
- */
-export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => Promise<void>;
+export class ReviewerStore<T = ITaskAction> {
+    @observable currentTaskRep: TaskRep<T> | undefined = undefined;
+    @observable pending: ReadonlyArray<TaskRep<T>>;
+    @observable finished: number;
+    @observable total: number;
 
-interface IReviewerStore {
-
-    readonly initialized: boolean;
-
-    /**
-     * The current TaskRep we're working with or undefined when there are no more.
-     */
-    readonly taskRep?: TaskRep<any>;
-
-    readonly pending: TaskRep<any>[];
-
-    readonly finished: number;
-
-    readonly total: number;
-
-    readonly doRating: RatingCallback<any>;
-
-    readonly doSuspended: SuspendedCallback<any>;
-
-    readonly doFinished: FinishedCallback;
+    @observable hasFinished: boolean = false;
+    @observable hasSuspended: boolean = false;
 
     /**
      * The history of ratings (mostly for debug)
      */
-    readonly ratings: ReadonlyArray<ReviewRating>;
+    ratings: ReadonlyArray<ReviewRating>;
 
-    /**
-     * True if the user has finished.
-     */
-    readonly hasFinished: boolean | undefined;
+    private readonly doRating: IReviewerStoreInitOpts<T>['doRating'];
+    private readonly doFinished: IReviewerStoreInitOpts<T>['doFinished'];
+    private readonly doSuspended: IReviewerStoreInitOpts<T>['doSuspended'];
 
-    /**
-     * True if the user has suspended.
-     */
-    readonly hasSuspended: boolean | undefined;
+    private readonly dialogManager: DialogManager;
 
-}
+    constructor(opts: IReviewerStoreInitOpts<T>) {
+        const {
+            taskReps: [firstTaskRep, ...restTaskReps],
+            doRating,
+            doFinished,
+            doSuspended,
+            dialogManager,
+        } = opts;
 
-interface IReviewerCallbacks {
+        this.pending = [...restTaskReps];
+        this.finished = 0;
+        this.total = opts.taskReps.length;
+        this.currentTaskRep = firstTaskRep
+        this.doRating = doRating;
+        this.doFinished = doFinished;
+        this.doSuspended = doSuspended;
+        this.ratings = [];
+        this.dialogManager = dialogManager;
 
-    readonly init: <A>(taskReps: ReadonlyArray<TaskRep<A>>,
-                       doRating: RatingCallback<any>,
-                       doSuspended: SuspendedCallback<any>,
-                       doFinished: FinishedCallback) => void;
+        makeObservable(this);
+    }
 
-    readonly next: (rating: Rating) => boolean;
+    @action onFinished() {
+        this.hasFinished = true;
+        this.handleAsyncCallback(this.doFinished);
+    }
 
-    readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
+    @action onSuspended() {
+        this.hasSuspended = true;
 
-    readonly onSuspended: () => void;
+        const currentTaskRep = this.currentTaskRep;
 
-    readonly onFinished: () => void;
-
-    readonly onReset: () => void;
-
-}
-
-const initialStore: IReviewerStore = {
-    initialized: false,
-    taskRep: undefined,
-    pending: [],
-    finished: 0,
-    total: 0,
-    ratings: [],
-    hasSuspended: undefined,
-    hasFinished: undefined,
-    doFinished: ASYNC_NULL_FUNCTION,
-    doSuspended: ASYNC_NULL_FUNCTION,
-    doRating: ASYNC_NULL_FUNCTION
-}
-
-interface Mutator {
-
-}
-
-function mutatorFactory<A>(storeProvider: Provider<IReviewerStore>,
-                           setStore: SetStore<IReviewerStore>): Mutator {
-
-    return {};
-
-}
-
-function useCallbacksFactory(storeProvider: Provider<IReviewerStore>,
-                            setStore: (store: IReviewerStore) => void,
-                            mutator: Mutator): IReviewerCallbacks {
-
-    const dialogs = useDialogManager();
-
-    return React.useMemo(() => {
-
-        function reset() {
-            setStore({
-                initialized: false,
-                taskRep: undefined,
-                pending: [],
-                finished: 0,
-                total: 0,
-                doFinished: ASYNC_NULL_FUNCTION,
-                doSuspended: ASYNC_NULL_FUNCTION,
-                doRating: ASYNC_NULL_FUNCTION,
-                ratings: [],
-                hasSuspended: undefined,
-                hasFinished: undefined,
-            })
+        if (! currentTaskRep) {
+            return;
         }
 
-        function init<A>(taskReps: ReadonlyArray<TaskRep<A>>,
-                         doRating: RatingCallback<any>,
-                         doSuspended: SuspendedCallback<any>,
-                         doFinished: FinishedCallback) {
+        this.handleAsyncCallback(async () => this.doSuspended(currentTaskRep));
+    }
 
-            const pending = [...taskReps];
-            const total = taskReps.length;
+    @action onRating(taskRep: TaskRep<T>, rating: Rating) {
+        this.handleAsyncCallback(async () => this.doRating(taskRep, rating));
+        this.next(rating);
+    }
 
-            setStore({
-                initialized: true,
-                taskRep: pending.shift(),
-                pending,
-                total,
-                finished: 0,
-                doRating,
+    @action private next(rating: Rating): boolean {
+        const [current, ...rest] = this.pending;
+        this.currentTaskRep = current;
+        this.pending = rest;
+
+        this.finished += 1;
+        this.ratings = [...this.ratings, rating];
+
+        if (! current) {
+            // We're done
+            this.onFinished();
+            return true;
+        }
+
+        return false;
+    }
+
+    private handleAsyncCallback(delegate: () => Promise<void>) {
+        const handleError = (err: Error) =>
+            this.dialogManager.snackbar({ type: 'error', message: err.message });
+
+        delegate().catch(handleError)
+    }
+
+}
+
+export const ReviewerStoreContext = React.createContext<ReviewerStore<ITaskAction> | undefined>(undefined);
+
+export const useReviewerStore = (): ReviewerStore<ITaskAction> => {
+    const value = React.useContext(ReviewerStoreContext);
+
+    if (! value) {
+        throw new Error("useReviewerStore can only be called from within a component that's wrapped in ReviewerStoreProvider");
+    }
+
+    return value;
+};
+
+interface IReviewerStoreProviderOpts {
+    readonly mode: RepetitionMode;
+    readonly dataProvider: () => Promise<CalculatedTaskReps<ITaskAction>>;
+    readonly onClose?: () => void;
+}
+
+export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore<ITaskAction> | undefined => {
+    const { dataProvider, mode, onClose } = opts;
+    const firestoreContext = useFirestore();
+    const dialogManagerRef = useRefWithUpdates(useDialogManager())
+    const [store, setStore] = React.useState<ReviewerStore<ITaskAction>>();
+
+    React.useEffect(() => {
+        const createStore = async () => {
+            const { taskReps, doRating, doSuspended, doFinished } = await Reviewers.create({
+                firestore: firestoreContext!,
+                onClose,
+                data: await dataProvider(),
+                mode,
+            });
+
+            return new ReviewerStore({
+                taskReps,
                 doSuspended,
                 doFinished,
-                ratings: [],
-                hasFinished: undefined,
-                hasSuspended: undefined
+                doRating,
+                dialogManager: dialogManagerRef.current,
             });
-
-        }
-
-        function next(rating: Rating): boolean {
-
-            const store = storeProvider();
-
-            const pending = [...store.pending];
-            const taskRep = pending.shift();
-
-            if (! taskRep) {
-
-                setStore({
-                    ...store,
-                    taskRep: undefined,
-                    ratings: [...store.ratings, rating]
-                });
-
-                onFinished();
-
-                return true;
-
-            }
-
-            const finished = store.finished + 1;
-
-            console.log(`next: finished: ${finished}, nr pending: ${pending.length}`);
-
-            setStore({
-                ...store,
-                pending,
-                taskRep,
-                finished,
-                ratings: [...store.ratings, rating]
-            });
-
-            return false;
-        }
-
-
-        function handleAsyncCallback(delegate: () => Promise<void>) {
-
-            function handleError(err: Error) {
-                dialogs.snackbar({type: 'error', message: err.message});
-            }
-
-            delegate()
-                .catch(handleError)
-
-        }
-
-        function onRating(taskRep: TaskRep<any>, rating: Rating) {
-            console.log("ReviewerStore: onRating: " + rating);
-            handleAsyncCallback(async () => storeProvider().doRating(taskRep, rating));
-            next(rating);
-        }
-
-        function onSuspended() {
-            console.log("ReviewerStore: onSuspended");
-            const store = storeProvider();
-            const {taskRep} = store;
-
-            setStore({...store, hasSuspended: true});
-
-            if (! taskRep) {
-                // we suspended when we didn't have any tasks left.
-                return;
-            }
-
-            handleAsyncCallback(async () => store.doSuspended(taskRep));
-            reset();
-        }
-
-        function onFinished() {
-            console.log("ReviewerStore: onFinished");
-            const store = storeProvider();
-            setStore({...store, hasFinished: true});
-            handleAsyncCallback(async () => storeProvider().doFinished());
-        }
-
-        function onReset() {
-            reset();
-        }
-
-        return {
-            init, next, onRating, onSuspended, onFinished, onReset
         };
 
-    }, [dialogs, setStore, storeProvider]);
+        createStore()
+            .then(setStore)
+            .catch(console.error);
+    }, [dataProvider, mode, onClose, firestoreContext, dialogManagerRef]);
 
-}
 
-export const [ReviewerStoreProvider, useReviewerStore, useReviewerCallbacks] =
-    createObservableStore<IReviewerStore, Mutator, IReviewerCallbacks>({
-        initialValue: initialStore,
-        mutatorFactory,
-        callbacksFactory: useCallbacksFactory
-    });
+    return store;
+};

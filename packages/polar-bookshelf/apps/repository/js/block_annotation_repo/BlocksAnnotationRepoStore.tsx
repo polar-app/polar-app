@@ -1,4 +1,4 @@
-import {action, computed, makeObservable, observable} from "mobx";
+import {action, comparer, computed, makeObservable, observable, reaction} from "mobx";
 import {IAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
@@ -11,6 +11,7 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates";
 import {Block} from "../../../../web/js/notes/store/Block";
 import {BlocksAnnotationRepoFilters} from "./BlocksAnnotationRepoFilters";
+import {ListValue} from "../../../../web/js/intersection_list/IntersectionList";
 
 
 export type IRepoAnnotationContent = IAnnotationContent | IMarkdownContent;
@@ -39,14 +40,14 @@ export class BlocksAnnotationRepoStore {
         const block = this._blocksStore.getBlock(this._active);
         const blockJSON = block?.toJSON();
 
-        if (! blockJSON || ! this.isRepoAnnotationBlock(blockJSON)) {
+        if (! blockJSON || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(blockJSON)) {
             return undefined;
         }
 
         return blockJSON;
     }
 
-    @computed get annotationBlocks(): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
+    @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<ListValue> {
         const documentBlocks = this._blocksStore
             .idsToBlocks(Object.values(this._blocksStore.indexByDocumentID));
 
@@ -58,13 +59,19 @@ export class BlocksAnnotationRepoStore {
 
         const allChildren = [...highlights, ...firstLevelChildren];
 
-        return allChildren
-            .map(block => block.toJSON() as IBlock<IBlockContent>)
-            .filter(this.isRepoAnnotationBlock.bind(this));
+        const blockIDs = allChildren.map(({ id }) => ({ id }));
+        return blockIDs;
     }
 
-    @computed get view(): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
-        return BlocksAnnotationRepoFilters.execute(this.annotationBlocks, this._filter);
+    @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
+        const blocks = this._blocksStore
+            .idsToBlocks(this.annotationBlocks.map(({ id }) => id))
+            .map(block => block.toJSON() as IBlock<IBlockContent>)
+            .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock);
+
+        return BlocksAnnotationRepoFilters
+            .execute(blocks, this._filter)
+            .map(({ id }) => ({ id }));
     }
 
     get filter(): BlocksAnnotationRepoFilters.Filter {
@@ -97,9 +104,16 @@ export class BlocksAnnotationRepoStore {
         return this._selected.has(id);
     }
 
-    private isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
+    static isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
         return IBlockPredicates.isAnnotationBlock(block)
                || block.content.type === 'markdown';
+    }
+
+    public idsToRepoAnnotationBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
+        return this._blocksStore
+            .idsToBlocks(ids)
+            .map(block => block.toJSON() as IBlock<IBlockContent>)
+            .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock);
     }
 }
 
@@ -108,5 +122,18 @@ export const [BlocksAnnotationRepoStoreProvider, useBlocksAnnotationRepoStore] =
     const store = React.useMemo(() => new BlocksAnnotationRepoStore(blocksStore), [blocksStore]);
 
     return store;
-})
+});
 
+
+export const useAnnotationRepoViewBlockIDs = () => {
+    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
+    const [blockIDs, setBlockIDs] = React.useState<ReadonlyArray<ListValue>>([]);
+
+    React.useEffect(() => {
+        return reaction(() => blocksAnnotationRepoStore.view, (ids) => {
+            setBlockIDs(ids);
+        }, { equals: comparer.structural });
+    } ,[blocksAnnotationRepoStore, setBlockIDs]);
+
+    return blockIDs;
+};

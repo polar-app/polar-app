@@ -3,7 +3,6 @@ import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockLink, ITextCo
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
-import equal from "deep-equal";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
 import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
@@ -38,10 +37,9 @@ type IUseNamedBlocksOpts = {
 export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Block<NamedContent>> => {
     const { sort = false } = opts;
 	const blocksStore = useBlocksStore();
-	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
 	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
 
-	React.useEffect(() => {
+    const sortBlocks = React.useCallback((blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
 
         const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
 
@@ -59,7 +57,7 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
                         // documents and named notes have real names
                         return 1;
                     case "date":
-                        // ten sort by date
+                        // then sort by date
                         return 2;
 
                 }
@@ -81,23 +79,26 @@ export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Bl
 
         const comparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
 
-	    const disposer = autorun(() => {
+        return [...blocks].sort(comparator);
+    }, []);
+
+	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>(() => {
             const namedBlocksIDs = Object.values(blocksStore.indexByName);
-            if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+            const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+            return sort ? sortBlocks(namedBlocks) : namedBlocks;
+    });
+
+	React.useEffect(() => {
+	    return autorun(() => {
+            const namedBlocksIDs = Object.values(blocksStore.indexByName);
+            // if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
                 prevNamedBlocksIDsRef.current = namedBlocksIDs;
 
-                function doSort() {
-                    return [...namedBlocks].sort(comparator);
-                }
-
-                setNamedBlocks(sort ? doSort() : namedBlocks);
-
-            }
+                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+                setNamedBlocks(sort ? sortBlocks(namedBlocks) : namedBlocks);
+            // }
 	    });
-
-	    return () => disposer();
-	}, [blocksStore, sort]);
+	}, [blocksStore, sort, sortBlocks]);
 
 	return namedBlocks;
 };

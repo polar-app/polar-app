@@ -1,7 +1,7 @@
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-import {AnnotationContentType, IAnnotationHighlightContent, IAreaHighlightAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, IAnnotationHighlightContent, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 export namespace IBlockPredicates {
 
@@ -24,6 +24,10 @@ export namespace IBlockPredicates {
     export function isAnnotationHighlightBlock(block: Readonly<IBlock>): block is IBlock<IAnnotationHighlightContent> {
         return [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT]
             .some(type => block.content.type === type);
+    }
+
+    export function isAnnotationFlashcardBlock(block: Readonly<IBlock>): block is IBlock<IFlashcardAnnotationContent> {
+        return block.content.type === AnnotationContentType.FLASHCARD;
     }
 
 

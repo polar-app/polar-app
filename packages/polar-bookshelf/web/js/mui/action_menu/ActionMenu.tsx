@@ -180,6 +180,8 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
                                 icon={item.icon}
                                 selected={selected}
                                 sequences={item.sequences}
+                                enableIcons={false}
+                                enableKeyboardShortcuts={false}
                                 onSelected={() => handleActionExecuted(item)}/>
         );
     });
@@ -209,6 +211,8 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
                         ? menuItems
                         : (<MUICommandMenuItem
                             text="Search for a note"
+                            enableIcons={false}
+                            enableKeyboardShortcuts={false}
                             onSelected={NULL_FUNCTION}
                         />)
                     }

@@ -10,13 +10,7 @@
   },
   "permissions": [
     "activeTab",
-    "fileBrowserHandler",
-    "storage",
-    "tabCapture",
-    "contextMenus",
     "unlimitedStorage",
-    "declarativeContent",
-    "notifications",
     "*://*/*"
   ],
   "externally_connectable": {

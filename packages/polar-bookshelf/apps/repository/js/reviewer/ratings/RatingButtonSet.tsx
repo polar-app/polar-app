@@ -3,10 +3,11 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {RatingButton} from './RatingButton';
-import {useReviewerCallbacks} from "../ReviewerStore";
+import {useReviewerStore} from "../ReviewerStore";
+import {ITaskAction} from '../ReviewerTasks';
 
-export interface IProps<A> {
-    readonly taskRep: TaskRep<A>;
+export interface IProps {
+    readonly taskRep: TaskRep<ITaskAction>;
     readonly options: ReadonlyArray<IRatingOption>;
 }
 
@@ -15,16 +16,14 @@ export interface IRatingOption {
     readonly color: string;
 }
 
-export const RatingButtonSet = function<A>(props: IProps<A>) {
+export const RatingButtonSet = function(props: IProps) {
 
     const {options, taskRep} = props;
+    const store = useReviewerStore();
 
-    const {onRating} = useReviewerCallbacks();
-
-    const handleRating = React.useCallback((taskRep: TaskRep<any>, rating: Rating) => {
-        onRating(taskRep, rating);
-
-    }, [onRating]);
+    const handleRating = React.useCallback((taskRep: TaskRep<ITaskAction>, rating: Rating) => {
+        store.onRating(taskRep, rating);
+    }, [store]);
 
     return (
         <MUIButtonBar>

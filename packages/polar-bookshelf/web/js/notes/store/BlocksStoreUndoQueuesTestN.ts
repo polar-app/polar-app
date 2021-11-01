@@ -343,7 +343,9 @@ describe("BlocksStoreUndoQueues", () => {
 
             Asserts.assertPresent(block);
 
-            TestingTime.forward(1000);
+            const timeDiffMs = 1000 * 60 * 2; // 2 mins
+
+            TestingTime.forward(timeDiffMs);
 
             BlocksStoreUndoQueues.performDocumentSideEffects(
                 blocksStore,
@@ -355,10 +357,38 @@ describe("BlocksStoreUndoQueues", () => {
 
             Asserts.assertPresent(updatedBlock);
 
-            const updatedTime = ISODateTimeStrings.create((new Date(block.updated).getTime()) + 1000);
+            const updatedTime = ISODateTimeStrings.create((new Date(block.updated).getTime()) + timeDiffMs);
 
             assert.equal(updatedBlock.updated, updatedTime);
         });
+
+        it('should ignore timestamp updates that are within a timeframe of less than 1 minute', () => {
+            const blocksStore = createStore();
+            const id = '2020document';
+
+            const block = blocksStore.getBlockForMutation(id);
+
+            Asserts.assertPresent(block);
+
+            const timeDiffMs = 1000 * 30; // 30 secs
+
+            TestingTime.forward(timeDiffMs);
+
+            BlocksStoreUndoQueues.performDocumentSideEffects(
+                blocksStore,
+                ['2020document'],
+                []
+            );
+
+            const updatedBlock = blocksStore.getBlockForMutation(id);
+
+            Asserts.assertPresent(updatedBlock);
+
+            const updatedTime = ISODateTimeStrings.create((new Date(block.updated).getTime()));
+
+            assert.equal(updatedBlock.updated, updatedTime);
+        });
+
 
 
         it('should update the counters of docInfo when a child gets added', () => {
@@ -467,7 +497,6 @@ describe("BlocksStoreUndoQueues", () => {
 
             const newDocInfo = ownerDocumentBlock.content.toJSON().docInfo;
 
-            console.log('debug', newDocInfo.nrAreaHighlights, oldDocInfo.nrAreaHighlights || 0);
             assert.equal(newDocInfo.nrAreaHighlights, (oldDocInfo.nrAreaHighlights || 0) - 1, 'nrAreaHighlights should have the correct number');
             assert.equal(newDocInfo.nrAnnotations, (oldDocInfo.nrAnnotations || 0) - 1, 'nrAnnotations should have the correct number');
         });

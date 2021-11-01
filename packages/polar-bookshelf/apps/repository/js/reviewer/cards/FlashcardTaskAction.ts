@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 /**
  * A flashcard action to show in the UI with front and back slides.
  */
-export interface FlashcardTaskAction {
+export interface IFlashcardTaskAction<T = unknown> {
+    readonly type: 'flashcard';
 
-    readonly front: React.ReactElement<any>;
+    readonly front: React.ReactElement;
 
-    readonly back: React.ReactElement<any>;
+    readonly back: React.ReactElement;
 
-    readonly docAnnotation: IDocAnnotation;
+    readonly original: T;
 
 }

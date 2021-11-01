@@ -20,7 +20,7 @@ import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
-import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
+import {useAutoFlashcardCreator} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 import {useAnnotationLink} from './JumpToAnnotationHook';
 
@@ -103,7 +103,7 @@ const CreateFlashcardButton = deepMemo(function CreateFlashcardButton(props: IMu
 });
 
 const CreateAIFlashcardButton = deepMemo(function CreateAIFlashcardButton(props: IAnnotationProps) {
-    const [status, handler] = useAutoFlashcardHandler(props.annotation);
+    const [status, handler] = useAutoFlashcardCreator(props.annotation);
     const theme = useTheme();
 
     const verifiedAction = useAIFlashcardVerifiedAction();

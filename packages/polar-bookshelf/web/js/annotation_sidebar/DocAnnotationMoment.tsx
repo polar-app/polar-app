@@ -33,10 +33,8 @@ export const DocAnnotationMoment = React.memo(function DocAnnotationMoment(props
 
     return (
         <div style={style} className={clsx(classes.root, className)}>
-            <Moment style={{
-                        fontSize: '12px'
-                    }}
-                    withTitle={true}
+            <Moment style={{ fontSize: '12px' }}
+                    withTitle
                     titleFormat="D MMM YYYY hh:MM A" fromNow>
                 {created}
             </Moment>
