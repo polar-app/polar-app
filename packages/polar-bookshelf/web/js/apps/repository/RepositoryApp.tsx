@@ -70,8 +70,8 @@ import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
-import {ActiveKeyboardShortcuts2} from "../../hotkeys/ActiveKeyboardShortcuts2";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 
 interface IProps {
     readonly app: App;
@@ -289,7 +289,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <Initializers/>
 
-                            <ActiveKeyboardShortcuts2/>
+                            <ActiveKeyboardShortcuts/>
                             <JumpToNoteKeyboardCommand/>
                             <JumpToDocumentKeyboardCommand/>
 
