@@ -41,6 +41,7 @@ export const SearchForNote: React.FC = observer(() => {
             size="medium"
             options={sortedNamedBlocks}
             getOptionLabel={option => option}
+            fullWidth
             inputValue={inputValue}
             blurOnSelect={true}
             onInputChange={(_, nextInputValue) => {

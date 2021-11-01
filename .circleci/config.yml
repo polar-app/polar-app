@@ -454,7 +454,7 @@ jobs:
             - polar-mobile-app
 
   # @ Build fastlane for deployment
-  Android:
+  Android-Internal:
     parameters:
       executor:
         type: executor
@@ -481,7 +481,34 @@ jobs:
             bundle exec fastlane run validate_play_store_json_key
             bundle exec fastlane beta
 
-  IOS:
+  Android-Release:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: build fastlane for ci
+    working_directory: ~/polar-mobile-app/android
+    steps:
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Bundle & Deploy
+          command: |
+            bundle update fastlane
+            touch google-play-service-account.json
+            echo $ANDROID_DEPLOYMENT_CONFIG >> google-play-service-account.json
+            bundle exec fastlane run google_play_track_version_codes
+            bundle exec fastlane run validate_play_store_json_key
+            bundle exec fastlane release
+
+  IOS-Testflight:
     working_directory: ~/polar-mobile-app/ios
     macos:
       xcode: "13.0.0"
@@ -502,6 +529,28 @@ jobs:
             bundle update fastlane
             pod install
             bundle exec fastlane beta
+
+  IOS-Release:
+    working_directory: ~/polar-mobile-app/ios
+    macos:
+      xcode: "13.0.0"
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Bundle & Deploy
+          command: |
+            bundle update fastlane
+            pod install
+            bundle exec fastlane release
 
 # ~ Define Custom Executors
 executors:
@@ -661,22 +710,39 @@ workflows:
     when:
       equal: [master, << pipeline.git.branch >>]
     jobs:
-      - Approve-Android:
+      - Approve-Android-Internal:
           type: approval
 
-      - Approve-IOS:
+      - Approve-Android-Release:
+          type: approval
+
+      - Approve-IOS-Testflight:
+          type: approval
+
+      - Approve-IOS-Release:
           type: approval
 
       - build-setup:
           executor: large
 
-      - Android:
+      - Android-Internal:
           executor: android
           requires:
-            - Approve-Android
+            - Approve-Android-Internal
             - build-setup
 
-      - IOS:
+      - Android-Release:
+          executor: android
           requires:
-            - Approve-IOS
+            - Approve-Android-Release
+            - build-setup
+
+      - IOS-Testflight:
+          requires:
+            - Approve-IOS-Testflight
+            - build-setup
+
+      - IOS-Release:
+          requires:
+            - Approve-IOS-Release
             - build-setup

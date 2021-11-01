@@ -1,15 +1,14 @@
 import * as React from "react";
-import {ReadingTaskAction} from "./ReadingTaskAction";
+import {IReadingTaskAction} from "./ReadingTaskAction";
 import {ReadingCard} from "./ReadingCard";
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
+import {IFlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardCard} from "./FlashcardCard";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {DocAnnotationTaskAction, DocAnnotationTaskActionPredicates} from "../DocAnnotationReviewerTasks";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ITaskAction, TaskActionPredicates} from "../ReviewerTasks";
 
 interface IDoReadingCardProps {
-    readonly taskRep: TaskRep<ReadingTaskAction<IDocAnnotation>>;
+    readonly taskRep: TaskRep<IReadingTaskAction>;
 }
 
 const DoReadingCard = deepMemo(function DoReadingCard(props: IDoReadingCardProps) {
@@ -20,7 +19,7 @@ const DoReadingCard = deepMemo(function DoReadingCard(props: IDoReadingCardProps
 });
 
 interface IDoFlashcardCardProps {
-    readonly taskRep: TaskRep<FlashcardTaskAction<IDocAnnotation>>;
+    readonly taskRep: TaskRep<IFlashcardTaskAction>;
 }
 
 const DoFlashcardCard: React.FC<IDoFlashcardCardProps> = deepMemo(function DoFlashcardCard(props) {
@@ -37,15 +36,15 @@ const DoFlashcardCard: React.FC<IDoFlashcardCardProps> = deepMemo(function DoFla
 
 
 interface IReviewerCardProps {
-    readonly taskRep: TaskRep<DocAnnotationTaskAction>;
+    readonly taskRep: TaskRep<ITaskAction>;
 }
 
 export const ReviewerCard: React.FC<IReviewerCardProps> = (props) => {
     const { taskRep } = props;
 
-    if (DocAnnotationTaskActionPredicates.isReadingTaskRep(taskRep)) {
+    if (TaskActionPredicates.isReadingTaskRep(taskRep)) {
         return <DoReadingCard taskRep={taskRep} />;
-    } else if (DocAnnotationTaskActionPredicates.isFlashcardTaskRep(taskRep)) {
+    } else if (TaskActionPredicates.isFlashcardTaskRep(taskRep)) {
         return <DoFlashcardCard taskRep={taskRep} />;
     }
 

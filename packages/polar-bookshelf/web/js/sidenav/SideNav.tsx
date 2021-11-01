@@ -7,7 +7,6 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
@@ -32,6 +31,7 @@ import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
+import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -162,7 +162,7 @@ const DailyNotesButton = React.memo(function AnnotationsButton() {
     return (
         <SideNavHistoryButton title="Daily Notes"
                               path={RoutePathNames.DAILY}>
-            <CalendarTodayIcon className={classes.secondaryIcon}/>
+            <MUICalendarMonthDayIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });
