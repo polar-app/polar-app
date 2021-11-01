@@ -74,7 +74,7 @@ export namespace ContainerOPF {
 
             function toHTML(manifestItem: IManifestItem) {
 
-                if (manifestItem.properties && manifestItem.properties.length != 0) {
+                if (manifestItem.properties && manifestItem.properties.length !== 0) {
                     const properties = manifestItem.properties.join(' ');
                     return `<item properties="${properties}" href="${manifestItem.href}" id="${manifestItem.id}" media-type="${manifestItem.mediaType}"/>`;
                 }
