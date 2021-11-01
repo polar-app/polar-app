@@ -166,7 +166,6 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
         }
     }, [blocksAnnotationRepoStore, block]);
-    trace();
 
     if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
         return null;
