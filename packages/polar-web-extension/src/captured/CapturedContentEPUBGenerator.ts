@@ -12,16 +12,7 @@ export namespace CapturedContentEPUBGenerator {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
-    const ENABLE_LOCAL_IMAGES = true;
-
-    interface LocalImage {
-        readonly id: string;
-        readonly img: HTMLImageElement;
-        readonly src: string;
-        readonly newSrc: string;
-        readonly blob: Blob;
-        readonly mediaType: string;
-    }
+    import LocalImage = EPUBGenerator.LocalImage;
 
     async function toLocalImage(url: URLStr,
                                 img: HTMLImageElement): Promise<LocalImage | undefined> {
@@ -149,7 +140,7 @@ export namespace CapturedContentEPUBGenerator {
                 .map(current => current!)
                 .collect();
 
-        const images = ENABLE_LOCAL_IMAGES ? convertDocumentToLocalImages(localImages) : [];
+        const images = convertDocumentToLocalImages(localImages);
 
         const coverImage = localImages.find(img => img.src === capture.image);
 
@@ -159,7 +150,7 @@ export namespace CapturedContentEPUBGenerator {
         const doc: EPUBGenerator.EPUBDocument = {
             url,
             title,
-            coverImageID: coverImage?.id,
+            cover: coverImage,
             conversion: ISODateTimeStrings.create(),
             contents: [
                 {
