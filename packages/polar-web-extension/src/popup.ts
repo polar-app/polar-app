@@ -2,9 +2,9 @@ import {AuthHandlers} from "polar-bookshelf/web/js/apps/repository/auth_handler/
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {PopupApp} from "./ui/popup/PopupApp";
 import {Tabs} from "./chrome/Tabs";
-import loadLinkInActiveTab = Tabs.loadLinkInActiveTab;
 import {SignInSuccessURLs} from "polar-bookshelf/apps/repository/js/login/SignInSuccessURLs";
 import {Karma} from "./Karma";
+import loadLinkInActiveTab = Tabs.loadLinkInActiveTab;
 
 function loadLinkInNewTab(link: string) {
     chrome.tabs.create({url: link});
@@ -60,7 +60,7 @@ async function requireAuth(): Promise<boolean> {
 
 }
 
-export function injectContentScript() {
+export function injectContentScript(callback: () => void) {
 
     console.log("Injecting content script...");
 
@@ -84,10 +84,11 @@ async function handleExtensionActivated() {
     const authenticated = await requireAuth();
 
     if (authenticated) {
-        injectContentScript();
+        injectContentScript(() => {
+            console.log("Content script successfully injected (closing window).")
+            window.close();
+        });
     }
-
-    window.close();
 
 }
 
