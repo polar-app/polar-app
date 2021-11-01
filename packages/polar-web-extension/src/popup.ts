@@ -66,7 +66,7 @@ export function injectContentScript(callback: () => void) {
 
     chrome.tabs.executeScript({
         file: 'content-bundle.js'
-    });
+    }, callback);
 
     console.log("Injecting content script...done");
 
