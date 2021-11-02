@@ -60,10 +60,12 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
     const classes = useStyles();
     const [hovered, setHovered] = React.useState(false);
 
-    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 50), [setHovered]);
-    const handleShow = React.useCallback(() => {
+    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 100), [setHovered]);
+
+    const handleShow = React.useCallback((event: React.MouseEvent) => {
         handleHide.clear();
         setHovered(true);
+        event.stopPropagation();
     }, [setHovered, handleHide]);
 
     return (
