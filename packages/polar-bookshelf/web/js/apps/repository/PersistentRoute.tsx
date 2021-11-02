@@ -1,8 +1,5 @@
 import {Route, Switch} from "react-router-dom";
 import * as React from "react";
-import isEqual from "react-fast-compare";
-import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
-import {deepMemo} from "../../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
@@ -78,13 +75,20 @@ interface MountListenerProps {
 }
 
 const MountListener = React.memo(function MountListener(props: MountListenerProps) {
+    
+    React.useEffect(() => {
 
-    useComponentDidMount(() => props.onMounted(true));
-    useComponentWillUnmount(() => props.onMounted(false));
+        props.onMounted(true);
+
+        return () => {
+            props.onMounted(false)
+        }
+
+    })
 
     return null;
 
-}, isEqual);
+});
 
 export interface IPersistentRouteContext {
     readonly active: boolean;
@@ -100,12 +104,12 @@ type Strategy = 'display' | 'visibility';
 
 interface IProps {
     readonly children: React.ReactElement;
-    readonly path: string | string[];
+    readonly path: string;
     readonly exact?: boolean;
     readonly strategy: Strategy;
 }
 
-export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) {
+export const PersistentRoute = React.memo(function PersistentRoute(props: IProps) {
 
     const displayClasses = useDisplayStyles();
     const visibilityClasses = useVisibilityStyles();

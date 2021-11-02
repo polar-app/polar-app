@@ -1,25 +1,25 @@
 import * as React from 'react';
 
-export interface IReactiveStoreProviderProps<T> {
+export interface IStoreContextProviderProps<T> {
     readonly children: JSX.Element;
     readonly initialStore?: T;
 }
 
-export type ReactiveStoreProviderComponent<T> = React.FunctionComponent<IReactiveStoreProviderProps<T>>;
+export type StoreContextProviderComponent<T> = React.FunctionComponent<IStoreContextProviderProps<T>>;
 
 export type StoreProvider<T> = () => T;
 
-export type ReactiveStoreTuple<T> = [
-    ReactiveStoreProviderComponent<T>,
+export type StoreContextTuple<T> = [
+    StoreContextProviderComponent<T>,
     StoreProvider<T>
 ];
 
 
-export function createReactiveStore<T>(useStoreDelegate: () => T): ReactiveStoreTuple<T> {
+export function createStoreContext<T>(useStoreDelegate: () => T): StoreContextTuple<T> {
 
     const StoreContext = React.createContext<T>(null!);
 
-    const StoreProvider = React.memo(function StoreProvider(props: IReactiveStoreProviderProps<T>) {
+    const StoreProvider = React.memo(function StoreProvider(props: IStoreContextProviderProps<T>) {
 
         const defaultStore = useStoreDelegate();
 
