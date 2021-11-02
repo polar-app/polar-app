@@ -153,7 +153,7 @@ commands:
           name: Diff Eslint
           no_output_timeout: 30m
           command: |
-            FORK_POINT=$(git merge-base --fork-point origin/master)
+            FORK_POINT=$(git merge-base origin/master $CIRCLE_BRANCH)
             git checkout $FORK_POINT
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
             lerna run eslint --no-bail >> forkpoint-output.txt || true
