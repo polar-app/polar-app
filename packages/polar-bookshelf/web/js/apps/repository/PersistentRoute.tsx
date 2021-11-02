@@ -111,6 +111,16 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
     const visibilityClasses = useVisibilityStyles();
 
     const [active, setActive] = React.useState(false);
+    const activeRef = React.useRef(active);
+
+    const handleMounted = React.useCallback((mounted: boolean) => {
+
+        if (mounted !== activeRef.current) {
+            activeRef.current = mounted;
+            setActive(mounted);
+        }
+
+    }, []);
 
     const computeClassName = React.useCallback((active: boolean) => {
 
@@ -133,7 +143,9 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
 
                 <Route path="/">
                     <div className={clsx('PersistentRoute', className)}>
-                        {props.children}
+                        <Cached>
+                            {props.children}
+                        </Cached>
                     </div>
                 </Route>
 
@@ -141,10 +153,21 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
 
             <Switch>
                 <Route exact path={props.path}>
-                    <MountListener onMounted={setActive}/>
+                    <MountListener onMounted={handleMounted}/>
                 </Route>
             </Switch>
        </PersistentRouteContext.Provider>
     );
 
+});
+
+interface CachedProps {
+    readonly children: React.ReactElement;
+}
+
+/**
+ * Just a memoized component that only takes a child and is always cached.
+ */
+const Cached = React.memo(function Cached(props: CachedProps) {
+    return props.children;
 });

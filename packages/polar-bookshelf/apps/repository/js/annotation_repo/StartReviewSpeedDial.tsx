@@ -1,11 +1,11 @@
 import {useHistory} from "react-router-dom";
 import React from "react";
-import SpeedDial from "@material-ui/lab/SpeedDial";
 import RateReviewIcon from "@material-ui/icons/RateReview";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import SpeedDial from '@material-ui/lab/SpeedDial';
 
 const useStyles = makeStyles((theme: Theme) =>
      createStyles({

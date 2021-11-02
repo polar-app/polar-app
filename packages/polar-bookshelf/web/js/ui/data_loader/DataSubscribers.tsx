@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
-import Alert from "@material-ui/lab/Alert";
+import Alert from '@material-ui/lab/Alert';
 import {SnapshotSubscriber, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {ErrorType} from "./UseSnapshotSubscriber";
 

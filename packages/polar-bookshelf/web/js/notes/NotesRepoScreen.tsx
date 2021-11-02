@@ -11,7 +11,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
 import {Block} from "./store/Block";
-import {NotesToolbar} from "./NotesToolbar";
 import {Devices} from "polar-shared/src/util/Devices";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {DocAnnotationMoment} from "../annotation_sidebar/DocAnnotationMoment";
@@ -195,10 +194,9 @@ export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
         loadNote(id as string);
     }, [loadNote]);
 
-    return (
-        <>
-            <NotesToolbar />
-            {blocksStore.hasSnapshot
+    console.log("FIXME: rendering the NotesRepoScreen ");
+
+    return blocksStore.hasSnapshot
                 ? (
                     <XGrid
                         hideFooterSelectedRowCount={true}
@@ -213,7 +211,5 @@ export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
                         checkboxSelection
                     />
                 ) : <LinearProgress />
-            }
-        </>
-    );
+
 };

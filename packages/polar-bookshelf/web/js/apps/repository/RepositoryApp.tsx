@@ -289,9 +289,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <Initializers/>
 
-                            <ActiveKeyboardShortcuts/>
-                            <JumpToNoteKeyboardCommand/>
-                            <JumpToDocumentKeyboardCommand/>
+                                <ActiveKeyboardShortcuts/>
+                                <JumpToNoteKeyboardCommand/>
+                                <JumpToDocumentKeyboardCommand/>
 
                                 <SideNav/>
                                 <DeviceRouters.NotDesktop>
@@ -340,11 +340,30 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                             <>
 
-                                                <PersistentRoute path={RoutePathNames.NOTES}
+                                                {/*<PersistentRoute path={RoutePathNames.NOTES}*/}
+                                                {/*                 exact*/}
+                                                {/*                 strategy="display">*/}
+                                                {/*    <NotesRepoScreen/>*/}
+                                                {/*</PersistentRoute>*/}
+
+                                                <Route path={RoutePathNames.NOTES}
                                                                  exact
-                                                                 strategy="display">
-                                                    <NotesRepoScreen/>
-                                                </PersistentRoute>
+                                                                 >
+                                                    {/*<ParentSizedContainer>*/}
+                                                    {/*    <NotesRepoScreen/>*/}
+                                                    {/*</ParentSizedContainer>*/}
+
+                                                    <div style={{height: 500, width: 500}}>
+                                                        {/*<div style={{ display: 'flex', height: '100%' }}>*/}
+                                                        {/*    <div style={{ flexGrow: 1 }}>*/}
+                                                                <NotesRepoScreen/>
+                                                        {/*    </div>*/}
+                                                        {/*</div>*/}
+
+                                                    </div>
+
+
+                                                </Route>
 
                                                 <PersistentRoute path={RoutePathNames.DAILY}
                                                                  strategy="display"
@@ -353,6 +372,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 </PersistentRoute>
 
                                                 <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                       exact
                                                        component={NotesScreen}/>
 
                                             </>
