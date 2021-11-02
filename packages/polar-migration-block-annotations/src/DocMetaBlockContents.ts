@@ -106,7 +106,7 @@ export namespace DocMetaBlockContents {
 
         return {
             docContentStructure: {
-                id: Hashcodes.create(documentContent.docInfo.fingerprint),
+                id: Hashcodes.createRandomID(),
                 content: documentContent,
                 children: sortedAnnotationContentStructure,
                 created: docMeta.docInfo.added,
@@ -133,7 +133,7 @@ export namespace DocMetaBlockContents {
 
         return {
             docContentStructure: {
-                id: Hashcodes.create(documentContent.docInfo.fingerprint),
+                id: Hashcodes.createRandomID(),
                 content: documentContent,
                 children: [],
             },
