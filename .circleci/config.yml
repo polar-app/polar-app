@@ -216,6 +216,7 @@ jobs:
       - checkout
       - restore_yarn_cache
       - bootstrap
+      - eslint-diff
       - check_duplicates
 
   # @ Run Karma Test Suite
