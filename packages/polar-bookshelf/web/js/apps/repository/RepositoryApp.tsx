@@ -289,9 +289,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 <Initializers/>
 
-                            <ActiveKeyboardShortcuts/>
-                            <JumpToNoteKeyboardCommand/>
-                            <JumpToDocumentKeyboardCommand/>
+                                <ActiveKeyboardShortcuts/>
+                                <JumpToNoteKeyboardCommand/>
+                                <JumpToDocumentKeyboardCommand/>
 
                                 <SideNav/>
                                 <DeviceRouters.NotDesktop>
