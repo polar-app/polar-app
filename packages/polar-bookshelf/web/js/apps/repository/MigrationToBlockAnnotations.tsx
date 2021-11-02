@@ -15,6 +15,7 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
+import {Percentages} from "polar-shared/src/util/Percentages";
 import {ErrorType} from "../../ui/data_loader/UseSnapshotSubscriber";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
@@ -29,9 +30,9 @@ const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const MIGRATION_NAME = 'block-annotations';
 
 type ProgressData = {
-    total: number;
-    current: number;
-    started: ISODateTimeString;
+    readonly total: number;
+    readonly current: number;
+    readonly started: ISODateTimeString;
 };
 
 namespace MigrationToBlockAnnotationsHelpers {
@@ -125,7 +126,7 @@ namespace MigrationToBlockAnnotationsHelpers {
      * @param uid The uid of the owner.
      */
     export async function getDocMetaIDs(firestore: IFirestoreClient,
-                                        uid: UIDStr): Promise<ReadonlyArray<{ id: string, migrated: boolean }>> {
+                                        uid: UIDStr): Promise<ReadonlyArray<{ readonly id: string, readonly migrated: boolean }>> {
 
         const data = await firestore
             .collection('doc_meta')
@@ -304,9 +305,11 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         </Alert>
     }
 
+    const percentage = progressData ? Percentages.calculate(progressData.current, progressData.total) : 0;
+
     return (
         <AdaptiveDialog>
-            <MigrationToBlockAnnotationsMain progress={progressData ? progressData.current / progressData.total * 100 : 0} />
+            <MigrationToBlockAnnotationsMain progress={percentage} />
         </AdaptiveDialog>
     );
 });
