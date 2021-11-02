@@ -1,5 +1,10 @@
 import {Box, createStyles, makeStyles, TableCell, TableRow, Theme, useTheme} from "@material-ui/core";
-import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {
+    AnnotationContentType,
+    IAreaHighlightAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {DocFileResolvers} from "../../../../web/js/datastore/DocFileResolvers";
@@ -10,12 +15,15 @@ import {ColorStr} from "../../../../web/js/ui/colors/ColorSelectorBox";
 import {DateTimeTableCell} from "../DateTimeTableCell";
 import {usePersistenceLayerContext} from "../persistence_layer/PersistenceLayerApp";
 import {calculateTextPreviewHeight} from "../annotation_repo/FixedHeightAnnotationPreview";
-import {BlocksAnnotationRepoStore, IRepoAnnotationContent, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
+import {
+    BlocksAnnotationRepoStore,
+    IRepoAnnotationContent,
+    useBlocksAnnotationRepoStore
+} from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
 import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
-import {trace} from "mobx";
 
 const MAX_IMG_HEIGHT = 300;
 
@@ -44,7 +52,7 @@ export const useFixedHeightBlockAnnotationCalculator = () => {
 };
 
 interface IHighlightPreviewParentProps {
-    readonly block: IBlock<IRepoAnnotationContent>; 
+    readonly block: IBlock<IRepoAnnotationContent>;
 }
 
 interface IUseHighlightPreviewParentStylesProps {
@@ -158,7 +166,6 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
         }
     }, [blocksAnnotationRepoStore, block]);
-    trace();
 
     if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
         return null;
