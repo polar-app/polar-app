@@ -62,7 +62,7 @@ export const useHandlePurgeDocumentBlocks = () => {
     }, [blocksStore, dialogs]);
 };
 
-const useDesktopStyles = makeStyles(() =>
+const useDesktopStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -71,6 +71,7 @@ const useDesktopStyles = makeStyles(() =>
             flex: '0 0 55px',
             height: 55,
             padding: '0 26px',
+            background: theme.palette.background.paper
         },
         divider: {
             padding: '0 26px',
@@ -128,12 +129,12 @@ const DesktopNotesToolbar = () => {
                     <SearchForNote />
                 </div>
             </div>
-            <div className={classes.divider}><Divider /></div>
+            {/* <div className={classes.divider}><Divider /></div> */}
         </>
     );
 };
 
-const useHandHeldStyles = makeStyles(() =>
+const useHandHeldStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -142,6 +143,7 @@ const useHandHeldStyles = makeStyles(() =>
             flex: '0 0 55px',
             height: 55,
             padding: '0 14px',
+            background: theme.palette.background.paper
         },
         divider: {
             padding: '0 14px',

@@ -1,10 +1,14 @@
 import {action, comparer, computed, makeObservable, observable, reaction} from "mobx";
-import {IAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {
+    IAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IBlocksStore} from "../../../../web/js/notes/store/IBlocksStore";
-import {createReactiveStore} from "../../../../web/js/react/store/ReactiveStore";
+import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
@@ -88,7 +92,7 @@ export class BlocksAnnotationRepoStore {
                                                     this.view,
                                                     event,
                                                     type);
-        
+
         this.clearSelected();
 
         this._active = selected[0];
@@ -117,7 +121,7 @@ export class BlocksAnnotationRepoStore {
     }
 }
 
-export const [BlocksAnnotationRepoStoreProvider, useBlocksAnnotationRepoStore] = createReactiveStore(() => {
+export const [BlocksAnnotationRepoStoreProvider, useBlocksAnnotationRepoStore] = createStoreContext(() => {
     const blocksStore = useBlocksStore();
     const store = React.useMemo(() => new BlocksAnnotationRepoStore(blocksStore), [blocksStore]);
 
