@@ -154,11 +154,12 @@ module.exports = {
         }),
     ],
     optimization: {
-        // minimize: ! isDev,
-        minimize: true,
-        // usedExports: true,
+        // NOTE: for the chrome extension we disable minimization.  I had bugs with terser handling unicode
+        // and ascii and the only way to fix it was to just disable minimization.  The resulting .zip was
+        // the same size either way so looks like it really doesn't matter much as zip encoding fixes the
+        // problem for us.
+        minimize: false,
         // removeAvailableModules: true,
         // removeEmptyChunks: true,
-        // splitChunks: false,
     }
 };
