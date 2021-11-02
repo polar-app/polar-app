@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
+import {createStyles, makeStyles, Table, TableCell, TableHead, TableBody, TableRow, Theme} from '@material-ui/core';
 import {useHistory} from 'react-router-dom';
 import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
@@ -85,13 +85,13 @@ export const SwitchScreen = () => {
                     {sortedDocInfos.length > 0 ?
                         <>
                             {sortedDocInfos.map( column =>
-                                <TableHead key={column.uuid}>
+                                <TableBody key={column.uuid}>
                                     <TableRow onClick={()=>history.push('/doc/'+column.fingerprint)}>
                                         <TableCell key={column.uuid} className={classes.th}>
                                             {column.title}
                                         </TableCell>
                                     </TableRow>
-                                </TableHead>
+                                </TableBody>
                             )}
                         </>
                         :
