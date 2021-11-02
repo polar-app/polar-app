@@ -153,21 +153,21 @@ commands:
           name: Diff Eslint
           no_output_timeout: 30m
           command: |
-            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run eslint --no-bail >> branchoutput.txt || true
-            git reset --hard
             FORK_POINT=$(git merge-base --fork-point origin/master)
             git checkout $FORK_POINT
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run eslint --no-bail >> masteroutput.txt || true
-            sed -i '/^\//!d' masteroutput.txt
-            sed -i '/^\//!d' branchoutput.txt
-            join -v1 -v2 <(sort ./masteroutput.txt) <(sort ./branchoutput.txt)
+            lerna run eslint --no-bail >> forkpoint-output.txt || true
+            git reset --hard
+            git checkout $CIRCLE_BRANCH
+            find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            lerna run eslint --no-bail >> branch-output.txt || true
+            sed -i '/^\//!d' forkpoint-output.txt
+            sed -i '/^\//!d' branch-output.txt
+            join -v1 -v2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)
             echo "###############################################################################################"
-            cat masteroutput.txt
+            cat forkpoint-output.txt
             echo "###############################################################################################"
-            cat branchoutput.txt
-            git checkout -
+            cat branch-output.txt
 
   # & Check for duplicate packages
   check_duplicates:
