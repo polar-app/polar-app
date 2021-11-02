@@ -173,7 +173,7 @@ interface ActivePrompt {
     readonly actionInput: HTMLSpanElement;
 }
 
-export const BlockAction: React.FC<IProps> = observer((props) => {
+export const BlockAction: React.FC<IProps> = observer(function BlockAction(props) {
 
     const theme = useTheme();
 
