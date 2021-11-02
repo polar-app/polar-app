@@ -156,8 +156,8 @@ commands:
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
             lerna run eslint --no-bail >> branchoutput.txt || true
             git reset --hard
-            git checkout master
-            git pull
+            FORK_POINT=$(git merge-base --fork-point origin/master)
+            git checkout $FORK_POINT
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
             lerna run eslint --no-bail >> masteroutput.txt || true
             sed -i '/^\//!d' masteroutput.txt
