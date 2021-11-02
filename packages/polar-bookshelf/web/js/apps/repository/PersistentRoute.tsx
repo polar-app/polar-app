@@ -3,6 +3,7 @@ import * as React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
+import {createSubscriberStore} from "../../react/store/SubscriberStore";
 
 
 // There are 2-3 main problems with using display: none and potentially
@@ -75,7 +76,7 @@ interface MountListenerProps {
 }
 
 const MountListener = React.memo(function MountListener(props: MountListenerProps) {
-    
+
     React.useEffect(() => {
 
         props.onMounted(true);
@@ -94,11 +95,11 @@ export interface IPersistentRouteContext {
     readonly active: boolean;
 }
 
-const PersistentRouteContext = React.createContext<IPersistentRouteContext>({active: true});
+// const PersistentRouteContext = React.createContext<IPersistentRouteContext>({active: true});
 
-export function usePersistentRouteContext() {
-    return React.useContext(PersistentRouteContext);
-}
+// export function usePersistentRouteContext() {
+//     return React.useContext(PersistentRouteContext);
+// }
 
 type Strategy = 'display' | 'visibility';
 
@@ -109,12 +110,14 @@ interface IProps {
     readonly strategy: Strategy;
 }
 
+export const [PersistentRouteProvider, usePersistentRouteContextSetter, usePersistentRouteContext] = createSubscriberStore();
+
 export const PersistentRoute = React.memo(function PersistentRoute(props: IProps) {
 
     const displayClasses = useDisplayStyles();
     const visibilityClasses = useVisibilityStyles();
 
-    const [active, setActive] = React.useState(false);
+    const setActive = usePersistentRouteContextSetter();
 
     const computeClassName = React.useCallback((active: boolean) => {
 
@@ -132,23 +135,25 @@ export const PersistentRoute = React.memo(function PersistentRoute(props: IProps
     const className = computeClassName(active);
 
     return (
-        <PersistentRouteContext.Provider value={{ active }}>
-            <Switch>
+        <PersistentRouteProvider initialValue={{ active }}>
+            <>
+                <Switch>
 
-                <Route path="/">
-                    <div className={clsx('PersistentRoute', className)}>
-                        {props.children}
-                    </div>
-                </Route>
+                    <Route path="/">
+                        <div className={clsx('PersistentRoute', className)}>
+                            {props.children}
+                        </div>
+                    </Route>
 
-            </Switch>
+                </Switch>
 
-            <Switch>
-                <Route exact path={props.path}>
-                    <MountListener onMounted={setActive}/>
-                </Route>
-            </Switch>
-       </PersistentRouteContext.Provider>
+                <Switch>
+                    <Route exact path={props.path}>
+                        <MountListener onMounted={setActive}/>
+                    </Route>
+                </Switch>
+            </>
+       </PersistentRouteProvider>
     );
 
 });
