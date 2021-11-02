@@ -164,10 +164,6 @@ commands:
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
             join -v1 -v2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)
-            echo "###############################################################################################"
-            cat forkpoint-output.txt
-            echo "###############################################################################################"
-            cat branch-output.txt
 
   # & Check for duplicate packages
   check_duplicates:
