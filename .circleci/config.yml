@@ -190,7 +190,6 @@ jobs:
       - install_linux_dependencies
       - debug_installed
       - bootstrap
-      - eslint
       - compile
       - save_yarn_cache
       - persist_workspace
