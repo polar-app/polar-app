@@ -13,8 +13,15 @@ export const MigrationToBlockAnnotationsMain = (props: IProps) => {
     const {progress} = props;
 
     return (
-        <Grid item style={{flexGrow: 1, display: 'flex'}}>
-            <Box m={2} display='flex' textAlign={'center'} flexGrow={1} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
+        <Grid item style={{ flexGrow: 1, display: "flex" }}>
+            <Box m={2}
+                 display="flex"
+                 textAlign="center"
+                 flexGrow={1}
+                 alignItems="center"
+                 justifyContent="center"
+                 flexDirection="column">
+
                 <Box m={2}>
                     <LogoAndTextSideBySide/>
                 </Box>

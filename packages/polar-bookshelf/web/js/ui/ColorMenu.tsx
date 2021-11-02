@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import {createStyles, fade, IconButton, makeStyles} from "@material-ui/core";
+import {createStyles, IconButton, makeStyles} from "@material-ui/core";
 import {ColorStr} from "./colors/ColorSelectorBox";
 import PaletteIcon from "@material-ui/icons/Palette";
 

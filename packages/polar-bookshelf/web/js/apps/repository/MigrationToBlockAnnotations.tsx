@@ -1,84 +1,224 @@
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
 import React from "react";
+import Alert from "@material-ui/lab/Alert";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import {AdaptiveDialog} from "../../mui/AdaptiveDialog";
 import {useMigrationSnapshotByName} from "./UseMigrationSnapshot";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
+import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
+import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
+import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
+import {useStateRef} from "../../hooks/ReactHooks";
+import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 
 interface IProps {
     readonly children: JSX.Element;
 }
 
-function useMigrationExecutor() {
+const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
+const MIGRATION_NAME = 'block-annotations';
 
-    return React.useCallback(() => {
+type ProgressData = {
+    total: number;
+    current: number;
+    started: ISODateTimeString;
+};
 
-        const cpk = Hashcodes.createRandomID();
+namespace MigrationToBlockAnnotationsHelpers {
+    /**
+     * Get the IDs of doc_meta records that belong to a specific user.
+     *
+     * @param firestore Firestore instance.
+     * @param uid The uid of the owner.
+     */
+    export async function getDocMetaIDs(firestore: IFirestoreClient,
+                                        uid: UIDStr): Promise<ReadonlyArray<{ id: string, migrated: boolean }>> {
 
-        console.log("Starting migration using cloud progress key: " + cpk);
+        const data = await firestore
+            .collection('doc_meta')
+            .where('uid', '==', uid)
+            .get();
 
-    }, []);
+        const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
+            snapshot.data() as RecordHolder<DocMetaHolder>;
+
+        return data.docs.map(toDocMeta).map(({ id, value: { ver } }) => ({ id, migrated: ver === 3 }));
+    }
+
+    /**
+     * Migrate a doc_meta record by ID.
+     *
+     * @param id The id of the doc_meta record to be migrated.
+     */
+    export async function migrateDocMeta(id: string): Promise<void> {
+        await JSONRPC.exec(MIGRATION_FUNCTION_PATH, { docMetaID: id });
+    }
+
+    export async function writeMigrationStarted(firestore: IFirestoreClient,
+                                                uid: UIDStr,
+                                                startTs: ISODateTimeString): Promise<void> {
+
+        return MigrationCollection.write(firestore, {
+            uid: uid,
+            name: MIGRATION_NAME,
+            status: 'started',
+            started: startTs,
+        });
+
+    }
+
+    export async function writeMigrationCompleted(firestore: IFirestoreClient,
+                                                  uid: UIDStr,
+                                                  startTs: ISODateTimeString,
+                                                  completeTs: ISODateTimeString): Promise<void> {
+
+        return MigrationCollection.write(firestore, {
+            uid: uid,
+            name: MIGRATION_NAME,
+            status: 'completed',
+            started: startTs,
+            completed: completeTs,
+        });
+    }
+
+    export async function writeMigrationFailed(firestore: IFirestoreClient,
+                                               uid: UIDStr,
+                                               startTs: ISODateTimeString,
+                                               failTs: ISODateTimeString): Promise<void> {
+
+        return MigrationCollection.write(firestore, {
+            uid: uid,
+            name: MIGRATION_NAME,
+            status: 'failed',
+            started: startTs,
+            failed: failTs,
+        });
+    }
 }
+
+function useMigrationExecutor() {
+    const { firestore, user } = useFirestore();
+    const [progressData, setProgressData, progressDataRef] = useStateRef<ProgressData | null>(null);
+    const [error, setError] = React.useState<Error | null>(null);
+
+    /**
+     * Migrate the logged in user's data to the new blocks system.
+     */
+    const migrateData = React.useCallback(async () => {
+        if (progressDataRef.current) { // The migration has already been started. just skip
+            return;
+        }
+
+        if (! user) {
+            throw new Error('useMigratorExecutor: user not found');
+        }
+
+        const docMetas = await MigrationToBlockAnnotationsHelpers.getDocMetaIDs(firestore, user.uid);
+
+        const started = ISODateTimeStrings.create();
+        const total = docMetas.length;
+        const unmigratedDocMetas = docMetas.filter(({ migrated }) => ! migrated);
+
+        setProgressData({
+            total,
+            started,
+            current: total - unmigratedDocMetas.length,
+        });
+
+        await MigrationToBlockAnnotationsHelpers
+            .writeMigrationStarted(firestore, user.uid, started);
+
+        for (const { id } of unmigratedDocMetas) {
+            try {
+                await MigrationToBlockAnnotationsHelpers.migrateDocMeta(id);
+            } catch (e) {
+                console.log(`Migration of doc_meta with the id: ${id} has failed`, e);
+            }
+
+            setProgressData(({
+                total,
+                started,
+                current: progressDataRef.current!.current + 1,
+            }));
+
+        }
+
+        await MigrationToBlockAnnotationsHelpers
+            .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
+        
+    }, [setProgressData, progressDataRef, firestore, user]);
+
+    /**
+     * Start the migration process
+     */
+    const migrationExecutor = React.useCallback(() => {
+        migrateData()
+            .catch((err) => {
+                if (! user) {
+                    return console.error('useMigratorExecutor: user not found');
+                }
+
+                console.error('MigrationToBlockAnnotations failed with error', err);
+                setError(err);
+
+                const started = progressDataRef.current!.started;
+
+                MigrationToBlockAnnotationsHelpers
+                    .writeMigrationFailed(firestore, user.uid, started, ISODateTimeStrings.create())
+                    .catch(console.error);
+
+            });
+    }, [migrateData, setError, user, firestore, progressDataRef]);
+
+    return { progressData, error, migrationExecutor };
+}
+
+export const MIGRATION_TO_BLOCKS_ENABLED = LocalStorageFeatureToggles.get('migration-to-block-annotations');
 
 export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
-    const [migrationSnapshot, error] = useMigrationSnapshotByName('block-annotations');
-    const migrationExecutor = useMigrationExecutor();
+    const [migrationSnapshot, error] = useMigrationSnapshotByName(MIGRATION_NAME);
+    const { progressData, error: migrationError, migrationExecutor } = useMigrationExecutor();
 
     React.useEffect(() => {
 
-        if (migrationSnapshot?.empty) {
+        if (migrationSnapshot?.empty && MIGRATION_TO_BLOCKS_ENABLED) {
             migrationExecutor();
         }
 
     }, [migrationSnapshot, migrationExecutor]);
 
-    if (migrationSnapshot && migrationSnapshot.docs[0].status === 'completed') {
+
+    if (! migrationSnapshot) {
+        return <LinearProgress />;
+    }
+
+    if (! MIGRATION_TO_BLOCKS_ENABLED
+        || (migrationSnapshot.docs.length > 0 && migrationSnapshot.docs[0].status === 'completed')) {
+
         return props.children;
     }
 
     if (error) {
-        return (
-            <Alert severity="error">
-                We're unable to migrate your data: <q>{error.message}</q>
-            </Alert>
-        );
+        <Alert severity="error">
+            We're unable to migrate your data: <q>{error.message}</q>
+        </Alert>
     }
 
-    // TODO: how do we START the migration...We have to trigger the cloud function on the backend.
-
-    // TODO: need to read the cloud progress listener... and the key that's used.
-
-    // TODO start doing the migration now...
-
-    // TODO: new users need to be pre-migrated and we have to write a record for
-    // them in the migration table.
+    if (migrationError) {
+        <Alert severity="error">
+            We're unable to migrate your data: <q>{migrationError.message}</q>
+        </Alert>
+    }
 
     return (
         <AdaptiveDialog>
-
-            <div style={{
-                     display: 'flex',
-                     justifyContent: 'center'
-                 }}>
-
-                <Box m={1}>
-                    <Typography variant="h2">
-                        We're migrating your data!
-                    </Typography>
-                </Box>
-
-                <Box m={1}>
-
-                    <Typography variant="h4">
-                        Just a moment please.  We're migrating your data to enable
-                        some really cool new features.
-                    </Typography>
-
-                </Box>
-
-            </div>
+            <MigrationToBlockAnnotationsMain progress={progressData ? progressData.current / progressData.total * 100 : 0} />
         </AdaptiveDialog>
-    )
+    );
 });

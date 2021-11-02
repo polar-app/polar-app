@@ -23,6 +23,7 @@ import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -147,7 +148,7 @@ export namespace DocumentDataUpdater {
 
             const docMeta = repoDocInfo.docMeta;
 
-            const docMetaValue = JSON.stringify({ ...docMeta, docInfo });
+            const docMetaValue = DocMetas.serialize({ ...docMeta, docInfo });
 
             switch (type) {
                 case 'modified':
