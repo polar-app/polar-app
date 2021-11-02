@@ -190,6 +190,7 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
     if (config.Typescript) {
         pkg.scripts.eslint = "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
         pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+        pkg.scripts.cieslint = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
         pkg.scripts.tsc = 'tsc';
         pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;";

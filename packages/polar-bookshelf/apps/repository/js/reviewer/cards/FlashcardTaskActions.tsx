@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IFlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {
     ClozeParser,
@@ -9,43 +8,44 @@ import {
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
+import {IBlockClozeFlashcard, IBlockFlashcard, IBlockFrontBackFlashcard} from 'polar-blocks/src/annotations/IBlockFlashcard';
 
 export class FlashcardTaskActions {
 
-    public static create(flashcard: IFlashcard,
-                         docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
+    public static create<T>(flashcard: IBlockFlashcard,
+                            original: T): ReadonlyArray<IFlashcardTaskAction<T>> {
 
         if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
-            return this.createBasicFrontBackFlashcard(flashcard, docAnnotation);
+            return this.createBasicFrontBackFlashcard(flashcard, original);
         } else if (flashcard.type === FlashcardType.CLOZE) {
-            return this.createClozeFlashcard(flashcard, docAnnotation);
+            return this.createClozeFlashcard(flashcard, original);
         } else {
             throw new Error("Type not yet supported: " + flashcard.type);
         }
 
     }
 
-    private static createBasicFrontBackFlashcard(flashcard: IFlashcard,
-                                                 docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
+    private static createBasicFrontBackFlashcard<T>(flashcard: IBlockFrontBackFlashcard,
+                                                    original: T): ReadonlyArray<IFlashcardTaskAction<T>> {
 
         const front = Texts.toString(flashcard.fields.front);
         const back = Texts.toString(flashcard.fields.back);
 
-        const result: FlashcardTaskAction = {
+        const result: IFlashcardTaskAction<T> = {
             front: <div dangerouslySetInnerHTML={{__html: front || ""}}/>,
             back: <div dangerouslySetInnerHTML={{__html: back || ""}}/>,
-            docAnnotation
+            type: 'flashcard',
+            original,
         };
 
         return [result];
 
     }
 
-    private static createClozeFlashcard(flashcard: IFlashcard,
-                                        docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
+    private static createClozeFlashcard<T>(flashcard: IBlockClozeFlashcard,
+                                           original: T): ReadonlyArray<IFlashcardTaskAction<T>> {
 
-        const cloze = Texts.toString(flashcard.fields.cloze || flashcard.fields.text);
+        const cloze = Texts.toString((flashcard.fields as any).cloze || flashcard.fields.text);
 
         if (cloze === undefined) {
             const msg = "No cloze text found";
@@ -78,14 +78,15 @@ export class FlashcardTaskActions {
 
         };
 
-        const toFlashcard = (id: number) => {
+        const toFlashcard = (id: number): IFlashcardTaskAction<T> => {
 
             const front = regions.map(region => regionToElement(region, id)).join('');
 
             return {
                 front: <div dangerouslySetInnerHTML={{__html: front}}/>,
                 back: <div dangerouslySetInnerHTML={{__html: clozeAsText}}/>,
-                docAnnotation
+                type: 'flashcard',
+                original,
             };
 
         };

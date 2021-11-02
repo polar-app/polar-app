@@ -246,9 +246,6 @@ export const AddFileDropzone = React.forwardRef((props: any, ref) => {
 
     return (
         <AddFileDropzoneDialog2 open={active} onClose={closeDialog}/>
-        // <AddFileDropzoneDialog open={active}
-        //                        noActions={true}
-        //                        onClose={closeDialog}/>
     );
 
 });

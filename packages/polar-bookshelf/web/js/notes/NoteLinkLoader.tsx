@@ -14,6 +14,8 @@ export function useNoteLinkLoader() {
 
     return React.useCallback((target: BlockTargetStr) => {
 
+        console.log("Loading target note: " + target);
+
         const newURL = RoutePathNames.NOTE(encodeURIComponent(target));
         historyRef.current.push(newURL);
 

@@ -11,6 +11,7 @@ export class LocalStorageFeatureToggles {
     /**
      * Get the current value of a feature toggle.
      *
+     * @Deprecated
      * @param name The name of the feature.
      * @param defaultValue The default value of the feature toggle.
      */

@@ -8,6 +8,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
 import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useKeyboardShortcutHandlers} from "../../keyboard_shortcuts/KeyboardShortcuts";
 
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10;
 
@@ -27,7 +28,7 @@ const hasEditorSelection = (): boolean => {
 
 };
 
-const abortEvent = (event: React.KeyboardEvent): void => {
+const abortEvent = (event: React.KeyboardEvent | KeyboardEvent): void => {
     event.stopPropagation();
     event.preventDefault();
 };
@@ -38,11 +39,11 @@ export const navNBlocks = (blocksTreeStore: BlocksTreeStore, delta: 'prev' | 'ne
     for (let i = 0; i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav(); i += 1) {};
 };
 
-export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean = true): boolean =>
+export const hasModifiers = (event: React.KeyboardEvent | KeyboardEvent, includeShift: boolean = true): boolean =>
     event.ctrlKey || event.metaKey || event.altKey || (includeShift && event.shiftKey);
 
 type KeydownHandlerOpts = {
-    event: React.KeyboardEvent;
+    event: React.KeyboardEvent | KeyboardEvent;
     contentEditableElem: HTMLElement;
     platform: Platform;
     blocksTreeStore: BlocksTreeStore;
@@ -55,7 +56,7 @@ type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
 type Modifier = 'ctrl' | 'alt' | 'shift';
 
-const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
+const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent | KeyboardEvent) => {
     const unpressed: Modifier[] = (['ctrl', 'alt', 'shift'] as Modifier[])
         .filter(mod => pressed.indexOf(mod) === -1);
 
@@ -317,7 +318,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 type IUseBlockKeyDownHandlerOpts = {
     contentEditableRef: React.RefObject<HTMLDivElement | null>,
     blockID: BlockIDStr;
-    onKeyDown?: React.EventHandler<React.KeyboardEvent>;
+    onKeyDown?: (event: React.KeyboardEvent | KeyboardEvent) => void;
     readonly?: boolean;
 };
 
@@ -331,7 +332,10 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
     const platform = React.useMemo(() => Platforms.get(), []);
     const isMultilineNavEnabled = useFeatureToggle('notes-multiline-nav');
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const globalKeyboardShortcutHandler = useKeyboardShortcutHandlers();
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent | KeyboardEvent) => {
+
         if (! (event.target instanceof HTMLElement)) {
             return;
         }
@@ -343,7 +347,9 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
         }
 
         const handler = HANDLERS[event.key.toLowerCase()];
+
         if (handler) {
+
             handler({
                 contentEditableElem: elem,
                 platform,
@@ -353,6 +359,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 readonly,
                 isMultilineNavEnabled,
             });
+
         } else if (readonly && ! hasModifiers(event, false)) {
             abortEvent(event);
         }
@@ -361,11 +368,16 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             abortEvent(event);
         }
 
+        if (globalKeyboardShortcutHandler(event)) {
+            abortEvent(event);
+            return;
+        }
+
         if (onKeyDown) {
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksTreeStore, readonly, isMultilineNavEnabled]);
+    }, [readonly, blocksTreeStore, globalKeyboardShortcutHandler, onKeyDown, platform, blockID, isMultilineNavEnabled]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;

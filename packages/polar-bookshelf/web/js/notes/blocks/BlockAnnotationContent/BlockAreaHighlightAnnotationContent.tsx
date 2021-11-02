@@ -33,6 +33,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         className,
         style,
     } = props;
+
     const highlight = annotation.value;
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const image = React.useMemo(() => {

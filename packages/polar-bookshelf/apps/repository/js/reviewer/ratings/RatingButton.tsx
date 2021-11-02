@@ -5,17 +5,18 @@ import {ColorButton} from '../ColorButton';
 import {RatingCallback} from "../RatingCallback";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {ITaskAction} from '../ReviewerTasks';
 
-interface IProps {
+interface IProps<T extends ITaskAction> {
 
-    readonly taskRep: TaskRep<any>;
+    readonly taskRep: TaskRep<T>;
     readonly rating: Rating;
     readonly color: string;
-    readonly onRating: RatingCallback<any>;
+    readonly onRating: RatingCallback<T>;
 
 }
 
-export const RatingButton = deepMemo(function RatingButton(props: IProps) {
+export const RatingButton = deepMemo(function RatingButton<T extends ITaskAction>(props: IProps<T>) {
 
     const {rating, taskRep, color} = props;
 

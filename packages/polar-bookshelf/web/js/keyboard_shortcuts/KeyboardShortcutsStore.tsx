@@ -2,6 +2,14 @@ import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {KeyboardEventLike} from "./KeyboardShortcuts";
+
+/**
+ * A generic input event common across mouse, pointer, keyboard and react and plain Javascript.
+ */
+export type GenericInputEvent = React.KeyboardEvent | KeyboardEvent |
+                                React.MouseEvent | MouseEvent |
+                                React.PointerEvent | PointerEvent;
 
 export interface IKeyboardShortcutEvent {
     preventDefault: () => void;
@@ -10,7 +18,7 @@ export interface IKeyboardShortcutEvent {
 
 export type KeyboardShortcutEventHandler = (event: IKeyboardShortcutEvent) => void;
 
-export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boolean;
+export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEventLike) => boolean;
 
 export type KeyBindingArray2 = readonly [string, string];
 export type KeyBindingArray1 = readonly [string];

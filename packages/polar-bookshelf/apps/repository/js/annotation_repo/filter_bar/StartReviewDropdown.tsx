@@ -26,19 +26,15 @@ export const StartReviewDropdown = memoForwardRef((props: IProps) => (
                  }
              }}
              caret>
-        <>
+        <MUIRouterLink
+            to={{pathname: '/annotations', hash: '#review-flashcards'}}>
+            <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>}/>
+        </MUIRouterLink>
 
-            <MUIRouterLink
-                to={{pathname: '/annotations', hash: '#review-flashcards'}}>
-                <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>}/>
-            </MUIRouterLink>
-
-            <MUIRouterLink
-                to={{pathname: '/annotations', hash: '#review-reading'}}>
-                <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
-            </MUIRouterLink>
-
-        </>
+        <MUIRouterLink
+            to={{pathname: '/annotations', hash: '#review-reading'}}>
+            <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
+        </MUIRouterLink>
 
     </MUIMenu>
 
