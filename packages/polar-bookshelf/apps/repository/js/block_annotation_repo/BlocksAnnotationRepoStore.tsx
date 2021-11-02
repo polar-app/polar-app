@@ -104,16 +104,16 @@ export class BlocksAnnotationRepoStore {
         return this._selected.has(id);
     }
 
-    static isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
-        return IBlockPredicates.isAnnotationBlock(block)
-               || block.content.type === 'markdown';
-    }
-
     public idsToRepoAnnotationBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
         return this._blocksStore
             .idsToBlocks(ids)
             .map(block => block.toJSON() as IBlock<IBlockContent>)
             .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock);
+    }
+
+    static isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
+        return IBlockPredicates.isAnnotationBlock(block)
+               || block.content.type === 'markdown';
     }
 }
 
@@ -130,10 +130,14 @@ export const useAnnotationRepoViewBlockIDs = () => {
     const [blockIDs, setBlockIDs] = React.useState<ReadonlyArray<ListValue>>([]);
 
     React.useEffect(() => {
-        return reaction(() => blocksAnnotationRepoStore.view, (ids) => {
-            setBlockIDs(ids);
-        }, { equals: comparer.structural });
-    } ,[blocksAnnotationRepoStore, setBlockIDs]);
+        const getBlockAnnotationIDs = () => blocksAnnotationRepoStore.view;
+
+        const disposer = reaction(getBlockAnnotationIDs, setBlockIDs, { equals: comparer.structural });
+
+        setBlockIDs(getBlockAnnotationIDs());
+
+        return disposer;
+    }, [blocksAnnotationRepoStore, setBlockIDs]);
 
     return blockIDs;
 };
