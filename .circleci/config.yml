@@ -119,14 +119,6 @@ commands:
           name: lerna run compile
           command: lerna run compile
 
-  # & lint all lerna modules
-  eslint:
-    description: lint all lerna modules
-    steps:
-      - run:
-          name: lerna run eslint
-          command: lerna run eslint
-
   # & Save Cache
   save_yarn_cache:
     description: save hoisted modules
