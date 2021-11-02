@@ -15,6 +15,11 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
+import {ErrorType} from "../../ui/data_loader/UseSnapshotSubscriber";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps {
     readonly children: JSX.Element;
@@ -30,7 +35,90 @@ type ProgressData = {
 };
 
 namespace MigrationToBlockAnnotationsHelpers {
-    /**
+
+    export interface IDocMetaMigrationSnapshot {
+        readonly migrations: ReadonlyArray<IDocMetaMigration>;
+        readonly fromCache: boolean;
+    }
+
+    export interface IDocMetaMigration {
+        readonly id: string;
+        readonly migrated: boolean;
+    }
+
+    export type DocMetaMigrationSnapshotResult = Readonly<[IDocMetaMigrationSnapshot | undefined, ErrorType | undefined, SnapshotUnsubscriber]>;
+
+    export function useDocMetaMigrationSnapshot(): DocMetaMigrationSnapshotResult {
+
+        const {firestore, uid} = useFirestore();
+
+        const [snapshot, setSnapshot] = React.useState<IDocMetaMigrationSnapshot | undefined>(undefined);
+        const [error, setError] = React.useState<ErrorType | undefined>(undefined);
+
+        const unsubscriberRef = React.useRef<SnapshotUnsubscriber>(NULL_FUNCTION);
+
+        if (! uid) {
+            throw new Error("Not authenticated");
+        }
+
+        const onNext = React.useCallback((snapshot: IQuerySnapshot<ISnapshotMetadata>) => {
+
+            const fromCache = snapshot.metadata.fromCache;
+
+            const toHolder = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
+                snapshot.data() as RecordHolder<DocMetaHolder>;
+
+            const migrations = snapshot.docs.map(toHolder).map(current => {
+                return {
+                    id: current.id,
+                    migrated: current.value.ver === 3
+                }
+            })
+
+            setSnapshot({fromCache, migrations});
+
+        }, []);
+
+        const onError = React.useCallback((err: ErrorType) => {
+            setError(err);
+        }, []);
+
+        React.useEffect(() => {
+
+            unsubscriberRef.current = firestore
+                .collection('doc_meta')
+                .where('uid', '==', uid)
+                .onSnapshot(snapshot => onNext(snapshot), err => onError(err))
+
+            return () => {
+                unsubscriberRef.current();
+            }
+
+        }, [])
+
+        return [snapshot, error, unsubscriberRef.current];
+
+    }
+
+    export function useDocMetaMigrationSnapshotFromServer(): Readonly<[IDocMetaMigrationSnapshot | undefined, ErrorType | undefined]> {
+
+        const [serverSnapshot, setServerSnapshot] = React.useState<IDocMetaMigrationSnapshot | undefined>(undefined);
+        const [snapshot, error, unsubscriber] = useDocMetaMigrationSnapshot();
+
+        React.useEffect(() => {
+
+            if (! snapshot?.fromCache) {
+                setServerSnapshot(serverSnapshot);
+                // now unsubscribe from updates as we have the first snapshot from the server.
+                unsubscriber();
+            }
+
+        })
+
+        return [serverSnapshot, error];
+
+    }
+        /**
      * Get the IDs of doc_meta records that belong to a specific user.
      *
      * @param firestore Firestore instance.
@@ -150,7 +238,7 @@ function useMigrationExecutor() {
 
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
-        
+
     }, [setProgressData, progressDataRef, firestore, user]);
 
     /**
