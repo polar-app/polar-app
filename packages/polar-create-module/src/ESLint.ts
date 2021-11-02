@@ -107,6 +107,6 @@ export namespace ESLint {
                 "*.d.ts",
                 "*.js"
             ]
-        };
+        };,
     }
 }
