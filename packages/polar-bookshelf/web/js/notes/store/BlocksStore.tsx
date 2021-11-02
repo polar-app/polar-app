@@ -1,5 +1,5 @@
 import * as React from "react";
-import {createReactiveStore} from "../../react/store/ReactiveStore";
+import {createStoreContext} from "../../react/store/StoreContext";
 import {action, computed, makeObservable, observable} from "mobx"
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -34,7 +34,18 @@ import {
 } from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {IBlockContentStructure, NewChildPos, BlockIDStr, IBlock, IBlockContent, IBlockLink, INewChildPosition, NamespaceIDStr, UIDStr, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {
+    BlockIDStr,
+    IBlock,
+    IBlockContent,
+    IBlockContentStructure,
+    IBlockLink,
+    INamedContent,
+    INewChildPosition,
+    NamespaceIDStr,
+    NewChildPos,
+    UIDStr
+} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
@@ -600,7 +611,7 @@ export class BlocksStore implements IBlocksStore {
                             }
                         } else {
                             if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
-                                
+
                                 const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
 
                                 if (savedBlockID) {
@@ -2468,7 +2479,7 @@ export class BlocksStore implements IBlocksStore {
 
 }
 
-export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
+export const [BlocksStoreProvider, useBlocksStoreDelegate] = createStoreContext(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
     const blocksPersistenceWriter = useBlocksPersistenceWriter();

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {createReactiveStore} from "../../react/store/ReactiveStore";
+import {createStoreContext} from "../../react/store/StoreContext";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
@@ -137,5 +137,5 @@ export class ActionStore {
 
 }
 
-export const [ActionMenuStoreProvider, useActionMenuStore] = createReactiveStore(() =>
+export const [ActionMenuStoreProvider, useActionMenuStore] = createStoreContext(() =>
     React.useMemo(() => new ActionStore(), []));
