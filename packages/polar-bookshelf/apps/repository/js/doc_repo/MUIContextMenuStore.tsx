@@ -1,4 +1,4 @@
-import {createReactiveStore} from "../../../../web/js/react/store/ReactiveStore";
+import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {action, computed, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
@@ -37,7 +37,7 @@ export class MUIContextMenuStore<O> {
 
 export function createContextMenuStore<O>() {
 
-    return createReactiveStore(() => new MUIContextMenuStore<O>())
+    return createStoreContext(() => new MUIContextMenuStore<O>())
 
 }
 

@@ -1,7 +1,7 @@
-import {createRXJSStore} from "../react/store/RXJSStore";
+import {createSubscriberStore} from "../react/store/SubscriberStore";
 
 export const [MUIHoverStoreProvider, useSetStore, useListener] =
-    createRXJSStore<boolean>();
+    createSubscriberStore<boolean>();
 
 export interface IMUIHoverListener {
     readonly onMouseEnter: () => void;
