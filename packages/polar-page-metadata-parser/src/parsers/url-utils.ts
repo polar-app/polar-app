@@ -1,10 +1,10 @@
 if (global.URL !== undefined) {
     // We're in Firefox
     module.exports = {
-        makeUrlAbsolute(base: UtilURL, relative: UtilURL) {
+        makeUrlAbsolute(base: UtilURL, relative: string): string {
             return new URL(relative, base).href;
         },
-        parseUrl(url: UtilURL) {
+        parseUrl(url: string): string {
             return new URL(url).host;
         }
     };
@@ -12,7 +12,7 @@ if (global.URL !== undefined) {
     // We're in Node.js
     const urlparse = require('url');
     module.exports = {
-        makeUrlAbsolute(base: UtilURL, relative: UtilURL) {
+        makeUrlAbsolute(base: string, relative: string): string {
             const relativeParsed = urlparse.parse(relative);
 
             if (relativeParsed.host === null) {
@@ -21,7 +21,7 @@ if (global.URL !== undefined) {
 
             return relative;
         },
-        parseUrl(url: UtilURL) {
+        parseUrl(url: UtilURL): string {
             return urlparse.parse(url).hostname;
         }
     };

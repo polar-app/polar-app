@@ -295,14 +295,23 @@ interface MetadataRuleSet {
 
 type MetadataKey = keyof MetadataRuleSet | keyof PageMetadata;
  
+//? add `keywords: ReadonlyArray<string>` key If needed 
+//? the parser supports extracting keywords. However,
+//? we don't really have any uses for meta keywords atm.
 export interface PageMetadata {
-    readonly description: string;
-    readonly icon: string;
-    readonly image: string;
-    readonly keywords: string[];
-    readonly title: string;
-    readonly language: string;
-    readonly type: string;
-    readonly url: string;
-    readonly provider: string;
+    readonly url: string; 
+
+    readonly description?: string;
+    
+    readonly icon?: string;
+    
+    readonly image?: string;
+
+    readonly title?: string;
+    
+    readonly language?: string;
+
+    readonly type?: string;
+
+    readonly provider?: string;
 }
