@@ -162,6 +162,7 @@ const metadataRuleSets: MetadataRuleSet = {
         ],
     },
 
+    /**
     keywords: {
         rules: [
             [
@@ -174,6 +175,7 @@ const metadataRuleSets: MetadataRuleSet = {
                 keywords.split(",").map((keyword) => keyword.trim()),
         ],
     },
+    */
 
     title: {
         rules: [
@@ -266,17 +268,17 @@ export function getMetadata(doc: Document, url: string): PageMetadata {
 }
 
 interface Context {
-    url: string;
+    readonly url: string;
 }
 
 interface RuleSet {
-    rules: Rule[];
-    processors?: any[];
-    scorers?: any[];
-    defaultValue?: any;
+    readonly rules: ReadonlyArray<Rule>;
+    readonly processors?: ReadonlyArray<any>;
+    readonly scorers?: ReadonlyArray<any>;
+    readonly defaultValue?: any;
 }
 
-type Rule = [
+type Rule = readonly [
     string,
     (element: HTMLElement) => string | null
 ];
@@ -285,17 +287,18 @@ interface MetadataRuleSet {
     readonly description: RuleSet;
     readonly icon: RuleSet;
     readonly image: RuleSet;
-    readonly keywords: RuleSet;
     readonly title: RuleSet;
     readonly language: RuleSet;
     readonly type: RuleSet;
     readonly url: RuleSet;
     readonly provider: RuleSet;
+
+    // readonly keywords: RuleSet;
 }
 
 type MetadataKey = keyof MetadataRuleSet | keyof PageMetadata;
  
-//? add `keywords: ReadonlyArray<string>` key If needed 
+//? enable `keywords: ReadonlyArray<string>` prop when needed 
 //? the parser supports extracting keywords. However,
 //? we don't really have any uses for meta keywords atm.
 export interface PageMetadata {
@@ -314,4 +317,6 @@ export interface PageMetadata {
     readonly type?: string;
 
     readonly provider?: string;
+
+    // keywords?: ReadonlyArray<string>;
 }
