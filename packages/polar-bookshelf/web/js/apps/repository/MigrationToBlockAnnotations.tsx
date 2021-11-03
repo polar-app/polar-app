@@ -21,6 +21,7 @@ import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Analytics} from "../../analytics/Analytics";
 
 interface IProps {
     readonly children: JSX.Element;
@@ -28,6 +29,7 @@ interface IProps {
 
 const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const MIGRATION_NAME = 'block-annotations';
+const ANALYTICS_EVENT_PREFIX = 'migration-to-block-annotations';
 
 type ProgressData = {
     readonly total: number;
@@ -47,7 +49,7 @@ namespace MigrationToBlockAnnotationsHelpers {
         readonly migrated: boolean;
     }
 
-    export type DocMetaMigrationSnapshotResult = Readonly<[IDocMetaMigrationSnapshot | undefined, ErrorType | undefined, SnapshotUnsubscriber]>;
+    export type DocMetaMigrationSnapshotResult = readonly [IDocMetaMigrationSnapshot | undefined, ErrorType | undefined, SnapshotUnsubscriber];
 
     export function useDocMetaMigrationSnapshot(): DocMetaMigrationSnapshotResult {
 
@@ -72,71 +74,52 @@ namespace MigrationToBlockAnnotationsHelpers {
             const migrations = snapshot.docs.map(toHolder).map(current => {
                 return {
                     id: current.id,
-                    migrated: current.value.ver === 3
-                }
-            })
+                    migrated: current.value.ver === 3,
+                };
+            });
 
-            setSnapshot({fromCache, migrations});
+            setSnapshot({ fromCache, migrations });
 
-        }, []);
+        }, [setSnapshot]);
 
         const onError = React.useCallback((err: ErrorType) => {
             setError(err);
-        }, []);
+        }, [setError]);
 
         React.useEffect(() => {
 
             unsubscriberRef.current = firestore
                 .collection('doc_meta')
                 .where('uid', '==', uid)
-                .onSnapshot(snapshot => onNext(snapshot), err => onError(err))
+                .onSnapshot({ includeMetadataChanges: true }, snapshot => onNext(snapshot), err => onError(err));
 
             return () => {
                 unsubscriberRef.current();
-            }
+            };
 
-        }, [])
+        }, [onNext, onError, firestore, uid])
 
         return [snapshot, error, unsubscriberRef.current];
 
     }
 
-    export function useDocMetaMigrationSnapshotFromServer(): Readonly<[IDocMetaMigrationSnapshot | undefined, ErrorType | undefined]> {
+    export function useDocMetaMigrationSnapshotFromServer(): readonly [IDocMetaMigrationSnapshot | undefined, ErrorType | undefined] {
 
         const [serverSnapshot, setServerSnapshot] = React.useState<IDocMetaMigrationSnapshot | undefined>(undefined);
         const [snapshot, error, unsubscriber] = useDocMetaMigrationSnapshot();
 
         React.useEffect(() => {
 
-            if (! snapshot?.fromCache) {
-                setServerSnapshot(serverSnapshot);
+            if (snapshot && ! snapshot.fromCache) {
+                setServerSnapshot(snapshot);
                 // now unsubscribe from updates as we have the first snapshot from the server.
                 unsubscriber();
             }
 
-        })
+        }, [setServerSnapshot, unsubscriber, snapshot])
 
         return [serverSnapshot, error];
 
-    }
-        /**
-     * Get the IDs of doc_meta records that belong to a specific user.
-     *
-     * @param firestore Firestore instance.
-     * @param uid The uid of the owner.
-     */
-    export async function getDocMetaIDs(firestore: IFirestoreClient,
-                                        uid: UIDStr): Promise<ReadonlyArray<{ readonly id: string, readonly migrated: boolean }>> {
-
-        const data = await firestore
-            .collection('doc_meta')
-            .where('uid', '==', uid)
-            .get();
-
-        const toDocMeta = (snapshot: IQueryDocumentSnapshot<unknown>): RecordHolder<DocMetaHolder> =>
-            snapshot.data() as RecordHolder<DocMetaHolder>;
-
-        return data.docs.map(toDocMeta).map(({ id, value: { ver } }) => ({ id, migrated: ver === 3 }));
     }
 
     /**
@@ -198,7 +181,7 @@ function useMigrationExecutor() {
     /**
      * Migrate the logged in user's data to the new blocks system.
      */
-    const migrateData = React.useCallback(async () => {
+    const migrateData = React.useCallback(async (docMetas: MigrationToBlockAnnotationsHelpers.IDocMetaMigrationSnapshot) => {
         if (progressDataRef.current) { // The migration has already been started. just skip
             return;
         }
@@ -207,11 +190,11 @@ function useMigrationExecutor() {
             throw new Error('useMigratorExecutor: user not found');
         }
 
-        const docMetas = await MigrationToBlockAnnotationsHelpers.getDocMetaIDs(firestore, user.uid);
+        Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-started`);
 
         const started = ISODateTimeStrings.create();
-        const total = docMetas.length;
-        const unmigratedDocMetas = docMetas.filter(({ migrated }) => ! migrated);
+        const total = docMetas.migrations.length;
+        const unmigratedDocMetas = docMetas.migrations.filter(({ migrated }) => ! migrated);
 
         setProgressData({
             total,
@@ -222,11 +205,14 @@ function useMigrationExecutor() {
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationStarted(firestore, user.uid, started);
 
+        let failCount = 0;
+
         for (const { id } of unmigratedDocMetas) {
             try {
                 await MigrationToBlockAnnotationsHelpers.migrateDocMeta(id);
             } catch (e) {
                 console.log(`Migration of doc_meta with the id: ${id} has failed`, e);
+                failCount += 1;
             }
 
             setProgressData(({
@@ -237,6 +223,8 @@ function useMigrationExecutor() {
 
         }
 
+        Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-finished`, { noSucceeded: unmigratedDocMetas.length - failCount, noFailed: failCount });
+
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
 
@@ -245,14 +233,15 @@ function useMigrationExecutor() {
     /**
      * Start the migration process
      */
-    const migrationExecutor = React.useCallback(() => {
-        migrateData()
+    const migrationExecutor = React.useCallback((docMetas: MigrationToBlockAnnotationsHelpers.IDocMetaMigrationSnapshot) => {
+        migrateData(docMetas)
             .catch((err) => {
                 if (! user) {
                     return console.error('useMigratorExecutor: user not found');
                 }
 
                 console.error('MigrationToBlockAnnotations failed with error', err);
+                Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-failed`);
                 setError(err);
 
                 const started = progressDataRef.current!.started;
@@ -273,19 +262,37 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     const [migrationSnapshot, error] = useMigrationSnapshotByName(MIGRATION_NAME);
     const { progressData, error: migrationError, migrationExecutor } = useMigrationExecutor();
+    const [docMetaSnapshot, docMetasSnapshotError] = MigrationToBlockAnnotationsHelpers.useDocMetaMigrationSnapshotFromServer();
+    const { firestore, user } = useFirestore();
 
-    React.useEffect(() => {
-
-        if (migrationSnapshot?.empty && MIGRATION_TO_BLOCKS_ENABLED) {
-            migrationExecutor();
+    const isMigrationComplete = React.useMemo((): boolean | undefined => {
+        if (! migrationSnapshot) {
+            return undefined;
         }
 
-    }, [migrationSnapshot, migrationExecutor]);
+        if (migrationSnapshot.docs.length > 0 && migrationSnapshot.docs[0].status === 'completed') {
+            return true;
+        }
+
+        return false;
+    }, [migrationSnapshot]);
+
+    React.useEffect(() => {
+        if (! user) {
+            return;
+        }
+
+        if (MIGRATION_TO_BLOCKS_ENABLED && isMigrationComplete === false && docMetaSnapshot) {
+            migrationExecutor(docMetaSnapshot);
+        }
+
+    }, [isMigrationComplete, docMetaSnapshot, migrationExecutor, user, firestore]);
 
 
     if (! migrationSnapshot) {
         return <LinearProgress />;
     }
+
 
     if (! MIGRATION_TO_BLOCKS_ENABLED
         || (migrationSnapshot.docs.length > 0 && migrationSnapshot.docs[0].status === 'completed')) {
@@ -293,16 +300,34 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         return props.children;
     }
 
-    if (error) {
-        <Alert severity="error">
-            We're unable to migrate your data: <q>{error.message}</q>
-        </Alert>
+    if (error || migrationError) {
+        return (
+            <Alert severity="error">
+                We're unable to migrate your data: <q>{error ? error.message : migrationError ? migrationError.message : ""}</q>
+            </Alert>
+        );
     }
 
-    if (migrationError) {
-        <Alert severity="error">
-            We're unable to migrate your data: <q>{migrationError.message}</q>
-        </Alert>
+    if (docMetasSnapshotError) {
+        return (
+            <Alert severity="error">
+                We were unable to fetch the required data to perform the migration, Please try again later.
+                {docMetasSnapshotError && (
+                    <>
+                        <br/>
+                        {(docMetasSnapshotError as Error).message}
+                    </>
+                )}
+            </Alert>
+        );
+    }
+
+    if (! progressData) {
+        return (
+            <AdaptiveDialog>
+                <MigrationToBlockAnnotationsMain />
+            </AdaptiveDialog>
+        );
     }
 
     const percentage = progressData ? Percentages.calculate(progressData.current, progressData.total) : 0;
