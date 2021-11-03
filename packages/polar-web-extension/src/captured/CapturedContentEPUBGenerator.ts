@@ -12,16 +12,7 @@ export namespace CapturedContentEPUBGenerator {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
-    const ENABLE_LOCAL_IMAGES = true;
-
-    interface LocalImage {
-        readonly id: string;
-        readonly img: HTMLImageElement;
-        readonly src: string;
-        readonly newSrc: string;
-        readonly blob: Blob;
-        readonly mediaType: string;
-    }
+    import LocalImage = EPUBGenerator.LocalImage;
 
     async function toLocalImage(url: URLStr,
                                 img: HTMLImageElement): Promise<LocalImage | undefined> {
@@ -132,8 +123,12 @@ export namespace CapturedContentEPUBGenerator {
     }
 
     async function convertToEPUBDocument(capture: ICapturedEPUB) {
+        let { title } = capture;
 
-        const {title, url} = capture;
+        // Rare cases where a captured page doesn't have a title tag..
+        if (!title) {
+            title = "";
+        }
 
         const readableContent = convertToHumanReadableContent(capture);
 
@@ -144,19 +139,22 @@ export namespace CapturedContentEPUBGenerator {
 
         const localImages =
             await asyncStream(imgs)
-                .map(current => toLocalImage(url, current))
+                .map(current => toLocalImage(capture.url, current))
                 .filter(current => current !== undefined)
                 .map(current => current!)
                 .collect();
 
-        const images = ENABLE_LOCAL_IMAGES ? convertDocumentToLocalImages(localImages) : [];
+        const images = convertDocumentToLocalImages(localImages);
+
+        const coverImage = localImages.find(img => img.src === capture.image);
 
         const localContent = contentDoc.documentElement.outerHTML;
         const data = XHTMLWrapper.wrap({title, content: localContent});
 
         const doc: EPUBGenerator.EPUBDocument = {
-            url,
             title,
+            url: capture.url,
+            cover: coverImage,
             conversion: ISODateTimeStrings.create(),
             contents: [
                 {

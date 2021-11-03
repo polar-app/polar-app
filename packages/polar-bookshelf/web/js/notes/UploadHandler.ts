@@ -1,4 +1,3 @@
-import {URLStr} from "page-metadata-parser";
 import React from "react";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
@@ -7,6 +6,8 @@ import {WriteController, WriteFileProgress} from "../datastore/Datastore";
 import {ProgressTrackerManager, useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {IDropTarget} from "./store/BlocksStore";
+
+type URLStr = string;
 
 type UploadFileTypes = 'image';
 
