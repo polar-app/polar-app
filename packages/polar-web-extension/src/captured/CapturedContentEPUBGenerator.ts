@@ -123,8 +123,12 @@ export namespace CapturedContentEPUBGenerator {
     }
 
     async function convertToEPUBDocument(capture: ICapturedEPUB) {
+        let { title } = capture;
 
-        const {title, url} = capture;
+        // Rare cases where a captured page doesn't have a title tag..
+        if (!title) {
+            title = "";
+        }
 
         const readableContent = convertToHumanReadableContent(capture);
 
@@ -135,7 +139,7 @@ export namespace CapturedContentEPUBGenerator {
 
         const localImages =
             await asyncStream(imgs)
-                .map(current => toLocalImage(url, current))
+                .map(current => toLocalImage(capture.url, current))
                 .filter(current => current !== undefined)
                 .map(current => current!)
                 .collect();
@@ -148,8 +152,8 @@ export namespace CapturedContentEPUBGenerator {
         const data = XHTMLWrapper.wrap({title, content: localContent});
 
         const doc: EPUBGenerator.EPUBDocument = {
-            url,
             title,
+            url: capture.url,
             cover: coverImage,
             conversion: ISODateTimeStrings.create(),
             contents: [
