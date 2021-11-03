@@ -2,7 +2,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {Box, createStyles, FormControlLabel, makeStyles, Paper, Radio, RadioGroup} from "@material-ui/core";
+import {Box, createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 import {Devices} from "polar-shared/src/util/Devices";
 import {ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
