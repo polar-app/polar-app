@@ -74,7 +74,6 @@ export const SettingSelect = (props: IProps) => {
                     </Box>
                 </Box>
 
-                <Paper >
                     <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
                         <RadioGroup name={name} value={value} onChange={onChange}>
                             {props.options.map(current =>
@@ -92,7 +91,6 @@ export const SettingSelect = (props: IProps) => {
                             )}
                         </RadioGroup>
                     </Box>
-                </Paper>
 
             </div>
 
