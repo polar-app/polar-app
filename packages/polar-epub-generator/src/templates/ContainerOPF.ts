@@ -39,6 +39,7 @@ export namespace ContainerOPF {
         readonly id: string;
         readonly href: string;
         readonly mediaType: MediaType;
+        readonly properties?: ReadonlyArray<string>;
     }
 
     export interface IGuideReference {
@@ -72,6 +73,12 @@ export namespace ContainerOPF {
         function generateManifestItems(): string {
 
             function toHTML(manifestItem: IManifestItem) {
+
+                if (manifestItem.properties && manifestItem.properties.length !== 0) {
+                    const properties = manifestItem.properties.join(' ');
+                    return `<item properties="${properties}" href="${manifestItem.href}" id="${manifestItem.id}" media-type="${manifestItem.mediaType}"/>`;
+                }
+                
                 return `<item href="${manifestItem.href}" id="${manifestItem.id}" media-type="${manifestItem.mediaType}"/>`;
             }
 
