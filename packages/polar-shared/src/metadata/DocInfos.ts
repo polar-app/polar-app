@@ -1,9 +1,9 @@
 import {DocInfo} from './DocInfo';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
-import {Optional} from '../util/ts/Optional';
 import {UUIDs} from './UUIDs';
 import {PagemarkType} from './PagemarkType';
 import {IDocInfo} from "./IDocInfo";
+import {Strings} from '../util/Strings';
 
 export class DocInfos {
 
@@ -25,13 +25,18 @@ export class DocInfos {
      * Get the best possible title from the doc info but fall back to filename
      * if one isn't available and then 'Untitled' after that.
      */
-    public static bestTitle(docInfo: IDocInfo) {
+    public static bestTitle(docInfo: IDocInfo): string {
+        const { title, filename } = docInfo;
 
-        return Optional.first(docInfo.title,
-                              docInfo.filename)
-            .validateString()
-            .getOrElse('Untitled');
+        if (! Strings.empty(title)) {
+            return title;
+        }
 
+        if (! Strings.empty(filename)) {
+            return filename;
+        }
+
+        return "Untitled";
     }
 
     public static upgrade(docInfo: IDocInfo) {

@@ -12,7 +12,6 @@ import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import {Block} from "../store/Block";
 import CloseIcon from '@material-ui/icons/Close';
-import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const SearchForNote: React.FC = observer(() => {
 
@@ -22,19 +21,9 @@ export const SearchForNote: React.FC = observer(() => {
 
     const [inputValue, setInputValue] = React.useState('');
 
-    const toLabel = React.useCallback((block: IBlock<INamedContent>): string => {
-        switch (block.content.type) {
-            case "name":
-            case "date":
-                return block.content.data;
-            case "document":
-                return block.content.docInfo.title || 'Untitled'
-        }
-    }, []);
-
     const sortedNamedBlocks = React.useMemo(() => {
-        return namedBlocks.map(toLabel);
-    }, [namedBlocks, toLabel]);
+        return namedBlocks.map(block => BlockTextContentUtils.getTextContentMarkdown(block.content));
+    }, [namedBlocks]);
 
     return (
         <Autocomplete
