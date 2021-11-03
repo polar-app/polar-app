@@ -13,16 +13,16 @@ if (global.URL !== undefined) {
     const urlparse = require('url');
     module.exports = {
         makeUrlAbsolute(base: string, relative: string): string {
-            const relativeParsed = urlparse.parse(relative);
+            const relativeParsed = urlparse.URL(relative);
 
             if (relativeParsed.host === null) {
-                return urlparse.resolve(base, relative);
+                return urlparse.URL(base, relative);
             }
 
             return relative;
         },
         parseUrl(url: UtilURL): string {
-            return urlparse.parse(url).hostname;
+            return urlparse.URL(url).hostname;
         }
     };
 }
