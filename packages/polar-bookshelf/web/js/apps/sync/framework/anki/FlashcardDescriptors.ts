@@ -1,12 +1,9 @@
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
-import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import * as _ from 'lodash';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-
-const log = Logger.create();
+import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 export class FlashcardDescriptors {
 
@@ -20,38 +17,54 @@ export class FlashcardDescriptors {
 
                 const docMeta = await docMetaSupplier();
 
-                Object.values(docMeta.pageMetas).forEach(pageMeta => {
+                const pageMetaToFlashcardDescriptors = (pageMeta: IPageMeta): ReadonlyArray<FlashcardDescriptor> => {
 
                     // collect all flashcards for the current page.
 
-                    const flashcards: IFlashcard[] = [];
+                    function computeFlashcards(): ReadonlyArray<IFlashcard> {
 
-                    flashcards.push(... Dictionaries.values(pageMeta.flashcards));
+                        const flashcards = Object.values(pageMeta.flashcards)
 
-                    flashcards.push(... _.chain(pageMeta.textHighlights)
-                        .map(current => Dictionaries.values(current.flashcards))
-                        .flatten()
-                        .value());
+                        const textHighlightFlashcards
+                            = arrayStream(Object.values(pageMeta.textHighlights))
+                            .map(current => Object.values(current.flashcards))
+                            .flatMap(current => current)
+                            .collect()
 
-                    flashcards.push(... _.chain(pageMeta.areaHighlights)
-                        .map(current => Dictionaries.values(current.flashcards))
-                        .flatten()
-                        .value());
+                        const areaHighlightFlashcards
+                            = arrayStream(Object.values(pageMeta.areaHighlights))
+                            .map(current => Object.values(current.flashcards))
+                            .flatMap(current => current)
+                            .collect()
 
-                    const flashcardDescriptors = _.chain(flashcards)
-                        .map(current => <FlashcardDescriptor> {
-                            docMeta,
-                            pageInfo: pageMeta.pageInfo,
-                            flashcard: current
-                        })
-                        .value();
+                        return [
+                            ...flashcards,
+                            ...textHighlightFlashcards,
+                            ...areaHighlightFlashcards
+                        ];
 
-                    result.push(...flashcardDescriptors);
+                    }
 
-                });
+                    const flashcards = computeFlashcards();
+
+                    return flashcards.map(current => <FlashcardDescriptor> {
+                        docMeta,
+                        pageInfo: pageMeta.pageInfo,
+                        flashcard: current
+                    });
+
+                }
+
+                const flashcardDescriptors
+                    = arrayStream(Object.values(docMeta.pageMetas))
+                        .map(pageMetaToFlashcardDescriptors)
+                        .flatMap(current => current)
+                        .collect();
+
+                result.push(...flashcardDescriptors);
 
             } catch (e) {
-                log.error("Unable to handle docMeta: ", e);
+                console.error("Unable to handle docMeta: ", e);
             }
 
         }

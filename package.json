@@ -68,7 +68,9 @@
     "find-package-versions-conflicting": "yarn run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
     "bootstrap-with-link": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link",
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)",
-    "update-modules": "lerna run --scope polar-create-module compile && lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
+    "update-modules": "lerna run --scope polar-create-module compile && lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update",
+    "lerna-yarn-list": "lerna exec -- 'yarn list > yarn-list.txt'",
+    "yarn-lock-conflicts": "cat yarn.lock |grep -E \"^[^ \\\"]\" |sort  |grep -Eo \"^[^@]+\" |sort |uniq -c |sort"
   },
   "deprecated": {},
   "keywords": [],
