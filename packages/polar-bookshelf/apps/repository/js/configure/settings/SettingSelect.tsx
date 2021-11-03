@@ -2,9 +2,9 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {Box, createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
-import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+import {Box, createStyles, FormControlLabel, makeStyles, Paper, Radio, RadioGroup} from "@material-ui/core";
 import {Devices} from "polar-shared/src/util/Devices";
+import {ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
 interface IProps {
     readonly title: string;
@@ -60,43 +60,39 @@ export const SettingSelect = (props: IProps) => {
                        .getOrElse(props.options[0].id);
 
     return (
-        <div>
-            <div>
-
-                <Box mx={2}>
-                    <Box pt={2}>
-                        <MUIIconText style={{ flex: 1}} icon={props.icon}>
-                                <h3><b>{props.title}</b></h3>
-                        </MUIIconText>
-                    </Box>
-                    <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
-                        {props.description}
-                    </Box>
-                </Box>
+        <Box>
+            <ListItem alignItems="flex-start">
+                    <ListItemIcon>
+                        {props.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                    primary={props.title}
+                    secondary={props.description}
+                    />
+                </ListItem>
 
                 <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
-                    <RadioGroup name={name} value={value} onChange={onChange}>
-                        {props.options.map(current =>
-                            <FormControlLabel
-                                key={current.id}
-                                value={current.id}
-                                labelPlacement="start"
-                                classes={{
-                                    root: classes.radioLabelRoot,
-                                    label: classes.radioLabel,
-                                }}
-                                control={<Radio />}
-                                label={current.label}
-                            />
-                        )}
-                    </RadioGroup>
-                </Box>
+                        <RadioGroup name={name} value={value} onChange={onChange}>
+                            {props.options.map(current =>
+                                <FormControlLabel
+                                    key={current.id}
+                                    value={current.id}
+                                    labelPlacement="start"
+                                    classes={{
+                                        root: classes.radioLabelRoot,
+                                        label: classes.radioLabel,
+                                    }}
+                                    control={<Radio />}
+                                    label={current.label}
+                                />
+                            )}
+                        </RadioGroup>
+                    </Box>
 
-            </div>
+                {props.preview && <PreviewWarning/>}
+        </Box>
 
-            {props.preview && <PreviewWarning/>}
-
-        </div>
+                    
     );
 
 };
