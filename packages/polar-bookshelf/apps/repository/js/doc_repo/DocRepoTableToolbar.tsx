@@ -58,7 +58,7 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
     return (
 
         <>
-            <SidenavTriggerIconButton/>
+            {/* <SidenavTriggerIconButton/> */}
 
             <DeviceRouter.Desktop>
                 <ChromeExtensionInstallBar/>
