@@ -2,7 +2,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {Box, createStyles, FormControlLabel, makeStyles, Paper, Radio, RadioGroup} from "@material-ui/core";
+import {Box, createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 import {Devices} from "polar-shared/src/util/Devices";
 
@@ -74,23 +74,23 @@ export const SettingSelect = (props: IProps) => {
                     </Box>
                 </Box>
 
-                    <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
-                        <RadioGroup name={name} value={value} onChange={onChange}>
-                            {props.options.map(current =>
-                                <FormControlLabel
-                                    key={current.id}
-                                    value={current.id}
-                                    labelPlacement="start"
-                                    classes={{
-                                        root: classes.radioLabelRoot,
-                                        label: classes.radioLabel,
-                                    }}
-                                    control={<Radio />}
-                                    label={current.label}
-                                />
-                            )}
-                        </RadioGroup>
-                    </Box>
+                <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
+                    <RadioGroup name={name} value={value} onChange={onChange}>
+                        {props.options.map(current =>
+                            <FormControlLabel
+                                key={current.id}
+                                value={current.id}
+                                labelPlacement="start"
+                                classes={{
+                                    root: classes.radioLabelRoot,
+                                    label: classes.radioLabel,
+                                }}
+                                control={<Radio />}
+                                label={current.label}
+                            />
+                        )}
+                    </RadioGroup>
+                </Box>
 
             </div>
 

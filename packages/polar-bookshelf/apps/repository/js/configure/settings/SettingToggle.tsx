@@ -2,9 +2,9 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
+
 import {Box} from "@material-ui/core";
-import {Devices} from "polar-shared/src/util/Devices";
+import {ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
 export interface PrefsWriter {
 
@@ -64,37 +64,20 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     };
 
     return (
-        <Box mx={2}>
-            <div style={{display: 'flex', alignItems: 'center'}}>
+        <Box mx={2} alignItems={'center'} display={'flex'}>
 
-                <MUIIconText style={{ flex: 1 }} icon={props.icon}>
-                    <Box component={'h3'} pt={1} style={{ position: 'relative', display: 'inline-block' }}>
-                        <b>{props.title}</b>
-                        {props.beta && (
-                            <div style={{
-                                position: 'absolute',
-                                left: '100%',
-                                top: -10,
-                                color: 'red',
-                                fontSize: 9,
-                            }}>BETA</div>
-                        )}
-                    </Box>
-                </MUIIconText>
-
-                <Box component={'div'} my={'auto'} >
+                <ListItem alignItems="flex-start">
+                    <ListItemIcon>
+                        {props.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                    primary={props.title}
+                    secondary={props.description}
+                    />
                     <SwitchButton size="medium"
                                   initialValue={value}
                                   onChange={value => onChange(value)} />
-                </Box>
-
-            </div>
-
-            <div>
-                <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
-                    {props.description}
-                </Box>
-            </div>
+                </ListItem>
         </Box>
     );
 

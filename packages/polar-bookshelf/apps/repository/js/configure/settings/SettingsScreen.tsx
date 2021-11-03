@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {useContext} from 'react';
-import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {ExportDataButton} from "../../premium/ExportDataButton";
-import {createStyles, makeStyles, List, ListItem, ListItemIcon, ListItemText, Divider} from "@material-ui/core";
+import {List, ListItem, ListItemIcon, ListItemText, Divider} from "@material-ui/core";
 import { ListItemProps } from '@material-ui/core/ListItem';
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";

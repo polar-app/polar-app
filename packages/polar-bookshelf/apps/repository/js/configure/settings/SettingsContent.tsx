@@ -12,7 +12,7 @@ import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
 import HeightIcon from "@material-ui/icons/Height";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
-import { Divider } from '@material-ui/core';
+import {List, Divider} from "@material-ui/core";
 
 export const SettingsMainContent = () => {
 
@@ -27,7 +27,8 @@ export const SettingsMainContent = () => {
 
     return(
         <Box>
-            <SettingToggle title="Dark Mode"
+            <List>
+                <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
                                 name="dark-mode"
                                 icon={<BrightnessMediumIcon />}
@@ -99,7 +100,8 @@ export const SettingsMainContent = () => {
                                 name="dev"
                                 prefs={prefs}
                                 preview={true}/>
-                <Divider/>
+            </List>
+            <Divider/>
         </Box>
     );
 }
