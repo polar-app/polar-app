@@ -68,7 +68,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const blocksTreeStore = useBlocksTreeStore();
 
-    const block = blocksTreeStore.getBlock(props.id);
+    const block = blocksTreeStore.getBlock(props.id)!;
     const selected = blocksTreeStore.selected;
     const isBlockEditable = !! (block && BlockPredicates.isEditableBlock(block));
 
@@ -231,7 +231,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         setFakeRangePosition(undefined);
         noteFormatHandlers.onLink(url);
     }, [noteFormatHandlers, restore]);
-
+    
     return (
 
         <div onMouseDown={onMouseDown}

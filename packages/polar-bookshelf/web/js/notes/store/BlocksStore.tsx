@@ -1167,6 +1167,9 @@ export class BlocksStore implements IBlocksStore {
                 if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
                     // this is an edge case where a merge to the parent isn't
                     // possible but the child is empty so we just delete the child.
+                    if(targetBlock.itemsAsArray.length != 1){
+
+                    }
                     this.doDelete([sourceBlock.id]);
                     this.setActiveWithPosition(targetBlock.id, 'end');
                     return 'block-merged-with-delete';
