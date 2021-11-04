@@ -22,6 +22,7 @@ import {useBlocksStore} from "../../../notes/store/BlocksStore";
 import {IBlockPredicates} from "../../../notes/store/IBlockPredicates";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../../../apps/doc/src/DocViewer";
 
 export namespace AddFileHooks {
 
@@ -66,7 +67,7 @@ export namespace AddFileHooks {
                     const documentBlockExists = !! blocksStore
                         .indexByDocumentID[importedFile.docInfo.fingerprint];
 
-                    if (importedFile.action !== 'skipped' && ! documentBlockExists) {
+                    if (NEW_NOTES_ANNOTATION_BAR_ENABLED && importedFile.action !== 'skipped' && ! documentBlockExists) {
                         const docInfo = Dictionaries.onlyDefinedProperties(importedFile.docInfo);
                         const namedBlocksIDs = Object.values(blocksStore.indexByName);
                         const namedBlocks = blocksStore

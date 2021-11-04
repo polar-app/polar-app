@@ -35,7 +35,6 @@ import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {useFirestore} from "../../repository/js/FirestoreProvider";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
@@ -50,8 +49,11 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {MIGRATION_TO_BLOCKS_ENABLED} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 
-export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
+export const NEW_NOTES_ANNOTATION_BAR_ENABLED = MIGRATION_TO_BLOCKS_ENABLED
+                                                || LocalStorageFeatureToggles.get('notes.docs-integration');
 
 const Main = React.memo(function Main() {
 

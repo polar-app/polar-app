@@ -7,7 +7,6 @@ const {GenerateSW} = require('workbox-webpack-plugin');
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
-const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 // const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');

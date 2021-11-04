@@ -134,10 +134,6 @@
         "function": "SSRFunction"
       },
       {
-        "source": "/polar3-0-migrate",
-        "function": "Polar3DocMetaMigratorFunction"
-      },
-      {
         "source": "**",
         "function": "webapp"
       },
