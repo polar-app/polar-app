@@ -13,7 +13,7 @@ export const STACK_ITEM_BANNER_WIDTH = 50;
 export const STACK_ITEM_SPACING = 18;
 
 interface INoteStackItemStylesOpts {
-    index: number;
+    readonly index: number;
 }
 
 export const useNoteStackItemWrapperStyles = makeStyles<Theme, INoteStackItemStylesOpts>((theme) =>

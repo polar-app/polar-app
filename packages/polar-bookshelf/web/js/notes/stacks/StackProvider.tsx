@@ -4,13 +4,13 @@ import {BlockTargetStr} from "../NoteLinkLoader";
 import {NoteStackSearchParams} from "./NoteStack";
 
 interface INoteStack {
-    push: (target: BlockTargetStr) => void;
+    readonly push: (target: BlockTargetStr) => void;
 }
 
 export const NoteStackContext = React.createContext<INoteStack | null>(null);
 
 interface INoteStackProviderProps {
-    target: BlockTargetStr;
+    readonly target: BlockTargetStr;
 }
 
 export const NoteStackProvider: React.FC<INoteStackProviderProps> = React.memo((props) => {
