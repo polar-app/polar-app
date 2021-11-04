@@ -33,7 +33,7 @@ interface IProps {
     readonly onChange?: (value: boolean) => void;
 }
 
-export const SystemThemeToggle =  React.memo(function SettingToggle(props: IProps){
+export const ThemeToggle =  React.memo(function SettingToggle(props: IProps){
 
     const log = useLogger();
 
