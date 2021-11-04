@@ -12,7 +12,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {SaveToPolarHandler} from "../../services/SaveToPolarHandler";
 import {SaveToPolarProgressListener} from './SaveToPolarProgressListener';
 import {deepMemo} from 'polar-bookshelf/web/js/react/ReactUtils';
-import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
+import {ExtensionContentCapture} from "polar-web-capture/src/capture/ExtensionContentCapture";
 import {PolarLogoImage} from "polar-bookshelf/apps/repository/js/nav/PolarLogoImage";
 import {PolarLogoText} from "polar-bookshelf/apps/repository/js/nav/PolarLogoText";
 import SaveToPolarRequestWithEPUB = SaveToPolarHandler.SaveToPolarRequestWithEPUB;
