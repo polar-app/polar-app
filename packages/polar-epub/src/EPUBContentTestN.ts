@@ -56,7 +56,7 @@ describe('EPUBContent', () => {
     });
 
     it("Parser traverses DOM tree in-order with correct CFI path", async () => {
-        const path = FilePaths.resolve(__dirname, '../alice.epub');
+       const path = FilePaths.resolve(__dirname, '../alice.epub');
 
        const html = async () => {
             return `
@@ -103,5 +103,15 @@ describe('EPUBContent', () => {
 
         assert.equal(parsedEpub[3].cfi, 'epubcfi(/6/8[chapter_001]!/4/2)');
         assert.equal(parsedEpub[3].text, 'last sentence.');
+    });
+
+    it("Reads from generator", async () => {
+        const path = FilePaths.resolve(__dirname, '../alice.epub');
+
+        let iter =  EPUBContent.parse(path);
+
+        for await (const item of iter) {
+            assert.isArray(item);
+        }
     });
 });
