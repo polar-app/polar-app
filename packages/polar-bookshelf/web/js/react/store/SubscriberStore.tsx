@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {Subject} from "rxjs";
 import {Provider} from 'polar-shared/src/util/Providers';
-import {typedMemo, useRefValue} from "../../hooks/ReactHooks";
-import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
+import {typedMemo} from "../../hooks/ReactHooks";
 
 export type ProviderComponent<V> = (props: IProviderProps<V>) => JSX.Element;
 
@@ -33,7 +32,7 @@ interface InternalObservableStore<V> {
 
 }
 
-function createInternalObservableStore<V>(initialValue: V): InternalObservableStore<V> {
+function createInternalSubscriberStore<V>(initialValue: V): InternalObservableStore<V> {
 
     const subject = new Subject<V>();
     subject.next(initialValue);
@@ -47,13 +46,13 @@ function createInternalObservableStore<V>(initialValue: V): InternalObservableSt
 
 }
 
-export function createRXJSStore<V>(): [ProviderComponent<V>, UseSetStore<V>, UseStoreListener<V>] {
+export function createSubscriberStore<V>(): [ProviderComponent<V>, UseSetStore<V>, UseStoreListener<V>] {
 
-    const Context = React.createContext<InternalObservableStore<any>>(null!);
+    const storeContext = React.createContext<InternalObservableStore<V>>(null!);
 
-    const useSetStore: UseSetStore<V> = () => {
+    const useSetter: UseSetStore<V> = () => {
 
-        const context = React.useContext(Context);
+        const context = React.useContext(storeContext);
 
         return (value) => {
             context.current = value;
@@ -62,46 +61,41 @@ export function createRXJSStore<V>(): [ProviderComponent<V>, UseSetStore<V>, Use
 
     };
 
-    const useStoreListener = () => {
+    const useGetter = () => {
 
-        const context = React.useContext(Context);
+        const context = React.useContext(storeContext);
         const [state, setState] = React.useState(context.current);
-        const stateRef = useRefValue(state);
 
-        const subscriptionRef = React.useRef(context.subject.subscribe((nextValue) => {
+        React.useEffect(() => {
 
-            if (stateRef.current !== nextValue) {
-                // TODO: isn't this technically setting the state during render???
+            const subscription = context.subject.subscribe((nextValue) => {
                 setState(nextValue);
-            }
+            });
 
-        }));
+            return () => {
+                return subscription.unsubscribe();
+            };
 
-        useComponentWillUnmount(() => {
-
-            if (subscriptionRef.current) {
-                subscriptionRef.current.unsubscribe();
-            }
-
-        });
+        }, [context.subject]);
 
         return state;
+
     }
 
     const Provider = typedMemo((props: IProviderProps<V>) => {
 
-        const store = React.useMemo(() => createInternalObservableStore(props.initialValue), [props.initialValue]);
+        const store = React.useMemo(() => createInternalSubscriberStore(props.initialValue), [props.initialValue]);
 
         return (
-            <Context.Provider value={store}>
+            <storeContext.Provider value={store}>
                 {props.children}
-            </Context.Provider>
+            </storeContext.Provider>
 
         );
 
     });
 
-    return [Provider, useSetStore, useStoreListener]
+    return [Provider, useSetter, useGetter]
 
 }
 

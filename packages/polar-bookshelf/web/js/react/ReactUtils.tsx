@@ -29,7 +29,7 @@ interface IDeepMemoOpts {
  * @param component The component to render
  * @param opts The opts for rendering the component
  */
-export function deepMemo<T extends React.ComponentType<any>>(component: T, opts: IDeepMemoOpts = {}) {
+export function deepMemo<T extends object>(component: React.FC<T>, opts: IDeepMemoOpts = {}) {
 
     const equalFunc = opts.debug ? debugIsEqual : isEqual;
 

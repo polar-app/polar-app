@@ -3,6 +3,9 @@ import {LoadDocRequest} from "./doc_loaders/LoadDocRequest";
 import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {useSideNavDocLoader} from './doc_loaders/sidenav/SideNavDocLoaders';
 import {SIDE_NAV_ENABLED} from "../../sidenav/SideNavStore";
+import {BackendFileRefs} from "../../datastore/BackendFileRefs";
+import {Either} from "../../util/Either";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export type DocLoader = (loadDocRequest: LoadDocRequest) => void;
 
@@ -41,5 +44,27 @@ export function useDocLoader(): DocLoader {
         }
 
     }, [defaultDocLoader, sideNavDocLoader]);
+
+}
+
+export function useDocLoaderForDocInfo() {
+
+    const docLoader = useDocLoader();
+
+    return React.useCallback((docInfo: IDocInfo) => {
+
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
+
+        const docLoadRequest: LoadDocRequest = {
+            fingerprint: docInfo.fingerprint,
+            title: docInfo.title || 'Untitled',
+            backendFileRef,
+            newWindow: true,
+            url: docInfo.url
+        }
+
+        docLoader(docLoadRequest);
+
+    }, [docLoader]);
 
 }

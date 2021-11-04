@@ -12,6 +12,14 @@ import {ContainerOPF} from "./templates/ContainerOPF";
 import {TOC_NCX} from "./templates/TOC_NCX";
 
 export namespace EPUBGenerator {
+    export interface LocalImage {
+        readonly id: string;
+        readonly img: HTMLImageElement;
+        readonly src: string;
+        readonly newSrc: string;
+        readonly blob: Blob;
+        readonly mediaType: string;
+    }
 
     import ISpineItem = ContainerOPF.ISpineItem;
     import IManifestItem = ContainerOPF.IManifestItem;
@@ -74,7 +82,7 @@ export namespace EPUBGenerator {
 
         readonly authors?: ReadonlyArray<AuthorStr>;
 
-        readonly cover?: RawData;
+        readonly cover?: LocalImage;
 
         readonly lang?: LangStr;
 
@@ -161,6 +169,14 @@ export namespace EPUBGenerator {
 
                 function toManifestItem(image: EPUBImage): IManifestItem {
 
+                    if (image.id === doc.cover?.id) {
+                        return {
+                            id: image.id,
+                            href: image.src,
+                            mediaType: image.mediaType,
+                            properties: ['cover-image']
+                        };
+                    }
                     return {
                         id: image.id,
                         href: image.src,

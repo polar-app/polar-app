@@ -1,5 +1,4 @@
 import {Button, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
-import {Link} from "react-router-dom";
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
@@ -63,7 +62,7 @@ export const useHandlePurgeDocumentBlocks = () => {
     }, [blocksStore, dialogs]);
 };
 
-const useDesktopStyles = makeStyles(() =>
+const useDesktopStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -72,6 +71,7 @@ const useDesktopStyles = makeStyles(() =>
             flex: '0 0 55px',
             height: 55,
             padding: '0 26px',
+            background: theme.palette.background.paper
         },
         divider: {
             padding: '0 26px',
@@ -82,7 +82,8 @@ const useDesktopStyles = makeStyles(() =>
             alignItems: 'center',
         },
         right: {
-            flexShrink: 0,
+            flex: 1,
+            maxWidth: 340,
             display: 'flex',
             alignItems: 'center',
         },
@@ -103,10 +104,15 @@ const DesktopNotesToolbar = () => {
         <>
             <div className={classes.root}>
                 <div className={classes.left}>
-                    <SidenavTriggerIconButton />
-                    <Link style={{ textDecoration: 'none' }} to={RoutePathNames.DAILY}>
-                        <Button variant="outlined" disableElevation>Daily Notes</Button>
-                    </Link>
+                    <Button color="primary"
+                            style={{ height: 38 }}
+                            variant="contained"
+                            disableElevation
+                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
+                            onClick={handleCreateNote}
+                            size="medium">
+                        Create a new note
+                    </Button>
                     {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
                         <Button
                             variant="outlined"
@@ -119,25 +125,16 @@ const DesktopNotesToolbar = () => {
                         </Button>
                     )}
                 </div>
-                <div className={classes.mid}><SearchForNote /></div>
                 <div className={classes.right}>
-                    <Button color="primary"
-                            style={{ height: 38 }}
-                            variant="contained"
-                            disableElevation
-                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
-                            onClick={handleCreateNote}
-                            size="medium">
-                        New
-                    </Button>
+                    <SearchForNote />
                 </div>
             </div>
-            <div className={classes.divider}><Divider /></div>
+            {/* <div className={classes.divider}><Divider /></div> */}
         </>
     );
 };
 
-const useHandHeldStyles = makeStyles(() =>
+const useHandHeldStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -146,6 +143,7 @@ const useHandHeldStyles = makeStyles(() =>
             flex: '0 0 55px',
             height: 55,
             padding: '0 14px',
+            background: theme.palette.background.paper
         },
         divider: {
             padding: '0 14px',

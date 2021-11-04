@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {createReactiveStore} from "../react/store/ReactiveStore";
+import {createStoreContext} from "../react/store/StoreContext";
 
 export interface INoteFormatBarPosition {
 
@@ -46,4 +46,4 @@ export class NoteFormatStore {
 
 }
 
-export const [NoteFormatStoreProvider, useNoteFormatStore] = createReactiveStore(() => new NoteFormatStore())
+export const [NoteFormatStoreProvider, useNoteFormatStore] = createStoreContext(() => new NoteFormatStore())

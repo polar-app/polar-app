@@ -1,34 +1,27 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React from 'react';
-import {Alert, Linking, Platform, SafeAreaView, StatusBar, StyleSheet, View, Text} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import React, {useEffect} from 'react';
+import {Alert, Linking, StyleSheet, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
 import {EmailTempStorage} from "./util/EmailTempStorage";
-
-const hasNotch = DeviceInfo.hasNotch();
+import {AdaptiveSafeAreaView} from "./AdaptiveSafeAreaView";
 
 const App = () => {
     const billing = new Billing();
 
     // @TODO useEffect
-    billing.init().then(() => {
-        console.log('Billing initialized');
-    });
+    useEffect(() => {
+        billing.init()
+            .then(() => {
+                console.log('Billing initialized');
+            })
+            .catch(reason => {
+                alert(reason);
+            })
+    }, [billing]);
 
     return (
-        <SafeAreaView style={styles.safeAreaView}>
-            <View
-                style={styles.container}>
+        <AdaptiveSafeAreaView>
+            <View style={styles.container}>
                 <InAppLiteServer
                     onBuy={async (planName, email) => {
 
@@ -61,17 +54,12 @@ const App = () => {
                         }
                     }}/>
             </View>
-        </SafeAreaView>
+        </AdaptiveSafeAreaView>
     );
 };
 export default App;
 
 const styles = StyleSheet.create({
-    safeAreaView: {
-        flex: 1,
-        backgroundColor: '#323638',
-        paddingTop: Platform.OS === 'android' && hasNotch ? StatusBar.currentHeight : 0,
-    },
     container: {
         flex: 1,
     },

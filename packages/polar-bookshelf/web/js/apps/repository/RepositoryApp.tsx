@@ -69,8 +69,9 @@ import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
-import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 
 interface IProps {
     readonly app: App;
@@ -223,12 +224,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 <BrowserRouter>
                                     <UseLocationChangeRoot>
                                         <MUIDialogController>
-                                            <AddFileDropzoneRoot>
-                                                <>
-                                                    <AndroidHistoryListener/>
-                                                    {children}
-                                                </>
-                                            </AddFileDropzoneRoot>
+                                            <>
+                                                <AndroidHistoryListener/>
+                                                {children}
+                                            </>
                                         </MUIDialogController>
                                     </UseLocationChangeRoot>
                                 </BrowserRouter>
@@ -285,101 +284,106 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <AuthRequired>
                     <DataProviders>
-                        <div className={classes.root}>
+                        <AddFileDropzoneRoot>
+                            <div className={classes.root}>
 
-                            <Initializers/>
+                                <Initializers/>
 
-                            <ActiveKeyboardShortcuts/>
-                            <JumpToNoteKeyboardCommand />
+                                <ActiveKeyboardShortcuts/>
+                                <JumpToNoteKeyboardCommand/>
+                                <JumpToDocumentKeyboardCommand/>
 
-                            <SideNav/>
-                            <DeviceRouters.NotDesktop>
-                                <MUIBottomNavigation/>
-                            </DeviceRouters.NotDesktop>
-                            <Intercom/>
+                                <SideNav/>
+                                <DeviceRouters.NotDesktop>
+                                    <MUIBottomNavigation/>
+                                </DeviceRouters.NotDesktop>
+                                <Intercom/>
 
-                            <RouteContainer>
+                                <RouteContainer>
 
-                                <Route exact path="/cdk-demo">
-                                    <CDKDemo/>
+                                    <Route exact path="/cdk-demo">
+                                        <CDKDemo/>
+                                    </Route>
+
+                                    <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
+                                        <DocRepoSidebarTagStore>
+                                            <DocRepoScreen2/>
+                                        </DocRepoSidebarTagStore>
+                                    </PersistentRoute>
+
+                                    <PersistentRoute strategy="display" exact path={RoutePathNames.ANNOTATIONS}>
+                                        <RenderAnnotationRepoScreen/>
+                                    </PersistentRoute>
+
+                                    <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
+                                        <SwitchScreen/>
+                                    </PersistentRoute>
+
+                                    <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
+                                        <AddFilesMobileScreen/>
+                                    </PersistentRoute>
+
+                                    <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
+                                        <AccountPageMobile/>
+                                    </PersistentRoute>
+
+                                    <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
+                                                    repoDocMetaManager={props.repoDocMetaManager}
+                                                    repoDocMetaLoader={props.repoDocMetaLoader}
+                                                    persistenceLayerManager={props.persistenceLayerManager}/>
+
+                                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                        <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
+                                               component={EnableFeatureToggle}/>
+
+                                        <FeatureToggleEnabled featureName="notes-enabled">
+
+                                            <>
+
+                                                <PersistentRoute path={RoutePathNames.NOTES}
+                                                                 exact
+                                                                 strategy="display">
+                                                    <NotesRepoScreen/>
+                                                </PersistentRoute>
+
+                                                <PersistentRoute path={RoutePathNames.DAILY}
+                                                                 strategy="display"
+                                                                 exact>
+                                                    <NotesScreen/>
+                                                </PersistentRoute>
+
+                                                <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                       component={NotesScreen}/>
+
+                                            </>
+
+                                        </FeatureToggleEnabled>
+
+                                        <Route path="/hello-ssr"
+                                               component={HelloServerSideRender}/>
+
+                                    </Switch>
+
+                                    <SharedRoutes/>
+                                </RouteContainer>
+                            </div>
+
+                            {/* the following are small popup screens that can exist anywhere */}
+                            <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+                                <Route path="#welcome" component={WelcomeScreen}/>
+
+                                <Route path="#account" component={AccountDialogScreen}/>
+
+                                <Route path="#add">
+                                    <PersistenceLayerContext.Provider
+                                        value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                                        <AddFileDropzoneScreen/>
+                                    </PersistenceLayerContext.Provider>
                                 </Route>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
-                                    <DocRepoSidebarTagStore>
-                                        <DocRepoScreen2/>
-                                    </DocRepoSidebarTagStore>
-                                </PersistentRoute>
-
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.ANNOTATIONS}>
-                                    <RenderAnnotationRepoScreen/>
-                                </PersistentRoute>
-
-                                <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
-                                    <SwitchScreen/>
-                                </PersistentRoute>
-
-                                <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
-                                    <AddFilesMobileScreen/>
-                                </PersistentRoute>
-
-                                <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
-                                    <AccountPageMobile/>
-                                </PersistentRoute>
-
-                                <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
-                                                repoDocMetaManager={props.repoDocMetaManager}
-                                                repoDocMetaLoader={props.repoDocMetaLoader}
-                                                persistenceLayerManager={props.persistenceLayerManager}/>
-
-                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                                    <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
-                                           component={EnableFeatureToggle}/>
-
-                                    <FeatureToggleEnabled featureName="notes-enabled">
-
-                                        <>
-
-                                            <PersistentRoute path={RoutePathNames.NOTES}
-                                                             exact
-                                                             strategy="display">
-                                                <NotesRepoScreen/>
-                                            </PersistentRoute>
-
-                                            <Route path={RoutePathNames.DAILY}
-                                                   component={NotesScreen}/>
-
-                                            <Route path={`${RoutePathNames.NOTES}/:id`}
-                                                   component={NotesScreen}/>
-
-                                        </>
-
-                                    </FeatureToggleEnabled>
-
-                                    <Route path="/hello-ssr"
-                                           component={HelloServerSideRender}/>
-
-                                </Switch>
-
-                                <SharedRoutes/>
-                            </RouteContainer>
-                        </div>
-
-                        {/* the following are small popup screens that can exist anywhere */}
-                        <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                            <Route path="#welcome" component={WelcomeScreen}/>
-
-                            <Route path="#account" component={AccountDialogScreen}/>
-
-                            <Route path="#add">
-                                <PersistenceLayerContext.Provider
-                                    value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
-                                    <AddFileDropzoneScreen/>
-                                </PersistenceLayerContext.Provider>
-                            </Route>
-
-                        </Switch>
-
+                            </Switch>
+                        </AddFileDropzoneRoot>
                     </DataProviders>
                 </AuthRequired>
 

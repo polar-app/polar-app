@@ -9,7 +9,7 @@ import {CardPaper} from "./CardPaper";
 import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
-import {TaskAction} from '../ReviewerTasks';
+import {ITaskAction} from '../ReviewerTasks';
 
 namespace card {
 
@@ -71,7 +71,7 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<TaskAction>;
+    readonly taskRep: TaskRep<ITaskAction>;
 
     readonly front: React.ReactElement;
 

@@ -1,7 +1,7 @@
 import {ReadabilityCapture} from "./ReadabilityCapture";
 import {Selections} from "polar-bookshelf/web/js/highlights/text/selection/Selections";
 import {SelectionCapture} from "./SelectionCapture";
-import {PageMetadata} from "page-metadata-parser";
+import {PageMetadata} from "polar-page-metadata-parser/src/parsers/PageParser";
 import { HTMLStr, PlainTextStr } from "polar-shared/src/util/Strings";
 
 export namespace ExtensionContentCapture {
@@ -13,7 +13,7 @@ export namespace ExtensionContentCapture {
     export interface ICapturedEPUB extends PageMetadata {
         readonly content: HTMLStr;
         readonly text: PlainTextStr;
-        readonly excerpt: PlainTextStr;
+        readonly excerpt?: PlainTextStr;
     }
 
     export function capture(): ICapturedEPUB {
