@@ -21025,11 +21025,6 @@ pad@^3.2.0:
   dependencies:
     wcwidth "^1.0.1"
 
-page-metadata-parser@=1.1.4:
-  version "1.1.4"
-  resolved "https://verdaccio.getpolarized.io/page-metadata-parser/-/page-metadata-parser-1.1.4.tgz#52cea38eb6d084d1808a10abb659ee8e9233bd4d"
-  integrity sha512-TbPNw7GddbHs4c2DyYinFvh51BVsaMfdrweeylzGlg8qeuzALGxq2NF+6jbmeKc7DnU2BZRDOuWNnEjDwUSqRQ==
-
 pako@^1.0.5, pako@~1.0.2, pako@~1.0.5:
   version "1.0.11"
   resolved "https://verdaccio.getpolarized.io/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
