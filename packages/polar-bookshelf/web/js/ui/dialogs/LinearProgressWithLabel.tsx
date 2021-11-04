@@ -9,7 +9,7 @@ export const LinearProgressWithLabel = deepMemo(function LinearProgressWithLabel
     const rounded = Math.round(props.value);
 
     return (
-        <Box display="flex" alignItems="center">
+        <Box className={props.className} display="flex" alignItems="center">
             <Box width="100%" mr={1}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>

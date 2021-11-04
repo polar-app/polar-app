@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import {createStyles, fade, IconButton, makeStyles} from "@material-ui/core";
+import {createStyles, IconButton, makeStyles} from "@material-ui/core";
 import {ColorStr} from "./colors/ColorSelectorBox";
 import PaletteIcon from "@material-ui/icons/Palette";
 
@@ -37,12 +37,14 @@ const useStyles = makeStyles((theme) =>
         },
         iconButton: {
             padding: 0,
+            width: 26,
+            height: 26,
             "&.selected": {
-                backgroundColor: fade(theme.palette.action.active, theme.palette.action.hoverOpacity),
+                border: `2px solid ${theme.palette.info.dark}`,
             },
         },
         item: {
-            padding: 6,
+            padding: 3,
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -71,8 +73,8 @@ export const ColorMenu = React.forwardRef<HTMLDivElement, IColorMenuProps>((prop
                 <div className={classes.item} key={color}>
                     <IconButton
                         className={clsx(classes.iconButton, { selected: Array.isArray(selected) ? selected.includes(color) : color === selected })}
-                        disableRipple
                         onClick={() => onChange(color)}
+                        disableRipple
                     >
                         { <PaletteIcon style={{ color, display: "block" }} /> }
                     </IconButton>
