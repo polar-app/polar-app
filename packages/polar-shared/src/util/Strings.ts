@@ -69,7 +69,7 @@ export namespace Strings {
     }
 
 
-    export function empty(value: string | null | undefined): boolean {
+    export function empty<T extends string | null | undefined>(value: T): value is Exclude<T, string> {
         return value === null || value === undefined || value.trim() === "";
     }
 
