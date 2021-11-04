@@ -94,14 +94,14 @@ export namespace EPUBContent {
 
         let rootEvenIndex = 0;
 
-        // dom.window.document.documentElement.childNodes.forEach((node) => {
-        //     if (node.nodeType === node.ELEMENT_NODE) {
-        //         rootEvenIndex += 2;
-        //         if (node.nodeName !== 'HEAD') {
-        //             parseChildren(node,`${content.sharedCfi}/${rootEvenIndex}`, results);
-        //         }
-        //     }
-        // });
+        dom.window.document.documentElement.childNodes.forEach((node) => {
+            if (node.nodeType === node.ELEMENT_NODE) {
+                rootEvenIndex += 2;
+                if (node.nodeName !== 'HEAD') {
+                    parseChildren(node,`${content.sharedCfi}/${rootEvenIndex}`, results);
+                }
+            }
+        });
 
         return results as ReadonlyArray<IEPUBText>;
     }
@@ -165,22 +165,20 @@ export namespace EPUBContent {
         const rootChildren = Array.from(xmlDOM.window.document.documentElement.childNodes);
 
         for (const node of rootChildren) {
-            //
-            // // Ignore empty whitespace '#text' nodes
-            // if (node.nodeName !== "#text") {
-            //
-            //     // CFI spec assigns even indices starting at 2
-            //     // to XML child nodes and increments it by 2 for each child node
-            //     // Ref: http://idpf.org/epub/linking/cfi/epub-cfi.html#sec-path-child-ref
-            //     CFIRootEvenIndex += 2;
-            //
-            //     if (node.nodeName === 'spine') {
-            //         spineNode = <HTMLElement> node;
-            //
-            //         rootSpineIndex = CFIRootEvenIndex;
-            //         break;
-            //     }
-            // }
+
+            // Ignore empty whitespace '#text' nodes
+            if (node.nodeName !== "#text") {
+
+                // CFI spec assigns even indices starting at 2
+                // to XML child nodes and increments it by 2 for each child node
+                // Ref: http://idpf.org/epub/linking/cfi/epub-cfi.html#sec-path-child-ref
+                CFIRootEvenIndex += 2;
+                if (node.nodeName === 'spine') {
+                    spineNode = <HTMLElement> node;
+                    rootSpineIndex = CFIRootEvenIndex;
+                    break;
+                }
+            }
         }
 
         const spine = getXmlToJSON(spineNode.innerHTML) as ISpine;
@@ -210,10 +208,10 @@ export namespace EPUBContent {
      * @param path document Path or URL
      */
     export async function* parse(path: string): AsyncGenerator<readonly IEPUBText[]> {
-        // const pages = await get(path);
-        //
-        // for (const page of pages) {
-        //     yield parseContent(path, page);
-        // }
+        const pages = await get(path);
+       
+        for (const page of pages) {
+            yield parseContent(page);
+        }
     }
 }
