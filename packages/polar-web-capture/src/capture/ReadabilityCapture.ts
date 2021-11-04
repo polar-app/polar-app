@@ -8,7 +8,6 @@ export namespace ReadabilityCapture {
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
 
     export function capture(): ICapturedEPUB {
-
         const url = document.location.href;
         const doc = <Document> document.cloneNode(true);
 

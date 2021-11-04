@@ -17,8 +17,8 @@ export namespace ExtensionContentCapture {
     }
 
     export function capture(): ICapturedEPUB {
-
         const selection = window.getSelection();
+
         if (selection !== null && hasActiveTextSelection(selection)) {
             return SelectionCapture.capture();
         } else {
