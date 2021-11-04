@@ -204,4 +204,16 @@ export namespace EPUBContent {
     function wrapCFIPath(CFIPath: string): string {
         return `epubcfi(${CFIPath})`;
     }
+
+    /**
+     * 
+     * @param path document Path or URL
+     */
+    export async function* parse(path: string): AsyncGenerator<readonly IEPUBText[]> {
+        const pages = await get(path);
+
+        for (const page of pages) {
+            yield parseContent(path, page);
+        }
+    }
 }

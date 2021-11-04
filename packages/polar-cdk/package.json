@@ -28,8 +28,7 @@
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0",
-    "ts-node": "=10.2.1"
+    "polar-webpack": "0.0.0"
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "=1.121.0",

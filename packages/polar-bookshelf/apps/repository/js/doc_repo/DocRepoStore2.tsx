@@ -431,7 +431,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
                 content.docInfo.flagged = flagged;
-                console.log('debug', content.docInfo);
             });
         };
 
