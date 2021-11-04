@@ -15,6 +15,7 @@ import {NotesInbound} from "./NotesInbound";
 import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
 import {NoteStack} from "./stacks/NoteStack";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -86,7 +87,7 @@ export const DailyNotesScreen: React.FC = () => {
                 <title>Polar: Daily notes</title>
             </Helmet>
             <NotesToolbar />
-            <NoteStack target="Daily notes" rootBannerLabel="Daily notes">
+            <NoteStack target={RoutePathNames.DAILY} rootBannerLabel="Daily notes">
                 <NotePaper ref={rootRef}>
                     {visibleNotes.map(({ id }) => (
                         <div key={id} className="NoteTree">

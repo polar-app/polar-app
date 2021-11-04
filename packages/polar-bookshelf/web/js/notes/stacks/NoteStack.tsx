@@ -3,7 +3,7 @@ import {Theme, Box, createStyles, makeStyles} from "@material-ui/core";
 import React from "react";
 import {useLocation} from "react-router-dom";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {NoteStackItem, NoteStackItemWrapper, STACK_ITEM_BANNER_WIDTH, STACK_ITEM_WIDTH} from "./NoteStackItem";
+import {NoteStackItem, NoteStackItemWrapper, STACK_ITEM_BANNER_WIDTH, STACK_ITEM_SPACING, STACK_ITEM_WIDTH} from "./NoteStackItem";
 import {NotesInnerContainer} from "../NotesContainer";
 import {NoteStackProvider} from "./StackProvider";
 
@@ -27,22 +27,22 @@ export namespace NoteStackSearchParams {
                             item: BlockTargetStr): string {
 
         const stack = parse(search);
+        const sourceIdx = stack.indexOf(sourceTarget);
+        const itemIdx = stack.indexOf(item);
 
-        if (stack.length === 0) {
-            return `stack=${item}`;
+        if (sourceIdx === -1) {
+            return `stack=${encodeURIComponent(item)}`;
         }
 
-        const idx = stack.indexOf(sourceTarget);
+        if (itemIdx > -1) {
+            const newStack = [...stack.slice(0, itemIdx + 1)];
 
-
-        if (idx === -1) {
-            return "";
+            return `stack=${encodeURIComponent(newStack.join(','))}`;
         }
 
-        const newStack = [...stack.slice(0, idx + 1), item];
+        const newStack = [...stack.slice(0, sourceIdx + 1), item];
 
-        return `stack=${newStack.join(',')}`
-
+        return `stack=${encodeURIComponent(newStack.join(','))}`;
     }
 
 }
@@ -69,6 +69,7 @@ const useNoteStackStyles = makeStyles<Theme, INoteStacksStylesOpts>(() =>
                 minWidth: width,
                 position: 'sticky',
                 left: 0,
+                marginRight: STACK_ITEM_SPACING,
             };
         }
     }),
@@ -99,7 +100,10 @@ export const NoteStack: React.FC<INoteStackProps> = (props) => {
 
         const handleScroll = () => {
             const scroll = elem.scrollLeft;
-            const hiddenUntil = Math.floor(scroll / (STACK_ITEM_WIDTH - STACK_ITEM_BANNER_WIDTH));
+            const hiddenUntil = Math.floor(
+                scroll
+                / (STACK_ITEM_WIDTH - STACK_ITEM_BANNER_WIDTH + STACK_ITEM_SPACING)
+            );
 
             setHiddenUntil(hiddenUntil);
             
@@ -110,14 +114,18 @@ export const NoteStack: React.FC<INoteStackProps> = (props) => {
         return () => elem.removeEventListener('scroll', handleScroll);
     }, [elem, setHiddenUntil]);
 
-    const getItem = React.useCallback((target: BlockTargetStr, index: number) => (
-        <NoteStackItemWrapper target={decodeURIComponent(target)}
-                              key={`${target}-${index}`}
-                              index={index}
-                              hidden={hiddenUntil > (index + 1)}>
-            <NoteStackItem target={target} />
-        </NoteStackItemWrapper>
-    ), [hiddenUntil]);
+    const getItem = React.useCallback((target: BlockTargetStr, index: number) => {
+        const decodedTarget = decodeURIComponent(target);
+
+        return (
+            <NoteStackItemWrapper target={decodedTarget}
+                                  key={`${target}-${index}`}
+                                  index={index}
+                                  hidden={hiddenUntil > (index + 1)}>
+                <NoteStackItem target={decodedTarget} />
+            </NoteStackItemWrapper>
+        );
+    }, [hiddenUntil]);
 
     if (stack.length === 0) {
         return (

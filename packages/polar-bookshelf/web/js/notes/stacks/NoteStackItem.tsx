@@ -33,9 +33,10 @@ export const useNoteStackItemWrapperStyles = makeStyles<Theme, INoteStackItemSty
             zIndex: 10,
             width: STACK_ITEM_BANNER_WIDTH,
             lineHeight: `${STACK_ITEM_BANNER_WIDTH}px`,
+            color: theme.palette.type === 'dark' ? theme.palette.text.primary : theme.palette.background.default,
             padding: '22px 0',
             minHeight: 200,
-            background: 'linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(103,84,214,1) 50%)',
+            background: `linear-gradient(0deg, rgba(0,0,0,0) 0%, ${theme.palette.primary.main} 50%)`,
         },
         bannerText: {
             writingMode: 'vertical-lr',
