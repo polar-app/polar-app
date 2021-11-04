@@ -159,17 +159,12 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-                    <DeviceRouters.NotDesktop>
-                        <TableCell className={classes.th} style={{width: '55px'}}>
-                            <MUICheckboxIconButton
-                                indeterminate={selected.length > 0 && selected.length < view.length}
-                                checked={selected.length === view.length && view.length !== 0}
-                                onChange={(_event, checked) => handleCheckbox(checked)}/>
-                        </TableCell>
-                    </DeviceRouters.NotDesktop>
-                    <DeviceRouters.Desktop>
-                        <Check/>
-                    </DeviceRouters.Desktop>
+                    <TableCell style={{width:'50px'}}>
+                        <MUICheckboxIconButton
+                            indeterminate={selected.length > 0 && selected.length < view.length}
+                            checked={selected.length === view.length && view.length !== 0}
+                            onChange={(_event, checked) => handleCheckbox(checked)}/>
+                    </TableCell>
 
                     {columns.map((column) => {
 
@@ -201,15 +196,23 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                         )
                     })}
                     <DeviceRouters.NotDesktop>
-                        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
-                            <SelectionOrToggleButtons/>
-                        </TableCell>
+                        <SelectionButtonsWithinTableCell/>
                     </DeviceRouters.NotDesktop>
 
-                    <DeviceRouters.Desktop>
-                        <ColumnSelector/>
+                    <DeviceRouters.Desktop>                            
+                        {selected.length > 0 ? <SelectionButtonsWithinTableCell/> : <ColumnSelector/>}
                     </DeviceRouters.Desktop>
                 </TableRow>
             </TableHead>
+    );
+});
+
+const SelectionButtonsWithinTableCell = React.memo(function SelectionButtonsWithinTableCell() {
+    const classes = useStyles();
+
+    return(
+        <TableCell className={classes.th} style={{ display: 'table-cell', width: '200px'}}>
+            <SelectionOrToggleButtons/>
+        </TableCell>
     );
 });
