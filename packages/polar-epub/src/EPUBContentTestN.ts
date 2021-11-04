@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import StreamZip from 'node-stream-zip';
 import {EPUBContent} from './EPUBContent';
 
-xdescribe('EPUBContent', () => {
+describe('EPUBContent', () => {
 
     it("Can read EPUB references to streams", async () => {
 
