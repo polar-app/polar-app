@@ -10,13 +10,13 @@ import {
     FASuperscriptIcon
 } from "../mui/MUIFontAwesome";
 import FormatClearIcon from '@material-ui/icons/FormatClear';
-import PublicIcon from '@material-ui/icons/Public';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CheckIcon from '@material-ui/icons/Check';
 import {URLStr} from 'polar-shared/src/util/Strings';
+import {BacklinkIconButton} from '../mui/icon_buttons/BacklinkIconButton';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -221,7 +221,7 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
 
             {props.canHaveWikiLinks && (
                 <FormatButton onClick={props.onWikiLinkFromSelection}>
-                    <PublicIcon className={classes.icon}/>
+                    <BacklinkIconButton className={classes.icon} />
                 </FormatButton>
             )}
         </>
