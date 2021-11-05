@@ -23,6 +23,8 @@ import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
+import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -136,7 +138,12 @@ export namespace DocumentDataUpdater {
                 .map(({ label }) => ({ label, id: label }))
                 .toMap(({ label }) => label);
 
-            const docInfo: IDocInfo = { ...block.content.docInfo, tags, lastUpdated: ISODateTimeStrings.create() };
+            const docInfo: IDocInfo = {
+                ...block.content.docInfo,
+                tags,
+                lastUpdated: ISODateTimeStrings.create(),
+                uuid: UUIDs.create(),
+            };
 
             const repoDocInfo = repoDocInfoDataObjectIndex.get(fingerprint);
 
@@ -147,7 +154,7 @@ export namespace DocumentDataUpdater {
 
             const docMeta = repoDocInfo.docMeta;
 
-            const docMetaValue = JSON.stringify({ ...docMeta, docInfo });
+            const docMetaValue = DocMetas.serialize({ ...docMeta, docInfo });
 
             switch (type) {
                 case 'modified':

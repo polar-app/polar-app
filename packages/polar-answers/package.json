@@ -42,7 +42,8 @@
     "polar-google-cloud-language": "0.0.0",
     "polar-pdf": "0.0.0",
     "polar-shared": "0.0.0",
-    "polar-cache": "0.0.0"
+    "polar-cache": "0.0.0",
+    "polar-epub": "0.0.0"
   },
   "files": [
     "**/*.js",

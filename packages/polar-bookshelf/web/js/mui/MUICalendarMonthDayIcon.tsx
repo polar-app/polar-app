@@ -25,7 +25,7 @@ const useMonthDay = () => {
         }, updateAfterMs);
 
         return () => clearTimeout(timeoutID);
-    }, [setDay]);
+    }, [setDay, day]);
 
     return day;
 };

@@ -89,7 +89,7 @@ export namespace DocMetaBlockContents {
      * Convert a IDocMeta object into blocks
      *
      * @param docMeta The IDocMeta object to convert
-     * @param existingNamedBlocks The existing named blocks that the user has
+     * @param existingNamedBlocks The existing named blocks that a user has
      */
     export function getFromDocMeta(docMeta: IDocMeta,
                                    existingNamedBlocks: ReadonlyArray<IBlock<INamedContent>>): IDocMetaBlockContents {

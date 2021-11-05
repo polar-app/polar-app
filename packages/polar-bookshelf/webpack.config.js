@@ -7,7 +7,6 @@ const {GenerateSW} = require('workbox-webpack-plugin');
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
-const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 // const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -441,19 +440,25 @@ module.exports = {
     },
     watchOptions: {},
     devServer: {
-        contentBase: path.resolve('dist/public'),
+        static: [
+            path.resolve('dist/public'),
+            {
+                watch: true
+            }
+        ],
         compress: true,
         port,
         open: false,
-        openPage,
-        overlay: true,
         hot: true,
-        watchContentBase: false,
-        writeToDisk: true,
-        disableHostCheck: true,
+        allowedHosts: 'all',
+        client: {
+            overlay: true,
+        },
+        devMiddleware: {
+            writeToDisk: true,
+        },
         historyApiFallback: {
             rewrites: [
-                // TODO: load DefaultRewrites here and convert them...
                 {from: /^\/login$/, to: '/apps/repository/index.html'},
                 {from: /^\/apps\/stories/, to: '/apps/stories/index.html'},
             ]

@@ -56,7 +56,7 @@ export namespace MigrationToBlockAnnotations {
         const documentBlock = await getDocumentBlockByFingerprint(idUser, firestore, docMeta.value.docInfo.fingerprint);
 
         if (docMeta.value.ver === 3 || documentBlock) {
-            throw new Error(`docMeta object with the ID: ${docMetaID} has already been migrated`);
+            return;
         }
 
         await migrateDocMeta(idUser, firestore, docMeta);
@@ -216,7 +216,7 @@ export namespace MigrationToBlockAnnotations {
 
         const writeToBatch = (block: IBlock) => {
             const data = Dictionaries.onlyDefinedProperties(block);
-            batch.set(blockCollection.doc(block.id), data);
+            batch.create(blockCollection.doc(block.id), data);
         };
 
 

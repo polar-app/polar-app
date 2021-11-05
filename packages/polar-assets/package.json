@@ -6,10 +6,8 @@
     "dist": "echo noop"
   },
   "devDependencies": {
-    "@types/sharp": "=0.25.1"
   },
   "dependencies": {
-    "sharp": "=0.25.4"
   },
   "repository": {
     "type": "git",
