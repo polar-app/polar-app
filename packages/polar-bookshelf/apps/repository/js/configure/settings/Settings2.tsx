@@ -1,7 +1,5 @@
-import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 import {Box} from "@material-ui/core";
 import {Devices} from "polar-shared/src/util/Devices";
@@ -20,30 +18,13 @@ interface IProps {
     readonly title: string;
     readonly description: string;
     readonly name: string;
-    readonly prefs: PrefsWriter | undefined;
-    readonly preview?: boolean;
-    readonly defaultValue?: boolean;
     readonly icon?: JSX.Element;
     readonly beta?: boolean;
-    readonly className?: string | undefined;
 
-    /**
-     * Optional callback to listen to settings.
-     */
     readonly onChange?: (value: boolean) => void;
 }
 
-export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
-
-    const log = useLogger();
-
-    const {prefs, name, defaultValue} = props;
-
-    if (! prefs) {
-        return null;
-    }
-
-    const value = prefs.isMarked(name, defaultValue);
+export const SwitchToggle =  React.memo(function SettingToggle(props: IProps){
 
     const onChange = (value: boolean) => {
         console.log("Setting Changed");
@@ -70,7 +51,6 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
                 <Box component={'div'} my={'auto'} >
                     <SwitchButton size="medium"
-                                  initialValue={value}
                                   onChange={value => onChange(value)} />
                 </Box>
 
