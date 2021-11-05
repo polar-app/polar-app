@@ -20,7 +20,7 @@ export function useMigrationSnapshotByName(name: string) {
 
     const {uid, firestore} = useFirestore();
 
-    const subscriber = MigrationCollection.createSnapshotByName(firestore, uid, name);
+    const subscriber = React.useMemo(() => MigrationCollection.createSnapshotByName(firestore, uid, name), [firestore, uid, name]);
     const converter = React.useCallback((data: TDocumentData) => (data as IMigration), [])
 
     return useFirestoreSnapshotSubscriber(subscriber, converter)

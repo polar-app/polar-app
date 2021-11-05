@@ -113,7 +113,13 @@ export namespace MigrationCollection {
 
     }
 
-    export async function write<SM = undefined>(firestore: IFirestore<SM>, write: Exclude<IMigration, 'id' | 'written'>) {
+    type IWriteData = Omit<IMigrationCompleted, 'id' | 'written'>
+                     | Omit<IMigrationStarted, 'id' | 'written'>
+                     | Omit<IMigrationFailed, 'id' | 'written'>;
+ 
+
+    export async function write<SM = undefined>(firestore: IFirestore<SM>,
+                                                write: IWriteData) {
 
         const id = Hashcodes.createID({
             uid: write.uid,
