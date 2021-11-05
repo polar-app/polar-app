@@ -13,6 +13,10 @@ const lambdas: AWSLambda[] = [
         path: path.resolve(__dirname, 'lambdas/private-beta/register.ts'),
     },
     {
+        name: 'private-beta/users',
+        path: path.resolve(__dirname, 'lambdas/private-beta/users.ts'),
+    },
+    {
         name: 'private-beta/accept-batch',
         path: path.resolve(__dirname, 'lambdas/private-beta/accept-batch.ts'),
     },
