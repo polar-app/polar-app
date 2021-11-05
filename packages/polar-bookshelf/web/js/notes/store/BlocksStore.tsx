@@ -2134,7 +2134,7 @@ export class BlocksStore implements IBlocksStore {
             readonly active: BlockIDStr;
             readonly activePos: NavPosition;
         }
-
+        debugger
         const computeNextActive = (): NextActive | undefined => {
 
             const blockID = blockIDs[0];
@@ -2205,9 +2205,13 @@ export class BlocksStore implements IBlocksStore {
 
                 if (block) {
 
+                    // last block should not be delted
+                    if(block.parent && this._index[block.parent]){
+                        continue;
+                    }
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
-
+                    
                     if (! opts.noDeleteItems) {
                         handleDelete(block.itemsAsArray);
                     }
@@ -2277,7 +2281,7 @@ export class BlocksStore implements IBlocksStore {
 
         const nextActive = computeNextActive();
 
-        if (handleDelete(blockIDs) > 0) {
+        if (blockIDs && handleDelete(blockIDs) > 0) {
 
             if (nextActive) {
                 this.setActiveWithPosition(nextActive.active, nextActive.activePos);
