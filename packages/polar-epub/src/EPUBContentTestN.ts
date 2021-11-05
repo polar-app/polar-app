@@ -1,7 +1,7 @@
 import {FilePaths} from "polar-shared/src/util/FilePaths";
-import { assert } from 'chai';
+import {assert} from 'chai';
 import StreamZip from 'node-stream-zip';
-import { EPUBContent } from './EPUBContent';
+import {EPUBContent} from './EPUBContent';
 
 describe('EPUBContent', () => {
 
@@ -35,9 +35,9 @@ describe('EPUBContent', () => {
         const secondChapterCFI = await EPUBContent.generateCFIXMLFragment(path, "chapter_002");
 
         const lastChapterCFI = await EPUBContent.generateCFIXMLFragment(path, "chapter_010");
-        
+
         assert.equal(firstChapterCFI, "/6/8[chapter_001]!");
-        
+
         assert.equal(secondChapterCFI, "/6/10[chapter_002]!");
 
         assert.equal(lastChapterCFI, "/6/26[chapter_010]!");

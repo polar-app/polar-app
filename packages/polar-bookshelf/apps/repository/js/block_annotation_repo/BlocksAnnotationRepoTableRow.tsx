@@ -158,8 +158,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
     const theme = useTheme();
     const blocksStore = useBlocksStore();
     const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
-    const block = React.useMemo(() =>
-        blocksStore.getBlock(blockID)?.toJSON(), [blockID, blocksStore]);
+    const block = blocksStore.getBlock(blockID)?.toJSON();
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
         if (block) {

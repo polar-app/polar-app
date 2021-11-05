@@ -23,7 +23,9 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal testers track"
   lane :beta do
-    track_code = google_play_track_version_codes(track: 'internal')
+    internal_track_code = google_play_track_version_codes(track: 'internal')
+    production_track_code = google_play_track_version_codes(track: 'production')
+    track_code = internal_track_code[0] > production_track_code[0] ? production_track_code[0] : internal_track_code[0]
     version_code = increment_version_code(version_code: track_code[0]+1)
     android_set_version_name(version_name: version_code.to_s)
     gradle(task: "clean bundleRelease")
@@ -32,11 +34,11 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :release do
-    version = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
-    track_code = google_play_track_version_codes(track: 'production')
+    internal_track_code = google_play_track_version_codes(track: 'internal')
+    production_track_code = google_play_track_version_codes(track: 'production')
+    track_code = internal_track_code[0] > production_track_code[0] ? production_track_code[0] : internal_track_code[0]
     version_code = increment_version_code(version_code: track_code[0]+1)
-    sh("export NEW_VERSION_NAME=#{version}")
-    sh('sed -i "s/90001/$NEW_VERSION_NAME/g" ../app/build.gradle')
+    android_set_version_name(version_name: version_code.to_s)
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'production')
   end
