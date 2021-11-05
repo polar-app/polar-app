@@ -29,7 +29,6 @@ export class BlocksTreeStore {
     constructor(root: BlockIDStr, blocksStore: IBlocksStore, autoExpandRoot: boolean) {
         this.root = root;
         this.blocksStore = blocksStore;
-        console.log(blocksStore.getBlock(this.root));
         this.rootAutoExpanded = autoExpandRoot;
     }
 

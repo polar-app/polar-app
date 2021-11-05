@@ -2134,7 +2134,7 @@ export class BlocksStore implements IBlocksStore {
             readonly active: BlockIDStr;
             readonly activePos: NavPosition;
         }
-        debugger
+
         const computeNextActive = (): NextActive | undefined => {
 
             const blockID = blockIDs[0];
