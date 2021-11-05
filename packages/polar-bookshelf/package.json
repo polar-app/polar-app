@@ -63,7 +63,7 @@
   "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/amplitude-js": "=7.0.1",
-    "@types/blueimp-md5": "=2.18.0",
+    "@types/blueimp-md5": "^2.18.0",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.114",
     "@types/deep-equal": "=1.0.1",
@@ -130,7 +130,7 @@
     "@types/mousetrap": "=1.6.3",
     "amplitude-js": "=8.3.1",
     "base58check": "2.0.0",
-    "blueimp-md5": "2.16.0",
+    "blueimp-md5": "^2.19.0",
     "clsx": "=1.1.1",
     "codemirror": "=5.38.0",
     "convert-stream": "=1.0.2",

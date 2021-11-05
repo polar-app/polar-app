@@ -69,7 +69,8 @@
     "bootstrap-with-link": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link",
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)",
     "update-modules": "lerna run --scope polar-create-module compile && lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update",
-    "yarn-lock-conflicts": "cat yarn.lock |grep -E \"^[^ \\\"]\" |sort |grep -Eo \"^[^@]+\" |sort |uniq -c |sort |grep -v ' 1'"
+    "yarn-lock-conflicts": "cat yarn.lock |grep -E \"^[^ \\\"]\" |sort |grep -Eo \"^[^@]+\" |sort |uniq -c |sort |grep -v ' 1' ",
+    "yarn-lock-conflicts-score": "yarn run yarn-lock-conflicts |grep -Eo \"^ +[0-9]+\" |grep -Eo \"[0-9]+$\" | paste -sd+ /dev/stdin | bc"
   },
   "deprecated": {},
   "keywords": [],
