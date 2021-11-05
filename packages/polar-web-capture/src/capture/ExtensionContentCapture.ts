@@ -22,7 +22,7 @@ export namespace ExtensionContentCapture {
         if (selection !== null && hasActiveTextSelection(selection)) {
             return SelectionCapture.capture();
         } else {
-            return ReadabilityCapture.capture();
+            return ReadabilityCapture.capture(window.document);
         }
     }
 
