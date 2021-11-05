@@ -1,4 +1,4 @@
-import {Box, Link, Typography, LinearProgress} from '@material-ui/core';
+import {Box, LinearProgress, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import * as React from 'react';
@@ -43,13 +43,13 @@ export const MigrationToBlockAnnotationsMain = (props: IProps) => {
 
                 <Typography variant="body1">
                     <b>
-                        Just a Minute
+                        Just a Moment
                     </b>
                 </Typography>
 
                 <Box m={1}>
                     <Typography variant="body1">
-                        We're Migrating you to the latest version of Polar
+                        We're migrating you to the latest version of Polar
                     </Typography>
                 </Box>
                 <Box m={2}>
@@ -67,9 +67,9 @@ export const MigrationToBlockAnnotationsMain = (props: IProps) => {
 
                 <Typography variant="caption">
                     <Box m={2} textAlign={'center'} justifyContent={'center'}>
-                        As part of Polar's Updates, we're migrating the backend which can take up to a
+                        As part of Polar's recent updates, we're migrating the backend which can take up to a
                         couple minutes, depending on the size of your repository. This is a one time migration.
-                        <Link> Learn More</Link>
+                        {/*<Link> Learn More</Link>*/}
                     </Box>
                 </Typography>
             </Box>
