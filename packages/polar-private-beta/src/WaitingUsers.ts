@@ -12,6 +12,8 @@ export namespace WaitingUsers {
     function isAuthorized(idUser: IDUser) {
         const allowed = [
             'dzhuneyt@getpolarized.io',
+            'jonathan@getpolarized.io',
+            'kevin@getpolarized.io',
         ];
         return allowed.includes(idUser.user.email);
     }

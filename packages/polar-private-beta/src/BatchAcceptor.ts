@@ -28,6 +28,7 @@ export namespace BatchAcceptor {
         const allowedEmails = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
+            'kevin@getpolarized.io',
         ];
         return allowedEmails.includes(idUser.user.email as string);
     }
