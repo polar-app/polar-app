@@ -90,6 +90,8 @@ export interface IBlocksStore {
     expand(id: BlockIDStr): void;
     // TODO: undo
     collapse(id: BlockIDStr): void;
+    
+    canDeleteLastBlock(id: BlockIDStr): boolean;
 
     toggleExpand(id: BlockIDStr): void;
 
