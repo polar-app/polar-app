@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "=5.8.5",
-    "firebase-admin": "=9.11.0",
+    "firebase-admin": "=10.0.0",
     "polar-firebase": "0.0.0",
     "polar-firestore-like": "0.0.0",
     "polar-shared": "0.0.0"
