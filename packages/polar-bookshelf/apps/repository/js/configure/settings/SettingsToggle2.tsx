@@ -1,6 +1,6 @@
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
-import {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListSubheader } from "@material-ui/core";
+import {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} from "@material-ui/core";
 
 export interface PrefsWriter {
 
