@@ -149,6 +149,8 @@ export namespace YarnLockDependencyAnalyzer {
 
             function computeScoreForPackage(pkg: string, history: {[key: string]: boolean} = {}): number {
 
+                // console.log("FIXME computeScoreForPackage: pkg: " + pkg)
+
                 const entries = entriesByPackageName.get(pkg);
 
                 let score = packageWithConflictsIndex[pkg] ? 1 : 0;
@@ -157,7 +159,10 @@ export namespace YarnLockDependencyAnalyzer {
                     = arrayStream(entries)
                         .map(current => Object.keys(current.dependencies || {}))
                         .flatMap(current => current)
+                        .unique()
                         .collect()
+
+                history[pkg] = true;
 
                 for (const dep of dependencies) {
 
@@ -166,13 +171,11 @@ export namespace YarnLockDependencyAnalyzer {
                         continue;
                     }
 
-                    score += computeScoreForPackage(dep, history);
+                    score += computeScoreForPackage(dep, {...history});
 
                     history[dep] = true;
 
                 }
-
-                history[pkg] = true;
 
                 return score;
 
@@ -180,13 +183,13 @@ export namespace YarnLockDependencyAnalyzer {
 
             return entriesByPackageName.keys()
                          .map(pkg => {
-                             console.log("pkg: " + pkg)
                              const score = computeScoreForPackage(pkg);
                              return {
                                  pkg,
                                  score
                              }
                          })
+                        .filter(current => current.score > 0)
                         .sort((a, b) => b.score - a.score)
 
         }
