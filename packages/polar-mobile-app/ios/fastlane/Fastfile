@@ -33,10 +33,9 @@ platform :ios do
   lane :release do
     match(type: "appstore")
     app_store_connect_api_key
-    increment_version_number(
-      version_number: sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'"),
-      xcodeproj: "PolarReactNative.xcodeproj"
-    )
+    vnum = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
+    increment_version_number(version_number: vnum, xcodeproj: "PolarReactNative.xcodeproj")
+    increment_build_number
     build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     upload_to_app_store(
         force: true, # Skip HTMl report verification
