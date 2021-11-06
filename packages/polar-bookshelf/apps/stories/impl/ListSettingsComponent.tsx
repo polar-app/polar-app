@@ -8,6 +8,7 @@ import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
 import HeightIcon from "@material-ui/icons/Height";
 import { SwitchSelect } from "../../repository/js/configure/settings/SettingSelect2";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 
 export const SettingsStateToggleFunction = () => {
 
@@ -54,6 +55,11 @@ export const SettingsStateToggleFunction = () => {
                         name="fixed-width-epub"
                         icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}
                     />
+
+                    <SwitchToggle title="Development"
+                                description="Enables general development features for software engineers working on Polar."
+                                icon={<DeveloperModeIcon />}
+                                name="dev"/>
                 </List>
             
         </StoryHolder>
