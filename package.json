@@ -14,7 +14,6 @@
     "**/@types/jsdom-global": "*",
     "**/@types/react": "*",
     "**/firebase": "=8.8.1",
-    "**/firebase-admin": "*",
     "**/@sentry/integrations": "*",
     "**/@types/pdfjs-dist": "2.1.71-polar.2",
     "**/@types/jest": "^26.0.24",
