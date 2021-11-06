@@ -29,7 +29,7 @@
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "@google-cloud/firestore": "=4.13.2",
+    "@google-cloud/firestore": "=4.15.1",
     "firebase-admin": "=9.11.0",
     "polar-firebase": "0.0.0",
     "polar-shared": "0.0.0"
