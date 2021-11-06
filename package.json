@@ -13,7 +13,7 @@
     "**/@types/jsdom": "*",
     "**/@types/jsdom-global": "*",
     "**/@types/react": "*",
-    "**/firebase": "*",
+    "**/firebase": "=8.8.1",
     "**/firebase-admin": "*",
     "**/@google-cloud/firestore": "*",
     "**/@sentry/integrations": "*",
