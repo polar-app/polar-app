@@ -20,6 +20,8 @@ import {
     NavOpts,
     NavPosition,
     StringSetMap,
+    INamedBlockEntry,
+    NamedContent,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -52,6 +54,8 @@ export interface IBlocksStore {
     indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
     relatedTagsManager: RelatedTagsManager;
+    namedBlockEntries: ReadonlyArray<INamedBlockEntry>;
+    namedBlocks: ReadonlyArray<Block<NamedContent>>;
 
     hasSnapshot: boolean;
 
@@ -138,8 +142,6 @@ export interface IBlocksStore {
 
     navPrev(root: BlockIDStr, opts: NavOpts): void;
     navNext(root: BlockIDStr, opts: NavOpts): void;
-
-    getNamedBlocks(): ReadonlyArray<string>;
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
     setHighlightAnnotationBlockContent(id: BlockIDStr, content: IAnnotationHighlightContent, docMeta: IDocMeta): void;
