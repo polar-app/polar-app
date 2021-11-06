@@ -132,10 +132,18 @@ export namespace YarnLockDependencyAnalyzer {
 
         // console.log("packageWithConflicts: ", JSON.stringify(packageWithConflicts, null, '  '));
 
-        const textGrid = TextGrid.createFromHeaders('name', 'count');
-        packageWithConflicts.forEach(current => textGrid.row(current.pkg, current.count));
-        console.log(textGrid.format())
+        function createPackageConflictReport() {
 
+            const textGrid = TextGrid.createFromHeaders('name', 'count');
+            packageWithConflicts.forEach(current => textGrid.row(current.pkg, current.count));
+            console.log(textGrid.format())
+            return textGrid.format();
+
+        }
+
+
+
+        console.log(createPackageConflictReport())
 
     }
 
