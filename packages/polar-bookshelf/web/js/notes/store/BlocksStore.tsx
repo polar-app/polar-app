@@ -258,6 +258,7 @@ export interface IDoDeleteOpts {
      * Do not delete items recursively.
      */
     readonly noDeleteItems?: boolean;
+    readonly remainingBlockId?: BlockIDStr;
 
 }
 
@@ -805,13 +806,12 @@ export class BlocksStore implements IBlocksStore {
         }
     }
     // In case we are trying to delete the last child (only child) of a named block, it should return false.
-    @action public canDeleteLastBlock(blockID: BlockIDStr) : boolean {
+    @action public canDeleteLastBlock(block: IBlock) : boolean {
 
-        const block = this._index[blockID];
         const parentBlock = block.parent && this._index[block.parent];
-        
+        debugger
         // check if the block has only one parent, and the parent has only one child
-        if (block && block.parents.length === 1 && parentBlock && parentBlock.itemsAsArray.length === 1) {
+        if (block && block.parents.length === 1 && parentBlock && parentBlock.itemsAsArray.length === 0) {
             return false;
         }
         else{
@@ -1370,12 +1370,13 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
-
+        
+        const newHashID = Hashcodes.createRandomID2();
         const redo = () => {
-            this.doDelete(blockIDs);
+            this.doDelete(blockIDs, {remainingBlockId: newHashID});
         }
-
-        return this.doUndoPush('deleteBlocks', blockIDs, redo);
+        // const parent = this._index[blockIDs[0]].parent;
+        return this.doUndoPush('deleteBlocks', [...blockIDs, newHashID], redo);
 
     }
 
@@ -2219,10 +2220,6 @@ export class BlocksStore implements IBlocksStore {
 
                 if (block) {
 
-                    // last block should not be deleted
-                    if(!this.canDeleteLastBlock(blockID)){
-                        return 0;
-                    }
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
                     
@@ -2281,6 +2278,8 @@ export class BlocksStore implements IBlocksStore {
 
                     ++deleted;
 
+                    
+
                 }
 
             }
@@ -2294,11 +2293,29 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const nextActive = computeNextActive();
+        const blockID = this._index[blockIDs[0]];
+        
         if (blockIDs && handleDelete(blockIDs) > 0) {
-
+            
             if (nextActive) {
                 this.setActiveWithPosition(nextActive.active, nextActive.activePos);
             }
+            
+            const checkRemainingBlocks = (blockID: IBlock) =>{
+                
+                if(blockID && blockID.parent && !this.canDeleteLastBlock(blockID)){
+                    debugger
+                    const trace = this.doCreateNewBlock(blockID.parent, 
+                        {content: new MarkdownContent({type: 'markdown', data: '', links:[]}) ,
+                        unshift: true, 
+                        newBlockID: opts.remainingBlockId});
+                    console.log(trace);
+                }
+                    
+                }
+            console.log('Our deleted block');
+            console.log(blockID);
+            checkRemainingBlocks(blockID);
 
             // we have to clear now because the blocks we deleted might have been selected
             this.clearSelected('doDelete');
