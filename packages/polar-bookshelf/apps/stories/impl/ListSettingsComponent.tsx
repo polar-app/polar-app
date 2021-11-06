@@ -12,10 +12,6 @@ import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 
 export const SettingsStateToggleFunction = () => {
 
-    const onChange = (value: boolean) => {
-        console.log("Setting Changed");
-    };
-
     return(
             <StoryHolder>
                 <List subheader={<ListSubheader>Settings</ListSubheader>}>
