@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "=1.121.0",
-    "@google-cloud/firestore": "=4.13.2",
+    "@google-cloud/firestore": "=4.15.1",
     "@types/node": "=14.17.9",
     "aws-cdk": "=1.121.0",
     "esbuild": "=0.12.25",
