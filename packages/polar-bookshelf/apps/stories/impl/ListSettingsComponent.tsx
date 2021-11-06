@@ -7,7 +7,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
 import HeightIcon from "@material-ui/icons/Height";
 import { SwitchSelect } from "../../repository/js/configure/settings/SettingSelect2";
-import {RadioGroup} from "@material-ui/core";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 
 export const SettingsStateToggleFunction = () => {
