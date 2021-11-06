@@ -9,7 +9,7 @@ const useStyles = makeStyles(() =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            paddingLeft: '1.5em'
+            paddingLeft: 18,
         },
     }),
 );

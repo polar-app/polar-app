@@ -8,6 +8,7 @@ import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
 import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
+import {BlockItems} from "../notes/BlockItems";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
@@ -49,13 +50,19 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
                     {annotationBlocks.length
                         ? (
                             annotationBlocks.map(block => (
-                                <Block
-                                    key={block.id}
-                                    parent={documentBlock.id}
-                                    id={block.id}
-                                    noExpand
-                                    noBullet
-                                />
+                                <React.Fragment key={block.id}>
+                                    <Block
+                                        parent={documentBlock.id}
+                                        id={block.id}
+                                        alwaysExpanded
+                                        dontRenderChildren
+                                        noBullet
+                                    />
+                                    <BlockItems
+                                        blockIDs={block.itemsAsArray}
+                                        indent={false}
+                                        parent={block.id} />
+                                </React.Fragment>
                             ))
                         ) : (
                             <NoAnnotations />

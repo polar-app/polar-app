@@ -55,7 +55,12 @@ export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
             <NotesInnerContainer>
                 <NotePaper>
                     <BlocksTreeProvider root={rootID} autoExpandRoot>
-                        <Block parent={undefined} id={rootID} withHeader noExpand noBullet />
+                        <Block parent={undefined}
+                               id={rootID}
+                               isHeader
+                               alwaysExpanded
+                               hasGutter
+                               noBullet />
                         <div style={{ marginTop: 64 }}>
                             <NotesInbound id={rootID} />
                         </div>
