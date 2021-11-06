@@ -1,5 +1,6 @@
 import {HashMultimap} from "polar-shared/src/util/Multimap";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 const fs = require('fs');
 const lockfile = require('@yarnpkg/lockfile');
@@ -41,7 +42,7 @@ export namespace YarnLockDependencyAnalyzer {
 
     interface IPackageVersionConflict {
         readonly pkg: PackageName;
-        readonly count: number;
+        readonly score: number;
     }
 
     export function parsePackageName(name: string) {
@@ -111,18 +112,18 @@ export namespace YarnLockDependencyAnalyzer {
         // - finding dependencies that that are conflicting and computing a score
         // - find the most packages that yield (recursively) to the highest scores.
 
-        function computePackagesWithConflicts() {
+        function computePackagesWithConflicts(): ReadonlyArray<IPackageVersionConflict> {
 
             return entriesByPackageName.entries()
                 .map(current => {
                     const [entryName, entryValue] = current;
                     return <IPackageVersionConflict> {
                         pkg: entryName,
-                        count: entryValue.length
+                        score: entryValue.length
                     }
                 })
-                .filter(current => current.count > 1)
-                .sort((a, b) => b.count - a.count)
+                .filter(current => current.score > 1)
+                .sort((a, b) => b.score - a.score)
 
         }
 
@@ -135,15 +136,74 @@ export namespace YarnLockDependencyAnalyzer {
         function createPackageConflictReport() {
 
             const textGrid = TextGrid.createFromHeaders('name', 'count');
-            packageWithConflicts.forEach(current => textGrid.row(current.pkg, current.count));
-            console.log(textGrid.format())
+            packageWithConflicts.forEach(current => textGrid.row(current.pkg, current.score));
             return textGrid.format();
 
         }
 
+        function computeRecursiveConflicts(): ReadonlyArray<IPackageVersionConflict> {
 
+            const packageWithConflictsIndex
+                = arrayStream(packageWithConflicts)
+                    .toMap2(current => current.pkg, current => current);
 
-        console.log(createPackageConflictReport())
+            function computeScoreForPackage(pkg: string, history: {[key: string]: boolean} = {}): number {
+
+                const entries = entriesByPackageName.get(pkg);
+
+                let score = packageWithConflictsIndex[pkg] ? 1 : 0;
+
+                const dependencies
+                    = arrayStream(entries)
+                        .map(current => Object.keys(current.dependencies || {}))
+                        .flatMap(current => current)
+                        .collect()
+
+                for (const dep of dependencies) {
+
+                    if (history[dep]) {
+                        // don't chase our own tail over and over again
+                        continue;
+                    }
+
+                    score += computeScoreForPackage(dep, history);
+
+                    history[dep] = true;
+
+                }
+
+                history[pkg] = true;
+
+                return score;
+
+            }
+
+            return entriesByPackageName.keys()
+                         .map(pkg => {
+                             console.log("pkg: " + pkg)
+                             const score = computeScoreForPackage(pkg);
+                             return {
+                                 pkg,
+                                 score
+                             }
+                         })
+                        .sort((a, b) => b.score - a.score)
+
+        }
+
+        // console.log(createPackageConflictReport())
+
+        const recursiveConflicts = computeRecursiveConflicts();
+
+        function createRecursiveConflictsReport() {
+
+            const textGrid = TextGrid.createFromHeaders('name', 'count');
+            recursiveConflicts.forEach(current => textGrid.row(current.pkg, current.score));
+            return textGrid.format();
+
+        }
+
+        console.log("createRecursiveConflictsReport: \n", createRecursiveConflictsReport())
 
     }
 
