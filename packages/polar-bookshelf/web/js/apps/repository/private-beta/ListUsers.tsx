@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import {Button} from "@material-ui/core";
+import {JSONRPC} from "../../../datastore/sharing/rpc/JSONRPC";
+import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
+import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 
 const useStyles = makeStyles({
     container: {
@@ -19,18 +22,17 @@ const useStyles = makeStyles({
     }
 });
 
-function createData(email: string, created_at: number) {
-    return {email, created_at};
-}
-
-const rows = [
-    createData('elon.musk@example.com', new Date().getTime()),
-    createData('bill.gates@example.com', new Date().getTime()),
-    createData('satoshi.nakamoto@example.com', new Date().getTime()),
-];
-
 export const ListUsers: React.FC = () => {
     const classes = useStyles();
+    const [users, setUsers] = React.useState<ReadonlyArray<IPrivateBetaReq>>([]);
+
+    useEffect(() => {
+        JSONRPC.exec<unknown, {
+            users: ReadonlyArray<IPrivateBetaReq>,
+        }>('private-beta/users', {}).then(response => {
+            setUsers(response.users);
+        });
+    }, []);
 
     return (
         <div className={classes.container}>
@@ -40,17 +42,21 @@ export const ListUsers: React.FC = () => {
                         <TableRow>
                             <TableCell>Email</TableCell>
                             <TableCell>Registered at</TableCell>
+                            <TableCell>Invite code</TableCell>
                             <TableCell align="right">Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.email}>
+                        {users.map((waitingUser) => (
+                            <TableRow key={waitingUser.email}>
                                 <TableCell component="th" scope="row">
-                                    {row.email}
+                                    {waitingUser.email}
                                 </TableCell>
                                 <TableCell>
-                                    {new Date(row.created_at).toLocaleString()}
+                                    {new Date(waitingUser.created).toLocaleString()}
+                                </TableCell>
+                                <TableCell>
+                                    {waitingUser.tags.join(', ')}
                                 </TableCell>
                                 <TableCell align="right">
                                     <ButtonGroup variant="contained" color="primary"
