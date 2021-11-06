@@ -42,6 +42,7 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
+import {SettingsStateToggleFunction} from "./impl/ListSettingsComponent"
 
 interface IStory {
     readonly name: string;
@@ -65,6 +66,11 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+
+    {
+        name: "New Settings Component",
+        component: <SettingsStateToggleFunction/>
+    },
 
     {
         name: "MigrationToBlockAnnotationsMain",
