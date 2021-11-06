@@ -1,7 +1,7 @@
 import {Numbers} from "./Numbers";
 import {arrayStream} from "./ArrayStreams";
 import {Reducers} from "./Reducers";
-import { Strings } from "./Strings";
+import {Strings} from "./Strings";
 
 export namespace TextGrid {
 
@@ -11,6 +11,14 @@ export namespace TextGrid {
         headers: (...cols: ReadonlyArray<string>) => void;
         row: (...cols: ReadonlyArray<TextData>) => void;
         format: () => string;
+    }
+
+    export function createFromHeaders(...headers: ReadonlyArray<string>) {
+
+        const result = create(headers.length);
+        result.headers(...headers);
+        return result;
+
     }
 
     // TODO: change this to require the names of the headers and this way we
