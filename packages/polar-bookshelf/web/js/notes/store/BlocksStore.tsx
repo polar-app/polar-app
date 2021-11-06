@@ -809,7 +809,7 @@ export class BlocksStore implements IBlocksStore {
     @action public canDeleteLastBlock(block: IBlock) : boolean {
 
         const parentBlock = block.parent && this._index[block.parent];
-        debugger
+        
         // check if the block has only one parent, and the parent has only one child
         if (block && block.parents.length === 1 && parentBlock && parentBlock.itemsAsArray.length === 0) {
             return false;
@@ -1167,6 +1167,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
 
+        const newHashID = Hashcodes.createRandomID();
         const redo = () => {
 
             const targetBlock = this.getBlockForMutation(target);
@@ -1184,8 +1185,8 @@ export class BlocksStore implements IBlocksStore {
                     if(targetBlock.itemsAsArray.length != 1){
 
                     }
-                    this.doDelete([sourceBlock.id]);
                     this.setActiveWithPosition(targetBlock.id, 'end');
+                    this.doDelete([sourceBlock.id],{remainingBlockId: newHashID});
                     return 'block-merged-with-delete';
                 }
 
@@ -1247,14 +1248,14 @@ export class BlocksStore implements IBlocksStore {
                 }
             });
             this.doPut([sourceBlock]);
-            this.doDelete([sourceBlock.id]);
+            this.doDelete([sourceBlock.id], {remainingBlockId: newHashID});
 
             this.setActiveWithPosition(targetBlock.id, offset);
 
             return undefined;
         };
 
-        return this.doUndoPush('mergeBlocks', [source, target], redo);
+        return this.doUndoPush('mergeBlocks', [source, target, newHashID], redo);
 
     }
 
@@ -1371,11 +1372,11 @@ export class BlocksStore implements IBlocksStore {
 
     public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
         
-        const newHashID = Hashcodes.createRandomID2();
+        const newHashID = Hashcodes.createRandomID();
         const redo = () => {
             this.doDelete(blockIDs, {remainingBlockId: newHashID});
         }
-        // const parent = this._index[blockIDs[0]].parent;
+
         return this.doUndoPush('deleteBlocks', [...blockIDs, newHashID], redo);
 
     }
@@ -2303,18 +2304,15 @@ export class BlocksStore implements IBlocksStore {
             
             const checkRemainingBlocks = (blockID: IBlock) =>{
                 
-                if(blockID && blockID.parent && !this.canDeleteLastBlock(blockID)){
-                    debugger
-                    const trace = this.doCreateNewBlock(blockID.parent, 
+                if(blockID && blockID.parent && opts.remainingBlockId && !this.canDeleteLastBlock(blockID)){
+                    
+                    this.doCreateNewBlock(blockID.parent, 
                         {content: new MarkdownContent({type: 'markdown', data: '', links:[]}) ,
                         unshift: true, 
                         newBlockID: opts.remainingBlockId});
-                    console.log(trace);
                 }
                     
                 }
-            console.log('Our deleted block');
-            console.log(blockID);
             checkRemainingBlocks(blockID);
 
             // we have to clear now because the blocks we deleted might have been selected
