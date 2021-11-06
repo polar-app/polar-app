@@ -25,7 +25,7 @@ platform :android do
   lane :beta do
     internal_track_code = google_play_track_version_codes(track: 'internal')
     production_track_code = google_play_track_version_codes(track: 'production')
-    track_code = internal_track_code[0] > production_track_code[0] ? production_track_code[0] : internal_track_code[0]
+    track_code = internal_track_code[0] > production_track_code[0] ? internal_track_code[0] : production_track_code[0]
     version_code = increment_version_code(version_code: track_code+1)
     android_set_version_name(version_name: version_code.to_s)
     gradle(task: "clean bundleRelease")
@@ -36,7 +36,7 @@ platform :android do
   lane :release do
     internal_track_code = google_play_track_version_codes(track: 'internal')
     production_track_code = google_play_track_version_codes(track: 'production')
-    track_code = internal_track_code[0] > production_track_code[0] ? production_track_code[0] : internal_track_code[0]
+    track_code = internal_track_code[0] > production_track_code[0] ? internal_track_code[0] : production_track_code[0]
     version_code = increment_version_code(version_code: track_code+1)
     android_set_version_name(version_name: version_code.to_s)
     gradle(task: "clean bundleRelease")
