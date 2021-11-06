@@ -24,7 +24,7 @@
     "@types/node": "=14.17.9",
     "aws-cdk": "=1.121.0",
     "esbuild": "=0.12.25",
-    "firebase-admin": "=9.11.0",
+    "firebase-admin": "=10.0.0",
     "polar-eslint": "0.0.0",
     "polar-karma": "0.0.0",
     "polar-typescript": "0.0.0",

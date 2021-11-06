@@ -37,6 +37,6 @@
   },
   "peerDependencies": {
     "firebase": "=8.8.1",
-    "firebase-admin": "=9.11.0"
+    "firebase-admin": "=10.0.0"
   }
 }

@@ -46,7 +46,7 @@
     "cors": "=2.8.5",
     "directory-tree": "=2.2.9",
     "express": "=4.17.1",
-    "firebase-admin": "=9.11.0",
+    "firebase-admin": "=10.0.0",
     "firebase-functions": "=3.14.1",
     "js-sha3": "0.8.0",
     "mailgun.js": "=3.3.0",
