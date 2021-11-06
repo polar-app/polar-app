@@ -38,10 +38,11 @@ platform :ios do
       xcodeproj: "PolarReactNative.xcodeproj"
     )
     build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
-    upload_to_app_store( # upload your app to App Store Connect
-        submit_for_review: true,
-        skip_screenshots: true,
+    upload_to_app_store(
         force: true # Skip HTMl report verification
+        skip_screenshots: true,
+        submit_for_review: true,
+        precheck_include_in_app_purchases: false,
     )
   end
 end
