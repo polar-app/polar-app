@@ -131,8 +131,6 @@ export namespace YarnLockDependencyAnalyzer {
 
         const packageWithConflicts = computePackagesWithConflicts()
 
-        // console.log("packageWithConflicts: ", JSON.stringify(packageWithConflicts, null, '  '));
-
         function createPackageConflictReport() {
 
             const textGrid = TextGrid.createFromHeaders('name', 'count');
@@ -148,8 +146,6 @@ export namespace YarnLockDependencyAnalyzer {
                     .toMap2(current => current.pkg, current => current);
 
             function computeScoreForPackage(pkg: string, history: {[key: string]: boolean} = {}): number {
-
-                // console.log("FIXME computeScoreForPackage: pkg: " + pkg)
 
                 const entries = entriesByPackageName.get(pkg);
 
@@ -194,7 +190,7 @@ export namespace YarnLockDependencyAnalyzer {
 
         }
 
-        // console.log(createPackageConflictReport())
+        console.log(createPackageConflictReport())
 
         const recursiveConflicts = computeRecursiveConflicts();
 
