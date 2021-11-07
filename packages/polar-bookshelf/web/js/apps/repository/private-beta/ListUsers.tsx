@@ -15,38 +15,67 @@ import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 
 const useStyles = makeStyles({
     container: {
-        padding: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
     },
     table: {
         minWidth: 650,
     }
 });
 
-export const ListUsers: React.FC = () => {
+const NoUsersComponent: React.FC = (props) => {
+    return <TableRow>
+        <TableCell component="th" scope="row">
+            Loading users...
+        </TableCell>
+        <TableCell>&nbsp;</TableCell>
+        <TableCell>&nbsp;</TableCell>
+        <TableCell>&nbsp;</TableCell>
+    </TableRow>;
+};
+
+export const ListUsers: React.FC = (ref) => {
     const classes = useStyles();
     const [users, setUsers] = React.useState<ReadonlyArray<IPrivateBetaReq>>([]);
 
     useEffect(() => {
         JSONRPC.exec<unknown, {
-            users: ReadonlyArray<IPrivateBetaReq>,
+            list: ReadonlyArray<IPrivateBetaReq>,
         }>('private-beta/users', {}).then(response => {
-            setUsers(response.users);
-        });
+            console.log(response);
+            setUsers(response.list);
+        }).catch((err) => {
+            console.error(err);
+        })
     }, []);
+
+    function formatTags(waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) {
+        const tags: string[] = [];
+        waitingUser.tags.forEach(tag => {
+            if (!tags.includes(tag) && tag !== 'initial_signup') {
+                tags.push(tag);
+            }
+        })
+        return tags.join(', ');
+    }
+
 
     return (
         <div className={classes.container}>
+            <h1>Manage waiting users</h1>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Email</TableCell>
+                            <TableCell>Email {users.length > 0 && `(${users.length} users)`}</TableCell>
                             <TableCell>Registered at</TableCell>
                             <TableCell>Invite code</TableCell>
-                            <TableCell align="right">Action</TableCell>
+                            <TableCell align="right">&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {!users.length && <NoUsersComponent/>}
+
                         {users.map((waitingUser) => (
                             <TableRow key={waitingUser.email}>
                                 <TableCell component="th" scope="row">
@@ -56,7 +85,7 @@ export const ListUsers: React.FC = () => {
                                     {new Date(waitingUser.created).toLocaleString()}
                                 </TableCell>
                                 <TableCell>
-                                    {waitingUser.tags.join(', ')}
+                                    {formatTags(waitingUser)}
                                 </TableCell>
                                 <TableCell align="right">
                                     <ButtonGroup variant="contained" color="primary"
