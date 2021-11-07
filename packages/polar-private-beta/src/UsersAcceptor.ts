@@ -1,30 +1,26 @@
-import {ComputeNextUserPriority} from "./ComputeNextUserPriority";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
 
-export namespace BatchAcceptor {
+export namespace UsersAcceptor {
 
-    interface IBatchAcceptorRequest {
+    interface IUsersAcceptorRequest {
+        emails: string[],
     }
 
-    interface IBatchAcceptorResponse {
+    interface IUsersAcceptorResponse {
         readonly accepted: ReadonlyArray<IUserRecord>,
     }
-
-    /**
-     * Every invocation of the cloud function will accept this number of users
-     * from the top of the waiting list for Private Beta
-     */
-    const MAX_BATCH_SIZE = 1;
 
     /**
      * Define a list of users that can invoke this cloud function
      * for accepting users into the private beta
      */
-    function canAcceptBatch(idUser: IDUser) {
+    export function authorized(idUser: IDUser) {
         const allowedEmails = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
@@ -45,31 +41,27 @@ export namespace BatchAcceptor {
         await Sendgrid.send(message);
     }
 
-    export const exec = async (idUser: IDUser, request: IBatchAcceptorRequest): Promise<IBatchAcceptorResponse> => {
-        if (!canAcceptBatch(idUser)) {
+    export const exec = async (idUser: IDUser, request: IUsersAcceptorRequest): Promise<IUsersAcceptorResponse> => {
+        if (!authorized(idUser)) {
             throw new Error('Not authorized');
         }
 
         const accepted: IUserRecord[] = [];
 
-        /**
-         * Retrieve a prioritized list of waiting users
-         */
-        const batch = await ComputeNextUserPriority.compute({
-            tagPriorities: {
-                initial_signup: {
-                    priority: 1,
-                },
-            },
-        });
+        const firestore = FirestoreAdmin.getInstance();
 
-        /**
-         * Take the first N number of users from the queue
-         */
-        const chunk = batch.slice(0, MAX_BATCH_SIZE);
+        const waitingUsers = await PrivateBetaReqCollection.list(firestore);
 
-        for (let waitingUser of chunk) {
-            const email = waitingUser.email;
+        // Check if the list of users are all valid waiting users
+        request.emails.forEach(email => {
+            const found = waitingUsers.find(waitingUsers => waitingUsers.email === email);
+
+            if (!found) {
+                throw new Error(`One of the users to be accepted ${email} does not exist`);
+            }
+        })
+
+        for (const email of request.emails) {
             const password = Hashcodes.createRandomID();
 
             const user = await FirebaseUserCreator.create(email, password);
