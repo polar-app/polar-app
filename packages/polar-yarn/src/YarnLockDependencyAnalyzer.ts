@@ -40,9 +40,19 @@ export namespace YarnLockDependencyAnalyzer {
         readonly object: IUYarnObjectMap;
     }
 
+    interface IConflictMap {
+        [key: string]: number;
+    }
+
     interface IPackageVersionConflict {
         readonly pkg: PackageName;
         readonly score: number;
+        readonly conflicts: IConflictMap;
+    }
+
+    interface IScoreWithConflicts {
+        readonly score: number;
+        readonly conflicts: IConflictMap;
     }
 
     export function parsePackageName(name: string) {
@@ -145,11 +155,16 @@ export namespace YarnLockDependencyAnalyzer {
                 = arrayStream(packageWithConflicts)
                     .toMap2(current => current.pkg, current => current);
 
-            function computeScoreForPackage(pkg: string, history: {[key: string]: boolean} = {}): number {
+            function computeScoreWithConflictsForPackage(pkg: string, history: {[key: string]: boolean} = {}): IScoreWithConflicts {
+
+                // console.log("computeScoreForPackage: " + pkg);
 
                 const entries = entriesByPackageName.get(pkg);
 
-                let score = packageWithConflictsIndex[pkg] ? 1 : 0;
+                const score = packageWithConflictsIndex[pkg] ? 1 : 0;
+                const conflicts: IConflictMap = score === 1 ? {[pkg]: 1} : {};
+
+                let result = {score, conflicts}
 
                 const dependencies
                     = arrayStream(entries)
@@ -160,6 +175,23 @@ export namespace YarnLockDependencyAnalyzer {
 
                 history[pkg] = true;
 
+                function mergeConflicts(a: IConflictMap, b: IConflictMap): IConflictMap {
+
+                    const keys
+                        = arrayStream([...Object.keys(a), ...Object.keys(b)])
+                            .unique()
+                            .collect();
+
+                    const result: IConflictMap = {};
+
+                    for (const key of keys) {
+                        result[key] = (a[key] || 0) + (b[key] || 0);
+                    }
+
+                    return result;
+
+                }
+
                 for (const dep of dependencies) {
 
                     if (history[dep]) {
@@ -167,22 +199,27 @@ export namespace YarnLockDependencyAnalyzer {
                         continue;
                     }
 
-                    score += computeScoreForPackage(dep, {...history});
+                    const depConflicts = computeScoreWithConflictsForPackage(dep, {...history});
+
+                    result = {
+                        score: result.score + depConflicts.score,
+                        conflicts: mergeConflicts(result.conflicts, depConflicts.conflicts)
+                    }
 
                     history[dep] = true;
 
                 }
 
-                return score;
+                return result;
 
             }
 
             return entriesByPackageName.keys()
                          .map(pkg => {
-                             const score = computeScoreForPackage(pkg);
+                             const scoreWithConflicts = computeScoreWithConflictsForPackage(pkg);
                              return {
                                  pkg,
-                                 score
+                                 ...scoreWithConflicts
                              }
                          })
                         .filter(current => current.score > 0)
@@ -196,8 +233,8 @@ export namespace YarnLockDependencyAnalyzer {
 
         function createRecursiveConflictsReport() {
 
-            const textGrid = TextGrid.createFromHeaders('name', 'count');
-            recursiveConflicts.forEach(current => textGrid.row(current.pkg, current.score));
+            const textGrid = TextGrid.createFromHeaders('name', 'count', 'conflicts');
+            recursiveConflicts.forEach(current => textGrid.row(current.pkg, current.score, JSON.stringify(current.conflicts)));
             return textGrid.format();
 
         }
