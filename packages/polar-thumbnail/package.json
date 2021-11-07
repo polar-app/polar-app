@@ -33,9 +33,9 @@
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "@types/puppeteer": "=5.4.3",
+    "@types/puppeteer": "=5.4.4",
     "polar-pdf": "0.0.0",
     "polar-shared": "0.0.0",
-    "puppeteer": "=9.1.1"
+    "puppeteer": "=11.0.0"
   }
 }
