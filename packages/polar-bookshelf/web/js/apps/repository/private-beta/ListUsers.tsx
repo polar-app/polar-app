@@ -12,6 +12,7 @@ import {Button} from "@material-ui/core";
 import {JSONRPC} from "../../../datastore/sharing/rpc/JSONRPC";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
 import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
+import {EmailStr} from "polar-shared/src/util/Strings";
 
 const useStyles = makeStyles({
     container: {
@@ -60,6 +61,20 @@ export const ListUsers: React.FC = (ref) => {
     }
 
 
+    function acceptUser(email: EmailStr) {
+        JSONRPC.exec<{
+            emails: EmailStr[],
+        }, {
+            accepted: ReadonlyArray<any>,
+        }>('private-beta/accept-users', {emails: [email]}).then(response => {
+            console.log(response);
+            console.log('User accepted');
+        }).catch((err) => {
+            console.error('Waiting user failed to be accepted');
+            console.error(err);
+        })
+    }
+
     return (
         <div className={classes.container}>
             <h1>Manage waiting users</h1>
@@ -90,7 +105,7 @@ export const ListUsers: React.FC = (ref) => {
                                 <TableCell align="right">
                                     <ButtonGroup variant="contained" color="primary"
                                                  aria-label="contained primary button group">
-                                        <Button>Accept</Button>
+                                        <Button onClick={() => acceptUser(waitingUser.email)}>Accept</Button>
                                     </ButtonGroup>
                                 </TableCell>
                             </TableRow>
