@@ -14,8 +14,7 @@ import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBe
 import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {UsersAcceptor} from "polar-private-beta/src/UsersAcceptor";
-import {WaitingUsers} from "polar-private-beta/src/WaitingUsers";
+import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 
 const useStyles = makeStyles({
     container: {
@@ -51,7 +50,10 @@ export const ListUsers: React.FC = (ref) => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await JSONRPC.exec<{}, WaitingUsers.Response>('private-beta/users', {});
+                type Response = {
+                    list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
+                }
+                const response = await JSONRPC.exec<{}, Response>('private-beta/users', {});
                 setUsers(response.list);
             } catch (e) {
                 console.error(e);
@@ -99,10 +101,17 @@ export const ListUsers: React.FC = (ref) => {
                 email,
             ]);
 
+            type Request = {
+                emails: string[],
+            };
+            type Response = {
+                readonly accepted: ReadonlyArray<IUserRecord>,
+            };
+
             // Accept this user
             const path = 'private-beta/accept-users';
             const request = {emails: [email]};
-            await JSONRPC.exec<UsersAcceptor.IUsersAcceptorRequest, UsersAcceptor.IUsersAcceptorResponse>(path, request);
+            await JSONRPC.exec<Request, Response>(path, request);
 
             // Remove user from the list in the frontend
             // He was already removed from DB as part of the API call anyway,
