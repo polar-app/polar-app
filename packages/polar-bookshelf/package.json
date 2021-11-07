@@ -224,6 +224,7 @@
     "summernote": "=0.8.18",
     "use-local-storage-state": "=6.0.0",
     "uuid": "3.3.3",
-    "typemoq": "=2.1.0"
+    "typemoq": "=2.1.0",
+    "throttle-debounce": "=3.0.1"
   }
 }
