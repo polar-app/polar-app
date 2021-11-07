@@ -4,6 +4,10 @@ import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBe
 
 export namespace WaitingUsers {
 
+    export interface Response {
+        list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
+    }
+
     /**
      * If the provided user can list the waiting users list
      * @param idUser
@@ -18,7 +22,7 @@ export namespace WaitingUsers {
         return allowed.includes(idUser.user.email);
     }
 
-    export async function getList(idUser: IDUser) {
+    export async function getList(idUser: IDUser): Promise<Response> {
         if (!isAuthorized(idUser)) {
             throw new Error('Not authorized');
         }

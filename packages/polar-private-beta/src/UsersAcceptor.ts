@@ -8,11 +8,11 @@ import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBe
 
 export namespace UsersAcceptor {
 
-    interface IUsersAcceptorRequest {
+    export interface IUsersAcceptorRequest {
         emails: string[],
     }
 
-    interface IUsersAcceptorResponse {
+    export interface IUsersAcceptorResponse {
         readonly accepted: ReadonlyArray<IUserRecord>,
     }
 
