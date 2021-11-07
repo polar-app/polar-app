@@ -44,7 +44,7 @@ export const ListUsers: React.FC = (ref) => {
     const [users, setUsers] = React.useState<ReadonlyArray<IPrivateBetaReq>>([]);
 
     // Keep the list of users who are "being accepted" in a temporary array in state, while they are processed
-    const [usersBeingProcessed, setUsersBeingProcessed] = React.useState<string[]>(['dzhuneyt+test3@getpolarized.io']);
+    const [usersBeingProcessed, setUsersBeingProcessed] = React.useState<ReadonlyArray<string>>([]);
 
     const dialogManager = useDialogManager();
 
