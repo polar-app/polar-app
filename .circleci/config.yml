@@ -223,6 +223,10 @@ jobs:
       - global_modules_setup
       - run:
           name: karma
+          ##
+          # Increase this as I think we might have to let mocha timeout to get the core error
+          # BUT it can't because CircleCI times out first.
+          no_output_timeout: 120m
           command: |
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
