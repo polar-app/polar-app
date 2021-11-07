@@ -4595,7 +4595,7 @@
   dependencies:
     "@types/jsdom" "*"
 
-"@types/jsdom@*", "@types/jsdom@=16.12.13":
+"@types/jsdom@*", "@types/jsdom@=16.2.13":
   version "16.2.13"
   resolved "https://verdaccio.getpolarized.io/@types%2fjsdom/-/jsdom-16.2.13.tgz#126c8b7441b159d6234610a48de77b6066f1823f"
   integrity sha512-8JQCjdeAidptSsOcRWk2iTm9wCcwn9l+kRG6k5bzUacrnm1ezV4forq0kWjUih/tumAeoG+OspOvQEbbRucBTw==
