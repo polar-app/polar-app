@@ -62,11 +62,11 @@ export namespace UsersAcceptor {
         })
 
         for (const email of request.emails) {
-            const password = Hashcodes.createRandomID();
-
-            const user = await FirebaseUserCreator.create(email, password);
+            const user = await FirebaseUserCreator.create(email, Hashcodes.createRandomID());
 
             await sendWelcomeEmail(email);
+
+            await PrivateBetaReqCollection.deleteByEmail(firestore, email);
 
             accepted.push(user);
         }

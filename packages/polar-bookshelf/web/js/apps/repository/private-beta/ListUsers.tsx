@@ -13,6 +13,7 @@ import {JSONRPC} from "../../../datastore/sharing/rpc/JSONRPC";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
 import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 
 const useStyles = makeStyles({
     container: {
@@ -60,18 +61,39 @@ export const ListUsers: React.FC = (ref) => {
         return tags.join(', ');
     }
 
+    const dialogManager = useDialogManager();
+
+    const showSuccessSnackbar = React.useCallback(() => {
+        dialogManager.snackbar({
+            type: "success",
+            message: "User accepted",
+        })
+    }, [dialogManager]);
+
+    const showErrorSnackbar = React.useCallback(() => {
+        dialogManager.snackbar({
+            type: "error",
+            message: "User failed to be accepted",
+        })
+    }, [dialogManager]);
 
     function acceptUser(email: EmailStr) {
-        JSONRPC.exec<{
+        type AcceptUserRequest = {
             emails: EmailStr[],
-        }, {
+        };
+        type AcceptUserResponse = {
             accepted: ReadonlyArray<any>,
-        }>('private-beta/accept-users', {emails: [email]}).then(response => {
-            console.log(response);
+        };
+        JSONRPC.exec<AcceptUserRequest, AcceptUserResponse>('private-beta/accept-users', {emails: [email]}).then(() => {
+            // Remove user from the list in the fronted
+            // He was already removed from DB as part of the API call anyway but a full list refresh might be expensive
+            setUsers(users.filter(user => user.email != email));
+            showSuccessSnackbar();
             console.log('User accepted');
         }).catch((err) => {
             console.error('Waiting user failed to be accepted');
             console.error(err);
+            showErrorSnackbar();
         })
     }
 
