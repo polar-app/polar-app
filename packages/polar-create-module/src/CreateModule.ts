@@ -207,7 +207,7 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
         }
 
         if (config.Karma) {
-            pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 2m npx karma start; fi;";
+            pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
             pkg.devDependencies['polar-karma'] = `${pkg.version}`;
             pkg.devDependencies['polar-webpack'] = `${pkg.version}`;
         }
