@@ -72,7 +72,7 @@
     "@types/html2canvas": "0.0.35",
     "@types/jquery": "=3.3.38",
     "@types/js-cookie": "=2.2.7",
-    "@types/jsdom": "=16.12.13",
+    "@types/jsdom": "=16.2.13",
     "@types/lodash": "=4.14.172",
     "@types/mocha": "=9.0.0",
     "@types/node": "=14.17.9",
@@ -227,10 +227,7 @@
     "string-to-stream": "=1.1.1",
     "summernote": "=0.8.18",
     "throttle-debounce": "=2.1.0",
-    "typed-web-workers": "=2.1.1",
-    "typemoq": "=2.1.0",
     "underscore": "=1.9.2",
-    "universal-analytics": "=0.4.23",
     "use-local-storage-state": "=6.0.0",
     "uuid": "3.3.3"
   }
