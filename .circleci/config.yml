@@ -227,6 +227,7 @@ jobs:
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
             lerna run karma
+            echo "Karma finished running."
       - store_test_results:
           path: /home/circleci/project/packages
 
