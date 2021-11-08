@@ -52,7 +52,7 @@ export const ListUsers: React.FC = (ref) => {
         (async () => {
             try {
                 type Response = {
-                    list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
+                    readonly list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
                 }
                 const response = await JSONRPC.exec<{}, Response>('private-beta/users', {});
                 setUsers(response.list);
@@ -71,7 +71,7 @@ export const ListUsers: React.FC = (ref) => {
      * Remove duplicates and remove "system" tags
      */
     const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
-        // @ts-ignore
+        // eslint-disable-next-line functional/prefer-readonly-type
         const tags: string[] = [];
         waitingUser.tags.forEach(tag => {
             if (!tags.includes(tag) && tag !== 'initial_signup') {
@@ -104,7 +104,7 @@ export const ListUsers: React.FC = (ref) => {
             ]);
 
             type Request = {
-                emails: ReadonlyArray<string>,
+                readonly emails: ReadonlyArray<string>,
             };
             type Response = {
                 readonly accepted: ReadonlyArray<IUserRecord>,

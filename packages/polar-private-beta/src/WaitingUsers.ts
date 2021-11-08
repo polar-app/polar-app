@@ -5,7 +5,7 @@ import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBe
 export namespace WaitingUsers {
 
     export interface Response {
-        list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
+        readonly list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
     }
 
     /**

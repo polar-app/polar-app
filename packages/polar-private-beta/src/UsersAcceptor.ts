@@ -9,7 +9,7 @@ import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBe
 export namespace UsersAcceptor {
 
     export interface IUsersAcceptorRequest {
-        emails: string[],
+        readonly emails: ReadonlyArray<string>,
     }
 
     export interface IUsersAcceptorResponse {
@@ -46,6 +46,7 @@ export namespace UsersAcceptor {
             throw new Error('Not authorized');
         }
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         const accepted: IUserRecord[] = [];
 
         const firestore = FirestoreAdmin.getInstance();
