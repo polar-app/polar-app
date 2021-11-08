@@ -326,12 +326,13 @@ jobs:
           name: Automatic Versioning
           command: |
             git fetch
-            TEMP_VERSION='0.0.0'
+            TEMP_VERSION='\"0.0.0\"'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            VERSION=$(semver $CURRENT_VERSION -i)
+            NEW_VERSION="\\\""$VERSION"\\\""
             git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
-            sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
-            lerna exec -- sed -i "s/"\"$TEMP_VERSION1\""/"\"$NEW_VERSION\""/g" package.json
+            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
+            lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
             git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
