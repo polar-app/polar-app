@@ -62,14 +62,15 @@ export const ListUsers: React.FC = (ref) => {
                     message: "Failed to fetch list of waiting users",
                 })
             }
-        })();
-    }, []);
+        })().then();
+    }, [dialogManager]);
 
     /**
      * Return a stringified version of an array of Referral codes for the given waiting user
      * Remove duplicates and remove "system" tags
      */
     const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
+        // @ts-ignore
         const tags: string[] = [];
         waitingUser.tags.forEach(tag => {
             if (!tags.includes(tag) && tag !== 'initial_signup') {
@@ -102,7 +103,7 @@ export const ListUsers: React.FC = (ref) => {
             ]);
 
             type Request = {
-                emails: string[],
+                emails: ReadonlyArray<string>,
             };
             type Response = {
                 readonly accepted: ReadonlyArray<IUserRecord>,
@@ -116,7 +117,7 @@ export const ListUsers: React.FC = (ref) => {
             // Remove user from the list in the frontend
             // He was already removed from DB as part of the API call anyway,
             // but a full list refresh might be an expensive operation
-            setUsers(users.filter(user => user.email != email));
+            setUsers(users.filter(user => user.email !== email));
 
             // Notify admin that the operation succeeded
             showSuccessSnackbar();
