@@ -215,6 +215,7 @@ export const BlockInner = observer((props: IProps) => {
             <BlockDragIndicator id={id}>
                 <Box {...contextMenuHandlers}
                     display="flex"
+                    my={0.3}
                     mx={0.25}
                     className={clsx({ [classes.titleBlockWrapper]: isHeader })}>
 
