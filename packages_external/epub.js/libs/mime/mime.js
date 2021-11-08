@@ -167,6 +167,6 @@ function lookup(filename) {
 }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lookup = lookup;
+// exports.lookup = lookup;
 
-// export default { lookup };
+export default { lookup };
