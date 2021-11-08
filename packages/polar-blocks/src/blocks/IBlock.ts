@@ -45,6 +45,9 @@ export type IEditableContent = IMarkdownContent
 export type ITextContent = IEditableContent
                            | IDocumentContent;
 
+export type IHasLinksContent = IMarkdownContent
+                               | ITextHighlightAnnotationContent;
+
 export type INamedContent = INameContent | IDateContent | IDocumentContent;
 
 export type IBlockContentStructure<T = IBlockContent> = {

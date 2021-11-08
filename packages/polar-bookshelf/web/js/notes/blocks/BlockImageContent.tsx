@@ -80,6 +80,7 @@ export const BlockImageContent: React.FC<IProps> = observer((props) => {
 
     return (
         <div onClick={handleClick}
+             style={{ padding: '2px 0' }}
              onKeyDown={handleKeyDown}
              id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
              data-id={props.id}

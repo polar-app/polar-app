@@ -1,6 +1,7 @@
 import {Box, Typography} from "@material-ui/core";
 import {observer} from "mobx-react-lite";
 import React from "react";
+import {BlockItems} from "../../../../web/js/notes/BlockItems";
 import {Block} from "../../../../web/js/notes/Block";
 import {BlocksTreeProvider} from "../../../../web/js/notes/BlocksTree";
 import {NoteProviders} from "../../../../web/js/notes/NoteScreen";
@@ -32,9 +33,14 @@ export const BlocksAnnotationInlineViewer = observer(function AnnotationInlineVi
                     <Block
                         id={activeBlock.id}
                         parent={activeBlock.parent}
-                        noExpand
+                        alwaysExpanded
                         noBullet
+                        dontRenderChildren
                     />
+                    <BlockItems
+                        blockIDs={activeBlock.itemsAsArray}
+                        indent={false}
+                        parent={activeBlock.id} />
                 </BlocksTreeProvider>
             </NoteProviders>
         </Box>

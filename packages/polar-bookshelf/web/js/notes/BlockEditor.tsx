@@ -20,6 +20,8 @@ import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
 import {BlockTextContentUtils} from "./NoteUtils";
+import {Block} from "./store/Block";
+import {BlockContent, useBlocksStore} from "./store/BlocksStore";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -85,18 +87,19 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     }, [id, handleRename, blocksTreeStore]);
 };
 
-const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
+interface INoteEditorInnerProps extends IProps {
+    readonly block: Readonly<Block<BlockContent>>;
+}
 
-    const {id, parent, style = {}, className = ""} = props;
+const NoteEditorInner = function BlockEditorInner(props: INoteEditorInnerProps) {
+
+    const { id, parent, style = {}, className = "", block } = props;
     const {root} = useBlocksTreeStore();
     const blocksTreeStore = useBlocksTreeStore()
     const linkNavigationClickHandler = useLinkNavigationClickHandler({ id });
     const handleBlockContentChange = useBlockContentUpdater({ id });
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
-    
-
-    const block = blocksTreeStore.getBlock(id);
 
     React.useEffect(() => {
         const focusBlock = () => {
@@ -222,15 +225,21 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     return <div>Unsupported block type</div>;
-});
+};
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
 
     // useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
+    const blocksStore = useBlocksStore();
+    const block = blocksStore.getBlock(props.id);
+
+    if (! block) {
+        return null;
+    }
 
     return (
         <NoteNavigation parent={props.parent} id={props.id}>
-            <NoteEditorInner {...props}/>
+            <NoteEditorInner {...props} block={block} />
         </NoteNavigation>
     );
 
@@ -251,6 +260,7 @@ interface IProps {
     readonly className?: string;
 
     readonly style?: React.CSSProperties;
+
 }
 
 export const BlockEditor = observer(function BlockEditor(props: IProps) {

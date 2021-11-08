@@ -5,9 +5,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import {MiddleDot} from "./MiddleDot";
 import {NoteButton} from "./NoteButton";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {NOTES_GUTTER_SIZE} from "./Block";
 
 type IInterstitialProps = {
-    interstitial: InterstitialType;
+    readonly interstitial: InterstitialType;
+    readonly hasGutter?: boolean;
 };
 
 const useImageInterstitialStyles = makeStyles(() =>
@@ -91,7 +93,8 @@ const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
-            border: '3px solid transparent'
+            border: '3px solid transparent',
+            paddingLeft: 2,
         },
         interstitialOuter: {
             marginLeft: 4,
@@ -104,14 +107,16 @@ const useStyles = makeStyles(() =>
         }
     }),
 );
-export const Interstitial: React.FC<IInterstitialProps> = ({ interstitial }) => {
+export const Interstitial: React.FC<IInterstitialProps> = (props) => {
+    const { interstitial, hasGutter = false } = props;
     const classes = useStyles();
 
     if (interstitial.type === 'image') {
         return (
-            <div className={classes.root}>
+            <div className={classes.root} style={{ marginLeft: hasGutter ? NOTES_GUTTER_SIZE : 0 }}>
                 <div className={classes.actionsArea}>
-                    <NoteButton onClick={NULL_FUNCTION} style={{ fontSize: 20 }}>
+                    <NoteButton onClick={NULL_FUNCTION}
+                                style={{ fontSize: 20, width: 20, height: 20, display: 'block' }}>
                         <MiddleDot />
                     </NoteButton>
                 </div>

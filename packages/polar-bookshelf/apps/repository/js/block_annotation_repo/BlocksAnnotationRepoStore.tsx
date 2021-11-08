@@ -16,8 +16,12 @@ import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates"
 import {Block} from "../../../../web/js/notes/store/Block";
 import {BlocksAnnotationRepoFilters} from "./BlocksAnnotationRepoFilters";
 import {ListValue} from "../../../../web/js/intersection_list/IntersectionList";
+import {AnnotationContent} from "../../../../web/js/notes/content/AnnotationContent";
+import {MarkdownContent} from "../../../../web/js/notes/content/MarkdownContent";
+import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 
 
+export type RepoAnnotationContent = AnnotationContent | MarkdownContent;
 export type IRepoAnnotationContent = IAnnotationContent | IMarkdownContent;
 export type IRepoAnnotationTextContent = ITextHighlightAnnotationContent
                                          | IFlashcardAnnotationContent
@@ -36,19 +40,21 @@ export class BlocksAnnotationRepoStore {
         makeObservable(this);
     }
 
-    @computed get activeBlock(): IBlock<IRepoAnnotationContent> | undefined {
+    @computed get activeBlock(): Block<RepoAnnotationContent> | undefined {
         if (! this._active) {
             return undefined;
         }
 
         const block = this._blocksStore.getBlock(this._active);
-        const blockJSON = block?.toJSON();
 
-        if (! blockJSON || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(blockJSON)) {
+        if (! block ||
+            (! BlockPredicates.isAnnotationBlock(block)
+             && ! BlockPredicates.isMarkdownBlock(block))) {
+
             return undefined;
         }
 
-        return blockJSON;
+        return block;
     }
 
     @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<ListValue> {
@@ -117,7 +123,7 @@ export class BlocksAnnotationRepoStore {
 
     static isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
         return IBlockPredicates.isAnnotationBlock(block)
-               || block.content.type === 'markdown';
+               || IBlockPredicates.isMarkdownBlock(block);
     }
 }
 

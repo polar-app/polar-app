@@ -70,7 +70,12 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
             {root 
                 ? (
                     <BlocksTreeProvider root={root.id} autoExpandRoot>
-                        <Block parent={undefined} id={root.id} withHeader noExpand noBullet />
+                        <Block id={root.id}
+                               parent={undefined}
+                               isHeader
+                               alwaysExpanded
+                               hasGutter
+                               noBullet />
                         <div style={{ marginTop: 64 }}>
                             <NotesInbound id={root.id} />
                         </div>

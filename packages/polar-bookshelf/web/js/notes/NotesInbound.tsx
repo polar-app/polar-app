@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
-import {Block} from "./Block";
+import {Block, NOTES_GUTTER_SIZE} from "./Block";
 import {observer} from "mobx-react-lite"
 import {NoteBreadcrumbLinks} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -63,14 +63,14 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     return (
         <div className="NotesInbound">
 
-            <Box color="text.secondary" display="flex" alignItems="center">
+            <Box mx={0.5} color="text.secondary" display="flex" alignItems="center">
                 <SectionExpandToggle expanded={expanded} onToggleExpand={onToggleExpand} />
 
-                <h3>Linked references ({ inbound.length })</h3>
+                <h3 style={{ paddingLeft: NOTES_GUTTER_SIZE }}>Linked references ({ inbound.length })</h3>
             </Box>
 
             {expanded &&
-                <UL>
+                <UL style={{ paddingLeft: 50 }}>
                     {inbound.map((current, idx) => <InboundNoteRef key={idx} id={current.id} />)}
                 </UL>
             }

@@ -9,7 +9,7 @@ import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
-import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
+import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {NotesToolbar} from "./NotesToolbar";
 import {Devices} from "polar-shared/src/util/Devices";
@@ -163,18 +163,17 @@ const useStyles = makeStyles((theme) =>
 export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
     const classes = useStyles();
     const blocksStore = useBlocksStore();
-    const namedBlocks = useNamedBlocks({ sort: true });
     const noteLinkLoader = useNoteLinkLoader();
 
     const rows = React.useMemo(() => (
-        namedBlocks.map(block => block.toJSON())
+        blocksStore.namedBlocks.map(block => block.toJSON())
             .map(({ id, content, created, updated }) => ({
                 title: BlockTextContentUtils.getTextContentMarkdown(content),
                 created: new Date(created),
                 id,
                 updated: new Date(updated),
             }))
-    ), [namedBlocks]);
+    ), [blocksStore]);
 
     const loadNote = React.useCallback((id: BlockIDStr) => {
         const block = blocksStore.getBlockByTarget(id as string) as Block<NamedContent>;
