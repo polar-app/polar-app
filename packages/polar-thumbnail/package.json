@@ -11,7 +11,7 @@
     "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
-    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;",
     "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;",
     "tscwatch": "tsc --watch",
     "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
@@ -33,9 +33,9 @@
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "@types/puppeteer": "=5.4.3",
+    "@types/puppeteer": "=5.4.4",
     "polar-pdf": "0.0.0",
     "polar-shared": "0.0.0",
-    "puppeteer": "=9.1.1"
+    "puppeteer": "=11.0.0"
   }
 }

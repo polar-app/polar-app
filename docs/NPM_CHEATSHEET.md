@@ -25,6 +25,11 @@ issue and it SEEMS that things are working properly.
 
     - ci-auto-commit burton-firebase-upgrade1 "polar-dep-upgrade firebase 1.2.3" 
 
+  - TODO:
+    - this probably needs a command, branch name, and commit message the result when it's finished
+    - this will allow us to ALSO build a script that does the upgrade
+    - 
+
 # Upgrading package versions
 
 Upgrading packages in our stack is a bit hard and prone to build and configuration errors. 
