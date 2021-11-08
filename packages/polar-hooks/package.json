@@ -36,7 +36,7 @@
     "polar-backend-shared": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-webapp-dist": "0.0.0",
-    "uuid": "3.3.3"
+    "uuid": "=8.3.2"
   },
   "devDependencies": {
     "polar-eslint": "0.0.0",

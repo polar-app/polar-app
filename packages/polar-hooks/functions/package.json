@@ -83,7 +83,7 @@
     "prompts": "=2.4.1",
     "rollbar": "=2.19.4",
     "stripe": "=8.119.0",
-    "uuid": "3.3.3",
+    "uuid": "=8.3.2",
     "yargs": "=15.3.1"
   },
   "devDependencies": {
