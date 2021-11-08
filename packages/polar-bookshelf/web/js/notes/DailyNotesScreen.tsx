@@ -12,9 +12,10 @@ import {Helmet} from "react-helmet";
 import {BlocksTreeProvider} from "./BlocksTree";
 import {Block} from "./Block";
 import {NotesInbound} from "./NotesInbound";
-import {NotesInnerContainer} from "./NotesContainer";
 import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
+import {NoteStack} from "./stacks/NoteStack";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -86,7 +87,7 @@ export const DailyNotesScreen: React.FC = () => {
                 <title>Polar: Daily notes</title>
             </Helmet>
             <NotesToolbar />
-            <NotesInnerContainer>
+            <NoteStack target={RoutePathNames.DAILY} rootBannerLabel="Daily notes">
                 <NotePaper ref={rootRef}>
                     {visibleNotes.map(({ id }) => (
                         <div key={id} className="NoteTree">
@@ -117,7 +118,7 @@ export const DailyNotesScreen: React.FC = () => {
                         </Box>
                     }
                 </NotePaper>
-            </NotesInnerContainer>
+            </NoteStack>
         </>
     );
 };
