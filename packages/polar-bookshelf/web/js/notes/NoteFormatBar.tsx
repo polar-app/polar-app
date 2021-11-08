@@ -16,6 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CheckIcon from '@material-ui/icons/Check';
 import {URLStr} from 'polar-shared/src/util/Strings';
+import {BacklinkIconButton} from '../mui/icon_buttons/BacklinkIconButton';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -170,7 +171,9 @@ interface NoteFormatBarInnerProps {
     readonly onLink?: (event: React.MouseEvent) => void;
     readonly onRemoveFormat?: () => void;
     readonly onDispose?: () => void;
+    readonly onWikiLinkFromSelection?: () => void;
 
+    readonly canHaveWikiLinks?: boolean;
 }
 
 const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
@@ -216,6 +219,11 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
                 <FormatClearIcon className={classes.icon}/>
             </FormatButton>
 
+            {props.canHaveWikiLinks && (
+                <FormatButton onClick={props.onWikiLinkFromSelection}>
+                    <BacklinkIconButton className={classes.icon} />
+                </FormatButton>
+            )}
         </>
     );
 }
@@ -230,6 +238,7 @@ export interface FormatBarActions {
     readonly onSuperscript?: () => void;
     readonly onLink?: (url: URLStr) => void;
     readonly onRemoveFormat?: () => void;
+    readonly onWikiLinkFromSelection?: () => void;
 }
 
 export interface NoteFormatBarProps extends FormatBarActions {
@@ -241,6 +250,8 @@ export interface NoteFormatBarProps extends FormatBarActions {
 
     readonly mode: BarMode;
     readonly setMode: (mode: BarMode) => void;
+
+    readonly canHaveWikiLinks?: boolean;
 }
 
 export type BarMode = 'link' | 'format';
@@ -269,7 +280,12 @@ export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormat
                           onMouseUp={handleMouseEvent}>
 
                 {props.mode === 'format' && (
-                    <NoteFormatBarInner {...props} onLink={changeToLinkMode}/>
+                    <NoteFormatBarInner
+                        {...props}
+                        onLink={changeToLinkMode}
+                        onWikiLinkFromSelection={props.onWikiLinkFromSelection}
+                        canHaveWikiLinks={props.canHaveWikiLinks}
+                    />
                 )}
 
                 {props.mode === 'link' && (

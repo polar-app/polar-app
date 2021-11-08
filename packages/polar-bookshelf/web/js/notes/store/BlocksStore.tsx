@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createStoreContext} from "../../react/store/StoreContext";
-import {action, computed, makeObservable, observable} from "mobx"
+import {action, comparer, computed, makeObservable, observable} from "mobx"
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -55,7 +55,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
-import {BlockTextContentUtils} from "../NoteUtils";
+import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
@@ -304,6 +304,11 @@ export interface IComputeLinearTreeOpts {
     root?: BlockIDStr;
 };
 
+export type INamedBlockEntry = {
+    id: BlockIDStr;
+    label: string;
+};
+
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
@@ -381,12 +386,18 @@ export class BlocksStore implements IBlocksStore {
         return this._indexByDocumentID;
     }
 
-    /**
-     * Get all the nodes by name.
-     */
-    getNamedBlocks(): ReadonlyArray<string> {
-        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NamedContent>>;
-        return blocks.map(block => BlockTextContentUtils.getTextContentMarkdown(block.content));
+    @computed get namedBlocks(): ReadonlyArray<Block<NamedContent>> {
+        const namedBlocksIDs = Object.values(this._indexByName);
+        return this.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+    }
+
+    @computed({ equals: comparer.structural }) get namedBlockEntries(): ReadonlyArray<INamedBlockEntry> {
+        const sorted = sortNamedBlocks(this.namedBlocks);
+
+        return sorted.map(({ id, content }) => ({
+            id,
+            label: BlockTextContentUtils.getTextContentMarkdown(content)
+        }));
     }
 
     @computed get reverse() {

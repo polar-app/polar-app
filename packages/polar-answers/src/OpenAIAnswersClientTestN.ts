@@ -11,7 +11,7 @@ import STOP = AnswerExecutor.STOP;
 
 xdescribe("OpenAIAnswersClient", function() {
 
-    this.timeout(30000);
+    this.timeout(120000);
 
     describe("with no docs", () => {
 

@@ -10,7 +10,7 @@ import {Package} from "./Package";
 import cliSelect from "cli-select";
 import {TSConfig} from "./TSConfig";
 import * as readline from 'readline';
-import { IPackageManifest, ICreateModuleConfig } from './Interfaces';
+import {ICreateModuleConfig, IPackageManifest} from './Interfaces';
 import {Files} from "polar-shared/src/util/Files";
 
 // ! ...................................................................................................
@@ -86,11 +86,11 @@ export async function updateModules(): Promise<void> {
     if (config.Typescript) {
         await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.create()));
         await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.create()));
-        
+
     } else {
         await Files.deleteAsync('.eslintrc.json');
         await Files.deleteAsync('tsconfig.json');
-        
+
     }
 
     // $ Update Karma Files
@@ -145,8 +145,8 @@ export async function selectFromCli(question: string, answers: Array<string>) {
 }
 
 /**
- * ? Helper Functions to Create any 
- * ! NON-EDITABLE 
+ * ? Helper Functions to Create any
+ * ! NON-EDITABLE
  * ? Json files in the new package
  */
 export function createJSONDataFile(obj: Record<string, unknown>) {
@@ -201,17 +201,17 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
 
         if (config.Mocha) {
             pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
-            pkg.scripts.mocha = "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+            pkg.scripts.mocha = "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
             pkg.scripts.citest = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
-            pkg.scripts.cimocha = "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+            pkg.scripts.cimocha = "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
         }
 
         if (config.Karma) {
-            pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else npx karma start; fi;";
+            pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
             pkg.devDependencies['polar-karma'] = `${pkg.version}`;
             pkg.devDependencies['polar-webpack'] = `${pkg.version}`;
         }
-            
+
     } else {
         delete pkg.scripts.eslint;
         delete pkg.scripts.eslintfix;

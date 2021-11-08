@@ -5,8 +5,8 @@ import React from "react";
 export const useStyles = makeStyles((theme) =>
     createStyles({
         legal: {
-            margin: theme.spacing(1),
-            marginTop: theme.spacing(5),
+            margin: theme.spacing(2),
+            marginTop: theme.spacing(2),
             marginBottom: theme.spacing(2),
             color: theme.palette.text.secondary,
             textAlign: 'center',

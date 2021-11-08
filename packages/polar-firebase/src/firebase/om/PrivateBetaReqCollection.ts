@@ -75,4 +75,12 @@ export namespace PrivateBetaReqCollection {
         return Collections.list<IPrivateBetaReq>(firestore, COLLECTION_NAME, []);
     }
 
+    export async function deleteByEmail<SM = unknown>(firestore: IFirestore<SM>, email: EmailStr): Promise<void> {
+        const single = await getByEmail(firestore, email);
+        if (!single) {
+            throw new Error(`Can not delete single user because the email was not found: ${email}`);
+        }
+        return Collections.doDelete<SM>(firestore, COLLECTION_NAME, single.id);
+    }
+
 }

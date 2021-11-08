@@ -11,11 +11,11 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
         root: ({ flushed }) => ({
             height: '100%',
             overflowY: 'auto',
-            ...(! flushed ? {
-                    background: theme.palette.background.paper,
-                    padding: '8px 16px',
+            ...(flushed ? {
+                    padding: '0 0px',
                 } : {
-                    padding: '0 12px',
+                    background: theme.palette.background.paper,
+                    padding: '8px 0px',
                 }
             ),
             '& > .NoteTree + .NoteTree': {

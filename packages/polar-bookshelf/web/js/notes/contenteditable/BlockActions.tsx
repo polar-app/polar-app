@@ -1,10 +1,9 @@
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {ActionMenuItemsProvider, createActionsProvider} from "../../mui/action_menu/ActionStore";
-import {useBlocksTreeStore} from "../BlocksTree";
 import {TAG_IDENTIFIER} from "../content/HasLinks";
-import {BlockTextContentUtils, useNamedBlocks} from "../NoteUtils";
 import {BlockPredicates} from "../store/BlockPredicates";
+import {useBlocksStore} from "../store/BlocksStore";
 import {BlockAction} from "./BlockAction";
 
 interface IBlockActionProps {
@@ -79,20 +78,18 @@ interface IBlockActionsProviderProps extends IBlockActionToggles {
 export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props) => {
     const { id, children } = props;
 
-    const namedBlocks = useNamedBlocks();
-    const blocksTreeStore = useBlocksTreeStore();
-    const block = React.useMemo(() => blocksTreeStore.getBlock(id), [blocksTreeStore, id]);
+    const blocksStore = useBlocksStore();
+    const block = React.useMemo(() => blocksStore.getBlock(id), [blocksStore, id]);
     const canHaveLinks = React.useMemo(() => block && BlockPredicates.canHaveLinks(block), [block]);
 
     const noteLinkActions = React.useMemo(() => {
-        return namedBlocks.map((block) => {
-            const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
+        return blocksStore.namedBlockEntries.map(({ label }) => {
             return {
-                id: name,
-                text: name,
+                id: label,
+                text: label,
             };
         });
-    }, [namedBlocks]);
+    }, [blocksStore]);
 
     const noteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
