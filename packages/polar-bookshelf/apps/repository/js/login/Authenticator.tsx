@@ -5,7 +5,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Typography} from '@material-ui/core';
+import {Box, Typography, Divider} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -544,19 +544,22 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                     <h2>
                         {props.title}
+
+                        <Box ml={2} mr={2} mt={1} mb={1} flexGrow={1}>
+                            <Divider/>
+                        </Box>
                     </h2>
 
                     {props.children}
 
                 </>
 
-                {props.alternative}
+                 {props.alternative}
 
-                <div style={{flexGrow: 1}}/>
-
-                <Box px={2}>
-                    <AuthLegalDisclaimer/>
+                <Box m={2} flexGrow={1}>
+                    <Divider/>
                 </Box>
+                    <AuthLegalDisclaimer/>
             </div>
         </>
     );
