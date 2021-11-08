@@ -4,7 +4,7 @@ import getUID = AnswerTests.getUID;
 
 xdescribe("ThreadingExecutor", function() {
 
-    this.timeout(30000000);
+    this.timeout(120000);
 
     it("basic", async function() {
 

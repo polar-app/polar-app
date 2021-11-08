@@ -3,7 +3,7 @@ import EpubCFI from "./epubcfi";
 import Hook from "./utils/hook";
 import {replaceBase} from "./utils/replacements";
 import Request from "./utils/request";
-import {XMLDOMSerializer} from "xmldom";
+import { DOMParser as XMLDOMSerializer } from "xmldom";
 
 /**
  * Represents a Section of the Book

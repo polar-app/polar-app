@@ -75,6 +75,8 @@ module.exports = (config) => {
 
         reporters: ['junit', 'spec'],
 
+        captureTimeout: 120000,
+        browserNoActivityTimeout: 120000,
         webpack: {
             plugins: [
                 new NodePolyfillPlugin(),

@@ -10,7 +10,7 @@ import {Assertions, assertJSON} from "polar-test/src/test/Assertions";
 
 describe('PDF Metadata', function() {
 
-    this.timeout(999999);
+    this.timeout(120000);
 
     describe('isPDF', function() {
 

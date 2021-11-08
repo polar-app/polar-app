@@ -3,7 +3,7 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 
 describe("PDFShingleParser", function() {
 
-    this.timeout(60000)
+    this.timeout(120000)
 
     xit("basic", async () => {
 
