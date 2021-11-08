@@ -333,7 +333,7 @@ jobs:
             git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
             sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
             lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
-            git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
+            git tag -a "$VERSION" -m "automated tag version $VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
             LOG=$(git log --pretty=format:"• %s\\n" --no-merges $LATEST_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq | tr '\r\n' ' ' ) || LOG="• fix: Minor Fixes for Release"
@@ -744,3 +744,5 @@ workflows:
           requires:
             - Approve-IOS-Release
             - build-setup
+
+      # write a job that echos hello world
