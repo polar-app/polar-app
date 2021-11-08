@@ -5,12 +5,8 @@
   "scripts": {
     "dist": "echo noop"
   },
-  "devDependencies": {
-    "@types/sharp": "=0.25.1"
-  },
-  "dependencies": {
-    "sharp": "=0.25.4"
-  },
+  "devDependencies": {},
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/burtonator/polar-app-public.git"
