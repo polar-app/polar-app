@@ -10,7 +10,7 @@ const fakeDocument = 'The Milky Way is the galaxy that includes the Solar System
 
 describe('OpenAICostEstimator', function () {
 
-    this.timeout(60000);
+    this.timeout(120000);
 
     it('OpenAICostEstimator.costOfSearch() example 1', async () => {
         const model = 'curie';

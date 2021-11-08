@@ -9,6 +9,10 @@
   - [Global](#global)
     - [`global-fullscreenModeEnabled` Global Fullscreen Mode Enabled](#global-fullscreenmodeenabled-global-fullscreen-mode-enabled)
     - [`global-zenModeEnabled` Global Zen Mode Enabled](#global-zenmodeenabled-global-zen-mode-enabled)
+  - [Migration to Block Annotations](#migration-to-block-annotations)
+    - [`migration-to-block-annotations-started` Migration to Block Annotations Started](#migration-to-block-annotations-started-migration-to-block-annotations-started)
+    - [`migration-to-block-annotations-finished` Migration to Block Annotations Finished](#migration-to-block-annotations-finished-migration-to-block-annotations-finished)
+    - [`migration-to-block-annotations-failed` Migration to Block Annotations Failed](#migration-to-block-annotations-failed-migration-to-block-annotations-failed)
   - [Anki](#anki)
     - [`anki-syncStarted` Anki Sync Started](#anki-syncstarted-anki-sync-started)
     - [`anki-syncFailed` Anki Sync Started](#anki-syncfailed-anki-sync-started)
@@ -61,6 +65,22 @@
     noFailed: number, // The number of flashcards that failed to sync
 }
 ```
+
+## Migration to Block Annotations
+
+### `migration-to-block-annotations-started` Migration to Block Annotations Started
+*No extra data*
+
+### `migration-to-block-annotations-finished` Migration to Block Annotations Finished
+```ts
+{
+    noSucceeded: number, // The number of documents that got migrated successfully
+    noFailed: number, // The number of documents that failed to be migrated
+}
+```
+
+### `migration-to-block-annotations-failed` Migration to Block Annotations Failed
+*No extra data*
 
 ## Document
 

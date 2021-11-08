@@ -3,7 +3,7 @@ import PathRegexStr = OrphanFinder.PathRegexStr;
 
 describe("OrphanFinder", function () {
 
-    this.timeout(600000);
+    this.timeout(120000);
 
     describe("_computeSourceReferences", () => {
 

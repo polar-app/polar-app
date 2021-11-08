@@ -1,14 +1,12 @@
 {
-  "name": "polar",
+  "name": "polar-website",
   "description": "General information, support, and downloads for the polar app",
   "version": "0.0.0",
-  "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
-  "private": true,
   "scripts": {
     "build": "gatsby build",
     "clean-dev": "gatsby clean && gatsby develop",
-    "dist": "yarn run clean && gatsby build",
-    "dist-release": "yarn run dist && firebase deploy",
+    "dist": "npm run-script clean && gatsby build",
+    "dist-release": "npm run-script dist && firebase deploy",
     "build-deploy-dev": "gatsby clean && gatsby build && firebase deploy && gatsby develop",
     "prune-dev": "npm prune && gatsby develop",
     "develop": "gatsby develop",
@@ -17,14 +15,14 @@
     "serve": "gatsby serve --port=8000",
     "clean": "gatsby clean && find src/pages/images -name '*.jsx' -exec rm '{}' ';'",
     "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"export const POLAR_RELEASE = '%s';\n\" > src/components/release.ts",
-    "prebuild": "yarn run get-release"
+    "prebuild": "npm run-script get-release"
   },
   "dependencies": {
     "@material-ui/core": "=4.11.3",
     "@material-ui/icons": "=4.11.2",
-    "@material-ui/styles": "=4.11.3",
-    "@types/node": "=14.17.9",
-    "@types/react": "=17.0.2",
+    "@material-ui/styles": "^4.11.3",
+    "@types/node": "=14.14.35",
+    "@types/react": "=16.9.53",
     "@types/react-helmet": "=6.1.0",
     "gatsby": "=2.32.3",
     "gatsby-image": "=2.8.0",
@@ -33,7 +31,7 @@
     "gatsby-plugin-google-analytics": "=2.8.0",
     "gatsby-plugin-manifest": "=2.9.1",
     "gatsby-plugin-material-ui": "=2.1.10",
-    "gatsby-plugin-react-helmet": "=3.10.0",
+    "gatsby-plugin-react-helmet": "=3.7.0",
     "gatsby-plugin-sharp": "=2.11.2",
     "gatsby-plugin-sitemap": "=2.9.0",
     "gatsby-remark-images": "=3.8.1",
@@ -44,20 +42,22 @@
     "ink": "=3.0.8",
     "ink-box": "=1.0.0",
     "pngquant-bin": "=6.0.0",
-    "polar-bookshelf": "0.0.0",
-    "polar-shared": "0.0.0",
-    "react": "=17.0.2",
-    "react-dom": "=17.0.2",
+    "react": "=16.14.0",
+    "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
     "react-reveal": "=1.2.2",
-    "typeface-roboto": "=1.1.13"
+    "typeface-roboto": "=1.1.13",
+    "@fortawesome/react-fontawesome": "=0.1.16",
+    "@fortawesome/fontawesome-svg-core": "1.2.36",
+    "@fortawesome/free-solid-svg-icons/": "=5.15.4",
+    "@fortawesome/free-regular-svg-icons": "=5.15.4",
+    "@fortawesome/free-brands-svg-icons": "=5.15.4"
   },
   "devDependencies": {
-    "prettier": "=2.3.2"
+    "prettier": "2.1.2"
   },
   "keywords": [
     "gatsby"
   ],
-  "license": "MIT",
-  "main": "n/a"
+  "license": "MIT"
 }
