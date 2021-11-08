@@ -12,7 +12,7 @@ import { Fetches } from 'polar-shared/src/util/Fetch';
 
 describe("Answer Executor", function () {
 
-    this.timeout(600000);
+    this.timeout(120000);
 
     async function executeQuestion(question: string, forEmail = 'burton@inputneuron.io') {
 

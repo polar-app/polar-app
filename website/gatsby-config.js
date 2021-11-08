@@ -1,14 +1,17 @@
 const myCustomQueries = {
-  xs: "(max-width: 320px)",
-  ms: "(max-width: 570px)",
-  sm: "(max-width: 720px)",
+  xs: '(max-width: 320px)',
+  ms: '(max-width: 570px)',
+  sm: '(max-width: 720px)',
 
-  md: "(max-width: 1024px)",
-  tab: "(max-width: 1259px)",
-  l: "(max-width: 1536px)",
+  md: '(max-width: 1024px)',
+  tab: '(max-width: 1259px)',
+  l: '(max-width: 1536px)',
 };
 
 module.exports = {
+  flags: {
+    DEV_SSR: false,
+  },
   siteMetadata: {
     title: `Polar`,
     author: {
@@ -68,14 +71,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
-        trackingId: "UA-122721184-3",
+        trackingId: 'UA-122721184-3',
       },
     },
     {
       resolve: `gatsby-plugin-amplitude-analytics`,
       options: {
         // Specify the API key for your Amplitude Project (required)
-        apiKey: "c1374bb8854a0e847c0d85957461b9f0",
+        apiKey: 'c1374bb8854a0e847c0d85957461b9f0',
         // Puts tracking script in the head instead of the body (optional)
         head: false,
         // Prevents loading Amplitude and logging events if visitors have "Do Not Track" enabled (optional)
@@ -88,14 +91,14 @@ module.exports = {
         },
         // Amplitude JS SDK configuration options (optional)
         amplitudeConfig: {
-          sameSiteCookie: "Lax",
-          domain: ".getpolarized.io",
+          sameSiteCookie: 'Lax',
+          domain: '.getpolarized.io',
           includeUtm: true,
           includeReferrer: true,
           saveEvents: true,
         },
         // Specify NODE_ENVs in which the plugin should be loaded (optional)
-        environments: ["production"],
+        environments: ['production'],
       },
     },
     `gatsby-plugin-sitemap`,
@@ -113,7 +116,7 @@ module.exports = {
     },
     `gatsby-plugin-react-helmet`,
     {
-      resolve: "gatsby-plugin-breakpoints",
+      resolve: 'gatsby-plugin-breakpoints',
       options: {
         queries: myCustomQueries,
       },

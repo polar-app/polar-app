@@ -5,7 +5,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 xdescribe('PDFThumbnailer', function() {
 
-    this.timeout(999999);
+    this.timeout(120000);
 
     it('basic', async function () {
 
