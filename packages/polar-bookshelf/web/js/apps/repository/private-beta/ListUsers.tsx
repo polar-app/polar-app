@@ -48,6 +48,7 @@ export const ListUsers: React.FC = (ref) => {
     const dialogManager = useDialogManager();
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         (async () => {
             try {
                 type Response = {
@@ -62,7 +63,7 @@ export const ListUsers: React.FC = (ref) => {
                     message: "Failed to fetch list of waiting users",
                 })
             }
-        })().then();
+        })();
     }, [dialogManager]);
 
     /**
