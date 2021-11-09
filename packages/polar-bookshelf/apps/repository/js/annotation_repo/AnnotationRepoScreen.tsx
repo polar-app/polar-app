@@ -21,15 +21,17 @@ import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotati
 import {AnnotationRepoTable} from './AnnotationRepoTable';
 import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnotationInlineViewer';
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../doc/src/DocViewer';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
 }
 
 const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
     return (
         <MUIPaperToolbar id="header-filter"
                          padding={1}>
@@ -47,7 +49,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     justifyContent: 'flex-end'
                 }}>
                     {
-                        NEW_NOTES_ANNOTATION_BAR_ENABLED
+                        notesIntegrationEnabled
                             ? <BlocksAnnotationRepoFilterBar />
                             : <AnnotationRepoFilterBar />
                     }
@@ -104,10 +106,11 @@ namespace Phone {
         const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
         const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
         const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
 
         const annotation = React.useMemo(() => {
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 return blocksAnnotationRepoStore.activeBlock;
             } else {
                 return selected.length > 0
@@ -127,7 +130,7 @@ namespace Phone {
 
         return (
             <>
-                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                {notesIntegrationEnabled
                     ? <BlocksAnnotationRepoTable />
                     : <AnnotationListView />
                 }
@@ -139,7 +142,7 @@ namespace Phone {
                     className={classes.drawer}
                     classes={{ root: classes.drawer, paper: classes.drawer }}
                 >
-                    {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                    {notesIntegrationEnabled
                         ? <BlocksAnnotationInlineViewer />
                         : <AnnotationInlineViewer />
                     }
@@ -153,30 +156,34 @@ namespace Phone {
 namespace Tablet {
 
 
-    export const Main = () => (
-        <DockLayout.Root dockPanels={[
-            {
-                id: 'dock-panel-center',
-                type: 'fixed',
-                style: {
-                    overflow: 'visible',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0,
+    export const Main = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+        return (
+            <DockLayout.Root dockPanels={[
+                {
+                    id: 'dock-panel-center',
+                    type: 'fixed',
+                    style: {
+                        overflow: 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        minHeight: 0,
+                    },
+                    component: notesIntegrationEnabled ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
+                    width: 400
                 },
-                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
-                width: 400
-            },
-            {
-                id: 'dock-panel-right',
-                type: 'grow',
-                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
-            }
-        ]}>
-            <DockLayout.Main/>
-        </DockLayout.Root>
-    );
+                {
+                    id: 'dock-panel-right',
+                    type: 'grow',
+                    component: notesIntegrationEnabled ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
+                }
+            ]}>
+                <DockLayout.Main/>
+            </DockLayout.Root>
+        );
+    };
 
 
 }
@@ -184,6 +191,7 @@ namespace Tablet {
 namespace Desktop {
 
     const Right = React.memo(function Right() {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <div style={{
@@ -214,7 +222,7 @@ namespace Desktop {
                                 flexDirection: 'column',
                                 minHeight: 0
                             }}>
-                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                {notesIntegrationEnabled
                                     ? <BlocksAnnotationRepoTable />
                                     : <AnnotationRepoTable />
                                 }
@@ -233,7 +241,7 @@ namespace Desktop {
                                               flexGrow: 1,
                                               display: 'flex'
                                           }}>
-                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                {notesIntegrationEnabled
                                     ? <BlocksAnnotationInlineViewer />
                                     : <AnnotationInlineViewer />
                                 }
