@@ -505,44 +505,31 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
     return (
         <>
-            <div className="AuthContent"
-                 style={{
-                     height: "auto",
-                     textAlign: 'center',
-                     display: 'flex',
-                     flexDirection: 'column'
-                 }}>
+            <Box pb={2} pt={4} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexGrow: 1
+                }}>
+                <LogoAndTextSideBySide/>
+            </Box>
 
-                <>
-                    <Box pb={2} pt={4} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <LogoAndTextSideBySide/>
-                    </Box>
-
-                    <Box pb={2}>
-                        <Typography component={'h5'} style={{fontSize: '24px'}}>
-                            {props.title}
-                        </Typography>
-                    </Box>
-                    <Box mx={3}>
-                        <Divider/>
-                    </Box>
-                    {props.children}
-
-                </>
-
-                 {props.alternative}
-
-                <Box m={1}>
-                    <Divider/>
-                </Box>
-                <Box pb={2}>
-                    <AuthLegalDisclaimer/>
-                </Box>
-            </div>
+            <Box pb={2}>
+                <Typography component={'h5'} style={{fontSize: '24px', textAlign: 'center'}}>
+                    {props.title}
+                </Typography>
+            </Box>
+            <Box mx={3}>
+                <Divider/>
+            </Box>
+            {props.children}
+            {props.alternative}
+            <Box m={3}>
+                <Divider/>
+            </Box>
+            <Box pb={2}>
+                <AuthLegalDisclaimer/>
+            </Box>
         </>
     );
 });
