@@ -53,16 +53,16 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'src/**/*.ts', watched: false },
+            { pattern: 'apps/**/*.ts', watched: false },
 
         ],
         exclude: [
-          'src/**/*.d.ts'
+          'apps/**/*.d.ts'
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            'src/**/*.ts': ['webpack'],
+            'apps/**/*.ts': ['webpack'],
         },
         singleRun: true,
 

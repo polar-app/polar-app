@@ -1,5 +1,5 @@
 {
   "Typescript": true,
   "Mocha": true,
-  "Karma": true
+  "Karma": false
 }
