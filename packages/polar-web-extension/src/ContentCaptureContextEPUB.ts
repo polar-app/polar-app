@@ -1,5 +1,5 @@
 import {CaptureApp} from "./ui/capture/CaptureApp";
-import {ExtensionContentCapture} from "./capture/ExtensionContentCapture";
+import {ExtensionContentCapture} from "polar-web-capture/src/capture/ExtensionContentCapture";
 
 /**
  * Run the content capture functionality.
