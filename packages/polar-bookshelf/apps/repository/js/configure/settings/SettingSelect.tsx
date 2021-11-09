@@ -1,10 +1,8 @@
-import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
-import {PreviewWarning} from "./PreviewWarning";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
-import {Box, createStyles, FormControlLabel, makeStyles, Paper, Radio, RadioGroup} from "@material-ui/core";
-import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
-import {Devices} from "polar-shared/src/util/Devices";
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
+import {PreviewWarning} from "./PreviewWarning";
+import {Box, createStyles, ListItemText, ListItemIcon, FormControlLabel, ListItem, makeStyles, Radio, RadioGroup} from "@material-ui/core";
 
 interface IProps {
     readonly title: string;
@@ -23,13 +21,11 @@ interface IOption {
 const useStyles = makeStyles((theme) =>
     createStyles({
         radioLabelRoot: {
-            marginLeft: Devices.isDesktop()? theme.spacing(2): 0,
-            marginRight: Devices.isDesktop()? theme.spacing(2): 0,
             justifyContent: 'space-between',
             alignItems: 'center',
         },
         radioLabel: {
-            fontSize: '1rem',
+            color: theme.palette.text.secondary
         },
 
     }),
@@ -42,6 +38,10 @@ export const SettingSelect = (props: IProps) => {
     const prefs = usePrefsContext();
 
     const {name} = props;
+
+    if (! prefs) {
+        return null;
+    }
 
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         console.log("Setting " + name);
@@ -60,45 +60,37 @@ export const SettingSelect = (props: IProps) => {
                        .getOrElse(props.options[0].id);
 
     return (
-        <div>
-            <div>
-
-                <Box mx={2}>
-                    <Box pt={2}>
-                        <MUIIconText style={{ flex: 1}} icon={props.icon}>
-                                <h3><b>{props.title}</b></h3>
-                        </MUIIconText>
-                    </Box>
-                    <Box component="p" color="text.secondary" ml={Devices.isPhone() && 5.5} >
-                        {props.description}
-                    </Box>
+        <>
+            <ListItem>
+                <ListItemIcon>
+                    {props.icon}
+                </ListItemIcon>
+                <ListItemText primary={props.title} secondary={props.description}/>
+                <ListItemText>
+                    {props.preview && <PreviewWarning/>}
+                </ListItemText>
+            </ListItem>
+            {props.options && <ListItem alignItems='center'>
+                <Box pl={5} width={'100%'}>
+                    <RadioGroup name={name} value={value} onChange={onChange}>
+                        {props.options.map(current =>
+                            <FormControlLabel
+                                key={current.id}
+                                value={current.id}
+                                labelPlacement="start"
+                                classes={{
+                                    root: classes.radioLabelRoot,
+                                    label: classes.radioLabel,
+                                }}
+                                control={<Radio />}
+                                label={current.label}
+                            />
+                        )}
+                    </RadioGroup>
                 </Box>
-
-                <Paper >
-                    <Box ml={Devices.isPhone()? 9 : 2} mr={Devices.isPhone()? 2 : 2}>
-                        <RadioGroup name={name} value={value} onChange={onChange}>
-                            {props.options.map(current =>
-                                <FormControlLabel
-                                    key={current.id}
-                                    value={current.id}
-                                    labelPlacement="start"
-                                    classes={{
-                                        root: classes.radioLabelRoot,
-                                        label: classes.radioLabel,
-                                    }}
-                                    control={<Radio />}
-                                    label={current.label}
-                                />
-                            )}
-                        </RadioGroup>
-                    </Box>
-                </Paper>
-
-            </div>
-
-            {props.preview && <PreviewWarning/>}
-
-        </div>
+            </ListItem>
+            }
+        </>
     );
 
 };

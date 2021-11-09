@@ -42,6 +42,7 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
+import {SettingsScreenStory} from "./impl/SettingsScreenStory";
 
 interface IStory {
     readonly name: string;
@@ -69,6 +70,10 @@ const stories = createStoryIndex([
     {
         name: "MigrationToBlockAnnotationsMain",
         component: <MigrationToBlockAnnotationsMainStory/>
+    },
+    {
+        name: "New Settings Component",
+        component: <SettingsScreenStory/>
     },
     {
         name: "Auth Hide on Scroll",
