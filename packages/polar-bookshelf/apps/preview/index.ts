@@ -11,7 +11,9 @@ import {Prerenderer} from "./Prerenderer";
 import {UserAgents} from "./UserAgents";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+if(PDFJS) {
+    PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+}
 
 async function getDocPreview(): Promise<DocPreviewCached> {
 

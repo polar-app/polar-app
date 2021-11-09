@@ -53,16 +53,16 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: '(apps|web)/**/*.ts', watched: false },
+            { pattern: '{apps,web}/**/*.ts', watched: false },
 
         ],
         exclude: [
-          'apps/**/*.d.ts'
+          '{apps,web}/**/*.d.ts'
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            'apps/**/*.ts': ['webpack'],
+            '{apps,web}/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -127,6 +127,20 @@ module.exports = (config) => {
 
                         ]
 
+                    },
+                    {
+                        test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
+                                }
+                            },
+                        ],
                     },
                     {
                         // make SVGs use data URLs.
