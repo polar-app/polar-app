@@ -53,7 +53,7 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: 'apps/**/*.ts', watched: false },
+            { pattern: '(apps|web)/**/*.ts', watched: false },
 
         ],
         exclude: [
