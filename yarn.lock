@@ -5968,11 +5968,6 @@ async@^3.0.1, async@^3.1.0, async@^3.2.0:
   resolved "https://verdaccio.getpolarized.io/async/-/async-3.2.2.tgz#2eb7671034bb2194d45d30e31e24ec7e7f9670cd"
   integrity sha512-H0E+qZaDEfx/FY4t7iLRv1W2fFI6+pyCeTw1uN20AQPiwqwM6ojPxHxdLv4z8hi2DtnW9BOckSspLucW7pIE5g==
 
-async@~1.2.1:
-  version "1.2.1"
-  resolved "https://verdaccio.getpolarized.io/async/-/async-1.2.1.tgz#a4816a17cd5ff516dfa2c7698a453369b9790de0"
-  integrity sha1-pIFqF81f9RbfosdpikUzabl5DeA=
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://verdaccio.getpolarized.io/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -7636,11 +7631,6 @@ console-control-strings@^1.0.0, console-control-strings@^1.1.0, console-control-
   resolved "https://verdaccio.getpolarized.io/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
-console-polyfill@0.3.0:
-  version "0.3.0"
-  resolved "https://verdaccio.getpolarized.io/console-polyfill/-/console-polyfill-0.3.0.tgz#84900902a18c47a5eba932be75fa44d23e8af861"
-  integrity sha512-w+JSDZS7XML43Xnwo2x5O5vxB0ID7T5BdqDtyqT6uiCAX2kZAgcWxNaGqT97tZfSHzfOcvrfsDAodKcJ3UvnXQ==
-
 constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://verdaccio.getpolarized.io/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
@@ -8303,13 +8293,6 @@ debug@^3.1.0, debug@^3.1.1, debug@^3.2.6, debug@^3.2.7:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
-
-decache@^3.0.5:
-  version "3.1.0"
-  resolved "https://verdaccio.getpolarized.io/decache/-/decache-3.1.0.tgz#4f5036fbd6581fcc97237ac3954a244b9536c2da"
-  integrity sha1-T1A2+9ZYH8yXI3rDlUokS5U2wto=
-  dependencies:
-    find "^0.2.4"
 
 decamelize-keys@^1.0.0:
   version "1.1.0"
@@ -9129,7 +9112,7 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-error-stack-parser@^2.0.4, error-stack-parser@^2.0.6:
+error-stack-parser@^2.0.6:
   version "2.0.6"
   resolved "https://verdaccio.getpolarized.io/error-stack-parser/-/error-stack-parser-2.0.6.tgz#5a99a707bd7a4c58a797902d48d82803ede6aad8"
   integrity sha512-d51brTeqC+BHlwF0BhPtcYgF5nlzf9ZZ0ZIUQNZpc9ZB9qw5IJ2diTrBY9jlCJkTLITYPjmiX6OWCwH+fuyNgQ==
@@ -10231,13 +10214,6 @@ find-up@^4.0.0, find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
-
-find@^0.2.4:
-  version "0.2.9"
-  resolved "https://verdaccio.getpolarized.io/find/-/find-0.2.9.tgz#4b73f1ff9e56ad91b76e716407fe5ffe6554bb8c"
-  integrity sha1-S3Px/55WrZG3bnFkB/5f/mVUu4w=
-  dependencies:
-    traverse-chain "~0.1.0"
 
 firebase-admin@=10.0.0:
   version "10.0.0"
@@ -12355,11 +12331,6 @@ is2@^2.0.6:
     ip-regex "^4.1.0"
     is-url "^1.2.4"
 
-is_js@^0.9.0:
-  version "0.9.0"
-  resolved "https://verdaccio.getpolarized.io/is_js/-/is_js-0.9.0.tgz#0ab94540502ba7afa24c856aa985561669e9c52d"
-  integrity sha1-CrlFQFArp6+iTIVqqYVWFmnpxS0=
-
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://verdaccio.getpolarized.io/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -13107,7 +13078,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://verdaccio.getpolarized.io/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.0, json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://verdaccio.getpolarized.io/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
@@ -14104,11 +14075,6 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
-
-lru-cache@~2.2.1:
-  version "2.2.4"
-  resolved "https://verdaccio.getpolarized.io/lru-cache/-/lru-cache-2.2.4.tgz#6c658619becf14031d0d0b594b16042ce4dc063d"
-  integrity sha1-bGWGGb7PFAMdDQtZSxYELOTcBj0=
 
 lru-cache@~4.0.0:
   version "4.0.2"
@@ -17292,13 +17258,6 @@ repeat-string@^1.6.1:
   resolved "https://verdaccio.getpolarized.io/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
   integrity sha1-jcrkcOHIirwtYA//Sndihtp15jc=
 
-request-ip@~2.0.1:
-  version "2.0.2"
-  resolved "https://verdaccio.getpolarized.io/request-ip/-/request-ip-2.0.2.tgz#deeae6d4af21768497db8cd05fa37143f8f1257e"
-  integrity sha1-3urm1K8hdoSX24zQX6NxQ/jxJX4=
-  dependencies:
-    is_js "^0.9.0"
-
 request-progress@^3.0.0:
   version "3.0.0"
   resolved "https://verdaccio.getpolarized.io/request-progress/-/request-progress-3.0.0.tgz#4ca754081c7fec63f505e4faa825aa06cd669dbe"
@@ -17516,22 +17475,6 @@ roarr@^2.15.3:
     json-stringify-safe "^5.0.1"
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
-
-rollbar@=2.19.4:
-  version "2.19.4"
-  resolved "https://verdaccio.getpolarized.io/rollbar/-/rollbar-2.19.4.tgz#eda4145cb459203bd3e9ccd885bfb5c5c3f6f2a2"
-  integrity sha512-8ErcMfJE2zkhgrFtpGRyejHBhyO0hU7dZ3EvG2ylNZ7qSu4yw5PZfhGx+Qyq3ksKshLFeQh9Y/Bh2S1TOPIhvw==
-  dependencies:
-    async "~1.2.1"
-    console-polyfill "0.3.0"
-    error-stack-parser "^2.0.4"
-    json-stringify-safe "~5.0.0"
-    lru-cache "~2.2.1"
-    request-ip "~2.0.1"
-    source-map "^0.5.7"
-    uuid "3.0.x"
-  optionalDependencies:
-    decache "^3.0.5"
 
 rollup-plugin-babel@^4.3.3:
   version "4.4.0"
@@ -18249,7 +18192,7 @@ source-map-url@^0.4.0:
   resolved "https://verdaccio.getpolarized.io/source-map-url/-/source-map-url-0.4.1.tgz#0af66605a745a5a2f91cf1bbf8a7afbc283dec56"
   integrity sha512-cPiFOTLUKvJFIg4SKVScy4ilPPW6rFgMgfuZJPNoDuMs3nC1HbMUycBoJw77xFIp6z1UJQJOfx6C9GMH80DiTw==
 
-source-map@^0.5.0, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.3:
+source-map@^0.5.0, source-map@^0.5.6, source-map@~0.5.3:
   version "0.5.7"
   resolved "https://verdaccio.getpolarized.io/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
@@ -19293,11 +19236,6 @@ tr46@~0.0.3:
   resolved "https://verdaccio.getpolarized.io/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
 
-traverse-chain@~0.1.0:
-  version "0.1.0"
-  resolved "https://verdaccio.getpolarized.io/traverse-chain/-/traverse-chain-0.1.0.tgz#61dbc2d53b69ff6091a12a168fd7d433107e40f1"
-  integrity sha1-YdvC1Ttp/2CRoSoWj9fUMxB+QPE=
-
 "traverse@>=0.3.0 <0.4":
   version "0.3.9"
   resolved "https://verdaccio.getpolarized.io/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
@@ -19877,11 +19815,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://verdaccio.getpolarized.io/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@3.0.x:
-  version "3.0.1"
-  resolved "https://verdaccio.getpolarized.io/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
-  integrity sha1-ZUS7ot/ajBzxfmKaOjBeK7H+5sE=
 
 uuid@3.3.2:
   version "3.3.2"
