@@ -32,6 +32,13 @@ export namespace ESLint {
 
                 // ? Import Rules
                 "unused-imports/no-unused-imports": "error",
+                "no-restricted-imports": ["error", {
+                    "paths": [{
+                        "name": "mobx",
+                        "importNames": ["trace"],
+                        "message": "Warning, this will break the build, never import it"
+                      }]
+                }],
 
                 // ? Functional Rules (Off Locally but gets enabled for new code in CI)
                 "functional/prefer-readonly-type": "off",
