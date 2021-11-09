@@ -35,7 +35,7 @@
     "@types/node-fetch": "2.5.7",
     "@types/stopword": "=0.3.0",
     "@types/twitter-text": "=2.0.0",
-    "@types/uuid": "3.4.5",
+    "@types/uuid": "=8.3.1",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
     "polar-eslint": "0.0.0",
@@ -56,7 +56,7 @@
     "stopword": "=0.3.4",
     "timekeeper": "2.2.0",
     "twitter-text": "=3.1.0",
-    "uuid": "3.3.3"
+    "uuid": "=8.3.2"
   },
   "files": [
     "**/*.js",
