@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React from "react";
@@ -28,9 +29,7 @@ export const useStyles = makeStyles((theme) =>
             },
         },
         linkDecoration: {
-            color: theme.palette.text.secondary,
-            textDecoration: 'underline !important'
-        }
+            color: theme.palette.primary.main + '!important'        }
     }),
 );
 
@@ -40,11 +39,9 @@ export const AuthLegalDisclaimer = () => {
     const classes = useStyles();
 
     return (
-        <div>
-            <p className={classes.legal}>
-                You acknowledge that you will read, and agree to
-                our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
-            </p>
-        </div>
+        <Typography component='p' className={classes.legal}>
+            You acknowledge that you will read, and agree to
+            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+        </Typography>
     );
 }

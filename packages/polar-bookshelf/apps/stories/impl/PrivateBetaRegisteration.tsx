@@ -15,8 +15,8 @@ export const useStyles = makeStyles((theme) =>
             margin: theme.spacing(1),
         },
         button: {
-            flexGrow: 1,
-            margin: theme.spacing(1),
+            // flexGrow: 1,
+            // margin: theme.spacing(1),
         }
     })
 );

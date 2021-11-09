@@ -454,7 +454,9 @@ const SignInWithExistingAccountButton = () => {
     return (
         <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/sign-in')}>
-                or sign-in with existing account
+                <span style={{textDecoration: 'underline'}}>
+                    or sign-in with existing account
+                </span>
             </Button>
         </div>
     );
@@ -465,7 +467,9 @@ const OrCreateNewAccountButton = () => {
     return (
         <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/create-account')}>
-                or register for private beta
+                <span style={{textDecoration: 'underline'}}>
+                    or register for private beta
+                </span>
             </Button>
         </div>
     );
@@ -473,39 +477,17 @@ const OrCreateNewAccountButton = () => {
 
 export const LogoAndTextSideBySide = () => {
     return (
-        <div>
-            <div style={{display: 'flex'}}>
-                <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
-                    <Box m={1}>
-                        <PolarSVGIcon width={100} height={100}/>
-                    </Box>
-                    <Box m={1}>
-                        <Typography variant="h2" component="div">
-                            POLAR
-                        </Typography>
-                    </Box>
-                </div>
+        <div style={{display: 'flex'}}>
+            <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
+                <Box m={1}>
+                    <PolarSVGIcon width={100} height={100}/>
+                </Box>
+                <Box m={1}>
+                    <Typography variant="h2" component="div">
+                        POLAR
+                    </Typography>
+                </Box>
             </div>
-        </div>
-    )
-}
-
-const FlexLayoutForm = () => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
-                <EmailTokenAuthButton/>
-
-            </div>
-
         </div>
     )
 }
@@ -525,41 +507,41 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
         <>
             <div className="AuthContent"
                  style={{
-                     height: "100vh",
+                     height: "auto",
                      textAlign: 'center',
-                     flexGrow: 1,
                      display: 'flex',
                      flexDirection: 'column'
                  }}>
 
                 <>
-                    <div style={{
+                    <Box pb={2} pt={4} style={{
                         display: 'flex',
-                        flexGrow: 1,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
                         <LogoAndTextSideBySide/>
-                    </div>
+                    </Box>
 
-                    <h2>
-                        {props.title}
-
-                        <Box ml={2} mr={2} mt={1} mb={1} flexGrow={1}>
-                            <Divider/>
-                        </Box>
-                    </h2>
-
+                    <Box pb={2}>
+                        <Typography component={'h5'} style={{fontSize: '24px'}}>
+                            {props.title}
+                        </Typography>
+                    </Box>
+                    <Box mx={3}>
+                        <Divider/>
+                    </Box>
                     {props.children}
 
                 </>
 
                  {props.alternative}
 
-                <Box m={2} flexGrow={1}>
+                <Box m={1}>
                     <Divider/>
                 </Box>
+                <Box pb={2}>
                     <AuthLegalDisclaimer/>
+                </Box>
             </div>
         </>
     );
