@@ -160,10 +160,6 @@ export class BlocksTreeStore {
         return this.blocksStore.insertFromBlockContentStructure(blocks, opts);
     }
 
-    getNamedBlocks(): ReadonlyArray<string> {
-        return this.blocksStore.getNamedBlocks();
-    }
-
     getBlockByName(name: BlockNameStr): Block | undefined {
         return this.blocksStore.getBlockByName(name);
     }

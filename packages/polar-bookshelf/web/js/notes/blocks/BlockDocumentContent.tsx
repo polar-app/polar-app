@@ -34,8 +34,9 @@ export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentCont
     const title = React.useMemo(() => DocInfos.bestTitle(docInfo), [docInfo]);
 
     return (
-        <div className={className}
-            style={style}>
+        <Box className={className}
+             mb={1}
+             style={style}>
             {title}
             <div className={classes.infoSection}>
                 <div><b>Reading progress</b> {docInfo.progress}%</div>
@@ -44,6 +45,6 @@ export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentCont
                 </Box>
                 
             </div>
-        </div>
+        </Box>
     );
 };

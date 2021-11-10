@@ -73,6 +73,7 @@ import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBlockAnnotations"
+import {ListUsers} from "./private-beta/ListUsers";
 
 interface IProps {
     readonly app: App;
@@ -305,6 +306,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <Route exact path="/cdk-demo">
                                             <CDKDemo/>
+                                        </Route>
+
+                                        <Route exact path="/private-beta/waiting-users">
+                                            <ListUsers/>
                                         </Route>
 
                                         <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>

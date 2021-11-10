@@ -9,8 +9,8 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
-import {TAG_IDENTIFIER} from '../content/HasLinks';
 import INodeOffset = ContentEditables.INodeOffset;
+import {DOMBlocks} from './DOMBlocks';
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -104,20 +104,13 @@ function useActionExecutor(id: BlockIDStr) {
             return range;
         }
 
-        function createLink(type: 'tag' | 'link') {
+        function createLink(type: DOMBlocks.IWikiLinkType) {
             const updateSelection = () => {
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
 
-                const a = document.createElement('a');
-                const trimmedTarget = actionOp.target.startsWith(TAG_IDENTIFIER)
-                    ? actionOp.target.slice(1)
-                    : actionOp.target;
-                a.setAttribute('contenteditable', 'false');
-                a.classList.add(type === 'tag' ? 'note-tag' : 'note-link');
-                a.setAttribute('href', '#' + trimmedTarget);
-                a.appendChild(document.createTextNode(actionOp.target));
+                const a = DOMBlocks.createWikiLinkAnchorElement(type, actionOp.target); 
 
 
                 coveringRange.insertNode(a);

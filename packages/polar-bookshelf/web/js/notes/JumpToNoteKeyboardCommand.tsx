@@ -3,33 +3,29 @@ import {CommandsProvider, ICommandWithHandler, OnCommandHandler} from "../mui/co
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {NamedContent} from "./store/BlocksStore";
-import {BlockTextContentUtils, useNamedBlocks} from "./NoteUtils";
-import {Block} from "./store/Block";
+import {INamedBlockEntry, useBlocksStore} from "./store/BlocksStore";
 import {IKeyboardShortcutEvent} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICommandWithHandler>, OnCommandHandler<ICommandWithHandler>]> {
 
     const noteLinkLoader = useNoteLinkLoader();
 
-    // TODO this needs to be sorted by we should really have our OWN sort
-    // handler that we can inject into the commands system
-    const namedBlocks = useNamedBlocks({ sort : true });
+    const blocksStore = useBlocksStore();
+    const namedBlocks = blocksStore.namedBlockEntries;
 
     const commandsProvider = React.useCallback((): ReadonlyArray<ICommandWithHandler> => {
 
-        function toCommand(block: Block<NamedContent>): ICommandWithHandler {
+        function toCommand({ label }: INamedBlockEntry): ICommandWithHandler {
 
-            const text = BlockTextContentUtils.getTextContentMarkdown(block.content);
             // these are ALL named notes so we should just use the text to jump to them.
-            const id = text;
+            const id = label;
 
-            const handler = (event: IKeyboardShortcutEvent) => {
+            const handler = (_: IKeyboardShortcutEvent) => {
                 console.log("Executing handler to load note: " + id);
                 noteLinkLoader(id);
             };
 
-            return {id, text, handler};
+            return {id, text: label, handler};
 
         }
 
