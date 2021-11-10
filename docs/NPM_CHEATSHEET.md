@@ -40,7 +40,7 @@ You should NOT have a PR that intermingles package.json version packages and reg
 yarn global add polar-npm
 lerna exec --concurrency=1 --parallel=false --no-bail -- npm-upgrade-pkg typescript "3.9.5"
 
-yarn run purge-node-modules && rm -f yarn.lock && lerna bootstrap 
+time (yarn run purge-node-modules && rm -f yarn.lock && lerna bootstrap) 
 
 ```
 
