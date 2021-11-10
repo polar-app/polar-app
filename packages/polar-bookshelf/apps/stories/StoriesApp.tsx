@@ -78,6 +78,12 @@ const stories = createStoryIndex([
         </MUIButton>
     },
     {
+        name: "MUI Button without href",
+        component: <MUIButton onClick={()=>console.log('MUIButton click') }>
+            MUI button without href
+        </MUIButton>
+    },
+    {
         name: "Auth Hide on Scroll",
         component: <AutoHideOnScrollStory/>
     },

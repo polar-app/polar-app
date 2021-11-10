@@ -4,7 +4,7 @@ import Button, { ButtonProps } from '@material-ui/core/Button';
 import { useLinkLoader } from '../../../../web/js/ui/util/LinkLoaderHook';
 
 interface MUIButtonProps extends ButtonProps{
-    readonly href: string;
+    readonly href?: string;
     readonly onClick: React.MouseEventHandler;
 }
 // note that the ButtonProps here needs to be the MUIButtonProps that Button uses
@@ -17,19 +17,20 @@ export const MUIButton = React.memo((props: MUIButtonProps) => {
     const {href} = props;
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
+        if(href){
+            if (href.startsWith('http:') || href.startsWith('https:')) {
+                linkLoader(href, {focus: true, newWindow: true});
+            } else {
+                props.onClick(event);
+            }
         
-        if (href.startsWith('http:') || href.startsWith('https:')) {
-            linkLoader(href, {focus: true, newWindow: true});
-        } else {
-            props.onClick(event);
+            // needed to prevent the default href handling.  The way this works is that the
+            // click handler is fired then the default browser behavior for navigating URLs is
+            // NOT fired because we prevent it here.
+        
+            event.preventDefault();
+            event.stopPropagation();
         }
-    
-        // needed to prevent the default href handling.  The way this works is that the
-        // click handler is fired then the default browser behavior for navigating URLs is
-        // NOT fired because we prevent it here.
-    
-        event.preventDefault();
-        event.stopPropagation();
         
     }, [linkLoader]);
     
