@@ -7,7 +7,7 @@ import {AnnotationContainers} from "./AnnotationContainers";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface IAreaHighlightsViewRenderer {
     docMeta: IDocMeta;
@@ -77,12 +77,13 @@ export const DocMetaAreaHighlightsView = () => {
 export const AreaHighlightsView = React.memo(function AreaHighlightsView() {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    if (notesIntegrationEnabled) {
         return <BlockAreaHighlightsViewRenderer docMeta={docMeta} />
     }
 

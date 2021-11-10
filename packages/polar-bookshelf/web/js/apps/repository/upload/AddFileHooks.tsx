@@ -22,7 +22,7 @@ import {useBlocksStore} from "../../../notes/store/BlocksStore";
 import {IBlockPredicates} from "../../../notes/store/IBlockPredicates";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../../../apps/doc/src/DocViewer";
+import {useNotesIntegrationEnabled} from '../MigrationToBlockAnnotations';
 
 export namespace AddFileHooks {
 
@@ -39,6 +39,7 @@ export namespace AddFileHooks {
         const batchUploader = useBatchUploader();
         const analytics = useAnalytics();
         const blocksStore = useBlocksStore();
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         const handleUploads = React.useCallback(async (uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> => {
 
@@ -67,7 +68,7 @@ export namespace AddFileHooks {
                     const documentBlockExists = !! blocksStore
                         .indexByDocumentID[importedFile.docInfo.fingerprint];
 
-                    if (NEW_NOTES_ANNOTATION_BAR_ENABLED && importedFile.action !== 'skipped' && ! documentBlockExists) {
+                    if (notesIntegrationEnabled && importedFile.action !== 'skipped' && ! documentBlockExists) {
                         const docInfo = Dictionaries.onlyDefinedProperties(importedFile.docInfo);
                         const namedBlocksIDs = Object.values(blocksStore.indexByName);
                         const namedBlocks = blocksStore

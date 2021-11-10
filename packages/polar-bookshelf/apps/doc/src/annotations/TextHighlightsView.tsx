@@ -6,8 +6,8 @@ import {useAnnotationContainers} from "./AnnotationHooks";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {PageAnnotations} from "./PageAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface ITextHighlightsViewRendererProps {
     docMeta: IDocMeta;
@@ -76,12 +76,13 @@ export const DocMetaTextHighlightsView: React.FC<ITextHighlightsViewRendererProp
 
 export const TextHighlightsView = React.memo(() => {
     const {docMeta} = useDocViewerStore(['docMeta']);
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    if (notesIntegrationEnabled) {
         return <BlockTextHighlightsViewRenderer docMeta={docMeta} />
     }
 

@@ -2,8 +2,8 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {CaptureRoot} from "./CaptureRoot";
 import {MUIAppRoot} from 'polar-bookshelf/web/js/mui/MUIAppRoot';
+import {ExtensionContentCapture} from "polar-web-capture/src/capture/ExtensionContentCapture";
 import ICapturedContent = ExtensionContentCapture.ICapturedEPUB;
-import {ExtensionContentCapture} from "../../capture/ExtensionContentCapture";
 
 const CaptureContentContext = React.createContext<ICapturedContent>(null!);
 
