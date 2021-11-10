@@ -1,7 +1,9 @@
 import * as React from 'react';
 
 import Button, { ButtonProps } from '@material-ui/core/Button';
-import { useLinkLoader } from '../../../../web/js/ui/util/LinkLoaderHook';
+import { Link, useHistory } from 'react-router-dom';
+import { useLinkLoader } from '../../../web/js/ui/util/LinkLoaderHook';
+import { StoryHolder } from '../../../apps/stories/StoryHolder';
 
 interface MUIButtonProps extends ButtonProps{
     readonly href: string;
@@ -43,9 +45,13 @@ export const MUIButton = React.memo((props: MUIButtonProps) => {
     // NOTE that passing ...props will also pass the href and we're going to override
     // the onClick that the user provides with our version
     return (
-        <Button {...props} onClick={(event) => handleClick(event)}>
-            {props.children}
-        </Button>
+        <StoryHolder>
+            <div>
+                <Button href={props.href} onClick={(event) => handleClick(event)}>
+                    {props.children}
+                </Button>
+            </div>
+        </StoryHolder>
     );
     
 });
