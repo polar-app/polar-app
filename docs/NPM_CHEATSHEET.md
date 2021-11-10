@@ -1,4 +1,22 @@
 
+# Bootstrap Locally
+
+To bootstrap locally run the following:
+
+```bash
+yarn run purge-node-modules && lerna bootstrap --ci
+```
+
+This is necessary because we can't wrap these command as yarn command itself
+because yarn has bug when running from within yarn.
+
+The --ci command in bootstrap forces you to use the same packages defined in
+yarn.lock and no new packages are evaluated to be added to the dependencies.
+
+This is necessary because a version could be updated and you'd get the most
+recent version of the package rather than what master wants you to use and
+this could yield to other bugs.
+
 # Potential Bugs
 
 ## Don't run Yarn from within Yarn!
@@ -45,3 +63,5 @@ time (yarn run purge-node-modules && rm -f yarn.lock && lerna bootstrap)
 ```
 
 Then commit these changes and send a PR. 
+
+# 
