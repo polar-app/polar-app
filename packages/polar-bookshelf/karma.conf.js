@@ -1,4 +1,3 @@
-
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
@@ -21,10 +20,9 @@ module.exports = (config) => {
                 './{,!(node_modules)/**}/*TestNK.js'
             ],
             mocha: {
-                timeout : 60000
+                timeout: 60000
             }
         },
-        // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
 
         customHeaders: [
@@ -53,16 +51,16 @@ module.exports = (config) => {
 
         files: [
 
-            { pattern: '**/*.ts', watched: false },
+            {pattern: './web/**/*TestK.ts', watched: false}
 
         ],
         exclude: [
-          '**/*.d.ts'
+            './**/*.d.ts'
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            '**/*.ts': ['webpack'],
+            '**/*': ['webpack'],
         },
         singleRun: true,
 
@@ -170,7 +168,7 @@ module.exports = (config) => {
                     },
                     {
                         test: /\.scss$/,
-                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                        use: ['style-loader', 'css-loader', 'sass-loader', 'sass'],
                     },
                     {
                         test: /fonts\.googleapis\.com\/css/,
