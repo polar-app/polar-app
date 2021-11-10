@@ -26,7 +26,6 @@ export namespace DatastoreWriter {
         readonly progressListener: WriteFileProgressListener;
 
         readonly webCapture: boolean;
-
     }
 
     export interface WrittenDoc {

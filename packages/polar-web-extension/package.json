@@ -37,7 +37,8 @@
     "polar-web-extension-api": "0.0.0",
     "readability": "0.2.0-polar.2",
     "polar-page-metadata-parser": "0.0.0",
-    "polar-web-capture": "0.0.0"
+    "polar-web-capture": "0.0.0",
+    "polar-backend-datastore": "0.0.0"
   },
   "devDependencies": {
     "@types/chai": "4.2.11",
