@@ -42,7 +42,9 @@ platform :ios do
         skip_screenshots: true,
         submit_for_review: true,
         precheck_include_in_app_purchases: false,
-        export_compliance_uses_encryption: false
+        submission_information: {
+          export_compliance_uses_encryption: false
+        }
     )
   end
 end
