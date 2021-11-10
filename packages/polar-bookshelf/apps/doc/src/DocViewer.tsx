@@ -49,11 +49,7 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-import {MIGRATION_TO_BLOCKS_ENABLED} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-
-export const NEW_NOTES_ANNOTATION_BAR_ENABLED = MIGRATION_TO_BLOCKS_ENABLED
-                                                || LocalStorageFeatureToggles.get('notes.docs-integration');
+import {useNotesIntegrationEnabled} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 const Main = React.memo(function Main() {
 
@@ -353,10 +349,11 @@ const useDocumentBlockMigrator = () => {
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
     const annotationBlockManager = useAnnotationBlockManager();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     React.useEffect(() => {
 
-        if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        if (migratedRef.current || ! docMeta || ! user || ! notesIntegrationEnabled) {
             return;
         }
 
@@ -402,7 +399,17 @@ const useDocumentBlockMigrator = () => {
 
         migrate()
             .catch(console.error);
-    }, [docMeta, user, blocksStore, dialogs, docFileResolver, firestore, migratedRef, annotationBlockManager]);
+    }, [
+        docMeta,
+        user,
+        blocksStore,
+        dialogs,
+        docFileResolver,
+        firestore,
+        migratedRef,
+        annotationBlockManager,
+        notesIntegrationEnabled,
+    ]);
 };
 
 export const DocViewer = deepMemo(function DocViewer() {

@@ -36,7 +36,7 @@
     "@aws-cdk/aws-elasticsearch": "=1.121.0",
     "@aws-cdk/core": "=1.121.0",
     "@types/node-fetch": "2.5.7",
-    "firebase": "=8.8.1",
+    "firebase": "=8.10.0",
     "node-fetch": "=2.6.1",
     "polar-accounts": "0.0.0",
     "polar-admin": "0.0.0",

@@ -39,7 +39,7 @@
     "polar-firestore-like": "0.0.0"
   },
   "peerDependencies": {
-    "firebase": "=8.8.1",
+    "firebase": "=8.10.0",
     "firebase-admin": "=10.0.0"
   }
 }

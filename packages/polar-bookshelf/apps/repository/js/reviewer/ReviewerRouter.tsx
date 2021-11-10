@@ -5,7 +5,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {BlockReviewerScreen, DocAnnotationReviewerScreen} from "./ReviewerScreen";
 import * as React from "react";
 import {useBlocksAnnotationRepoStore} from "../block_annotation_repo/BlocksAnnotationRepoStore";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../../apps/doc/src/DocViewer";
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 export const BlocksReviewRouter = observer(() => {
     const store = useBlocksAnnotationRepoStore();
@@ -53,7 +53,9 @@ export const DocAnnotationReviewRouter = () => {
 };
 
 export const ReviewRouter = () => {
-    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+    if (notesIntegrationEnabled) {
         return <BlocksReviewRouter />
     }
 
