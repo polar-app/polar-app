@@ -42,7 +42,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     }
 
     const value = prefs.isMarked(name, defaultValue);
-
+    
     const handleDarkModeToggle = (enabled: boolean) => {
 
         const theme = enabled ? 'dark' : 'light';
@@ -57,7 +57,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
         prefs.mark(name, value);
 
         if (props.name === 'dark-mode') {
-            handleDarkModeToggle(value);
+            handleDarkModeToggle(value || true);
         }
 
         const doCommit = async () => {

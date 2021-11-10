@@ -57,6 +57,7 @@ const Main = () => {
                 <SettingToggle title="Dark Mode"
                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
                                 name="dark-mode"
+                                defaultValue={true}
                                 icon={<BrightnessMediumIcon />}/>
                 <Divider/>
                 <SettingSelect title="PDF Dark Mode Handling"
