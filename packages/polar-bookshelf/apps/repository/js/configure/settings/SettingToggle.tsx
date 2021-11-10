@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import { ListItem, ListItemText, ListItemIcon, IconButton, ListItemSecondaryAction } from "@material-ui/core";
+import { ListItem, ListItemText, ListItemIcon, Box, ListItemSecondaryAction } from "@material-ui/core";
 import { MUIThemeTypeContext } from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 import { usePrefsContext } from "../../persistence_layer/PrefsContext2";
 
@@ -56,7 +56,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
         prefs.mark(name, value);
 
         if (props.name === 'dark-mode') {
-            handleDarkModeToggle(value || true);
+            handleDarkModeToggle(value);
         }
 
         const doCommit = async () => {
@@ -75,13 +75,13 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                     {props.icon}
                 </ListItemIcon>
                 <ListItemText primary={props.title} secondary={props.description}/>
-                <ListItemSecondaryAction style={{top: 0, paddingTop: '55px', paddingLeft: '20px'}}>
-                    <IconButton edge="end" aria-label="delete">
+                <ListItemIcon>
+                    <Box pl={1}>
                         <SwitchButton size="small"
-                                    initialValue={value}
-                                    onChange={value => onChange(value)} />
-                    </IconButton>
-                </ListItemSecondaryAction>
+                        initialValue={value}
+                        onChange={value => onChange(value)} />
+                    </Box>
+                </ListItemIcon>
             </ListItem>
         </>
     );
