@@ -31,13 +31,13 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/ISelectedContent";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {GlobalHotKeys} from "react-hotkeys";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
+import {useNotesIntegrationEnabled} from "../../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -198,6 +198,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {fileType} = useDocViewerContext();
     const {create: createAnnotation} = useAnnotationBlockManager();
     const {getBlock} = useAnnotationBlockManager();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
         if (event) {
@@ -221,7 +222,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             if (createdTextHighlight) {
                 const {pageMeta, textHighlight} = createdTextHighlight;
 
-                if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                if (notesIntegrationEnabled) {
                     const content = BlockContentAnnotationTree.toTextHighlightAnnotation(
                         docMeta,
                         pageNum, 
@@ -267,6 +268,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         docViewerElementsRef,
         createAnnotation,
         annotationMutations,
+        notesIntegrationEnabled,
     ]);
 
     React.useEffect(() => {

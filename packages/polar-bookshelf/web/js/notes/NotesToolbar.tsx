@@ -3,7 +3,6 @@ import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
 import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 import {MUIMenu} from '../mui/menu/MUIMenu';
@@ -16,6 +15,7 @@ import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {NameContent} from "./content/NameContent";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
+import {useNotesIntegrationEnabled} from '../apps/repository/MigrationToBlockAnnotations';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -99,38 +99,25 @@ const DesktopNotesToolbar = () => {
     const classes = useDesktopStyles();
     const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
     const handleCreateNote = useCreateNoteDialog();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
-        <>
-            <div className={classes.root}>
-                <div className={classes.left}>
-                    <Button color="primary"
-                            style={{ height: 38 }}
-                            variant="contained"
-                            disableElevation
-                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
-                            onClick={handleCreateNote}
-                            size="medium">
-                        Create a new note
-                    </Button>
-                    {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            style={{ height: 38, marginLeft: 10 }}
-                            disableElevation
-                            onClick={handlePurgeDocumentNotes}
-                        >
-                            Purge document blocks
-                        </Button>
-                    )}
-                </div>
-                <div className={classes.right}>
-                    <SearchForNote />
-                </div>
+        <div className={classes.root}>
+            <div className={classes.left}>
+                <Button color="primary"
+                        style={{ height: 38 }}
+                        variant="contained"
+                        disableElevation
+                        startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
+                        onClick={handleCreateNote}
+                        size="medium">
+                    Create a new note
+                </Button>
             </div>
-            {/* <div className={classes.divider}><Divider /></div> */}
-        </>
+            <div className={classes.right}>
+                <SearchForNote />
+            </div>
+        </div>
     );
 };
 
@@ -155,6 +142,7 @@ const HandheldNotesToolbar = () => {
     const classes = useHandHeldStyles();
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
 
@@ -179,11 +167,6 @@ const HandheldNotesToolbar = () => {
                             <MUIMenuItem text="Create Note"
                                          icon={<AddCircleOutlineIcon />}
                                          onClick={createNoteDialog} />
-                            {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                                <MUIMenuItem text="Purge Document Blocks"
-                                             icon={<DeleteIcon />}
-                                             onClick={handlePurgeDocumentNotes} />
-                            )}
                         </div>
                     </MUIMenu>
                 </div>

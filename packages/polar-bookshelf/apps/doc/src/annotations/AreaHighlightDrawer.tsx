@@ -9,9 +9,9 @@ import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {useDocViewerCallbacks, useDocViewerStore} from '../DocViewerStore';
 import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext';
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -32,6 +32,7 @@ export const AreaHighlightCreator: React.FC = () => {
     const classes = useAreaHighlightCreatorStyles();
     const {fileType} = useDocViewerContext();
     const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
@@ -41,7 +42,7 @@ export const AreaHighlightCreator: React.FC = () => {
     }, [areaHighlightMode, docViewerElements, classes]);
 
     const createAreaHighlight: IUsePDFRectangleDrawerCallback = React.useCallback(({ rect, pageNum }) => {
-        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        if (notesIntegrationEnabled) {
             if (! docMeta || ! docScale) {
                 return;
             }
@@ -67,6 +68,7 @@ export const AreaHighlightCreator: React.FC = () => {
         docMeta,
         docViewerElements,
         fileType,
+        notesIntegrationEnabled,
     ])
 
     usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
