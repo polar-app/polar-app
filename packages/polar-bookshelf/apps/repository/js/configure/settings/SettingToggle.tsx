@@ -21,7 +21,6 @@ interface IProps {
     readonly title: string;
     readonly description: string;
     readonly name: string;
-    // readonly prefs: PrefsWriter | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
     readonly icon?: JSX.Element;
@@ -71,12 +70,12 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     return (
         <>
-            <ListItem>
+            <ListItem alignItems="flex-start">
                 <ListItemIcon>
                     {props.icon}
                 </ListItemIcon>
                 <ListItemText primary={props.title} secondary={props.description}/>
-                <ListItemSecondaryAction>
+                <ListItemSecondaryAction style={{top: 0, paddingTop: '55px', paddingLeft: '20px'}}>
                     <IconButton edge="end" aria-label="delete">
                         <SwitchButton size="small"
                                     initialValue={value}

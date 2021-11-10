@@ -61,7 +61,7 @@ export const SettingSelect = (props: IProps) => {
 
     return (
         <>
-            <ListItem>
+            <ListItem alignItems="flex-start">
                 <ListItemIcon>
                     {props.icon}
                 </ListItemIcon>
