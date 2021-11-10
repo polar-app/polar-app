@@ -13,14 +13,6 @@
         "destination": "/apps/repository/index.html"
       },
       {
-        "source": "/daily",
-        "destination": "/apps/doc/index.html"
-      },
-      {
-        "source": "/design",
-        "destination": "/apps/doc/index.html"
-      },
-      {
         "source": "/stats",
         "destination": "/apps/repository/index.html"
       },
