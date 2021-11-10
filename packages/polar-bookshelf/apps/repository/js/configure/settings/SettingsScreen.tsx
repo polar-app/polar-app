@@ -59,25 +59,21 @@ const Main = () => {
                                 name="dark-mode"
                                 defaultValue={true}
                                 icon={<BrightnessMediumIcon />}/>
-                <Divider/>
                 <SettingSelect title="PDF Dark Mode Handling"
                                 description="Enable custom dark mode handling for PDFs.  This allows to change how the PDF colors are displayed."
                                 name="dark-mode-pdf"
                                 icon={<ImportContactsIcon />}
                                 options={PREF_PDF_DARK_MODE_OPTIONS}/>
-                <Divider/>
                 <SettingToggle
                     title="Automatically resume reading position"
                     description="This feature restores the document reading position using pagemarks when reopening a document."
                     name="settings-auto-resume"
                     icon={<FilterCenterFocusIcon />}
                     defaultValue={true}/>
-                <Divider/>
                 <SettingToggle title="Fixed-width EPUBs"
                                 description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                 name="fixed-width-epub"
                                 icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}/>
-                <Divider/>
                 {/*<SettingEntry title="Enable groups"*/}
                 {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                 {/*              name="groups"*/}
@@ -88,7 +84,6 @@ const Main = () => {
                                 name={KnownPrefs.AUTO_PAGEMARKS}
                                 icon={<BookmarkIcon />}
                                 preview={true}/>
-                <Divider/>
                 {/*<DeviceRouters.Desktop>*/}
                 {/*    <SettingEntry*/}
                 {/*        title="Table and phone reading"*/}
@@ -103,21 +98,15 @@ const Main = () => {
                                 icon={<DeveloperModeIcon />}
                                 name="dev"
                                 preview={true}/>
-                <Divider/>
                 <ViewDeviceInfoButton/>
-                <Divider/>
                 <DeviceRouters.Desktop>
                     <>
                         <CancelSubscriptionButton/>
-                        <Divider/>
                         <ManageSubscriptionButton/>
-                        <Divider/>
                     </>
                 </DeviceRouters.Desktop>
                 <ExportDataButton/>
-                <Divider/>
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
-                <Divider/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
             </List>
         </Box>
