@@ -3,25 +3,18 @@ import * as React from 'react';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import { useLinkLoader } from '../../../../web/js/ui/util/LinkLoaderHook';
 
-interface MUIButtonProps extends ButtonProps{
-    readonly href?: string;
-    readonly onClick: React.MouseEventHandler;
-}
-// note that the ButtonProps here needs to be the MUIButtonProps that Button uses
-// so that we properly pass all the properties of a button like variant, color,
-// etc.
-export const MUIButton = React.memo((props: MUIButtonProps) => {
+export const MUIButton = React.memo((props: ButtonProps) => {
     
     const linkLoader = useLinkLoader();
     
-    const {href} = props;
+    const {href, onClick} = props;
 
-    const handleClick = React.useCallback((event: React.MouseEvent) => {
-        if(href){
+    const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if(href && onClick){
             if (href.startsWith('http:') || href.startsWith('https:')) {
                 linkLoader(href, {focus: true, newWindow: true});
             } else {
-                props.onClick(event);
+                onClick(event);
             }
         
             // needed to prevent the default href handling.  The way this works is that the

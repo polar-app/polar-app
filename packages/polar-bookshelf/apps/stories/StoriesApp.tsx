@@ -42,7 +42,7 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
-import { MUIButton } from './impl/MUIButtonStory';
+import { MUIButtonStory } from './impl/MUIButtonStory';
 
 interface IStory {
     readonly name: string;
@@ -73,15 +73,15 @@ const stories = createStoryIndex([
     },
     {
         name: "MUI Button",
-        component: <MUIButton href={"https://www.example.com"} onClick={()=>console.log('MUIButton click') }>
+        component: <MUIButtonStory href={"https://www.example.com"} onClick={()=>console.log('MUIButton click') }>
             MUI button
-        </MUIButton>
+        </MUIButtonStory>
     },
     {
         name: "MUI Button without href",
-        component: <MUIButton onClick={()=>console.log('MUIButton click') }>
+        component: <MUIButtonStory onClick={()=>console.log('MUIButton click') }>
             MUI button without href
-        </MUIButton>
+        </MUIButtonStory>
     },
     {
         name: "Auth Hide on Scroll",
