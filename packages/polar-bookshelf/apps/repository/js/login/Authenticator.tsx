@@ -9,7 +9,7 @@ import {Box, Typography, Divider} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics, useAnalytics} from "../../../../web/js/analytics/Analytics";
@@ -447,33 +447,18 @@ export const RegisterForBetaButton = () => {
     )
 }
 
-const SignInWithExistingAccountButton = () => {
-
-    const history = useHistory();
-
-    return (
-        <div style={{textAlign: 'center'}}>
-            <Button variant="text" onClick={() => history.push('/sign-in')}>
-                <span style={{textDecoration: 'underline'}}>
-                    or sign-in with existing account
-                </span>
-            </Button>
-        </div>
-    );
+interface LinkButtonProps {
+    readonly href: string;
+    readonly text: string;
 }
 
-const OrCreateNewAccountButton = () => {
-    const history = useHistory();
-    return (
-        <div style={{textAlign: 'center'}}>
-            <Button variant="text" onClick={() => history.push('/create-account')}>
-                <span style={{textDecoration: 'underline'}}>
-                    or register for private beta
-                </span>
-            </Button>
-        </div>
+export const LinkButton = React.memo(function(props: LinkButtonProps) {
+    return( 
+        <Button component={Link} to={props.href} variant="text">
+            {props.text}
+        </Button>
     );
-}
+});
 
 export const LogoAndTextSideBySide = () => {
     return (
@@ -537,7 +522,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 export const PrivateBetaRegisterAuthContent = () => {
     return (
         <AuthContent title="Join the Waiting List"
-                     alternative={<SignInWithExistingAccountButton/>}>
+                     alternative={<LinkButton text={'or sign-in with existing account'} href={'/sign-in'}/>}>
 
             <RegisterForBetaButton/>
 
@@ -548,8 +533,8 @@ export const PrivateBetaRegisterAuthContent = () => {
 export const SignInAuthContent = () => {
     return (
         <AuthContent title="Sign In to Polar"
-                     alternative={<OrCreateNewAccountButton/>}>
-            <div style={{
+            alternative={<LinkButton text={'or register for private beta'} href={'/create-account'}/>}>
+        <div style={{
                 display: 'flex',
                 flexDirection: 'column'
             }}>

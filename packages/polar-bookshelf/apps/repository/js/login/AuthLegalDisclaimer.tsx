@@ -2,6 +2,8 @@ import { Typography } from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React from "react";
+import { Link } from "react-router-dom";
+import { useLinkLoader } from "../../../../web/js/ui/util/LinkLoaderHook";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -41,7 +43,23 @@ export const AuthLegalDisclaimer = () => {
     return (
         <Typography component='p' className={classes.legal}>
             You acknowledge that you will read, and agree to
-            our <a className={classes.linkDecoration} href="https://getpolarized.io/terms/">Terms of Service</a> and <a className={classes.linkDecoration} href="https://getpolarized.io/privacy-policy">Privacy Policy</a>.
+            our <LinkAnchor href="https://getpolarized.io/terms/" text={' Terms of Service '}/> 
+            and <LinkAnchor href="https://getpolarized.io/privacy-policy" text={' Privacy Policy '}/> 
         </Typography>
     );
 }
+interface LinkAnchorProps {
+    readonly href: string;
+    readonly text: string;
+}
+
+export const LinkAnchor = React.memo(function LinkAnchor(props: LinkAnchorProps){
+    // const linkLoader = useLinkLoader();
+    const classes = useStyles();
+
+    return(
+        <Link to={props.href} className={classes.linkDecoration}>
+            {props.text}
+        </Link>
+    );
+});
