@@ -20,6 +20,10 @@ const lambdas: AWSLambda[] = [
         name: 'private-beta/accept-users',
         path: path.resolve(__dirname, 'lambdas/private-beta/accept-users.ts'),
     },
+    {
+        name: 'web-capture/url',
+        path: path.resolve(__dirname, 'lambdas/web-capture/url.ts'),
+    },
 ];
 
 export class RPC extends Construct {
