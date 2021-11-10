@@ -4,7 +4,7 @@
 To bootstrap locally run the following:
 
 ```bash
-yarn run purge-node-modules && rm -f yarn.lock && lerna bootstrap --ci
+yarn run purge-node-modules && lerna bootstrap --ci
 ```
 
 This is necessary because we can't wrap these command as yarn command itself
