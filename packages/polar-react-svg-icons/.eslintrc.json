@@ -29,6 +29,20 @@
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
     "unused-imports/no-unused-imports": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "mobx",
+            "importNames": [
+              "trace"
+            ],
+            "message": "Warning, this will break the build, never import it"
+          }
+        ]
+      }
+    ],
     "functional/prefer-readonly-type": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-namespace": "off",

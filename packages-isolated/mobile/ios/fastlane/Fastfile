@@ -1,0 +1,50 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    setup_circle_ci
+  end
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    match(type: "appstore")
+    app_store_connect_api_key
+    vnum = latest_testflight_build_number + 1
+    increment_build_number({ build_number: vnum })
+    increment_version_number({ version_number: vnum.to_s })
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    upload_to_testflight
+  end
+
+  lane :release do
+    match(type: "appstore")
+    app_store_connect_api_key
+    vnum = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
+    increment_version_number(version_number: vnum, xcodeproj: "PolarReactNative.xcodeproj")
+    increment_build_number
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    upload_to_app_store(
+        force: true, # Skip HTMl report verification
+        skip_screenshots: true,
+        submit_for_review: true,
+        precheck_include_in_app_purchases: false,
+        submission_information: {
+          export_compliance_uses_encryption: false
+        }
+    )
+  end
+end
