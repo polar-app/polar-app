@@ -42,13 +42,13 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     const value = prefs.isMarked(name, defaultValue);
     
-    const handleDarkModeToggle = (enabled: boolean) => {
+    const handleDarkModeToggle = React.useCallback((enabled: boolean) => {
 
         const theme = enabled ? 'dark' : 'light';
 
         setTimeout(() => setTheme(theme), 1);
 
-    };
+    },[theme]);
     
     const onChange = (value: boolean) => {
         console.log("Setting " + name);
