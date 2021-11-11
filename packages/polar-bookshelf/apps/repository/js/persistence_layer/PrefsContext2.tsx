@@ -24,7 +24,7 @@ interface IProps {
  */
 export function usePrefsContext(): IPersistentPrefs {
     const snapshot = useUserPrefContextSnapshot();
-    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot.value), [snapshot]);
+    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
     return persistentPrefs;
 }
