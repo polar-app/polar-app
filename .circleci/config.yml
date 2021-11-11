@@ -704,8 +704,6 @@ workflows:
                 - master
 
   IOS-Android:
-    when:
-      equal: [dzhuneyt-ios-compliance, << pipeline.git.branch >>]
     jobs:
       - Approve-Android-Internal:
           type: approval
