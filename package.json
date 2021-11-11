@@ -41,10 +41,7 @@
     "yarn-lock-conflicts": "cat yarn.lock |grep -E \"^[^ \\\"]\" |sort |grep -Eo \"^[^@]+\" |sort |uniq -c |sort -r |grep -v ' 1'",
     "yarn-lock-conflicts-score": "yarn run yarn-lock-conflicts | grep -Eo '^[ ]*[0-9]+' |grep -Eo '[0-9]+$' |  paste -sd+ /dev/stdin | bc -l"
   },
-  "deprecated": {},
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
   "private": true
 }
