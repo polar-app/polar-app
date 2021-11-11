@@ -5,8 +5,8 @@ FROM node:14.17-buster
 ARG USER_ID
 ARG GROUP_ID
 
-# ! Install Lerna, figlet globally
-RUN yarn global add lerna @lerna/global-options figlet figlet-cli
+# ! Install pnpm
+RUN npm install -g pnpm
 
 # ? Install jq for bumping versions
 RUN wget "http://stedolan.github.io/jq/download/linux64/jq" -O /bin/jq && chmod 755 /bin/jq
