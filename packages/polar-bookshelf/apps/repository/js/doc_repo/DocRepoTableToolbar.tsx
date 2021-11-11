@@ -17,7 +17,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import Paper from "@material-ui/core/Paper";
-import { MUICheckboxHeaderIconButton } from "../../../../web/js/mui/MUICheckboxIconButton";
+import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

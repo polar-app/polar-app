@@ -16,7 +16,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import ArchiveIcon from "@material-ui/icons/Archive";
 import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
-import {MUICheckboxHeaderIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
 import {SelectionActiveButtons} from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
