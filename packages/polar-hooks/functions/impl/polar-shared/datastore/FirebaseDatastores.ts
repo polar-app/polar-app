@@ -4,23 +4,26 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {StoragePath, StorageSettings} from './FirebaseDatastore';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Backend} from 'polar-shared/src/datastore/Backend';
+import {UserIDStr} from "polar-shared/src/datastore/FirebaseDatastores";
 
 export class FirebaseDatastores {
 
-    public static computeStoragePath(backend: Backend, fileRef: FileRef, uid: string): StoragePath {
+    public static computeStoragePath(backend: Backend,
+                                     fileRef: FileRef,
+                                     uid: UserIDStr): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
 
         const suffix = ext.map(value => {
 
-                if ( ! value.startsWith('.') ) {
-                    // if the suffix doesn't begin with a '.' then add it.
-                    value = '.' + value;
-                }
+            if (!value.startsWith('.')) {
+                // if the suffix doesn't begin with a '.' then add it.
+                value = '.' + value;
+            }
 
-                return value;
+            return value;
 
-            })
+        })
             .getOrElse('');
 
         const settings = this.computeStorageSettings(ext).getOrUndefined();
