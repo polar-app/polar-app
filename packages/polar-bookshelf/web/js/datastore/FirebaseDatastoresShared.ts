@@ -1,9 +1,9 @@
-import {IDStr} from "polar-shared/src/util/Strings";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {DatastoreMutation, DefaultDatastoreMutation} from "polar-shared/src/datastore/DatastoreMutation";
+import {DatastoreMutation} from "polar-shared/src/datastore/DatastoreMutation";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileHandle} from "polar-shared/src/util/Files";
@@ -13,6 +13,9 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
 import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
 import {DocPermissionCollection} from "./sharing/db/DocPermissionCollection";
+import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {ErrorType} from "polar-shared/src/util/Errors";
+import {WriteFileOpts} from "./Datastore";
 
 /**
  * Provides for a generic writer that can commit records to Firebase (frontend or backend)
@@ -194,6 +197,8 @@ export namespace FirebaseDatastoresShared {
 
         readonly visibility?: Visibility;
 
+        readonly groups?: ReadonlyArray<IDStr>;
+
         /**
          * Specify a progress listener so that when you're writing a file you can
          * keep track of the progress
@@ -213,18 +218,23 @@ export namespace FirebaseDatastoresShared {
         public readonly visibility = Visibility.PRIVATE;
     }
 
-    export async function write(fingerprint: string,
-                                data: string,
-                                docInfo: IDocInfo,
-                                opts: WriteOpts = new DefaultWriteOpts()) {
+    // return a tuple of docMetaRef, docInfoRef
+    export type WriteResult<SM = unknown> = Readonly<[
+        IDocumentReference<SM>,
+        IDocumentReference<SM>
+    ]>
 
-        const firestore = this.firestore!;
+    export async function write<SM = unknown>(firestore: IFirestore<SM>,
+                                              uid: UserIDStr,
+                                              fingerprint: string,
+                                              data: string,
+                                              docInfo: IDocInfo,
+                                              opts: WriteOpts = new DefaultWriteOpts()): Promise<WriteResult<SM>> {
 
-        await this.handleWriteFile(opts);
 
-        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
+        await handleWriteFile(opts);
 
-        const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint, uid);
 
         /**
          * Create our two main doc refs.
@@ -249,7 +259,7 @@ export namespace FirebaseDatastoresShared {
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
-                const docPermission = await DocPermissionCollection.get(id);
+                const docPermission = await DocPermissionCollection.get(firestore, id);
 
                 if (docPermission) {
                     return {
@@ -274,50 +284,106 @@ export namespace FirebaseDatastoresShared {
 
             const [docMetaRef, docInfoRef] = createDocRefs();
 
-            batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, recordPermission));
-            batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, recordPermission));
+            batch.set(docMetaRef, createRecordHolderForDocMeta(docInfo, data, recordPermission));
+            batch.set(docInfoRef, createRecordHolderForDocInfo(docInfo, recordPermission));
 
             await batch.commit();
 
-            /**
-             * This will verify that the data we have is written to the server
-             * and not just the local cache.
-             */
-            const waitForCommit = async () => {
-
-                // TODO: this might add some EXTRA latency though because (I
-                // think) it's going to wait for another server read.  Ideally
-                // what would happen is that we could listen to the batch
-                // directly to avoid this.
-
-                const [docMetaRef, docInfoRef] = createDocRefs();
-
-                this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
-
-                const commitPromise = Promise.all([
-                    this.waitForCommit(docMetaRef),
-                    this.waitForCommit(docInfoRef)
-                ]);
-
-                console.debug("write: Waiting for commit promise...");
-                await commitPromise;
-                console.debug("write: Waiting for commit promise...done");
-
-            }
-
-            if (opts.consistency === 'committed') {
-                console.log("write: Waiting for commit...");
-                // normally we would NOT want to wait because this will just
-                // slow down our writes and going into the cache is ok for most
-                // operations.
-                await waitForCommit();
-                console.log("write: Waiting for commit...done");
-            }
+            return [docMetaRef, docInfoRef]
 
         } finally {
             // noop for now
         }
 
     }
+
+    /**
+     * Handle the file write if specify as a dependency within write()
+     */
+    export async function handleWriteFile(opts?: WriteOpts) {
+
+        if (! opts) {
+            return;
+        }
+
+        if (opts.writeFile) {
+            const writeFileOpts: WriteFileOpts = {progressListener: opts.progressListener, onController: opts.onController};
+            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, writeFileOpts);
+        }
+
+    }
+
+    /**
+     * Create the document that we will store in for the DocMeta
+     */
+    function createRecordHolderForDocMeta(docInfo: IDocInfo,
+                                          docMeta: string,
+                                          opts: WriteOpts = new DefaultWriteOpts()) {
+
+        const visibility = opts.visibility || Visibility.PRIVATE;
+
+        const uid = this.uid;
+
+        const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
+
+        const docMetaHolder: DocMetaHolder = {
+            docInfo,
+            value: docMeta
+        };
+
+        const recordHolder: RecordHolder<DocMetaHolder> = {
+            uid,
+            id,
+            visibility,
+            groups: opts.groups || null,
+            value: docMetaHolder
+        };
+
+        return recordHolder;
+
+    }
+
+    function createRecordHolderForDocInfo(docInfo: IDocInfo,
+                                          opts: WriteOpts = new DefaultWriteOpts()) {
+
+        const visibility = opts.visibility || Visibility.PRIVATE;
+
+        const uid = this.uid;
+        const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
+
+        const recordHolder: RecordHolder<IDocInfo> = {
+            uid,
+            id,
+            visibility,
+            groups: opts.groups || null,
+            value: docInfo
+        };
+
+        return recordHolder;
+
+    }
+
+
+    /**
+     * Wait for the record to be fully committed to the remote datastore - not
+     * just written to the local cache.
+     */
+    export function waitForCommit(ref: IDocumentReferenceClient, onError: (err: ErrorType) => void): Promise<void> {
+
+        return new Promise(resolve => {
+
+            const unsubscribeToSnapshot = ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+                if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                    unsubscribeToSnapshot();
+                    resolve();
+                }
+
+            }, onError);
+
+        });
+
+    }
+
 
 }

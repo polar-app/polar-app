@@ -4,7 +4,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
-import {DeterminateProgress, IndeterminateProgress, Progress,} from 'polar-shared/src/util/ProgressTracker';
+import {Progress,} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
@@ -26,6 +26,8 @@ import {SimpleReactor} from "../reactor/SimpleReactor";
 import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteFileProgressListener = FirebaseDatastoresShared.WriteFileProgressListener;
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -413,15 +415,6 @@ export interface WritableBinaryDatastore {
 export interface BaseWriteFileProgress {
     readonly ref: BackendFileRef;
 }
-
-export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
-}
-export interface WriteFileProgressIndeterminate extends IndeterminateProgress, BaseWriteFileProgress {
-}
-
-export type WriteFileProgress = WriteFileProgressDeterminate | WriteFileProgressIndeterminate;
-
-export type WriteFileProgressListener = (progress: WriteFileProgress) => void;
 
 export interface WriteController {
 

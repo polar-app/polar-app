@@ -47,7 +47,6 @@ import {
     UIDStr
 } from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
-import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
@@ -59,6 +58,9 @@ import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
+import {FirebaseDatastoresShared} from "../../datastore/FirebaseDatastoresShared";
+import WriteController = FirebaseDatastoresShared.WriteController;
+import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
 
 export const ENABLE_UNDO_TRACING = false;
 
