@@ -15,6 +15,7 @@ import {NotesToolbar} from "./NotesToolbar";
 import {Devices} from "polar-shared/src/util/Devices";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {DocAnnotationMoment} from "../annotation_sidebar/DocAnnotationMoment";
+import {observer} from "mobx-react-lite";
 
 const DateCellRenderer: GridColDef['renderCell'] = ({ value }) => {
     return <DocAnnotationMoment created={value as string} />;
@@ -160,7 +161,7 @@ const useStyles = makeStyles((theme) =>
     })
 );
 
-export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
+export const NotesRepoScreen: React.FC = observer(function NotesRepoScreen() {
     const classes = useStyles();
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
@@ -173,7 +174,7 @@ export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
                 id,
                 updated: new Date(updated),
             }))
-    ), [blocksStore]);
+    ), [blocksStore.namedBlocks]);
 
     const loadNote = React.useCallback((id: BlockIDStr) => {
         const block = blocksStore.getBlockByTarget(id as string) as Block<NamedContent>;
@@ -215,4 +216,4 @@ export const NotesRepoScreen: React.FC = function NotesRepoScreen() {
             }
         </>
     );
-};
+});

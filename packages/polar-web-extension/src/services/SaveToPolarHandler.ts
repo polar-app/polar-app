@@ -1,5 +1,5 @@
 import {CapturedContentEPUBGenerator} from "polar-web-capture/src/captured/CapturedContentEPUBGenerator";
-import {DatastoreWriter} from "polar-datastore/src/DatastoreWriter";
+import {DatastoreWriter} from "polar-backend-datastore/src/DatastoreWriter";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
