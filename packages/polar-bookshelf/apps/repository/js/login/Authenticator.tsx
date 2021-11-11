@@ -1,5 +1,5 @@
 import React from 'react';
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import PolarLogo from "polar-assets/src/assets/logo/logoAndName.svg";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
@@ -465,13 +465,13 @@ export const LogoAndTextSideBySide = () => {
         <div style={{display: 'flex'}}>
             <div style={{marginRight: 'auto', marginLeft: 'auto', display: 'flex', alignItems: "center"}}>
                 <Box m={1}>
-                    <PolarSVGIcon width={100} height={100}/>
+                    <img src={PolarLogo} alt={'Polar'} />
                 </Box>
-                <Box m={1}>
+                {/* <Box m={1}>
                     <Typography variant="h2" component="div">
                         POLAR
                     </Typography>
-                </Box>
+                </Box> */}
             </div>
         </div>
     )
@@ -521,7 +521,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
 export const PrivateBetaRegisterAuthContent = () => {
     return (
-        <AuthContent title="Join the Waiting List"
+        <AuthContent title="Register for Private Beta"
                      alternative={<LinkButton text={'or sign-in with existing account'} href={'/sign-in'}/>}>
 
             <RegisterForBetaButton/>

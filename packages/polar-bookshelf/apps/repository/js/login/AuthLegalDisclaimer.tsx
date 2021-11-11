@@ -1,9 +1,8 @@
-import { Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useLinkLoader } from "../../../../web/js/ui/util/LinkLoaderHook";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -12,6 +11,7 @@ export const useStyles = makeStyles((theme) =>
             marginTop: theme.spacing(2),
             marginBottom: theme.spacing(2),
             color: theme.palette.text.secondary,
+            fontSize: 10,
             textAlign: 'center',
             "& a:link": {
                 color: theme.palette.text.secondary,
@@ -41,11 +41,11 @@ export const AuthLegalDisclaimer = () => {
     const classes = useStyles();
 
     return (
-        <Typography component='p' className={classes.legal}>
+        <Box component='p' className={classes.legal}>
             You acknowledge that you will read, and agree to
             our <LinkAnchor href="https://getpolarized.io/terms/" text={' Terms of Service '}/> 
             and <LinkAnchor href="https://getpolarized.io/privacy-policy" text={' Privacy Policy '}/> 
-        </Typography>
+        </Box>
     );
 }
 interface LinkAnchorProps {
