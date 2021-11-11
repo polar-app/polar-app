@@ -24,10 +24,6 @@ WORKDIR /polar-app
 # ! Always pass auth tokens to Verdaccio
 RUN npm config set always-auth true
 
-# ? Mount the yarn cache to presist on different containers
-RUN yarn config set cache-folder /polar-app/.cache
-
 # @ Expose the port for polar-bookshelf serving
 EXPOSE 8050
-
 EXPOSE 8051
