@@ -17,7 +17,7 @@ import {
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";

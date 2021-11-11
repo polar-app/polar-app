@@ -33,7 +33,7 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import firebase from 'firebase/app'
 import 'firebase/storage';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {Percentages} from 'polar-shared/src/util/Percentages';

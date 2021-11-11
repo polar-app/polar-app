@@ -24,7 +24,7 @@ import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';

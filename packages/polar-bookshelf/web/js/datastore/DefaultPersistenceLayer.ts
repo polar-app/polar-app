@@ -23,7 +23,7 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';

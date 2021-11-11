@@ -21,7 +21,7 @@ import {
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {DatastoreMutation} from '../DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";

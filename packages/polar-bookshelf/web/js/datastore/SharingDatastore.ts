@@ -18,7 +18,7 @@ import {
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';

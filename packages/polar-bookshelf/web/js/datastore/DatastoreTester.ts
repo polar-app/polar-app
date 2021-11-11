@@ -11,7 +11,7 @@ import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Datastore} from './Datastore';
-import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';

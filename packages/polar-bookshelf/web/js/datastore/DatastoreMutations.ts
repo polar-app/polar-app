@@ -1,4 +1,4 @@
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DatastoreConsistency} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
 

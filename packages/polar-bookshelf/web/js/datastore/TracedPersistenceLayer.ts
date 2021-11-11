@@ -16,7 +16,7 @@ import {
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
