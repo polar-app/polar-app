@@ -36,8 +36,7 @@ export class DefaultRewrites {
                     "/profile",
                     "/device",
                     "/error",
-                    "/daily",
-                    "/design"
+                    "/daily"
                 ],
                 "destination": "/apps/repository/index.html"
             },
