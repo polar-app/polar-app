@@ -5,7 +5,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {StorageSettings} from "../datastore/StorageSettings";
 import {StoragePath} from "../datastore/StoragePath";
 import {URLStr} from "polar-shared/src/util/Strings";
-import { Backend } from "../datastore/Backend";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 export class FirebaseFileStorage {
 

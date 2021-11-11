@@ -2,8 +2,8 @@ import {FileRef} from './Datastore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {StoragePath, StorageSettings} from './FirebaseDatastore';
-import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Backend} from 'polar-shared/src/datastore/Backend';
 
 export class FirebaseDatastores {
 
