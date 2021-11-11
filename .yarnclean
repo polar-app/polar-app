@@ -1,9 +1,0 @@
-# Remove duplicate typings from the original pdfjs-dist package because
-# we modified the library at some point (due to bugs) and the typings for it
-# we handle through a dedicated package (called @polar/pdfjs-dist-types)
-# which handles the changed types, but the existence of both is problematic
-# during a "yarn run compile" for some packages, most notably:
-# packages/polar-app-public/polar-pdf/package.json
-# because those packages prioritize the original typings (the ones included
-# in the "pdfjs-dist" package instead of the ones from @polar/pdfjs-dist-types
-pdfjs-dist/types
