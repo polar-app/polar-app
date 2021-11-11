@@ -1,8 +1,10 @@
 {
   "name": "polar-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Polar Monorepo",
+  "author": "Polar Inc.",
+  "license": "ISC",
+  "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
@@ -29,8 +31,5 @@
     "find-package-versions-conflicting": "yarn run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)",
     "update-modules": "lerna run --scope polar-create-module compile && lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
-  },
-  "author": "",
-  "license": "ISC",
-  "private": true
+  }
 }
