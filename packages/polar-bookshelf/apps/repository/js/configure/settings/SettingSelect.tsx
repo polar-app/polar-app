@@ -24,10 +24,6 @@ const useStyles = makeStyles((theme) =>
             justifyContent: 'space-between',
             alignItems: 'center',
         },
-        radioLabel: {
-            color: theme.palette.text.secondary
-        },
-
     }),
 );
 
@@ -71,16 +67,15 @@ export const SettingSelect = (props: IProps) => {
                 </ListItemText>
             </ListItem>
             {props.options && <ListItem alignItems='center'>
-                <Box pl={5} width={'100%'}>
+                <Box pl={5} pr={1} width={'100%'} color={'text.secondary'}>
                     <RadioGroup name={name} value={value} onChange={onChange}>
                         {props.options.map(current =>
-                            <FormControlLabel
+                                <FormControlLabel
                                 key={current.id}
                                 value={current.id}
                                 labelPlacement="start"
                                 classes={{
                                     root: classes.radioLabelRoot,
-                                    label: classes.radioLabel,
                                 }}
                                 control={<Radio />}
                                 label={current.label}
