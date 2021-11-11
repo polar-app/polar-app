@@ -5,8 +5,8 @@ FROM node:14.17-buster
 ARG USER_ID
 ARG GROUP_ID
 
-# ! Install pnpm
-RUN npm install -g pnpm
+# ! Install pnpm & only-allow to force it's usage
+RUN npm install -g pnpm only-allow
 
 # ? Install jq for bumping versions
 RUN wget "http://stedolan.github.io/jq/download/linux64/jq" -O /bin/jq && chmod 755 /bin/jq
