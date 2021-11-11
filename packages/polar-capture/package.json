@@ -18,7 +18,9 @@
   "author": "Polar",
   "license": "ISC",
   "dependencies": {
-    "polar-web-capture": "0.0.0"
+    "@types/node-fetch": "2.5.7",
+    "polar-web-capture": "0.0.0",
+    "node-fetch": "=2.6.1"
   },
   "devDependencies": {
     "polar-eslint": "0.0.0",
