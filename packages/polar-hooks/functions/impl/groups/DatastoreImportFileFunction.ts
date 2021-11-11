@@ -1,5 +1,5 @@
 import {File} from '@google-cloud/storage';
-import {FileRef} from '../polar-shared/datastore/Datastore';
+import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {trace} from '../trace';
 import {Datastores} from '../datastore/Datastores';
