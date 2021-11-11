@@ -50,7 +50,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     },[theme]);
     
-    const onChange = (value: boolean) => {
+    const onChange = React.useCallback((value: boolean) => {
         console.log("Setting " + name);
         LocalStorageFeatureToggles.set(name, value);
         prefs.mark(name, value);
@@ -66,7 +66,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
         doCommit()
             .catch(err => log.error("Could not write prefs: ", err));
-    };
+    },[handleDarkModeToggle]);
 
     return (
         <>
