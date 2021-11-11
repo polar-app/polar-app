@@ -128,5 +128,10 @@
       "italic": false
     }
   ],
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "files.exclude": {
+    ".pytest_cache": true,
+    ".pnpm-store": true,
+    ".idea": true
+  }
 }
