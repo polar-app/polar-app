@@ -48,7 +48,7 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
-import {DocPermissions} from "./sharing/db/DocPermissions";
+import {DocPermissionCollection} from "./sharing/db/DocPermissionCollection";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
@@ -706,7 +706,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
-                const docPermission = await DocPermissions.get(id);
+                const docPermission = await DocPermissionCollection.get(id);
 
                 if (docPermission) {
                     return {

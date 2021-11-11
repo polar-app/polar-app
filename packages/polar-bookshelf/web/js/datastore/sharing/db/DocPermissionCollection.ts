@@ -5,9 +5,9 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import GetOptions = firebase.firestore.GetOptions;
 
-export class DocPermissions {
+export namespace DocPermissionCollection {
 
-    public static async get(id: DocPermissionIDStr, options?: GetOptions) {
+    export async function get(id: DocPermissionIDStr, options?: GetOptions): Promise<DocPermission | undefined> {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
@@ -19,7 +19,7 @@ export class DocPermissions {
 
         if (doc.exists) {
             return <DocPermission> doc.data();
-        } 
+        }
 
         return undefined;
 
