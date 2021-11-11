@@ -8,15 +8,16 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
-    "eslint": "pnpm m run eslint --no-bail",
-    "compile": "pnpm m run run compile",
-    "test": "pnpm m run test",
-    "publish": "pnpm m publish",
+    "eslint-all": "pnpm m run eslint --no-bail",
+    "compile-all": "pnpm m run run compile",
+    "test-all": "pnpm m run test",
+    "publish-all": "pnpm m publish",
     "clean": "git clean -Xfd && git clean -fd",
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc",
-    "find-package-versions": "lerna exec --concurrency=1 --parallel=false --no-private -- jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
-    "find-package-versions-conflicting": "yarn run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
+    "find-package-versions": "pnpm m exec jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
+    "find-package-versions-conflicting": "pnpm run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)",
-    "update-modules": "lerna run --scope polar-create-module compile && lerna exec -- node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
-  }
+    "update-modules": "pnpm run compile --filter polar-create-module && pnpm m exec node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
+  },
+  "devDependencies": {}
 }
