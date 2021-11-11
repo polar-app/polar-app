@@ -8,7 +8,6 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
-import {BackendFileRefData, BinaryFileData, DatastoreConsistency,} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
@@ -51,6 +50,9 @@ export interface ImportedFile {
 export namespace DocImporter {
 
     import WriteFileProgressListener = FirebaseDatastoresShared.WriteFileProgressListener;
+    import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
+    import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+    import BackendFileRefData = FirebaseDatastoresShared.BackendFileRefData;
 
     /**
      * Minimal metadata for the doc we want to import so that, in theory, we

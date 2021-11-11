@@ -1,5 +1,4 @@
 import {
-    BinaryFileData,
     Datastore,
     DatastoreID,
     DatastoreInitOpts,
@@ -10,7 +9,6 @@ import {
     ErrorListener,
     InitResult,
     WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -22,6 +20,9 @@ import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 
 const tracer = RendererAnalytics.createTracer('datastore');
 

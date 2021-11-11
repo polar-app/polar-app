@@ -1,6 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreInitOpts,
@@ -13,7 +12,6 @@ import {
     ErrorListener,
     SnapshotResult,
     WriteFileOpts,
-    WriteOptsBase
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
@@ -24,6 +22,9 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteOptsBase = FirebaseDatastoresShared.WriteOptsBase;
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 
 export interface PersistenceLayer {
 

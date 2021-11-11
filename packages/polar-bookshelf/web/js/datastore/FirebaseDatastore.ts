@@ -1,9 +1,7 @@
 import {
     AbstractDatastore,
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
-    DatastoreConsistency,
     DatastoreInitOpts,
     DatastoreOverview,
     DefaultWriteFileOpts,
@@ -19,9 +17,7 @@ import {
     MutationType,
     SnapshotResult,
     WritableBinaryMetaDatastore,
-    WriteController,
     WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -62,6 +58,13 @@ import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
+import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
+import FirestoreSource = FirebaseDatastoresShared.FirestoreSource;
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import DefaultWriteOpts = FirebaseDatastoresShared.DefaultWriteOpts;
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 const log = Logger.create();
 
@@ -1003,16 +1006,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
 }
 
-type FirestoreSource = 'default' | 'server' | 'cache';
-
-export enum DatastoreCollection {
-
-    DOC_INFO = "doc_info",
-
-    DOC_META = "doc_meta",
-
-}
-
 
 /**
  * The result of a FB database mutation.
@@ -1129,11 +1122,6 @@ interface GetDocMetaOpts {
 
     readonly preferredSource?: FirestoreSource;
 
-}
-
-export class DefaultWriteOpts implements WriteOpts {
-    public readonly consistency = 'written';
-    public readonly visibility = Visibility.PRIVATE;
 }
 
 const ERR_HANDLER = (err: Error) => log.error("Could not create snapshot for account: ", err);

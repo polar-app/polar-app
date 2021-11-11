@@ -1,10 +1,4 @@
-import {
-    DatastoreConsistency,
-    DocMetaMutation,
-    DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener,
-    MutationType
-} from './Datastore';
+import {DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, MutationType} from './Datastore';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
@@ -18,6 +12,8 @@ import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
 
 describe('DocMetaSnapshotEventListener', function() {
 

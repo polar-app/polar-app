@@ -1,7 +1,6 @@
 import {
     AbstractDatastore,
     AbstractPrefsProvider,
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreInfo,
@@ -14,7 +13,6 @@ import {
     PrefsProvider,
     SnapshotResult,
     WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -45,6 +43,9 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();
 

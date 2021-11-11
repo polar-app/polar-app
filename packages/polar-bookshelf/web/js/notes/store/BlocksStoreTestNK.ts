@@ -19,7 +19,6 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {WriteController} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {BlockTextContentUtils} from "../NoteUtils";
@@ -32,6 +31,7 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {FirebaseDatastoresShared} from "../../datastore/FirebaseDatastoresShared";
 import assertPresent = Asserts.assertPresent;
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 

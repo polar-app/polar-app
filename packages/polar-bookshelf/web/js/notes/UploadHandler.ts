@@ -2,12 +2,12 @@ import React from "react";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {Images} from "polar-shared/src/util/Images";
-import {WriteController} from "../datastore/Datastore";
 import {ProgressTrackerManager, useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {IDropTarget} from "./store/BlocksStore";
 import {FirebaseDatastoresShared} from "../datastore/FirebaseDatastoresShared";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 type URLStr = string;
 

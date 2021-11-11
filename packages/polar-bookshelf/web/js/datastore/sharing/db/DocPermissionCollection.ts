@@ -1,11 +1,13 @@
 import {GroupIDStr} from "../../Datastore";
-import {DatastoreCollection} from "../../FirebaseDatastore";
 import firebase from 'firebase/app'
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {FirebaseDatastoresShared} from "../../FirebaseDatastoresShared";
 import GetOptions = firebase.firestore.GetOptions;
 
 export namespace DocPermissionCollection {
+
+    import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
 
     export async function get(firestore: IFirestore<unknown>,
                               id: DocPermissionIDStr,

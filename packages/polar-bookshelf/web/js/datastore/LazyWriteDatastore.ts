@@ -1,4 +1,4 @@
-import {Datastore, DatastoreID, DeleteResult, WriteOpts} from './Datastore';
+import {Datastore, DatastoreID, DeleteResult} from './Datastore';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
@@ -7,6 +7,8 @@ import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();
 

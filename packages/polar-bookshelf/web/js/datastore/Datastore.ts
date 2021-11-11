@@ -2,7 +2,7 @@
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
+import {FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Progress,} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
@@ -28,6 +28,10 @@ import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
 import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
 import WriteFileProgressListener = FirebaseDatastoresShared.WriteFileProgressListener;
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -323,38 +327,6 @@ export abstract class AbstractDatastore {
 
 }
 
-
-export interface WriteOptsBase<T> {
-
-    readonly consistency?: DatastoreConsistency;
-
-    readonly datastoreMutation?: DatastoreMutation<T>;
-
-    /**
-     * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
-     * and that the operations are ordered properly.
-     */
-    readonly writeFile?: BackendFileRefData;
-
-    readonly visibility?: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr>;
-
-    /**
-     * Specify a progress listener so that when you're writing a file you can
-     * keep track of the progress
-     */
-    readonly progressListener?: WriteFileProgressListener;
-
-    readonly onController?: (controller: WriteController) => void;
-
-}
-
-
-export interface WriteOpts extends WriteOptsBase<boolean> {
-
-}
-
 interface WritableDatastore {
 
     /**
@@ -409,32 +381,6 @@ export interface WritableBinaryDatastore {
               opts?: WriteFileOpts): Promise<DocFileMeta>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
-
-}
-
-export interface BaseWriteFileProgress {
-    readonly ref: BackendFileRef;
-}
-
-export interface WriteController {
-
-    /**
-     * Pauses a running task. Has no effect on a paused or failed task.
-     * @return True if the pause had an effect.
-     */
-    readonly pause: () => boolean;
-
-    /**
-     * Resume a running task. Has no effect on a paused or failed task.
-     * @return True if the pause had an effect.
-     */
-    readonly resume: () => boolean;
-
-    /**
-     * Cancels a running task. Has no effect on a complete or failed task.
-     * @return True if the cancel had an effect.
-     */
-    readonly cancel: () => boolean;
 
 }
 
@@ -531,8 +477,6 @@ export namespace sources {
 
 }
 
-export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
-
 export type BinaryFileDataType = 'file-handle' | 'buffer' | 'string' | 'blob' | 'readable-stream';
 
 export class BinaryFileDatas {
@@ -580,10 +524,6 @@ export function isBinaryFileData(data: any): boolean {
 
     return false;
 
-}
-
-export interface BackendFileRefData extends BackendFileRef {
-    readonly data: BinaryFileData;
 }
 
 // noinspection TsLint
@@ -760,19 +700,6 @@ export interface DocMetaSnapshotBatch {
     readonly terminated: boolean;
 
 }
-
-/**
- * The consistency of the underlying data, whether it's written or committed.
- *
- * 'written' means that it was written to a WAL or a local cache but may not
- * be fully committed to a cloud store, to all replicas of a database, etc.
- *
- * 'committed' means that it's fully committed and consistent with the current
- * state of a database system.  A read that is 'committed' means it is fully
- * up to date.
- *
- */
-export type DatastoreConsistency = 'written' | 'committed';
 
 export interface SnapshotProgress extends Readonly<Progress> {
 

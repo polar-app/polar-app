@@ -15,7 +15,6 @@ import {
     PrefsProvider,
     SnapshotResult,
     WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -33,6 +32,8 @@ import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();
 

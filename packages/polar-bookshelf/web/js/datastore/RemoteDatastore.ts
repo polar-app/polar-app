@@ -7,7 +7,6 @@ import {
     ErrorListener,
     InitResult,
     SnapshotResult,
-    WriteOpts
 } from './Datastore';
 import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
@@ -17,6 +16,8 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutations} from './DatastoreMutations';
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();
 

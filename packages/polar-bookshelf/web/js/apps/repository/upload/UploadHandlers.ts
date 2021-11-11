@@ -1,6 +1,7 @@
 import {UpdateProgressCallback, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
-import {WriteController} from "../../../datastore/Datastore";
 import React from 'react';
+import {FirebaseDatastoresShared} from "../../../datastore/FirebaseDatastoresShared";
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 export type OnWriteController = (controller: WriteController) => void;
 export type UploadHandler<V> = (uploadProgress: UpdateProgressCallback, onController : OnWriteController) => Promise<V>;

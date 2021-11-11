@@ -1,6 +1,5 @@
 import {
     AbstractDatastore,
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreInitOpts,
@@ -22,7 +21,6 @@ import {
     SynchronizationEventListener,
     SynchronizingDatastore,
     WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
@@ -45,6 +43,9 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();
 

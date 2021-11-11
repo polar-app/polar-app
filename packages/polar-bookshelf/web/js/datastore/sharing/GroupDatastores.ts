@@ -4,7 +4,6 @@ import {GroupIDStr} from '../Datastore';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
 import {DocIDStr, GroupProvisionRequest, GroupProvisions} from './rpc/GroupProvisions';
-import {DatastoreCollection} from '../FirebaseDatastore';
 import {BackendFileRefs} from '../BackendFileRefs';
 import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
@@ -16,6 +15,8 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
+import {FirebaseDatastoresShared} from "../FirebaseDatastoresShared";
+import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
 
 const log = Logger.create();
 

@@ -2,7 +2,7 @@ import React from "react";
 import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
 import {FileHandles} from 'polar-shared/src/util/Files';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {BinaryFileData, DefaultWriteFileOpts, WriteController, WriteFileOpts} from "./Datastore";
+import {DefaultWriteFileOpts, WriteFileOpts} from "./Datastore";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {URLs} from "polar-shared/src/util/URLs";
@@ -18,6 +18,8 @@ import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
 import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteController = FirebaseDatastoresShared.WriteController;
 
 type ProgressTrackerManagerListener<T> = (data: T) => void;
 
