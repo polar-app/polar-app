@@ -1,17 +1,22 @@
-node_modules
-lerna-debug.log
-.idea
+# pnpm Folders
 .cache
 .pnpm-store
+node_modules
+
+# pnpm log
 pnpm-debug.log
-tsconfig.tsbuildinfo
-test_results.xml
 
 # Ignore IntelliJ related configuration
+.idea
 *.iml
 
+# Typescript
+*.d.ts
 tsconfig.tsbuildinfo
+
+# Webpack cache
 .webpack-cache-loader
 
+# Compile test reports
 TESTS*.xml
-*.d.ts
+test_results.xml
