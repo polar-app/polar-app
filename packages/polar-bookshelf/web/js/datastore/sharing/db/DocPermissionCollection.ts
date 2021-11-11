@@ -2,14 +2,14 @@ import {GroupIDStr} from "../../Datastore";
 import {DatastoreCollection} from "../../FirebaseDatastore";
 import firebase from 'firebase/app'
 import {Visibility} from "polar-shared/src/datastore/Visibility";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import GetOptions = firebase.firestore.GetOptions;
 
 export namespace DocPermissionCollection {
 
-    export async function get(id: DocPermissionIDStr, options?: GetOptions): Promise<DocPermission | undefined> {
-
-        const firestore = await FirestoreBrowserClient.getInstance();
+    export async function get(firestore: IFirestore<unknown>,
+                              id: DocPermissionIDStr,
+                              options?: GetOptions): Promise<DocPermission | undefined> {
 
         const ref = firestore
             .collection(DatastoreCollection.DOC_META)

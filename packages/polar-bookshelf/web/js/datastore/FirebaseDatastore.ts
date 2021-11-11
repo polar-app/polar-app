@@ -706,7 +706,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
-                const docPermission = await DocPermissionCollection.get(id);
+                const docPermission = await DocPermissionCollection.get(firestore, id);
 
                 if (docPermission) {
                     return {

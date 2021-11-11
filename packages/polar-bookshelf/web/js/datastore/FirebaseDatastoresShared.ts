@@ -20,6 +20,7 @@ import {DocPermissionCollection} from "./sharing/db/DocPermissionCollection";
 export namespace FirebaseDatastoresShared {
 
     // FIXME get these types migrated properly...
+    // FIXME:
 
     export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
     }
