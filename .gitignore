@@ -3,6 +3,7 @@ lerna-debug.log
 .idea
 .cache
 .pnpm-store
+pnpm-debug.log
 tsconfig.tsbuildinfo
 test_results.xml
 
