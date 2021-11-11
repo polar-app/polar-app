@@ -146,6 +146,7 @@ commands:
           no_output_timeout: 30m
           command: |
             FORK_POINT=$(git merge-base origin/master $CIRCLE_BRANCH)
+            git reset --hard
             git checkout $FORK_POINT
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
             lerna run cieslint --no-bail >> forkpoint-output.txt || true
@@ -155,7 +156,7 @@ commands:
             lerna run cieslint --no-bail >> branch-output.txt || true
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
-            OUTPUT=$(join -v1 -v2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
+            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)) 
             RED='\033[0;31m'
             NC='\033[0m'
             if [ ! -z "$OUTPUT" ]; then echo -e "\n ${RED} Please Fix the Following Errors: \n ${NC} $OUTPUT" && exit 1; fi;
@@ -222,10 +223,15 @@ jobs:
       - global_modules_setup
       - run:
           name: karma
+          ##
+          # Increase this as I think we might have to let mocha timeout to get the core error
+          # BUT it can't because CircleCI times out first.
+          no_output_timeout: 120m
           command: |
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
             lerna run karma
+            echo "Karma finished running."
       - store_test_results:
           path: /home/circleci/project/packages
 
@@ -320,13 +326,14 @@ jobs:
           name: Automatic Versioning
           command: |
             git fetch
-            TEMP_VERSION='0.0.0'
+            TEMP_VERSION='\"0.0.0\"'
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            NEW_VERSION=$(semver $CURRENT_VERSION -i)
+            VERSION=$(semver $CURRENT_VERSION -i)
+            NEW_VERSION="\\\""$VERSION"\\\""
             git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
-            sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" lerna.json
-            lerna exec -- sed -i "s/"$TEMP_VERSION"/$NEW_VERSION/g" package.json
-            git tag -a "$NEW_VERSION" -m "automated tag version $NEW_VERSION"
+            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
+            lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            git tag -a "$VERSION" -m "automated tag version $VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
             LOG=$(git log --pretty=format:"• %s\\n" --no-merges $LATEST_VERSION...$CURRENT_VERSION | grep "• feat:\|• fix:\|• docs:\|• style:\|• refactor:\|• perf:\|• test:\|• build:\|• ci:\|• chore:\|• revert:" | sort | uniq | tr '\r\n' ' ' ) || LOG="• fix: Minor Fixes for Release"
@@ -423,7 +430,7 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor >>
-    description: build node Environment)
+    description: Build node Environment
     steps:
       - checkout
       - run:
@@ -431,18 +438,18 @@ jobs:
           command: |
             git fetch
             CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            mv /home/circleci/project/packages/polar-mobile-app /home/circleci/
+            mv /home/circleci/project/packages-isolated/mobile /home/circleci/
             rm -rf /home/circleci/project
       - run:
           name: yarn install
           command: |
-            cd /home/circleci/polar-mobile-app
+            cd /home/circleci/mobile
             sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
             yarn install
       - persist_to_workspace:
           root: /home/circleci/
           paths:
-            - polar-mobile-app
+            - mobile
 
   # @ Build fastlane for deployment
   Android-Internal:
@@ -451,7 +458,7 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     description: build fastlane for ci
-    working_directory: ~/polar-mobile-app/android
+    working_directory: ~/mobile/android
     steps:
       - attach_workspace:
           at: ~/
@@ -478,7 +485,7 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     description: build fastlane for ci
-    working_directory: ~/polar-mobile-app/android
+    working_directory: ~/mobile/android
     steps:
       - attach_workspace:
           at: ~/
@@ -500,7 +507,7 @@ jobs:
             bundle exec fastlane release
 
   IOS-Testflight:
-    working_directory: ~/polar-mobile-app/ios
+    working_directory: ~/mobile/ios
     macos:
       xcode: "13.0.0"
     shell: /bin/bash --login -o pipefail
@@ -522,7 +529,7 @@ jobs:
             bundle exec fastlane beta
 
   IOS-Release:
-    working_directory: ~/polar-mobile-app/ios
+    working_directory: ~/mobile/ios
     macos:
       xcode: "13.0.0"
     shell: /bin/bash --login -o pipefail
@@ -737,3 +744,5 @@ workflows:
           requires:
             - Approve-IOS-Release
             - build-setup
+
+      # write a job that echos hello world

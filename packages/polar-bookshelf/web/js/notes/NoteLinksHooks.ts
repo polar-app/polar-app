@@ -7,6 +7,8 @@ import {useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {AppSites} from "../apps/repository/auth_handler/AppSites";
+import {useNoteStack} from "./stacks/StackProvider";
+import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 
 export const useNoteWikiLinkIdentifierCreator = () => {
@@ -54,13 +56,10 @@ export const useNoteWikiLinkIdentifierCreator = () => {
 };
 
 
-type IUseLinkNavigationOpts = {
-    id: BlockIDStr;
-};
-
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
     readonly target: EventTarget | null;
+    readonly openInStack: boolean;
 }
 
 export const getNoteAnchorFromHref = (href: string): string | null => {
@@ -98,11 +97,18 @@ export const getNoteAnchorFromHref = (href: string): string | null => {
     return null;
 };
 
+type IUseLinkNavigationOpts = {
+    id: BlockIDStr;
+};
+
+
 function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
     const noteWikiLinkCreator = useNoteWikiLinkIdentifierCreator();
+    const noteStack = useNoteStack();
+    const noteStackEnabled = useFeatureToggle('note-stack');
 
     return React.useCallback((event: ILinkNavigationEvent): boolean => {
 
@@ -123,18 +129,23 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         if (anchor) {
             const link = noteWikiLinkCreator(id, anchor);
-            noteLinkLoader(link);
+
+            if (noteStack && event.openInStack && noteStackEnabled) {
+                noteStack.push(link);
+            } else {
+                noteLinkLoader(link);
+            }
 
             abortEvent();
             return true;
         } else {
-            linkLoaderRef.current(href, {newWindow: true, focus: true});
+            linkLoaderRef.current(href, { newWindow: true, focus: true });
             abortEvent();
             return true;
 
         }
 
-    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, id]);
+    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, id, noteStack, noteStackEnabled]);
 
 }
 
@@ -151,7 +162,7 @@ export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
 
         const target = event.target;
 
-        return linkNavigationEventListener({target, abortEvent});
+        return linkNavigationEventListener({ target, abortEvent, openInStack: event.altKey });
 
     }, [linkNavigationEventListener]);
 

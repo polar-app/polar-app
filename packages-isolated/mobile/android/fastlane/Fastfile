@@ -1,0 +1,45 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Deploy a new version to the Google Play internal testers track"
+  lane :beta do
+    internal_track_code = google_play_track_version_codes(track: 'internal')
+    production_track_code = google_play_track_version_codes(track: 'production')
+    track_code = internal_track_code[0] > production_track_code[0] ? internal_track_code[0] : production_track_code[0]
+    version_code = increment_version_code(version_code: track_code+1)
+    android_set_version_name(version_name: version_code.to_s)
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(track: 'internal')
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :release do
+    internal_track_code = google_play_track_version_codes(track: 'internal')
+    production_track_code = google_play_track_version_codes(track: 'production')
+    track_code = internal_track_code[0] > production_track_code[0] ? internal_track_code[0] : production_track_code[0]
+    version_code = increment_version_code(version_code: track_code+1)
+    android_set_version_name(version_name: version_code.to_s)
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(track: 'production')
+  end
+end

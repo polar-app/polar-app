@@ -42,7 +42,6 @@ import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/st
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
 import {BlockContentUtils, useBlockTagEditorDialog} from "../../../../web/js/notes/NoteUtils";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../doc/src/DocViewer";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
@@ -50,6 +49,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface IDocRepoStore {
 
@@ -243,6 +243,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     const {updateTab} = useSideNavCallbacks();
     const blockTagEditorDialog = useBlockTagEditorDialog();
     const blocksStore = useBlocksStore();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     function firstSelected() {
         const selected = selectedProvider();
@@ -398,7 +399,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         async function doHandle() {
 
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 repoDocInfos.forEach(persistToBlocksStore);
             } else {
                 await withBatch(repoDocInfos.map(toAsyncTransaction));
@@ -431,12 +432,11 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
                 content.docInfo.flagged = flagged;
-                console.log('debug', content.docInfo);
             });
         };
 
         async function doHandle() {
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 repoDocInfos.forEach(persistToBlocksStore);
             } else {
                 await withBatch(repoDocInfos.map(toAsyncTransaction));
@@ -477,7 +477,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         async function doHandle() {
 
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 const fingerprint =  docInfo.fingerprint;
 
                 const updater = (content: IDocumentContent) => content.docInfo = docInfo;
@@ -553,7 +553,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
-        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        if (notesIntegrationEnabled) {
             const toTarget = (repoDocInfo: RepoDocInfo): BlockContentUtils.IHasLinksBlockTarget | null => {
                 const block = getBlockForDocument(blocksStore, repoDocInfo.fingerprint);
 
@@ -594,7 +594,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         async function doHandle() {
             mutator.refresh();
 
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
                     content.docInfo.title = title;
                 });
@@ -775,7 +775,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
-        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        if (notesIntegrationEnabled) {
             const selectedDocs = selectedProvider();
             const blockIDs = arrayStream(selectedDocs)
                 .map(doc => blocksStore.indexByDocumentID[doc.fingerprint])

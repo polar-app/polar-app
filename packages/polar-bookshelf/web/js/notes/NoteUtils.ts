@@ -2,7 +2,6 @@ import React from "react";
 import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
-import {autorun} from "mobx";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
 import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
@@ -25,82 +24,47 @@ import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 import {Comparators} from "polar-shared/src/util/Comparators";
 
-type IUseNamedBlocksOpts = {
-    sort?: boolean;
-};
 
-/**
- * Get all the named blocks in notes.
- *
- * @param opts Options object @see IUseNamedBlocksOpts
- */
-export const useNamedBlocks = (opts: IUseNamedBlocksOpts = {}): ReadonlyArray<Block<NamedContent>> => {
-    const { sort = false } = opts;
-	const blocksStore = useBlocksStore();
-	const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
+export const sortNamedBlocks = (blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
+    const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
 
-    const sortBlocks = React.useCallback((blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
+        function toInt(block: Readonly<Block<NamedContent>>) {
 
-        const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+            if (block.content.type === 'name' && block.content.data.startsWith("/")) {
+                // push this down to the end.
+                return 3;
+            }
 
-            function toInt(block: Readonly<Block<NamedContent>>) {
+            switch (block.content.type) {
 
-                if (block.content.type === 'name' && block.content.data.startsWith("/")) {
-                    // push this down to the end.
-                    return 3;
-                }
-
-                switch (block.content.type) {
-
-                    case "document":
-                    case "name":
-                        // documents and named notes have real names
-                        return 1;
-                    case "date":
-                        // then sort by date
-                        return 2;
-
-                }
+                case "document":
+                case "name":
+                    // documents and named notes have real names
+                    return 1;
+                case "date":
+                    // then sort by date
+                    return 2;
 
             }
 
-            return toInt(a) - toInt(b);
-
         }
 
-        const sortByContentComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+        return toInt(a) - toInt(b);
 
-            const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
-            const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
+    }
 
-            return strA.localeCompare(strB);
+    const sortByContentComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
 
-        }
+        const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
+        const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
 
-        const comparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
+        return strA.localeCompare(strB);
 
-        return [...blocks].sort(comparator);
-    }, []);
+    }
 
-	const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>(() => {
-            const namedBlocksIDs = Object.values(blocksStore.indexByName);
-            const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
-            return sort ? sortBlocks(namedBlocks) : namedBlocks;
-    });
+    const comparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
 
-	React.useEffect(() => {
-	    return autorun(() => {
-            const namedBlocksIDs = Object.values(blocksStore.indexByName);
-            // if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-                prevNamedBlocksIDsRef.current = namedBlocksIDs;
-
-                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
-                setNamedBlocks(sort ? sortBlocks(namedBlocks) : namedBlocks);
-            // }
-	    });
-	}, [blocksStore, sort, sortBlocks]);
-
-	return namedBlocks;
+    return [...blocks].sort(comparator);
 };
 
 /**
@@ -128,7 +92,7 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
 
 export const useBlockTagEditorDialog = () => {
     const blocksStore = useBlocksStore();
-    const namedBlocksRef = useRefWithUpdates(useNamedBlocks());
+    const namedBlocksRef = useRefWithUpdates(blocksStore.namedBlockEntries);
     const dialogs = useDialogManager();
 
     return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
@@ -151,10 +115,7 @@ export const useBlockTagEditorDialog = () => {
 
         const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
             targets: () => blocks.map(toTarget),
-            tagsProvider: () => namedBlocksRef.current.map(block => ({
-                label: BlockTextContentUtils.getTextContentMarkdown(block.content),
-                id: block.id,
-            })),
+            tagsProvider: () => namedBlocksRef.current,
             dialogs,
             doTagged: BlockContentUtils.updateTags.bind(null, blocksStore),
         };

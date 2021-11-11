@@ -10,10 +10,9 @@ import {
     FlashcardAnnotationContent,
     TextHighlightAnnotationContent
 } from "../content/AnnotationContent";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
-import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {DocumentContent} from "../content/DocumentContent";
+import {IBlockPredicates} from "./IBlockPredicates";
 
 export type EditableContent = MarkdownContent
                               | NameContent
@@ -35,65 +34,55 @@ export type HasLinksContent = MarkdownContent | TextHighlightAnnotationContent;
 export namespace BlockPredicates {
 
     export function isEditableBlock(block: Readonly<Block>): block is Block<EditableContent> {
-        return block.content.type === 'markdown'
-               || block.content.type === 'name'
-               || block.content.type === 'date'
-               || block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
-               || block.content.type === AnnotationContentType.FLASHCARD;
+        return IBlockPredicates.isEditableBlock(block);
     }
 
     export function isTextBlock(block: Readonly<Block>): block is Block<TextContent> {
-        return isEditableBlock(block) || block.content.type === 'document';
+        return IBlockPredicates.isTextBlock(block);
     }
 
     export function isDateBlock(block: Readonly<Block>): block is Block<DateContent> {
-        return block.content.type === 'date';
+        return IBlockPredicates.isDateBlock(block);
     }
 
     export function isNamedBlock(block: Readonly<Block>): block is Block<NamedContent> {
-        return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
+        return IBlockPredicates.isNamedBlock(block);
     }
 
     export function canHaveLinks(block: Readonly<Block>): block is Block<HasLinksContent> {
-        return [
-            'markdown',
-            AnnotationContentType.TEXT_HIGHLIGHT,
-        ].indexOf(block.content.type) > -1;
+        return IBlockPredicates.canHaveLinks(block);
     }
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
-        return Object.values(AnnotationContentType).some(type => block.content.type === type);
+        return IBlockPredicates.isAnnotationBlock(block);
     }
 
     export function isAnnotationTextHighlightBlock(block: Readonly<Block>): block is Block<TextHighlightAnnotationContent> {
-        return block.content.type === AnnotationContentType.TEXT_HIGHLIGHT;
+        return IBlockPredicates.isAnnotationTextHighlightBlock(block);
     }
 
     export function isAnnotationAreaHighlightBlock(block: Readonly<Block>): block is Block<AreaHighlightAnnotationContent> {
-        return block.content.type === AnnotationContentType.AREA_HIGHLIGHT;
+        return IBlockPredicates.isAnnotationAreaHighlightBlock(block);
     }
 
 
     export function isAnnotationHighlightBlock(block: Readonly<Block>): block is Block<AnnotationHighlightContent> {
-        return [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT]
-            .some(type => block.content.type === type);
+        return IBlockPredicates.isAnnotationHighlightBlock(block);
     }
 
     export function isFrontBackFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockFrontBackFlashcard>> {
-        return block.content.type === AnnotationContentType.FLASHCARD
-               && [
-                   FlashcardType.BASIC_FRONT_BACK,
-                   FlashcardType.BASIC_FRONT_BACK_OR_REVERSE,
-                   FlashcardType.BASIC_FRONT_BACK_AND_REVERSE,
-               ].indexOf(block.content.value.type) > -1;
+        return IBlockPredicates.isFrontBackFlashcardBlock(block);
     }
 
     export function isClozeFlashcardBlock(block: Readonly<Block>): block is Block<FlashcardAnnotationContent<IBlockClozeFlashcard>> {
-        return block.content.type === AnnotationContentType.FLASHCARD
-               && block.content.value.type === FlashcardType.CLOZE;
+        return IBlockPredicates.isClozeFlashcardBlock(block);
     }
 
     export function isDocumentBlock(block: Readonly<Block>): block is Block<DocumentContent> {
-        return block.content.type === 'document';
+        return IBlockPredicates.isDocumentBlock(block);
+    }
+    
+    export function isMarkdownBlock(block: Readonly<Block>): block is Block<MarkdownContent> {
+        return IBlockPredicates.isMarkdownBlock(block);
     }
 }

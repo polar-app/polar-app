@@ -19,13 +19,15 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly id: IDStr;
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
 }
 
 interface IExpandButtonProps {
-    expanded: boolean;
-    onToggle: () => void;
-    style?: React.CSSProperties;
-    className?: string;
+    readonly expanded: boolean;
+    readonly onToggle: () => void;
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
 }
 
 export const ExpandToggle: React.FC<IExpandButtonProps> = (props) => {
@@ -54,7 +56,7 @@ export const ExpandToggle: React.FC<IExpandButtonProps> = (props) => {
 
 export const BlockExpandToggleButton = observer(function NoteExpandToggleButton(props: IProps) {
 
-    const {id} = props;
+    const {id, className, style} = props;
 
     const blocksTreeStore = useBlocksTreeStore();
 
@@ -62,6 +64,6 @@ export const BlockExpandToggleButton = observer(function NoteExpandToggleButton(
 
     const onToggle = React.useCallback(() => blocksTreeStore.toggleExpand(id), [id, blocksTreeStore]);
 
-    return <ExpandToggle expanded={expanded} onToggle={onToggle} />;
+    return <ExpandToggle expanded={expanded} onToggle={onToggle} className={className} style={style} />;
 
 });

@@ -5,41 +5,29 @@ import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import {NamedContent} from '../store/BlocksStore';
+import {useBlocksStore} from '../store/BlocksStore';
 import {MUIDialog} from '../../ui/dialogs/MUIDialog';
 import {ICommand, MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
-import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
-import {Block} from "../store/Block";
 import CloseIcon from '@material-ui/icons/Close';
-import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 
 export const SearchForNote: React.FC = observer(() => {
 
     const noteLinkLoader = useNoteLinkLoader();
+    const blocksStore = useBlocksStore();
 
-    const namedBlocks = useNamedBlocks({sort: true});
+    const namedBlocks = blocksStore.namedBlockEntries;
 
     const [inputValue, setInputValue] = React.useState('');
 
-    const toLabel = React.useCallback((block: IBlock<INamedContent>): string => {
-        switch (block.content.type) {
-            case "name":
-            case "date":
-                return block.content.data;
-            case "document":
-                return block.content.docInfo.title || 'Untitled'
-        }
-    }, []);
-
-    const sortedNamedBlocks = React.useMemo(() => {
-        return namedBlocks.map(toLabel);
-    }, [namedBlocks, toLabel]);
+    const namedBlockNames = React.useMemo(() => {
+        return namedBlocks.map(({ label }) => label);
+    }, [namedBlocks]);
 
     return (
         <Autocomplete
             size="medium"
-            options={sortedNamedBlocks}
+            options={namedBlockNames}
             getOptionLabel={option => option}
             fullWidth
             inputValue={inputValue}
@@ -86,17 +74,14 @@ const useSearchForNoteHandheldStyles = makeStyles((theme) =>
     })
 );
 
-export const SearchForNoteHandheld: React.FC = () => {
+export const SearchForNoteHandheld: React.FC = observer(() => {
     const classes = useSearchForNoteHandheldStyles();
-    const namedBlocks = useNamedBlocks({ sort: true });
+    const blocksStore = useBlocksStore();
+    const namedBlocks = blocksStore.namedBlockEntries;
     const noteLinkLoader = useNoteLinkLoader();
 
     const commandsProvider = React.useCallback(() => {
-        const toCommand = (block: Readonly<Block<NamedContent>>) => {
-            const text = BlockTextContentUtils.getTextContentMarkdown(block.content);
-            return { text, id: text };
-        };
-        return namedBlocks.map(toCommand);
+        return namedBlocks.map(({ id, label }) => ({ id, text: label }));
     }, [namedBlocks]);
 
     const [active, setActive] = React.useState(false);
@@ -124,4 +109,4 @@ export const SearchForNoteHandheld: React.FC = () => {
             </MUIDialog>
         </>
     );
-};
+});

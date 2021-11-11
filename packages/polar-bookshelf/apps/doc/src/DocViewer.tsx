@@ -35,7 +35,6 @@ import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {useFirestore} from "../../repository/js/FirestoreProvider";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
@@ -50,8 +49,7 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-
-export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
+import {useNotesIntegrationEnabled} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 const Main = React.memo(function Main() {
 
@@ -351,10 +349,11 @@ const useDocumentBlockMigrator = () => {
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
     const annotationBlockManager = useAnnotationBlockManager();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     React.useEffect(() => {
 
-        if (migratedRef.current || ! docMeta || ! user || ! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        if (migratedRef.current || ! docMeta || ! user || ! notesIntegrationEnabled) {
             return;
         }
 
@@ -400,7 +399,17 @@ const useDocumentBlockMigrator = () => {
 
         migrate()
             .catch(console.error);
-    }, [docMeta, user, blocksStore, dialogs, docFileResolver, firestore, migratedRef, annotationBlockManager]);
+    }, [
+        docMeta,
+        user,
+        blocksStore,
+        dialogs,
+        docFileResolver,
+        firestore,
+        migratedRef,
+        annotationBlockManager,
+        notesIntegrationEnabled,
+    ]);
 };
 
 export const DocViewer = deepMemo(function DocViewer() {

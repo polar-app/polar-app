@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, createStyles, makeStyles, Typography} from "@material-ui/core";
+import {Box, createStyles, Divider, makeStyles, Typography} from "@material-ui/core";
 import {useStateRef} from "../hooks/ReactHooks";
 import {useBlocksStore} from "./store/BlocksStore";
 import {Block as BlockClass} from "./store/Block";
@@ -12,9 +12,10 @@ import {Helmet} from "react-helmet";
 import {BlocksTreeProvider} from "./BlocksTree";
 import {Block} from "./Block";
 import {NotesInbound} from "./NotesInbound";
-import {NotesInnerContainer} from "./NotesContainer";
-import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
+import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
+import {NoteStack} from "./stacks/NoteStack";
+import {RoutePathNames} from "../apps/repository/RoutePathNames";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -31,10 +32,10 @@ export const DailyNotesScreen: React.FC = () => {
     const classes = useStyles();
     const [threshold, setThreshold, thresholdRef] = useStateRef(0);
     const [dailyNotes, setDailyNotes, dailyNotesRef] = useStateRef<ReadonlyArray<BlockClass<DateContent>>>([]);
-    const namedBlocks = useNamedBlocks();
     const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
+        const namedBlocks = blocksStore.namedBlocks;
         const dateBlocks = namedBlocks.filter(BlockPredicates.isDateBlock)
         const descendingDateSorter = (
             a: Readonly<BlockClass<DateContent>>,
@@ -43,7 +44,7 @@ export const DailyNotesScreen: React.FC = () => {
 
         const notes = [...dateBlocks].sort(descendingDateSorter);
         setDailyNotes(notes);
-    }, [namedBlocks, setDailyNotes]);
+    }, [blocksStore, setDailyNotes]);
 
     React.useEffect(() => {
         // Add a note for today if it doesn't exist & focus the first child
@@ -86,12 +87,18 @@ export const DailyNotesScreen: React.FC = () => {
                 <title>Polar: Daily notes</title>
             </Helmet>
             <NotesToolbar />
-            <NotesInnerContainer>
+            <NoteStack target={RoutePathNames.DAILY} rootBannerLabel="Daily notes">
                 <NotePaper ref={rootRef}>
-                    {visibleNotes.map(({ id }) => (
+                    {visibleNotes.map(({ id }, i) => (
                         <div key={id} className="NoteTree">
+                            {i !== 0 && <Divider style={{ margin: '10px 14px' }} />}
                             <BlocksTreeProvider root={id} autoExpandRoot>
-                                <Block parent={undefined} id={id} withHeader noExpand noBullet />
+                                <Block parent={undefined}
+                                       id={id}
+                                       isHeader
+                                       alwaysExpanded
+                                       noBullet
+                                       hasGutter />
                                 <NotesInbound id={id} />
                             </BlocksTreeProvider>
                         </div>
@@ -117,7 +124,7 @@ export const DailyNotesScreen: React.FC = () => {
                         </Box>
                     }
                 </NotePaper>
-            </NotesInnerContainer>
+            </NoteStack>
         </>
     );
 };

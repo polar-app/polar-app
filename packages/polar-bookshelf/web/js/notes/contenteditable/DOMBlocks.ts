@@ -1,4 +1,5 @@
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {TAG_IDENTIFIER} from "../content/HasLinks";
 import {NavPosition} from "../store/BlocksStore";
 import {CursorPositions} from "./CursorPositions";
 
@@ -141,5 +142,21 @@ export namespace DOMBlocks {
         CursorPositions.jumpToPosition(sibling, newPos || 'start');
 
         return getBlockID(sibling) || null;
+    }
+
+    export type IWikiLinkType = 'tag' | 'link';
+
+    export function createWikiLinkAnchorElement(type: IWikiLinkType, target: string): HTMLAnchorElement {
+        const a = document.createElement('a');
+        const trimmedTarget = type === 'tag' && target.startsWith(TAG_IDENTIFIER)
+            ? target.slice(1)
+            : target;
+
+        a.setAttribute('contenteditable', 'false');
+        a.classList.add(type === 'tag' ? 'note-tag' : 'note-link');
+        a.setAttribute('href', '#' + trimmedTarget);
+        a.appendChild(document.createTextNode(target));
+
+        return a;
     }
 }
