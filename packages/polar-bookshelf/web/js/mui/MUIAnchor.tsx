@@ -5,6 +5,8 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {Callback} from 'polar-shared/src/util/Functions';
 
+/**deprecated, use MUIAnchor2 instead*/
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 

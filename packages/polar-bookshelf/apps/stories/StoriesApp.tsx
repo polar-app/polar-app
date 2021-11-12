@@ -44,6 +44,7 @@ import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from '
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
 import { MUIButtonStory } from './impl/MUIButtonStory';
 import {SettingsScreenStory} from "./impl/SettingsScreenStory";
+import { MUIAnchorStory } from './impl/MUIAnchorStory';
 
 interface IStory {
     readonly name: string;
@@ -83,6 +84,12 @@ const stories = createStoryIndex([
         component: <MUIButtonStory onClick={()=>console.log('MUIButton click') }>
             MUI button without href
         </MUIButtonStory>
+    },
+    {
+        name: "MUI Anchor(link)",
+        component: <MUIAnchorStory href={"mui-button"}>
+            Go to MUI Button section
+        </MUIAnchorStory>
     },
     {
         name: "New Settings Component",

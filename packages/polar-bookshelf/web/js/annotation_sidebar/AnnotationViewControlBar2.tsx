@@ -6,7 +6,7 @@ import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import EditIcon from '@material-ui/icons/Edit';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
-import {MUIAnchor} from "../mui/MUIAnchor";
+import {MUIButton} from "../mui/buttons/MUIButton";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
@@ -170,9 +170,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <DocAuthor author={annotation.author}/>
 
-                        <MUIAnchor href={annotationLink}>
+                        <MUIButton href={annotationLink}>
                             <DocAnnotationMoment created={annotation.lastUpdated}/>
-                        </MUIAnchor>
+                        </MUIButton>
 
                     </MUIButtonBar>
 
