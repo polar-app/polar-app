@@ -312,7 +312,7 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
             migrationExecutor(docMetaSnapshot);
         }
 
-    }, [migrationStatus, docMetaSnapshot]);
+    }, [migrationStatus, docMetaSnapshot, migrationExecutor]);
 
     const handleStart = React.useCallback(() => {
 
