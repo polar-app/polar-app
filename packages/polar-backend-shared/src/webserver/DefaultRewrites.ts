@@ -21,7 +21,7 @@ export class DefaultRewrites {
                     "/logout",
                     "/login",
                     "/beta-register",
-                    "/private-beta",
+                    "/private-beta/waiting-users",
                     "/login-with-custom-token",
                     "/sign-in",
                     "/create-account",

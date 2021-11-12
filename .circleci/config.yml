@@ -350,7 +350,6 @@ jobs:
             source packages/polar-bookshelf-secrets/credentials.sh
             rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
             lerna run test
-            yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
             (cd packages/polar-webapp-dist && yarn run dist)
       - run:

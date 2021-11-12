@@ -17,6 +17,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import Paper from "@material-ui/core/Paper";
+import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -43,7 +44,7 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
                 <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocFlagButton onClick={callbacks.onFlagged} size={Devices.isDesktop()?"medium":"small"}/>
-                <Divider orientation="vertical" variant="middle" flexItem/>
+                <Divider orientation="vertical" flexItem/>
 
                 <MUIDocDeleteButton size={Devices.isDesktop()?"medium":"small"}
                                     onClick={callbacks.onDeleted}/>
@@ -53,22 +54,22 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
 });
 
 const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
-    const {selected} = useDocRepoStore(['selected']);
+    const {view, selected} = useDocRepoStore(['view', 'selected']);
 
     return (
-
         <>
             {/* <SidenavTriggerIconButton/> */}
-
             <DeviceRouter.Desktop>
                 <ChromeExtensionInstallBar/>
             </DeviceRouter.Desktop>
-
-            <div style={{ display: 'flex' }}>
-                {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
-            </div>
-
             <DocRepoFilterBar/>
+            <DeviceRouter.Desktop>
+                <div style={{display: 'flex',marginRight: 'auto'}}>
+                    <MUICheckboxHeaderIconButton/>
+                    
+                    {selected.length > 0 && <SelectionActiveButtons/>}
+                </div>
+            </DeviceRouter.Desktop>
         </>
     );
 
@@ -80,7 +81,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
     return (
         <>
-
             <DeviceRouter.Desktop>
                 <Paper square className={classes.root}>
                     <DocRepoTableToolbarMain/>
@@ -95,7 +95,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
                 </AppBar>
             </DeviceRouter.Handheld>
-
         </>
     );
 }, isEqual);
