@@ -8,7 +8,7 @@ import {File} from '@google-cloud/storage';
 import {ArchiveWritable} from "./ArchiveWritable";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SnapshotTransformer} from "./SnapshotTransformer";
-import {FileRef} from "../polar-shared/datastore/Datastore";
+import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {ZipStreamChunk} from "./ZipStreamChunk";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";

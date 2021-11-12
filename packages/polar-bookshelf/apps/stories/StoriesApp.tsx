@@ -43,6 +43,7 @@ import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
 import { MUIButtonStory } from './impl/MUIButtonStory';
+import {SettingsScreenStory} from "./impl/SettingsScreenStory";
 
 interface IStory {
     readonly name: string;
@@ -82,6 +83,10 @@ const stories = createStoryIndex([
         component: <MUIButtonStory onClick={()=>console.log('MUIButton click') }>
             MUI button without href
         </MUIButtonStory>
+    },
+    {
+        name: "New Settings Component",
+        component: <SettingsScreenStory/>
     },
     {
         name: "Auth Hide on Scroll",
