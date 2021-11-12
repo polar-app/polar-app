@@ -67,7 +67,7 @@ export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IF
 
 export type IFirestoreConvertedSnapshotTuple<T, SM = unknown,> = [IFirestoreTypedQuerySnapshot<T> | undefined, IFirestoreError | undefined];
 
-export function useFirestoreSnapshotSubscriber<SM extends unknown, T>(subscriber: FirestoreSnapshotSubscriber<IQuerySnapshot<SM>>,
+export function useFirestoreSnapshotSubscriber<T, SM = unknown>(subscriber: FirestoreSnapshotSubscriber<IQuerySnapshot<SM>>,
                                                                       converter: FirestoreSnapshotConverter<T>): IFirestoreConvertedSnapshotTuple<T, SM> {
 
     const {firestore} = useFirestore();

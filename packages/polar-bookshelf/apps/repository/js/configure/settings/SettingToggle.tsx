@@ -3,9 +3,9 @@ import {useContext} from 'react';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import { ListItem, ListItemText, ListItemIcon, Box, ListItemSecondaryAction } from "@material-ui/core";
-import { MUIThemeTypeContext } from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import { usePrefsContext } from "../../persistence_layer/PrefsContext2";
+import {ListItem, ListItemText, ListItemIcon, Box} from "@material-ui/core";
+import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
+import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
 export interface PrefsWriter {
 
@@ -31,14 +31,10 @@ interface IProps {
 export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
     const log = useLogger();
-    const {theme, setTheme} = useContext(MUIThemeTypeContext);
+    const {setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
 
     const {name, defaultValue} = props;
-
-    if (! prefs) {
-        return null;
-    }
 
     const value = prefs.isMarked(name, defaultValue);
     
@@ -48,14 +44,14 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
         setTimeout(() => setTheme(theme), 1);
 
-    },[theme]);
+    }, [setTheme]);
     
     const onChange = React.useCallback((value: boolean) => {
         console.log("Setting " + name);
         LocalStorageFeatureToggles.set(name, value);
         prefs.mark(name, value);
 
-        if (props.name === 'dark-mode') {
+        if (name === 'dark-mode') {
             handleDarkModeToggle(value);
         }
 
@@ -66,7 +62,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
 
         doCommit()
             .catch(err => log.error("Could not write prefs: ", err));
-    },[handleDarkModeToggle]);
+    }, [handleDarkModeToggle, log, name, prefs]);
 
     return (
         <>
