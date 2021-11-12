@@ -75,7 +75,7 @@ const stories = createStoryIndex([
     },
     {
         name: "MUI Button",
-        component: <MUIButtonStory href={"https://www.example.com"} onClick={()=>console.log('MUIButton click') }>
+        component: <MUIButtonStory href={"https://www.example.com"}>
             MUI button
         </MUIButtonStory>
     },

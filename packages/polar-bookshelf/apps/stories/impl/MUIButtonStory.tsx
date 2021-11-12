@@ -8,7 +8,7 @@ export const MUIButtonStory = React.memo((props: IAnchorProps) => {
     return (
         <StoryHolder>
             <div>
-                <MUIAnchorButton {...props} to={props.href || {}}>
+                <MUIAnchorButton {...props}>
                     {props.children}
                 </MUIAnchorButton>
             </div>
