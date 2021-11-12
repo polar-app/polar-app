@@ -47,7 +47,7 @@ platform :ios do
           add_id_info_uses_idfa: true,
         },
         release_notes({
-          'default' => "Bugfixes and general stability improvements"
+            "default"=>"Bugfixes"
         })
     )
   end
