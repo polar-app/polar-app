@@ -78,9 +78,9 @@ const useDesktopStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
-            // padding: '0 5 0 26px',
+            flex: '0 0 50px',
+            height: 50,
+            padding: '0 26px',
             background: theme.palette.background.paper
         },
         divider: {
@@ -135,8 +135,8 @@ const useHandHeldStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
+            flex: '0 0 50px',
+            height: 50,
             padding: '0 14px',
             background: theme.palette.background.paper
         },

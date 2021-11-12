@@ -13,7 +13,7 @@ import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
-import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
+import {Box, createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -33,12 +33,11 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
     const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
-        <MUIPaperToolbar id="header-filter"
-                         padding={1}>
+        <MUIPaperToolbar id="header-filter">
 
-            <div style={{
+            <Box pt={0.3} pb={0.3} style={{
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
 
                 <SidenavTriggerIconButton />
@@ -62,7 +61,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     )}
                 </div>
 
-            </div>
+            </Box>
 
         </MUIPaperToolbar>
     );
