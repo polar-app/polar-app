@@ -117,7 +117,7 @@ namespace Phone {
                     ? view.filter(current => current.id === selected[0])[0]
                     : undefined;
             }
-        }, [blocksAnnotationRepoStore.activeBlock, selected, view]);
+        }, [blocksAnnotationRepoStore.activeBlock, selected, view, notesIntegrationEnabled]);
 
         const classes = useStyles();
 

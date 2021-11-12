@@ -35,14 +35,10 @@ export const SettingSelect = (props: IProps) => {
 
     const {name} = props;
 
-    if (! prefs) {
-        return null;
-    }
-
     const onChange = React.useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
         console.log("Setting " + name);
 
-        prefs.set(props.name, evt.target.value);
+        prefs.set(name, evt.target.value);
 
         const doCommit = async () => {
             await prefs.commit();
@@ -50,10 +46,11 @@ export const SettingSelect = (props: IProps) => {
 
         doCommit()
             .catch(err => log.error("Could not write prefs: ", err));
-    },[prefs]);
+    }, [prefs, log, name]);
 
-    const value = prefs.get(props.name)
+    const value = prefs.get(name)
                        .getOrElse(props.options[0].id);
+
 
     return (
         <>
