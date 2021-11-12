@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {URLStr} from "polar-shared/src/util/Strings";
-import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import blue from '@material-ui/core/colors/blue';
+import { IAnchorProps } from './buttons/MUIButton';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -20,22 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
             "& a:active": {
                 color: blue[500],
             },
-        },
-        noUnderline: {
-            textDecoration: 'none',
         }
-
     })
 );
-
-interface IAnchorProps {
-    readonly id?: string;
-    readonly className?: string;
-    readonly underline?: boolean;
-    readonly href: URLStr | URLPathStr;
-    readonly children: React.ReactNode;
-}
-
 /**
  * An anchor (a) element with styles
  */
@@ -45,7 +31,7 @@ export const MUIAnchor2 = (props: IAnchorProps) => {
 
     return (
         <Link id={props.id}
-            className={[props.className, classes.root, !props.underline ? classes.noUnderline : ""].join(' ')}
+            className={[props.className, classes.root].join(' ')}
             to={{pathname: props.href}}>
             {props.children}
         </Link>

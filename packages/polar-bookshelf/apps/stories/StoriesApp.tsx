@@ -80,12 +80,6 @@ const stories = createStoryIndex([
         </MUIButtonStory>
     },
     {
-        name: "MUI Button without href",
-        component: <MUIButtonStory onClick={()=>console.log('MUIButton click') }>
-            MUI button without href
-        </MUIButtonStory>
-    },
-    {
         name: "MUI Anchor(link)",
         component: <MUIAnchorStory href={"mui-button"}>
             Go to MUI Button section
