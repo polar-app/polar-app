@@ -6,7 +6,7 @@ import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import EditIcon from '@material-ui/icons/Edit';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
-import {MUIAnchorButton} from "../mui/buttons/MUIButton";
+import {MUIAnchorButton} from "../mui/buttons/MUIAnchorButton";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";

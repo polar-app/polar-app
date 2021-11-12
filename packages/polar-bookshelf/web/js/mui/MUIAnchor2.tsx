@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import blue from '@material-ui/core/colors/blue';
-import { IAnchorProps } from './buttons/MUIButton';
+import { IAnchorProps } from './buttons/MUIAnchorButton';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
