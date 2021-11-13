@@ -36,7 +36,7 @@ import {AsyncFunction} from 'polar-shared/src/util/AsyncWorkQueue';
 import firebase from 'firebase/app'
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
-import {Either} from '../util/Either';
+import {Either} from 'polar-shared/src/util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";

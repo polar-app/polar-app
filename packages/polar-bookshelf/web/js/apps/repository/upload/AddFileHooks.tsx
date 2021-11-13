@@ -7,7 +7,7 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {useDocLoader} from "../../main/DocLoaderHooks";
 import IconButton from '@material-ui/core/IconButton';
 import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
-import {Either} from "../../../util/Either";
+import {Either} from "polar-shared/src/util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
 import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/AccountVerifiedAction";
@@ -82,7 +82,7 @@ export namespace AddFileHooks {
                             docContentStructure,
                             ...tagContentsStructure,
                         ]);
-                        
+
                     }
 
 

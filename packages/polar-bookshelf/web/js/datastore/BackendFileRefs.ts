@@ -1,4 +1,4 @@
-import {Either, LeftEither} from '../util/Either';
+import {Either, LeftEither} from 'polar-shared/src/util/Either';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';

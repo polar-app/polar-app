@@ -4,7 +4,7 @@ import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useRepoDocMetaManager} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDocLoader} from "../apps/main/DocLoaderHooks";
 import {BackendFileRefs} from "../datastore/BackendFileRefs";
-import {Either} from "../util/Either";
+import {Either} from "polar-shared/src/util/Either";
 import {LoadDocRequest} from "../apps/main/doc_loaders/LoadDocRequest";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {useLocation} from 'react-router';

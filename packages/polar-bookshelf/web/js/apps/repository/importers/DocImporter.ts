@@ -1,4 +1,3 @@
-import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -10,12 +9,14 @@ import {DatastoreFiles} from 'polar-shared/src/datastore/DatastoreFiles';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
-import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {DocMetadata} from "./DocMetadata";
-import {OnWriteController} from "../upload/UploadHandlers";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+
+import {OnWriteController} from "../upload/UploadHandlers";
+import {DocMetadata} from "./DocMetadata";
+import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
+import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 
 const log = Logger.create();
 

@@ -4,7 +4,7 @@ import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {useSideNavDocLoader} from './doc_loaders/sidenav/SideNavDocLoaders';
 import {SIDE_NAV_ENABLED} from "../../sidenav/SideNavStore";
 import {BackendFileRefs} from "../../datastore/BackendFileRefs";
-import {Either} from "../../util/Either";
+import {Either} from "polar-shared/src/util/Either";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export type DocLoader = (loadDocRequest: LoadDocRequest) => void;

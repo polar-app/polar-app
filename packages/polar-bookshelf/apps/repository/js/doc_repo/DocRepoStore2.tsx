@@ -20,7 +20,7 @@ import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
-import {Either} from "../../../../web/js/util/Either";
+import {Either} from "polar-shared/src/util/Either";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {TagSidebarEventForwarder, TagSidebarEventForwarderContext} from "../store/TagSidebarEventForwarder";
@@ -45,11 +45,11 @@ import {BlockContentUtils, useBlockTagEditorDialog} from "../../../../web/js/not
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
+import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface IDocRepoStore {
 
