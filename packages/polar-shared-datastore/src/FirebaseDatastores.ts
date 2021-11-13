@@ -13,7 +13,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
 import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {ErrorType} from "polar-shared/src/util/Errors";
-import {DocPermissionCollection} from "polar-bookshelf/web/js/datastore/sharing/db/DocPermissionCollection";
+// import {DocPermissionCollection} from "polar-bookshelf/web/js/datastore/sharing/db/DocPermissionCollection";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
@@ -402,13 +402,13 @@ export namespace FirebaseDatastores {
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
-                const docPermission = await DocPermissionCollection.get(firestore, id);
-
-                if (docPermission) {
-                    return {
-                        visibility: docPermission.visibility,
-                    };
-                }
+                // const docPermission = await DocPermissionCollection.get(firestore, id);
+                //
+                // if (docPermission) {
+                //     return {
+                //         visibility: docPermission.visibility,
+                //     };
+                // }
 
                 return {
                     visibility: docInfo.visibility || Visibility.PRIVATE
