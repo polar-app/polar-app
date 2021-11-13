@@ -12,10 +12,9 @@ import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
-
-import {OnWriteController} from "../upload/UploadHandlers";
-import {DocMetadata} from "./DocMetadata";
 import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
+
+import {DocMetadata} from "./DocMetadata";
 import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 
 const log = Logger.create();
@@ -54,6 +53,7 @@ export namespace DocImporter {
     import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
     import BinaryFileData = FirebaseDatastores.BinaryFileData;
     import BackendFileRefData = FirebaseDatastores.BackendFileRefData;
+    import OnWriteController = FirebaseDatastores.OnWriteController;
 
     /**
      * Minimal metadata for the doc we want to import so that, in theory, we

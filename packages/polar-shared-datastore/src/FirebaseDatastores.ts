@@ -199,6 +199,11 @@ export namespace FirebaseDatastores {
 
     }
 
+    /**
+     * Callback for when we have a write controller.
+     */
+    export type OnWriteController = (controller: WriteController) => void;
+
     export type WriteFileProgress = WriteFileProgressDeterminate | WriteFileProgressIndeterminate;
 
     export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
