@@ -13,6 +13,8 @@
     "test-all": "pnpm m run test",
     "publish-all": "pnpm m publish",
     "clean": "git clean -Xfd && git clean -fd",
+    "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)",
+    "serve": "(cd packages/polar-bookshelf && pnpm run webpack-serve)",
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc",
     "find-package-versions": "pnpm m exec jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
     "find-package-versions-conflicting": "pnpm run find-package-versions | uniq | grep -Eo '^[^:]+' | uniq -c | sort | grep -Ev '^[ ]+1 '",
