@@ -52,10 +52,11 @@ export interface ISpineRef {
 
 const getMetadataFieldFromSpine = (rootFile: IEPUBRoot, name: string) => rootFile.package.metadata[`dc:${name}`];
 
-export class EPUBMetadataUsingNode {
+export namespace EPUBMetadataUsingNode {
 
-    public static async getMetadata(epubFile: PathOrURLStr): Promise<IParsedDocMeta> {
-        const rootFile = await this.getRootFile(epubFile);
+    export async function getMetadata(epubFile: PathOrURLStr): Promise<IParsedDocMeta> {
+
+        const rootFile = await getRootFile(epubFile);
         const rootFileAsJSON = rootFile.contents;
 
         const creator = getMetadataFieldFromSpine(rootFileAsJSON, 'creator');
@@ -95,8 +96,8 @@ export class EPUBMetadataUsingNode {
      * On how to use the returned `file` paths:
      * @see getChapterContents()
      */
-    public static async getChapterReferences(epubFile: PathOrURLStr): Promise<IChapterReference[]> {
-        const rootFile = await this.getRootFile(epubFile);
+    export async function getChapterReferences(epubFile: PathOrURLStr): Promise<IChapterReference[]> {
+        const rootFile = await getRootFile(epubFile);
         const rootFileAsJSON = rootFile.contents;
         const pathToRootFile = path.parse(rootFile.name).dir;
 
@@ -113,7 +114,7 @@ export class EPUBMetadataUsingNode {
             const fullObj = rootFileAsJSON.package.manifest.item
                 .find((val: IManifestItem) => val['@_id'] === idref);
 
-            // handles edge case of failing to find spine ID Ref 
+            // handles edge case of failing to find spine ID Ref
             // in package manifest
             if (!fullObj) {
                 return {
@@ -137,12 +138,12 @@ export class EPUBMetadataUsingNode {
      * @param epubFile
      * @param chapterPath
      */
-    static async getChapterContents(epubFile: PathOrURLStr, chapterPath: string) {
-        const zip = this.getZip(epubFile)
+    async function getChapterContents(epubFile: PathOrURLStr, chapterPath: string) {
+        const zip = getZip(epubFile)
         return await zip.entryData(chapterPath);
     }
 
-    public static getZip(docPathOrURL: PathOrURLStr) {
+    function getZip(docPathOrURL: PathOrURLStr) {
         // eslint-disable-next-line new-cap
         return new StreamZip.async({
             file: docPathOrURL,
@@ -150,8 +151,8 @@ export class EPUBMetadataUsingNode {
         });
     }
 
-    private static async getRootFile(docPathOrURL: string): Promise<IEPUBRootFile> {
-        const { rootFile, rootFileData } = await this.getRootFileXML(docPathOrURL);
+    async function getRootFile(docPathOrURL: string): Promise<IEPUBRootFile> {
+        const { rootFile, rootFileData } = await getRootFileXML(docPathOrURL);
 
         const rootFileAsJSON = getXmlToJSON(rootFileData.toString()) as IEPUBRoot;
 
@@ -161,8 +162,8 @@ export class EPUBMetadataUsingNode {
         };
     }
 
-    public static async getRootFileXML(docPathOrURL: string): Promise<IEPUBRootFileXML> {
-        const zip = this.getZip(docPathOrURL);
+    export async function getRootFileXML(docPathOrURL: string): Promise<IEPUBRootFileXML> {
+        const zip = getZip(docPathOrURL);
 
         const data = await zip.entryData('META-INF/container.xml');
 

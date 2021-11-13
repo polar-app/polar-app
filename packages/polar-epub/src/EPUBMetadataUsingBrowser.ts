@@ -3,9 +3,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {EPUBDocs} from "./EPUBDocs";
 
-export class EPUBMetadataUsingBrowser {
+export namespace EPUBMetadataUsingBrowser {
 
-    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
+    export async function getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
 
         const book = await EPUBDocs.getDocument({url: docPathOrURL});
 
