@@ -362,6 +362,7 @@ export namespace FirebaseDatastores {
     }
 
     // return a tuple of docMetaRef, docInfoRef
+    // eslint-disable-next-line functional/prefer-readonly-type
     export type WriteResult<SM = unknown> = Readonly<[
         IDocumentReference<SM>,
         IDocumentReference<SM>
@@ -444,6 +445,7 @@ export namespace FirebaseDatastores {
      * Arbitrary settings for files specific to each storage layer.  Firebase uses
      * visibility and uid.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     export interface FileMeta {
 
         // TODO: I should also include the StorageSettings from Firebase here to

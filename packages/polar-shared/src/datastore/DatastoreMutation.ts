@@ -24,6 +24,7 @@ export interface DatastoreMutation<T> {
 
 abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     public static SEQUENCE = 0;
 
     public readonly id: number = AbstractDatastoreMutation.SEQUENCE++;
