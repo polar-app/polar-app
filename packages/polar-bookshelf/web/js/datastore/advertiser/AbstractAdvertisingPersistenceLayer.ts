@@ -15,7 +15,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
-    WriteFileOpts
 } from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from 'polar-shared/src/datastore/Backend';
@@ -27,8 +26,9 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "../FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
 
 export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersistenceLayer implements ListenablePersistenceLayer {
 

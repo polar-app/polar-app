@@ -18,7 +18,6 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -26,12 +25,11 @@ import {SimpleReactor} from "../reactor/SimpleReactor";
 import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
-import WriteFileProgressListener = FirebaseDatastoresShared.WriteFileProgressListener;
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
-import WriteController = FirebaseDatastoresShared.WriteController;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -384,40 +382,6 @@ export interface WritableBinaryDatastore {
 
 }
 
-export interface WriteFileOpts {
-
-    /**
-     * @deprecated we no longer support arbitrary file metadata.
-     */
-    readonly meta?: FileMeta;
-
-    /**
-     * Set the file visibility.  Default is private.
-     */
-    readonly visibility?: Visibility;
-
-    /**
-     * Only update metadata.  Don't actually write data.
-     */
-    readonly updateMeta?: boolean;
-
-    readonly datastoreMutation?: DatastoreMutation<boolean>;
-
-    /**
-     * Specify a progress listener so that when you're writing a file you can
-     * keep track of the progress
-     */
-    readonly progressListener?: WriteFileProgressListener;
-
-    readonly onController?: (controller: WriteController) => void;
-
-}
-
-export class DefaultWriteFileOpts implements WriteFileOpts {
-    public readonly meta: FileMeta = {};
-    public readonly visibility = Visibility.PRIVATE;
-}
-
 export interface WritableBinaryMetaDatastore {
     // writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
@@ -527,18 +491,6 @@ export function isBinaryFileData(data: any): boolean {
 }
 
 // noinspection TsLint
-/**
- * Arbitrary settings for files specific to each storage layer.  Firebase uses
- * visibility and uid.
- */
-export interface FileMeta {
-
-    // TODO: I should also include the StorageSettings from Firebase here to
-    // give it a set of standardized fields like contentType as screenshots
-    // needs to be added with a file type.
-    [key: string]: string;
-
-}
 
 /**
  *

@@ -12,18 +12,14 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
 import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
-import {DocPermissionCollection} from "./sharing/db/DocPermissionCollection";
 import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {ErrorType} from "polar-shared/src/util/Errors";
-import {WriteFileOpts} from "./Datastore";
+import {DocPermissionCollection} from "polar-bookshelf/web/js/datastore/sharing/db/DocPermissionCollection";
 
 /**
  * Provides for a generic writer that can commit records to Firebase (frontend or backend)
  */
 export namespace FirebaseDatastoresShared {
-
-    // FIXME get these types migrated properly...
-    // FIXME:
 
     export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
     }
@@ -295,6 +291,53 @@ export namespace FirebaseDatastoresShared {
             // noop for now
         }
 
+    }
+
+    /**
+     * Arbitrary settings for files specific to each storage layer.  Firebase uses
+     * visibility and uid.
+     */
+    export interface FileMeta {
+
+        // TODO: I should also include the StorageSettings from Firebase here to
+        // give it a set of standardized fields like contentType as screenshots
+        // needs to be added with a file type.
+        [key: string]: string;
+
+    }
+
+    export interface WriteFileOpts {
+
+        /**
+         * @deprecated we no longer support arbitrary file metadata.
+         */
+        readonly meta?: FileMeta;
+
+        /**
+         * Set the file visibility.  Default is private.
+         */
+        readonly visibility?: Visibility;
+
+        /**
+         * Only update metadata.  Don't actually write data.
+         */
+        readonly updateMeta?: boolean;
+
+        readonly datastoreMutation?: DatastoreMutation<boolean>;
+
+        /**
+         * Specify a progress listener so that when you're writing a file you can
+         * keep track of the progress
+         */
+        readonly progressListener?: WriteFileProgressListener;
+
+        readonly onController?: (controller: WriteController) => void;
+
+    }
+
+    export class DefaultWriteFileOpts implements WriteFileOpts {
+        public readonly meta: FileMeta = {};
+        public readonly visibility = Visibility.PRIVATE;
     }
 
     /**

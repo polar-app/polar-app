@@ -7,14 +7,11 @@ import {
     Datastore,
     DatastoreCapabilities,
     DatastoreOverview,
-    DefaultWriteFileOpts,
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
-    FileMeta,
     PrefsProvider,
     SnapshotResult,
-    WriteFileOpts,
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -32,8 +29,11 @@ import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import FileMeta = FirebaseDatastoresShared.FileMeta;
 
 const log = Logger.create();
 

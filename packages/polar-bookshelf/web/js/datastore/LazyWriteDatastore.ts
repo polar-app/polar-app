@@ -7,7 +7,7 @@ import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "../polar-shared-datastore/src/FirebaseDatastoresShared";
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 
 const log = Logger.create();

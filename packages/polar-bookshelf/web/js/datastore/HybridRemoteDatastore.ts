@@ -6,7 +6,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "../polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 
 /**

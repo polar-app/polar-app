@@ -9,7 +9,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
-    WriteFileOpts
 } from './Datastore';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
@@ -33,8 +32,9 @@ import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
 
 const log = Logger.create();
 

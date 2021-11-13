@@ -4,7 +4,6 @@ import {
     DatastoreCapabilities,
     DatastoreInitOpts,
     DatastoreOverview,
-    DefaultWriteFileOpts,
     DeleteResult,
     DocMetaMutation,
     DocMetaSnapshotEvent,
@@ -12,12 +11,10 @@ import {
     DocMetaSnapshotOpts,
     DocMetaSnapshotResult,
     ErrorListener,
-    FileMeta,
     InitResult,
     MutationType,
     SnapshotResult,
     WritableBinaryMetaDatastore,
-    WriteFileOpts,
 } from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -56,7 +53,7 @@ import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapsho
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
@@ -65,6 +62,9 @@ import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import DefaultWriteOpts = FirebaseDatastoresShared.DefaultWriteOpts;
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteController = FirebaseDatastoresShared.WriteController;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
+import FileMeta = FirebaseDatastoresShared.FileMeta;
 
 const log = Logger.create();
 

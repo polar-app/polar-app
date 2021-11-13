@@ -2,7 +2,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
 import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {FirebaseDatastoresShared} from "polar-bookshelf/web/js/datastore/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 
 export namespace DatastoreWriter {
 

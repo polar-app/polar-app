@@ -5,14 +5,12 @@ import {
     DatastoreCapabilities,
     DatastoreInfo,
     DatastoreOverview,
-    DefaultWriteFileOpts,
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
     InitResult,
     PrefsProvider,
     SnapshotResult,
-    WriteFileOpts,
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -43,9 +41,11 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
 
 const log = Logger.create();
 

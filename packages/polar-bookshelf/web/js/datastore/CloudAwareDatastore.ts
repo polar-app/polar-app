@@ -20,7 +20,6 @@ import {
     SynchronizationEvent,
     SynchronizationEventListener,
     SynchronizingDatastore,
-    WriteFileOpts,
 } from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
@@ -43,9 +42,10 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "./FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
 
 const log = Logger.create();
 

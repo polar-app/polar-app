@@ -73,6 +73,7 @@
     "polar-sentry-cloud-functions": "0.0.0",
     "polar-shared": "0.0.0",
     "polar-shared-webserver": "0.0.0",
+    "polar-shared-datastore": "0.0.0",
     "polar-typescript": "0.0.0",
     "polar-firebase-users": "0.0.0",
     "polar-url": "0.0.0",
