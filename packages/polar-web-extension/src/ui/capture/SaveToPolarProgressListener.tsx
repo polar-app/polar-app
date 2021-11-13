@@ -1,10 +1,11 @@
 import React from 'react';
 import {deepMemo} from "polar-bookshelf/web/js/react/ReactUtils";
-import {WriteFileProgress} from "polar-bookshelf/web/js/datastore/Datastore";
 import {useComponentDidMount, useComponentWillUnmount} from "polar-bookshelf/web/js/hooks/ReactLifecycleHooks";
 import {TypedMessage} from 'polar-bookshelf/web/js/util/TypedMessage';
 import {UploadProgressDialog} from "polar-bookshelf/web/js/ui/dialogs/UploadProgressDialog";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 
 export function useChromeMessageListener<T>(type: string, handler: (value: T) => void) {
 
