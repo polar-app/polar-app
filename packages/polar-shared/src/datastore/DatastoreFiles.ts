@@ -24,7 +24,6 @@ export namespace DatastoreFiles {
      * Blacklist model to accept a string for a filename and strip characters
      * that are invalid and not accepted on most filesystems.
      *
-     * @param name
      */
     export function sanitizeFileName(name: string) {
         return name.replace(/[/\\:*?\"<>|]/g, '_');
