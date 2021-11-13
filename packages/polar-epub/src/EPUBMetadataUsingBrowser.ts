@@ -3,7 +3,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {EPUBDocs} from "./EPUBDocs";
 
-export class EPUBMetadata {
+export class EPUBMetadataUsingBrowser {
 
     public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
 
