@@ -138,12 +138,12 @@ export namespace EPUBMetadataUsingNode {
      * @param epubFile
      * @param chapterPath
      */
-    async function getChapterContents(epubFile: PathOrURLStr, chapterPath: string) {
+    export async function getChapterContents(epubFile: PathOrURLStr, chapterPath: string) {
         const zip = getZip(epubFile)
         return await zip.entryData(chapterPath);
     }
 
-    function getZip(docPathOrURL: PathOrURLStr) {
+    export function getZip(docPathOrURL: PathOrURLStr) {
         // eslint-disable-next-line new-cap
         return new StreamZip.async({
             file: docPathOrURL,
