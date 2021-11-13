@@ -20,7 +20,9 @@
   "dependencies": {
     "polar-bookshelf": "0.0.0",
     "polar-shared": "0.0.0",
-    "polar-shared-datastore": "0.0.0"
+    "polar-shared-datastore": "0.0.0",
+    "polar-pdf": "0.0.0",
+    "polar-epub": "0.0.0"
   },
   "devDependencies": {
     "polar-eslint": "0.0.0",
