@@ -25,7 +25,7 @@ namespace Parsers {
 
     function requireParserModule(moduleName: string): any {
 
-        const modulePath = `./${moduleName}`
+        const modulePath = `./${moduleName}.ts`
 
         const module = require(modulePath);
 
