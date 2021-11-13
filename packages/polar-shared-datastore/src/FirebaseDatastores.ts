@@ -35,7 +35,6 @@ export interface StorageSettings {
  * available within Firebase.
  */
 export type FirebaseDocMetaID = string;
- UserIDStr = string;
 
 export namespace FirebaseDatastores {
 
