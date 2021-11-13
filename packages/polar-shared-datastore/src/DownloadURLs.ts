@@ -1,7 +1,7 @@
 import {URLs} from "polar-shared/src/util/URLs";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {StoragePath} from "polar-shared-datastore/src/FirebaseDatastores";
+import {StoragePath} from "./FirebaseDatastores";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export class DownloadURLs {

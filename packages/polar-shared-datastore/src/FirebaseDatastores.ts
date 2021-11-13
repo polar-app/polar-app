@@ -19,6 +19,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {DownloadURLs} from "./DownloadURLs";
 
 export interface StoragePath {
     readonly path: string;
@@ -513,19 +514,18 @@ export namespace FirebaseDatastores {
 
     }
 
-    // export async function containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-    //
-    //     const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
-    //
-    //     const downloadURL =
-    //         DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
-    //
-    //     return DownloadURLs.checkExistence(downloadURL);
-    //
-    // }
+    export async function containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
+        const storagePath = computeStoragePath(backend, ref, this.uid);
 
-    // FIXMEL this needs getFile and containsFile
+        const downloadURL =
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
+
+        return DownloadURLs.checkExistence(downloadURL);
+
+    }
+
+    // FIXMEL this needs getFile
 
 
     /**

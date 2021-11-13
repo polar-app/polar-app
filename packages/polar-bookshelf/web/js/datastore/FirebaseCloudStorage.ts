@@ -14,7 +14,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
-import {DownloadURLs} from "./DownloadURLs";
+import {DownloadURLs} from "polar-shared-datastore/src/DownloadURLs";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import BinaryFileData = FirebaseDatastores.BinaryFileData;
 import WriteController = FirebaseDatastores.WriteController;

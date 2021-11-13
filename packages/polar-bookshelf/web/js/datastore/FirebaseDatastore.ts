@@ -53,7 +53,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
-import {DownloadURLs} from "./DownloadURLs";
+import {DownloadURLs} from "polar-shared-datastore/src/DownloadURLs";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
