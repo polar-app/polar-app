@@ -52,11 +52,7 @@ import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapsho
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
-import {
-    FirebaseDatastores,
-    FirebaseDatastoresShared,
-    StoragePath
-} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastores, FirebaseDatastoresShared, StoragePath} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;

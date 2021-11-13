@@ -5,7 +5,7 @@ import {Images} from "polar-shared/src/util/Images";
 import {ProgressTrackerManager, useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {IDropTarget} from "./store/BlocksStore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
 import WriteController = FirebaseDatastoresShared.WriteController;
 

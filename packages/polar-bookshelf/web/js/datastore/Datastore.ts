@@ -25,7 +25,7 @@ import {SimpleReactor} from "../reactor/SimpleReactor";
 import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;

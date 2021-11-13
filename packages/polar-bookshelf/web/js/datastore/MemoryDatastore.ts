@@ -29,7 +29,7 @@ import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
 import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;

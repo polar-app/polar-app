@@ -7,7 +7,7 @@ import {IDUsers} from '../util/IDUsers';
 import {Lazy} from '../util/Lazy';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);

@@ -25,7 +25,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts, NetworkLayers} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared, FirebaseDocMetaID} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared, FirebaseDocMetaID} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;

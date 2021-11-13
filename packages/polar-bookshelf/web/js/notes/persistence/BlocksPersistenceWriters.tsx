@@ -23,7 +23,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
-import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';

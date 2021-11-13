@@ -20,7 +20,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteOpts = FirebaseDatastoresShared.WriteOpts;
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;

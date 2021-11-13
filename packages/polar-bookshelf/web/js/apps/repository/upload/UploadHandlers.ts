@@ -1,6 +1,6 @@
 import {UpdateProgressCallback, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
 import React from 'react';
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteController = FirebaseDatastoresShared.WriteController;
 
 export type OnWriteController = (controller: WriteController) => void;

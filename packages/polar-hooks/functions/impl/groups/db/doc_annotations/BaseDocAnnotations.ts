@@ -11,7 +11,7 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DocIDStr, ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {IDRecord} from "polar-shared/src/util/IDMaps";
-import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 
 export class BaseDocAnnotations {
 

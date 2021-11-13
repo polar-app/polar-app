@@ -15,7 +15,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {DocMetadata} from "./DocMetadata";
 import {OnWriteController} from "../upload/UploadHandlers";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 
 const log = Logger.create();
 

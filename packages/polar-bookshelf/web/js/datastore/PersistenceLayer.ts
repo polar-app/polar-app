@@ -21,7 +21,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
 import WriteOptsBase = FirebaseDatastoresShared.WriteOptsBase;
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
