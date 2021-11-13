@@ -15,8 +15,8 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
 
 const log = Logger.create();
 

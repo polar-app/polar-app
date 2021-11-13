@@ -29,11 +29,11 @@ import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import WriteOpts = FirebaseDatastoresShared.WriteOpts;
-import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
-import FileMeta = FirebaseDatastoresShared.FileMeta;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import FileMeta = FirebaseDatastores.FileMeta;
 
 const log = Logger.create();
 

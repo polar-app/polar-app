@@ -14,12 +14,12 @@ import "firebase/storage";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
-import {FirebaseDatastores, FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteController = FirebaseDatastoresShared.WriteController;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
-import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteController = FirebaseDatastores.WriteController;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
 
 type ProgressTrackerManagerListener<T> = (data: T) => void;
 

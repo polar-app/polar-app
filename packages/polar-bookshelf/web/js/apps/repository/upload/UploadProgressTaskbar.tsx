@@ -2,8 +2,8 @@ import React from 'react';
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {Percentage} from 'polar-shared/src/util/ProgressTracker';
 import {TaskbarDialogProps} from "../../../ui/dialogs/TaskbarDialog";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 
 export type UpdateProgressCallback = (progress: WriteFileProgress | number | 'terminate') => void;
 

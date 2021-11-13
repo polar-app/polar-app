@@ -42,10 +42,10 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteOpts = FirebaseDatastoresShared.WriteOpts;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 const log = Logger.create();
 

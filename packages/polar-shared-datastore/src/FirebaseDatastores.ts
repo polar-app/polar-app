@@ -35,10 +35,7 @@ export interface StorageSettings {
  * available within Firebase.
  */
 export type FirebaseDocMetaID = string;
-/**
- * @Deprecated use the version from Strings
- */
-export type UserIDStr = string;
+ UserIDStr = string;
 
 export namespace FirebaseDatastores {
 
@@ -60,7 +57,7 @@ export namespace FirebaseDatastores {
         })
             .getOrElse('');
 
-        const settings = this.computeStorageSettings(ext).getOrUndefined();
+        const settings = computeStorageSettings(ext).getOrUndefined();
 
         let key: any;
 
@@ -171,12 +168,6 @@ export namespace FirebaseDatastores {
 
     }
 
-}
-
-/**
- * Provides for a generic writer that can commit records to Firebase (frontend or backend)
- */
-export namespace FirebaseDatastoresShared {
 
     export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
     }

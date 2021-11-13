@@ -1,7 +1,7 @@
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Latch} from "polar-shared/src/util/Latch";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
 
 export class DatastoreMutations {
 

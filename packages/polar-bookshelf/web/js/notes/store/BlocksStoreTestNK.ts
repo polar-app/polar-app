@@ -28,10 +28,10 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 import assertPresent = Asserts.assertPresent;
-import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
-import WriteController = FirebaseDatastoresShared.WriteController;
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
+import WriteController = FirebaseDatastores.WriteController;
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 

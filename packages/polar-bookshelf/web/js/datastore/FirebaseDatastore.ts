@@ -52,18 +52,18 @@ import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapsho
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
-import {FirebaseDatastores, FirebaseDatastoresShared, StoragePath} from "polar-shared-datastore/src/FirebaseDatastores";
-import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
-import DatastoreCollection = FirebaseDatastoresShared.DatastoreCollection;
-import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
-import FirestoreSource = FirebaseDatastoresShared.FirestoreSource;
-import WriteOpts = FirebaseDatastoresShared.WriteOpts;
-import DefaultWriteOpts = FirebaseDatastoresShared.DefaultWriteOpts;
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteController = FirebaseDatastoresShared.WriteController;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
-import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
-import FileMeta = FirebaseDatastoresShared.FileMeta;
+import {FirebaseDatastores, StoragePath} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
+import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
+import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
+import FirestoreSource = FirebaseDatastores.FirestoreSource;
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import DefaultWriteOpts = FirebaseDatastores.DefaultWriteOpts;
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteController = FirebaseDatastores.WriteController;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
+import FileMeta = FirebaseDatastores.FileMeta;
 
 const log = Logger.create();
 
@@ -365,7 +365,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaDirectly(id: string,
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        return FirebaseDatastoresShared.getDocMeta(this.firestore!, id, {
+        return FirebaseDatastores.getDocMeta(this.firestore!, id, {
             preferredSource: opts.preferredSource || this.preferredSource()
         })
 
@@ -679,7 +679,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        const [docMetaRef, docInfoRef] = await FirebaseDatastoresShared.write(firestore, uid, fingerprint, data, docInfo, opts);
+        const [docMetaRef, docInfoRef] = await FirebaseDatastores.write(firestore, uid, fingerprint, data, docInfo, opts);
 
         /**
          * This will verify that the data we have is written to the server

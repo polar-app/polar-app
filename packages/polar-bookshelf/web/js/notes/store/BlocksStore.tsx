@@ -58,9 +58,9 @@ import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import WriteController = FirebaseDatastoresShared.WriteController;
-import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteController = FirebaseDatastores.WriteController;
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 
 export const ENABLE_UNDO_TRACING = false;
 

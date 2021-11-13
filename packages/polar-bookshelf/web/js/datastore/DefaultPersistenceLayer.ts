@@ -32,9 +32,9 @@ import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 const log = Logger.create();
 

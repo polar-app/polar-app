@@ -12,8 +12,8 @@ import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import DatastoreConsistency = FirebaseDatastoresShared.DatastoreConsistency;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
 
 describe('DocMetaSnapshotEventListener', function() {
 

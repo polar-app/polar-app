@@ -6,9 +6,9 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 /**
  * A datastore which extends RemoteDatastore but adds support for local disk

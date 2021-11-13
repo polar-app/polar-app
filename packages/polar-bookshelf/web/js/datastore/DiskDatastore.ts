@@ -41,11 +41,11 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastores";
-import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
-import WriteOpts = FirebaseDatastoresShared.WriteOpts;
-import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
-import DefaultWriteFileOpts = FirebaseDatastoresShared.DefaultWriteFileOpts;
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
 
 const log = Logger.create();
 
