@@ -1,13 +1,14 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DocImporter} from "polar-bookshelf/web/js/apps/repository/importers/DocImporter";
-import {WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 import {PersistenceLayer} from "polar-bookshelf/web/js/datastore/PersistenceLayer";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {FirebaseDatastoresShared} from "polar-bookshelf/web/js/datastore/FirebaseDatastoresShared";
 
 export namespace DatastoreWriter {
 
     import IDocImport = DocImporter.IDocImport;
     import DocImporterOpts = DocImporter.DocImporterOpts;
+    import WriteFileProgressListener = FirebaseDatastoresShared.WriteFileProgressListener;
 
     export interface IWriteOpts {
 
