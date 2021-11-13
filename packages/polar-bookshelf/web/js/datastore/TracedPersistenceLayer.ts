@@ -11,7 +11,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
-    WriteFileOpts
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -23,8 +22,9 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
-import {FirebaseDatastoresShared} from "../polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
+import WriteFileOpts = FirebaseDatastoresShared.WriteFileOpts;
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');
 
