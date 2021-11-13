@@ -15,7 +15,6 @@ export namespace EPUBMetadata {
             return EPUBMetadataUsingNode.getMetadata(docPathOrURL);
         } else {
             return EPUBMetadataUsingBrowser.getMetadata(docPathOrURL);
-
         }
 
     }
