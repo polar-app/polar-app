@@ -26,7 +26,8 @@ export interface Scripts {
 }
 
 export interface ICreateModuleConfig {
-    readonly Typescript?: 'disabled';
-    readonly Mocha?: true;
-    readonly Karma?: true;
+    readonly Typescript?: Boolean;
+    readonly Mocha?: Boolean;
+    readonly Karma?: Boolean;
+    readonly KarmaDelete?: Boolean;
 }
