@@ -15,7 +15,7 @@ import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores"
 import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 
 import {DocMetadata} from "./DocMetadata";
-import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
+import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -54,6 +54,7 @@ export namespace DocImporter {
     import BinaryFileData = FirebaseDatastores.BinaryFileData;
     import BackendFileRefData = FirebaseDatastores.BackendFileRefData;
     import OnWriteController = FirebaseDatastores.OnWriteController;
+    import WriteOptsBase = FirebaseDatastores.WriteOptsBase;
 
     /**
      * Minimal metadata for the doc we want to import so that, in theory, we
@@ -210,7 +211,7 @@ export namespace DocImporter {
             ...fileRef,
         };
 
-        const writeFileOpts: WriteOpts = {
+        const writeFileOpts: WriteOptsBase<IDocInfo> = {
             consistency: opts.consistency,
             writeFile,
             progressListener: opts.progressListener,
