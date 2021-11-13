@@ -506,7 +506,7 @@ export namespace FirebaseDatastores {
 
         if (opts.writeFile) {
             const writeFileOpts: WriteFileOpts = {progressListener: opts.progressListener, onController: opts.onController};
-            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, writeFileOpts);
+            await writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, writeFileOpts);
         }
 
     }
@@ -519,8 +519,6 @@ export namespace FirebaseDatastores {
                                           opts: WriteOpts = new DefaultWriteOpts()) {
 
         const visibility = opts.visibility || Visibility.PRIVATE;
-
-        const uid = this.uid;
 
         const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
@@ -546,7 +544,6 @@ export namespace FirebaseDatastores {
 
         const visibility = opts.visibility || Visibility.PRIVATE;
 
-        const uid = this.uid;
         const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
         const recordHolder: RecordHolder<IDocInfo> = {
