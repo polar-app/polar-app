@@ -96,7 +96,7 @@ export async function updateModules(): Promise<void> {
     // $ Update Karma Files
     if (config.Karma) {
         await fs.promises.writeFile('karma.conf.js', Karma.create());
-    } else {
+    } else if (config.KarmaDelete === undefined || config.KarmaDelete === false) {
         await Files.deleteAsync('karma.conf.js');
     }
 
