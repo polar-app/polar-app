@@ -1,6 +1,6 @@
 import {DocFileMeta} from "./DocFileMeta";
 import {FileRef} from "./FileRef";
-import { Backend } from "./Backend";
+import {Backend} from "./Backend";
 
 /**
  *
@@ -45,9 +45,6 @@ export interface ReadableBinaryDatastore {
 
 }
 
-/**
- * Options for getFile
- */
 export interface GetFileOpts {
 
     /**

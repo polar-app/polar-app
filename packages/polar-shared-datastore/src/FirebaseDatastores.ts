@@ -20,6 +20,8 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DownloadURLs} from "./DownloadURLs";
+import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export interface StoragePath {
     readonly path: string;
@@ -514,9 +516,28 @@ export namespace FirebaseDatastores {
 
     }
 
-    export async function containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+    export function getFile(uid: UserIDStr,
+                            backend: Backend,
+                            ref: FileRef,
+                            opts: GetFileOpts = {}): DocFileMeta {
 
-        const storagePath = computeStoragePath(backend, ref, this.uid);
+
+        console.debug("getFile");
+
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, uid);
+
+        const downloadURL =
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, opts);
+
+        return { backend, ref, url: downloadURL};
+
+    }
+
+    export async function containsFile(uid: UserIDStr,
+                                       backend: Backend,
+                                       ref: FileRef): Promise<boolean> {
+
+        const storagePath = computeStoragePath(backend, ref, uid);
 
         const downloadURL =
             DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
@@ -524,9 +545,6 @@ export namespace FirebaseDatastores {
         return DownloadURLs.checkExistence(downloadURL);
 
     }
-
-    // FIXMEL this needs getFile
-
 
     /**
      * Create the document that we will store in for the DocMeta

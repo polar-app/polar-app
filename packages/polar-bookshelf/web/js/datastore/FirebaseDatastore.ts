@@ -53,7 +53,6 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
-import {DownloadURLs} from "polar-shared-datastore/src/DownloadURLs";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
@@ -599,40 +598,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
-        console.debug("getFile");
-
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
-
-        const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, opts);
-
-        const url: string = this.wrappedDownloadURL(downloadURL);
-
-        return { backend, ref, url};
-
-    }
-    /**
-     * Optionally wrap the download URL with a middleware URL which can perform
-     * operations like authentication for the underlying download URL.
-     */
-    private wrappedDownloadURL(url: string) {
-
-        return url;
-
-        // this is disabled for now.
-        // return "https://us-central1-polar-cors.cloudfunctions.net/cors?url=" + encodeURIComponent(url);
+        return FirebaseDatastores.getFile(this.uid, backend, ref, opts);
 
     }
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
-
-        const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
-
-        return DownloadURLs.checkExistence(downloadURL);
-
+        return FirebaseDatastores.containsFile(this.uid, backend, ref)
     }
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
