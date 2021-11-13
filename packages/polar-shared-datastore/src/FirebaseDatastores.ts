@@ -6,8 +6,13 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {DatastoreMutation} from "polar-shared/src/datastore/DatastoreMutation";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
-import {FileHandle} from "polar-shared/src/util/Files";
-import {DeterminateProgress, IndeterminateProgress} from "polar-shared/src/util/ProgressTracker";
+import {FileHandle, FileHandles} from "polar-shared/src/util/Files";
+import {
+    DeterminateProgress,
+    IndeterminateProgress,
+    Percentage,
+    ProgressTracker
+} from "polar-shared/src/util/ProgressTracker";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
@@ -22,6 +27,9 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DownloadURLs} from "./DownloadURLs";
 import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {ProgressMessage} from "polar-bookshelf/web/js/ui/progress_bar/ProgressMessage";
+import {ProgressMessages} from "polar-bookshelf/web/js/ui/progress_bar/ProgressMessages";
+import {Percentages} from "polar-shared/src/util/Percentages";
 
 export interface StoragePath {
     readonly path: string;
@@ -512,6 +520,201 @@ export namespace FirebaseDatastores {
         if (opts.writeFile) {
             const writeFileOpts: WriteFileOpts = {progressListener: opts.progressListener, onController: opts.onController};
             await writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, writeFileOpts);
+        }
+
+    }
+
+
+    export async function writeFile(uid: UserIDStr,
+                                    backend: Backend,
+                                    ref: FileRef,
+                                    data: BinaryFileData,
+                                    opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
+
+        // TODO: the latch handling, file writing, and progress notification
+        // should all be decoupled into their own functions.
+
+        console.debug(`writeFile: ${backend}: `, ref);
+
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, uid);
+        const pendingFileWriteKey = storagePath.path;
+
+        try {
+
+            const visibility = opts.visibility || Visibility.PRIVATE;
+
+            const storage = this.storage!;
+
+            const fileRef = storage.ref().child(storagePath.path);
+
+            if (!isPresent(data)) {
+
+                if (opts.updateMeta) {
+
+                    const meta: FileMeta = { visibility };
+
+                    // https://firebase.google.com/docs/storage/web/file-metadata
+                    //
+                    // Only the properties specified in the metadata are updated,
+                    // all others are left unmodified.
+
+                    await fileRef.updateMetadata(meta);
+
+                    console.info("File metadata updated with: ", meta);
+
+                    return this.getFile(backend, ref);
+
+                } else {
+                    // when the caller specifies null they mean that there's a
+                    // metadata update which needs to be applied.
+                    throw new Error("No data present");
+                }
+
+            }
+
+            if (await this.containsFile(backend, ref)) {
+                // the file is already in the datastore so don't attempt to
+                // overwrite it for now.  The files are immutable and we don't
+                // accept overwrites.
+                return this.getFile(backend, ref);
+            }
+
+            let uploadTask: firebase.storage.UploadTask;
+
+            const uid = this.uid;
+
+            // stick the uid into the metadata which we use for authorization of the
+            // blob when not public.
+            const meta = { uid, visibility };
+
+            const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
+
+            if (storagePath.settings) {
+                metadata.contentType = storagePath.settings.contentType;
+                metadata.cacheControl = storagePath.settings.cacheControl;
+            }
+
+            if (typeof data === 'string') {
+                uploadTask = fileRef.putString(data, 'raw', metadata);
+            } else if (data instanceof Blob) {
+                uploadTask = fileRef.put(data, metadata);
+            } else {
+
+                if (FileHandles.isFileHandle(data)) {
+
+                    // This only happens in the desktop app so we can read file URLs
+                    // to blobs and otherwise it converts URLs to files.
+                    const fileHandle = <FileHandle> data;
+
+                    const fileURL = FilePaths.toURL(fileHandle.path);
+                    const blob = await URLs.toBlob(fileURL);
+                    uploadTask = fileRef.put(blob, metadata);
+
+                } else {
+                    uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+                }
+
+            }
+
+            // TODO: we can get progress from the uploadTask here.
+
+            const started = Date.now();
+
+            const task = ProgressTracker.createNonce();
+
+            // TODO: create an index of pending progress messages and show the
+            // OLDEST on in the progress bar.. but add like a 5 minute timeout in
+            // case it's not updated.   Each progress message MUST have a 'created'
+            // timestamp from now on so we can GC them and or ignore them if they're
+            // never used again
+
+            const progressID = 'firebase-upload-' + STORAGE_UPLOAD_ID++;
+
+            const controller: WriteController = {
+                pause: () => uploadTask.pause(),
+                resume: () => uploadTask.resume(),
+                cancel: () => uploadTask.cancel()
+            };
+
+            if (opts.onController) {
+                opts.onController(controller);
+            }
+
+            uploadTask.on('state_changed', (snapshotData: any) => {
+
+                const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+
+                const now = Date.now();
+                const duration = now - started;
+
+                const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+                console.log('Upload is ' + percentage + '% done');
+
+                const progress: ProgressMessage = {
+                    id: progressID,
+                    task,
+                    completed: snapshot.bytesTransferred,
+                    total: snapshot.totalBytes,
+                    duration,
+                    progress: <Percentage> percentage,
+                    timestamp: Date.now(),
+                    name: `${backend}/${ref.name}`
+                };
+
+                ProgressMessages.broadcast(progress);
+
+                if (opts.progressListener) {
+
+                    // if the write operation has a progress listener then increment
+                    // the listener properly.
+
+                    const writeFileProgress: WriteFileProgress = {
+                        ref: {backend, ...ref},
+                        ...progress,
+                        value: progress.progress,
+                        type: 'determinate'
+                    }
+
+                    opts.progressListener(writeFileProgress);
+
+                }
+
+                switch (snapshot.state) {
+
+                    case firebase.storage.TaskState.PAUSED:
+                        // or 'paused'
+                        // console.log('Upload is paused');
+                        break;
+
+                    case firebase.storage.TaskState.RUNNING:
+                        // or 'running'
+                        // console.log('Upload is running');
+                        break;
+                }
+
+            });
+
+            const uploadTaskSnapshot = await uploadTask;
+
+
+            // TODO: we can use bytesTransferred to keep track of accounting
+            const {downloadURL, bytesTransferred} = uploadTaskSnapshot;
+
+            const result: DocFileMeta = {
+                backend,
+                ref,
+                url: downloadURL!
+            };
+
+            latch.resolve(result);
+
+            // now we have to clean up after our latch.
+            delete this.pendingFileWrites[pendingFileWriteKey];
+
+            return result;
+
+        } catch (e) {
+            throw e;
         }
 
     }
