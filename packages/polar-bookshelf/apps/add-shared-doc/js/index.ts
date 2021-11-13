@@ -3,7 +3,7 @@ import {GroupMemberInvitation} from "../../../web/js/datastore/sharing/db/GroupM
 import {PersistenceLayer} from "../../../web/js/datastore/PersistenceLayer";
 import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/BrowserDocLoader";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
-import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
+import {BackendFileRefs} from "polar-shared/src/datastore/BackendFileRefs";
 
 // *****
 //

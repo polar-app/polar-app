@@ -14,7 +14,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {InterceptedPersistentPrefs, InterceptedPersistentPrefsFactory, IPersistentPrefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from 'polar-shared/src/util/Either';
-import {BackendFileRefs} from './BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";

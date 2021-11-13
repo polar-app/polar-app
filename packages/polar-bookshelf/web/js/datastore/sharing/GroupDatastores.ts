@@ -4,7 +4,7 @@ import {GroupIDStr} from '../Datastore';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
 import {DocIDStr, GroupProvisionRequest, GroupProvisions} from './rpc/GroupProvisions';
-import {BackendFileRefs} from '../BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {Either} from 'polar-shared/src/util/Either';
 import {DocRefs} from './db/DocRefs';
 import {FirebaseDatastoreResources} from '../FirebaseDatastoreResources';

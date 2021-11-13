@@ -10,7 +10,7 @@ import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
-import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

@@ -14,7 +14,7 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {usePersistenceContext} from "../persistence_layer/PersistenceLayerApp";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
+import {BackendFileRefs} from "polar-shared/src/datastore/BackendFileRefs";
 import {Either} from "polar-shared/src/util/Either";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";

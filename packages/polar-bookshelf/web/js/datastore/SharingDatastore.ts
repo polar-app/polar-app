@@ -20,7 +20,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
-import {BackendFileRefs} from './BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";

@@ -17,7 +17,7 @@ import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from "polar-shared/src/util/URLs";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {BackendFileRefs} from './BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";

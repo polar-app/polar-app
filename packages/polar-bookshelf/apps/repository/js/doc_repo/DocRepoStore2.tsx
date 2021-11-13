@@ -19,7 +19,7 @@ import {
 import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
+import {BackendFileRefs} from "polar-shared/src/datastore/BackendFileRefs";
 import {Either} from "polar-shared/src/util/Either";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {Optional} from "polar-shared/src/util/ts/Optional";

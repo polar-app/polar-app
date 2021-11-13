@@ -6,7 +6,7 @@ import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {useDocLoader} from "../../main/DocLoaderHooks";
 import IconButton from '@material-ui/core/IconButton';
-import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
+import {BackendFileRefs} from "polar-shared/src/datastore/BackendFileRefs";
 import {Either} from "polar-shared/src/util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";

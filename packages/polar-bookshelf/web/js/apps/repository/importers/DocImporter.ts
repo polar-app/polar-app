@@ -15,7 +15,7 @@ import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores"
 
 import {OnWriteController} from "../upload/UploadHandlers";
 import {DocMetadata} from "./DocMetadata";
-import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 
 const log = Logger.create();
