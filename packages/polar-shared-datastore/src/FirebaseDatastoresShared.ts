@@ -1,4 +1,4 @@
-import {IDStr} from "polar-shared/src/util/Strings";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {isPresent} from 'polar-shared/src/Preconditions';
@@ -35,7 +35,6 @@ export interface StorageSettings {
  * available within Firebase.
  */
 export type FirebaseDocMetaID = string;
-
 /**
  * @Deprecated use the version from Strings
  */
