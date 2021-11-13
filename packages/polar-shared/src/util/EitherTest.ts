@@ -6,6 +6,7 @@ describe('Either', function() {
 
     it("basic", function() {
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         const values: any[] = [];
 
         const myFunction = (either: Either<string, number>) => {

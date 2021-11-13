@@ -450,12 +450,13 @@ export namespace FirebaseDatastores {
      * Arbitrary settings for files specific to each storage layer.  Firebase uses
      * visibility and uid.
      */
-    // eslint-disable-next-line functional/prefer-readonly-type
     export interface FileMeta {
 
         // TODO: I should also include the StorageSettings from Firebase here to
         // give it a set of standardized fields like contentType as screenshots
         // needs to be added with a file type.
+
+        // eslint-disable-next-line functional/prefer-readonly-type
         [key: string]: string;
 
     }

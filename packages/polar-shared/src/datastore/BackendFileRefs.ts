@@ -52,6 +52,7 @@ export class BackendFileRefs {
      */
     public static toBackendFileRefs(either: LeftEither<IDocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         const result: BackendFileRef[] = [];
 
         const fileRef = this.toBackendFileRef(either);
