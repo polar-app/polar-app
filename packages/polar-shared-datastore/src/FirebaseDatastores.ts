@@ -257,7 +257,6 @@ export namespace FirebaseDatastores {
 
     }
 
-
     /**
      * Get the DocMeta if from the raw docID encoded into the users account.
      */
@@ -500,6 +499,9 @@ export namespace FirebaseDatastores {
      */
     export async function handleWriteFile(opts?: WriteOpts) {
 
+        // FIXME this called writeFile in Datastore but since it was extended it
+        // was actually calling the one in FirebaseDatastore
+
         if (! opts) {
             return;
         }
@@ -510,6 +512,21 @@ export namespace FirebaseDatastores {
         }
 
     }
+
+    // export async function containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+    //
+    //     const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
+    //
+    //     const downloadURL =
+    //         DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
+    //
+    //     return DownloadURLs.checkExistence(downloadURL);
+    //
+    // }
+
+
+    // FIXMEL this needs getFile and containsFile
+
 
     /**
      * Create the document that we will store in for the DocMeta
@@ -581,6 +598,5 @@ export namespace FirebaseDatastores {
         });
 
     }
-
 
 }

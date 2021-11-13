@@ -52,7 +52,8 @@ import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapsho
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
-import {FirebaseDatastores, StoragePath} from "polar-shared-datastore/src/FirebaseDatastores";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import {DownloadURLs} from "./DownloadURLs";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
@@ -598,16 +599,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
-        log.debug("getFile");
-
-        const storage = this.storage!;
+        console.debug("getFile");
 
         const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
 
-        const storageRef = storage.ref().child(storagePath.path);
-
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, opts);
 
         const url: string = this.wrappedDownloadURL(downloadURL);
 
@@ -631,11 +628,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
 
-        const storage = this.storage!;
-        const storageRef = storage.ref().child(storagePath.path);
-
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
 
         return DownloadURLs.checkExistence(downloadURL);
 
@@ -1044,74 +1038,6 @@ function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): M
 
         case 'removed':
             return 'deleted';
-
-    }
-
-}
-
-export class DownloadURLs {
-
-    public static async checkExistence(url: string): Promise<boolean> {
-
-        // This is pretty darn slow when using HEAD but with GET and a range
-        // query the performance isn't too bad.  Performing the HEAD directly
-        // is really poor with 300-7500ms latencies.  There are some major
-        // outliers when performing HEAD.
-        //
-        // Using GET and range of 0-0 is actually consistently about 200ms
-        // which is pretty reasonable but we stills should have the option
-        // to skip the exists check to just compute the URL.
-        //
-        // Doing an exists() with the Cloud SDK is about 250ms too.
-
-        return await URLs.existsWithGETUsingRange(url);
-
-    }
-
-    public static computeDownloadURL(backend: Backend,
-                                     ref: FileRef,
-                                     storagePath: StoragePath,
-                                     storageRef: firebase.storage.Reference,
-                                     opts: GetFileOpts): string {
-
-        return this.computeDownloadURLDirectly(backend, ref, storagePath, opts);
-
-    }
-    private static computeDownloadURLDirectly(backend: Backend,
-                                              ref: FileRef,
-                                              storagePath: StoragePath,
-                                              opts: GetFileOpts): string {
-
-        /**
-         * Compute the storage path including the flip over whether we're
-         * going to be public without any type of path conversion depending
-         * on whether it's public or not.  Public URLs have a 1:1 mapping
-         * where everything else might be in a different bucket or path
-         * depending the storage computation function.
-         */
-        const toPath = (): string => {
-
-            if (backend === Backend.PUBLIC) {
-                // there is no blinding of the data path with the users
-                // user ID or other key.
-                return `${backend}/${ref.name}`;
-            } else {
-                return storagePath.path;
-            }
-
-        };
-
-        const toURL = (): string => {
-
-            const path = toPath();
-
-            const project = process.env.POLAR_TEST_PROJECT || "polar-32b0f";
-
-            return `https://storage.googleapis.com/${project}.appspot.com/${path}`;
-
-        };
-
-        return toURL();
 
     }
 

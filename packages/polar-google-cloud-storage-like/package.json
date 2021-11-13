@@ -1,0 +1,20 @@
+{
+  "name": "polar-google-cloud-storage-like",
+  "version": "0.0.0",
+  "description": "APIs that are similar across the Google Cloud Storage backend and frontend APIs.",
+  "scripts": {
+    "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "cieslint": "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "tsc": "tsc",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;",
+    "tscwatch": "tsc --watch"
+  },
+  "author": "Polar",
+  "license": "ISC",
+  "devDependencies": {
+    "polar-eslint": "0.0.0",
+    "polar-typescript": "0.0.0"
+  }
+}

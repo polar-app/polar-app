@@ -5,7 +5,6 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {URLs} from "polar-shared/src/util/URLs";
-import {DownloadURLs} from "./FirebaseDatastore";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {ProgressMessage} from "../ui/progress_bar/ProgressMessage";
@@ -15,6 +14,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import {DownloadURLs} from "./DownloadURLs";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import BinaryFileData = FirebaseDatastores.BinaryFileData;
 import WriteController = FirebaseDatastores.WriteController;
@@ -59,7 +59,7 @@ export class CloudStorage {
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
 
         return DownloadURLs.checkExistence(downloadURL);
 
@@ -76,7 +76,7 @@ export class CloudStorage {
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, opts);
 
         return { backend, ref, url: downloadURL };
 
