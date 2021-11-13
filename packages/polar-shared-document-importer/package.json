@@ -1,5 +1,5 @@
 {
-  "name": "polar-backend-datastore",
+  "name": "polar-shared-document-importer",
   "version": "0.0.0",
   "description": "",
   "scripts": {
