@@ -3,12 +3,10 @@
   "version": "2.1.71-polar.2",
   "description": "Typescript bindings for the latest PDFJS.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo nothing to test",
-    "compile": "echo nothing to compile"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Polar Inc.",
   "license": "ISC",
-  "types": "pdf"
+  "types": "pdf",
+  "devDependencies": {}
 }
