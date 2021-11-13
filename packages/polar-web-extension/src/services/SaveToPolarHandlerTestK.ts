@@ -31,7 +31,9 @@ describe("SaveToPolarHandler", function() {
         assert.isDefined(update);
         assert.isNotNull(update);
 
-        assertJSON(Object.keys(update!), ['type', 'strategy', 'value']);
+        console.log("Working with update: ", update);
+
+        assertJSON(Object.keys(update!), ['op', 'id', 'updateProperties']);
 
         (update as any).updateProperties.url = 'xxx'
 
