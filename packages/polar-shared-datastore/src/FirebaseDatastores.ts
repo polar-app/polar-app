@@ -40,11 +40,11 @@ export type FirebaseDocMetaID = string;
  */
 export type UserIDStr = string;
 
-export class FirebaseDatastores {
+export namespace FirebaseDatastores {
 
-    public static computeStoragePath(backend: Backend,
-                                     fileRef: FileRef,
-                                     uid: UserIDStr): StoragePath {
+    export function computeStoragePath(backend: Backend,
+                                       fileRef: FileRef,
+                                       uid: UserIDStr): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
 
@@ -103,7 +103,7 @@ export class FirebaseDatastores {
 
     }
 
-    private static computeStorageSettings(optionalExt: Optional<string>): Optional<StorageSettings> {
+    function computeStorageSettings(optionalExt: Optional<string>): Optional<StorageSettings> {
 
         const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
 
@@ -164,8 +164,8 @@ export class FirebaseDatastores {
     // in the future. Or, an anonymous user can link a Facebook account and then,
     // later, sign in with Facebook to continue using your app.
 
-    public static computeDocMetaID(fingerprint: string,
-                                   uid: UserIDStr): FirebaseDocMetaID {
+    export function computeDocMetaID(fingerprint: string,
+                                     uid: UserIDStr): FirebaseDocMetaID {
 
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
 
