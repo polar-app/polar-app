@@ -99,7 +99,7 @@ export namespace AddFileHooks {
 
             return await batchUploader(uploadHandlers);
 
-        }, [batchUploader, persistenceLayerProvider, blocksStore]);
+        }, [batchUploader, persistenceLayerProvider, blocksStore, notesIntegrationEnabled]);
 
         const promptToOpenFiles = React.useCallback((importedFiles: ReadonlyArray<ImportedFile>) => {
 

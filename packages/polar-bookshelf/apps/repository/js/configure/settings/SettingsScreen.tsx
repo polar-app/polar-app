@@ -7,7 +7,7 @@ import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
 import {ExportDataButton} from "../../premium/ExportDataButton";
-import {createStyles, makeStyles, List, Divider} from "@material-ui/core";
+import {createStyles, makeStyles, List} from "@material-ui/core";
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";

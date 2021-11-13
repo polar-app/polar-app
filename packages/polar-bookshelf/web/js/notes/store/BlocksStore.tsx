@@ -308,6 +308,7 @@ export interface IComputeLinearTreeOpts {
 
 export type INamedBlockEntry = {
     id: BlockIDStr;
+    type: INamedContent['type'];
     label: string;
 };
 
@@ -398,7 +399,8 @@ export class BlocksStore implements IBlocksStore {
 
         return sorted.map(({ id, content }) => ({
             id,
-            label: BlockTextContentUtils.getTextContentMarkdown(content)
+            type: content.type,
+            label: BlockTextContentUtils.getTextContentMarkdown(content),
         }));
     }
 
