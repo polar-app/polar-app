@@ -26,7 +26,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
-import {DatastoreFiles} from './DatastoreFiles';
+import {DatastoreFiles} from 'polar-shared/src/datastore/DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';

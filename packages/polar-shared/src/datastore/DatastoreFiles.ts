@@ -1,5 +1,5 @@
-import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {Preconditions} from "polar-shared/src/Preconditions";
+import {FileRef} from "./FileRef";
+import {Preconditions} from "../Preconditions";
 
 export namespace DatastoreFiles {
 

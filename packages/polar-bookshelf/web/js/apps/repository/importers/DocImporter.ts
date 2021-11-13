@@ -6,7 +6,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
+import {DatastoreFiles} from 'polar-shared/src/datastore/DatastoreFiles';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
