@@ -433,8 +433,8 @@ export namespace FirebaseDatastores {
 
             const [docMetaRef, docInfoRef] = createDocRefs();
 
-            batch.set(docMetaRef, createRecordHolderForDocMeta(docInfo, data, recordPermission));
-            batch.set(docInfoRef, createRecordHolderForDocInfo(docInfo, recordPermission));
+            batch.set(docMetaRef, createRecordHolderForDocMeta(uid, docInfo, data, recordPermission));
+            batch.set(docInfoRef, createRecordHolderForDocInfo(uid, docInfo, recordPermission));
 
             await batch.commit();
 
@@ -514,7 +514,8 @@ export namespace FirebaseDatastores {
     /**
      * Create the document that we will store in for the DocMeta
      */
-    function createRecordHolderForDocMeta(docInfo: IDocInfo,
+    function createRecordHolderForDocMeta(uid: UserIDStr,
+                                          docInfo: IDocInfo,
                                           docMeta: string,
                                           opts: WriteOpts = new DefaultWriteOpts()) {
 
@@ -539,7 +540,8 @@ export namespace FirebaseDatastores {
 
     }
 
-    function createRecordHolderForDocInfo(docInfo: IDocInfo,
+    function createRecordHolderForDocInfo(uid: UserIDStr,
+                                          docInfo: IDocInfo,
                                           opts: WriteOpts = new DefaultWriteOpts()) {
 
         const visibility = opts.visibility || Visibility.PRIVATE;
