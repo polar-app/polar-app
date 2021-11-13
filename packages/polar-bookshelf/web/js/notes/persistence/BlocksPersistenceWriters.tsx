@@ -13,7 +13,6 @@ import {URLStr, UserIDStr} from 'polar-shared/src/util/Strings';
 import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
 import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentContent} from 'polar-blocks/src/blocks/content/IDocumentContent';
 import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
 import {useBlocksStoreContext} from '../store/BlockStoreContextProvider';
@@ -22,9 +21,10 @@ import {RepoDocInfoDataObjectIndex} from '../../../../apps/repository/js/RepoDoc
 import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';
 

@@ -12,10 +12,9 @@ import {ProgressMessage} from "../ui/progress_bar/ProgressMessage";
 import firebase from "firebase/app"
 import "firebase/storage";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
 import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
-import {FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
+import {FirebaseDatastores, FirebaseDatastoresShared} from "polar-shared-datastore/src/FirebaseDatastoresShared";
 import WriteFileProgress = FirebaseDatastoresShared.WriteFileProgress;
 import BinaryFileData = FirebaseDatastoresShared.BinaryFileData;
 import WriteController = FirebaseDatastoresShared.WriteController;
