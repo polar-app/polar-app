@@ -30,7 +30,7 @@ export interface IAnchorProps {
     readonly id?: string;
     readonly className?: string;
     readonly href: URLStr;
-    readonly children: JSX.Element;
+    readonly children: JSX.Element | string;
 }
 
 export type RouteDeclaration = URLStr;

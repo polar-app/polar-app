@@ -42,8 +42,8 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
-import { MUIAnchorButtonStory } from '../../web/js/mui/MUIAnchorButtonStory';
-import { MUIAnchorStory } from '../../web/js/mui/MUIAnchorStory';
+import {MUIAnchorButtonStory} from '../../web/js/mui/MUIAnchorButtonStory';
+import {MUIAnchorStory} from '../../web/js/mui/MUIAnchorStory';
 import {SettingsScreenStory} from "./impl/SettingsScreenStory";
 
 interface IStory {
@@ -74,16 +74,12 @@ const stories = createStoryIndex([
         component: <MigrationToBlockAnnotationsMainStory/>
     },
     {
-        name: "MUI Button",
-        component: <MUIAnchorButtonStory href={"https://www.example.com"}>
-            <span>MUI Anchor button</span>
-        </MUIAnchorButtonStory>
+        name: "MUIAnchor",
+        component: <MUIAnchorStory/>
     },
     {
-        name: "MUI Anchor(link)",
-        component: <MUIAnchorStory href={"https://www.example.com"}>
-            <span>MUI Anchor</span>
-        </MUIAnchorStory>
+        name: "MUIAnchorButton",
+        component: <MUIAnchorButtonStory/>
     },
     {
         name: "New Settings Component",
