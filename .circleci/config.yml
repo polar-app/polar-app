@@ -620,17 +620,17 @@ workflows:
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
-       - cypress/run:
-           name: cypress-desktop-chrome
-           executor: ff-chrome
-           requires:
-             - build-polar-app
-           working_directory: /root/project/packages/polar-bookshelf
-           start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
-           wait-on: "http://localhost:8050"
-           command: yarn run cypress-desktop-chrome
-           attach-workspace: true
-           store_artifacts: true
+      - cypress/run:
+          name: cypress-desktop-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
+          wait-on: "http://localhost:8050"
+          command: yarn run cypress-desktop-chrome
+          attach-workspace: true
+          store_artifacts: true
 
       # # @ Run Cypress tests for firefox-desktop (1080p)
       # - cypress/run:
