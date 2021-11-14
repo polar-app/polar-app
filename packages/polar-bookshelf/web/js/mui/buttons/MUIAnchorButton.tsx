@@ -17,7 +17,7 @@ export type IAnchorProps = IPropsWithHref | IPropsWithTo;
 
 export const MUIAnchorButton = React.memo((props: IAnchorProps) => {
     return (
-        <Button {...props}>
+        <Button {...props} href={props.href} >
             {props.children}
         </Button>
     );

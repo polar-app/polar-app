@@ -42,7 +42,7 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
-import { MUIButtonStory } from './impl/MUIButtonStory';
+import { MUIAnchorButtonStory } from './impl/MUIAnchorButtonStory';
 import {SettingsScreenStory} from "./impl/SettingsScreenStory";
 import { MUIAnchorStory } from './impl/MUIAnchorStory';
 
@@ -75,9 +75,9 @@ const stories = createStoryIndex([
     },
     {
         name: "MUI Button",
-        component: <MUIButtonStory href={"https://www.example.com"}>
+        component: <MUIAnchorButtonStory href={"https://www.example.com"}>
             MUI button
-        </MUIButtonStory>
+        </MUIAnchorButtonStory>
     },
     {
         name: "MUI Anchor(link)",

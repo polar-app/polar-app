@@ -1,44 +1,39 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {URLStr} from "polar-shared/src/util/Strings";
-import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
-import {Callback} from 'polar-shared/src/util/Functions';
-
-/**deprecated, use MUIAnchor2 instead*/
+import blue from '@material-ui/core/colors/blue';
+import { IAnchorProps } from './buttons/MUIAnchorButton';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-
-        link: {
-            textDecoration: 'none',
-            color: theme.palette.text.primary
+        root: {
+            "& a:link": {
+                color: blue[300],
+            },
+            "& a:visited": {
+                color: blue[600],
+            },
+            "& a:hover": {
+                color: blue[400],
+            },
+            "& a:active": {
+                color: blue[500],
+            },
         }
-
     })
 );
-
-interface IProps {
-    readonly id?: string;
-    readonly className?: string;
-    readonly href: URLStr | URLPathStr;
-    readonly onClick?: Callback,
-    readonly children: JSX.Element;
-}
-
 /**
- * An anchor (a) element without any style
+ * An anchor (a) element with styles
  */
-export const MUIAnchor = (props: IProps) => {
+export const MUIAnchor = (props: IAnchorProps) => {
 
     const classes = useStyles();
 
     return (
         <Link id={props.id}
-              className={[props.className, classes.link].join(' ')}
-              to={props.href}>
+            className={[props.className, classes.root].join(' ')}
+            to={{pathname: props.href}}>
             {props.children}
         </Link>
     );
-
 };
