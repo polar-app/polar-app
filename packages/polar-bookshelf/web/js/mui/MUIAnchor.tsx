@@ -69,15 +69,25 @@ export const MUIAnchor = deepMemo((props: IAnchorProps) => {
 
     const handleClick = useAnchorClickHandler(props.href);
 
+    // NOTE: we're using a parent span so the above CSS rules match. It's a hack
+    // and we should try to fix it in the future.
+
+    // WARN: There's a Link element in both React Router and Material UI.  We're
+    // using the one from React Router but it's really not necessary because
+    // the onClick handler is being used. That said, do not use the MUI Link
+    // because it WILL NOT work with CSS visited, etc.
+
     return (
-        <Link id={props.id}
-              className={classes.root}
-              to={{pathname: props.href}}
-              onClick={handleClick}>
+        <span className={classes.root}>
+            <Link id={props.id}
+                  className={props.className}
+                  to={props.href}
+                  onClick={handleClick}>
 
-            {props.children}
+                {props.children}
 
-        </Link>
+            </Link>
+        </span>
     );
 
 });

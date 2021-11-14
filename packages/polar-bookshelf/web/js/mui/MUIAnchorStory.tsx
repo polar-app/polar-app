@@ -6,7 +6,7 @@ export const MUIAnchorStory = React.memo(function MUIAnchorStory() {
     return (
         <StoryHolder>
             <div>
-                <MUIAnchor href='/'>
+                <MUIAnchor href='#hello'>
                     This is an anchor
                 </MUIAnchor>
             </div>
