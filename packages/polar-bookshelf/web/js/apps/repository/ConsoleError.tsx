@@ -114,7 +114,12 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
                                        .map(current => current.match)
                                        .sort((a, b) => a!.localeCompare(b!))
 
+    const unexpectedFilter = (match: LabelWithMatch) => {
+        return ! match.message.startsWith("Slow task");
+    }
+
     const unexpected = messagesWithLabels.filter(current => current.label === 'unexpected')
+                                         .filter(current => unexpectedFilter(current));
 
     // the accepted array of messages we accept from the expected...
     const accepted = [
