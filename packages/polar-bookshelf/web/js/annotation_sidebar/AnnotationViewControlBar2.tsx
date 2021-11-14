@@ -22,7 +22,7 @@ import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardCreator} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 import {useAnnotationLink} from './JumpToAnnotationHook';
-import {MUIAnchorButton} from '../mui/MUIAnchorButton';
+import {MUIAnchor} from "../mui/MUIAnchor";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -170,9 +170,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <DocAuthor author={annotation.author}/>
 
-                        <MUIAnchorButton href={annotationLink}>
+                        <MUIAnchor href={annotationLink}>
                             <DocAnnotationMoment created={annotation.lastUpdated}/>
-                        </MUIAnchorButton>
+                        </MUIAnchor>
 
                     </MUIButtonBar>
 

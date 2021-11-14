@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Button, {ButtonProps} from '@material-ui/core/Button';
 import {useAnchorClickHandler} from "./MUIAnchor";
+import {deepMemo} from "../react/ReactUtils";
 
 interface IMUIAnchorButton extends Exclude<ButtonProps, 'onClick'> {
 
@@ -11,7 +12,7 @@ interface IMUIAnchorButton extends Exclude<ButtonProps, 'onClick'> {
 
 }
 
-export const MUIAnchorButton = React.memo((props: IMUIAnchorButton) => {
+export const MUIAnchorButton = deepMemo((props: IMUIAnchorButton) => {
 
     const handleClick = useAnchorClickHandler(props.href);
 
