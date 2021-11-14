@@ -76,13 +76,13 @@ const stories = createStoryIndex([
     {
         name: "MUI Button",
         component: <MUIAnchorButtonStory href={"https://www.example.com"}>
-            <span>MUI button</span>
+            <span>MUI Anchor button</span>
         </MUIAnchorButtonStory>
     },
     {
         name: "MUI Anchor(link)",
         component: <MUIAnchorStory href={"https://www.example.com"}>
-            <span>Go to MUI Button section</span>
+            <span>MUI Anchor</span>
         </MUIAnchorStory>
     },
     {
