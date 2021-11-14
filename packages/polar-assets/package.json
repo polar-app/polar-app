@@ -24,5 +24,6 @@
     "*.d.ts",
     "images.d.ts",
     "package.json"
-  ]
+  ],
+  "scripts": {}
 }
