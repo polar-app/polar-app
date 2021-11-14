@@ -76,7 +76,7 @@ commands:
           command: |
             echo -e "Node version: $(node --version) \n"
             echo -e "NPM version: $(npm --version) \n"
-            echo -e "Pnpm version: $(Pnpm --version) \n"
+            echo -e "Pnpm version: $(pnpm --version) \n"
             echo -e "firebase version: $(firebase --version) \n"
 
       # ? Debug Step for OS version
