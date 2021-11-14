@@ -100,11 +100,6 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
 
     }
 
-    interface MessageWithLabel {
-        readonly message: string;
-        readonly label: Label;
-    }
-
     const messagesWithLabels =
         messages.map(current => current.message)
                 .map(current => computeLabelWithMatch(current))
