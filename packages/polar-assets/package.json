@@ -15,7 +15,6 @@
     "url": "https://github.com/burtonator/polar-app-public/issues"
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
-  "type": "images",
   "files": [
     "**/*.svg",
     "**/*.png",
