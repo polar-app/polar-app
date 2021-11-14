@@ -22,7 +22,7 @@ import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardCreator} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 import {useAnnotationLink} from './JumpToAnnotationHook';
-import { MUIAnchorButton } from '../mui/buttons/MUIAnchorButton';
+import {MUIAnchorButton} from '../mui/MUIAnchorButton';
 
 const useStyles = makeStyles((theme) =>
     createStyles({

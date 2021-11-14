@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { StoryHolder } from '../../../apps/stories/StoryHolder';
-import { MUIAnchor } from '../../../web/js/mui/MUIAnchor';
-import { IAnchorProps } from '../../../web/js/mui/buttons/MUIAnchorButton';
+import {StoryHolder} from '../../../apps/stories/StoryHolder';
+import {MUIAnchor} from '../../../web/js/mui/MUIAnchor';
+import {IAnchorProps} from '../../../web/js/mui/MUIAnchorButton';
 
 export const MUIAnchorStory = React.memo(function(props: IAnchorProps) {
     return (
@@ -14,5 +14,5 @@ export const MUIAnchorStory = React.memo(function(props: IAnchorProps) {
             </div>
         </StoryHolder>
     );
-    
+
 });
