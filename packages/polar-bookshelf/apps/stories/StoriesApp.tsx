@@ -42,9 +42,9 @@ import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
 import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
 import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
-import { MUIAnchorButtonStory } from './impl/MUIAnchorButtonStory';
+import { MUIAnchorButtonStory } from '../../web/js/mui/MUIAnchorButtonStory';
+import { MUIAnchorStory } from '../../web/js/mui/MUIAnchorStory';
 import {SettingsScreenStory} from "./impl/SettingsScreenStory";
-import { MUIAnchorStory } from './impl/MUIAnchorStory';
 
 interface IStory {
     readonly name: string;
@@ -76,13 +76,13 @@ const stories = createStoryIndex([
     {
         name: "MUI Button",
         component: <MUIAnchorButtonStory href={"https://www.example.com"}>
-            MUI button
+            <span>MUI button</span>
         </MUIAnchorButtonStory>
     },
     {
         name: "MUI Anchor(link)",
-        component: <MUIAnchorStory href={"mui-button"}>
-            Go to MUI Button section
+        component: <MUIAnchorStory href={"https://www.example.com"}>
+            <span>Go to MUI Button section</span>
         </MUIAnchorStory>
     },
     {

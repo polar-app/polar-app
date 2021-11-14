@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import {StoryHolder} from '../../../apps/stories/StoryHolder';
-import {MUIAnchor} from '../../../web/js/mui/MUIAnchor';
-import {IAnchorProps} from '../../../web/js/mui/MUIAnchorButton';
+import {MUIAnchor} from './MUIAnchor';
+import { IAnchorProps } from './MUIAnchor';
 
 export const MUIAnchorStory = React.memo(function(props: IAnchorProps) {
     return (
