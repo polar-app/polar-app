@@ -1,28 +1,29 @@
 import * as React from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import blue from '@material-ui/core/colors/blue';
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {deepMemo} from "../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
+
     createStyles({
         root: {
             "& a:link": {
-                color: blue[300],
+                color: theme.palette.info.main,
             },
             "& a:visited": {
-                color: blue[600],
+                color: theme.palette.info.light,
             },
             "& a:hover": {
-                color: blue[400],
+                color: theme.palette.info.dark,
             },
             "& a:active": {
-                color: blue[500],
+                color: theme.palette.info.contrastText,
             },
         }
     })
+
 );
 
 export interface IAnchorProps {
@@ -70,7 +71,7 @@ export const MUIAnchor = deepMemo((props: IAnchorProps) => {
 
     return (
         <Link id={props.id}
-              className={[props.className, classes.root].join(' ')}
+              className={classes.root}
               to={{pathname: props.href}}
               onClick={handleClick}>
 
