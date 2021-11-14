@@ -41,22 +41,21 @@ commands:
   global_modules_setup:
     description: install global modules
     steps:
-      # ! Install Basic Modules { lerna, npm, firebase tools }
+      # ! Install Basic Modules { pnpm, npm, firebase tools }
       - run:
           name: Install global node_modules
           command: |
-            sudo yarn global add lerna@4.0.0
-            sudo yarn global add npm@7.19.1
-            sudo yarn global add firebase-tools@9.16.0
-            sudo yarn global add semver
+            sudo pnpm add npm@7.19.1 --global
+            sudo pnpm add firebase-tools@9.16.0 --global
+            sudo pnpm add semver --global
 
-  # & Download/Restore yarn.lock cache
-  restore_yarn_cache:
+  # & Download/Restore pnpm-lock.yaml cache
+  restore_pnpm_cache:
     description: Restore all bootstraped module
     steps:
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
 
   # & Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
   install_linux_dependencies:
@@ -70,14 +69,13 @@ commands:
   debug_installed:
     description: Debug installed libraries/modules
     steps:
-      # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
+      # ? Debug Step for Node/Npm/Pnpm/Firebase Versions
       - run:
-          name: DEBUG(Node, NPM, Yarn, Lerna & Firebase Versions)
+          name: DEBUG(Node, NPM, PNPM & Firebase Versions)
           command: |
             echo -e "Node version: $(node --version) \n"
             echo -e "NPM version: $(npm --version) \n"
-            echo -e "Yarn version: $(yarn --version) \n"
-            echo -e "Lerna version: $(lerna --version) \n"
+            echo -e "Pnpm version: $(Pnpm --version) \n"
             echo -e "firebase version: $(firebase --version) \n"
 
       # ? Debug Step for OS version
@@ -87,9 +85,9 @@ commands:
             echo $OSTYPE
             uname -a
 
-      # ? Debug step for Npm/Yarn Configuration
+      # ? Debug step for Npm/Pnpm Configuration
       - run:
-          name: DEBUG(NPM/Yarn Setup)
+          name: DEBUG(NPM/Pnpm Setup)
           command: |
             cp .npmrc ~/.npmrc
             cat ~/.npmrc
@@ -97,36 +95,36 @@ commands:
             npm ping
             echo "npm config ls -l: ======"
             npm config ls -l
-            echo "yarn config list: ======"
-            yarn config list
+            echo "pnpm config list: ======"
+            pnpm config list
 
   # & Hoist all dependencies
   bootstrap:
     description: Hoist all dependencies
     steps:
       - run:
-          name: lerna bootstrap
+          name: bootstrap
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link
+            pnpm install
 
-  # & Compile all lerna modules
+  # & Compile all modules
   compile:
-    description: compile all lerna modules
+    description: compile all modules
     steps:
       - run:
-          name: lerna run compile
-          command: lerna run compile
+          name: Compile
+          command: pnpm run compile-all
 
   # & Save Cache
-  save_yarn_cache:
+  save_pnpm_cache:
     description: save hoisted modules
     steps:
       - save_cache:
           paths:
-            - ~/.cache/yarn
-          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - ~/.pnpm-store
+          key: pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
 
   # & Persist Workspace
   persist_workspace:
@@ -149,11 +147,11 @@ commands:
             git reset --hard
             git checkout $FORK_POINT
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run cieslint --no-bail >> forkpoint-output.txt || true
+            pnpm run eslint-ci-all --no-bail >> forkpoint-output.txt || true
             git reset --hard
             git checkout $CIRCLE_BRANCH
             find . -type d -name node_modules -prune -o -type d -name .cache -prune -o -name ".eslintrc.json" -exec sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
-            lerna run cieslint --no-bail >> branch-output.txt || true
+            pnpm run eslint-ci-all --no-bail >> branch-output.txt || true
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
             OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)) 
@@ -168,11 +166,11 @@ commands:
       - run:
           name: Check if duplicate packages with different versions exist
           command: |
-            (cd packages/polar-shared && yarn run compile)
-            (cd packages/polar-npm && yarn run compile)
-            DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
+            (cd packages/polar-shared && pnpm run compile)
+            (cd packages/polar-npm && pnpm run compile)
+            DUPLICATES=$(pnpm -r exec -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
-            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+            pnpm -r exec -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
 
 # ~ Workflow Building Blocks
 jobs:
@@ -187,12 +185,12 @@ jobs:
     steps:
       - global_modules_setup
       - checkout
-      - restore_yarn_cache
+      - restore_pnpm_cache
       - install_linux_dependencies
       - debug_installed
       - bootstrap
       - compile
-      - save_yarn_cache
+      - save_pnpm_cache
       - persist_workspace
 
   # @ Run Code-Quality Steps
@@ -205,7 +203,7 @@ jobs:
     steps:
       - global_modules_setup
       - checkout
-      - restore_yarn_cache
+      - restore_pnpm_cache
       - bootstrap
       - eslint_diff
       - check_duplicates
@@ -230,8 +228,7 @@ jobs:
           command: |
             sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
-            lerna run karma
-            echo "Karma finished running."
+            pnpm run karma-all
       - store_test_results:
           path: /home/circleci/project/packages
 
@@ -249,7 +246,7 @@ jobs:
           name: test
           command: |
             cd /home/circleci/project
-            npx lerna run citest
+            pnpm run test-ci-all
       - store_test_results:
           path: /home/circleci/project/packages
 
@@ -268,7 +265,7 @@ jobs:
           command: |
             cd /home/circleci/project/packages/polar-web-extension/
             export POLAR_EXTENSION_TYPE=PROD
-            yarn run dist
+            pnpm run dist
 
   # @ Deploy aws CDK changes
   aws-cdk:
@@ -299,7 +296,7 @@ jobs:
           command: |
             cd /home/circleci/project/packages/polar-bookshelf && \
             free -m && \
-            yarn run build-webapp && \
+            pnpm run build-webapp && \
             echo "Webapp Built Successfully" && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
@@ -331,8 +328,8 @@ jobs:
             VERSION=$(semver $CURRENT_VERSION -i)
             NEW_VERSION="\\\""$VERSION"\\\""
             git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
-            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" lerna.json
-            lerna exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            pnpm -r exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
             git tag -a "$VERSION" -m "automated tag version $VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
@@ -349,10 +346,8 @@ jobs:
             npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
             rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
-            lerna run test
-            yarn run dist-validate-env
-            lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
-            (cd packages/polar-webapp-dist && yarn run dist)
+            pnpm run publish-all
+            (cd packages/polar-webapp-dist && pnpm run dist)
       - run:
           name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
@@ -362,7 +357,7 @@ jobs:
             mv /home/circleci/project/packages/polar-hooks/ /home/circleci/
             rm -rf /home/circleci/project
             cd /home/circleci/polar-hooks
-            rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
+            rm -rf node_modules && rm -rf functions/node_modules && pnpm install && (cd functions && pnpm install)
             time firebase deploy --only functions
       - slack/notify:
           custom: |
@@ -441,11 +436,11 @@ jobs:
             mv /home/circleci/project/packages-isolated/mobile /home/circleci/
             rm -rf /home/circleci/project
       - run:
-          name: yarn install
+          name: pnpm install
           command: |
             cd /home/circleci/mobile
             sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
-            yarn install
+            pnpm install
       - persist_to_workspace:
           root: /home/circleci/
           paths:
@@ -627,7 +622,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time pnpm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
       #     attach-workspace: true
@@ -640,7 +635,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
       #     attach-workspace: true
@@ -653,7 +648,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
       #     attach-workspace: true
@@ -666,7 +661,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time yarn run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
       #     attach-workspace: true
