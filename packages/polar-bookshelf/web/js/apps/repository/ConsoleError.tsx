@@ -58,7 +58,7 @@ function useDisabler(): Readonly<[boolean, () => void]> {
 }
 
 
-function isError(messages: ReadonlyArray<IConsoleMessage>) {
+function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-expected-signature' | 'too-many-unexpected' | 'valid' {
 
     // We have to do TWO things here. We have to verify existing errors are
     // accepted. If we just whitelist them we will never know when they were
@@ -127,15 +127,15 @@ function isError(messages: ReadonlyArray<IConsoleMessage>) {
 
     if (! deepEqual(expected, accepted)) {
         console.log("Did not expect messages: ", expected);
-        return true;
+        return 'invalid-expected-signature';
     }
 
     if (unexpected.length > 0) {
         console.log("Too many unexpected messages: ", unexpected);
-        return true;
+        return 'too-many-unexpected';
     }
 
-    return false;
+    return 'valid';
 
 }
 
@@ -153,7 +153,9 @@ export const ConsoleError = React.memo(() => {
         return null;
     }
 
-    if (! isError(messages)) {
+    const error = categorizeMessages(messages);
+
+    if (error === 'valid') {
         return null;
     }
 
@@ -164,7 +166,7 @@ export const ConsoleError = React.memo(() => {
 
             <Alert severity="error"
                    action={<Button onClick={doDisable}>Disable Future Notifications</Button>}>
-                We've encountered an internal error.  Please see console logs.
+                We've encountered an internal error.  Please see console logs: {error}
             </Alert>
 
         </Snackbar>
