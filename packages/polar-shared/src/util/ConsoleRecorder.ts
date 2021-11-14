@@ -21,6 +21,10 @@ export namespace ConsoleRecorder {
     export const CHANNEL = 'console-recorder';
 
     // eslint-disable-next-line functional/prefer-readonly-type
+
+    // TODO: this should really be a RingBuffer with a max cap so we don't ever
+    // run out of memory.
+
     export const messages: IConsoleMessage[] = [];
 
     let initialized: boolean = false;
