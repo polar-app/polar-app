@@ -45,6 +45,7 @@ commands:
       - run:
           name: Install global node_modules
           command: |
+            sudo yarn global add pnpm
             sudo pnpm add npm@7.19.1 --global
             sudo pnpm add firebase-tools@9.16.0 --global
             sudo pnpm add semver --global
