@@ -42,7 +42,7 @@ function useConsoleErrors() {
 
 
 
-function useDisabler(): Readonly<[boolean, () => void]> {
+function useDisabler(): readonly [boolean, () => void] {
 
     const key = 'console-messages.enabled';
 
