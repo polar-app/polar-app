@@ -8,7 +8,7 @@ import isDevBuild = DevBuild.isDevBuild;
 
 export function useConsoleMessages() {
 
-    const [messages, setMessages] = React.useState<ReadonlyArray<IConsoleMessage>>([]);
+    const [messages, setMessages] = React.useState<ReadonlyArray<IConsoleMessage>>(ConsoleRecorder.snapshot());
 
     const handlePostMessage = React.useCallback((event: MessageEvent<any>) => {
 
@@ -53,19 +53,24 @@ function useDisabler(): Readonly<[boolean, () => void]> {
 
 export const ConsoleMessages = React.memo(() => {
 
+    console.log("FIXMEL: within console messages");
+
     const messages = useConsoleMessages();
 
     const [disabled, doDisable] = useDisabler();
 
     if (disabled) {
+        console.log("FIXME3");
         return null;
     }
 
     if (! isDevBuild()) {
+        console.log("FIXME4");
         return null;
     }
 
     if (messages.length === 0) {
+        console.log("FIXME5");
         return null;
     }
 
