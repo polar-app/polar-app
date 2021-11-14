@@ -141,6 +141,10 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
 
 export const ConsoleError = React.memo(() => {
 
+    // TODO: this isn't tested to make sure it errors properly so we're going to
+    // have a story that can handle this in the future that we can test with
+    // cypress.
+
     const messages = useConsoleErrors();
 
     const [disabled, doDisable] = useDisabler();
