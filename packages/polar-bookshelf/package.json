@@ -16,11 +16,7 @@
     "dist-prepare": "",
     "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;",
     "compile-watch": "tsc --watch",
-    "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
-    "_test": "./scripts/test-runner.sh",
-    "___test": "mocha --timeout 20000 --exit 'web/js/**/*Test.js' 'apps/**/*Test.js'",
     "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;",
-    "__test": "scripts/test.sh",
     "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
     "webpack": "rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin/ && mkdir -p dist/public && npx --max_old_space_size=4096 webpack --config=webpack.config.js && pwd && ls -al dist/public && echo 'Webpack built successfully'",
     "webpack-serve": "node --max_old_space_size=4096 ../../node_modules/.bin/webpack serve --host=0.0.0.0",
@@ -29,13 +25,8 @@
     "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
     "mocha": "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc",
-    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;",
-    "tscwatch": "tsc --watch",
-    "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;",
-    "cimocha": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "cieslint": "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern"
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
