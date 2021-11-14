@@ -17,7 +17,7 @@ export interface Scripts {
     "mocha-ci"?: string;
     karma?: string;
     eslint?: string;
-    eslintfix?: string;
+    "eslint-fix"?: string;
     "eslint-ci"?: string;
     compile?: string;
     watch?: string;

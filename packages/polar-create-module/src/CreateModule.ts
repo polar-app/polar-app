@@ -189,7 +189,7 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
     // * if typescript is enabled for this module
     if (config.Typescript) {
         pkg.scripts.eslint = "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
-        pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+        pkg.scripts["eslint-fix"] = "eslint -c ./.eslintrc.json . --fix";
         pkg.scripts["eslint-ci"] = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
         pkg.scripts.tsc = 'tsc';
@@ -214,7 +214,7 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
 
     } else {
         delete pkg.scripts.eslint;
-        delete pkg.scripts.eslintfix;
+        delete pkg.scripts["eslint-fix"];
         delete pkg.scripts.compile;
         delete pkg.scripts.tsc;
         delete pkg.scripts.watch;
