@@ -20,6 +20,7 @@ export namespace ConsoleRecorder {
      */
     export const CHANNEL = 'console-recorder';
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     export const messages: IConsoleMessage[] = [];
 
     let initialized: boolean = false;
@@ -117,6 +118,8 @@ export namespace ConsoleRecorder {
                 broadcastMessage(message);
                 delegates.error(message, ...optionalParams);
             }
+
+            console.info("ConsoleRecorder initialized and capturing messages");
 
         } finally {
             initialized = true;
