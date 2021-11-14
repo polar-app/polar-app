@@ -12,17 +12,17 @@ export interface IPackageManifest {
 
 export interface Scripts {
     test?: string;
-    citest?: string;
+    "test-ci"?: string;
     mocha?: string;
-    cimocha?: string;
+    "mocha-ci"?: string;
     karma?: string;
     eslint?: string;
     eslintfix?: string;
-    cieslint?: string;
+    "eslint-ci"?: string;
     compile?: string;
     watch?: string;
     tsc?: string;
-    tscwatch?: string;
+    "tsc-watch"?: string;
 }
 
 export interface ICreateModuleConfig {

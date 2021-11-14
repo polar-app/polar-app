@@ -190,11 +190,11 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
     if (config.Typescript) {
         pkg.scripts.eslint = "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
         pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-        pkg.scripts.cieslint = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+        pkg.scripts["eslint-ci"] = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
         pkg.scripts.tsc = 'tsc';
         pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
-        pkg.scripts.tscwatch = 'tsc --watch';
+        pkg.scripts["tsc-watch"] = 'tsc --watch';
 
         pkg.devDependencies['polar-eslint'] = `${pkg.version}`;
         pkg.devDependencies['polar-typescript'] = `${pkg.version}`;
@@ -202,8 +202,8 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
         if (config.Mocha) {
             pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
             pkg.scripts.mocha = "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
-            pkg.scripts.citest = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
-            pkg.scripts.cimocha = "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+            pkg.scripts["test-ci"] = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;";
+            pkg.scripts["mocha-ci"] = "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
         }
 
         if (config.Karma) {
@@ -218,11 +218,11 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
         delete pkg.scripts.compile;
         delete pkg.scripts.tsc;
         delete pkg.scripts.watch;
-        delete pkg.scripts.tscwatch;
+        delete pkg.scripts["tsc-watch"];
         delete pkg.scripts.test;
         delete pkg.scripts.mocha;
-        delete pkg.scripts.citest;
-        delete pkg.scripts.cimocha;
+        delete pkg.scripts["test-ci"];
+        delete pkg.scripts["mocha-ci"];
         delete pkg.scripts.karma;
 
         delete pkg.devDependencies['polar-eslint'];
