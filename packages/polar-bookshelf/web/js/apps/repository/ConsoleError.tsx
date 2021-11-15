@@ -4,6 +4,7 @@ import {Button, Snackbar} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {DevBuild} from "../../util/DevBuild";
 import deepEqual from "deep-equal";
+import {ConsoleErrorMessages} from "./ConsoleErrorMessages";
 import IConsoleMessage = ConsoleRecorder.IConsoleMessage;
 import isDevBuild = DevBuild.isDevBuild;
 
@@ -43,7 +44,7 @@ function useConsoleErrors() {
 
 function useDisabler(): readonly [boolean, () => void] {
 
-    const key = 'console-messages.enabled';
+    const key = 'console-messages.disabled';
 
     const [disabled, setDisabled] = React.useState(() => localStorage.getItem(key) === 'true');
 
@@ -75,27 +76,21 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
 
     function computeLabelWithMatch(message: string): LabelWithMatch {
 
-        const expectations: ReadonlyArray<string> = [
-            "@firebase/firestore:", // this is a hack but I don't care
-            "@firebase/firestore: Firestore (8.10.0): You are overriding the original host. If you did not intend to override your settings, use {merge: true}.",
-            "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
-            'Warning: React.createFactory() is deprecated and w…SX or use React.createElement() directly instead.',
-            'Warning: forwardRef render functions accept exactly two parameters: props and ref. %s',
-            'Not registering service worker - localhost/webpack-dev-server',
-            "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
-        ];
+        const expected = ConsoleErrorMessages.isExpected(message);
 
-        for (const current of expectations) {
-            if (message.indexOf(current) !== -1) {
-                return {
-                    message,
-                    label: 'expected',
-                    match: current
-                }
+        if (expected) {
+            return {
+                message,
+                label: 'expected',
+                match: expected
             }
         }
 
-        return {label: 'unexpected', message, match: undefined}
+        return {
+            label: 'unexpected',
+            message,
+            match: undefined
+        };
 
     }
 
@@ -109,7 +104,9 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
                                        .sort((a, b) => a!.localeCompare(b!))
 
     const unexpectedFilter = (match: LabelWithMatch) => {
-        return ! match.message.startsWith("Slow task");
+        return ! match.message.startsWith("Slow task") &&
+                // Canny: Something went wrong identifying user
+               ! match.message.startsWith("Snapshot subscriber has high latency");
     }
 
     const unexpected = messagesWithLabels.filter(current => current.label === 'unexpected')
@@ -124,6 +121,21 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
             [
                 "@firebase/firestore:",
                 "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
+                "Not registering service worker - localhost/webpack-dev-server",
+                "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead.",
+                "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
+            ],
+            [
+                "@firebase/firestore:",
+                "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
+                "Not registering service worker - localhost/webpack-dev-server",
+                "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
+                "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
+            ],
+            [
+                "@firebase/firestore:",
+                "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
+                "Material-UI: useResizeContainer - The parent of the grid has an empty height.",
                 "Not registering service worker - localhost/webpack-dev-server",
                 "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
                 "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
