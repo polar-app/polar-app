@@ -6,9 +6,9 @@ import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
 import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
 import {BlockItems} from "../notes/BlockItems";
+import {useNotesIntegrationEnabled} from "../apps/repository/MigrationToBlockAnnotations";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
@@ -77,12 +77,13 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
 
 export const AnnotationSidebar = () => {
     const { docMeta } = useDocViewerStore(['docMeta']);
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    if (! notesIntegrationEnabled) {
         return <AnnotationSidebar2 />
     }
 

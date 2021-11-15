@@ -1,21 +1,21 @@
-import {Button, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Button, Box, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
 import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 import {MUIMenu} from '../mui/menu/MUIMenu';
 import {MUIMenuItem} from '../mui/menu/MUIMenuItem';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import DeleteIcon from '@material-ui/icons/Delete';
 import BorderAllIcon from '@material-ui/icons/BorderAll';
 import {useHistory} from "react-router";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {NameContent} from "./content/NameContent";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
+import {DateContent} from './content/DateContent';
+import moment from 'moment';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -23,17 +23,27 @@ export const useCreateNoteDialog = () => {
     const blocksStore = useBlocksStore();
 
     return React.useCallback(() => {
+        const getContent = (text: string) => {
+            const date = moment(text);
+
+            if (date.isValid()) {
+                return new DateContent({
+                    type: 'date',
+                    format: 'YYYY-MM-DD',
+                    data: date.format('YYYY-MM-DD'),
+                    links: [],
+                });
+            }
+
+            return new NameContent({ type: 'name', data: text, links: [] });
+        };
+
         dialogs.prompt({
             title: "Create new named note",
             autoFocus: true,
             onCancel: NULL_FUNCTION,
             onDone: (text) => {
-                const content = new NameContent({
-                    type: 'name',
-                    data: text,
-                    links: [],
-                });
-                const id = blocksStore.createNewNamedBlock({ content });
+                const id = blocksStore.createNewNamedBlock({ content: getContent(text) });
                 history.push(RoutePathNames.NOTE(id));
             }
         });
@@ -68,8 +78,8 @@ const useDesktopStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
+            flex: '0 0 50px',
+            height: 50,
             padding: '0 26px',
             background: theme.palette.background.paper
         },
@@ -97,40 +107,25 @@ const useDesktopStyles = makeStyles((theme) =>
 
 const DesktopNotesToolbar = () => {
     const classes = useDesktopStyles();
-    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
     const handleCreateNote = useCreateNoteDialog();
 
     return (
-        <>
-            <div className={classes.root}>
-                <div className={classes.left}>
-                    <Button color="primary"
-                            style={{ height: 38 }}
-                            variant="contained"
-                            disableElevation
-                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
-                            onClick={handleCreateNote}
-                            size="medium">
-                        Create a new note
-                    </Button>
-                    {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            style={{ height: 38, marginLeft: 10 }}
-                            disableElevation
-                            onClick={handlePurgeDocumentNotes}
-                        >
-                            Purge document blocks
-                        </Button>
-                    )}
-                </div>
-                <div className={classes.right}>
-                    <SearchForNote />
-                </div>
-            </div>
-            {/* <div className={classes.divider}><Divider /></div> */}
-        </>
+        <Box pr={2} pl={1} className={classes.root}>
+            <Box className={classes.left}>
+                <Button color="primary"
+                        style={{ height: 38, width: 284 }}
+                        variant="contained"
+                        disableElevation
+                        startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
+                        onClick={handleCreateNote}
+                        size="medium">
+                    Create a new note
+                </Button>
+            </Box>
+            <Box className={classes.right}>
+                <SearchForNote />
+            </Box>
+        </Box>
     );
 };
 
@@ -140,8 +135,8 @@ const useHandHeldStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
+            flex: '0 0 50px',
+            height: 50,
             padding: '0 14px',
             background: theme.palette.background.paper
         },
@@ -155,8 +150,6 @@ const HandheldNotesToolbar = () => {
     const classes = useHandHeldStyles();
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
-
-    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
 
     const handleDailyNotesNavigation = React.useCallback(() =>
         history.push(RoutePathNames.DAILY), [history]);
@@ -179,11 +172,6 @@ const HandheldNotesToolbar = () => {
                             <MUIMenuItem text="Create Note"
                                          icon={<AddCircleOutlineIcon />}
                                          onClick={createNoteDialog} />
-                            {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                                <MUIMenuItem text="Purge Document Blocks"
-                                             icon={<DeleteIcon />}
-                                             onClick={handlePurgeDocumentNotes} />
-                            )}
                         </div>
                     </MUIMenu>
                 </div>

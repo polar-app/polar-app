@@ -1,5 +1,5 @@
-import {CapturedContentEPUBGenerator} from "../captured/CapturedContentEPUBGenerator";
-import {DatastoreWriter} from "../datastore/DatastoreWriter";
+import {CapturedContentEPUBGenerator} from "polar-web-capture/src/captured/CapturedContentEPUBGenerator";
+import {DatastoreWriter} from "polar-backend-datastore/src/DatastoreWriter";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
@@ -8,7 +8,7 @@ import {WriteFileProgress, WriteFileProgressListener} from "polar-bookshelf/web/
 import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
 import {PHZMigrations} from "./PHZMigrations";
 import {PHZActiveMigrations} from "./PHZActiveMigrations";
-import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
+import {ExtensionContentCapture} from "polar-web-capture/src/capture/ExtensionContentCapture";
 import WrittenDoc = DatastoreWriter.WrittenDoc;
 import IWriteOpts = DatastoreWriter.IWriteOpts;
 import {ErrorType} from "polar-bookshelf/web/js/ui/data_loader/UseSnapshotSubscriber";

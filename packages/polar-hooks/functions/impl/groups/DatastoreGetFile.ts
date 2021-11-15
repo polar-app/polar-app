@@ -1,14 +1,13 @@
 import * as functions from 'firebase-functions';
-import {GetSignedUrlConfig} from '@google-cloud/storage';
-import {File} from '@google-cloud/storage';
-import {FileRef} from '../polar-shared/datastore/Datastore';
-import {FirebaseDatastores} from '../polar-shared/datastore/FirebaseDatastores';
+import {File, GetSignedUrlConfig} from '@google-cloud/storage';
+import {FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {trace} from '../trace';
 import {Datastores} from '../datastore/Datastores';
 import {DatastoreRequests} from '../datastore/DatastoreRequests';
 import {IDUsers} from '../util/IDUsers';
-import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
-import { Lazy } from '../util/Lazy';
+import {Lazy} from '../util/Lazy';
+import {Backend} from 'polar-shared/src/datastore/Backend';
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);

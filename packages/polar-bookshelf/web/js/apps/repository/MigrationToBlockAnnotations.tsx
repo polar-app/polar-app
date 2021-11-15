@@ -7,7 +7,7 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
-import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
+import {JSONRPC, JSONRPCError} from "../../datastore/sharing/rpc/JSONRPC";
 import {useStateRef} from "../../hooks/ReactHooks";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -22,6 +22,7 @@ import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Analytics} from "../../analytics/Analytics";
+import {useFeatureToggle, useFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 interface IProps {
     readonly children: JSX.Element;
@@ -30,6 +31,12 @@ interface IProps {
 const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const MIGRATION_NAME = 'block-annotations';
 const ANALYTICS_EVENT_PREFIX = 'migration-to-block-annotations';
+
+const FEATURE_TOGGLE_NAME = 'notes-integration';
+
+export const useNotesIntegrationEnabled = () => {
+    return useFeatureToggle(FEATURE_TOGGLE_NAME);
+};
 
 type ProgressData = {
     readonly total: number;
@@ -177,6 +184,7 @@ function useMigrationExecutor() {
     const { firestore, user } = useFirestore();
     const [progressData, setProgressData, progressDataRef] = useStateRef<ProgressData | null>(null);
     const [error, setError] = React.useState<Error | null>(null);
+    const featureToggler = useFeatureToggler();
 
     /**
      * Migrate the logged in user's data to the new blocks system.
@@ -211,8 +219,15 @@ function useMigrationExecutor() {
             try {
                 await MigrationToBlockAnnotationsHelpers.migrateDocMeta(id);
             } catch (e) {
-                console.log(`Migration of doc_meta with the id: ${id} has failed`, e);
-                failCount += 1;
+                if (e instanceof JSONRPCError) {
+                    console.log(`Migration of doc_meta with the id: ${id} has failed`, e);
+                    failCount += 1;
+                } else {
+
+
+                    // Network error I think
+                    throw e;
+                }
             }
 
             setProgressData(({
@@ -228,7 +243,9 @@ function useMigrationExecutor() {
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
 
-    }, [setProgressData, progressDataRef, firestore, user]);
+        await featureToggler(FEATURE_TOGGLE_NAME);
+
+    }, [setProgressData, progressDataRef, firestore, user, featureToggler]);
 
     /**
      * Start the migration process
@@ -263,39 +280,54 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
     const [migrationSnapshot, error] = useMigrationSnapshotByName(MIGRATION_NAME);
     const { progressData, error: migrationError, migrationExecutor } = useMigrationExecutor();
     const [docMetaSnapshot, docMetasSnapshotError] = MigrationToBlockAnnotationsHelpers.useDocMetaMigrationSnapshotFromServer();
-    const { firestore, user } = useFirestore();
+    const [skipped, setSkipped] = React.useState<boolean>(false);
 
-    const isMigrationComplete = React.useMemo((): boolean | undefined => {
+    const handleSkip = React.useCallback(() => setSkipped(true), [setSkipped]);
+
+    const migrationStatus = React.useMemo((): 'notstarted' | 'started' | 'completed' | undefined => {
+
         if (! migrationSnapshot) {
             return undefined;
         }
 
-        if (migrationSnapshot.docs.length > 0 && migrationSnapshot.docs[0].status === 'completed') {
-            return true;
+        if (migrationSnapshot.docs.length === 0) {
+            return 'notstarted';
         }
 
-        return false;
+        if (migrationSnapshot.docs[0].status === 'completed') {
+            return 'completed';
+        }
+
+        return 'started';
+
     }, [migrationSnapshot]);
 
     React.useEffect(() => {
-        if (! user) {
-            return;
-        }
 
-        if (MIGRATION_TO_BLOCKS_ENABLED && isMigrationComplete === false && docMetaSnapshot) {
+        /**
+         * If the migration was started but not finished
+         * then just resume it
+         */
+        if (migrationStatus === 'started' && docMetaSnapshot) {
             migrationExecutor(docMetaSnapshot);
         }
 
-    }, [isMigrationComplete, docMetaSnapshot, migrationExecutor, user, firestore]);
+    }, [migrationStatus, docMetaSnapshot, migrationExecutor]);
 
+    const handleStart = React.useCallback(() => {
+
+        if (migrationStatus === 'notstarted' && docMetaSnapshot) {
+            migrationExecutor(docMetaSnapshot);
+        }
+
+    }, [migrationExecutor, migrationStatus, docMetaSnapshot]);
 
     if (! migrationSnapshot) {
         return <LinearProgress />;
     }
 
 
-    if (! MIGRATION_TO_BLOCKS_ENABLED
-        || (migrationSnapshot.docs.length > 0 && migrationSnapshot.docs[0].status === 'completed')) {
+    if (! MIGRATION_TO_BLOCKS_ENABLED || skipped || migrationStatus === 'completed') {
 
         return props.children;
     }
@@ -322,19 +354,17 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         );
     }
 
-    if (! progressData) {
-        return (
-            <AdaptiveDialog>
-                <MigrationToBlockAnnotationsMain />
-            </AdaptiveDialog>
-        );
-    }
-
     const percentage = progressData ? Percentages.calculate(progressData.current, progressData.total) : 0;
 
     return (
         <AdaptiveDialog>
-            <MigrationToBlockAnnotationsMain progress={percentage} />
+            <MigrationToBlockAnnotationsMain
+                onSkip={handleSkip}
+                onStart={handleStart}
+                progress={percentage}
+                started={migrationStatus === 'started'}
+                skippable
+            />
         </AdaptiveDialog>
     );
 });
