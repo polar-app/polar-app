@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) =>
             paddingBottom: '5px',
             zIndex: 10,
             transform: 'translateX(-50%)',
-            userSelect: 'none',
+            userSelect: 'none'
         },
         fakeRange: {
             position: 'absolute',
