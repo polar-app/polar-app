@@ -29,13 +29,11 @@
     "polar-karma": "0.0.0",
     "polar-test": "0.0.0",
     "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0"
+    "polar-webpack": "0.0.0",
+    "@google-cloud/firestore": "=4.15.1",
+    "firebase": "=8.10.0"
   },
   "dependencies": {
     "polar-shared": "0.0.0"
-  },
-  "peerDependencies": {
-    "firebase": "=8.10.0",
-    "firebase-admin": "=10.0.0"
   }
 }
