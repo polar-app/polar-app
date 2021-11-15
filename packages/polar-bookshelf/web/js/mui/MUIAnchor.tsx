@@ -17,10 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             "& a:hover": {
                 color: theme.palette.info.dark,
-            },
-            "& a:active": {
-                color: theme.palette.info.contrastText,
-            },
+            }
         }
     })
 
