@@ -32,18 +32,45 @@ platform :ios do
 
   lane :release do
     match(type: "appstore")
-    app_store_connect_api_key
-    vnum = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
-    increment_version_number(version_number: vnum, xcodeproj: "PolarReactNative.xcodeproj")
-    increment_build_number
+
+    # Connect to the app store programmatically
+    api_key = app_store_connect_api_key
+
+    # Get the latest build number from the live or TestFlight build
+    build_num = app_store_build_number(
+        api_key: api_key,
+        live: false
+    )
+
+    # Increment the build number with +1
+    increment_build_number(build_number: lane_context[SharedValues::LATEST_BUILD_NUMBER]+1)
+
+    # Set the version number to match the build number, to avoid any confusion
+    increment_version_number(version_number: lane_context[SharedValues::BUILD_NUMBER])
+
+    # Build the binary locally
     build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+
+    # Upload the binary to live track and submit for review
     upload_to_app_store(
         force: true, # Skip HTMl report verification
         skip_screenshots: true,
         submit_for_review: true,
         precheck_include_in_app_purchases: false,
+
+        # Should the app be automatically released once it's approved?
+        automatic_release: true,
+
+        # Rejects the previously submitted build if it's in a state where it's possible
+        reject_if_possible: true,
+
         submission_information: {
-          export_compliance_uses_encryption: false
+          export_compliance_uses_encryption: false,
+          add_id_info_uses_idfa: true,
+        },
+        release_notes: {
+            "default"=>"Bugfixes",
+            "en-US"=>"Bugfixes",
         }
     )
   end
