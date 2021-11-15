@@ -7,7 +7,6 @@ import deepEqual from "deep-equal";
 import IConsoleMessage = ConsoleRecorder.IConsoleMessage;
 import isDevBuild = DevBuild.isDevBuild;
 
-
 function consoleErrorsSnapshot() {
     return ConsoleRecorder.snapshot().filter(current => ['error', 'warn'].includes(current.level));
 }
@@ -106,7 +105,7 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
 
     const expected = messagesWithLabels.filter(current => current.label === 'expected')
                                        .filter(current => current.match !== undefined)
-                                       .map(current => current.match)
+                                       .map(current => current.match!)
                                        .sort((a, b) => a!.localeCompare(b!))
 
     const unexpectedFilter = (match: LabelWithMatch) => {
@@ -116,16 +115,35 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
     const unexpected = messagesWithLabels.filter(current => current.label === 'unexpected')
                                          .filter(current => unexpectedFilter(current));
 
-    // the accepted array of messages we accept from the expected...
-    const accepted = [
-        "@firebase/firestore:",
-        "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
-        "Not registering service worker - localhost/webpack-dev-server",
-        "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
-        "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
-    ];
+    function isExpectedProfile() {
 
-    if (! deepEqual(expected, accepted)) {
+        type ExpectedProfile = ReadonlyArray<string>;
+
+        // the accepted array of messages we accept from the expected...
+        const EXPECTED_PROFILES: ReadonlyArray<ExpectedProfile> = [
+            [
+                "@firebase/firestore:",
+                "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
+                "Not registering service worker - localhost/webpack-dev-server",
+                "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
+                "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
+            ]
+        ];
+
+        for (const expectedProfile of EXPECTED_PROFILES) {
+
+            if (deepEqual(expected, expectedProfile)) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
+
+    if (! isExpectedProfile()) {
         console.log("Did not expect messages: ", expected);
         return 'invalid-expected-signature';
     }
