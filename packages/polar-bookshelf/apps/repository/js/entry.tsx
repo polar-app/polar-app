@@ -1,5 +1,10 @@
+import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 import {Logging} from '../../../web/js/logger/Logging';
 import {Repository} from "../../../web/js/apps/repository/Repository";
+
+// need to start the ConsoleRecorder as soon as possible so that we capture even
+// when libraries are being imported
+ConsoleRecorder.init();
 
 async function start() {
 

@@ -352,7 +352,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             dialogs.prompt({
                 title: "Create new " + type,
-                description: "May not create spaces and some extended unicode characters.",
                 autoFocus: true,
                 onCancel: NULL_FUNCTION,
                 onDone: (text) => doCreateUserTag(text, type)

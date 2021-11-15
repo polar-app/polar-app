@@ -74,6 +74,7 @@ import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardC
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
+import {ConsoleError} from './ConsoleError';
 
 interface IProps {
     readonly app: App;
@@ -263,6 +264,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     return (
         <GlobalProviders>
+            <ConsoleError/>
             <Switch>
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>

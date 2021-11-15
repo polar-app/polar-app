@@ -156,7 +156,7 @@ commands:
             lerna run cieslint --no-bail >> branch-output.txt || true
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
-            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)) 
+            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
             RED='\033[0;31m'
             NC='\033[0m'
             if [ ! -z "$OUTPUT" ]; then echo -e "\n ${RED} Please Fix the Following Errors: \n ${NC} $OUTPUT" && exit 1; fi;
@@ -620,17 +620,17 @@ workflows:
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
-      # - cypress/run:
-      #     name: cypress-desktop-chrome
-      #     executor: ff-chrome
-      #     requires:
-      #       - build-polar-app
-      #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
-      #     wait-on: "http://localhost:8050"
-      #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
-      #     attach-workspace: true
-      #     store_artifacts: true
+      - cypress/run:
+          name: cypress-desktop-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
+          attach-workspace: true
+          store_artifacts: true
 
       # # @ Run Cypress tests for firefox-desktop (1080p)
       # - cypress/run:
@@ -694,8 +694,8 @@ workflows:
             - build-polar-app
             - mocha
             - karma
+            - cypress-desktop-chrome
             # - cypress-desktop-firefox
-            # - cypress-desktop-chrome
             # - cypress-tablet-chrome
             # - cypress-phone-chrome
           filters:
