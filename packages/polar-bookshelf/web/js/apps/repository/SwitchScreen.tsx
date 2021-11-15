@@ -88,7 +88,7 @@ export const SwitchScreen = () => {
                                 <TableBody key={column.uuid}>
                                     <TableRow onClick={()=>history.push('/doc/'+column.fingerprint)}>
                                         <TableCell key={column.uuid} className={classes.th}>
-                                            {column.title}
+                                            {column.title || "Untitled"}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
