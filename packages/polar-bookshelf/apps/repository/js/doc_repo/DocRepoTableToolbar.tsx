@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) =>
         root: {
             display: 'flex',
             flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
+            paddingTop: theme.spacing(0.3),
+            paddingBottom: theme.spacing(0.3),
             paddingRight: theme.spacing(1),
         }
     }),

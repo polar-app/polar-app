@@ -80,7 +80,6 @@ const useDesktopStyles = makeStyles((theme) =>
             alignItems: 'center',
             flex: '0 0 50px',
             height: 50,
-            padding: '0 26px',
             background: theme.palette.background.paper
         },
         divider: {
