@@ -38,7 +38,8 @@
     "polar-webpack": "0.0.0"
   },
   "dependencies": {
-    "@sendgrid/mail": "=7.3.0"
+    "@sendgrid/mail": "=7.3.0",
+    "@sendgrid/client": "=7.3.0"
   },
   "files": [
     "**/*.js",
