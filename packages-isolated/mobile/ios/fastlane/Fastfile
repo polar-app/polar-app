@@ -32,10 +32,17 @@ platform :ios do
 
   lane :release do
     match(type: "appstore")
-    app_store_connect_api_key
+#     api_key = app_store_connect_api_key(key_id: "6QG288L5PD", issuer_id: "5436540c-a61f-4572-99f8-0fc5879a8034", key_filepath: "AuthKey_6QG288L5PD.p8")
+    api_key = app_store_connect_api_key
 #     vnum = sh("curl -u $CI_PUBLISHER_NAME:$GITHUB_TOKEN https://api.github.com/repos/polar-app/polar-app/releases/latest -s | jq .tag_name | tr -d '\"'")
 #     increment_version_number(version_number: vnum, xcodeproj: "PolarReactNative.xcodeproj")
-    increment_build_number
+
+    # Get the latest build number
+    build_num = app_store_build_number(
+        api_key: api_key,
+        live: false
+    )
+    increment_build_number(build_number: lane_context[SharedValues::LATEST_BUILD_NUMBER]+1)
     increment_version_number(version_number: lane_context[SharedValues::BUILD_NUMBER])
     build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
     upload_to_app_store(
