@@ -9,7 +9,6 @@ import {Box, Typography, Divider} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import {Link, useHistory} from 'react-router-dom';
 import {useAuthHandler, useTriggerStartTokenAuth, useTriggerVerifyTokenAuth} from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics, useAnalytics} from "../../../../web/js/analytics/Analytics";
