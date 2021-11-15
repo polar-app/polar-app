@@ -2,7 +2,7 @@ import { Box } from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React from "react";
-import { Link } from "react-router-dom";
+import { MUIAnchor } from "../../../../web/js/mui/MUIAnchor";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) =>
             marginTop: theme.spacing(2),
             marginBottom: theme.spacing(2),
             color: theme.palette.text.secondary,
-            fontSize: 10,
+            fontSize: 12,
             textAlign: 'center',
             "& a:link": {
                 color: theme.palette.text.secondary,
@@ -43,23 +43,8 @@ export const AuthLegalDisclaimer = () => {
     return (
         <Box component='p' className={classes.legal}>
             You acknowledge that you will read, and agree to
-            our <LinkAnchor href="https://getpolarized.io/terms/" text={' Terms of Service '}/> 
-            and <LinkAnchor href="https://getpolarized.io/privacy-policy" text={' Privacy Policy '}/> 
+            our <MUIAnchor href="https://getpolarized.io/terms/" className={classes.linkDecoration}> Terms of Service </MUIAnchor> 
+            and <MUIAnchor href="https://getpolarized.io/privacy-policy" className={classes.linkDecoration}> Privacy Policy </MUIAnchor> 
         </Box>
     );
 }
-interface LinkAnchorProps {
-    readonly href: string;
-    readonly text: string;
-}
-
-export const LinkAnchor = React.memo(function LinkAnchor(props: LinkAnchorProps){
-    // const linkLoader = useLinkLoader();
-    const classes = useStyles();
-
-    return(
-        <Link to={props.href} className={classes.linkDecoration}>
-            {props.text}
-        </Link>
-    );
-});

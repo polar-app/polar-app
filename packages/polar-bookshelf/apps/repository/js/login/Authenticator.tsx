@@ -19,6 +19,7 @@ import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
+import { MUIAnchorButton } from '../../../../web/js/mui/MUIAnchorButton';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -446,20 +447,6 @@ export const RegisterForBetaButton = () => {
         </>
     )
 }
-
-interface LinkButtonProps {
-    readonly href: string;
-    readonly text: string;
-}
-
-export const LinkButton = React.memo(function(props: LinkButtonProps) {
-    return( 
-        <Button component={Link} to={props.href} variant="text">
-            {props.text}
-        </Button>
-    );
-});
-
 export const LogoAndTextSideBySide = () => {
     return (
         <div style={{display: 'flex'}}>
@@ -467,11 +454,6 @@ export const LogoAndTextSideBySide = () => {
                 <Box m={1}>
                     <img src={PolarLogo} alt={'Polar'} />
                 </Box>
-                {/* <Box m={1}>
-                    <Typography variant="h2" component="div">
-                        POLAR
-                    </Typography>
-                </Box> */}
             </div>
         </div>
     )
@@ -522,7 +504,9 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 export const PrivateBetaRegisterAuthContent = () => {
     return (
         <AuthContent title="Register for Private Beta"
-                     alternative={<LinkButton text={'or sign-in with existing account'} href={'/sign-in'}/>}>
+                     alternative={<MUIAnchorButton href={'/sign-in'}>
+                         or sign-in with existing account
+                     </MUIAnchorButton>}>
 
             <RegisterForBetaButton/>
 
@@ -533,7 +517,9 @@ export const PrivateBetaRegisterAuthContent = () => {
 export const SignInAuthContent = () => {
     return (
         <AuthContent title="Sign In to Polar"
-            alternative={<LinkButton text={'or register for private beta'} href={'/create-account'}/>}>
+            alternative={<MUIAnchorButton href={'/create-account'}>
+                or register for private beta
+            </MUIAnchorButton>}>
         <div style={{
                 display: 'flex',
                 flexDirection: 'column'
