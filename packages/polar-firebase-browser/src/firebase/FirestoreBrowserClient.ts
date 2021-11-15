@@ -77,6 +77,8 @@ export namespace FirestoreBrowserClient {
             return;
         }
 
+        console.log("Initializing firestore with: ", opts);
+
         instance = await firestoreProvider(opts);
         return instance;
     }
