@@ -17,19 +17,7 @@
     "**/@types/pdfjs-dist": "2.1.71-polar.2",
     "**/@types/jest": "^26.0.24",
     "**/@types/mocha": "*",
-    "**/@typescript-eslint/eslint-plugin": "=4.31.0",
-    "**/@typescript-eslint/parser": "*",
-    "**/eslint-config-standard-with-typescript": "*",
-    "**/eslint": "*",
-    "**/eslint-config-prettier": "*",
-    "**/eslint-plugin-import": "*",
-    "**/eslint-plugin-jsdoc": "*",
-    "**/eslint-plugin-prefer-arrow": "*",
-    "**/eslint-plugin-react-hooks": "*",
-    "**/prettier": "*",
-    "**/eslint-plugin-react": "*",
-    "**/eslint-plugin-node": "*",
-    "**/eslint-plugin-promise": "*"
+    "**/prettier": "*"
   },
   "scripts": {
     "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",

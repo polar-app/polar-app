@@ -1,10 +1,8 @@
 import React from "react";
 import {Box, createStyles, Divider, makeStyles, Typography} from "@material-ui/core";
 import {useStateRef} from "../hooks/ReactHooks";
-import {useBlocksStore} from "./store/BlocksStore";
-import {Block as BlockClass} from "./store/Block";
+import {INamedBlockEntry, useBlocksStore} from "./store/BlocksStore";
 import {DateContent} from "./content/DateContent";
-import {BlockPredicates} from "./store/BlockPredicates";
 import {DateContents} from "./content/DateContents";
 import {useInView} from "react-intersection-observer";
 import {NotePaper} from "./NotePaper";
@@ -16,6 +14,9 @@ import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
 import {NoteStack} from "./stacks/NoteStack";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
+import {observer} from "mobx-react-lite";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import moment from "moment";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -28,23 +29,25 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export const DailyNotesScreen: React.FC = () => {
+export const DailyNotesScreen: React.FC = observer(() => {
     const classes = useStyles();
     const [threshold, setThreshold, thresholdRef] = useStateRef(0);
-    const [dailyNotes, setDailyNotes, dailyNotesRef] = useStateRef<ReadonlyArray<BlockClass<DateContent>>>([]);
+    const [dailyNoteIDs, setDailyNoteIDs] = useStateRef<ReadonlyArray<BlockIDStr>>([]);
     const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
-        const namedBlocks = blocksStore.namedBlocks;
-        const dateBlocks = namedBlocks.filter(BlockPredicates.isDateBlock)
+        const dateBlocks = blocksStore
+            .namedBlockEntries
+            .filter(({ type }) => type === 'date');
+
         const descendingDateSorter = (
-            a: Readonly<BlockClass<DateContent>>,
-            b: Readonly<BlockClass<DateContent>>
-        ) => (new Date(b.content.data)).getTime() - (new Date(a.content.data)).getTime();
+            a: Readonly<INamedBlockEntry>,
+            b: Readonly<INamedBlockEntry>,
+        ) => moment(b.label).diff(moment(a.label), 'seconds');
 
         const notes = [...dateBlocks].sort(descendingDateSorter);
-        setDailyNotes(notes);
-    }, [blocksStore, setDailyNotes]);
+        setDailyNoteIDs(notes.map(({ id }) => id));
+    }, [blocksStore.namedBlockEntries, setDailyNoteIDs]);
 
     React.useEffect(() => {
         // Add a note for today if it doesn't exist & focus the first child
@@ -62,7 +65,7 @@ export const DailyNotesScreen: React.FC = () => {
     }, [blocksStore]);
 
     const rootRef = React.useRef<HTMLDivElement>(null);
-    const visibleNotes = React.useMemo(() => dailyNotes.slice(0, threshold), [dailyNotes, threshold]);
+    const visibleNotes = React.useMemo(() => dailyNoteIDs.slice(0, threshold), [dailyNoteIDs, threshold]);
 
     const hasMore = threshold === visibleNotes.length;
     const {ref, inView} = useInView({
@@ -78,7 +81,7 @@ export const DailyNotesScreen: React.FC = () => {
         if (inView) {
             setThreshold(threshold + DAILY_NOTES_CHUNK_SIZE);
         }
-    }, [inView, dailyNotesRef, thresholdRef, setThreshold]);
+    }, [inView, setThreshold, thresholdRef]);
 
 
     return (
@@ -89,7 +92,7 @@ export const DailyNotesScreen: React.FC = () => {
             <NotesToolbar />
             <NoteStack target={RoutePathNames.DAILY} rootBannerLabel="Daily notes">
                 <NotePaper ref={rootRef}>
-                    {visibleNotes.map(({ id }, i) => (
+                    {visibleNotes.map((id, i) => (
                         <div key={id} className="NoteTree">
                             {i !== 0 && <Divider style={{ margin: '10px 14px' }} />}
                             <BlocksTreeProvider root={id} autoExpandRoot>
@@ -127,5 +130,5 @@ export const DailyNotesScreen: React.FC = () => {
             </NoteStack>
         </>
     );
-};
+});
 

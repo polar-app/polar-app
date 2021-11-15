@@ -156,7 +156,7 @@ commands:
             lerna run cieslint --no-bail >> branch-output.txt || true
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
-            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt)) 
+            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
             RED='\033[0;31m'
             NC='\033[0m'
             if [ ! -z "$OUTPUT" ]; then echo -e "\n ${RED} Please Fix the Following Errors: \n ${NC} $OUTPUT" && exit 1; fi;
@@ -350,7 +350,6 @@ jobs:
             source packages/polar-bookshelf-secrets/credentials.sh
             rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
             lerna run test
-            yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
             (cd packages/polar-webapp-dist && yarn run dist)
       - run:

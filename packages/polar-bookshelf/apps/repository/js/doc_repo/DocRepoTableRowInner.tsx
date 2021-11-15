@@ -361,10 +361,8 @@ export namespace cells {
 
     export const Check = React.memo(function Check(props: CheckboxProps) {
 
-        const {viewID, viewIndex, selected} = props;
+        const {viewID, selected} = props;
         const {selectRow} = useDocRepoCallbacks();
-
-        const labelId = `enhanced-table-checkbox-${viewIndex}`;
 
         return (
             <TableCell padding="none">

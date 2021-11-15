@@ -5,14 +5,14 @@ import {Datastores} from "./Datastores";
 import {File} from "@google-cloud/storage";
 import {Paths} from "polar-shared/src/util/Paths";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
-import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {FirebaseFileStorage} from "polar-firebase/src/firebase/files/FirebaseFileStorage";
 import {DocCaches} from "./DocCaches";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {URLs} from "polar-shared/src/util/URLs";
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
-import { Lazy } from "polar-shared/src/util/Lazy";
+import {Lazy} from "polar-shared/src/util/Lazy";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 const log = Logger.create();
 
