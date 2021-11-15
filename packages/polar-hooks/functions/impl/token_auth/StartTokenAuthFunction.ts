@@ -86,7 +86,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         return {
             to: email,
             from: 'noreply@getpolarized.io',
-            subject: `Please Sign in to Polar with code ${p0} ${p1}`,
+            subject: `Please use code ${p0} ${p1} to sign in to Polar`,
             html: `<p>Please use the following code to sign in to Polar:</p>
                    <p><span style="font-size: 30px;"><b>${p0} ${p1}</b></span></p>
                    <p style="font-size: smaller; color: #c6c6c6;">Sent via ${provider}</p>`
