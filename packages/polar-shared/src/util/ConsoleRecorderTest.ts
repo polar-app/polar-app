@@ -7,7 +7,7 @@ xdescribe('ConsoleRecord', function() {
 
     beforeEach(() => {
         TestingTime.freeze();
-        ConsoleRecorder.start();
+        ConsoleRecorder.init();
     });
 
     afterEach(() => {
