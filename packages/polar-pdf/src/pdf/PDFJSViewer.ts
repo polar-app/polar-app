@@ -1,4 +1,5 @@
 import {ILinkTarget, IPageViewport, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
@@ -141,10 +142,10 @@ export interface IPDFRenderingQueueConstructor {
     new(): IPDFRenderingQueue;
 }
 
-export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
-export const EventBus: EventBusConstructor = viewer.EventBus;
-export const PDFPageView: IPDFPageViewConstructor = viewer.PDFPageView;
-export const PDFViewer: IPDFViewerConstructor = viewer.PDFViewer;
-export const PDFLinkService: IPDFLinkServiceConstructor = viewer.PDFLinkService;
-export const PDFRenderingQueue: IPDFRenderingQueueConstructor = viewer.PDFRenderingQueue;
+export const PDFFindController: PDFFindControllerConstructor = Preconditions.assertPresent(viewer.PDFFindController);
+export const EventBus: EventBusConstructor = Preconditions.assertPresent(viewer.EventBus);
+export const PDFPageView: IPDFPageViewConstructor = Preconditions.assertPresent(viewer.PDFPageView);
+export const PDFViewer: IPDFViewerConstructor = Preconditions.assertPresent(viewer.PDFViewer);
+export const PDFLinkService: IPDFLinkServiceConstructor = Preconditions.assertPresent(viewer.PDFLinkService);
+export const PDFRenderingQueue: IPDFRenderingQueueConstructor = Preconditions.assertPresent(viewer.PDFRenderingQueue);
 

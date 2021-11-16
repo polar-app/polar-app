@@ -1,3 +1,4 @@
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const _PDFSJ = require('pdfjs-dist');
 
@@ -138,7 +139,7 @@ export interface ILinkTarget {
     readonly BLANK: any;
 }
 
-export const Util: IUtil = _PDFSJ.Util;
-export const PDFJS: IPDFJS = _PDFSJ;
+export const Util: IUtil = Preconditions.assertPresent(_PDFSJ.Util);
+export const PDFJS: IPDFJS = Preconditions.assertPresent(_PDFSJ);
 
-export const LinkTarget: ILinkTarget = _PDFSJ.LinkTarget;
+export const LinkTarget: ILinkTarget = Preconditions.assertPresent(_PDFSJ.LinkTarget);
