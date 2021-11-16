@@ -2,9 +2,25 @@ import {ILinkTarget, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
+interface Name {
+    name: string;
+}
 
-export type Outline = any;
-export type Destination = any;
+export interface Outline {
+
+    title: string;
+    bold: boolean;
+    italic: boolean;
+    dest: Array<Name | string | any[]> | null;
+    unsafeUrl?: string;
+    url: string | null;
+    items: Outline[];
+
+}
+
+export interface Destination {
+
+}
 
 export interface FindCommandState {
     query: string;
@@ -22,9 +38,9 @@ export interface IPDFFindController {
 }
 
 interface PDFFindControllerOptions {
-    pdfViewer?: any;
-    linkService: any;
-    eventBus: any;
+    pdfViewer?: IPDFViewer;
+    linkService: IPDFLinkService;
+    eventBus: IEventBus;
 }
 
 export interface PDFFindControllerConstructor {
@@ -61,7 +77,7 @@ export interface IPDFPageView {
 export interface IPDFPageViewOptions {
 
     container: HTMLDivElement;
-    eventBus: any; // FIXME
+    eventBus: IEventBus;
     id: number;
     scale: number;
     defaultViewport: any; // FIXME
