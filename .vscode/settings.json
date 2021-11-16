@@ -129,6 +129,7 @@
     }
   ],
   //"eslint.workingDirectories": [{ "mode": "auto" }],
+  "editor.bracketPairColorization.enabled": true,
   "files.exclude": {
     ".pytest_cache": true,
     ".pnpm-store": true,
