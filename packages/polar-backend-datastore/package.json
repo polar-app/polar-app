@@ -20,7 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "polar-bookshelf": "0.0.0",
-    "polar-shared": "0.0.0"
+    "polar-shared": "0.0.0",
+    "@material-ui/styles": "=4.11.4"
   },
   "devDependencies": {}
 }

@@ -35,7 +35,10 @@
     "polar-backend-shared": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-webapp-dist": "0.0.0",
-    "uuid": "3.3.3"
+    "uuid": "3.3.3",
+    "firebase-functions": "3.16.0",
+    "@sentry/node": "6.15.0",
+    "@google-cloud/storage": "=5.16.0"
   },
   "devDependencies": {}
 }

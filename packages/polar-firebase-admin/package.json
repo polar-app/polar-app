@@ -32,6 +32,7 @@
     "firebase-admin": "=10.0.0",
     "polar-firebase": "0.0.0",
     "polar-firestore-like": "0.0.0",
+    "firebase-functions": "=3.16.0",
     "polar-shared": "0.0.0"
   }
 }

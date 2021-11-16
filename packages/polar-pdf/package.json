@@ -32,7 +32,7 @@
     "@types/pdfjs-dist": "2.1.71-polar.2",
     "canvas": "=2.8.0",
     "jsdom": "=16.7.0",
-    "pdfjs-dist": "=2.8.250-polar.3",
+    "pdfjs-dist": "=2.8.250-polar.4",
     "polar-shared": "0.0.0",
     "polar-test": "0.0.0"
   },
