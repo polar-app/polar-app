@@ -8,13 +8,12 @@ import {
     IPDFRenderingQueue,
     IPDFViewer,
     IPDFViewerOptions,
-    Outline,
     PDFFindController,
     PDFLinkService,
     PDFRenderingQueue,
     PDFViewer
 } from 'polar-pdf/src/pdf/PDFJSViewer';
-import {IPDFDocumentLoadingTask, IPDFDocumentProxy, LinkTarget} from 'polar-pdf/src/pdf/PDFJS'
+import {IPDFDocumentLoadingTask, IPDFDocumentProxy, LinkTarget, Outline} from 'polar-pdf/src/pdf/PDFJS'
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";

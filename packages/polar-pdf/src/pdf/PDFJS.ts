@@ -55,6 +55,22 @@ export interface IMetadataProxy {
 
 }
 
+interface Name {
+    name: string;
+}
+
+export interface Outline {
+
+    title: string;
+    bold: boolean;
+    italic: boolean;
+    dest: Array<Name | string | any[]> | null;
+    unsafeUrl?: string;
+    url: string | null;
+    items: Outline[];
+
+}
+
 export interface IPDFDocumentProxy {
 
     /**
@@ -77,7 +93,7 @@ export interface IPDFDocumentProxy {
 
     getMetadata(): Promise<IMetadataProxy>;
 
-    getOutline(): any; // FIXME
+    getOutline(): Promise<Outline[] | null>;
 
 }
 
@@ -125,4 +141,4 @@ export interface ILinkTarget {
 export const Util: IUtil = _PDFSJ.Util;
 export const PDFJS: IPDFJS = _PDFSJ;
 
-export const LinkTarget: any = _PDFSJ.LinkTarget; // FIXME
+export const LinkTarget: ILinkTarget = _PDFSJ.LinkTarget;

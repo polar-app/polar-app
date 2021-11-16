@@ -2,21 +2,6 @@ import {ILinkTarget, IPageViewport, IPDFDocumentProxy, IPDFPageProxy} from "./PD
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
-interface Name {
-    name: string;
-}
-
-export interface Outline {
-
-    title: string;
-    bold: boolean;
-    italic: boolean;
-    dest: Array<Name | string | any[]> | null;
-    unsafeUrl?: string;
-    url: string | null;
-    items: Outline[];
-
-}
 
 export interface Destination {
 
