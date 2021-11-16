@@ -46,7 +46,7 @@
     "dist-release-win": "yarn run do-release-init && yarn run do-release-win",
     "dist-release-macos": "yarn run do-release-init && yarn run do-release-macos",
     "dist-release-site": "cd packages/polar-site2 && yarn run publish",
-    "purge-node-modules": "rm -rf node_modules && npx lerna exec --concurrency=1 --parallel=false -- rm -rf node_modules",
+    "purge-node-modules": "rm -rf node_modules && npx lerna exec -- rm -rf node_modules",
     "ls-packages": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'echo ${PWD}'",
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n",
     "find-package-versions": "lerna exec --concurrency=1 --parallel=false --no-private -- jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
