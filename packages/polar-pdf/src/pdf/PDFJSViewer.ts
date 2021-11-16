@@ -1,4 +1,4 @@
-import {ILinkTarget, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
+import {ILinkTarget, IPageViewport, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
@@ -80,7 +80,7 @@ export interface IPDFPageViewOptions {
     eventBus: IEventBus;
     id: number;
     scale: number;
-    defaultViewport: any; // FIXME
+    defaultViewport: IPageViewport;
     // renderingQueue?: PDFRenderingQueue;
     textLayerMode: 'canvas' | number;
     renderInteractiveForms: boolean;
