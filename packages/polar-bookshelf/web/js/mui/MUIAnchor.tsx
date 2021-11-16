@@ -11,13 +11,20 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             "& a:link": {
                 color: theme.palette.info.main,
+                textDecoration: 'none'
             },
             "& a:visited": {
                 color: theme.palette.info.light,
+                textDecoration: 'none'
             },
             "& a:hover": {
                 color: theme.palette.info.dark,
-            }
+                textDecoration: 'none'
+            },
+            "& a:active": {
+                color: theme.palette.info.dark,
+                textDecoration: 'none'
+            },
         }
     })
 
