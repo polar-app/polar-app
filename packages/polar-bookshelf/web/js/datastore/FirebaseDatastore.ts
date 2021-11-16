@@ -53,6 +53,9 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {RecordPermission} from "polar-shared/src/metadata/RecordPermission";
+import {DocPermissionCollection} from "./sharing/db/DocPermissionCollection";
 import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 import DatastoreCollection = FirebaseDatastores.DatastoreCollection;
 import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
@@ -640,43 +643,104 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
         const firestore = this.firestore!;
-        const uid = this.uid!;
+
+        await this.handleWriteFile(opts);
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        // FIXME we need to revert the .write call here ..
-        const [docMetaRef, docInfoRef] = await FirebaseDatastores.write(firestore, uid, fingerprint, data, docInfo, opts);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
 
         /**
-         * This will verify that the data we have is written to the server
-         * and not just the local cache.
+         * Create our two main doc refs.
          */
-        const waitForCommit = async () => {
+        const createDocRefs = () => {
 
-            // TODO: this might add some EXTRA latency though because (I
-            // think) it's going to wait for another server read.  Ideally
-            // what would happen is that we could listen to the batch
-            // directly to avoid this.
-            this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
+            const docMetaRef = firestore
+                .collection(DatastoreCollection.DOC_META)
+                .doc(id);
 
-            const commitPromise = Promise.all([
-                this.waitForCommit(docMetaRef),
-                this.waitForCommit(docInfoRef)
-            ]);
+            const docInfoRef = firestore
+                .collection(DatastoreCollection.DOC_INFO)
+                .doc(id);
 
-            log.debug("write: Waiting for commit promise...");
-            await commitPromise;
-            log.debug("write: Waiting for commit promise...done");
+            return [docMetaRef, docInfoRef];
 
         }
 
-        if (opts.consistency === 'committed') {
-            console.log("write: Waiting for commit...");
-            // normally we would NOT want to wait because this will just
-            // slow down our writes and going into the cache is ok for most
-            // operations.
-            await waitForCommit();
-            console.log("write: Waiting for commit...done");
+        try {
+
+            docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
+
+            const createRecordPermission = async (): Promise<RecordPermission> => {
+
+                const docPermission = await DocPermissionCollection.get(firestore, id);
+
+                if (docPermission) {
+                    return {
+                        visibility: docPermission.visibility,
+                        groups: docPermission.groups
+                    };
+                }
+
+                return {
+                    visibility: docInfo.visibility || Visibility.PRIVATE
+                };
+
+            };
+
+            const recordPermission
+                = Dictionaries.onlyDefinedProperties(await createRecordPermission());
+
+            const batch = firestore.batch();
+
+            const dataLen = data.length;
+
+            log.notice(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
+
+            const [docMetaRef, docInfoRef] = createDocRefs();
+
+            batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, recordPermission));
+            batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, recordPermission));
+
+            await batch.commit();
+
+            /**
+             * This will verify that the data we have is written to the server
+             * and not just the local cache.
+             */
+            const waitForCommit = async () => {
+
+                // TODO: this might add some EXTRA latency though because (I
+                // think) it's going to wait for another server read.  Ideally
+                // what would happen is that we could listen to the batch
+                // directly to avoid this.
+
+                const [docMetaRef, docInfoRef] = createDocRefs();
+
+                this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
+
+                const commitPromise = Promise.all([
+                    this.waitForCommit(docMetaRef),
+                    this.waitForCommit(docInfoRef)
+                ]);
+
+                log.debug("write: Waiting for commit promise...");
+                await commitPromise;
+                log.debug("write: Waiting for commit promise...done");
+
+            }
+
+            if (opts.consistency === 'committed') {
+                console.log("write: Waiting for commit...");
+                // normally we would NOT want to wait because this will just
+                // slow down our writes and going into the cache is ok for most
+                // operations.
+                await waitForCommit();
+                console.log("write: Waiting for commit...done");
+            }
+
+        } finally {
+            // noop for now
         }
 
     }
