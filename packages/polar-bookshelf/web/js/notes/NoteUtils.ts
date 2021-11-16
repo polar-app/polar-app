@@ -24,9 +24,16 @@ import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 import {Comparators} from "polar-shared/src/util/Comparators";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {useNotesIntegrationEnabled} from "../apps/repository/MigrationToBlockAnnotations";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
+import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+
+export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
+
+export const useNotesIntegrationEnabled = () => {
+    return useFeatureToggle(NOTES_INTEGRATION_FEATURE_TOGGLE_NAME);
+};
+
 
 export const useDocumentBlockFromDocInfoCreator = () => {
     const blocksStore = useBlocksStore();
