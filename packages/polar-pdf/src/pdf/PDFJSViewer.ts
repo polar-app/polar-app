@@ -3,7 +3,6 @@ import {ILinkTarget, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
 
-export type IPDFViewerOptions = any;
 export type Outline = any;
 export type Destination = any;
 
@@ -106,6 +105,10 @@ export interface IPDFViewer {
     setDocument(pdfDocument: IPDFDocumentProxy): void;
 
     cleanup(): void;
+
+}
+
+export interface IPDFViewerOptions {
 
 }
 
