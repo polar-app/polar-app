@@ -1,13 +1,9 @@
-import {PageViewport} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 import {Canvases} from "polar-shared/src/util/Canvases";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {
-    EventBus,
-    PDFPageView,
-    PDFPageViewOptions
-} from "pdfjs-dist/web/pdf_viewer";
 import {IThumbnail, ThumbnailerGenerateOpts, Thumbnailers} from "polar-shared/src/util/Thumbnailer";
+import {IPageViewport} from "./PDFJS";
+import {EventBus, PDFPageView, PDFPageViewOptions} from "./PDFJSViewer";
 
 export namespace PDFThumbnailer {
 
@@ -71,7 +67,7 @@ export namespace PDFThumbnailer {
         const eventBus = new EventBus();
         const viewport = page.getViewport({scale: 1.0});
 
-        const defaultViewport: PageViewport = viewport;
+        const defaultViewport: IPageViewport = viewport;
 
         // Using PDFPageView is the best option to generate PDFs with the proper
         // resolution. I could use page.render but it message up WRT the correct
