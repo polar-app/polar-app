@@ -5,12 +5,14 @@
 // * ...................................................................................................
 
 import fs from "fs";
-import { Package } from "./Package";
 import cliSelect from "cli-select";
-import { TSConfig } from "./TSConfig";
 import * as readline from "readline";
-import { ICreateModuleConfig, IPackageManifest } from "./Interfaces";
 import { Files } from "polar-shared/src/util/Files";
+
+import { Karma } from "./Karma";
+import { Package } from "./Package";
+import { TSConfig } from "./TSConfig";
+import { ICreateModuleConfig, IPackageManifest } from "./Interfaces";
 
 // ! ...................................................................................................
 // ! ..                                                                                               ..
@@ -94,6 +96,14 @@ export async function createNewModule(): Promise<void> {
         );
     }
 
+    // $ Create karma.conf.js
+    if (config.Karma) {
+        await fs.promises.writeFile(
+            `../${packageName}/karma.conf.js`,
+            Karma.create()
+        );
+    }
+
     // $ Return Success Message
     console.log("Package Created Successfully");
 }
@@ -110,7 +120,7 @@ export async function updateModules(): Promise<void> {
     const pkg = await UpdatePackageJson(config, data);
     await fs.promises.writeFile("package.json", JSON.stringify(pkg, null, 2));
 
-    // $ Update tsconfig.json
+    // $ Update tsconfig.json & karma.conf.js
     if (config.Typescript) {
         await fs.promises.writeFile(
             "tsconfig.json",
@@ -119,6 +129,16 @@ export async function updateModules(): Promise<void> {
     } else {
         await Files.deleteAsync(".eslintrc.json");
         await Files.deleteAsync("tsconfig.json");
+    }
+
+    // $ Update Karma Files
+    if (config.Karma) {
+        await fs.promises.writeFile("karma.conf.js", Karma.create());
+    } else if (
+        !config.KarmaDelete === undefined ||
+        !config.KarmaDelete === false
+    ) {
+        await Files.deleteAsync("karma.conf.js");
     }
 
     // $ Delete Useless files if they exists
@@ -223,32 +243,36 @@ export async function UpdatePackageJson(
 
     // * if typescript is enabled for this module
     if (config.Typescript) {
-        pkg.scripts.eslint =
-            "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
-        pkg.scripts["eslint-fix"] = "eslint -c ./.eslintrc.json . --fix";
-        pkg.scripts["eslint-ci"] =
-            "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
-        pkg.scripts.compile =
-            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
+        // ! Check nested polar-hooks-functions
+        if (pkg.name === "polar-hooks-functions") {
+            pkg.scripts.eslint = "eslint -c ../../../.eslintrc.json . --no-error-on-unmatched-pattern";
+            pkg.scripts["eslint-fix"] = "eslint -c ../../../.eslintrc.json . --fix";
+            pkg.scripts["eslint-ci"] = "eslint -c ../../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+        } else {
+            pkg.scripts.eslint = "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern";
+            pkg.scripts["eslint-fix"] = "eslint -c ../../.eslintrc.json . --fix";
+            pkg.scripts["eslint-ci"] = "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+        }
+
+        pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
         pkg.scripts.tsc = "tsc --project ./tsconfig.json";
-        pkg.scripts.watch =
-            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
+        pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
         pkg.scripts["tsc-watch"] = "tsc --project ./tsconfig.json --watch";
 
         if (config.Mocha) {
             pkg.scripts.test =
                 "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
             pkg.scripts.mocha =
-                "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+                "../../node_modules/.bin/mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
             pkg.scripts["test-ci"] =
                 "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;";
             pkg.scripts["mocha-ci"] =
-                "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+                "../../node_modules/.bin/mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
         }
 
         if (config.Karma) {
             pkg.scripts.karma =
-                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
+                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m ../../node_modules/.bin/karma start; fi;";
         }
     } else {
         delete pkg.scripts.eslint;
