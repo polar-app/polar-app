@@ -8,13 +8,13 @@ import {
     IPDFRenderingQueue,
     IPDFViewer,
     IPDFViewerOptions,
-    LinkTarget,
     Outline,
     PDFFindController,
     PDFLinkService,
     PDFRenderingQueue,
     PDFViewer
 } from 'polar-pdf/src/pdf/PDFJSViewer';
+import {IPDFDocumentLoadingTask, IPDFDocumentProxy, LinkTarget} from 'polar-pdf/src/pdf/PDFJS'
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -49,7 +49,6 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
-import {IPDFDocumentLoadingTask, IPDFDocumentProxy} from "polar-pdf/src/pdf/PDFJS";
 
 interface DocViewer {
     readonly eventBus: IEventBus;

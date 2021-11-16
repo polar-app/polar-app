@@ -48,14 +48,13 @@ export interface EventBusConstructor {
 }
 
 export const EventBus: any = viewer.EventBus;
-export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindControllerConstructor;
+export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
 
 export const PDFPageView: any = viewer.PDFPageView; // FIXME
 export const PDFViewer: any = viewer.PDFViewer; // FIXME
 export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
 export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
 
-export const LinkTarget: any = viewer.LinkTarget; // FIXME
 
 export interface PDFPageViewOptions {
 

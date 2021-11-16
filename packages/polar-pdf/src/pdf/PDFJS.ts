@@ -1,3 +1,4 @@
+
 const _PDFSJ = require('pdfjs-dist');
 
 export type Transform = number[];
@@ -119,3 +120,5 @@ export interface IPDFJS {
 
 export const Util: IUtil = _PDFSJ.Util;
 export const PDFJS: IPDFJS = _PDFSJ;
+
+export const LinkTarget: any = _PDFSJ.LinkTarget; // FIXME
