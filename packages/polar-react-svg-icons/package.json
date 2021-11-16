@@ -26,12 +26,7 @@
     "url": "https://github.com/burtonator/polar-app-public/issues"
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
-  "devDependencies": {
-    "polar-eslint": "0.0.0",
-    "polar-karma": "0.0.0",
-    "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0"
-  },
+  "devDependencies": {},
   "dependencies": {
     "polar-react": "0.0.0"
   },

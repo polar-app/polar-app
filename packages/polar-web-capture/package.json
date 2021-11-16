@@ -26,10 +26,5 @@
     "polar-html": "0.0.0",
     "polar-epub-generator": "0.0.0"
   },
-  "devDependencies": {
-    "polar-eslint": "0.0.0",
-    "polar-typescript": "0.0.0",
-    "polar-karma": "0.0.0",
-    "polar-webpack": "0.0.0"
-  }
+  "devDependencies": {}
 }

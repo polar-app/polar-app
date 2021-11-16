@@ -49,12 +49,7 @@
     "polar-firebase-test": "0.0.0",
     "polar-firebase-browser": "0.0.0",
     "chai": "4.2.0",
-    "mocha": "=9.1.1",
-    "polar-eslint": "0.0.0",
-    "polar-karma": "0.0.0",
-    "polar-mocha": "0.0.0",
-    "polar-typescript": "0.0.0",
-    "polar-webpack": "0.0.0"
+    "mocha": "=9.1.1"
   },
   "files": [
     "package.json"
