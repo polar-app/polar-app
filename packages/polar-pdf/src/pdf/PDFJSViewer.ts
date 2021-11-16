@@ -1,3 +1,5 @@
+/* eslint-disable functional/prefer-readonly-type */
+
 import {ILinkTarget, IPageViewport, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 import {Preconditions} from "polar-shared/src/Preconditions";
 

@@ -1,3 +1,5 @@
+/* eslint-disable functional/prefer-readonly-type */
+
 import {Preconditions} from "polar-shared/src/Preconditions";
 
 const _PDFSJ = require('pdfjs-dist');
