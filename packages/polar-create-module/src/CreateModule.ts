@@ -3,15 +3,13 @@
 // * ..                                     Imports                                                   ..
 // * ..                                                                                               ..
 // * ...................................................................................................
-import fs from 'fs';
-import {Karma} from "./Karma";
-import {ESLint} from "./ESLint";
-import {Package} from "./Package";
+import fs from "fs";
+import { Package } from "./Package";
 import cliSelect from "cli-select";
-import {TSConfig} from "./TSConfig";
-import * as readline from 'readline';
-import {ICreateModuleConfig, IPackageManifest} from './Interfaces';
-import {Files} from "polar-shared/src/util/Files";
+import { TSConfig } from "./TSConfig";
+import * as readline from "readline";
+import { ICreateModuleConfig, IPackageManifest } from "./Interfaces";
+import { Files } from "polar-shared/src/util/Files";
 
 // ! ...................................................................................................
 // ! ..                                                                                               ..
@@ -22,7 +20,9 @@ import {Files} from "polar-shared/src/util/Files";
 /**
  * ! Entry Point
  */
-workFlow().catch(err => console.error("ERROR: Unable to create module: ", err));
+workFlow().catch((err) =>
+    console.error("ERROR: Unable to create module: ", err)
+);
 
 /**
  * ! Create Module Routine
@@ -33,36 +33,64 @@ export async function createNewModule(): Promise<void> {
 
     // $ Capture & Transform User Input
     const packageName: string = await getUserInput("Package Name: ");
-    const packageDescription: string = await getUserInput("Package Description: ");
-    const NeedTS = await selectFromCli("Will the package have Typescript files ?", ["Yes", "No"]);
+    const packageDescription: string = await getUserInput(
+        "Package Description: "
+    );
+    const NeedTS = await selectFromCli(
+        "Will the package have Typescript files ?",
+        ["Yes", "No"]
+    );
     if (NeedTS === "Yes") {
         config.Typescript = true;
-        const NeedTests = await selectFromCli("Will the package have Test Files ?", ["No", "Mocha", "Mocha + Karma"]);
-        if(NeedTests === "No") { config.Mocha = false; config.Karma = false; }
-        if(NeedTests === "Mocha") { config.Mocha = true; config.Karma = false; }
-        if(NeedTests === "Mocha + Karma") { config.Mocha = true; config.Karma = true; }
+        const NeedTests = await selectFromCli(
+            "Will the package have Test Files ?",
+            ["No", "Mocha", "Mocha + Karma"]
+        );
+        if (NeedTests === "No") {
+            config.Mocha = false;
+            config.Karma = false;
+        }
+        if (NeedTests === "Mocha") {
+            config.Mocha = true;
+            config.Karma = false;
+        }
+        if (NeedTests === "Mocha + Karma") {
+            config.Mocha = true;
+            config.Karma = true;
+        }
     }
-    if(NeedTS === "No") { config.Typescript = false; config.Mocha = false; config.Karma = false; }
+    if (NeedTS === "No") {
+        config.Typescript = false;
+        config.Mocha = false;
+        config.Karma = false;
+    }
 
     // $ Create Folders and Files
     await fs.promises.mkdir(`../${packageName}`);
     await fs.promises.mkdir(`../${packageName}/src`);
-    await fs.promises.writeFile(`../${packageName}/package.json`, JSON.stringify(Package.create(packageName, packageDescription), null, 2));
-    await fs.promises.writeFile(`../${packageName}/module-config.json`, JSON.stringify(config, null, 2));
+    await fs.promises.writeFile(
+        `../${packageName}/package.json`,
+        JSON.stringify(Package.create(packageName, packageDescription), null, 2)
+    );
+    await fs.promises.writeFile(
+        `../${packageName}/module-config.json`,
+        JSON.stringify(config, null, 2)
+    );
 
     // $ Read & Update Package.json Template with proper config arguments
     const data = await readPackageJson(`../${packageName}/package.json`);
     const pkg = await UpdatePackageJson(config, data);
-    await fs.promises.writeFile(`../${packageName}/package.json`, JSON.stringify(pkg, null, 2));
+    await fs.promises.writeFile(
+        `../${packageName}/package.json`,
+        JSON.stringify(pkg, null, 2)
+    );
 
-    // $ Create Remaining Files
-    if(config.Typescript) {
-        await fs.promises.writeFile(`../${packageName}/.eslintrc.json`, createJSONDataFile(ESLint.create()));
-        await fs.promises.writeFile(`../${packageName}/tsconfig.json`, createJSONDataFile(TSConfig.create()));
-
-    }
-    if(config.Karma) {
-        await fs.promises.writeFile(`../${packageName}/karma.conf.js`, Karma.create());
+    // $ Create tsconfig.json
+    if (config.Typescript) {
+        await fs.promises.writeFile(
+            `../${packageName}/tsconfig.json`,
+            createJSONDataFile(TSConfig.create())
+        );
     }
 
     // $ Return Success Message
@@ -73,41 +101,36 @@ export async function createNewModule(): Promise<void> {
  * ! Update Module Routine
  */
 export async function updateModules(): Promise<void> {
-
     // $ Read Package.json & module-config.json
     const config = await readCreateModuleConfig();
     const data = await readPackageJson("package.json");
 
     // $ Update Package.json
     const pkg = await UpdatePackageJson(config, data);
-    await fs.promises.writeFile('package.json', JSON.stringify(pkg, null, 2));
+    await fs.promises.writeFile("package.json", JSON.stringify(pkg, null, 2));
 
-    // $ Update TS/ESlint Files
+    // $ Update tsconfig.json
     if (config.Typescript) {
-        await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.create()));
-        await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.create()));
-
+        await fs.promises.writeFile(
+            "tsconfig.json",
+            createJSONDataFile(TSConfig.create())
+        );
     } else {
-        await Files.deleteAsync('.eslintrc.json');
-        await Files.deleteAsync('tsconfig.json');
-
+        await Files.deleteAsync(".eslintrc.json");
+        await Files.deleteAsync("tsconfig.json");
     }
 
-    // $ Update Karma Files
-    if (config.Karma) {
-        await fs.promises.writeFile('karma.conf.js', Karma.create());
-    } else if (!config.KarmaDelete === undefined || !config.KarmaDelete === false) {
-        await Files.deleteAsync('karma.conf.js');
+    // $ Delete Useless files if they exists
+    if (fs.existsSync("tslint.yaml")) {
+        await fs.promises.rm("tslint.yaml");
     }
-
-    // $ Delete Tslint if it exists
-    if (fs.existsSync('tslint.yaml')) {
-        await fs.promises.rm('tslint.yaml');
+    if (fs.existsSync(".eslintrc.json")) {
+        await fs.promises.rm(".eslintrc.json");
     }
-
+    if (fs.existsSync("karma.conf.js")) {
+        await fs.promises.rm("karma.conf.js");
+    }
 }
-
-
 
 // ? ...................................................................................................
 // ? ..                                                                                               ..
@@ -136,12 +159,15 @@ export async function getUserInput(property: string): Promise<string> {
  * ? Helper function to push answers and capture selection from user
  */
 export async function selectFromCli(question: string, answers: Array<string>) {
-
     console.log(question);
 
     return await cliSelect({ values: answers, indentation: 1 })
-    .then((response) => { return response.value; })
-    .catch((err) => { return err });
+        .then((response) => {
+            return response.value;
+        })
+        .catch((err) => {
+            return err;
+        });
 }
 
 /**
@@ -150,19 +176,21 @@ export async function selectFromCli(question: string, answers: Array<string>) {
  * ? Json files in the new package
  */
 export function createJSONDataFile(obj: Record<string, unknown>) {
-    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, 2);
+    return (
+        `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` +
+        JSON.stringify(obj, null, 2)
+    );
 }
 
 /**
  * ? Helper function to Update based on the requirements of certain packages
  */
 export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
-
     const path = "module-config.json";
 
     if (await Files.existsAsync(path)) {
-        const buff = await Files.readFileAsync(path)
-        return JSON.parse(buff.toString('utf-8'));
+        const buff = await Files.readFileAsync(path);
+        return JSON.parse(buff.toString("utf-8"));
     }
 
     return {};
@@ -171,42 +199,56 @@ export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
 /**
  * ? Read Json File
  */
-export async function readPackageJson(path: string){
+export async function readPackageJson(path: string) {
     const data = await fs.promises.readFile(path);
-    const pkg: IPackageManifest = JSON.parse(data.toString('utf-8'));
+    const pkg: IPackageManifest = JSON.parse(data.toString("utf-8"));
     return pkg;
 }
 
 /**
  * ? Create or Update Package.json
  */
-export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPackageManifest): Promise<IPackageManifest> {
-
+export async function UpdatePackageJson(
+    config: ICreateModuleConfig,
+    pkg: IPackageManifest
+): Promise<IPackageManifest> {
     // * it's possible that there aren't any scripts or devDependencies.
-    if (! pkg.scripts) { pkg.scripts = {}; }
-    if (! pkg.devDependencies) { pkg.devDependencies = {}; }
+    if (!pkg.scripts) {
+        pkg.scripts = {};
+    }
+    if (!pkg.devDependencies) {
+        pkg.devDependencies = {};
+    }
 
     // * if typescript is enabled for this module
     if (config.Typescript) {
-        pkg.scripts.eslint = "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
+        pkg.scripts.eslint =
+            "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern";
         pkg.scripts["eslint-fix"] = "eslint -c ./.eslintrc.json . --fix";
-        pkg.scripts["eslint-ci"] = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
-        pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
-        pkg.scripts.tsc = 'tsc --project ./tsconfig.json';
-        pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
-        pkg.scripts["tsc-watch"] = 'tsc --project ./tsconfig.json --watch'; 
+        pkg.scripts["eslint-ci"] =
+            "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+        pkg.scripts.compile =
+            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
+        pkg.scripts.tsc = "tsc --project ./tsconfig.json";
+        pkg.scripts.watch =
+            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
+        pkg.scripts["tsc-watch"] = "tsc --project ./tsconfig.json --watch";
 
         if (config.Mocha) {
-            pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
-            pkg.scripts.mocha = "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
-            pkg.scripts["test-ci"] = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;";
-            pkg.scripts["mocha-ci"] = "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+            pkg.scripts.test =
+                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
+            pkg.scripts.mocha =
+                "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+            pkg.scripts["test-ci"] =
+                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;";
+            pkg.scripts["mocha-ci"] =
+                "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
         }
 
         if (config.Karma) {
-            pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
+            pkg.scripts.karma =
+                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
         }
-
     } else {
         delete pkg.scripts.eslint;
         delete pkg.scripts["eslint-fix"];
@@ -219,11 +261,6 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
         delete pkg.scripts["test-ci"];
         delete pkg.scripts["mocha-ci"];
         delete pkg.scripts.karma;
-
-        delete pkg.devDependencies['polar-eslint'];
-        delete pkg.devDependencies['polar-typescript'];
-        delete pkg.devDependencies['polar-karma'];
-        delete pkg.devDependencies['polar-webpack'];
     }
     return pkg;
 }
@@ -232,17 +269,16 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
  * ? Start Workflow based on CLI Args
  */
 export async function workFlow(): Promise<void> {
-
     // $ Extract Cli Args
     const cliargs: Array<string> = process.argv.slice(2);
 
     // $ Start flow based on Args
-    if (cliargs.length === 1 && cliargs[0] === '--update') {
+    if (cliargs.length === 1 && cliargs[0] === "--update") {
         await updateModules();
     } else if (cliargs.length === 0) {
         await createNewModule();
     } else {
-        console.error('Incorrect args: ', cliargs);
+        console.error("Incorrect args: ", cliargs);
         process.exit(1);
     }
 }
