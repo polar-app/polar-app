@@ -121,7 +121,12 @@ export async function updateModules(): Promise<void> {
     await fs.promises.writeFile("package.json", JSON.stringify(pkg, null, 2));
 
     // $ Update tsconfig.json
-    if (config.Typescript) {
+    if (config.Typescript && pkg.name === "polar-hooks-functions") {
+        await fs.promises.writeFile(
+            "tsconfig.json",
+            createJSONDataFile(TSConfig.createV2())
+        );
+    } else if (config.Typescript) {
         await fs.promises.writeFile(
             "tsconfig.json",
             createJSONDataFile(TSConfig.create())
