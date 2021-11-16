@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {EventBus, PDFFindController, PDFLinkService, PDFRenderingQueue, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
-import {LinkTarget, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
+import {PDFFindController, PDFLinkService, PDFRenderingQueue, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
+
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -35,11 +35,10 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
-import Outline = _pdfjs.Outline;
-import Destination = _pdfjs.Destination;
+import {EventBus, IEventBus} from 'polar-pdf/src/pdf/PDFJSViewer';
 
 interface DocViewer {
-    readonly eventBus: EventBus;
+    readonly eventBus: IEventBus;
     readonly findController: PDFFindController;
     readonly viewer: PDFViewer;
     readonly linkService: PDFLinkService;
