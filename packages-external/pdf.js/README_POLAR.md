@@ -4,7 +4,7 @@ https://stackoverflow.com/questions/25545613/how-can-i-push-to-my-fork-from-a-cl
 
 # NEW build instructions
 
-- current build is 2.8.248-polar.1
+- current build is 2.8.248-polar.4
 
 ```
 npm install
