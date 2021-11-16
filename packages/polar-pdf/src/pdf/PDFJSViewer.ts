@@ -47,15 +47,6 @@ export interface EventBusConstructor {
     new(opts?: EventBusOpts): IEventBus;
 }
 
-export const EventBus: any = viewer.EventBus;
-export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
-
-export const PDFPageView: any = viewer.PDFPageView; // FIXME
-export const PDFViewer: any = viewer.PDFViewer; // FIXME
-export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
-export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
-
-
 export interface PDFPageViewOptions {
 
     container: HTMLDivElement;
@@ -78,3 +69,15 @@ export interface PDFPageViewOptions {
     // l10n?: IL10n;
 
 }
+
+// TODO: thisis the proper way to define a class type so that it behaves like an interface.
+export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
+
+
+export const EventBus: any = viewer.EventBus;
+
+export const PDFPageView: any = viewer.PDFPageView; // FIXME
+export const PDFViewer: any = viewer.PDFViewer; // FIXME
+export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
+export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
+
