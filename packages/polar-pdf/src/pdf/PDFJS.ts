@@ -76,10 +76,25 @@ export interface IPDFDocumentProxy {
 
     getMetadata(): Promise<IMetadataProxy>;
 
+    getOutline(): any; // FIXME
+
 }
+
+export interface IDocumentLoadingProgress {
+    loaded: number;
+    total: number;
+}
+
+export type DocumentLoadingProgressCallback = (
+    documentLoadingProgress: IDocumentLoadingProgress
+) => void;
 
 export interface IPDFDocumentLoadingTask {
     readonly promise: Promise<IPDFDocumentProxy>;
+
+    destroy(): Promise<void>;
+    onProgress: DocumentLoadingProgressCallback | null;
+
 }
 
 

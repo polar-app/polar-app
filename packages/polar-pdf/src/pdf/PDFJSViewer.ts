@@ -1,21 +1,19 @@
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
+export type IPDFViewer = any;
+export type IPDFLinkService = any;
+export type IPDFRenderingQueue = any;
+
+export type IPDFViewerOptions = any;
+export type Outline = any;
+export type Destination = any;
+
 export interface FindCommandState {
     query: string;
     phraseSearch: boolean;
     caseSensitive: boolean;
     highlightAll: boolean;
     findPrevious: boolean;
-}
-
-export namespace LinkTarget {
-
-    export const NONE: LinkTarget;
-    export const SELF: LinkTarget;
-    export const BLANK: LinkTarget;
-    export const PARENT: LinkTarget;
-    export const TOP: LinkTarget;
-
 }
 
 export interface IPDFFindController {
@@ -26,14 +24,19 @@ export interface IPDFFindController {
 }
 
 interface PDFFindControllerOptions {
-    pdfViewer: PDFViewer;
+    pdfViewer?: any;
+    linkService: any;
+    eventBus: any;
 }
 
 export interface PDFFindControllerConstructor {
-    new(opts: PDFFindControllerOptions): IEventBus;
+    new(opts: PDFFindControllerOptions): IPDFFindController;
 }
 
 export interface IEventBus {
+    on(eventName: string, listener: (...args: any[]) => void): void;
+    off(eventName: string, listener: (...args: any[]) => void): void;
+    dispatch(eventName: string, ...args: any[]): void;
 }
 
 interface EventBusOpts {
@@ -44,10 +47,15 @@ export interface EventBusConstructor {
     new(opts?: EventBusOpts): IEventBus;
 }
 
-export const EventBus: EventBusConstructor = viewer.EventBus;
+export const EventBus: any = viewer.EventBus;
 export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindControllerConstructor;
 
 export const PDFPageView: any = viewer.PDFPageView; // FIXME
+export const PDFViewer: any = viewer.PDFViewer; // FIXME
+export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
+export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
+
+export const LinkTarget: any = viewer.LinkTarget; // FIXME
 
 export interface PDFPageViewOptions {
 

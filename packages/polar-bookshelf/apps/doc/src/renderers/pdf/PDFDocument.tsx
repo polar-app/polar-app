@@ -1,6 +1,20 @@
 import * as React from 'react';
-import {PDFFindController, PDFLinkService, PDFRenderingQueue, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
-
+import {
+    Destination,
+    EventBus,
+    IEventBus,
+    IPDFFindController,
+    IPDFLinkService,
+    IPDFRenderingQueue,
+    IPDFViewer,
+    IPDFViewerOptions,
+    LinkTarget,
+    Outline,
+    PDFFindController,
+    PDFLinkService,
+    PDFRenderingQueue,
+    PDFViewer
+} from 'polar-pdf/src/pdf/PDFJSViewer';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -35,14 +49,14 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
-import {EventBus, IEventBus} from 'polar-pdf/src/pdf/PDFJSViewer';
+import {IPDFDocumentLoadingTask, IPDFDocumentProxy} from "polar-pdf/src/pdf/PDFJS";
 
 interface DocViewer {
     readonly eventBus: IEventBus;
-    readonly findController: PDFFindController;
-    readonly viewer: PDFViewer;
-    readonly linkService: PDFLinkService;
-    readonly renderingQueue: PDFRenderingQueue;
+    readonly findController: IPDFFindController;
+    readonly viewer: IPDFViewer;
+    readonly linkService: IPDFLinkService;
+    readonly renderingQueue: IPDFRenderingQueue;
     readonly containerElement: HTMLElement;
 }
 
@@ -64,7 +78,7 @@ function createDocViewer(docID: string): DocViewer {
 
     const {containerElement, viewerElement} = ViewerElements.find(docID);
 
-    const viewerOpts: PDFViewerOptions = {
+    const viewerOpts: IPDFViewerOptions = {
         container: containerElement,
         viewer: viewerElement,
         textLayerMode: 2,
@@ -117,7 +131,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
-    const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
+    const docRef = React.useRef<IPDFDocumentProxy | undefined>(undefined);
     const pageNavigatorRef = React.useRef<PageNavigator | undefined>(undefined);
     const pdfUpgrader = usePDFUpgrader();
 
@@ -214,22 +228,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         }
 
     }, [setScale, setStoreScale]);
-
-    interface IDocumentLoadingProgress {
-        loaded: number;
-        total: number;
-    }
-
-    type DocumentLoadingProgressCallback = (
-        documentLoadingProgress: IDocumentLoadingProgress
-    ) => void;
-
-    interface IPDFDocumentLoadingTask {
-        destroy(): Promise<void>;
-        onProgress: DocumentLoadingProgressCallback | null;
-        promise: Promise<PDFDocumentProxy>;
-
-    }
 
     const loadingTaskRef = React.useRef<IPDFDocumentLoadingTask | undefined>();
 
@@ -335,7 +333,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         setOutlineNavigator(async (destination: any) => docViewer.linkService.goToDestination(destination as Destination));
 
-        function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
+        function createPageNavigator(pdfDocumentProxy: IPDFDocumentProxy): PageNavigator {
 
             const count = pdfDocumentProxy.numPages;
 

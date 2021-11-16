@@ -1,5 +1,5 @@
-import {EventBus, PDFFindController} from 'pdfjs-dist/web/pdf_viewer';
 import {Finder, FindHandler, IFindOpts, IMatches} from "../../Finders";
+import {IEventBus, IPDFFindController} from 'polar-pdf/src/pdf/PDFJSViewer';
 
 export namespace PDFFindControllers {
 
@@ -7,7 +7,7 @@ export namespace PDFFindControllers {
         readonly matchesCount: IMatches;
     }
 
-    export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
+    export function createFinder(eventBus: IEventBus, findController: IPDFFindController): Finder {
 
         const defaultOpts = {
             phraseSearch: true,
