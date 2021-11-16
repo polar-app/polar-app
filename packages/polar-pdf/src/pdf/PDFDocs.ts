@@ -20,8 +20,6 @@ export namespace PDFDocs {
 
     }
 
-
-
     export interface IPDFDocumentLoadingTask {
 
     }
