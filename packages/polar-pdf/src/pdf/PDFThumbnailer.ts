@@ -3,7 +3,7 @@ import {Canvases} from "polar-shared/src/util/Canvases";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {IThumbnail, ThumbnailerGenerateOpts, Thumbnailers} from "polar-shared/src/util/Thumbnailer";
 import {IPageViewport} from "./PDFJS";
-import {EventBus, PDFPageView, PDFPageViewOptions} from "./PDFJSViewer";
+import {EventBus, IPDFPageViewOptions, PDFPageView} from "./PDFJSViewer";
 
 export namespace PDFThumbnailer {
 
@@ -80,7 +80,7 @@ export namespace PDFThumbnailer {
 
         const scaledDimensions = Thumbnailers.computeScaleDimensions(opts, viewport);
 
-        const pageViewOptions: PDFPageViewOptions = {
+        const pageViewOptions: IPDFPageViewOptions = {
             id: 1,
             container,
             eventBus,
