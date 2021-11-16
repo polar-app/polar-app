@@ -644,6 +644,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
+        // FIXME we need to revert the .write call here ..
         const [docMetaRef, docInfoRef] = await FirebaseDatastores.write(firestore, uid, fingerprint, data, docInfo, opts);
 
         /**
