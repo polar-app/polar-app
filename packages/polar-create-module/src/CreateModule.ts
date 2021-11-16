@@ -120,7 +120,7 @@ export async function updateModules(): Promise<void> {
     const pkg = await UpdatePackageJson(config, data);
     await fs.promises.writeFile("package.json", JSON.stringify(pkg, null, 2));
 
-    // $ Update tsconfig.json & karma.conf.js
+    // $ Update tsconfig.json
     if (config.Typescript) {
         await fs.promises.writeFile(
             "tsconfig.json",
@@ -131,7 +131,7 @@ export async function updateModules(): Promise<void> {
         await Files.deleteAsync("tsconfig.json");
     }
 
-    // $ Update Karma Files
+    // $ Update karma.conf.js
     if (config.Karma) {
         await fs.promises.writeFile("karma.conf.js", Karma.create());
     } else if (
@@ -147,9 +147,6 @@ export async function updateModules(): Promise<void> {
     }
     if (fs.existsSync(".eslintrc.json")) {
         await fs.promises.rm(".eslintrc.json");
-    }
-    if (fs.existsSync("karma.conf.js")) {
-        await fs.promises.rm("karma.conf.js");
     }
 }
 
@@ -245,34 +242,42 @@ export async function UpdatePackageJson(
     if (config.Typescript) {
         // ! Check nested polar-hooks-functions
         if (pkg.name === "polar-hooks-functions") {
-            pkg.scripts.eslint = "eslint -c ../../../.eslintrc.json . --no-error-on-unmatched-pattern";
-            pkg.scripts["eslint-fix"] = "eslint -c ../../../.eslintrc.json . --fix";
-            pkg.scripts["eslint-ci"] = "eslint -c ../../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+            pkg.scripts.eslint =
+                "eslint -c ../../../.eslintrc.json . --no-error-on-unmatched-pattern";
+            pkg.scripts["eslint-fix"] =
+                "eslint -c ../../../.eslintrc.json . --fix";
+            pkg.scripts["eslint-ci"] =
+                "eslint -c ../../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         } else {
-            pkg.scripts.eslint = "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern";
-            pkg.scripts["eslint-fix"] = "eslint -c ../../.eslintrc.json . --fix";
-            pkg.scripts["eslint-ci"] = "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
+            pkg.scripts.eslint =
+                "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern";
+            pkg.scripts["eslint-fix"] =
+                "eslint -c ../../.eslintrc.json . --fix";
+            pkg.scripts["eslint-ci"] =
+                "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         }
 
-        pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
+        pkg.scripts.compile =
+            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
         pkg.scripts.tsc = "tsc --project ./tsconfig.json";
-        pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
+        pkg.scripts.watch =
+            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
         pkg.scripts["tsc-watch"] = "tsc --project ./tsconfig.json --watch";
 
         if (config.Mocha) {
             pkg.scripts.test =
                 "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
             pkg.scripts.mocha =
-                "../../node_modules/.bin/mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+                "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
             pkg.scripts["test-ci"] =
                 "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;";
             pkg.scripts["mocha-ci"] =
-                "../../node_modules/.bin/mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
+                "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'";
         }
 
         if (config.Karma) {
             pkg.scripts.karma =
-                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m ../../node_modules/.bin/karma start; fi;";
+                "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m karma start; fi;";
         }
     } else {
         delete pkg.scripts.eslint;
