@@ -118,6 +118,10 @@ export interface IPDFJS {
 
 }
 
+export interface ILinkTarget {
+    readonly BLANK: any;
+}
+
 export const Util: IUtil = _PDFSJ.Util;
 export const PDFJS: IPDFJS = _PDFSJ;
 
