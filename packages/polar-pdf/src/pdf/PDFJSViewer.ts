@@ -70,12 +70,12 @@ export interface PDFPageViewOptions {
 
 }
 
-// TODO: thisis the proper way to define a class type so that it behaves like an interface.
+// TODO: this is the proper way to define a class type so that it behaves like an interface.
 export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
+export const EventBus: EventBusConstructor = viewer.EventBus;
 
 
-export const EventBus: any = viewer.EventBus;
-
+// TODO: these are using any types and not proper constructor types.
 export const PDFPageView: any = viewer.PDFPageView; // FIXME
 export const PDFViewer: any = viewer.PDFViewer; // FIXME
 export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
