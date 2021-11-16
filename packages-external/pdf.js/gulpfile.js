@@ -1360,18 +1360,8 @@ gulp.task("jsdoc", function (done) {
 });
 
 gulp.task("types", function (done) {
-  console.log("### Generating TypeScript definitions using `tsc`");
-  const args = [
-    "target ES2020",
-    "allowJS",
-    "declaration",
-    `outDir ${TYPES_DIR}`,
-    "strict",
-    "esModuleInterop",
-    "forceConsistentCasingInFileNames",
-    "emitDeclarationOnly",
-  ].join(" --");
-  exec(`"node_modules/.bin/tsc" --${args} src/pdf.js`, done);
+  console.log("### Not Generating TypeScript definitions using `tsc`");
+  exec(`echo "Done."`, done);
 });
 
 function buildLib(defines, dir) {
