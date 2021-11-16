@@ -192,12 +192,9 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
         pkg.scripts["eslint-fix"] = "eslint -c ./.eslintrc.json . --fix";
         pkg.scripts["eslint-ci"] = "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern";
         pkg.scripts.compile = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
-        pkg.scripts.tsc = 'tsc';
+        pkg.scripts.tsc = 'tsc --project ./tsconfig.json';
         pkg.scripts.watch = "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
-        pkg.scripts["tsc-watch"] = 'tsc --watch';
-
-        pkg.devDependencies['polar-eslint'] = `${pkg.version}`;
-        pkg.devDependencies['polar-typescript'] = `${pkg.version}`;
+        pkg.scripts["tsc-watch"] = 'tsc --project ./tsconfig.json --watch'; 
 
         if (config.Mocha) {
             pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;";
@@ -208,8 +205,6 @@ export async function UpdatePackageJson(config: ICreateModuleConfig, pkg: IPacka
 
         if (config.Karma) {
             pkg.scripts.karma = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;";
-            pkg.devDependencies['polar-karma'] = `${pkg.version}`;
-            pkg.devDependencies['polar-webpack'] = `${pkg.version}`;
         }
 
     } else {
