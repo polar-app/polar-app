@@ -1,8 +1,7 @@
-import {IPDFPageProxy} from "./PDFJS";
+import {IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
-export type IPDFViewer = any;
 export type IPDFLinkService = any;
 export type IPDFRenderingQueue = any;
 
@@ -89,13 +88,33 @@ export interface IPDFPageViewConstructor {
     new(opts: IPDFPageViewOptions): IPDFPageView;
 }
 
+export interface IPDFViewer {
+
+    /**
+     * @param {number} val - Scale of the pages in percents.
+     */
+    currentScale: number;
+
+    /**
+     * @param val - The scale of the pages (in percent or predefined value).
+     */
+    currentScaleValue: string;
+
+    /**
+     * @param {number} val - The page number.
+     */
+    currentPageNumber: number;
+
+    setDocument(pdfDocument: IPDFDocumentProxy): void;
+
+}
+
 // TODO: this is the proper way to define a class type so that it behaves like an interface.
 export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
 export const EventBus: EventBusConstructor = viewer.EventBus;
-
+export const PDFPageView: IPDFPageViewConstructor = viewer.PDFPageView; // FIXME
 
 // TODO: these are using any types and not proper constructor types.
-export const PDFPageView: IPDFPageViewConstructor = viewer.PDFPageView; // FIXME
 export const PDFViewer: any = viewer.PDFViewer; // FIXME
 export const PDFLinkService: any = viewer.PDFLinkService; // FIXME
 export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
