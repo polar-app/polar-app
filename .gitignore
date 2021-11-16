@@ -4,7 +4,7 @@
 node_modules
 
 # pnpm log
-pnpm-debug.log
+.pnpm-debug.log
 
 # Ignore IntelliJ related configuration
 .idea
