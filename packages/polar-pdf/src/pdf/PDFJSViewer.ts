@@ -2,7 +2,6 @@ import {ILinkTarget, IPDFDocumentProxy, IPDFPageProxy} from "./PDFJS";
 
 const viewer = require('pdfjs-dist/web/pdf_viewer');
 
-export type IPDFRenderingQueue = any;
 
 export type IPDFViewerOptions = any;
 export type Outline = any;
@@ -130,14 +129,18 @@ export interface IPDFLinkServiceConstructor {
     new(options: IPDFLinkServiceOptions): IPDFLinkService;
 }
 
+export interface IPDFRenderingQueue {
+    setViewer(pdfViewer: IPDFViewer): void;
+}
 
-// TODO: this is the proper way to define a class type so that it behaves like an interface.
+export interface IPDFRenderingQueueConstructor {
+    new(): IPDFRenderingQueue;
+}
+
 export const PDFFindController: PDFFindControllerConstructor = viewer.PDFFindController;
 export const EventBus: EventBusConstructor = viewer.EventBus;
 export const PDFPageView: IPDFPageViewConstructor = viewer.PDFPageView;
 export const PDFViewer: IPDFViewerConstructor = viewer.PDFViewer;
 export const PDFLinkService: IPDFLinkServiceConstructor = viewer.PDFLinkService;
-
-// TODO: these are using any types and not proper constructor types.
-export const PDFRenderingQueue: any = viewer.PDFRenderingQueue; // FIXME
+export const PDFRenderingQueue: IPDFRenderingQueueConstructor = viewer.PDFRenderingQueue;
 
