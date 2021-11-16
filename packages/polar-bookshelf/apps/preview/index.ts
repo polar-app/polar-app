@@ -1,4 +1,3 @@
-import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {EventBus, PDFFindController, PDFLinkService, PDFViewer, PDFViewerOptions} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
@@ -10,6 +9,8 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {Prerenderer} from "./Prerenderer";
 import {UserAgents} from "./UserAgents";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+
+const PDFJS = require('pdfjs-dist');
 
 if(PDFJS) {
     PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
@@ -173,7 +174,7 @@ async function doLoad() {
 
     doUpdateRelCanonical(docPreview);
 
-    const init: DocumentInitParameters = {
+    const init = {
         url,
         cMapPacked: true,
         cMapUrl: '../../node_modules/pdfjs-dist/cmaps/'

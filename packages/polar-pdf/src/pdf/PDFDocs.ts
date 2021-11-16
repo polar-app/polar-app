@@ -1,11 +1,7 @@
-
-import * as PDFJS from 'pdfjs-dist';
-import {
-    DocumentInitParameters,
-    PDFDocumentLoadingTask
-} from "pdfjs-dist";
 import {PDFWorkers} from "./PDFWorkers";
 import {URLStr} from "polar-shared/src/util/Strings";
+
+const PDFJS = require('pdfjs-dist');
 
 PDFJS.GlobalWorkerOptions.workerSrc = PDFWorkers.computeWorkerSrcPath();
 

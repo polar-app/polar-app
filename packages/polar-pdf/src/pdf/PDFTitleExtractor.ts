@@ -1,9 +1,8 @@
-import {PDFDocumentProxy} from "pdfjs-dist";
 import {Whitespace} from "polar-shared/src/util/Whitespace";
 
-export namespace PDFTitleExtractor {
+const {PDFDocumentProxy} = require("pdfjs-dist");
 
-    import TextItem = _pdfjs.TextItem;
+export namespace PDFTitleExtractor {
 
     export async function extract(doc: PDFDocumentProxy): Promise<string | undefined> {
 
@@ -25,13 +24,13 @@ export namespace PDFTitleExtractor {
             return firstText.height;
         }
 
-        function computeHeadTextWithIdenticalHeight(height: number): ReadonlyArray<TextItem> {
+        function computeHeadTextWithIdenticalHeight(height: number): ReadonlyArray<any> {
 
             function createPredicate() {
 
                 let accept: boolean = true;
 
-                return (textItem: TextItem) => {
+                return (textItem: any) => {
 
                     if (textItem.height !== height) {
                         accept = false;

@@ -1,5 +1,6 @@
-import {EventBus, PDFFindController} from 'pdfjs-dist/web/pdf_viewer';
 import {Finder, FindHandler, IFindOpts, IMatches} from "../../Finders";
+
+const {EventBus, PDFFindController} = require('pdfjs-dist/web/pdf_viewer');
 
 export namespace PDFFindControllers {
 
