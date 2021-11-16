@@ -1,9 +1,6 @@
-
 import * as PDFJS from 'pdfjs-dist';
-import {
-    DocumentInitParameters,
-    PDFDocumentLoadingTask
-} from "pdfjs-dist";
+import {PDFDocumentLoadingTask} from 'pdfjs-dist';
+import {DocumentInitParameters} from "./PDFJS"
 import {PDFWorkers} from "./PDFWorkers";
 import {URLStr} from "polar-shared/src/util/Strings";
 
