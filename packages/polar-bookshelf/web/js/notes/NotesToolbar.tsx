@@ -16,6 +16,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
 import {DateContent} from './content/DateContent';
 import moment from 'moment';
+import { RepositoryToolbar } from '../apps/repository/RepositoryToolbar';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -78,9 +79,7 @@ const useDesktopStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 50px',
-            height: 50,
-            background: theme.palette.background.paper
+            padding: '5px 8px'
         },
         divider: {
             padding: '0 26px',
@@ -109,7 +108,7 @@ const DesktopNotesToolbar = () => {
     const handleCreateNote = useCreateNoteDialog();
 
     return (
-        <Box pr={2} pl={1} className={classes.root}>
+        <RepositoryToolbar className={classes.root}>
             <Box className={classes.left}>
                 <Button color="primary"
                         style={{ height: 38, width: 284 }}
@@ -124,7 +123,7 @@ const DesktopNotesToolbar = () => {
             <Box className={classes.right}>
                 <SearchForNote />
             </Box>
-        </Box>
+        </RepositoryToolbar>
     );
 };
 
