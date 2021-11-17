@@ -2097,6 +2097,7 @@ importers:
       chai: 4.2.0
       jszip: '=3.7.1'
       mocha: '=9.1.1'
+      pdfjs-dist: '=2.8.250-polar.4'
       polar-assets: 0.0.0
       polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
@@ -2141,6 +2142,7 @@ importers:
       '@types/react-dom': 17.0.2
       chai: 4.2.0
       mocha: 9.1.1
+      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -16340,7 +16342,6 @@ packages:
       worker-loader: ^3.0.7
     dependencies:
       worker-loader: 3.0.8_webpack@5.61.0
-    dev: false
 
   /pend/1.2.0:
     resolution: {integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=}
