@@ -4,9 +4,9 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {deepMemo} from "../react/ReactUtils";
+import { usePrefsContext } from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 const useStyles = makeStyles((theme: Theme) =>
-
     createStyles({
         root: {
             "& a:link": {
@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 textDecoration: 'none'
             },
             "& a:visited": {
-                color: theme.palette.info.light,
+                color: theme.palette.type === 'dark' ? theme.palette.info.dark : theme.palette.info.light,
                 textDecoration: 'none'
             },
             "& a:hover": {
-                color: theme.palette.info.dark,
+                color: theme.palette.type === 'dark' ? theme.palette.info.light : theme.palette.info.dark,
                 textDecoration: 'none'
             },
             "& a:active": {

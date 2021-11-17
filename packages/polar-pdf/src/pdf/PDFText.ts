@@ -1,6 +1,5 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import {PageViewport, Util} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 import {ISibling} from "polar-shared/src/util/Tuples";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -9,16 +8,16 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IPageViewport, ITextItem, Util} from "./PDFJS";
 
 export namespace PDFText {
 
-    import TextItem = _pdfjs.TextItem;
     import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
     export interface IPDFTextContent {
         readonly pageNum: PageNumber;
         readonly extract: ReadonlyArray<ReadonlyArray<IPDFTextWord>>;
-        readonly viewport: PageViewport;
+        readonly viewport: IPageViewport;
         readonly progress: Progress;
     }
 
@@ -64,7 +63,7 @@ export namespace PDFText {
                     disableCombineTextItems: false
                 });
 
-                function toPDFTextWord(textItem: TextItem): IPDFTextWord {
+                function toPDFTextWord(textItem: ITextItem): IPDFTextWord {
                     const tx = Util.transform(viewport.transform, textItem.transform);
                     const x = tx[4];
                     const y = tx[5];

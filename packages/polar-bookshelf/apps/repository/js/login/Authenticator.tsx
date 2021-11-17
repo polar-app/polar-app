@@ -479,7 +479,6 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
                 }}>
                 <LogoAndTextSideBySide/>
             </Box>
-
             <Box pb={2}>
                 <Typography component={'h5'} style={{fontSize: '24px', textAlign: 'center'}}>
                     {props.title}
