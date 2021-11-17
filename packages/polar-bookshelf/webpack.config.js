@@ -336,9 +336,9 @@ module.exports = {
                 // need to be preserved AND they actually need to be loaded but
                 // PDF.js doesn't link to them directly
 
-                {from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
-                {from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps'},
-                {from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist'},
+                {from: './node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
+                {from: './node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps'},
+                {from: './node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist'},
 
                 // ***** apps
                 {from: './apps/**/*.html', to: './'},
