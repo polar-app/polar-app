@@ -4,7 +4,6 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {deepMemo} from "../react/ReactUtils";
-import { usePrefsContext } from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
