@@ -148,11 +148,11 @@ commands:
             FORK_POINT=$(git merge-base origin/master $CIRCLE_BRANCH)
             git reset --hard
             git checkout $FORK_POINT
-            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' ./.eslintrc.json
             pnpm run eslint-ci-all >> forkpoint-output.txt || true
             git reset --hard
             git checkout $CIRCLE_BRANCH
-            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' {} +
+            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' ./.eslintrc.json
             pnpm run eslint-ci-all --no-bail >> branch-output.txt || true
             sed -i '/^\//!d' forkpoint-output.txt
             sed -i '/^\//!d' branch-output.txt
