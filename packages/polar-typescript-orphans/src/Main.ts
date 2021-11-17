@@ -6,6 +6,7 @@ import {PathStr} from "polar-shared/src/util/Strings";
 import {IModuleReference} from "./IModuleReference";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
+import {Reporters} from "./Reporters";
 
 async function doAsync() {
 
@@ -120,6 +121,7 @@ async function doAsync() {
         const sorted = [...modules].sort((a, b) => a.name.localeCompare(b.name));
 
         const grid = TextGrid.create(2);
+        grid.title("Working with the following modules")
         grid.headers('name', 'dir');
 
         sorted.forEach(current => grid.row(current.name, current.srcDir));
@@ -128,9 +130,11 @@ async function doAsync() {
 
     }
 
-    // console.log("Working with the following modules: ")
-    // console.log("====================================")
-    // console.log(createModuleReport());
+    const verbose = true;
+
+    const reporter = Reporters.create(verbose);
+
+    reporter.verbose(createModuleReport());
 
     const testsFilter = [
         "Test\.ts$",
@@ -149,7 +153,7 @@ async function doAsync() {
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter });
+    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, verbose});
 
 }
 

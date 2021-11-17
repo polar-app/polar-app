@@ -9,6 +9,9 @@ import {PathStr} from "polar-shared/src/util/Strings";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
 import {Predicates} from "polar-shared/src/util/Predicates";
 import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
+import * as process from "process";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Reporters} from "./Reporters";
 
 export namespace OrphanFinder {
 
@@ -174,7 +177,11 @@ export namespace OrphanFinder {
         readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
         readonly modules: ReadonlyArray<IModuleReference>;
+
+        readonly verbose: boolean;
+
     }
+
 
     export async function doFind(opts: IDoFindOpts) {
 
@@ -185,7 +192,9 @@ export namespace OrphanFinder {
 
         const dependencyIndex = DependencyIndex.create();
 
-        // console.log("Scanning modules...")
+        const reporter = Reporters.create(opts.verbose);
+
+        reporter.verbose("Scanning modules...")
 
         const sourceTypeClassifier = (path: PathStr) => {
 
@@ -228,9 +237,9 @@ export namespace OrphanFinder {
         const [mainSourceReferences] = computeMainSourceReferences(sourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
 
-        // console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
-        //
-        // console.log("Scanning imports...")
+        reporter.verbose(`Scanning modules...done (found ${sourceReferences.length} source references)`);
+
+        reporter.verbose("Scanning imports...")
 
         // Note that these imports have to be computed over the
         // mainSourceReferences NOT the sourceReferences because unit tests
@@ -238,7 +247,7 @@ export namespace OrphanFinder {
         // never get down to zero and they would never be orphans.
         const imports = await computeImports(mainSourceReferences);
 
-        // console.log(`Scanning imports...done (found ${imports.length} imports)`);
+        reporter.verbose(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
         mainSourceReferences
@@ -256,6 +265,7 @@ export namespace OrphanFinder {
 
             const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
 
+            grid.title("Import rankings")
             grid.headers("path", "main refs", "test refs", "orphan");
             importRankings
                 .filter(current => current.type === 'main')
@@ -266,7 +276,7 @@ export namespace OrphanFinder {
 
         }
 
-        // console.log(createImportRankingsReport());
+        reporter.verbose(createImportRankingsReport());
 
         interface IOrphanTest {
             readonly path: PathStr;
@@ -292,30 +302,52 @@ export namespace OrphanFinder {
 
         function computeOrphanedTestsReport() {
             const grid = TextGrid.create(3);
+            grid.title("Orphan tests")
             grid.headers('path', 'imported', 'orphan');
             orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
-        // console.log("Orphan tests: ================")
-        // console.log(computeOrphanedTestsReport());
+        reporter.verbose(computeOrphanedTestsReport());
 
-        function generateOrphansReport() {
+        async function generateOrphansReport() {
+
+            type RecentGitUpdates = Readonly<{[path: string]: boolean}>;
+
+            async function computeRecentGitUpdates(): Promise<RecentGitUpdates> {
+                // this is a hack for now...
+                const buff = await Files.readFileAsync('./recent-git-updates.txt')
+                const content = buff.toString('utf-8');
+                const lines = content.split('\n').filter(current => current.trim() !== '');
+
+                const cwd = process.cwd();
+                const paths = lines.map(current => FilePaths.join(cwd, current))
+
+                return arrayStream(paths).toLookup(current => current);
+            }
 
             interface IOrphan {
                 readonly path: string;
             }
 
-            const orphans: ReadonlyArray<IOrphan> = [
+            const rawOrphans: ReadonlyArray<IOrphan> = [
                 ...orphanedTests,
                 ...importRankings.filter(current => current.orphan)
             ]
 
-            orphans.forEach(current => console.log(current.path))
+            const recentGitUpdates = await computeRecentGitUpdates();
+
+            const orphans = rawOrphans.filter(current => !recentGitUpdates[current.path])
+
+            const delta = Math.abs(orphans.length - rawOrphans.length);
+
+            reporter.verbose(`Removed ${delta} orphans due to being recently updated: `);
+
+            orphans.forEach(current => reporter.info(current.path))
 
         }
 
-        generateOrphansReport();
+        await generateOrphansReport();
 
     }
 

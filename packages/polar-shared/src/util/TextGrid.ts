@@ -8,6 +8,7 @@ export namespace TextGrid {
     export type TextData = string | number | boolean;
 
     export interface ITextGrid {
+        title: (title: string) => void;
         headers: (...cols: ReadonlyArray<string>) => void;
         row: (...cols: ReadonlyArray<TextData>) => void;
         format: () => string;
@@ -31,6 +32,12 @@ export namespace TextGrid {
         let _headers: string[] = [];
 
         let col_padding = 2;
+
+        let _title: string | undefined;
+
+        function title(title: string) {
+            _title = title;
+        }
 
         /**
          * Provide optional headers.
@@ -79,6 +86,13 @@ export namespace TextGrid {
 
             let buff = '';
 
+            if (_title !== undefined) {
+                buff += title + ":"
+                buff += "\n"
+                buff += Strings.generate(title.length, "=")
+                buff += "\n"
+            }
+
             if (_headers.length > 0) {
 
                 buff += formatToColumnWidth(_headers);
@@ -95,7 +109,7 @@ export namespace TextGrid {
 
         }
 
-        return {headers, row, format}
+        return {headers, row, format, title}
 
     }
 

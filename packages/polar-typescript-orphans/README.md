@@ -14,7 +14,6 @@ implement arg parsing in the future to accept a full path)
 
 Running with: 
 
-node packages/polar-typescript-orphans/src/Main.js 
 
 Will print out files that can be purged.
 
@@ -23,6 +22,12 @@ to work on and these can often be considered orphans.
 
 I have a hack for this now where we need to compute files that were recently
 updated by the team and then remove them from the list of duplicates to remove.
+
+## To compute the recent file names:
+
+git log --since="30 days ago" --pretty=format: --name-only | sort | sed -r '/^\s*$/d'| sort | uniq > recent-git-updates.txt
+
+node packages/polar-typescript-orphans/src/Main.js
 
 # NOTES
 
