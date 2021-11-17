@@ -13,7 +13,7 @@ export class AppRuntimeRouter extends React.Component<IProps> {
     public render() {
 
         switch (this.runtime) {
-            case "electron":
+            case "electron-renderer":
                 return this.props.electron || null;
             case "browser":
                 return this.props.browser || null;
