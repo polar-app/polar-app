@@ -19,7 +19,7 @@
         "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;",
         "eslint": "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern",
         "webpack": "rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin/ && mkdir -p dist/public && npx --max_old_space_size=4096 webpack --config=webpack.config.js && pwd && ls -al dist/public && echo 'Webpack built successfully'",
-        "webpack-serve": "node --max_old_space_size=4096 ../../node_modules/.bin/webpack serve --host=0.0.0.0",
+        "webpack-serve": "webpack serve --host=0.0.0.0",
         "find-unhandled-promises": "pnpm run tslint | grep 'Promises must be handled appropriately' | grep -v 'web/test' ; true",
         "serve": "node scripts/serve.js",
         "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m npx karma start; fi;",
