@@ -9,6 +9,8 @@ import {AnnotationHeader} from './AnnotationSidebarHeader';
 import isEqual from "react-fast-compare";
 import {memoForwardRef} from "../react/ReactUtils";
 import {FeedbackPadding} from "../../../apps/repository/js/ui/FeedbackPadding";
+import { MUIAnchor } from '../mui/MUIAnchor';
+import { MUIAnchorButton } from '../mui/MUIAnchorButton';
 
 const LoadRepositoryExplainer = () => (
     <div className="p-2 text-center">
@@ -17,21 +19,16 @@ const LoadRepositoryExplainer = () => (
             Click below for your personal repository
         </h2>
 
-        <a href="https://app.getpolarized.io">
-
+        <MUIAnchor href='https://app.getpolarized.io'>
             <img alt="Annotation Sidebar"
                  className="img-shadow img-fluid shadow"
                  src="https://getpolarized.io/assets/screenshots/2019-11-document-view.png"/>
-        </a>
+        </MUIAnchor>
 
         <div className="mt-3 mb-3">
-             <a href="https://app.getpolarized.io">
-                 <Button size="large"
-                         variant="contained"
-                         color="primary">
-                     Load My Doc Repository
-                 </Button>
-             </a>
+             <MUIAnchorButton href="https://app.getpolarized.io">
+                Load My Doc Repository
+             </MUIAnchorButton>
          </div>
 
     </div>

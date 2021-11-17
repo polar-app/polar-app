@@ -39,9 +39,9 @@ export function StartReviewSpeedDial() {
         history.push({pathname: '/annotations', hash: '#review-flashcards'});
     }
 
-    const handleVisibility = () => {
-        setHidden((prevHidden) => !prevHidden);
-    };
+    // const handleVisibility = () => {
+    //     setHidden((prevHidden) => !prevHidden);
+    // };
 
     const handleOpen = () => {
         setOpen(true);

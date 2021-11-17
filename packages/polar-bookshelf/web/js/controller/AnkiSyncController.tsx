@@ -10,7 +10,8 @@ import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {DocMetaSupplier} from "../metadata/DocMetaSupplier";
 import {AnkiSyncError} from "../apps/sync/framework/anki/AnkiSyncError";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {MUILinkLoaderButton} from "../mui/MUILinkLoaderButton";
+import { MUIAnchor } from '../mui/MUIAnchor';
+import { MUIAnchorButton } from '../mui/MUIAnchorButton';
 
 export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
@@ -130,16 +131,16 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
                                     Make sure you have the Anki Connect add-on installed.
 
                                     <p>
-                                        <MUILinkLoaderButton href="https://ankiweb.net/shared/info/2055492159" variant="contained">
+                                        <MUIAnchorButton href="https://ankiweb.net/shared/info/2055492159" variant="contained">
                                             Install Anki Connect
-                                        </MUILinkLoaderButton>
+                                        </MUIAnchorButton>
                                     </p>
 
                                 </li>
 
                                 <li>
                                     You now need to allow Polar to connect to your Anki Connect.
-                                    Please follow <a href="https://www.reddit.com/r/PolarBookshelf/comments/nv65ev/workaround_to_fix_polar_sync_issues_in_latest_anki/?">these instructions</a>.
+                                    Please follow <MUIAnchor href='https://www.reddit.com/r/PolarBookshelf/comments/nv65ev/workaround_to_fix_polar_sync_issues_in_latest_anki/?'>these instructions</MUIAnchor>.
                                 </li>
 
                                 <li>

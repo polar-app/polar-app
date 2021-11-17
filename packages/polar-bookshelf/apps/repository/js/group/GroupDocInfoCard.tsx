@@ -20,7 +20,7 @@ export class GroupDocInfoCard extends React.Component<IProps, IState> {
                 {/*<LeftRightSplit left={<div style={{display: 'flex'}}>*/}
 
                 {/*                    <VerticalAlign>*/}
-                {/*                        <a className="text-lg" href={'#group/' + this.props.id}>{group.name}</a>*/}
+                {/*                        <MUIAbchor className="text-lg" href={'#group/' + this.props.id}>{group.name}</MUIAnchor>*/}
                 {/*                    </VerticalAlign>*/}
 
                 {/*                </div>}*/}

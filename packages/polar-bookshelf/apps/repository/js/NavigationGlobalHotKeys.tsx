@@ -1,5 +1,4 @@
 import React from "react";
-import {useDocRepoCallbacks} from "./doc_repo/DocRepoStore2";
 import {useHistory} from "react-router-dom";
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
@@ -28,20 +27,19 @@ const globalKeyMap = keyMapWithGroup(
 
 export const NavigationGlobalHotKeys = React.memo(function NavigationGlobalHotKeys() {
 
-    const callbacks = useDocRepoCallbacks();
     const history = useHistory();
 
     const handleNavToDocuments = React.useCallback(() => {
         history.push("/");
     }, [history]);
 
-    const handleNavToAnnotations = React.useCallback(() => {
-        history.push("/annotations");
-    }, [history]);
+    // const handleNavToAnnotations = React.useCallback(() => {
+    //     history.push("/annotations");
+    // }, [history]);
 
-    const handleNavToStatistics = React.useCallback(() => {
-        history.push("/statistics");
-    }, [history]);
+    // const handleNavToStatistics = React.useCallback(() => {
+    //     history.push("/statistics");
+    // }, [history]);
 
     const globalKeyHandlers = {
         DOCUMENTS: handleNavToDocuments

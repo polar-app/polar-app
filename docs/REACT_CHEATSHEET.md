@@ -138,3 +138,27 @@ const AuthButtonMobile = (props: IAuthButtonProps) => {
     );
 }
 ```
+
+# MUIAnchor and MUIAnchorButton for routing:
+
+<MUIAnchor> - is the proper way of handling links throught the app.
+instead of using the <a> component for links use only <MUIAnchor> component
+that already has the dedicated functionaily to handle routing via react-router-dom.
+
+``` typescript jsx
+interface IAnchorProps {
+    readonly id?: string;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
+    readonly href: URLStr;
+    readonly children: JSX.Element | string;
+}
+```
+
+<MUIAnchorButton> - is in fact a link that has a button shape, therefore. we do not give this component an onClick prop. we only provide an href (along with the other buttons props if needed). If you need to provide an onClick property to handle a specific functionality beyond re-routing, use the normal <Button> component.
+
+``` typescript jsx
+interface IMUIAnchorButton extends Exclude<ButtonProps, 'onClick'> {
+    readonly href: string;
+}
+```

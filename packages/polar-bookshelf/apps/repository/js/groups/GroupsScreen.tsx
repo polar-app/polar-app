@@ -7,6 +7,7 @@ import {GroupsTable} from "./GroupsTable";
 import {CreateGroupButton} from "./CreateGroupButton";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import { MUIAnchor } from '../../../../web/js/mui/MUIAnchor';
 
 const log = Logger.create();
 
@@ -69,7 +70,7 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                                     <div className="mt-1">
                                     If you're interested in using group in your organization we'd love
-                                    to <a href="https://kevinburton1.typeform.com/to/Ze4mqY">get your feedback</a>.
+                                    to <MUIAnchor href="https://kevinburton1.typeform.com/to/Ze4mqY">get your feedback</MUIAnchor>.
                                     </div>
 
                                 </div>

@@ -3,15 +3,12 @@ import { Box, Container } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 // import EditorsChoice from "./BlogAside";
-import { Link } from "gatsby-material-ui-components";
 const DEFAULT_POST_IMAGE = require("../../content/assets/utility-images/defaultBlogPost.jpg");
 const DEFAULT_POST_IMAGE1 = require("../../content/assets/utility-images/defaultBlogPost1.jpg");
 const ImgPolarLogo = require("../../content/assets/polar-icon.png");
 
-import Bio from "./bio";
-
-import { StaticQuery, graphql } from "gatsby";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
+import { MUIAnchor } from ".../../polar-bookshelf/web/js/mui/MUIAnchor";
 
 const useStyles = makeStyles({
   articleCard: {
@@ -177,8 +174,7 @@ function BlogHeadMobile({ posts }) {
           return (
             <Box className={classes.articleBlob} key={title}>
 
-              <a style={{ textDecoration: "none", color: "#e0e0e0" }}
-                 href={node.fields.slug}>
+              <MUIAnchor href={node.fields.slug} style={{ textDecoration: "none", color: "#e0e0e0" }}>
 
                 <Container style={{ textOverflow: "wrap", maxWidth: "1000px" }}
                            disableGutters
@@ -209,7 +205,7 @@ function BlogHeadMobile({ posts }) {
                     />
                   </div>
                 </Container>
-              </a>
+              </MUIAnchor>
             </Box>
           );
         })}

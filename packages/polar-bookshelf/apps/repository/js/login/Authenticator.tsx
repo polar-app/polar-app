@@ -19,6 +19,7 @@ import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
+import { MUIAnchorButton } from '../../../../web/js/mui/MUIAnchorButton';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -453,9 +454,9 @@ const SignInWithExistingAccountButton = () => {
 
     return (
         <div style={{textAlign: 'center'}}>
-            <Button variant="text" onClick={() => history.push('/sign-in')}>
+            <MUIAnchorButton variant="text" href='/sign-in'>
                 or sign-in with existing account
-            </Button>
+            </MUIAnchorButton>
         </div>
     );
 }
@@ -464,9 +465,9 @@ const OrCreateNewAccountButton = () => {
     const history = useHistory();
     return (
         <div style={{textAlign: 'center'}}>
-            <Button variant="text" onClick={() => history.push('/create-account')}>
+            <MUIAnchorButton variant="text" href='/create-account'>
                 or register for private beta
-            </Button>
+            </MUIAnchorButton>
         </div>
     );
 }

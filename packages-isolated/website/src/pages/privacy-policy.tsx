@@ -5,6 +5,7 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Box, ThemeProvider, CssBaseline } from "@material-ui/core";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
+import { MUIAnchor } from "../../../../packages/polar-bookshelf/web/js/mui/MUIAnchor";
 
 const Landing = ({ location }) => {
   return (
@@ -32,7 +33,7 @@ const Landing = ({ location }) => {
               Your privacy is important to us. It is Polar's policy to respect
               your privacy regarding any information we may collect from you
               across our website,{" "}
-              <a href="http://getpolarized.io">http://getpolarized.io</a>, and
+              <MUIAnchor href="http://getpolarized.io">http://getpolarized.io</MUIAnchor>, and
               other sites we own and operate.
             </p>
             <h3>1. Information we collect</h3>

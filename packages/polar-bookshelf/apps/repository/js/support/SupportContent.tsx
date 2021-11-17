@@ -2,6 +2,7 @@ import React from 'react';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import { MUIAnchor } from '../../../../web/js/mui/MUIAnchor';
 
 export function SupportContent() {
 
@@ -31,8 +32,8 @@ export function SupportContent() {
                         <h2>Premium</h2>
 
                         <p className="text-lg">
-                            All users of <a href="#plans">Polar
-                            Premium</a> benefit
+                            All users of <MUIAnchor href="#plans"> Polar Premium </MUIAnchor>
+                            benefit
                             from direct support with 24 hour response
                             time. This includes the <b>bronze</b>,
                             <b>silver</b>, and <b>gold</b> plans.
@@ -49,11 +50,10 @@ export function SupportContent() {
 
                         <p className="text-lg">
                             Users on the free tier can use our community
-                            resources
-                            and reach out on <a
-                            href="https://discord.gg/GT8MhA6">Discord</a> or <a
-                            href="https://github.com/burtonator/polar-bookshelf/issues">Create
-                            an issue on Github</a>.
+                            resources and reach out on 
+                            <MUIAnchor href='https://discord.gg/GT8MhA6'>Discord</MUIAnchor>
+                             or <MUIAnchor href='https://github.com/burtonator/polar-bookshelf/issues'>Create
+                            an issue on Github</MUIAnchor>.
                         </p>
 
                         <p className="text-lg">

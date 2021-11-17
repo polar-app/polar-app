@@ -1,9 +1,8 @@
-import {useHistory} from "react-router-dom";
 import React from "react";
-import Button from '@material-ui/core/Button';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../react/ReactUtils";
+import { MUIAnchorButton } from "polar-bookshelf/web/js/mui/MUIAnchorButton";
 
 interface IProps {
     readonly required: Billing.V2PlanLevel;
@@ -12,20 +11,19 @@ interface IProps {
 
 export const UpgradeButton = deepMemo(function UpgradeButton(props: IProps) {
 
-    const history = useHistory();
     const {required, feature} = props;
 
     return (
-        <Button variant="contained"
+        <MUIAnchorButton variant="contained"
                 size="large"
                 color="primary"
                 className="border"
                 startIcon={<LockOpenIcon/>}
-                onClick={() => history.push("/plans")}>
+                href="/plans">
 
             Upgrade to {required} to unlock {feature}
 
-        </Button>
+        </MUIAnchorButton>
     );
 
 });

@@ -1,6 +1,7 @@
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
+import { MUIAnchor } from "../../../../../web/js/mui/MUIAnchor";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 
 interface IProps {
@@ -65,7 +66,7 @@ export const BlockTagsSection: React.FC<IBlockTagsSectionProps> = ({ links, onCl
     return (
         <div className={classes.root} onClick={onClick}>
             {links.map(({ text, id }, i) => 
-                <a href={`${text}`} className="note-tag" key={`${id}-${i}`}>{text}</a>
+                <MUIAnchor href={text} className="note-tag" key={`${id}-${i}`} >{text}</MUIAnchor>
             )}
         </div>
     );

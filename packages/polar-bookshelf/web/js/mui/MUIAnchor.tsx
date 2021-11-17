@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface IAnchorProps {
     readonly id?: string;
     readonly className?: string;
+    readonly style?: React.CSSProperties;
     readonly href: URLStr;
     readonly children: JSX.Element | string;
 }
@@ -80,6 +81,7 @@ export const MUIAnchor = deepMemo((props: IAnchorProps) => {
     return (
         <span className={classes.root}>
             <Link id={props.id}
+                  style={props.style}
                   className={props.className}
                   to={props.href}
                   onClick={handleClick}>
