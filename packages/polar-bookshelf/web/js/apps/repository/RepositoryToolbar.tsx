@@ -1,6 +1,5 @@
 import React from 'react';
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 
 interface IProps {
     readonly className?: string;
@@ -15,11 +14,9 @@ export const RepositoryToolbar = (props: IProps) => {
     return (
         <Paper square 
                style={props.style}
-               className={[{width: '100%'}, props.className].join(' ')}>
+               className={ props.className }>
 
-            <Box style={{display:'contents'}}>
-                {props.children || null}
-            </Box>
+            {props.children || null}
         </Paper>
     )
 }
