@@ -128,7 +128,7 @@ function useSteps(): EnhancedStep[] {
             </div>,
             image: "/web/assets/images/web.svg",
             placement: 'center',
-            disabled: AppRuntime.isElectron()
+            disabled: AppRuntime.isElectronRenderer()
         }),
 
         // JoyrideTours.createImageStep({
@@ -181,7 +181,7 @@ function useSteps(): EnhancedStep[] {
             </div>,
             image:
                 <Icon className="fas fa-cloud-upload-alt"/>,
-            disabled: ! AppRuntime.isElectron()
+            disabled: ! AppRuntime.isElectronRenderer()
 
         }),
         //

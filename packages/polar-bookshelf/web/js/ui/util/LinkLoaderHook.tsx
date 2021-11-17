@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
-import isElectron = AppRuntime.isElectron;
+import isElectron = AppRuntime.isElectronRenderer;
 
 interface ILocation {
     readonly hash?: string;
