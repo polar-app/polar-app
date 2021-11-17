@@ -168,7 +168,7 @@ function createRules() {
 
     if (target !== 'electron-renderer') {
 
-        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js');
+        const electronPath = path.resolve(__dirname, './node_modules/electron/index.js');
 
         if (!fs.existsSync(electronPath)) {
             throw new Error("Electron dir doesn't exist: " + electronPath);
