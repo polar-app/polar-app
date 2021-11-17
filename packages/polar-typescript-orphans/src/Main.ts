@@ -132,14 +132,13 @@ async function doAsync() {
     // console.log("====================================")
     // console.log(createModuleReport());
 
-
     const testsFilter = [
-        "Test.ts$",
-        "TestN.ts$",
-        "TestK.ts$",
-        "TestNK.ts$",
-        "TestKN.ts$",
-        "Story.tsx",
+        "Test\.ts$",
+        "TestN\.ts$",
+        "TestK\.ts$",
+        "TestNK\.ts$",
+        "TestKN\.ts$",
+        // "Story\.tsx$",
     ]
 
     const entriesFilter = [
