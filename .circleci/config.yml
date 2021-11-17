@@ -242,6 +242,7 @@ jobs:
     executor: << parameters.executor>>
     description: "Run our karma tests in the browser."
     steps:
+      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
@@ -260,6 +261,7 @@ jobs:
     executor: << parameters.executor>>
     description: "Build the polar chrome extension"
     steps:
+      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
@@ -291,6 +293,7 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     steps:
+      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
@@ -429,6 +432,7 @@ jobs:
     executor: << parameters.executor >>
     description: Build node Environment
     steps:
+      - global_modules_setup
       - checkout
       - run:
           name: isolate
