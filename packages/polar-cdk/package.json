@@ -45,7 +45,7 @@
     "polar-answers": "0.0.0",
     "source-map-support": "=0.5.19",
     "@elastic/elasticsearch": "=7.13.0",
-    "@google-cloud/storage": "=5.16.0",
+    "@google-cloud/storage": "=5.8.5",
     "@aws-cdk/aws-logs": "=1.132.0"
   }
 }
