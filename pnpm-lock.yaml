@@ -132,9 +132,6 @@ importers:
       workbox-webpack-plugin: 6.3.0_webpack@5.61.0
       worker-loader: 3.0.8_webpack@5.61.0
 
-  packages/@types/pdfjs-dist:
-    specifiers: {}
-
   packages/polar-accounts:
     specifiers:
       '@types/chai': 4.2.11
@@ -1471,7 +1468,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/node': 14.17.9
-      '@types/pdfjs-dist': link:../@types/pdfjs-dist
+      '@types/pdfjs-dist': 2.1.71-polar.2
 
   packages/polar-openai:
     specifiers:
@@ -1538,7 +1535,6 @@ importers:
       '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
-      '@types/pdfjs-dist': 2.1.71-polar.2
       canvas: '=2.8.0'
       chai: 4.2.0
       jsdom: '=16.7.0'
@@ -1548,7 +1544,6 @@ importers:
       polar-test: 0.0.0
     dependencies:
       '@types/node': 14.17.9
-      '@types/pdfjs-dist': link:../@types/pdfjs-dist
       canvas: 2.8.0
       jsdom: 16.7.0_canvas@2.8.0
       pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
@@ -7010,6 +7005,10 @@ packages:
 
   /@types/parse5/6.0.2:
     resolution: {integrity: sha512-+hQX+WyJAOne7Fh3zF5CxPemILIbuhNcqHHodzK9caYOLnC8pD5efmPleRnw0z++LfKUC/sVNMwk0Gap+B0baA==}
+
+  /@types/pdfjs-dist/2.1.71-polar.2:
+    resolution: {integrity: sha512-mJoaTeg0DVodS2Qog9kQbWykY++ZtiJ7ibrPZy5wDA0CpiQCIOCm7Gnd0kgeYS1zYPnQmGDDLwYnxkl7mRdSgQ==}
+    dev: true
 
   /@types/plist/3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
