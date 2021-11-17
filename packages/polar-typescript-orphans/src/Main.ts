@@ -144,6 +144,7 @@ async function doAsync() {
     const entriesFilter = [
         "\/entry\.tsx?$",
         "\/index\.tsx?$",
+        "\/StoryApp\.tsx?$",
         'login\.ts$',
         'service-worker-registration\.ts$'
     ];

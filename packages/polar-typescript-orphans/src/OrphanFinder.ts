@@ -202,10 +202,20 @@ export namespace OrphanFinder {
 
         // *** the main source references is the actual source code, not including tests.
 
+        type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
+
         function computeMainSourceReferences() {
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
-            return _filterSourceReferences(sourceReferences, predicate);
+            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            const rejectPredicate = Predicates.not(acceptPredicate);
+
+            const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
+            const rejected = _filterSourceReferences(sourceReferences, rejectPredicate);
+
+            console.log("FIXLE We rejected the following main source refs: ", rejected);
+
+            return [accepted, rejected];
+
 
         }
         //
@@ -216,7 +226,7 @@ export namespace OrphanFinder {
         //
         // }
 
-        const mainSourceReferences = computeMainSourceReferences();
+        const [mainSourceReferences] = computeMainSourceReferences();
         // const testSourceReferences = computeTestSourceReferences();
 
         // console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
