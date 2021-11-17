@@ -2,7 +2,7 @@ import React from "react";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../react/ReactUtils";
-import { MUIAnchorButton } from "polar-bookshelf/web/js/mui/MUIAnchorButton";
+import { MUIAnchorButton } from "../../../../web/js/mui/MUIAnchorButton";
 
 interface IProps {
     readonly required: Billing.V2PlanLevel;

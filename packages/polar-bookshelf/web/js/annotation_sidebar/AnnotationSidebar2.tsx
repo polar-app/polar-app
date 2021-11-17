@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from './DocAnnotation';
 import Paper from "@material-ui/core/Paper";
-import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
 import {useAnnotationSidebarStore} from '../../../apps/doc/src/AnnotationSidebarStore';
 import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
