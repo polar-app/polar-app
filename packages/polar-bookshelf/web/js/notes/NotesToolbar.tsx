@@ -78,11 +78,7 @@ const useDesktopStyles = makeStyles((theme) =>
         root: {
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '5px 8px'
-        },
-        divider: {
-            padding: '0 26px',
+            alignItems: 'center'
         },
         left: {
             flexShrink: 0,
@@ -94,11 +90,6 @@ const useDesktopStyles = makeStyles((theme) =>
             maxWidth: 340,
             display: 'flex',
             alignItems: 'center',
-        },
-        mid: {
-            flex: '0 1 522px',
-            maxWidth: 522,
-            margin: '0 20px',
         }
     }),
 );
@@ -109,7 +100,7 @@ const DesktopNotesToolbar = () => {
 
     return (
         <RepositoryToolbar className={classes.root}>
-            <Box className={classes.left}>
+            <Box px={1} py={1} className={classes.left}>
                 <Button color="primary"
                         style={{ height: 38, width: 284 }}
                         variant="contained"
@@ -120,7 +111,7 @@ const DesktopNotesToolbar = () => {
                     Create a new note
                 </Button>
             </Box>
-            <Box className={classes.right}>
+            <Box px={1} py={1} className={classes.right}>
                 <SearchForNote />
             </Box>
         </RepositoryToolbar>
