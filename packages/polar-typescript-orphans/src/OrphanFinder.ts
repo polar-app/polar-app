@@ -24,7 +24,8 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
+    export function _filterSourceReferences<R extends ISourceReference>(sourceReferences: ReadonlyArray<R>,
+                                                                        predicate: Predicates.Predicate<PathStr>) {
 
         return sourceReferences.filter(current => predicate(current.fullPath));
 
@@ -204,15 +205,13 @@ export namespace OrphanFinder {
 
         type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
-        function computeMainSourceReferences() {
+        function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
 
             const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
             const rejectPredicate = Predicates.not(acceptPredicate);
 
             const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
             const rejected = _filterSourceReferences(sourceReferences, rejectPredicate);
-
-            console.log("FIXLE We rejected the following main source refs: ", rejected);
 
             return [accepted, rejected];
 
@@ -226,7 +225,7 @@ export namespace OrphanFinder {
         //
         // }
 
-        const [mainSourceReferences] = computeMainSourceReferences();
+        const [mainSourceReferences] = computeMainSourceReferences(sourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
 
         // console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
@@ -237,12 +236,12 @@ export namespace OrphanFinder {
         // mainSourceReferences NOT the sourceReferences because unit tests
         // shouldn't count against ref numbers because if they do then we would
         // never get down to zero and they would never be orphans.
-        const imports = await computeImports(sourceReferences);
+        const imports = await computeImports(mainSourceReferences);
 
         // console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        sourceReferences
+        mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
         // *** this should register all the imports...
