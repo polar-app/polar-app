@@ -8,7 +8,7 @@ import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
 import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
 import {BlockItems} from "../notes/BlockItems";
-import {useNotesIntegrationEnabled} from "../apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../notes/NoteUtils";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;

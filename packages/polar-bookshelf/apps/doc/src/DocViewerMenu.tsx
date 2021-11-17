@@ -39,7 +39,7 @@ import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightBlocksHooks"
 import {useDocViewerContext} from "./renderers/DocRenderer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {DOMBlocks} from "../../../web/js/notes/contenteditable/DOMBlocks";
-import {useNotesIntegrationEnabled} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 

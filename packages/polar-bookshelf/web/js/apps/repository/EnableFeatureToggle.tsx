@@ -11,6 +11,7 @@ export const EnableFeatureToggle = () => {
         const url = new URL(document.location.href);
 
         const feature = url.searchParams.get('name')
+        const state = url.searchParams.get('state');
 
         if (feature) {
 
@@ -19,7 +20,7 @@ export const EnableFeatureToggle = () => {
             // note that we MAY need to shutdown Firestore due to that Safari
             // bug but it might be fixed by now.
 
-            featureToggler(feature)
+            featureToggler(feature, ! state || state !== 'off')
                 .then(() => document.location.href = '/')
                 .catch(err => console.error(err));
 

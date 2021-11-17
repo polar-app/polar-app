@@ -12,7 +12,6 @@ import {useStateRef} from "../../hooks/ReactHooks";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {Percentages} from "polar-shared/src/util/Percentages";
@@ -22,21 +21,29 @@ import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Analytics} from "../../analytics/Analytics";
-import {useFeatureToggle, useFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {IFirestoreTypedQuerySnapshot} from "polar-firestore-like/src/FirestoreSnapshots";
+import {useBlocksStore} from "../../notes/store/BlocksStore";
+import {useUserTagsDB} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
+import {Tag} from "polar-shared/src/tags/Tags";
+import {Contents} from "../../notes/content/Contents";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IBlocksStore} from "../../notes/store/IBlocksStore";
+import {NameContent} from "../../notes/content/NameContent";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
+import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
 
 interface IProps {
     readonly children: JSX.Element;
 }
 
 const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
-const MIGRATION_NAME = 'block-annotations';
-const ANALYTICS_EVENT_PREFIX = 'migration-to-block-annotations';
-
-const FEATURE_TOGGLE_NAME = 'notes-integration';
-
-export const useNotesIntegrationEnabled = () => {
-    return useFeatureToggle(FEATURE_TOGGLE_NAME);
-};
+const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
+const TAGS_MIGRATION_NAME = 'block-usertagsdb';
+const ANALYTICS_MIGRATION_EVENT_PREFIX = 'migration-to-block-annotations';
+const ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX = 'user-tags-migration';
 
 type ProgressData = {
     readonly total: number;
@@ -144,7 +151,7 @@ namespace MigrationToBlockAnnotationsHelpers {
 
         return MigrationCollection.write(firestore, {
             uid: uid,
-            name: MIGRATION_NAME,
+            name: MIGRATION_TO_BLOCK_ANNOTATIONS_NAME,
             status: 'started',
             started: startTs,
         });
@@ -158,7 +165,7 @@ namespace MigrationToBlockAnnotationsHelpers {
 
         return MigrationCollection.write(firestore, {
             uid: uid,
-            name: MIGRATION_NAME,
+            name: MIGRATION_TO_BLOCK_ANNOTATIONS_NAME,
             status: 'completed',
             started: startTs,
             completed: completeTs,
@@ -172,7 +179,7 @@ namespace MigrationToBlockAnnotationsHelpers {
 
         return MigrationCollection.write(firestore, {
             uid: uid,
-            name: MIGRATION_NAME,
+            name: MIGRATION_TO_BLOCK_ANNOTATIONS_NAME,
             status: 'failed',
             started: startTs,
             failed: failTs,
@@ -198,7 +205,7 @@ function useMigrationExecutor() {
             throw new Error('useMigratorExecutor: user not found');
         }
 
-        Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-started`);
+        Analytics.event2(`${ANALYTICS_MIGRATION_EVENT_PREFIX}-started`);
 
         const started = ISODateTimeStrings.create();
         const total = docMetas.migrations.length;
@@ -238,12 +245,12 @@ function useMigrationExecutor() {
 
         }
 
-        Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-finished`, { noSucceeded: unmigratedDocMetas.length - failCount, noFailed: failCount });
+        Analytics.event2(`${ANALYTICS_MIGRATION_EVENT_PREFIX}-finished`, { noSucceeded: unmigratedDocMetas.length - failCount, noFailed: failCount });
 
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
 
-        await featureToggler(FEATURE_TOGGLE_NAME);
+        await featureToggler(NOTES_INTEGRATION_FEATURE_TOGGLE_NAME);
 
     }, [setProgressData, progressDataRef, firestore, user, featureToggler]);
 
@@ -258,7 +265,7 @@ function useMigrationExecutor() {
                 }
 
                 console.error('MigrationToBlockAnnotations failed with error', err);
-                Analytics.event2(`${ANALYTICS_EVENT_PREFIX}-failed`);
+                Analytics.event2(`${ANALYTICS_MIGRATION_EVENT_PREFIX}-failed`);
                 setError(err);
 
                 const started = progressDataRef.current!.started;
@@ -273,46 +280,185 @@ function useMigrationExecutor() {
     return { progressData, error, migrationExecutor };
 }
 
+namespace UserTagsMigrationHelpers {
+
+    export function getBlockStructureTagsRecursively({ content, children }: IBlockContentStructure): ReadonlyArray<Tag> {
+        const tags = Contents.create(content).getTags();
+
+        return [...tags, ...children.flatMap(getBlockStructureTagsRecursively)];
+    }
+
+    export function getFromBlockStructures(blockStructures: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<Tag> {
+
+        return arrayStream(blockStructures.flatMap(getBlockStructureTagsRecursively))
+            .unique(({ id }) => id)
+            .collect();
+    }
+
+    export function userTagsToNotesTags(blocksStore: IBlocksStore,
+                                        tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+
+        const nonExistent = tags.filter(({ label }) => ! blocksStore.getBlockByName(label));
+
+        const nonExistentBlockContents = nonExistent.map(({ label }) => 
+            new NameContent({ type: 'name', data: label, links: [] }).toJSON());
+
+        const nonExistentBlockStructures: ReadonlyArray<IBlockContentStructure<INameContent>> =
+            nonExistentBlockContents.map(content => ({ id: Hashcodes.createRandomID(), content, children: [] }));
+
+        if (nonExistentBlockStructures.length > 0) {
+            blocksStore.insertFromBlockContentStructure(nonExistentBlockStructures);
+        }
+
+        // Tags that already exist as notes
+        const existentBlockTags = tags.filter(({ id }) => !! blocksStore.index[id]);
+
+        // Tags that we just created notes for
+        const nonExistentBlockTags = nonExistentBlockStructures.map(({ id, content }) =>
+            ({ id, label: content.data }))
+
+        return [
+            ...existentBlockTags,
+            ...nonExistentBlockTags,
+        ];
+
+    }
+}
+
+function useTagsMigrationExecutor() {
+    const blocksStore = useBlocksStore();
+    const userTagsDB = useUserTagsDB();
+    const [error, setError] = React.useState<Error | null>(null);
+    const startedRef = React.useRef(false);
+    const { firestore, user } = useFirestore();
+
+    const migrationExecutor = React.useCallback(() => {
+        if (startedRef.current || ! user) {
+            return;
+        }
+
+        startedRef.current = true;
+        const startTs = ISODateTimeStrings.create();
+
+        const migrateData = async () => {
+            await MigrationCollection.write(firestore, {
+                uid: user.uid,
+                name: TAGS_MIGRATION_NAME,
+                status: 'started',
+                started: startTs,
+            });
+
+            Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-started`);
+
+            const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
+            const documentBlockStructures = blocksStore.createBlockContentStructure(documentBlockIDs);
+
+            const blockTags = UserTagsMigrationHelpers.getFromBlockStructures(documentBlockStructures);
+            const userTags = userTagsDB.tags();
+
+            const tags = [...blockTags, ...UserTagsMigrationHelpers.userTagsToNotesTags(blocksStore, userTags)];
+
+            const uniqueTags = arrayStream(tags).unique(({ id }) => id).collect();
+            
+            // Delete the old tags
+            userTags.forEach(({ id }) => userTagsDB.delete(id));
+
+            // Insert the new ones
+            uniqueTags.forEach(tag => userTagsDB.register(tag));
+
+            // Commit 💩
+            await userTagsDB.commit();
+
+            await MigrationCollection.write(firestore, {
+                uid: user.uid,
+                name: TAGS_MIGRATION_NAME,
+                status: 'completed',
+                started: startTs,
+                completed: ISODateTimeStrings.create(),
+            });
+
+            Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-completed`);
+        };
+
+        migrateData().catch((err) => {
+            setError(err);
+
+            if (! user) {
+                return console.error('useMigratorExecutor: user not found');
+            }
+
+            console.error('MigrationToBlockAnnotations failed with error', err);
+            Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-failed`);
+
+            MigrationCollection.write(firestore, {
+                uid: user.uid,
+                name: TAGS_MIGRATION_NAME,
+                status: 'failed',
+                started: startTs,
+                failed: ISODateTimeStrings.create(),
+            }).catch(console.error);
+        });
+        
+    }, [blocksStore, userTagsDB, firestore, user, setError, startedRef]);
+
+    return { migrationExecutor, error };
+}
+
+const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQuerySnapshot<MigrationCollection.IMigration> | undefined): 'notstarted' | 'started' | 'completed' | undefined => {
+    if (! migrationSnapshot) {
+        return undefined;
+    }
+
+    if (migrationSnapshot.docs.length === 0) {
+        return 'notstarted';
+    }
+
+    if (migrationSnapshot.docs[0].status === 'completed') {
+        return 'completed';
+    }
+
+    return 'started';
+};
+
 export const MIGRATION_TO_BLOCKS_ENABLED = LocalStorageFeatureToggles.get('migration-to-block-annotations');
 
 export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
-    const [migrationSnapshot, error] = useMigrationSnapshotByName(MIGRATION_NAME);
+    const [migrationSnapshot, migrationSnapshotError] = useMigrationSnapshotByName(MIGRATION_TO_BLOCK_ANNOTATIONS_NAME);
+    const [tagsMigrationSnapshot, tagsMigrationSnapshotError] = useMigrationSnapshotByName(TAGS_MIGRATION_NAME);
     const { progressData, error: migrationError, migrationExecutor } = useMigrationExecutor();
+    const { migrationExecutor: tagsMigrationExecutor, error: tagsMigrationError } = useTagsMigrationExecutor();
     const [docMetaSnapshot, docMetasSnapshotError] = MigrationToBlockAnnotationsHelpers.useDocMetaMigrationSnapshotFromServer();
     const [skipped, setSkipped] = React.useState<boolean>(false);
 
     const handleSkip = React.useCallback(() => setSkipped(true), [setSkipped]);
 
-    const migrationStatus = React.useMemo((): 'notstarted' | 'started' | 'completed' | undefined => {
+    const migrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(migrationSnapshot), [migrationSnapshot]);
+    const tagsMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(tagsMigrationSnapshot), [tagsMigrationSnapshot]);
 
-        if (! migrationSnapshot) {
-            return undefined;
-        }
-
-        if (migrationSnapshot.docs.length === 0) {
-            return 'notstarted';
-        }
-
-        if (migrationSnapshot.docs[0].status === 'completed') {
-            return 'completed';
-        }
-
-        return 'started';
-
-    }, [migrationSnapshot]);
-
+    /**
+     * If the migration was started but not finished
+     * then just resume it
+     */
     React.useEffect(() => {
 
-        /**
-         * If the migration was started but not finished
-         * then just resume it
-         */
         if (migrationStatus === 'started' && docMetaSnapshot) {
             migrationExecutor(docMetaSnapshot);
         }
 
     }, [migrationStatus, docMetaSnapshot, migrationExecutor]);
+
+    /**
+     * Start the tag migration once the main migration is complete
+     * TODO: Enable this after we reimplement the new folder sidebar
+     */
+    /*
+    React.useEffect(() => {
+        if (migrationStatus === 'completed' && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
+            tagsMigrationExecutor();
+        }
+    }, [tagsMigrationExecutor, migrationStatus, tagsMigrationStatus]);
+     */
 
     const handleStart = React.useCallback(() => {
 
@@ -322,20 +468,33 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     }, [migrationExecutor, migrationStatus, docMetaSnapshot]);
 
-    if (! migrationSnapshot) {
+    const percentage = React.useMemo(() => {
+        if (tagsMigrationStatus === 'started' || ! progressData) {
+            return undefined;
+        }
+        
+        return Percentages.calculate(progressData.current, progressData.total);
+    }, [progressData, tagsMigrationStatus]);
+
+    if (! migrationSnapshot || ! tagsMigrationSnapshot) {
         return <LinearProgress />;
     }
 
 
-    if (! MIGRATION_TO_BLOCKS_ENABLED || skipped || migrationStatus === 'completed') {
+    if (! MIGRATION_TO_BLOCKS_ENABLED || skipped || (migrationStatus === 'completed' && tagsMigrationStatus === 'completed')) {
 
         return props.children;
     }
 
-    if (error || migrationError) {
+    const genericError = migrationSnapshotError
+                         || migrationError
+                         || tagsMigrationSnapshotError
+                         || tagsMigrationError;
+
+    if (genericError) {
         return (
             <Alert severity="error">
-                We're unable to migrate your data: <q>{error ? error.message : migrationError ? migrationError.message : ""}</q>
+                We're unable to migrate your data: <q>{genericError.message}</q>
             </Alert>
         );
     }
@@ -354,15 +513,13 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         );
     }
 
-    const percentage = progressData ? Percentages.calculate(progressData.current, progressData.total) : 0;
-
     return (
         <AdaptiveDialog>
             <MigrationToBlockAnnotationsMain
                 onSkip={handleSkip}
                 onStart={handleStart}
                 progress={percentage}
-                started={migrationStatus === 'started'}
+                started={migrationStatus === 'started' || tagsMigrationStatus === 'started'}
                 skippable
             />
         </AdaptiveDialog>

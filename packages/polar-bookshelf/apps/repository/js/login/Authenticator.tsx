@@ -480,7 +480,7 @@ export const LogoAndTextSideBySide = () => {
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
-                        <Typography variant="h2" component="div">
+                        <Typography variant="h2" component="div" style={{ fontWeight: 400 }}>
                             POLAR
                         </Typography>
                     </Box>

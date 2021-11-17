@@ -51,6 +51,21 @@ export namespace BlocksStoreUndoQueues {
         readonly noExpand?: boolean;
     }
 
+    export function doSave<T>(blocksStore: BlocksStore,
+                              identifiers: ReadonlyArray<BlockIDStr>,
+                              blocksPersistenceWriter: BlocksPersistenceWriter,
+                              redoDelegate: () => T): T {
+
+        const undoCapture = createUndoCapture(blocksStore, identifiers, blocksPersistenceWriter);
+
+        const value = redoDelegate();
+
+        undoCapture.capture();
+        undoCapture.persist();
+
+        return value;
+    }
+
     /**
      * Do an undo operation and push it into the undo queue.
      */
