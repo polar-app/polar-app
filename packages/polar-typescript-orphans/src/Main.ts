@@ -100,18 +100,6 @@ async function doAsync() {
 
         return await computeSourceDirectories();
     }
-    //
-    // const modules: ReadonlyArray<IModuleReference> = [
-    //     {
-    //         name: 'polar-bookshelf',
-    //         dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js'
-    //     },
-    //     {
-    //         name: 'polar-bookshelf',
-    //         dir: '/Users/burton/projects/polar-app/packages/polar-bookshelf/apps'
-    //     }
-    //
-    // ];
 
     const modules = await computeModules("./packages");
 
@@ -139,7 +127,7 @@ async function doAsync() {
         "TestK.ts$",
         "TestNK.ts$",
         "TestKN.ts$",
-        "Story.tsx",
+        // "Story.tsx",
     ]
 
     const entriesFilter = [

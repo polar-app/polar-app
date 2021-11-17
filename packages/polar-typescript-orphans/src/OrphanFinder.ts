@@ -24,7 +24,7 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
+    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>, predicate: Predicates.Predicate<PathStr>) {
 
         return sourceReferences.filter(current => predicate(current.fullPath));
 
@@ -204,8 +204,15 @@ export namespace OrphanFinder {
 
         function computeMainSourceReferences() {
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
-            return _filterSourceReferences(sourceReferences, predicate);
+            const input = [...entriesFilter, ...testsFilter];
+            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny(input));
+            const result = _filterSourceReferences(sourceReferences, predicate);
+
+            if (result.length === input.length) {
+                throw new Error("No entries or tests filtered");
+            }
+
+            return result;
 
         }
         //
@@ -227,7 +234,7 @@ export namespace OrphanFinder {
         // mainSourceReferences NOT the sourceReferences because unit tests
         // shouldn't count against ref numbers because if they do then we would
         // never get down to zero and they would never be orphans.
-        const imports = await computeImports(sourceReferences);
+        const imports = await computeImports(mainSourceReferences);
 
         // console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
