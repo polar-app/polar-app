@@ -25,7 +25,7 @@ export class AppRuntimeRouter extends React.Component<IProps> {
 
     public static Electron = (props: any) => {
 
-        if (AppRuntime.isElectron()) {
+        if (AppRuntime.isElectronRenderer()) {
             return props.children;
         } else {
             return null;
