@@ -9,7 +9,7 @@ interface IProps {
 
 export const BrowserTabs = React.memo(function BrowserTabs(props: IProps) {
 
-    if (! AppRuntime.isElectron()) {
+    if (! AppRuntime.isElectronRenderer()) {
         // don't do anything if we're not running electron
         return props.children;
     }

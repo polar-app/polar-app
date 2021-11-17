@@ -1,6 +1,6 @@
 import {OrphanFinder} from "./OrphanFinder";
 import {Files} from "polar-shared/src/util/Files";
-import { FilePaths } from "polar-shared/src/util/FilePaths";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 import * as fs from "fs";
 import {PathStr} from "polar-shared/src/util/Strings";
 import {IModuleReference} from "./IModuleReference";
@@ -128,18 +128,21 @@ async function doAsync() {
 
     }
 
-    console.log("Working with the following modules: ")
-    console.log("====================================")
-    console.log(createModuleReport());
+    // console.log("Working with the following modules: ")
+    // console.log("====================================")
+    // console.log(createModuleReport());
 
+    // NOTE: This won't work well with stories (for now) because they're tightly
+    // bound against StoryApp.tsx.  This will be fixed when we migrate to
+    // storybook
 
     const testsFilter = [
-        "Test.ts$",
-        "TestN.ts$",
-        "TestK.ts$",
-        "TestNK.ts$",
-        "TestKN.ts$",
-        "Story.tsx",
+        "Test\.ts$",
+        "TestN\.ts$",
+        "TestK\.ts$",
+        "TestNK\.ts$",
+        "TestKN\.ts$",
+        // "Story\.tsx$",
     ]
 
     const entriesFilter = [

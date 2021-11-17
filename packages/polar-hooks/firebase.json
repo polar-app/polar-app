@@ -17,6 +17,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/daily",
+        "destination": "/apps/doc/index.html"
+      },
+      {
         "source": "/sitemap-doc-preview.xml",
         "function": "docPreviewSitemap"
       },

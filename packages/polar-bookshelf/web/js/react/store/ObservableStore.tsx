@@ -323,7 +323,7 @@ export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
-    <R extends any>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R,
+    <R>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R,
     UseContextHook<SetStore<V>>,
     UseContextHook<StoreProvider<V>>,
 ];
@@ -449,7 +449,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    const useStoreReducerHook = <R extends any>(reducer: (value: V) => R, opts: IUseObservableStoreReducerOpts<R> = {}) => {
+    const useStoreReducerHook = <R,>(reducer: (value: V) => R, opts: IUseObservableStoreReducerOpts<R> = {}) => {
         return useObservableStoreReducer(storeContext, reducer, opts);
     }
 

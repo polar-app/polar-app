@@ -25,6 +25,7 @@ export namespace UsersAcceptor {
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
             'kevin@getpolarized.io',
+            'jonathan.graeupner@gmail.com',
         ];
         return allowedEmails.includes(idUser.user.email as string);
     }
@@ -32,10 +33,13 @@ export namespace UsersAcceptor {
     async function sendWelcomeEmail(email: string) {
         const message = {
             to: email,
-            from: 'noreply@getpolarized.io',
-            subject: `Your Polar account has been set up. Welcome!`,
-            html: `<p>You can now begin using Polar:</p>
-                   <p><b><a href="https://getpolarized.io">Login to Polar</a></b></p>
+            from: 'founders@getpolarized.io',
+            subject: `Your journey with Polar is ready to begin! 🙌`,
+            html: `<p>Welcome to Polar! 🎉🎉 You now have access to Polar and can log in using this email address</p>
+                   <p><b><a href="https://getpolarized.io">Click here to get started</a></b></p>
+                   <p>Quick note: we would love to hear from you! We are rapidly releasing multiple new features these days. If you have any feedback, send us a message! It helps us improve the tool faster 🙏</p>
+                   <p>Cheers</p>
+                   <p>The Polar team</p>
                    <p style="font-size: smaller; color: #c6c6c6;">Polar - Read. Learn. Never Forget.</p>`
         };
         await Sendgrid.send(message);

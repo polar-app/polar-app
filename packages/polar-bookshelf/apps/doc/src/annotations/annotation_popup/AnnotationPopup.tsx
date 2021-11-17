@@ -22,7 +22,7 @@ export const useAnnotationPopupStyles = makeStyles((theme) =>
     createStyles({
         root: {
             color: theme.palette.text.secondary,
-            background: theme.palette.background.default,
+            background: theme.palette.background.paper,
             borderRadius: 4,
             boxSizing: "border-box",
         },

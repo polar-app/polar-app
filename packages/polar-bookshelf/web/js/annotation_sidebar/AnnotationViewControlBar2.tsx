@@ -6,7 +6,6 @@ import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import EditIcon from '@material-ui/icons/Edit';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
-import {MUIAnchor} from "../mui/MUIAnchor";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
@@ -23,6 +22,7 @@ import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardCreator} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 import {useAnnotationLink} from './JumpToAnnotationHook';
+import {MUIAnchor} from "../mui/MUIAnchor";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

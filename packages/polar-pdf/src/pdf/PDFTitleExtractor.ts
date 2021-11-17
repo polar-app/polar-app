@@ -1,11 +1,10 @@
-import {PDFDocumentProxy} from "pdfjs-dist";
 import {Whitespace} from "polar-shared/src/util/Whitespace";
+import {IPDFDocumentProxy, ITextItem} from "./PDFJS";
 
 export namespace PDFTitleExtractor {
 
-    import TextItem = _pdfjs.TextItem;
 
-    export async function extract(doc: PDFDocumentProxy): Promise<string | undefined> {
+    export async function extract(doc: IPDFDocumentProxy): Promise<string | undefined> {
 
         if (doc.numPages === 0) {
             // no pages so we obviously can't extract a title.
@@ -25,13 +24,13 @@ export namespace PDFTitleExtractor {
             return firstText.height;
         }
 
-        function computeHeadTextWithIdenticalHeight(height: number): ReadonlyArray<TextItem> {
+        function computeHeadTextWithIdenticalHeight(height: number): ReadonlyArray<ITextItem> {
 
             function createPredicate() {
 
                 let accept: boolean = true;
 
-                return (textItem: TextItem) => {
+                return (textItem: ITextItem) => {
 
                     if (textItem.height !== height) {
                         accept = false;

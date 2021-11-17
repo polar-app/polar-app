@@ -600,7 +600,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         console.log("Jumping to annotation on document: " + docDescriptor.fingerprint, docDescriptor);
         jumpToAnnotationHandler(ptr)
 
-    }, [docDescriptor, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights]);
+    }, [docDescriptor, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights, notesIntegrationEnabled]);
 
     const isPDF = origin.fileType === 'pdf';
 
