@@ -257,7 +257,7 @@ export namespace OrphanFinder {
 
         }
 
-        console.log(createImportRankingsReport());
+        // console.log(createImportRankingsReport());
 
         interface IOrphanTest {
             readonly path: PathStr;
@@ -279,16 +279,34 @@ export namespace OrphanFinder {
 
         }
 
-        function computeOrphanTestsReport() {
-            const orphanTest = computeOrphanTests();
+        const orphanedTests = computeOrphanTests();
+
+        function computeOrphanedTestsReport() {
             const grid = TextGrid.create(3);
             grid.headers('path', 'imported', 'orphan');
-            orphanTest.forEach(current => grid.row(current.path, current.imported, true))
+            orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
-        console.log("Orphan tests: ================")
-        console.log(computeOrphanTestsReport());
+        // console.log("Orphan tests: ================")
+        // console.log(computeOrphanedTestsReport());
+
+        function generateOrphansReport() {
+
+            interface IOrphan {
+                readonly path: string;
+            }
+
+            const orphans: ReadonlyArray<IOrphan> = [
+                ...orphanedTests,
+                ...importRankings.filter(current => current.orphan)
+            ]
+
+            orphans.forEach(current => console.log(current.path))
+
+        }
+
+        generateOrphansReport();
 
     }
 
