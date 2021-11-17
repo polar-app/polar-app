@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import {Callback} from "polar-shared/src/util/Functions";
 import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
@@ -16,6 +15,8 @@ interface InputCompleteListenerOpts {
 
 function useInputCompleteWindowListener(opts: InputCompleteListenerOpts) {
 
+    const {onComplete, onCancel} = opts;
+
     const onKeyDown = React.useCallback((event: KeyboardEvent) => {
 
         // note that react-hotkeys is broken when you listen to 'Enter' on
@@ -23,18 +24,17 @@ function useInputCompleteWindowListener(opts: InputCompleteListenerOpts) {
         // can just listen to the key directly
 
         if (isInputCompleteEvent(event)) {
-            opts.onComplete();
+            onComplete();
         }
 
-        if (event.key === 'Escape' && opts.onCancel) {
-            opts.onCancel();
+        if (event.key === 'Escape' && onCancel) {
+            onCancel();
         }
 
-        console.log("FIXME1: blocking key binding");
         event.preventDefault();
         event.stopPropagation();
 
-    }, []);
+    }, [onCancel, onComplete]);
 
     // FIXME:
     //
