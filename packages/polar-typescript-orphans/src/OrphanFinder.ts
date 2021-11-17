@@ -184,7 +184,7 @@ export namespace OrphanFinder {
 
         const dependencyIndex = DependencyIndex.create();
 
-        console.log("Scanning modules...")
+        // console.log("Scanning modules...")
 
         const sourceTypeClassifier = (path: PathStr) => {
 
@@ -219,9 +219,9 @@ export namespace OrphanFinder {
         const mainSourceReferences = computeMainSourceReferences();
         // const testSourceReferences = computeTestSourceReferences();
 
-        console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
-
-        console.log("Scanning imports...")
+        // console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
+        //
+        // console.log("Scanning imports...")
 
         // Note that these imports have to be computed over the
         // mainSourceReferences NOT the sourceReferences because unit tests
@@ -229,7 +229,7 @@ export namespace OrphanFinder {
         // never get down to zero and they would never be orphans.
         const imports = await computeImports(sourceReferences);
 
-        console.log(`Scanning imports...done (found ${imports.length} imports)`);
+        // console.log(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
         sourceReferences
