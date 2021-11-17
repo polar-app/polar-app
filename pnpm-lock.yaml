@@ -468,6 +468,7 @@ importers:
       react-json-view: '=1.19.1'
       react-moment: '=0.9.7'
       react-rnd: '=10.2.3'
+      react-router: '=5.2.0'
       react-router-dom: '=5.2.0'
       react-spring: '=8.0.27'
       react-summernote: '=2.0.2'
@@ -488,6 +489,7 @@ importers:
       throttle-debounce: '=3.0.1'
       timekeeper: 2.2.0
       typemoq: '=2.1.0'
+      universal-analytics: '=0.5.0'
       use-local-storage-state: '=6.0.0'
       userflow.js: '=2.2.0'
       uuid: 3.3.3
@@ -599,6 +601,7 @@ importers:
       react-json-view: 1.19.1_react-dom@17.0.2+react@17.0.2
       react-moment: 0.9.7_moment@2.29.1+react@17.0.2
       react-rnd: 10.2.3
+      react-router: 5.2.0_react@17.0.2
       react-router-dom: 5.2.0_react@17.0.2
       react-spring: 8.0.27_react-dom@17.0.2+react@17.0.2
       react-summernote: 2.0.2_a6fb626e697bf441bc99b7f40fdc2d0f
@@ -616,6 +619,7 @@ importers:
       summernote: 0.8.18
       throttle-debounce: 3.0.1
       typemoq: 2.1.0
+      universal-analytics: 0.5.0
       use-local-storage-state: 6.0.0_react@17.0.2
       uuid: 3.3.3
     devDependencies:
@@ -900,6 +904,7 @@ importers:
       '@types/mocha': '=9.0.0'
       epubjs: '=0.3.89-polar.21'
       fast-xml-parser: '=3.19.0'
+      jsdom: '=16.7.0'
       mocha: '=9.1.1'
       node-stream-zip: '=1.14.0'
       polar-shared: 0.0.0
@@ -907,6 +912,7 @@ importers:
     dependencies:
       epubjs: 0.3.89-polar.21
       fast-xml-parser: 3.19.0
+      jsdom: 16.7.0
       node-stream-zip: 1.14.0
       polar-shared: link:../polar-shared
     devDependencies:
@@ -2125,11 +2131,13 @@ importers:
       polar-shared: 0.0.0
       polar-web-capture: 0.0.0
       polar-web-extension-api: 0.0.0
+      react: '=17.0.2'
+      react-dom: 17.0.2
       readability: 0.2.0-polar.2
     dependencies:
       '@fortawesome/fontawesome-free': 5.13.0
-      '@material-ui/core': 4.11.3_@types+react@17.0.2
-      '@material-ui/icons': 4.11.2_5ca5f6944d761878610aa211cdb85eb5
+      '@material-ui/core': 4.11.3_0607d8bab5983684f0a746a30ac1a448
+      '@material-ui/icons': 4.11.2_8f76ac0a517dc414459d6962f6e4d50b
       jszip: 3.7.1
       polar-assets: link:../polar-assets
       polar-backend-datastore: link:../polar-backend-datastore
@@ -2154,6 +2162,8 @@ importers:
       chai: 4.2.0
       mocha: 9.1.1
       polar-firebase-test: link:../polar-firebase-test
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
 
   packages/polar-web-extension-api:
     specifiers:
@@ -5091,49 +5101,6 @@ packages:
       react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
     dev: false
 
-  /@material-ui/core/4.11.3_@types+react@17.0.2:
-    resolution: {integrity: sha512-Adt40rGW6Uds+cAyk3pVgcErpzU/qxc7KBR94jFHBYretU4AtWZltYcNsbeMn9tXL86jjVL1kuGcIHsgLgFGRw==}
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      '@types/react': ^16.8.6 || ^17.0.0
-      react: ^16.8.0 || ^17.0.0
-      react-dom: ^16.8.0 || ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@material-ui/styles': 4.11.4_@types+react@17.0.2
-      '@material-ui/system': 4.12.1_@types+react@17.0.2
-      '@material-ui/types': 5.1.0_@types+react@17.0.2
-      '@material-ui/utils': 4.11.2
-      '@types/react': 17.0.2
-      '@types/react-transition-group': 4.4.4
-      clsx: 1.1.1
-      hoist-non-react-statics: 3.3.2
-      popper.js: 1.16.1-lts
-      prop-types: 15.7.2
-      react-is: 17.0.2
-      react-transition-group: 4.4.2
-    dev: false
-
-  /@material-ui/icons/4.11.2_5ca5f6944d761878610aa211cdb85eb5:
-    resolution: {integrity: sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==}
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      '@material-ui/core': ^4.0.0
-      '@types/react': ^16.8.6 || ^17.0.0
-      react: ^16.8.0 || ^17.0.0
-      react-dom: ^16.8.0 || ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@material-ui/core': 4.11.3_@types+react@17.0.2
-      '@types/react': 17.0.2
-    dev: false
-
   /@material-ui/icons/4.11.2_8f76ac0a517dc414459d6962f6e4d50b:
     resolution: {integrity: sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==}
     engines: {node: '>=8.0.0'}
@@ -5273,36 +5240,6 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /@material-ui/styles/4.11.4_@types+react@17.0.2:
-    resolution: {integrity: sha512-KNTIZcnj/zprG5LW0Sao7zw+yG3O35pviHzejMdcSGCdWbiO8qzRgOYL8JAxAsWBKOKYwVZxXtHWaB5T2Kvxew==}
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      '@types/react': ^16.8.6 || ^17.0.0
-      react: ^16.8.0 || ^17.0.0
-      react-dom: ^16.8.0 || ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@emotion/hash': 0.8.0
-      '@material-ui/types': 5.1.0_@types+react@17.0.2
-      '@material-ui/utils': 4.11.2
-      '@types/react': 17.0.2
-      clsx: 1.1.1
-      csstype: 2.6.18
-      hoist-non-react-statics: 3.3.2
-      jss: 10.8.2
-      jss-plugin-camel-case: 10.8.2
-      jss-plugin-default-unit: 10.8.2
-      jss-plugin-global: 10.8.2
-      jss-plugin-nested: 10.8.2
-      jss-plugin-props-sort: 10.8.2
-      jss-plugin-rule-value-function: 10.8.2
-      jss-plugin-vendor-prefixer: 10.8.2
-      prop-types: 15.7.2
-    dev: false
-
   /@material-ui/system/4.12.1:
     resolution: {integrity: sha512-lUdzs4q9kEXZGhbN7BptyiS1rLNHe6kG9o8Y307HCvF4sQxbCgpL2qi+gUk+yI8a2DNk48gISEQxoxpgph0xIw==}
     engines: {node: '>=8.0.0'}
@@ -5338,24 +5275,6 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-    dev: false
-
-  /@material-ui/system/4.12.1_@types+react@17.0.2:
-    resolution: {integrity: sha512-lUdzs4q9kEXZGhbN7BptyiS1rLNHe6kG9o8Y307HCvF4sQxbCgpL2qi+gUk+yI8a2DNk48gISEQxoxpgph0xIw==}
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      '@types/react': ^16.8.6 || ^17.0.0
-      react: ^16.8.0 || ^17.0.0
-      react-dom: ^16.8.0 || ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@material-ui/utils': 4.11.2
-      '@types/react': 17.0.2
-      csstype: 2.6.18
-      prop-types: 15.7.2
     dev: false
 
   /@material-ui/types/5.1.0:
@@ -17194,7 +17113,6 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
-    dev: false
 
   /react-draggable/4.4.3:
     resolution: {integrity: sha512-jV4TE59MBuWm7gb6Ns3Q1mxX8Azffb7oTtDtBgFkxRvhDp38YAARmRplrj0+XGkhOJB5XziArX+4HUUABtyZ0w==}
@@ -17556,7 +17474,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /read-config-file/6.0.0:
     resolution: {integrity: sha512-PHjROSdpceKUmqS06wqwP92VrM46PZSTubmNIMJ5DrMwg1OgenSTSEHIkCa6TiOJ+y/J0xnG1fFwG3M+Oi1aNA==}
@@ -18179,7 +18096,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /schema-utils/2.7.0:
     resolution: {integrity: sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==}
@@ -19842,6 +19758,16 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /universal-analytics/0.5.0:
+    resolution: {integrity: sha512-kLUELbj5EjaWi1tC677zfyDRBR80kj99N/A8Z4ngzFl1PXCIcqd42ZrBoeIAUHGEp5odoN9hgKMpREaOAW/mFg==}
+    engines: {node: '>=12.18.2'}
+    dependencies:
+      debug: 4.3.2
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /universal-cookie/2.2.0:
     resolution: {integrity: sha512-weEuvQvnMs74WGwqKSbeapCRv/7ATHDCqrfZtj579r3fQCxcwtoXYMoaZ8YOCQga/ctQTYy20xMOH1u7cAAU6w==}
