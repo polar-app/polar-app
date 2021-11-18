@@ -1,3 +1,36 @@
+# Overview
+
+This is a basic but very functional reference counting garbage collector for
+deleting stale files from Typecript-base monorepos.
+
+It parses import statements, computes the full file path of the reference, then it will increment the count.
+
+Anything with zero references is considered an orphan and flagged for deletion.
+
+# Execution
+
+It must be run from the root of the monorepo as Main.ts is configured to check based on cwd (we should probably
+implement arg parsing in the future to accept a full path)
+
+Running with: 
+
+
+Will print out files that can be purged.
+
+One main problem is that it will also flag NEW files that the team just started
+to work on and these can often be considered orphans.
+
+I have a hack for this now where we need to compute files that were recently
+updated by the team and then remove them from the list of duplicates to remove.
+
+## To compute the recent file names:
+
+git log --since="30 days ago" --pretty=format: --name-only | sort | sed -r '/^\s*$/d'| sort | uniq > recent-git-updates.txt
+
+node packages/polar-typescript-orphans/src/Main.js
+
+# NOTES
+
 V2 of stale finding of Typescript code.
 
 Last version was done by an intern and the code wasn't very good.  
