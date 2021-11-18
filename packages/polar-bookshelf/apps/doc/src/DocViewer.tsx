@@ -49,7 +49,7 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-import {useNotesIntegrationEnabled} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 
 const Main = React.memo(function Main() {
 

@@ -23,8 +23,8 @@ import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnot
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
-import { RepositoryToolbar } from '../../../../web/js/apps/repository/RepositoryToolbar';
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
+import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
