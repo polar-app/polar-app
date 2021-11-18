@@ -491,26 +491,6 @@ export const LogoAndTextSideBySide = () => {
     )
 }
 
-const FlexLayoutForm = () => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
-                <EmailTokenAuthButton/>
-
-            </div>
-
-        </div>
-    )
-}
-
 interface AuthContentProps {
     readonly title: string;
     readonly children: React.ReactNode;
@@ -527,6 +507,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
             <div className="AuthContent"
                  style={{
                      height: "100vh",
+                     maxHeight: '650px',
                      textAlign: 'center',
                      flexGrow: 1,
                      display: 'flex',

@@ -21,7 +21,7 @@ const MIN_PAINT_INTERVAL = 1000 / 60;
 export class ElectronScreenshots {
 
     public static supported(): boolean {
-        return AppRuntime.isElectron();
+        return AppRuntime.isElectronRenderer();
     }
 
     /**

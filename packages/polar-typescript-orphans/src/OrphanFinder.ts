@@ -9,6 +9,9 @@ import {PathStr} from "polar-shared/src/util/Strings";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
 import {Predicates} from "polar-shared/src/util/Predicates";
 import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
+import * as process from "process";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Reporters} from "./Reporters";
 
 export namespace OrphanFinder {
 
@@ -24,7 +27,8 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
+    export function _filterSourceReferences<R extends ISourceReference>(sourceReferences: ReadonlyArray<R>,
+                                                                        predicate: Predicates.Predicate<PathStr>) {
 
         return sourceReferences.filter(current => predicate(current.fullPath));
 
@@ -173,7 +177,11 @@ export namespace OrphanFinder {
         readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
         readonly modules: ReadonlyArray<IModuleReference>;
+
+        readonly verbose: boolean;
+
     }
+
 
     export async function doFind(opts: IDoFindOpts) {
 
@@ -184,7 +192,9 @@ export namespace OrphanFinder {
 
         const dependencyIndex = DependencyIndex.create();
 
-        console.log("Scanning modules...")
+        const reporter = Reporters.create(opts.verbose);
+
+        reporter.verbose("Scanning modules...")
 
         const sourceTypeClassifier = (path: PathStr) => {
 
@@ -198,14 +208,24 @@ export namespace OrphanFinder {
 
         }
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+        const rawSourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+
+        reporter.verbose(`Scanning modules...done (found ${rawSourceReferences.length} source references)`);
 
         // *** the main source references is the actual source code, not including tests.
 
-        function computeMainSourceReferences() {
+        type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
-            return _filterSourceReferences(sourceReferences, predicate);
+        function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
+
+            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            const rejectPredicate = Predicates.not(acceptPredicate);
+
+            const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
+            const rejected = _filterSourceReferences(sourceReferences, rejectPredicate);
+
+            return [accepted, rejected];
+
 
         }
         //
@@ -216,23 +236,17 @@ export namespace OrphanFinder {
         //
         // }
 
-        const mainSourceReferences = computeMainSourceReferences();
+        const [mainSourceReferences] = computeMainSourceReferences(rawSourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
 
-        console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
+        reporter.verbose("Scanning imports...")
 
-        console.log("Scanning imports...")
+        const imports = await computeImports(rawSourceReferences);
 
-        // Note that these imports have to be computed over the
-        // mainSourceReferences NOT the sourceReferences because unit tests
-        // shouldn't count against ref numbers because if they do then we would
-        // never get down to zero and they would never be orphans.
-        const imports = await computeImports(sourceReferences);
-
-        console.log(`Scanning imports...done (found ${imports.length} imports)`);
+        reporter.verbose(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        sourceReferences
+        mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
         // *** this should register all the imports...
@@ -243,21 +257,21 @@ export namespace OrphanFinder {
 
         function createImportRankingsReport() {
 
-            const grid = TextGrid.create(4);
-
             const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
 
-            grid.headers("path", "main refs", "test refs", "orphan");
+            const grid = TextGrid.createFromHeaders("path", "type", "main refs", "test refs", "orphan");
+
+            grid.title("Import rankings")
             importRankings
                 .filter(current => current.type === 'main')
                 .filter(current => ! entriesPredicate(current.path))
-                .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
+                .forEach(current => grid.row(current.path, current.type, current.nrMainRefs, current.nrTestRefs, current.orphan,));
 
             return grid.format();
 
         }
 
-        console.log(createImportRankingsReport());
+        reporter.verbose(createImportRankingsReport());
 
         interface IOrphanTest {
             readonly path: PathStr;
@@ -279,16 +293,55 @@ export namespace OrphanFinder {
 
         }
 
-        function computeOrphanTestsReport() {
-            const orphanTest = computeOrphanTests();
-            const grid = TextGrid.create(3);
-            grid.headers('path', 'imported', 'orphan');
-            orphanTest.forEach(current => grid.row(current.path, current.imported, true))
+        const orphanedTests = computeOrphanTests();
+
+        function computeOrphanedTestsReport() {
+            const grid = TextGrid.createFromHeaders('path', 'imported', 'orphan');
+            grid.title("Orphan tests")
+            orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
-        console.log("Orphan tests: ================")
-        console.log(computeOrphanTestsReport());
+        reporter.verbose(computeOrphanedTestsReport());
+
+        async function generateOrphansReport() {
+
+            type RecentGitUpdates = Readonly<{[path: string]: boolean}>;
+
+            async function computeRecentGitUpdates(): Promise<RecentGitUpdates> {
+                // this is a hack for now...
+                const buff = await Files.readFileAsync('./recent-git-updates.txt')
+                const content = buff.toString('utf-8');
+                const lines = content.split('\n').filter(current => current.trim() !== '');
+
+                const cwd = process.cwd();
+                const paths = lines.map(current => FilePaths.join(cwd, current))
+
+                return arrayStream(paths).toLookup(current => current);
+            }
+
+            interface IOrphan {
+                readonly path: string;
+            }
+
+            const rawOrphans: ReadonlyArray<IOrphan> = [
+                ...orphanedTests,
+                ...importRankings.filter(current => current.orphan)
+            ]
+
+            const recentGitUpdates = await computeRecentGitUpdates();
+
+            const orphans = rawOrphans.filter(current => !recentGitUpdates[current.path])
+
+            const delta = Math.abs(orphans.length - rawOrphans.length);
+
+            reporter.verbose(`Removed ${delta} orphans due to being recently updated: `);
+
+            orphans.forEach(current => reporter.info(current.path))
+
+        }
+
+        await generateOrphansReport();
 
     }
 

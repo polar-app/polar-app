@@ -9,7 +9,7 @@ export function useAnkiSyncCallback() {
     const dialogs = useDialogManager();
     const linkLoader = useLinkLoader();
 
-    const isElectron = AppRuntime.isElectron();
+    const isElectron = AppRuntime.isElectronRenderer();
 
     return React.useCallback(() => {
 

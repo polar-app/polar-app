@@ -1,6 +1,6 @@
-import React from "react";
-import {useComponentDidMount} from "../../web/js/hooks/ReactLifecycleHooks";
-import {deepMemo} from "../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
+import React from 'react';
+import {useComponentDidMount} from "../../../../../../web/js/hooks/ReactLifecycleHooks";
 
 /**
  * Passes the element that was mounted.
@@ -50,4 +50,5 @@ export function createQuerySelector<E extends HTMLElement>() {
     });
 
 }
+
 
