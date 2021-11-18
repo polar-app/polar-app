@@ -12,8 +12,11 @@ import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
 import * as process from "process";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Reporters} from "./Reporters";
+import {Highlights} from "polar-bookshelf/web/js/dom_highlighter/Highlights";
 
 export namespace OrphanFinder {
+
+
 
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
@@ -214,7 +217,7 @@ export namespace OrphanFinder {
 
         // *** the main source references is the actual source code, not including tests.
 
-        type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
+        type MainSourceReferencesResult = [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
         function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
 
@@ -236,6 +239,8 @@ export namespace OrphanFinder {
         //
         // }
 
+        // FIXME: we need to compute mainSourceRefeences and testSourceReferences
+
         const [mainSourceReferences] = computeMainSourceReferences(rawSourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
 
@@ -248,6 +253,12 @@ export namespace OrphanFinder {
         // ** register all files so that they get a ref count of zero..
         mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
+
+        // ** register all test so that they get a ref count of zero..
+        rawSourceReferences
+            .filter(current => current.type === 'test')
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
+
 
         // *** this should register all the imports...
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
