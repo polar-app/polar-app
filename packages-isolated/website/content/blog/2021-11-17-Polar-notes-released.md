@@ -37,6 +37,7 @@ We also want to provide some visibility into what's coming up as there's multipl
 - Collaboration - we've heard consistently that collaborating is crucial for you. Plan is to have this released within the next few weeks
 - Improvements to the notes features. The notes system has all basic features but we want to add multiple new features to make it even more useful (e.g., better image handling, synced notes, in-line commands, embeds,...)
 - Significantly improved search functionality
+- Improved flashcard, flashcard review, and spaced repetition features
 - Major design improvements across the entire platform
 - Improved documentation - this has been on the backburner since we've been very focused on actually building. Moving forward, we want to make sure documentation is up to date, incl. video tutorials
 
