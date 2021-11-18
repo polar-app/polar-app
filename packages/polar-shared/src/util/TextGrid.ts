@@ -87,9 +87,9 @@ export namespace TextGrid {
             let buff = '';
 
             if (_title !== undefined) {
-                buff += title + ":"
+                buff += _title + ":"
                 buff += "\n"
-                buff += Strings.generate(title.length, "=")
+                buff += Strings.generate(_title.length, "-") + "-"
                 buff += "\n"
             }
 
