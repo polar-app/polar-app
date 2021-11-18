@@ -208,7 +208,9 @@ export namespace OrphanFinder {
 
         }
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+        const rawSourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+
+        reporter.verbose(`Scanning modules...done (found ${rawSourceReferences.length} source references)`);
 
         // *** the main source references is the actual source code, not including tests.
 
@@ -234,18 +236,12 @@ export namespace OrphanFinder {
         //
         // }
 
-        const [mainSourceReferences] = computeMainSourceReferences(sourceReferences);
+        const [mainSourceReferences] = computeMainSourceReferences(rawSourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
-
-        reporter.verbose(`Scanning modules...done (found ${sourceReferences.length} source references)`);
 
         reporter.verbose("Scanning imports...")
 
-        // Note that these imports have to be computed over the
-        // mainSourceReferences NOT the sourceReferences because unit tests
-        // shouldn't count against ref numbers because if they do then we would
-        // never get down to zero and they would never be orphans.
-        const imports = await computeImports(mainSourceReferences);
+        const imports = await computeImports(rawSourceReferences);
 
         reporter.verbose(`Scanning imports...done (found ${imports.length} imports)`);
 
@@ -261,16 +257,15 @@ export namespace OrphanFinder {
 
         function createImportRankingsReport() {
 
-            const grid = TextGrid.create(4);
-
             const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
 
+            const grid = TextGrid.createFromHeaders("path", "type", "main refs", "test refs", "orphan");
+
             grid.title("Import rankings")
-            grid.headers("path", "main refs", "test refs", "orphan");
             importRankings
                 .filter(current => current.type === 'main')
                 .filter(current => ! entriesPredicate(current.path))
-                .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
+                .forEach(current => grid.row(current.path, current.type, current.nrMainRefs, current.nrTestRefs, current.orphan,));
 
             return grid.format();
 
