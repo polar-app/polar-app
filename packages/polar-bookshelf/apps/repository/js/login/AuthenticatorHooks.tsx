@@ -44,7 +44,7 @@ export function useElectronWarningForGoogle() {
 
     return React.useCallback(() => {
 
-        if (AppRuntime.isElectron()) {
+        if (AppRuntime.isElectronRenderer()) {
 
             Analytics.event2("auth:ElectronWarningForGoogle")
 

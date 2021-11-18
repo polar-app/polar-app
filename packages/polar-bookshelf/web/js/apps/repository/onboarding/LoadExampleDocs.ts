@@ -272,7 +272,7 @@ export class LoadExampleDocs {
 
         const doImport = async (): Promise<ImportedDoc> => {
 
-            if (AppRuntime.isElectron()) {
+            if (AppRuntime.isElectronRenderer()) {
 
                 const pdfMeta: IParsedDocMeta = {
                     fingerprint: opts.fingerprint,

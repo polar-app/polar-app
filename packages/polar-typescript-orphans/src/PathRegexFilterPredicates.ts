@@ -15,4 +15,16 @@ export namespace PathRegexFilterPredicates {
 
     }
 
+    /**
+     * Match all the given filters.
+     */
+    export function createMatchAll(filters: ReadonlyArray<PathRegexStr>) {
+
+        return (path: string): boolean => {
+            return filters.filter(filter => path.match(filter)).length === filters.length;
+        }
+
+    }
+
+
 }

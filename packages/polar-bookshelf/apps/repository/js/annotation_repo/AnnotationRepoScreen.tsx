@@ -25,6 +25,7 @@ import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
 import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
+import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
@@ -34,9 +35,9 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
     const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
-        <MUIPaperToolbar id="header-filter">
+        <RepositoryToolbar>
 
-            <Box pt={0.3} pb={0.3} style={{
+            <Box style={{
                 display: 'flex',
                 alignItems: 'center',
             }}>
@@ -64,7 +65,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
 
             </Box>
 
-        </MUIPaperToolbar>
+        </RepositoryToolbar>
     );
 });
 
