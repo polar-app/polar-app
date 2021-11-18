@@ -12,7 +12,7 @@ export const DeviceInfo = () => {
     const version = Version.get();
     const device = Devices.get();
     const platform = Platforms.toSymbol(Platforms.get());
-    const isElectron = AppRuntime.isElectron();
+    const isElectron = AppRuntime.isElectronRenderer();
 
     return (
         <div>

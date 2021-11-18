@@ -112,7 +112,7 @@ export namespace ZestInjector {
             return false;
         }
 
-        if (AppRuntime.isElectron()) {
+        if (AppRuntime.isElectronRenderer()) {
             return false;
         }
 
