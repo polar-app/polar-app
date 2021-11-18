@@ -256,8 +256,7 @@ export namespace OrphanFinder {
             .filter(current => current.type === 'test')
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
-
-        // *** this should register all the imports...
+        // *** this should register all the imports from these files
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
