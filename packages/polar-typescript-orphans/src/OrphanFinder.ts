@@ -296,9 +296,8 @@ export namespace OrphanFinder {
         const orphanedTests = computeOrphanTests();
 
         function computeOrphanedTestsReport() {
-            const grid = TextGrid.create(3);
+            const grid = TextGrid.createFromHeaders('path', 'imported', 'orphan');
             grid.title("Orphan tests")
-            grid.headers('path', 'imported', 'orphan');
             orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
