@@ -1,8 +1,9 @@
 import * as React from "react"
+import { graphql } from "gatsby";
 
 import Layout from "../components/layout";
+import SEO from "../components/seo";
 import { Box } from "@material-ui/core";
-import { MUIAnchor } from "../../../../packages/polar-bookshelf/web/js/mui/MUIAnchor";
 
 const NotFoundPage = ({ data, location }) => {
   // const siteTitle = data.site.siteMetadata.title;
@@ -25,7 +26,7 @@ const NotFoundPage = ({ data, location }) => {
         </h1>
         <p>This page does not exist!</p>
         <p>
-          Click <MUIAnchor href={"/"}>here</MUIAnchor> to return to the homepage.
+          Click <a href={"/"}>here</a> to return to the homepage.
         </p>
       </Box>
     </Layout>

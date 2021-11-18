@@ -3,7 +3,6 @@ import { Box, ThemeProvider, CssBaseline } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import "./intra-index.css";
-import { MUIAnchor } from "../../../../../packages/polar-bookshelf/web/js/mui/MUIAnchor";
 
 const useStyles = makeStyles({
   background: {
@@ -44,9 +43,9 @@ export default function IntraPageIndex({ headers, hiddenBelow }) {
             fontWeight: 500,
           }}
         >
-          <MUIAnchor style={{ color: "#e0e0e0", textDecoration: "none" }} href="#">
+          <a style={{ color: "#e0e0e0", textDecoration: "none" }} href="#">
             What's Covered Here:
-          </MUIAnchor>
+          </a>
         </Box>
         {headers.map(({ value, depth }) => {
           return (

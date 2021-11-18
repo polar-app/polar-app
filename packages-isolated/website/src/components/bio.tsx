@@ -1,6 +1,5 @@
 import * as React from "react"
 const polarLogo = require("../../content/assets/polar-icon.png");
-import { MUIAnchor } from ".../../polar-bookshelf/web/js/mui/MUIAnchor";
 
 type Data = {
   site: {
@@ -58,7 +57,11 @@ const Bio = () => {
           <div>
             {author.summary}
             &nbsp;
-            <MUIAnchor href={`https://twitter.com/${social.twitter}`}>Follow us on Twitter</MUIAnchor>
+            <a
+              href={`https://twitter.com/${social.twitter}`}
+            >
+              Follow us on Twitter
+            </a>
           </div>
         </p>
       </div>

@@ -5,7 +5,6 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
-import { MUIAnchor } from "../../../../packages/polar-bookshelf/web/js/mui/MUIAnchor";
 
 const Landing = ({ location }) => {
   return (
@@ -29,7 +28,7 @@ const Landing = ({ location }) => {
             <h3>1. Terms</h3>
             <p>
               By accessing the website at{" "}
-              <MUIAnchor href="http://getpolarized.io">http://getpolarized.io</MUIAnchor>, you
+              <a href="http://getpolarized.io">http://getpolarized.io</a>, you
               are agreeing to be bound by these terms of service, all applicable
               laws and regulations, and agree that you are responsible for
               compliance with any applicable local laws. If you do not agree

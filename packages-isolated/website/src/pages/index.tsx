@@ -28,7 +28,6 @@ import {AnkiSyncVideo} from "../components/AnkiSyncVideo";
 import ReadingProgressImage from "./images/ReadingProgressImage";
 import WebCaptureImage from "./images/WebCaptureImage";
 import {AIFlashcardsVideo} from "../components/AIFlashcardsVideo";
-import { MUIAnchor } from "../../../../packages/polar-bookshelf/web/js/mui/MUIAnchor";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -108,9 +107,9 @@ const Landing = ({}) => {
 
                   <div style={{marginBottom: '10px'}}>
                       Already using Polar?{" "}
-                      <MUIAnchor style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
+                      <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
                           Sign in
-                      </MUIAnchor>
+                      </a>
                   </div>
 
                   <ColorBackground0 style={{
