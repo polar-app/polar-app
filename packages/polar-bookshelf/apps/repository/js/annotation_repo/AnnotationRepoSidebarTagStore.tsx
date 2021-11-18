@@ -1,4 +1,5 @@
 import React from "react";
+import {AnnotationRepoBlocksFolderSidebarStoreProvider} from "../folder_sidebar/BlocksFolderSidebarStore";
 import {
     createFolderSidebarStore,
     FolderSidebarCallbacksContext,
@@ -11,11 +12,7 @@ export const [
     useAnnotationRepoSidebarTagStoreCallbacks
 ] = createFolderSidebarStore('annotation_repo');
 
-interface IProps {
-    readonly children: JSX.Element;
-}
-
-const StoreBinder = (props: IProps) => {
+const StoreBinder: React.FC = (props) => {
 
     return (
         <FolderSidebarStoreContext.Provider value={useAnnotationRepoSidebarTagStoreStore}>
@@ -27,14 +24,16 @@ const StoreBinder = (props: IProps) => {
 
 }
 
-export const AnnotationRepoSidebarTagStore = (props: IProps) => {
+export const AnnotationRepoSidebarTagStore: React.FC = (props) => {
 
     return (
         <AnnotationRepoSidebarTagStoreProvider>
             <StoreBinder>
-                {props.children}
+                <AnnotationRepoBlocksFolderSidebarStoreProvider>
+                    {props.children}
+                </AnnotationRepoBlocksFolderSidebarStoreProvider>
             </StoreBinder>
         </AnnotationRepoSidebarTagStoreProvider>
-    )
+    );
 
-}
+};

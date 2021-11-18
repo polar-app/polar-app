@@ -24,6 +24,7 @@ import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnno
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
 import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
+import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
@@ -257,6 +258,7 @@ namespace Desktop {
 
 
     export const Main = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -271,7 +273,9 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        <FolderSidebar2 header={<StartReviewHeader/>}/>
+                        notesIntegrationEnabled
+                            ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                            : <FolderSidebar2 header={<StartReviewHeader/>} />
                     ),
                     width: 300
                 },
@@ -296,6 +300,7 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
         const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
@@ -317,7 +322,10 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            <FolderSidebar2 header={<StartReviewHeader/>}/>
+                            {notesIntegrationEnabled
+                                ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                                : <FolderSidebar2 header={<StartReviewHeader/>} />
+                            }
                         </SideCar>
 
                         <DeviceRouter phone={

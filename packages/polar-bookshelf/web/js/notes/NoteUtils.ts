@@ -27,6 +27,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 
 export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
 
@@ -127,6 +128,7 @@ export const useBlockTagEditorDialog = () => {
     const blocksStore = useBlocksStore();
     const namedBlocksRef = useRefWithUpdates(blocksStore.namedBlockEntries);
     const dialogs = useDialogManager();
+    const updateBlockTags = useUpdateBlockTags();
 
     return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
         const blocks = arrayStream(ids)
@@ -138,7 +140,7 @@ export const useBlockTagEditorDialog = () => {
             return console.error('useBlockTagEditorDialog: Blocks to be edited were not found.');
         }
 
-        type ITaggedBlock = TaggedCallbacks.ITagsHolder & BlockContentUtils.IHasLinksBlockTarget;
+        type ITaggedBlock = TaggedCallbacks.ITagsHolder & IHasLinksBlockTarget;
 
         const toTarget = (block: Block): ITaggedBlock => ({
             id: block.id,
@@ -150,35 +152,32 @@ export const useBlockTagEditorDialog = () => {
             targets: () => blocks.map(toTarget),
             tagsProvider: () => namedBlocksRef.current,
             dialogs,
-            doTagged: BlockContentUtils.updateTags.bind(null, blocksStore),
+            doTagged: updateBlockTags,
         };
 
 
         TaggedCallbacks.create(opts)();
-    }, [blocksStore, namedBlocksRef, dialogs]);
+    }, [blocksStore, namedBlocksRef, dialogs, updateBlockTags]);
 };
 
+export interface IHasLinksBlockTarget {
+    id: BlockIDStr;
+    content: HasLinks;
+};
 
-
-export namespace BlockContentUtils {
-
-    export interface IHasLinksBlockTarget {
-        id: BlockIDStr;
-        content: HasLinks;
-    };
+export const useUpdateBlockTags = () => {
+    const blocksStore = useBlocksStore();
+    const blocksUserTagsDB = useBlocksUserTagsDB();
 
     /**
-     * @param blocksStore BlocksStore instance
-     * @param targets An array of targets to updated @see IHasLinksBlockTarget
+     * @param targets An array of targets to updated
      * @param tags The new tags
-     * @param strategy The strategy on how to calculate the new tags for a target @see Tags.ComputeNewTagsStrategy
+     * @param strategy The strategy on how to calculate the new tags for a target
      */
-    export function updateTags(
-        blocksStore: IBlocksStore,
-        targets: ReadonlyArray<IHasLinksBlockTarget>,
-        tags: ReadonlyArray<Tag>,
-        strategy: Tags.ComputeNewTagsStrategy = 'set'
-    ): void {
+    return React.useCallback((targets: ReadonlyArray<IHasLinksBlockTarget>,
+                              tags: ReadonlyArray<Tag>,
+                              strategy: Tags.ComputeNewTagsStrategy = 'set'): void => {
+        
         const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
             const newTags = Tags.computeNewTags(Tags.toMap(content.getTags()), tags, strategy);
 
@@ -211,10 +210,16 @@ export namespace BlockContentUtils {
             newContent.updateLinks([...wikiLinks, ...newTagLinks]);
 
             blocksStore.setBlockContent(id, newContent);
+            newTagLinks.forEach(({ id, text }) => blocksUserTagsDB.register({ id, label: text.slice(1) }));
         };
 
         targets.forEach(updateTarget);
-    }
+        blocksUserTagsDB.commit().catch(console.error); 
+
+    }, [blocksStore, blocksUserTagsDB]);
+};
+
+export namespace BlockContentUtils {
 
     /**
      * A Generic Utility function to update the content of a block.

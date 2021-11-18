@@ -50,6 +50,7 @@ export interface IBlocksStore {
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+    tagsIndex: ReverseIndex;
     indexByName: BlocksIndexByName;
     indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
@@ -73,7 +74,7 @@ export interface IBlocksStore {
 
     setActive(active: BlockIDStr | undefined): void;
 
-    getBlockByName(name: BlockNameStr): Block | undefined;
+    getBlockByName(name: BlockNameStr): Block<NamedContent> | undefined;
     getBlockByTarget(target: BlockIDStr | BlockNameStr): Block | undefined;
 
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
@@ -121,7 +122,7 @@ export interface IBlocksStore {
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
-                                                               content: MarkdownStr): void;
+                                                               content: MarkdownStr): BlockIDStr;
 
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                     opts?: IInsertBlocksContentStructureOpts): ReadonlyArray<BlockIDStr>;
