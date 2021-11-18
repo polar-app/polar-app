@@ -21,7 +21,7 @@ Please note, using the latest Polar version will require you to do a one-time mi
 
 Before we go into any details, check out this short clip summarizing the main updates:
 
-[![Notes in Polar](https://i.imgur.com/f2oKG4V.png)](https://youtu.be/oxfSNOuIaK0 "Notes in Polar")
+[![Notes in Polar](https://i.imgur.com/SXNH4av.png)](https://youtu.be/oxfSNOuIaK0 "Notes in Polar")
 
 ## What's new
 - Your highlights from documents are now notes. You can edit, comment, create backlinks, and various other things that come with non-linear notes
