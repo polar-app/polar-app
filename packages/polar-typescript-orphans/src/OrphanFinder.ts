@@ -12,7 +12,6 @@ import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
 import * as process from "process";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Reporters} from "./Reporters";
-import {Highlights} from "polar-bookshelf/web/js/dom_highlighter/Highlights";
 
 export namespace OrphanFinder {
 
@@ -238,8 +237,6 @@ export namespace OrphanFinder {
         //     return _filterSourceReferences(sourceReferences, predicate);
         //
         // }
-
-        // FIXME: we need to compute mainSourceRefeences and testSourceReferences
 
         const [mainSourceReferences] = computeMainSourceReferences(rawSourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
