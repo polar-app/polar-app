@@ -4,8 +4,8 @@
 export namespace Reporters {
 
     export interface IReporter {
-        verbose: (msg: string, ...data: readonly any[]) => void;
-        info: (msg: string, ...data: readonly any[]) => void;
+        readonly verbose: (msg: string, ...data: readonly any[]) => void;
+        readonly info: (msg: string, ...data: readonly any[]) => void;
     }
 
     export function create(doVerbose: boolean): IReporter {
