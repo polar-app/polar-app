@@ -15,6 +15,8 @@ import {Reporters} from "./Reporters";
 
 export namespace OrphanFinder {
 
+
+
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
         const promises = modules.map(module => Scanner.doScan(module))
@@ -214,7 +216,7 @@ export namespace OrphanFinder {
 
         // *** the main source references is the actual source code, not including tests.
 
-        type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
+        type MainSourceReferencesResult = [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
         function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
 
@@ -249,7 +251,12 @@ export namespace OrphanFinder {
         mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
-        // *** this should register all the imports...
+        // ** register all test so that they get a ref count of zero..
+        rawSourceReferences
+            .filter(current => current.type === 'test')
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
+
+        // *** this should register all the imports from these files
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
