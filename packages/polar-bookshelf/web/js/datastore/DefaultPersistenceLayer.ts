@@ -178,7 +178,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
             log.debug("Wrote tags to TagsDB: ", tags);
 
         } catch (e) {
-            log.error("Failed to write docMeta tags: ", e);
+            console.error("Failed to write docMeta tags: ", e);
         }
     }
 

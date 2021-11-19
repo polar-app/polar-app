@@ -85,7 +85,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
             };
 
             doAsync()
-                .catch(err => log.error("Could not handle snapshot: ", err));
+                .catch(err => console.error("Could not handle snapshot: ", err));
 
         });
 

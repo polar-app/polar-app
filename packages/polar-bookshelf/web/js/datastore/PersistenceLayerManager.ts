@@ -211,7 +211,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         whenChanged((type) => {
 
             this.change(type)
-                .catch(err => log.error("Unable to change to type: " + type));
+                .catch(err => console.error("Unable to change to type: " + type));
 
         });
 

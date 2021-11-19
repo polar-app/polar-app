@@ -133,4 +133,4 @@ export namespace Accounts {
 
 }
 
-const ERR_HANDLER = (err: ErrorType) => log.error("Could not create snapshot for account: ", err);
+const ERR_HANDLER = (err: ErrorType) => console.error("Could not create snapshot for account: ", err);

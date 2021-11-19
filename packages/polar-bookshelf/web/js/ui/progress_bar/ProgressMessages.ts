@@ -25,7 +25,7 @@ export class ProgressMessages {
             };
 
             Messenger.postMessage({message})
-                .catch(err => log.error("Could not send message: ", err));
+                .catch(err => console.error("Could not send message: ", err));
 
         }
 

@@ -49,7 +49,7 @@ export class FirestoreAnalytics implements IAnalytics {
         };
 
         doWrite()
-            .catch(err => log.error(err));
+            .catch(err => console.error(err));
 
     }
 

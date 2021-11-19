@@ -75,7 +75,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
 
         onAreaHighlightCreatedAsync(opts)
-            .catch(err => log.error(err));
+            .catch(err => console.error(err));
 
     }, [log, onAreaHighlightCreatedAsync]);
 
@@ -113,7 +113,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
 
         onAreaHighlightUpdatedAsync(opts)
-            .catch(err => log.error(err));
+            .catch(err => console.error(err));
 
     }, [log, onAreaHighlightUpdatedAsync]);
 

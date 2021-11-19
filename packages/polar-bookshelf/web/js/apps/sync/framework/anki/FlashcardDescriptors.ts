@@ -51,7 +51,7 @@ export class FlashcardDescriptors {
                 });
 
             } catch (e) {
-                log.error("Unable to handle docMeta: ", e);
+                console.error("Unable to handle docMeta: ", e);
             }
 
         }

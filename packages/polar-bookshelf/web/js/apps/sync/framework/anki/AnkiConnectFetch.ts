@@ -46,7 +46,7 @@ export class AnkiConnectFetch {
             }
 
             const msg = `Unable to connect to anki with ports ${this.PORTS} (make sure Anki Connect is installed)`;
-            log.error(msg);
+            console.error(msg);
             throw new AnkiSyncError(msg, 'no-anki-connect');
 
         };

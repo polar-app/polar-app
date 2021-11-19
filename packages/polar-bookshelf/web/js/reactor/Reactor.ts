@@ -73,7 +73,7 @@ export class Reactor<V> implements IReactor<V> {
                 listener(value);
 
             } catch (e) {
-                log.error("listener generated unhandled exception: ", e);
+                console.error("listener generated unhandled exception: ", e);
             }
 
         });

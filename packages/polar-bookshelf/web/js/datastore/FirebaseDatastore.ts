@@ -182,14 +182,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 batchIDs[consistency]++;
 
             } catch (e) {
-                log.error("Could not handle snapshot: ", e);
+                console.error("Could not handle snapshot: ", e);
                 errorListener(e);
             }
 
         };
 
         const onSnapshotError = (err: Error) => {
-            log.error("Could not handle snapshot: ", err);
+            console.error("Could not handle snapshot: ", err);
             errorListener(err);
         };
 
@@ -1097,7 +1097,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 id: batchID,
                 terminated: true,
             }
-        }).catch(err => log.error("Unable to dispatch event listener: ", err));
+        }).catch(err => console.error("Unable to dispatch event listener: ", err));
 
         log.debug("onSnapshot... done");
 
@@ -1260,4 +1260,4 @@ export class DefaultWriteOpts implements WriteOpts {
     public readonly visibility = Visibility.PRIVATE;
 }
 
-const ERR_HANDLER = (err: Error) => log.error("Could not create snapshot for account: ", err);
+const ERR_HANDLER = (err: Error) => console.error("Could not create snapshot for account: ", err);

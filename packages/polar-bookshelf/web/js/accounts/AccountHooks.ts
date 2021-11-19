@@ -31,7 +31,7 @@ export function useLogoutCallback() {
 
         }
 
-        doAsync().catch(err => log.error(err));
+        doAsync().catch(err => console.error(err));
 
     };
 

@@ -166,7 +166,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 }
 
-            }).catch(err => log.error(err));
+            }).catch(err => console.error(err));
 
         }
 
@@ -242,7 +242,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             }
 
             handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
-                .catch(err => log.error(err));
+                .catch(err => console.error(err));
 
         }
 
@@ -294,7 +294,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             }
 
             doAsync()
-                .catch(err => log.error(err));
+                .catch(err => console.error(err));
 
         }
 
@@ -305,7 +305,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
                 case "revert":
                 case "update":
                     handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
-                        .catch(err => log.error(err));
+                        .catch(err => console.error(err));
                     break;
 
                 case "create":
@@ -315,7 +315,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                     writeUpdatedDocMetas([docMeta])
                         .then(() => Analytics.event2('doc-highlightCreated', { type: 'text' }))
-                        .catch(err => log.error(err));
+                        .catch(err => console.error(err));
 
                     break;
 
@@ -343,7 +343,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
         function onComment(holders: ReadonlyArray<IAnnotationMutationHolder<ICommentMutation>>) {
 
             handleUpdate2(holders, DocAnnotationsMutator.onComment)
-                .catch(err => log.error(err));
+                .catch(err => console.error(err));
 
         }
 
@@ -367,7 +367,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
         function onFlashcard(holders: ReadonlyArray<IAnnotationMutationHolder<IFlashcardMutation>>) {
 
             handleUpdate2(holders, DocAnnotationsMutator.onFlashcard)
-                .catch(err => log.error(err));
+                .catch(err => console.error(err));
 
         }
 
@@ -396,7 +396,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
                 }
 
                 Analytics.event2('annotation-colorChanged');
-            }).catch(err => log.error(err));
+            }).catch(err => console.error(err));
 
         }
 
