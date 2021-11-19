@@ -18,12 +18,6 @@
   },
   "author": "Polar",
   "license": "ISC",
-  "devDependencies": {
-    "polar-eslint": "0.0.0",
-    "polar-typescript": "0.0.0",
-    "polar-karma": "0.0.0",
-    "polar-webpack": "0.0.0"
-  },
   "dependencies": {
     "electron": "=12.0.2",
     "polar-shared": "0.0.0"
