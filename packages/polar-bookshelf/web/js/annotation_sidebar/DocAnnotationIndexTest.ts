@@ -503,7 +503,7 @@ describe('DocAnnotationIndex', function() {
 
         const docAnnotations = toDocAnnotations(docAnnotationIndex);
 
-        assertJSON(docAnnotations, expected, "main output wrong (1)");
+        assertJSON(docAnnotations, expected);
 
     });
 
@@ -517,7 +517,7 @@ describe('DocAnnotationIndex', function() {
 
         assertJSON(docAnnotationIndex.getDocAnnotations().map(current => current.id), [
             "textarea1",
-        ], "textarea1 is wrong");
+        ]);
 
         const children = docAnnotationIndex.get('textarea1')!.getChildren();
 
