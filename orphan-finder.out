@@ -21,12 +21,6 @@
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/ICodeContent.ts
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/ILatexContent.ts
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/IPlayerContent.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash/splashes/components/EventTrackedLink.tsx
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/FirebaseDatastoreResources.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/DocRefs.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/DatastoreImportFiles.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupDocsAdd.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/ConditionalSetting.ts
 /Users/burton/projects/polar-app/packages/polar-cloud-progress/src/CloudProgress.ts
 /Users/burton/projects/polar-app/packages/polar-cloud-progress/src/CloudProgressTestN.ts
 /Users/burton/projects/polar-app/packages/polar-content-capture/src/capture/ContentCapture.ts

@@ -83,42 +83,42 @@ polar-web-extension-api            /Users/burton/projects/polar-app/packages/pol
 polar-webapp-links                 /Users/burton/projects/polar-app/packages/polar-webapp-links/src               
 polar-yarn                         /Users/burton/projects/polar-app/packages/polar-yarn/src                       
 Scanning modules...
-Scanning modules...done (found 1978 source references)
+Scanning modules...done (found 1972 source references)
 Scanning imports...
-Scanning imports...done (found 7491 imports)
+Scanning imports...done (found 7472 imports)
 Import rankings:
 ----------------
 path                                                                                                                                                                type  main refs  test refs  orphan
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------  ----  ---------  ---------  ------
-/Users/burton/projects/polar-app/packages/polar-shared/src/util/Strings.ts                                                                                          main  256        8          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/util/Strings.ts                                                                                          main  255        8          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/Preconditions.ts                                                                                         main  142        1          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/react/ReactUtils.tsx                                                                               main  138        0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/ISODateTimeStrings.ts                                                                           main  123        11         false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Functions.ts                                                                                        main  96         3          false 
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/IBlock.ts                                                                                         main  87         6          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/ArrayStreams.ts                                                                                     main  77         4          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IDocMeta.ts                                                                                     main  69         2          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/logger/Logger.ts                                                                                         main  68         2          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IDocInfo.ts                                                                                     main  60         2          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/util/Hashcodes.ts                                                                                        main  60         8          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IDocMeta.ts                                                                                     main  68         2          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IDocInfo.ts                                                                                     main  59         2          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/util/Hashcodes.ts                                                                                        main  59         8          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/tags/Tags.ts                                                                                             main  55         5          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/doc/src/DocViewerStore.tsx                                                                           main  50         0          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/util/ts/Optional.ts                                                                                      main  48         3          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/util/ts/Optional.ts                                                                                      main  46         3          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Arrays.ts                                                                                           main  45         6          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/annotation_sidebar/DocAnnotation.ts                                                                main  44         1          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/store/BlocksStore.tsx                                                                        main  44         3          false 
 /Users/burton/projects/polar-app/packages/polar-firestore-like/src/IFirestore.ts                                                                                    main  43         1          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/mui/dialogs/MUIDialogControllers.ts                                                                main  42         0          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/analytics/Analytics.ts                                                                             main  37         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IPageMeta.ts                                                                                    main  37         1          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/Backend.ts                                                                                     main  35         2          false 
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/analytics/Analytics.ts                                                                             main  36         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/ITextHighlight.ts                                                                               main  35         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Devices.ts                                                                                          main  35         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Dictionaries.ts                                                                                     main  35         3          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Providers.ts                                                                                        main  35         1          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/Backend.ts                                                                                     main  33         2          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/hooks/ReactHooks.tsx                                                                               main  32         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/NoteUtils.ts                                                                                 main  31         3          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/Datastore.ts                                                                             main  30         1          false 
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/Datastore.ts                                                                             main  29         1          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/DocMetas.ts                                                                                     main  29         6          false 
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/IAnnotationContent.ts                                                                     main  28         3          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/persistence_layer/PersistenceLayerApp.tsx                                              main  28         0          false 
@@ -126,13 +126,13 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/DeviceRouter.tsx                                                                                main  28         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IAreaHighlight.ts                                                                               main  28         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/FilePaths.ts                                                                                        main  28         17         false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/FileRef.ts                                                                                     main  27         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/FlashcardType.ts                                                                                main  26         4          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Files.ts                                                                                            main  26         12         false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Numbers.ts                                                                                          main  26         8          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/rects/ILTRect.ts                                                                                    main  26         0          false 
 /Users/burton/projects/polar-app/packages/polar-accounts/src/Billing.ts                                                                                             main  25         2          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/mui/MUILogger.tsx                                                                                  main  25         0          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/FileRef.ts                                                                                     main  25         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IComment.ts                                                                                     main  25         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IFlashcard.ts                                                                                   main  25         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/annotation_sidebar/AnnotationMutationsContext.tsx                                                  main  24         0          false 
@@ -177,7 +177,6 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/Text.ts                                                                                         main  15         0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/Texts.ts                                                                                        main  15         4          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/URLs.ts                                                                                             main  15         2          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/JSONRPC.ts                                                                   main  14         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/store/Block.tsx                                                                              main  14         2          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Latch.ts                                                                                            main  14         4          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/rects/IRect.ts                                                                                      main  14         1          false 
@@ -194,6 +193,7 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/RepoDocInfo.ts                                                                         main  12         1          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore.tsx                                    main  12         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/main/file_loaders/FileType.ts                                                                 main  12         0          false 
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/JSONRPC.ts                                                                   main  12         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/MarkdownContentConverter.ts                                                                  main  12         1          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/NoteLinkLoader.tsx                                                                           main  12         0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/contenteditable/DOMBlocks.ts                                                                 main  12         2          false 
@@ -322,7 +322,6 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-dom-text-search/src/DOMTextHit.ts                                                                                   main  6          0          false 
 /Users/burton/projects/polar-app/packages/polar-firestore-like/src/IFirestoreError.ts                                                                               main  6          0          false 
 /Users/burton/projects/polar-app/packages/polar-search-api/src/api/search/Search.ts                                                                                 main  6          0          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/FirebaseDatastores.ts                                                                          main  6          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/DocInfos.ts                                                                                     main  6          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/Hashcode.ts                                                                                     main  6          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IAnnotation.ts                                                                                  main  6          0          false 
@@ -369,7 +368,7 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-firebase/src/firebase/om/SpacedRepStatCollection.ts                                                                 main  5          0          false 
 /Users/burton/projects/polar-app/packages/polar-firestore-like/src/IQuery.ts                                                                                        main  5          0          false 
 /Users/burton/projects/polar-app/packages/polar-firestore-like/src/IQueryDocumentSnapshot.ts                                                                        main  5          0          false 
-/Users/burton/projects/polar-app/packages/polar-shared/src/groups/DocRef.ts                                                                                         main  5          0          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/datastore/FirebaseDatastores.ts                                                                          main  5          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/AnnotationHolder.ts                                                                             main  5          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/IThumbnail.ts                                                                                   main  5          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/Pagemarks.ts                                                                                    main  5          2          false 
@@ -582,6 +581,7 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-pdf/src/pdf/PDFJSViewer.ts                                                                                          main  3          0          false 
 /Users/burton/projects/polar-app/packages/polar-release-metadata/src/ReleaseMetadatas.ts                                                                            main  3          1          false 
 /Users/burton/projects/polar-app/packages/polar-rpc/src/IDUser.ts                                                                                                   main  3          0          false 
+/Users/burton/projects/polar-app/packages/polar-shared/src/groups/DocRef.ts                                                                                         main  3          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/logger/ConsoleLogger.ts                                                                                  main  3          1          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/AnnotationRect.ts                                                                               main  3          0          false 
 /Users/burton/projects/polar-app/packages/polar-shared/src/metadata/Attachment.ts                                                                                   main  3          0          false 
@@ -746,12 +746,10 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/MemoryDatastore.ts                                                                       main  2          2          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/PersistenceEventType.ts                                                                  main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/PersistenceLayerListener.ts                                                              main  2          0          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/firebase/CloudFunctions.ts                                                               main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Collections.ts                                                                main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/GroupMemberInvitations.ts                                                     main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Groups.ts                                                                     main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Images.ts                                                                     main  2          0          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupProvisions.ts                                                           main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/dom_highlighter/DOMHighlight.tsx                                                                   main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/electron/context/ElectronContextType.ts                                                            main  2          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ga/CIDProvider.ts                                                                                  main  2          0          false 
@@ -1265,10 +1263,12 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/TracedDatastore.ts                                                                       main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/advertiser/AbstractAdvertisingPersistenceLayer.ts                                        main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/factories/WebPersistenceLayerFactory.ts                                                  main  1          0          false 
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/firebase/CloudFunctions.ts                                                               main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/firebase/UserPrefs.ts                                                                    main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/firebase/UserTraits.ts                                                                   main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/DocPermissions.ts                                                             main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/UserRequest.ts                                                                main  1          0          false 
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupProvisions.ts                                                           main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/dom_highlighter/AnimationFrameDebouncers.ts                                                        main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/dom_highlighter/DOMHighlightRow.tsx                                                                main  1          0          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/dom_highlighter/DOMHighlights.tsx                                                                  main  1          0          false 
@@ -1668,16 +1668,10 @@ path                                                                            
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/ILatexContent.ts                                                                          main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/IPlayerContent.ts                                                                         main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/MockRepoDocInfos.ts                                                                    main  0          2          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash/splashes/components/EventTrackedLink.tsx                                        main  0          0          true  
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/FirebaseDatastoreResources.ts                                                            main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/MockDatastore.ts                                                                         main  0          2          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/DocRefs.ts                                                                    main  0          0          true  
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/DatastoreImportFiles.ts                                                      main  0          0          true  
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupDocsAdd.ts                                                              main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/metadata/exporter/writers/BufferWriter.ts                                                          main  0          2          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/notes/store/BlocksStoreTests.ts                                                                    main  0          3          false 
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/reactor/QueuedReactor.ts                                                                           main  0          2          false 
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/ConditionalSetting.ts                                                                      main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-cloud-progress/src/CloudProgress.ts                                                                                 main  0          1          true  
 /Users/burton/projects/polar-app/packages/polar-content-capture/src/capture/ContentCapture.ts                                                                       main  0          0          true  
 /Users/burton/projects/polar-app/packages/polar-content-capture/src/capture/test/ContentResourceLoader.ts                                                           main  0          0          true  
@@ -2191,7 +2185,6 @@ full path                                                                       
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/reviewer/ratings/RatingButtons.tsx                                                     polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/reviewer/ratings/ReviewRatingButtons.tsx                                               polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/reviewer/ratings/ReviewRatingGlobalHotKeys.tsx                                         polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash/splashes/components/EventTrackedLink.tsx                                        polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash2/rules_engine/Engine.ts                                                         polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash2/rules_engine/Rule.ts                                                           polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/repository/js/splash2/whats_new/WhatsNewContent.tsx                                                  polar-bookshelf                    main
@@ -2463,7 +2456,6 @@ full path                                                                       
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/DocMetaRef.ts                                                                            polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/FirebaseCloudStorage.ts                                                                  polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/FirebaseDatastore.ts                                                                     polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/FirebaseDatastoreResources.ts                                                            polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/Invitations.ts                                                                           polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/ListenablePersistenceLayer.ts                                                            polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/MemoryDatastore.ts                                                                       polar-bookshelf                    main
@@ -2485,13 +2477,10 @@ full path                                                                       
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/firebase/UserTraits.ts                                                                   polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Collections.ts                                                                polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/DocPermissions.ts                                                             polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/DocRefs.ts                                                                    polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/GroupMemberInvitations.ts                                                     polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Groups.ts                                                                     polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/Images.ts                                                                     polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/db/UserRequest.ts                                                                polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/DatastoreImportFiles.ts                                                      polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupDocsAdd.ts                                                              polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/GroupProvisions.ts                                                           polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/JSONRPC.ts                                                                   polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/sharing/rpc/UserRefs.ts                                                                  polar-bookshelf                    main
@@ -2872,7 +2861,6 @@ full path                                                                       
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/tree/TNode.tsx                                                                                  polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/tree/TRoot.ts                                                                                   polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/uimodes/UIModes.ts                                                                              polar-bookshelf                    main
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/ConditionalSetting.ts                                                                      polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/DateMoment.tsx                                                                             polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/LifecycleEvents.ts                                                                         polar-bookshelf                    main
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/ui/util/LifecycleToggle.ts                                                                         polar-bookshelf                    main
