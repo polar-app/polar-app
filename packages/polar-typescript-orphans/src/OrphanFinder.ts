@@ -320,13 +320,14 @@ export namespace OrphanFinder {
             readonly path: string;
         }
 
-        function computeMainOrphans(): ReadonlyArray<IImportRanking> {
+        function computePrimaryOrphans(): ReadonlyArray<IImportRanking> {
             return importRankings
-                .filter(current => current.type === 'main')
+                .filter(current => ['main'].includes(current.type))
                 .filter(current => current.orphan);
+
         }
 
-        const mainOrphans = computeMainOrphans();
+        const mainOrphans = computePrimaryOrphans();
 
         function computeTestOrphans(mainOrphans: ReadonlyArray<IImportRanking>): ReadonlyArray<IOrphanTest> {
 
