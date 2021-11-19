@@ -2,7 +2,7 @@ import {Broadcasters} from '../../ipc/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
-import {AppRuntime} from "../../AppRuntime";
+import {DesktopAppRuntime} from "../../DesktopAppRuntime";
 
 
 export class ProgressMessages {
@@ -11,7 +11,7 @@ export class ProgressMessages {
 
     public static broadcast(progressMessage: ProgressMessage) {
 
-        if (AppRuntime.get() === 'electron-main') {
+        if (DesktopAppRuntime.get() === 'electron-main') {
             // this is done so that the main process in electron can send a
             // progress message.
             Broadcasters.send(this.CHANNEL, progressMessage);

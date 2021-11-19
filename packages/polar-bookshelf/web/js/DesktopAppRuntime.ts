@@ -2,11 +2,10 @@ import {ipcMain, ipcRenderer} from 'electron';
 
 /**
  * Used to determine if we're running in Electron or Chrome.
- * @Deprected use the one from polar-shared
  */
-export class AppRuntime {
+export namespace DesktopAppRuntime {
 
-    public static get(): AppRuntimeName {
+    export function get(): DesktopAppRuntimeName {
 
         if (ipcRenderer) {
             return 'electron-renderer';
@@ -21,9 +20,9 @@ export class AppRuntime {
     /**
      * A higher level runtime type (electron or browser)
      */
-    public static type(): AppRuntimeType {
+    export function type(): DesktopAppRuntimeType {
 
-        switch (this.get()) {
+        switch (get()) {
 
             case 'electron-renderer':
                 return 'electron';
@@ -38,17 +37,17 @@ export class AppRuntime {
 
     }
 
-    public static isElectron() {
-        return this.get().startsWith('electron-');
+    export function isElectron() {
+        return get().startsWith('electron-');
     }
 
-    public static isBrowser() {
-        return this.get() === 'browser';
+    export function isBrowser() {
+        return get() === 'browser';
     }
 
 }
 
-export type AppRuntimeName = 'electron-renderer' | 'electron-main' | 'browser';
+export type DesktopAppRuntimeName = 'electron-renderer' | 'electron-main' | 'browser';
 
-export type AppRuntimeType = 'electron' | 'browser';
+export type DesktopAppRuntimeType = 'electron' | 'browser';
 
