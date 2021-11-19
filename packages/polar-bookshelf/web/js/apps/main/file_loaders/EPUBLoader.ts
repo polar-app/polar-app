@@ -1,4 +1,4 @@
-import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
+import {ResourcePaths} from '../../../util/ResourcePaths';
 import {ViewerURLs} from "../doc_loaders/ViewerURLs";
 import IViewerURL = ViewerURLs.IViewerURL;
 

@@ -1,4 +1,4 @@
-import {ResourcePaths} from "../electron/webresource/ResourcePaths";
+import {ResourcePaths} from "../util/ResourcePaths";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {HashURLs} from "polar-shared/src/util/HashURLs";

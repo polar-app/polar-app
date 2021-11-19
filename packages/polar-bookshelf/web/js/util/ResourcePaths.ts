@@ -12,8 +12,6 @@ export class ResourcePaths {
 
     /**
      * Build a full resource URL from a given relative URL path.
-     *
-     * @param relativeURL
      */
     public static resourceURLFromRelativeURL(relativeURL: string): URLStr {
 
