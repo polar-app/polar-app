@@ -1,7 +1,7 @@
 import {ProgressInfo} from "builder-util-runtime";
 import {ipcRenderer} from 'electron';
-import {DeterminateProgressBar} from "../ui/progress_bar/DeterminateProgressBar";
-import {RestartForUpdateButtons} from './RestartForUpdateButtons';
+import {DeterminateProgressBar} from "polar-bookshelf/web/js/ui/progress_bar/DeterminateProgressBar";
+import {RestartForUpdateButtons} from 'polar-bookshelf/web/js/auto_updates/RestartForUpdateButtons';
 
 
 export class UpdatesController {
