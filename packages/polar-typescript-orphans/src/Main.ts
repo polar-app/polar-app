@@ -159,7 +159,8 @@ async function doAsync() {
     ];
 
     const excludesFilter = [
-        "\/polar-test\/.*"
+        "\/polar-test\/.*",
+        "NavigationGlobalHotKeys"
     ]
 
     await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, excludesFilter, verbose});
