@@ -28,7 +28,7 @@ export class WebPersistenceLayerFactory {
 
         const datastore = toDatastore();
 
-        log.info("Using datastore: " + datastore.id);
+        console.log("Using datastore: " + datastore.id);
 
         return new NullListenablePersistenceLayer(new DefaultPersistenceLayer(datastore));
 

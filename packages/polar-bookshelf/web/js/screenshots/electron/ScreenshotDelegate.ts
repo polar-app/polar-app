@@ -66,7 +66,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
             if (screenshotRequest.resize.width !== undefined ||
                 screenshotRequest.resize.height !== undefined) {
 
-                log.info("Resizing image to: ", screenshotRequest.resize);
+                console.log("Resizing image to: ", screenshotRequest.resize);
 
                 image = image.resize(screenshotRequest.resize);
 
@@ -75,7 +75,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
         }
 
         if (screenshotRequest.crop) {
-            log.info("Cropping image to: ", screenshotRequest.resize);
+            console.log("Cropping image to: ", screenshotRequest.resize);
             image = image.crop(screenshotRequest.crop);
         }
 

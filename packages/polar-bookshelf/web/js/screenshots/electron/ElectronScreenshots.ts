@@ -46,7 +46,7 @@ export class ElectronScreenshots {
 
         const screenshotRequest = await this.doCapture(target, opts);
 
-        log.info("Sending screenshot request: ", screenshotRequest);
+        console.log("Sending screenshot request: ", screenshotRequest);
 
         // const id: WebContentsID = webContents.id;
 
@@ -102,7 +102,7 @@ export class ElectronScreenshots {
 
         if (target instanceof HTMLElement) {
 
-            log.info("Using HTML element to build rect from bounding client rect.");
+            console.log("Using HTML element to build rect from bounding client rect.");
 
             rect = IXYRects.createFromClientRect(target.getBoundingClientRect());
 
@@ -115,10 +115,10 @@ export class ElectronScreenshots {
                 height: target.height
             };
 
-            log.info("Using client rect: ", rect);
+            console.log("Using client rect: ", rect);
 
         } else if (IXYRects.instanceOf(target)) {
-            log.info("Using IXYRect");
+            console.log("Using IXYRect");
             rect = target;
         } else {
             throw new Error("Unknown target type.");

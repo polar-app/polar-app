@@ -98,7 +98,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             return {};
         }
 
-        log.notice("Initializing FirebaseDatastore...");
+        console.log("Initializing FirebaseDatastore...");
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
@@ -128,7 +128,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         this.initialized = true;
 
-        log.notice("Initializing FirebaseDatastore...done");
+        console.log("Initializing FirebaseDatastore...done");
 
         return {};
 
@@ -252,7 +252,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const firestore = this.firestore!;
 
-        log.info("delete: ", docMetaFileRef);
+        console.log("delete: ", docMetaFileRef);
 
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
 
@@ -487,7 +487,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                     await fileRef.updateMetadata(meta);
 
-                    log.info("File metadata updated with: ", meta);
+                    console.log("File metadata updated with: ", meta);
 
                     return this.getFile(backend, ref);
 
@@ -575,7 +575,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const duration = now - started;
 
                 const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-                log.notice('Upload is ' + percentage + '% done');
+                console.log('Upload is ' + percentage + '% done');
 
                 const progress: ProgressMessage = {
                     id: progressID,
@@ -787,7 +787,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const dataLen = data.length;
 
-            log.notice(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
+            console.log(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
 
             const [docMetaRef, docInfoRef] = createDocRefs();
 

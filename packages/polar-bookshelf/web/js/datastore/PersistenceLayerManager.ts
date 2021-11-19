@@ -37,7 +37,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (this.requiresReset()) {
 
-            log.info("Going go reset and deactivate current datastore: " + type);
+            console.log("Going go reset and deactivate current datastore: " + type);
 
             const deactivatePersistenceLayer = this.createPersistenceLayer(type);
 
@@ -92,7 +92,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (this.persistenceLayer) {
 
-            log.info("Stopping persistence layer...");
+            console.log("Stopping persistence layer...");
 
             this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
@@ -103,7 +103,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             await this.persistenceLayer.stop();
 
-            log.info("Stopped persistence layer...");
+            console.log("Stopped persistence layer...");
 
             this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
@@ -115,7 +115,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
 
-        log.info("Changed to persistence layer: " + type);
+        console.log("Changed to persistence layer: " + type);
 
         await this.persistenceLayer.init(err => {
             // noop
@@ -123,7 +123,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
-        log.info("Initialized persistence layer: " + type);
+        console.log("Initialized persistence layer: " + type);
 
         // Analytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
 
@@ -132,7 +132,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     }
 
     public reset() {
-        log.info("Datastore reset");
+        console.log("Datastore reset");
         window.localStorage.setItem(RESET_KEY, 'true');
     }
 

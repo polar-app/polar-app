@@ -70,7 +70,7 @@ export class SyncQueue {
         while ((syncTask = this.pending.shift()) !== undefined) {
 
             if (this.abortable.aborted) {
-                log.info("Aborting sync.");
+                console.log("Aborting sync.");
                 return;
             }
 

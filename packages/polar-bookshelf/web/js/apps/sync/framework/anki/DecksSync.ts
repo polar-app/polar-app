@@ -56,7 +56,7 @@ export class DecksSync {
 
     private async findExistingDecks(deckDescriptors: ReadonlyArray<DeckDescriptor>): Promise<Optional<SyncTaskResult>> {
 
-        log.info("Fetching existing decks for deckDescriptors: ", deckDescriptors);
+        console.log("Fetching existing decks for deckDescriptors: ", deckDescriptors);
 
         const deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 
@@ -69,7 +69,7 @@ export class DecksSync {
         this.missingDecks.push(... SetArrays.difference(expectedDecks, currentDecks));
 
         const message = `Found ${this.missingDecks.length} missing decks from a total of ${currentDecks.length}`;
-        log.info(message);
+        console.log(message);
 
         this.missingDeckDescriptors.push(... this.missingDecks.map(name => <DeckDescriptor> { name }));
 
@@ -93,7 +93,7 @@ export class DecksSync {
 
     private async createMissingDeck(missingDeck: string): Promise<Optional<SyncTaskResult>> {
         const message = `Creating missing deck: ${missingDeck}`;
-        log.info(message);
+        console.log(message);
         await this.createDeckClient.execute(missingDeck);
         return Optional.of({message});
     }

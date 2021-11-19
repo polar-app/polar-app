@@ -100,7 +100,7 @@ export namespace DocImporter {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-        log.info(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
+        console.log(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
 
         const docMetadata = opts.docImport || await DocMetadata.getMetadata(docPathOrURL, docType);
 
@@ -170,7 +170,7 @@ export namespace DocImporter {
 
             // TODO(webapp): make this into a toBlob function call
             if (URLs.isURL(docPathOrURL)) {
-                log.info("Reading data from URL: ", docPathOrURL);
+                console.log("Reading data from URL: ", docPathOrURL);
                 const response = await fetch(docPathOrURL);
                 return await response.blob();
             }

@@ -246,7 +246,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
         // update the sequence before we write it out to disk.
         docMeta.docInfo.uuid = UUIDs.create();
 
-        log.info(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
+        console.log(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
 
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with

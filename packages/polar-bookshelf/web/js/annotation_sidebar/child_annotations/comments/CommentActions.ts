@@ -17,7 +17,7 @@ const log = Logger.create();
 export class CommentActions {
 
     public static delete(pageMeta: IPageMeta, comment: IDocAnnotationRef) {
-        log.info("Comment deleted: ", comment);
+        console.log("Comment deleted: ", comment);
         delete pageMeta.comments[comment.id];
     }
 

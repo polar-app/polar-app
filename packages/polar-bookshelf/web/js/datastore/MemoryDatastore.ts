@@ -147,7 +147,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         const nrDocs = Object.keys(this.docMetas).length;
 
-        log.info(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`);
+        console.log(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`);
 
         return this.docMetas[fingerprint];
     }

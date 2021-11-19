@@ -54,7 +54,7 @@ export class AnkiConnectFetch {
         const configurePort = async () => {
 
             this.port = await detectPort();
-            log.notice("Using Anki sync port: "  + this.port);
+            console.log("Using Anki sync port: "  + this.port);
 
         };
 
