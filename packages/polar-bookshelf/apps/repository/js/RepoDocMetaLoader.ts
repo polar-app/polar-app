@@ -58,7 +58,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
 
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
-        log.info("onPersistenceLayerChanged");
+        console.log("onPersistenceLayerChanged");
 
         this.addInitialProgressListener(persistenceLayer);
 

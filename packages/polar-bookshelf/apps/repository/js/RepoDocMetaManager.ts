@@ -173,7 +173,7 @@ export class RepoDocMetaManager {
 
         docMeta.docInfo = new DocInfo(docInfo);
 
-        log.info("Writing out updated DocMeta");
+        console.log("Writing out updated DocMeta");
 
         await persistenceLayer.writeDocMeta(docMeta);
 
