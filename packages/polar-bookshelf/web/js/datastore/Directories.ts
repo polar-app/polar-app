@@ -1,7 +1,6 @@
 /**
  * Represents key local directories for Polar when running locally.
  */
-import {DataDir, DataDirConfig, DiskDatastore} from './DiskDatastore';
 import {CreateDirResult, Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {isPresent} from 'polar-shared/src/Preconditions';
@@ -20,7 +19,7 @@ export class Directories {
      * Expose the DataDirConfig so tests and other systems can see how the
      * dataDir was setup for the DiskDatastore.
      */
-    public readonly dataDirConfig: DataDirConfig;
+    public readonly dataDirConfig: any;
 
     public initialization?: Initialization;
 
@@ -52,9 +51,9 @@ export class Directories {
 
     }
 
-    public static getDataDir(): DataDirConfig {
+    public static getDataDir(): any {
 
-        let dataDirs: DataDir[] = [
+        let dataDirs: any[] = [
             {
                 // configured via static.  I think we should deprecate this in the
                 // future as the env var seems more flexible and works across
@@ -67,10 +66,6 @@ export class Directories {
                 path: process.env.POLAR_DATA_DIR,
                 strategy: 'env'
             },
-            {
-                path: FilePaths.join(DiskDatastore.getUserHome(), ".polar"),
-                strategy: 'home',
-            }
         ];
 
         // remove any paths that are missing...
@@ -116,3 +111,4 @@ export interface Initialization {
     readonly logsDir: CreateDirResult;
     readonly configDir: CreateDirResult;
 }
+
