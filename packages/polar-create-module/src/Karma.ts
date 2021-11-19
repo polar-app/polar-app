@@ -163,7 +163,7 @@ module.exports = (config) => {
                     {
                         // We have to use a null-loader for Electron because if we don't require()
                         // will attempt to use 'fs' which doesn't exist in the browser.
-                        test: /\/electron\/index.js$/,
+                        test: /\\/electron\\/index.js$/,
                         use: 'null-loader'
                     }
                 ]
