@@ -10,6 +10,7 @@ large_image: https://i.imgur.com/ifCQPCH.png
 
 ## Notes now live
 
+TODO: fix image here
 <img alt="Polar x Notes" src="https://i.imgur.com/995TM0p.png">
 
 TODO: add another img w actual notes in img
@@ -18,9 +19,9 @@ Today, we've released non-linear notes in Polar. Some of you have already been t
 
 Please note, using the latest Polar version will require you to do a one-time migration. Please migrate within the next month to avoid any data loss.
 
-Before we go into any details, check out this 20 second clip summarizing the main updates:
+Before we go into any details, check out this short clip summarizing the main updates:
 
-TODO: add video
+[![Notes in Polar](https://i.imgur.com/SXNH4av.png)](https://youtu.be/oxfSNOuIaK0 "Notes in Polar")
 
 ## What's new
 - Your highlights from documents are now notes. You can edit, comment, create backlinks, and various other things that come with non-linear notes

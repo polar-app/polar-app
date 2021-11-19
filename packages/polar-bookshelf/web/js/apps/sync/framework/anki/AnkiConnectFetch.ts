@@ -1,9 +1,7 @@
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnkiSyncError} from './AnkiSyncError';
 
-const log = Logger.create();
 
 /**
  * Fetch implementation that always uses the proper Anki local URL.
@@ -46,7 +44,7 @@ export class AnkiConnectFetch {
             }
 
             const msg = `Unable to connect to anki with ports ${this.PORTS} (make sure Anki Connect is installed)`;
-            log.error(msg);
+            console.error(msg);
             throw new AnkiSyncError(msg, 'no-anki-connect');
 
         };
@@ -54,7 +52,7 @@ export class AnkiConnectFetch {
         const configurePort = async () => {
 
             this.port = await detectPort();
-            log.notice("Using Anki sync port: "  + this.port);
+            console.log("Using Anki sync port: "  + this.port);
 
         };
 
@@ -86,7 +84,7 @@ export class AnkiConnectFetch {
 
             return result.result;
         } catch (e) {
-            log.warn("Anki connect fetch failed (install Anki Connect): ", e);
+            console.warn("Anki connect fetch failed (install Anki Connect): ", e);
             throw e;
         }
 

@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {AppInstance} from '../../electron/framework/AppInstance';
+import {AppInstance} from 'polar-electron-framework/src/AppInstance';
 import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';

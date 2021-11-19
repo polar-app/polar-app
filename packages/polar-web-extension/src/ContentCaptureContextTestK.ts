@@ -1,5 +1,5 @@
 import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {MockChrome} from "./MockChrome";
 
 describe("ContentCaptureContext", function() {

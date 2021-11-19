@@ -158,7 +158,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
 
     return (
         <MUIDialog
-            maxWidth={props.maxWidth}
+            maxWidth={props.maxWidth || 'sm'}
             open={open}
             onClose={handleClose}
             classes={props.classes}

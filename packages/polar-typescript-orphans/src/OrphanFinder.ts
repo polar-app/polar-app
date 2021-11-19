@@ -15,6 +15,9 @@ import {Reporters} from "./Reporters";
 
 export namespace OrphanFinder {
 
+
+    import IImportRanking = DependencyIndex.IImportRanking;
+
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
         const promises = modules.map(module => Scanner.doScan(module))
@@ -176,6 +179,11 @@ export namespace OrphanFinder {
          */
         readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
+        /**
+         * These patterns are never matches as either tests or entries.
+         */
+        readonly excludesFilter?: ReadonlyArray<PathRegexStr>;
+
         readonly modules: ReadonlyArray<IModuleReference>;
 
         readonly verbose: boolean;
@@ -189,6 +197,7 @@ export namespace OrphanFinder {
 
         const entriesFilter = opts.entriesFilter || [];
         const testsFilter = opts.testsFilter || [];
+        const excludesFilter = opts.excludesFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
@@ -196,12 +205,18 @@ export namespace OrphanFinder {
 
         reporter.verbose("Scanning modules...")
 
-        const sourceTypeClassifier = (path: PathStr) => {
+        const sourceTypeClassifier = (path: PathStr): SourceType => {
 
             const testPredicate = PathRegexFilterPredicates.createMatchAny(testsFilter);
+            const entryPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
+            const excludePredicate = PathRegexFilterPredicates.createMatchAny(excludesFilter);
 
             if (testPredicate(path)) {
                 return 'test';
+            } else if (entryPredicate(path)) {
+                return 'entry';
+            } else if (excludePredicate(path)) {
+                return 'exclude';
             } else {
                 return 'main';
             }
@@ -214,11 +229,11 @@ export namespace OrphanFinder {
 
         // *** the main source references is the actual source code, not including tests.
 
-        type MainSourceReferencesResult = readonly [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
+        type MainSourceReferencesResult = [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
         function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
 
-            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter, ...excludesFilter]));
             const rejectPredicate = Predicates.not(acceptPredicate);
 
             const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
@@ -249,7 +264,12 @@ export namespace OrphanFinder {
         mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
-        // *** this should register all the imports...
+        // ** register all test so that they get a ref count of zero..
+        rawSourceReferences
+            .filter(current => current.type === 'test')
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
+
+        // *** this should register all the imports from these files
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
@@ -273,32 +293,73 @@ export namespace OrphanFinder {
 
         reporter.verbose(createImportRankingsReport());
 
+        function createSourceReferenceTypeReport(sourceType: SourceType) {
+
+            const grid = TextGrid.createFromHeaders("full path", "module", "type");
+
+            grid.title(`Source type ${sourceType}`)
+            rawSourceReferences
+                .filter(current => current.type === sourceType)
+                .forEach(current => grid.row(current.fullPath, current.module, current.type));
+
+            return grid.format();
+
+        }
+
+        reporter.verbose(createSourceReferenceTypeReport('main'));
+        reporter.verbose(createSourceReferenceTypeReport('test'));
+        reporter.verbose(createSourceReferenceTypeReport('exclude'));
+        reporter.verbose(createSourceReferenceTypeReport('entry'));
+
         interface IOrphanTest {
             readonly path: PathStr;
             readonly imported: PathStr;
         }
 
-        function computeOrphanTests(): ReadonlyArray<IOrphanTest> {
+        interface IOrphan {
+            readonly path: string;
+        }
 
-            return arrayStream(importRankings)
-                .filter(current => current.orphan)
-                .filter(current => current.nrTestRefs === 1)
-                .map((current): IOrphanTest => {
+        function computePrimaryOrphans(): ReadonlyArray<IImportRanking> {
+            return importRankings
+                .filter(current => ['main'].includes(current.type))
+                .filter(current => current.orphan);
+
+        }
+
+        const mainOrphans = computePrimaryOrphans();
+
+        function computeTestOrphans(mainOrphans: ReadonlyArray<IImportRanking>): ReadonlyArray<IOrphanTest> {
+
+            // from the orphans that we're going to delete, compute the tests
+            // that they use so that they can ALSO be deleted
+
+            function toTestOrphans(importRanking: IImportRanking): ReadonlyArray<IOrphanTest> {
+
+                return importRanking.testRefs.map(current => {
                     return {
-                        path: current.testRefs[0],
-                        imported: current.path
+                        path: current,
+                        imported: importRanking.path
                     }
                 })
+
+            }
+
+            return arrayStream(mainOrphans)
+                .filter(current => current.orphan)
+                .map(current => toTestOrphans(current))
+                .flatMap(current => current)
+                .sort((a, b) => a.path.localeCompare(b.path))
                 .collect()
 
         }
 
-        const orphanedTests = computeOrphanTests();
+        const testOrphans = computeTestOrphans(mainOrphans);
 
         function computeOrphanedTestsReport() {
             const grid = TextGrid.createFromHeaders('path', 'imported', 'orphan');
             grid.title("Orphan tests")
-            orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
+            testOrphans.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
@@ -320,14 +381,10 @@ export namespace OrphanFinder {
                 return arrayStream(paths).toLookup(current => current);
             }
 
-            interface IOrphan {
-                readonly path: string;
-            }
-
             const rawOrphans: ReadonlyArray<IOrphan> = [
-                ...orphanedTests,
-                ...importRankings.filter(current => current.orphan)
-            ]
+                ...testOrphans,
+                ...mainOrphans
+            ].sort((a, b) => a.path.localeCompare(b.path));
 
             const recentGitUpdates = await computeRecentGitUpdates();
 

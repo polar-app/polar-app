@@ -1,7 +1,6 @@
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ICapturedScreenshot} from './Screenshot';
-import {BrowserScreenshots} from './browser/BrowserScreenshots';
 import {FileType} from '../apps/main/file_loaders/FileType';
 import {Preconditions} from "polar-shared/src/Preconditions";
 
@@ -38,28 +37,13 @@ export namespace Screenshots {
 
         Preconditions.assertPresent(fileType, 'fileType');
 
-        const captureDirectly = () => {
-
-            // TODO this isn't really needed anymore as EPUB capture only
-            // supports images
-            return captureViaBrowser(boxRect, element);
-
-            //
-            // if (AppRuntime.isBrowser()) {
-            //     return captureViaBrowser(boxRect, element);
-            // } else {
-            //     return captureViaElectron(boxRect, element);
-            // }
-
-        };
-
         switch (fileType) {
 
             case 'pdf':
                 return captureViaCanvas(pageNum, boxRect, docViewerElement);
 
             case 'epub':
-                return captureDirectly();
+                throw new Error("EPUB not supported");
 
         }
 
@@ -91,27 +75,6 @@ export namespace Screenshots {
         const canvas = getCanvasForPage(pageNum);
 
         return await Canvases.extract(canvas, rect);
-
-    }
-
-    async function captureViaBrowser(boxRect: ILTRect,
-                                     element?: HTMLElement) {
-
-        // we have to capture via our extension
-        const browserScreenshot = await BrowserScreenshots.capture(boxRect, element);
-
-        if (browserScreenshot) {
-
-            return {
-                data: browserScreenshot.dataURL,
-                type: browserScreenshot.type,
-                width: boxRect.width,
-                height: boxRect.height
-            };
-
-        } else {
-            throw new Error("Unable to take screenshot via browser");
-        }
 
     }
 
