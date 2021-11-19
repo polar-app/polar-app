@@ -296,6 +296,7 @@ export namespace OrphanFinder {
                         imported: current.path
                     }
                 })
+                .sort((a, b) => a.path.localeCompare(b.path))
                 .collect()
 
         }
@@ -334,7 +335,7 @@ export namespace OrphanFinder {
             const rawOrphans: ReadonlyArray<IOrphan> = [
                 ...orphanedTests,
                 ...importRankings.filter(current => current.orphan)
-            ]
+            ].sort((a, b) => a.path.localeCompare(b.path));
 
             const recentGitUpdates = await computeRecentGitUpdates();
 
