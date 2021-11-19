@@ -1,3 +1,4 @@
+
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
@@ -20,9 +21,10 @@ module.exports = (config) => {
                 './{,!(node_modules)/**}/*TestNK.js'
             ],
             mocha: {
-                timeout: 60000
+                timeout : 60000
             }
         },
+        // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
 
         customHeaders: [
@@ -51,16 +53,16 @@ module.exports = (config) => {
 
         files: [
 
-            {pattern: './web/**/*TestK.ts', watched: false}
+            { pattern: 'src/**/*.ts', watched: false },
 
         ],
         exclude: [
-            './**/*.d.ts'
+          'src/**/*.d.ts'
         ],
 
         preprocessors: {
             // add webpack as preprocessor
-            '**/*': ['webpack'],
+            'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
 
@@ -127,20 +129,6 @@ module.exports = (config) => {
 
                     },
                     {
-                        test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
-                        exclude: [],
-                        use: [
-                            {
-                                loader: 'file-loader',
-                                options: {
-                                    name: '[name]-[contenthash].[ext]',
-                                    outputPath: 'assets',
-                                    publicPath: '/assets'
-                                }
-                            },
-                        ],
-                    },
-                    {
                         // make SVGs use data URLs.
                         test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
                         exclude: [],
@@ -168,7 +156,7 @@ module.exports = (config) => {
                     },
                     {
                         test: /\.scss$/,
-                        use: ['style-loader', 'css-loader', 'sass-loader', 'sass'],
+                        use: ['style-loader', 'css-loader', 'sass-loader'],
                     },
                     {
                         test: /fonts\.googleapis\.com\/css/,
@@ -186,7 +174,7 @@ module.exports = (config) => {
                     {
                         // We have to use a null-loader for Electron because if we don't require()
                         // will attempt to use 'fs' which doesn't exist in the browser.
-                        test: /\/electron\/index.js/,
+                        test: path.resolve(__dirname, '../../node_modules/electron/index.js'),
                         use: 'null-loader'
                     }
 

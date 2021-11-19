@@ -1,9 +1,31 @@
 import {BrowserWindow} from 'electron';
-import {PostMessageRequest} from './PostMessageRequest';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 declare var window: Window;
+
+export class IPostMessageRequest {
+
+
+    /**
+     * The BrowserWindow running the app to receive the message.
+     */
+    public readonly window?: Electron.BrowserWindow | null | undefined;
+
+    /**
+     * The message to send the remote window.
+     */
+    public readonly message: any;
+
+    /**
+     *
+     */
+    constructor(opts: any) {
+        this.window = opts.window;
+        this.message = opts.message;
+    }
+
+}
 
 /**
  * Messenger is a class for using postMessage within the renderer to communicate
@@ -16,9 +38,7 @@ declare var window: Window;
  */
 export class Messenger {
 
-    public static async postMessage(postMessageRequest: PostMessageRequest) {
-
-        postMessageRequest = new PostMessageRequest(postMessageRequest);
+    public static async postMessage(postMessageRequest: IPostMessageRequest) {
 
         if (typeof window !== 'undefined') {
             await this.postMessageDirectly(postMessageRequest.message);
