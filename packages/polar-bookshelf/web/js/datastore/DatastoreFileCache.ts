@@ -28,7 +28,7 @@ export class DatastoreFileCache {
 
         const status = entry ? 'hit' : 'miss';
 
-        log.debug("DatastoreFileCache status: " + status);
+        console.debug("DatastoreFileCache status: " + status);
 
         return Optional.of(entry);
     }

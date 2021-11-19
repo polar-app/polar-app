@@ -173,7 +173,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
             await this.userTagsDB?.commit();
 
-            log.debug("Wrote tags to TagsDB: ", tags);
+            console.debug("Wrote tags to TagsDB: ", tags);
 
         } catch (e) {
             console.error("Failed to write docMeta tags: ", e);

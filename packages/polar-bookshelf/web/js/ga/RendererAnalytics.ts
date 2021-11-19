@@ -48,7 +48,7 @@ export class RendererAnalytics {
         // one of the arguments like action and label but give category and
         // value then we don't handle the method call properly.
 
-        // log.debug("Sending analytics event: ", args);
+        // console.debug("Sending analytics event: ", args);
 
         // TODO: screenResolution (sr) and viewportSize (vp)
         //

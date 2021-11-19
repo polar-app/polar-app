@@ -22,7 +22,7 @@ export class DataFileCacheDatastore extends DelegatedDatastore {
         const hit = DatastoreFileCache.getFile(backend, ref);
 
         if (hit.isPresent()) {
-            log.debug("Found file in datastore cache: ", {backend, ref});
+            console.debug("Found file in datastore cache: ", {backend, ref});
             return hit.get();
         }
 

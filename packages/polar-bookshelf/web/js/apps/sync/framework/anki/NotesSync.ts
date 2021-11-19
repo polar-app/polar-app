@@ -93,7 +93,7 @@ export class NotesSync {
 
             const message = `Note not found.  Checking if we can add.`;
 
-            log.debug(message, normalizedNote);
+            console.debug(message, normalizedNote);
 
             return Optional.of({message});
 
@@ -102,7 +102,7 @@ export class NotesSync {
             // TODO: we need to implement updates ... those aren't implemented now.
             const message = 'Note already found. Skipping.';
 
-            log.debug(message, normalizedNote);
+            console.debug(message, normalizedNote);
 
             return Optional.of({message});
         }
@@ -123,7 +123,7 @@ export class NotesSync {
             message = 'Note already exists';
         }
 
-        log.debug(message, normalizedNote);
+        console.debug(message, normalizedNote);
         return Optional.of({message});
 
     }

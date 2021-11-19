@@ -14,10 +14,10 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
 
         const nativeImage =
             await Stopwatches.withStopwatchAsync(() => this.captureNativeImage(id, screenshotRequest),
-                                                 stopwatch => log.debug("captureNativeImage took: " + stopwatch));
+                                                 stopwatch => console.debug("captureNativeImage took: " + stopwatch));
 
         return Stopwatches.withStopwatch(() => this.toCapturedScreenshot(nativeImage, screenshotRequest),
-                                         stopwatch => log.debug("toCapturedScreenshot took: " + stopwatch));
+                                         stopwatch => console.debug("toCapturedScreenshot took: " + stopwatch));
 
     }
 
