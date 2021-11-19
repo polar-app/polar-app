@@ -296,6 +296,7 @@ export namespace OrphanFinder {
                         imported: current.path
                     }
                 })
+                .sort((a, b) => a.path.localeCompare(b.path))
                 .collect()
 
         }
