@@ -179,6 +179,7 @@
         "polar-spaced-repetition-api": "0.0.0",
         "polar-text-highlighter": "0.0.0",
         "polar-web-extension-api": "0.0.0",
+        "polar-electron-framework": "0.0.0",
         "polar-webapp-links": "0.0.0",
         "@material-ui/core": "=4.11.3",
         "@material-ui/icons": "=4.11.2",
