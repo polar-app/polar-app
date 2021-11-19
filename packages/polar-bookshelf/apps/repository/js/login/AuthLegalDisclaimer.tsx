@@ -22,7 +22,7 @@ export const AuthLegalDisclaimer = () => {
     const classes = useStyles();
 
     return (
-        <Box component='small' className={classes.legal}>
+        <Box component='small' display='block' className={classes.legal}>
             You acknowledge that you will read, and agree to
             our <MUIAnchor href="https://getpolarized.io/terms/"> Terms of Service </MUIAnchor> 
             and <MUIAnchor href="https://getpolarized.io/privacy-policy"> Privacy Policy </MUIAnchor> 
