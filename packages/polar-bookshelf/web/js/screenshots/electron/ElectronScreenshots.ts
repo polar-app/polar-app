@@ -2,14 +2,12 @@ import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {IXYRects} from 'polar-shared/src/util/rects/IXYRects';
 import {CaptureOpts, DefaultCaptureOpts, Screenshot, ScreenshotRequest} from '../Screenshot';
 import {ClientRects} from 'polar-shared/src/util/rects/ClientRects';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
 import {AnnotationToggler} from '../AnnotationToggler';
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Promises} from "polar-shared/src/util/Promises";
 
-const log = Logger.create();
 
 const MIN_PAINT_INTERVAL = 1000 / 60;
 
@@ -46,7 +44,7 @@ export class ElectronScreenshots {
 
         const screenshotRequest = await this.doCapture(target, opts);
 
-        log.info("Sending screenshot request: ", screenshotRequest);
+        console.log("Sending screenshot request: ", screenshotRequest);
 
         // const id: WebContentsID = webContents.id;
 
@@ -102,7 +100,7 @@ export class ElectronScreenshots {
 
         if (target instanceof HTMLElement) {
 
-            log.info("Using HTML element to build rect from bounding client rect.");
+            console.log("Using HTML element to build rect from bounding client rect.");
 
             rect = IXYRects.createFromClientRect(target.getBoundingClientRect());
 
@@ -115,10 +113,10 @@ export class ElectronScreenshots {
                 height: target.height
             };
 
-            log.info("Using client rect: ", rect);
+            console.log("Using client rect: ", rect);
 
         } else if (IXYRects.instanceOf(target)) {
-            log.info("Using IXYRect");
+            console.log("Using IXYRect");
             rect = target;
         } else {
             throw new Error("Unknown target type.");

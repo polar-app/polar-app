@@ -5,7 +5,6 @@ import {
     DocMetaSnapshotEventListener,
     SnapshotResult
 } from './Datastore';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
@@ -20,7 +19,6 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 export class Datastores {
 
@@ -187,9 +185,9 @@ export class Datastores {
     public static async purge(datastore: Datastore,
                               purgeListener: PurgeListener = NULL_FUNCTION) {
 
-        log.debug("Getting doc meta refs...");
+        console.debug("Getting doc meta refs...");
         const docMetaFiles = await datastore.getDocMetaRefs();
-        log.debug("Getting doc meta refs...done");
+        console.debug("Getting doc meta refs...done");
 
         let completed: number = 0;
         const total: number = docMetaFiles.length;
@@ -210,7 +208,7 @@ export class Datastores {
 
             work.push(async () => {
 
-                log.debug(`Purging file: ${docMetaFile.fingerprint} in datastore ${datastore.id}`);
+                console.debug(`Purging file: ${docMetaFile.fingerprint} in datastore ${datastore.id}`);
 
                 const data = await datastore.getDocMeta(docMetaFile.fingerprint);
                 const docMeta = DocMetas.deserialize(data!, docMetaFile.fingerprint);

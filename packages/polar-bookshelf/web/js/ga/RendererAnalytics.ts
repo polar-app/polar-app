@@ -1,5 +1,4 @@
 import ua, {EventParams} from 'universal-analytics';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {CIDs} from './CIDs';
 import {Stopwatch, TrackedDuration} from 'polar-shared/src/util/Stopwatch';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
@@ -24,7 +23,6 @@ const visitorOptions: ua.VisitorOptions = {
 
 const visitor = ua(TRACKING_ID, visitorOptions).debug(DEBUG);
 
-const log = Logger.create();
 
 const defaultCallback = (err: Error, response: any, body: any) => {
 
@@ -32,7 +30,7 @@ const defaultCallback = (err: Error, response: any, body: any) => {
     // us to log failure.
 
     if (err) {
-        log.warn("Unable to track analytics: ", err);
+        console.warn("Unable to track analytics: ", err);
     }
 
 };
@@ -42,7 +40,7 @@ export class RendererAnalytics {
     public static event(args: IEventArgs): void {
 
         if (! isBrowserContext) {
-            // log.warn("Not called from browser context");
+            // console.warn("Not called from browser context");
             return;
         }
 
@@ -50,7 +48,7 @@ export class RendererAnalytics {
         // one of the arguments like action and label but give category and
         // value then we don't handle the method call properly.
 
-        // log.debug("Sending analytics event: ", args);
+        // console.debug("Sending analytics event: ", args);
 
         // TODO: screenResolution (sr) and viewportSize (vp)
         //
@@ -105,7 +103,7 @@ export class RendererAnalytics {
     public static pageview(path: string, hostname?: string, title?: string): void {
 
         if (! isBrowserContext) {
-            log.warn("Not called from browser context");
+            console.warn("Not called from browser context");
             return;
         }
 
@@ -127,7 +125,7 @@ export class RendererAnalytics {
     public static timing(category: string, variable: string, time: string | number): void {
 
         if (! isBrowserContext) {
-            log.warn("Not called from browser context");
+            console.warn("Not called from browser context");
             return;
         }
 
@@ -245,7 +243,7 @@ class DefaultTimer implements Timer {
     public stop() {
 
         if (this.stopped) {
-            log.warn("Stop called twice");
+            console.warn("Stop called twice");
             // only allow this to be stopped once as a bug with subsequent
             // stop calls would yield incorrect metrics.
             return;

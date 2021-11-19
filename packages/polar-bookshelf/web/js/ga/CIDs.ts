@@ -37,7 +37,7 @@ export class CIDs {
 
         const localCID = window.localStorage.getItem(KEY);
 
-        // log.debug(`mainCID: ${mainCID}, localCID: ${localCID}`);
+        // console.debug(`mainCID: ${mainCID}, localCID: ${localCID}`);
 
         return Optional.first(mainCID, localCID).getOrUndefined();
 

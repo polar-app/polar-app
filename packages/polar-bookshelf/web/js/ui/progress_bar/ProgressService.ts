@@ -2,10 +2,8 @@ import {ipcRenderer} from "electron";
 import {ProgressMessage} from "./ProgressMessage";
 import {ProgressMessages} from "./ProgressMessages";
 import {DeterminateProgressBar} from './DeterminateProgressBar';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {TypedMessage} from '../../util/TypedMessage';
 
-const log = Logger.create();
 
 export class ProgressService {
 

@@ -1,9 +1,7 @@
 import {Screenshot, ScreenshotRequest} from '../Screenshot';
 import {webContents} from 'electron';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 
-const log = Logger.create();
 
 /**
  * Handles the actual screenshots
@@ -16,10 +14,10 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
 
         const nativeImage =
             await Stopwatches.withStopwatchAsync(() => this.captureNativeImage(id, screenshotRequest),
-                                                 stopwatch => log.debug("captureNativeImage took: " + stopwatch));
+                                                 stopwatch => console.debug("captureNativeImage took: " + stopwatch));
 
         return Stopwatches.withStopwatch(() => this.toCapturedScreenshot(nativeImage, screenshotRequest),
-                                         stopwatch => log.debug("toCapturedScreenshot took: " + stopwatch));
+                                         stopwatch => console.debug("toCapturedScreenshot took: " + stopwatch));
 
     }
 
@@ -66,7 +64,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
             if (screenshotRequest.resize.width !== undefined ||
                 screenshotRequest.resize.height !== undefined) {
 
-                log.info("Resizing image to: ", screenshotRequest.resize);
+                console.log("Resizing image to: ", screenshotRequest.resize);
 
                 image = image.resize(screenshotRequest.resize);
 
@@ -75,7 +73,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
         }
 
         if (screenshotRequest.crop) {
-            log.info("Cropping image to: ", screenshotRequest.resize);
+            console.log("Cropping image to: ", screenshotRequest.resize);
             image = image.crop(screenshotRequest.crop);
         }
 

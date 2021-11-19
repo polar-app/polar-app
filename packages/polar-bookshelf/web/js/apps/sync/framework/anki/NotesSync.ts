@@ -2,7 +2,6 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient, IAddNoteClient} from './clients/AddNoteClient';
 import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
 import {SyncQueue} from '../SyncQueue';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/StoreMediaFileClient';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {MediaContents} from './MediaContents';
@@ -13,7 +12,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import * as util from "util";
 import {SyncEntities} from "../../../../om/SyncEntities";
 
-const log = Logger.create();
 
 /**
  * Performs sync of notes once we are certain the decks are created.
@@ -95,7 +93,7 @@ export class NotesSync {
 
             const message = `Note not found.  Checking if we can add.`;
 
-            log.debug(message, normalizedNote);
+            console.debug(message, normalizedNote);
 
             return Optional.of({message});
 
@@ -104,7 +102,7 @@ export class NotesSync {
             // TODO: we need to implement updates ... those aren't implemented now.
             const message = 'Note already found. Skipping.';
 
-            log.debug(message, normalizedNote);
+            console.debug(message, normalizedNote);
 
             return Optional.of({message});
         }
@@ -125,7 +123,7 @@ export class NotesSync {
             message = 'Note already exists';
         }
 
-        log.debug(message, normalizedNote);
+        console.debug(message, normalizedNote);
         return Optional.of({message});
 
     }
@@ -155,7 +153,7 @@ export class NotesSync {
 
         } catch (err) {
             message = "Failed to create note: " + this.pp(normalizedNote.noteDescriptor);
-            log.warn(message, err);
+            console.warn(message, err);
             return Optional.of({message, failed: true});
         }
 

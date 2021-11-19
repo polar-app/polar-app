@@ -1,7 +1,6 @@
 import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
@@ -22,7 +21,6 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {DocMetadata} from "./DocMetadata";
 import {OnWriteController} from "../upload/UploadHandlers";
 
-const log = Logger.create();
 
 export interface ImportedFile {
 
@@ -100,7 +98,7 @@ export namespace DocImporter {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-        log.info(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
+        console.log(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
 
         const docMetadata = opts.docImport || await DocMetadata.getMetadata(docPathOrURL, docType);
 
@@ -122,7 +120,7 @@ export namespace DocImporter {
         // we know we're always writing a NEW document.
         if (await persistenceLayer.contains(docID)) {
 
-            log.warn(`File already present in datastore: docID=${docID}: ${docPathOrURL}`);
+            console.warn(`File already present in datastore: docID=${docID}: ${docPathOrURL}`);
 
             const docMeta = await persistenceLayer.getDocMeta(docID);
 
@@ -170,7 +168,7 @@ export namespace DocImporter {
 
             // TODO(webapp): make this into a toBlob function call
             if (URLs.isURL(docPathOrURL)) {
-                log.info("Reading data from URL: ", docPathOrURL);
+                console.log("Reading data from URL: ", docPathOrURL);
                 const response = await fetch(docPathOrURL);
                 return await response.blob();
             }
