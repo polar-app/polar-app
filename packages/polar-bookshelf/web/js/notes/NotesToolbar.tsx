@@ -16,6 +16,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
 import {DateContent} from './content/DateContent';
 import moment from 'moment';
+import { RepositoryToolbar } from '../apps/repository/RepositoryToolbar';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -77,14 +78,7 @@ const useDesktopStyles = makeStyles((theme) =>
         root: {
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            flex: '0 0 50px',
-            height: 50,
-            padding: '0 26px',
-            background: theme.palette.background.paper
-        },
-        divider: {
-            padding: '0 26px',
+            alignItems: 'center'
         },
         left: {
             flexShrink: 0,
@@ -96,11 +90,6 @@ const useDesktopStyles = makeStyles((theme) =>
             maxWidth: 340,
             display: 'flex',
             alignItems: 'center',
-        },
-        mid: {
-            flex: '0 1 522px',
-            maxWidth: 522,
-            margin: '0 20px',
         }
     }),
 );
@@ -110,8 +99,8 @@ const DesktopNotesToolbar = () => {
     const handleCreateNote = useCreateNoteDialog();
 
     return (
-        <Box pr={2} pl={1} className={classes.root}>
-            <Box className={classes.left}>
+        <RepositoryToolbar className={classes.root}>
+            <Box px={1} py={1} className={classes.left}>
                 <Button color="primary"
                         style={{ height: 38, width: 284 }}
                         variant="contained"
@@ -122,10 +111,10 @@ const DesktopNotesToolbar = () => {
                     Create a new note
                 </Button>
             </Box>
-            <Box className={classes.right}>
+            <Box px={1} py={1} className={classes.right}>
                 <SearchForNote />
             </Box>
-        </Box>
+        </RepositoryToolbar>
     );
 };
 
