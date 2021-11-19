@@ -8,7 +8,7 @@ const globalKeyMap = {
 
 interface IProps {
     readonly onEscape: Callback;
-    readonly children: JSX.Element;
+    readonly children?: JSX.Element;
 }
 
 /**
@@ -39,6 +39,10 @@ export const InputEscapeListener = deepMemo(function InputEscapeListener(props: 
 
     }, [handleKeyDown])
 
-    return props.children;
+    if (props.children) {
+        return props.children;
+    }
+
+    return null;
 
 });
