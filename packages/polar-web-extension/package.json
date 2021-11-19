@@ -32,7 +32,6 @@
     "polar-epub-generator": "0.0.0",
     "polar-firebase-browser": "0.0.0",
     "polar-html": "0.0.0",
-    "polar-test": "0.0.0",
     "polar-react": "0.0.0",
     "polar-shared": "0.0.0",
     "polar-web-extension-api": "0.0.0",
@@ -42,6 +41,7 @@
     "polar-backend-datastore": "0.0.0"
   },
   "devDependencies": {
+    "polar-test": "0.0.0",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.114",
     "@types/mocha": "=9.0.0",
