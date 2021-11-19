@@ -1,4 +1,4 @@
-import {ipcMain, ipcRenderer} from '../../polar-bookshelf/web/js/electron';
+import {ipcMain, ipcRenderer} from 'electron';
 
 /**
  * Used to determine if we're running in Electron or Chrome.
@@ -39,6 +39,10 @@ export namespace DesktopAppRuntime {
 
     export function isElectron() {
         return get().startsWith('electron-');
+    }
+
+    export function isElectronRenderer() {
+        return get() === 'electron-renderer';
     }
 
     export function isBrowser() {

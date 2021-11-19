@@ -1,5 +1,4 @@
 import {BrowserWindow} from "electron";
-import {BrowserWindowReference} from 'polar-bookshelf/web/js/ui/dialog_window/BrowserWindowReference';
 
 /**
  * @ElectronMainContext
@@ -11,7 +10,7 @@ export class Broadcasters {
      * BrowserWindows.  If nothing is listening on that 'channel' the message
      * is ignored.
      */
-    public static send(channel: string, message: any, ...excluding: BrowserWindowReference[]) {
+    public static send(channel: string, message: any, ...excluding: IBrowserWindowReference[]) {
 
         const excludingIDs = excluding.map(current => current.id);
 
@@ -27,4 +26,10 @@ export class Broadcasters {
 
     }
 
+
+
+}
+
+export interface IBrowserWindowReference {
+    readonly id: number;
 }
