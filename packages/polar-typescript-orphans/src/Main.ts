@@ -158,7 +158,11 @@ async function doAsync() {
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, verbose});
+    const excludesFilter = [
+        "\/polar-test\/.*"
+    ]
+
+    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, excludesFilter, verbose});
 
 }
 

@@ -179,6 +179,11 @@ export namespace OrphanFinder {
          */
         readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
+        /**
+         * These patterns are never matches as either tests or entries.
+         */
+        readonly excludesFilter?: ReadonlyArray<PathRegexStr>;
+
         readonly modules: ReadonlyArray<IModuleReference>;
 
         readonly verbose: boolean;
@@ -192,6 +197,7 @@ export namespace OrphanFinder {
 
         const entriesFilter = opts.entriesFilter || [];
         const testsFilter = opts.testsFilter || [];
+        const excludesFilter = opts.excludesFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
@@ -199,12 +205,18 @@ export namespace OrphanFinder {
 
         reporter.verbose("Scanning modules...")
 
-        const sourceTypeClassifier = (path: PathStr) => {
+        const sourceTypeClassifier = (path: PathStr): SourceType => {
 
             const testPredicate = PathRegexFilterPredicates.createMatchAny(testsFilter);
+            const entryPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
+            const excludePredicate = PathRegexFilterPredicates.createMatchAny(excludesFilter);
 
             if (testPredicate(path)) {
                 return 'test';
+            } else if (entryPredicate(path)) {
+                return 'entry';
+            } else if (excludePredicate(path)) {
+                return 'exclude';
             } else {
                 return 'main';
             }
@@ -221,7 +233,7 @@ export namespace OrphanFinder {
 
         function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
 
-            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
+            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter, ...excludesFilter]));
             const rejectPredicate = Predicates.not(acceptPredicate);
 
             const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
@@ -281,6 +293,24 @@ export namespace OrphanFinder {
 
         reporter.verbose(createImportRankingsReport());
 
+        function createSourceReferenceTypeReport(sourceType: SourceType) {
+
+            const grid = TextGrid.createFromHeaders("full path", "module", "type");
+
+            grid.title(`Source type ${sourceType}`)
+            rawSourceReferences
+                .filter(current => current.type === sourceType)
+                .forEach(current => grid.row(current.fullPath, current.module, current.type));
+
+            return grid.format();
+
+        }
+
+        reporter.verbose(createSourceReferenceTypeReport('main'));
+        reporter.verbose(createSourceReferenceTypeReport('test'));
+        reporter.verbose(createSourceReferenceTypeReport('exclude'));
+        reporter.verbose(createSourceReferenceTypeReport('entry'));
+
         interface IOrphanTest {
             readonly path: PathStr;
             readonly imported: PathStr;
@@ -291,7 +321,9 @@ export namespace OrphanFinder {
         }
 
         function computeMainOrphans(): ReadonlyArray<IImportRanking> {
-            return importRankings.filter(current => current.orphan);
+            return importRankings
+                .filter(current => current.type === 'main')
+                .filter(current => current.orphan);
         }
 
         const mainOrphans = computeMainOrphans();
@@ -350,7 +382,7 @@ export namespace OrphanFinder {
 
             const rawOrphans: ReadonlyArray<IOrphan> = [
                 ...testOrphans,
-                ...importRankings.filter(current => current.orphan)
+                ...mainOrphans
             ].sort((a, b) => a.path.localeCompare(b.path));
 
             const recentGitUpdates = await computeRecentGitUpdates();
