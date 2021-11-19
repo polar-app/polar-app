@@ -196,7 +196,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         if (! (docMeta instanceof DocMeta)) {
             const msg = "Can not sync anything other than DocMeta";
-            log.warn(msg + ': ', docMeta);
+            console.warn(msg + ': ', docMeta);
             // check to make sure nothing from JS-land can call this
             // incorrectly.
             throw new Error(msg);

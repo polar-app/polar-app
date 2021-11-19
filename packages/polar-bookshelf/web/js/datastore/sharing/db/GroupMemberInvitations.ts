@@ -56,7 +56,7 @@ export class GroupMemberInvitations {
 
         if (! user) {
             // no current user so there's nothing we can do yet.
-            log.warn("No user. No notifications will be delivered");
+            console.warn("No user. No notifications will be delivered");
             return;
         }
 

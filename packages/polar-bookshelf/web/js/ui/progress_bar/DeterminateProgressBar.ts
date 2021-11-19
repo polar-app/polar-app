@@ -67,11 +67,11 @@ export class DeterminateProgressBar {
                 if (progressElement.parentElement !== null) {
                     progressElement.parentElement.removeChild(progressElement);
                 } else {
-                    log.warn("No parent element for progress bar.");
+                    console.warn("No parent element for progress bar.");
                 }
 
             } else {
-                // log.warn("No progress bar to destroy.");
+                // console.warn("No progress bar to destroy.");
             }
 
         };

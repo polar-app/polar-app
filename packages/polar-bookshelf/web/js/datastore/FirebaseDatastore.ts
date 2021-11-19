@@ -425,7 +425,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
         if (! recordHolder) {
-            log.warn("Could not get docMeta with id: " + id);
+            console.warn("Could not get docMeta with id: " + id);
             return null;
         }
 
@@ -460,7 +460,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         let latch = this.pendingFileWrites[pendingFileWriteKey];
 
         if (latch) {
-            log.warn("Write already pending.  Going to return latch.");
+            console.warn("Write already pending.  Going to return latch.");
             return this.pendingFileWrites[pendingFileWriteKey].get();
         }
 

@@ -62,7 +62,7 @@ export class ActiveSelections {
                     const point = this.eventToPoint(event);
 
                     if (! element) {
-                        log.warn("No target element: ", event.target);
+                        console.warn("No target element: ", event.target);
                         return;
                     }
 
@@ -271,7 +271,7 @@ export class ActiveSelections {
         }
 
         if (event.changedTouches.length === 0) {
-            log.warn("No touches found in event: " , event);
+            console.warn("No touches found in event: " , event);
             throw new Error("No touches");
         }
 

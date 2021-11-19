@@ -29,7 +29,7 @@ export class GroupSharingRecords {
         //     const profile = await ProfileCollection.currentProfile(firestore);
         //
         //     if (! profile) {
-        //         log.warn("No current user profile");
+        //         console.warn("No current user profile");
         //         return [];
         //     }
         //

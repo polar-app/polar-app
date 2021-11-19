@@ -155,7 +155,7 @@ export class NotesSync {
 
         } catch (err) {
             message = "Failed to create note: " + this.pp(normalizedNote.noteDescriptor);
-            log.warn(message, err);
+            console.warn(message, err);
             return Optional.of({message, failed: true});
         }
 

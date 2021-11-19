@@ -17,7 +17,7 @@ export class BackendFileRefs {
     public static toBackendFileRef(either: LeftEither<IDocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
-            log.warn("No 'either' param specified.");
+            console.warn("No 'either' param specified.");
             return undefined;
         }
 
@@ -42,7 +42,7 @@ export class BackendFileRefs {
             return backendFileRef;
 
         } else {
-            // log.warn("DocInfo has no filename");
+            // console.warn("DocInfo has no filename");
         }
 
         return undefined;
@@ -80,7 +80,7 @@ export class BackendFileRefs {
                     return true;
                 }
 
-                log.warn("Doc had missing attachment data: ", docInfo.fingerprint);
+                console.warn("Doc had missing attachment data: ", docInfo.fingerprint);
                 return false;
             });
 

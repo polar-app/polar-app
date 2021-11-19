@@ -86,7 +86,7 @@ export class AnkiConnectFetch {
 
             return result.result;
         } catch (e) {
-            log.warn("Anki connect fetch failed (install Anki Connect): ", e);
+            console.warn("Anki connect fetch failed (install Anki Connect): ", e);
             throw e;
         }
 

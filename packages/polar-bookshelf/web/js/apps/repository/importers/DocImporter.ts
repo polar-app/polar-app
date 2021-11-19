@@ -122,7 +122,7 @@ export namespace DocImporter {
         // we know we're always writing a NEW document.
         if (await persistenceLayer.contains(docID)) {
 
-            log.warn(`File already present in datastore: docID=${docID}: ${docPathOrURL}`);
+            console.warn(`File already present in datastore: docID=${docID}: ${docPathOrURL}`);
 
             const docMeta = await persistenceLayer.getDocMeta(docID);
 

@@ -39,7 +39,7 @@ export function useAccountUpgrader(): IAccountUpgrade | undefined {
     const required = plan.level !== planRequiredForAccount.plan.level;
 
     if (required) {
-        log.warn(`Current account needs to be upgrade from ${plan.level} to ${planRequiredForAccount.plan}`);
+        console.warn(`Current account needs to be upgrade from ${plan.level} to ${planRequiredForAccount.plan}`);
     }
 
     return {

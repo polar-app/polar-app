@@ -223,7 +223,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             const annotations = docMetaLookupContext.lookupAnnotations(mutation.selected);
 
             if (annotations.length === 0) {
-                log.warn("no repoAnnotation");
+                console.warn("no repoAnnotation");
                 return;
             }
 
