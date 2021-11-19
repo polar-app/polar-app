@@ -1,5 +1,5 @@
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {cloneDeep} from "lodash";

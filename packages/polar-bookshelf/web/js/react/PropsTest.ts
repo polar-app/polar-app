@@ -1,4 +1,4 @@
-import {assertJSON} from "../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Props} from "./Props";
 
 describe('Props', function() {
