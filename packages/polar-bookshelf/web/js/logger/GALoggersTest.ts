@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {GALoggers} from './GALoggers';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('GALoggers', function() {
 

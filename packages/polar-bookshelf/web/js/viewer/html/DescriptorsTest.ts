@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Descriptors} from './Descriptors';
 import {ScrollBox} from 'polar-content-capture/src/capture/Captured';
 

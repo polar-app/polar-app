@@ -18,11 +18,7 @@ import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastor
 import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
-import {useBlocksStore} from "../../../notes/store/BlocksStore";
-import {IBlockPredicates} from "../../../notes/store/IBlockPredicates";
-import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
-import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {useNotesIntegrationEnabled} from '../MigrationToBlockAnnotations';
+import {useDocumentBlockFromDocInfoCreator} from "../../../notes/NoteUtils";
 
 export namespace AddFileHooks {
 
@@ -38,8 +34,7 @@ export namespace AddFileHooks {
         const diskDatastoreMigration = useDiskDatastoreMigration();
         const batchUploader = useBatchUploader();
         const analytics = useAnalytics();
-        const blocksStore = useBlocksStore();
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
+        const createDocumentBlockFromDocInfo = useDocumentBlockFromDocInfoCreator();
 
         const handleUploads = React.useCallback(async (uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> => {
 
@@ -65,26 +60,9 @@ export namespace AddFileHooks {
                                                                       FilePaths.basename(upload.name),
                                                                       {progressListener: uploadProgress, docInfo, onController});
 
-                    const documentBlockExists = !! blocksStore
-                        .indexByDocumentID[importedFile.docInfo.fingerprint];
 
-                    if (notesIntegrationEnabled && importedFile.action !== 'skipped' && ! documentBlockExists) {
-                        const docInfo = Dictionaries.onlyDefinedProperties(importedFile.docInfo);
-                        const namedBlocksIDs = Object.values(blocksStore.indexByName);
-                        const namedBlocks = blocksStore
-                            .createSnapshot(namedBlocksIDs)
-                            .filter(IBlockPredicates.isNamedBlock);
-
-                        const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
-                            .getFromDocInfo(docInfo, namedBlocks);
-
-                        blocksStore.insertFromBlockContentStructure([
-                            docContentStructure,
-                            ...tagContentsStructure,
-                        ]);
-                        
-                    }
-
+                    createDocumentBlockFromDocInfo(importedFile.docInfo);
+                    
 
                     console.log("Imported file: ", importedFile);
 
@@ -99,7 +77,7 @@ export namespace AddFileHooks {
 
             return await batchUploader(uploadHandlers);
 
-        }, [batchUploader, persistenceLayerProvider, blocksStore, notesIntegrationEnabled]);
+        }, [batchUploader, persistenceLayerProvider, createDocumentBlockFromDocInfo]);
 
         const promptToOpenFiles = React.useCallback((importedFiles: ReadonlyArray<ImportedFile>) => {
 

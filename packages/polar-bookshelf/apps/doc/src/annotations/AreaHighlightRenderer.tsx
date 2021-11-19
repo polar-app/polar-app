@@ -19,7 +19,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 interface IProps {
     readonly fingerprint: IDStr;

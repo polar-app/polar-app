@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {ClozeDeletions} from './ClozeDeletions';
-import {assertJSON} from "../../../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('ClozeDeletions', function() {
 

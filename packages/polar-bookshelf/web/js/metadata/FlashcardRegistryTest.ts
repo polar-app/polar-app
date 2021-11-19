@@ -1,5 +1,5 @@
 import {FlashcardRegistry} from './FlashcardRegistry';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
 TestingTime.freeze();

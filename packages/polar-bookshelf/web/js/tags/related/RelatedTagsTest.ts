@@ -1,5 +1,5 @@
 import {DocTagsIndex, RelatedTagsManager, TagDocsIndex} from './RelatedTagsManager';
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {assert} from 'chai';
 import {Tags} from "polar-shared/src/tags/Tags";
 
@@ -63,7 +63,7 @@ describe('RelatedTags', function() {
                     "0x05": true
                 }
             }
-        }, undefined, true);
+        }, {unsorted: true});
 
         assertJSON(docTagsIndex, {
             "0x01": {
@@ -96,7 +96,7 @@ describe('RelatedTags', function() {
                     "google": { refs: 1 },
                 }
             },
-        }, undefined, true);
+        }, {unsorted: true});
 
         const tagHits = relatedTags.compute(['linux']);
 
@@ -109,7 +109,7 @@ describe('RelatedTags', function() {
                    "tag": "google",
                    "hits": 2
                }
-           ], undefined, true);
+           ], {unsorted: true});
 
     });
 
@@ -147,7 +147,7 @@ describe('RelatedTags', function() {
                     "0x01": true,
                 }
             },
-        }, undefined, true);
+        }, {unsorted: true});
 
         assertJSON(docTagsIndex, {
             "0x01": {
