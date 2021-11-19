@@ -32,7 +32,7 @@
     "polar-blocks": "0.0.0",
     "polar-rpc": "0.0.0",
     "polar-markdown-parser": "0.0.0",
-    "firebase-functions":  "=3.16.0"
+    "firebase-functions": "=3.16.0"
   },
   "files": [
     "**/*.js",
