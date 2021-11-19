@@ -1,5 +1,5 @@
 import {BrowserWindow} from "electron";
-import {BrowserWindowReference} from '../ui/dialog_window/BrowserWindowReference';
+import {BrowserWindowReference} from 'polar-bookshelf/web/js/ui/dialog_window/BrowserWindowReference';
 
 /**
  * @ElectronMainContext

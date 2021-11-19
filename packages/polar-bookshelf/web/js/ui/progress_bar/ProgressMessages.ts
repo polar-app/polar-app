@@ -1,4 +1,4 @@
-import {Broadcasters} from '../../ipc/Broadcasters';
+import {Broadcasters} from 'polar-electron-framework/src/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
