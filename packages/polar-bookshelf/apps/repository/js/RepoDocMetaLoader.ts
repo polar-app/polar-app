@@ -169,7 +169,7 @@ class ObjectConverter {
             return RepoDocMetas.convert(this.persistenceLayerProvider, fingerprint, fromCache, hasPendingWrites, docMeta);
 
         } else {
-            log.warn("No DocMeta for fingerprint: " + fingerprint);
+            console.warn("No DocMeta for fingerprint: " + fingerprint);
         }
 
         return undefined;

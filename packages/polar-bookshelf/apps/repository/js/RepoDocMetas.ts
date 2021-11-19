@@ -31,12 +31,12 @@ export class RepoDocMetas {
                           docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (! docMeta) {
-            log.warn("No docMeta for file: ", fingerprint);
+            console.warn("No docMeta for file: ", fingerprint);
             return undefined;
         }
 
         if (! docMeta.docInfo) {
-            log.warn("No docInfo for file: ", fingerprint);
+            console.warn("No docInfo for file: ", fingerprint);
             return undefined;
         }
 
