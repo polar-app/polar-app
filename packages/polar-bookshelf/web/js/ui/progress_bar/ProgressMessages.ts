@@ -1,6 +1,6 @@
 import {Broadcasters} from 'polar-electron-framework/src/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
-import {Messenger} from '../../electron/messenger/Messenger';
+import {Messenger} from 'polar-electron-framework/src/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
 import {DesktopAppRuntime} from "polar-electron-framework/src/DesktopAppRuntime";
 

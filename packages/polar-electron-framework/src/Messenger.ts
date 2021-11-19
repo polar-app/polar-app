@@ -1,5 +1,5 @@
 import {BrowserWindow} from 'electron';
-import {PostMessageRequest} from './PostMessageRequest';
+import {PostMessageRequest} from 'polar-bookshelf/web/js/electron/messenger/PostMessageRequest';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
