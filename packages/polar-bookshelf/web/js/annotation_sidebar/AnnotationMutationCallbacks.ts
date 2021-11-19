@@ -423,7 +423,6 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
         docMetaLookupContext,
         tagsContext,
         repoDocMetaManager,
-        log,
     ]);
 
 }
