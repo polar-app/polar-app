@@ -318,7 +318,7 @@ module.exports = {
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
         //
