@@ -1,19 +1,18 @@
 import * as React from 'react';
-import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {PersistenceLayer, PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,
 } from "../../../../web/js/datastore/PersistenceLayerManager";
-import {ListenablePersistenceLayer} from "../../../../web/js/datastore/ListenablePersistenceLayer";
 import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly Component: React.FunctionComponent<{persistenceLayerProvider: ListenablePersistenceLayerProvider}>;
+    readonly Component: React.FunctionComponent<{persistenceLayerProvider: PersistenceLayerProvider}>;
 }
 
 export interface IState {
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider | undefined;
+    readonly persistenceLayerProvider: PersistenceLayerProvider | undefined;
 }
 
 
@@ -22,7 +21,7 @@ export const PersistenceLayerWatcher = React.memo(function PersistenceLayerWatch
     const unmountedRef = React.useRef(false);
     const [state, setState] = React.useState<IState>({persistenceLayerProvider: undefined});
 
-    const onPersistenceLayer = React.useCallback((persistenceLayer: ListenablePersistenceLayer) => {
+    const onPersistenceLayer = React.useCallback((persistenceLayer: PersistenceLayer) => {
 
         setState({
             persistenceLayerProvider: () => persistenceLayer
