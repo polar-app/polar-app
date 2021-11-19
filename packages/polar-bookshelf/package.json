@@ -227,6 +227,7 @@
     "use-local-storage-state": "=6.0.0",
     "uuid": "3.3.3",
     "typemoq": "=2.1.0",
-    "throttle-debounce": "=3.0.1"
+    "throttle-debounce": "=3.0.1",
+    "polar-electron-framework": "0.0.0"
   }
 }
