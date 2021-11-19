@@ -91,7 +91,6 @@
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/stories/impl/TextAreaMarkdownEditorStory.tsx
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/stories/impl/WhatsNewStory.tsx
 /Users/burton/projects/polar-app/packages/polar-bookshelf/apps/stories/impl/XGridStory.tsx
-/Users/burton/projects/polar-app/packages/polar-bookshelf/apps/stories/StoriesApp.tsx
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/accounts/Account.ts
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/analytics/ga/GAAnalytics.ts
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/analytics/userflow/UserflowAnalytics.ts
@@ -105,7 +104,6 @@
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/repository/FileImportRequests.ts
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/repository/integrations/CannyHooks.ts
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/repository/PersistentRouteDemo.tsx
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/repository/Repository.tsx
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/repository/RepositoryTour2.tsx
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/sync/framework/anki/clients/AddNotesClient.ts
 /Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/apps/sync/framework/anki/clients/ModelTemplatesClient.ts
@@ -396,7 +394,6 @@
 /Users/burton/projects/polar-app/packages/polar-web-extension/src/legacy/autohandler/HttpHeaders.ts
 /Users/burton/projects/polar-app/packages/polar-web-extension/src/popup.ts
 /Users/burton/projects/polar-app/packages/polar-web-extension/src/PopupScriptMessages.ts
-/Users/burton/projects/polar-app/packages/polar-web-extension/src/ui/login/LoginApp.tsx
 /Users/burton/projects/polar-app/packages/polar-webapp-links/src/docs/AddURLs.ts
 /Users/burton/projects/polar-app/packages/polar-webapp-links/src/docs/AddURLsTestN.ts
 /Users/burton/projects/polar-app/packages/polar-webapp-links/src/docs/PreviewViewerURLs.ts
