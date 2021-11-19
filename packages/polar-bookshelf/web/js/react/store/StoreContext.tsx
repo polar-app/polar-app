@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 export interface IStoreContextProviderProps<T> {
-    readonly children: JSX.Element;
     readonly initialStore?: T;
 }
 
-export type StoreContextProviderComponent<T> = React.FunctionComponent<IStoreContextProviderProps<T>>;
+export type StoreContextProviderComponent<T> = React.FC<IStoreContextProviderProps<T>>;
 
 export type StoreProvider<T> = () => T;
 
@@ -19,7 +18,7 @@ export function createStoreContext<T>(useStoreDelegate: () => T): StoreContextTu
 
     const StoreContext = React.createContext<T>(null!);
 
-    const StoreProvider = React.memo(function StoreProvider(props: IStoreContextProviderProps<T>) {
+    const StoreProvider: React.FC<IStoreContextProviderProps<T>> = React.memo(function StoreProvider(props) {
 
         const defaultStore = useStoreDelegate();
 

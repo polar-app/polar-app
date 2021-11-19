@@ -358,6 +358,8 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     @observable _interstitials: InterstitialMap = {};
+    
+    @observable _tagsIndex: ReverseIndex = new ReverseIndex();
 
     /*
      * Used to keep track of cursor positions in every note
@@ -405,6 +407,10 @@ export class BlocksStore implements IBlocksStore {
 
     @computed get reverse() {
         return this._reverse;
+    }
+
+    @computed get tagsIndex() {
+        return this._tagsIndex;
     }
 
     @computed get expanded() {
@@ -545,16 +551,24 @@ export class BlocksStore implements IBlocksStore {
             }
 
             /**
-             * Update links indices
+             * Update links & tag indices
              */
             if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
+
+                for (const tagLink of existingBlock.content.tagLinks) {
+                    this._tagsIndex.remove(tagLink.id, block.id);
+                }
             }
 
             for (const link of block.content.links) {
                 this._reverse.add(link.id, block.id);
+            }
+
+            for (const tagLink of block.content.tagLinks) {
+                this._tagsIndex.add(tagLink.id, block.id);
             }
 
             /**
@@ -592,6 +606,30 @@ export class BlocksStore implements IBlocksStore {
             this._expanded[opts.newExpand] = true;
         }
 
+    }
+
+    @action public setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>) {
+        const identifiers = blocks.map(({ id }) => id);
+
+        const redo = () => {
+            const update = ({ id, content }: IBlockContentStructure) => {
+                const block = this.getBlockForMutation(id);
+
+                if (block) {
+
+                    block.withMutation(() => {
+                        block.setContent(content);
+                    });
+
+                    this.doPut([block]);
+
+                }
+            };
+
+            blocks.forEach(update);
+        };
+
+        return this.doUndoPush('setBlockContents', identifiers, redo);
     }
 
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
@@ -746,16 +784,22 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public getBlockByName(name: BlockNameStr): Block | undefined {
+    public getBlockByName(name: BlockNameStr): Block<NamedContent> | undefined {
 
         const lowercaseName = name.toLowerCase();
         const blockRefByName = this._indexByName[lowercaseName];
 
-        if (blockRefByName) {
-            return this._index[blockRefByName] || undefined;
+        if (! blockRefByName) {
+            return undefined;
         }
 
-        return undefined;
+        const block: Block | undefined = this._index[blockRefByName];
+
+        if (! block || ! BlockPredicates.isNamedBlock(block)) {
+            return undefined;
+        }
+
+        return block;
 
     }
 
@@ -1483,7 +1527,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
                                      rawTargetName: BlockNameStr,
-                                     content: MarkdownStr) {
+                                     content: MarkdownStr): BlockIDStr {
 
         const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
@@ -1534,6 +1578,8 @@ export class BlocksStore implements IBlocksStore {
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }
+
+            return targetBlockID;
         };
 
         return this.doUndoPush('createLinkToBlock', [sourceBlockID, targetID], redo);

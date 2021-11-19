@@ -21,7 +21,6 @@ import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Analytics} from "../../analytics/Analytics";
-import {useFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {IFirestoreTypedQuerySnapshot} from "polar-firestore-like/src/FirestoreSnapshots";
 import {useBlocksStore} from "../../notes/store/BlocksStore";
 import {useUserTagsDB} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
@@ -191,7 +190,6 @@ function useMigrationExecutor() {
     const { firestore, user } = useFirestore();
     const [progressData, setProgressData, progressDataRef] = useStateRef<ProgressData | null>(null);
     const [error, setError] = React.useState<Error | null>(null);
-    const featureToggler = useFeatureToggler();
 
     /**
      * Migrate the logged in user's data to the new blocks system.
@@ -250,9 +248,7 @@ function useMigrationExecutor() {
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
 
-        await featureToggler(NOTES_INTEGRATION_FEATURE_TOGGLE_NAME);
-
-    }, [setProgressData, progressDataRef, firestore, user, featureToggler]);
+    }, [setProgressData, progressDataRef, firestore, user]);
 
     /**
      * Start the migration process
@@ -369,6 +365,16 @@ function useTagsMigrationExecutor() {
             // Commit 💩
             await userTagsDB.commit();
 
+            await firestore.collection('user_pref')
+                .doc(user.uid)
+                .update({
+                    [`value.${NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}`]: {
+                        key: NOTES_INTEGRATION_FEATURE_TOGGLE_NAME,
+                        value: "true",
+                        written: ISODateTimeStrings.create(),
+                    }
+                });
+
             await MigrationCollection.write(firestore, {
                 uid: user.uid,
                 name: TAGS_MIGRATION_NAME,
@@ -450,15 +456,14 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     /**
      * Start the tag migration once the main migration is complete
-     * TODO: Enable this after we reimplement the new folder sidebar
      */
-    /*
     React.useEffect(() => {
-        if (migrationStatus === 'completed' && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
-            tagsMigrationExecutor();
+
+        if (migrationStatus === 'completed'
+            && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
+            setTimeout(() => tagsMigrationExecutor(), 4000);
         }
     }, [tagsMigrationExecutor, migrationStatus, tagsMigrationStatus]);
-     */
 
     const handleStart = React.useCallback(() => {
 
@@ -513,13 +518,15 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         );
     }
 
+    const started = migrationStatus === 'started' || migrationStatus === 'completed';
+
     return (
         <AdaptiveDialog>
             <MigrationToBlockAnnotationsMain
                 onSkip={handleSkip}
                 onStart={handleStart}
                 progress={percentage}
-                started={migrationStatus === 'started' || tagsMigrationStatus === 'started'}
+                started={started}
                 skippable
             />
         </AdaptiveDialog>

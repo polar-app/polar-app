@@ -47,14 +47,12 @@ interface IProps {
     // readonly borderRight?: boolean;
     // readonly border?: boolean;
 
-    readonly children?: JSX.Element | ReadonlyArray<JSX.Element>;
-
 }
 
 /**
  * A toolbar that looks like paper and has proper borders.
  */
-export const MUIPaperToolbar = (props: IProps) => {
+export const MUIPaperToolbar: React.FC<IProps> = (props) => {
 
     // TODO: instead of CSS this could use Dividers as these use the right colors
 
