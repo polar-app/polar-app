@@ -1,15 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const {GenerateSW} = require('workbox-webpack-plugin');
 const os = require('os');
-const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 
 const isDevServer = process.argv.includes('serve');
@@ -168,15 +164,15 @@ function createRules() {
 
     if (target !== 'electron-renderer') {
 
-        const electronPath = path.resolve(__dirname, './node_modules/electron/index.js');
-
-        if (!fs.existsSync(electronPath)) {
-            throw new Error("Electron dir doesn't exist: " + electronPath);
-        }
-
-        console.log("Adding null-loader for electron libraries: " + electronPath);
+        console.log("Adding null-loader for electron libraries: ");
+        
         rules.push({
-            test: electronPath,
+            test: /\/electron\/index.js$/,
+            use: 'null-loader'
+        });
+
+        rules.push({
+            test: /\/electron$/,
             use: 'null-loader'
         });
     }

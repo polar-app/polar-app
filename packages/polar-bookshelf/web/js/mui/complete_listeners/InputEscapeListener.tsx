@@ -19,7 +19,7 @@ interface IProps {
  */
 export const InputEscapeListener = deepMemo(function InputEscapeListener(props: IProps) {
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
 
         if (event.key === 'Escape') {
             props.onEscape();
