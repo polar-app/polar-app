@@ -9,24 +9,20 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             "& a:link": {
-                color: theme.palette.info.main,
-                textDecoration: 'none'
+                color: theme.palette.type === 'dark' ? '#B388FF' : '#7E57C2',
             },
             "& a:visited": {
-                color: theme.palette.type === 'dark' ? theme.palette.info.dark : theme.palette.info.light,
-                textDecoration: 'none'
+                color: theme.palette.type === 'dark' ? '#7E57C2' : '#6200EA',
             },
             "& a:hover": {
-                color: theme.palette.type === 'dark' ? theme.palette.info.light : theme.palette.info.dark,
-                textDecoration: 'none'
+                color: theme.palette.type === 'dark' ? '#D1C4E9': '#B388FF',
             },
             "& a:active": {
-                color: theme.palette.type === 'dark' ? theme.palette.info.dark : theme.palette.info.light,
+                color: theme.palette.type === 'dark' ? '#6200EA': '#4527A0',
                 textDecoration: 'none'
             },
         }
     })
-
 );
 
 export interface IAnchorProps {
