@@ -447,6 +447,7 @@ importers:
       polar-snapshot-cache: 0.0.0
       polar-spaced-repetition: 0.0.0
       polar-spaced-repetition-api: 0.0.0
+      polar-test: 0.0.0
       polar-text-highlighter: 0.0.0
       polar-ui-framework: 0.0.0
       polar-web-extension-api: 0.0.0
@@ -658,6 +659,7 @@ importers:
       install: 0.12.2
       jsdom: 16.7.0
       mocha: 9.1.1
+      polar-test: link:../polar-test
       react-contenteditable: 3.3.5_react@17.0.2
       recursive-readdir: 2.2.2
       summernote-typescript: 0.8.9
@@ -2109,6 +2111,7 @@ importers:
       polar-page-metadata-parser: 0.0.0
       polar-react: 0.0.0
       polar-shared: 0.0.0
+      polar-test: 0.0.0
       polar-web-capture: 0.0.0
       polar-web-extension-api: 0.0.0
       react: '=17.0.2'
@@ -2144,6 +2147,7 @@ importers:
       mocha: 9.1.1
       pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
+      polar-test: link:../polar-test
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router-dom: 5.2.0_react@17.0.2
