@@ -36,7 +36,6 @@ import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
-import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
@@ -281,10 +280,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path="/error">
                     <ErrorScreen/>
-                </Route>
-
-                <Route exact path="/migration/phz">
-                    <PHZMigrationScreen/>
                 </Route>
 
                 <AuthRequired>
