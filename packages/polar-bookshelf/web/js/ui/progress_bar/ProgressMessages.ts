@@ -1,11 +1,8 @@
-import {Broadcasters} from '../../ipc/Broadcasters';
+import {Broadcasters} from 'polar-electron-framework/src/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
-import {Messenger} from '../../electron/messenger/Messenger';
+import {Messenger} from 'polar-electron-framework/src/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {AppRuntime} from "../../AppRuntime";
-
-const log = Logger.create();
+import {DesktopAppRuntime} from "polar-electron-framework/src/DesktopAppRuntime";
 
 export class ProgressMessages {
 
@@ -13,7 +10,7 @@ export class ProgressMessages {
 
     public static broadcast(progressMessage: ProgressMessage) {
 
-        if (AppRuntime.get() === 'electron-main') {
+        if (DesktopAppRuntime.get() === 'electron-main') {
             // this is done so that the main process in electron can send a
             // progress message.
             Broadcasters.send(this.CHANNEL, progressMessage);
@@ -25,7 +22,7 @@ export class ProgressMessages {
             };
 
             Messenger.postMessage({message})
-                .catch(err => log.error("Could not send message: ", err));
+                .catch(err => console.error("Could not send message: ", err));
 
         }
 

@@ -1,12 +1,10 @@
 import {Either, LeftEither} from '../util/Either';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {DocInfoLike} from "polar-shared/src/metadata/DocInfo";
 
-const log = Logger.create();
 
 export class BackendFileRefs {
 
@@ -17,7 +15,7 @@ export class BackendFileRefs {
     public static toBackendFileRef(either: LeftEither<IDocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
-            log.warn("No 'either' param specified.");
+            console.warn("No 'either' param specified.");
             return undefined;
         }
 
@@ -42,7 +40,7 @@ export class BackendFileRefs {
             return backendFileRef;
 
         } else {
-            // log.warn("DocInfo has no filename");
+            // console.warn("DocInfo has no filename");
         }
 
         return undefined;
@@ -80,7 +78,7 @@ export class BackendFileRefs {
                     return true;
                 }
 
-                log.warn("Doc had missing attachment data: ", docInfo.fingerprint);
+                console.warn("Doc had missing attachment data: ", docInfo.fingerprint);
                 return false;
             });
 

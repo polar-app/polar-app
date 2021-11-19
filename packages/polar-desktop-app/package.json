@@ -59,8 +59,8 @@
     "builder-util-runtime": "=8.9.2"
   },
   "dependencies": {
-    "polar-bookshelf": "0.0.0",
-    "polar-shared": "0.0.0"
+    "polar-shared": "0.0.0",
+    "polar-electron-framework": "0.0.0"
   },
   "collective": {
     "type": "opencollective",

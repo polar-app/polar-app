@@ -71,7 +71,7 @@ export interface IEventOrigin {
 
 }
 
-export interface MenuComponentProps<O> {
+export interface MenuComponentProps<O = unknown> {
     readonly origin: O | undefined;
     readonly disabled?: boolean;
 }

@@ -56,7 +56,7 @@ export function useDocViewerSnapshot2(docID: IDStr | undefined): DocViewerSnapsh
                 }),
 
                 onError: (err) => {
-                    log.error("Could not handle snapshot: ", err);
+                    console.error("Could not handle snapshot: ", err);
                 }
 
             });
@@ -64,7 +64,7 @@ export function useDocViewerSnapshot2(docID: IDStr | undefined): DocViewerSnapsh
         };
 
         handleLoad()
-            .catch(err => log.error(err));
+            .catch(err => console.error(err));
 
     });
 

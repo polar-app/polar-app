@@ -56,7 +56,7 @@ export class BlocksTreeStore {
         return this.blocksStore.createNewNamedBlock(opts);
     }
 
-    createLinkToBlock(sourceID: BlockIDStr, targetName: BlockNameStr, content: MarkdownStr): void {
+    createLinkToBlock(sourceID: BlockIDStr, targetName: BlockNameStr, content: MarkdownStr): BlockIDStr {
         return this.blocksStore.createLinkToBlock(sourceID, targetName, content);
     };
 

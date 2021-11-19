@@ -204,7 +204,7 @@ type ISharedActionMap = {
 }
 
 export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): React.ReactElement[] => {
-    const { annotation, id, actions = ['createFlashcard', 'createAIFlashcard',  'changeColor', 'remove', 'open'] } = opts;
+    const { annotation, id, actions = ['createFlashcard', 'createAIFlashcard',  'changeColor', 'remove', 'open', 'editTags'] } = opts;
     const blocksTreeStore = useBlocksTreeStore();
     const { getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();

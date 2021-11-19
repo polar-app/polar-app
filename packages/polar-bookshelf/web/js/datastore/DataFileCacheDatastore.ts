@@ -1,13 +1,11 @@
 import {Datastore} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DatastoreFileCache} from './DatastoreFileCache';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 /**
  * Basic delegated datastore so that we can resolve files form the local file
@@ -24,7 +22,7 @@ export class DataFileCacheDatastore extends DelegatedDatastore {
         const hit = DatastoreFileCache.getFile(backend, ref);
 
         if (hit.isPresent()) {
-            log.debug("Found file in datastore cache: ", {backend, ref});
+            console.debug("Found file in datastore cache: ", {backend, ref});
             return hit.get();
         }
 

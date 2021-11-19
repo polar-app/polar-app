@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockContentStructure, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
@@ -18,7 +18,6 @@ import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {useRefWithUpdates} from "../hooks/ReactHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
@@ -27,6 +26,9 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 
 export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
 
@@ -125,8 +127,9 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
 
 export const useBlockTagEditorDialog = () => {
     const blocksStore = useBlocksStore();
-    const namedBlocksRef = useRefWithUpdates(blocksStore.namedBlockEntries);
     const dialogs = useDialogManager();
+    const updateBlockTags = useUpdateBlockTags();
+    const blocksUserTagsDB = useBlocksUserTagsDB();
 
     return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
         const blocks = arrayStream(ids)
@@ -138,7 +141,7 @@ export const useBlockTagEditorDialog = () => {
             return console.error('useBlockTagEditorDialog: Blocks to be edited were not found.');
         }
 
-        type ITaggedBlock = TaggedCallbacks.ITagsHolder & BlockContentUtils.IHasLinksBlockTarget;
+        type ITaggedBlock = TaggedCallbacks.ITagsHolder & IHasLinksBlockTarget;
 
         const toTarget = (block: Block): ITaggedBlock => ({
             id: block.id,
@@ -148,73 +151,183 @@ export const useBlockTagEditorDialog = () => {
 
         const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
             targets: () => blocks.map(toTarget),
-            tagsProvider: () => namedBlocksRef.current,
+            tagsProvider: () => blocksUserTagsDB.tags(),
             dialogs,
-            doTagged: BlockContentUtils.updateTags.bind(null, blocksStore),
+            doTagged: updateBlockTags,
         };
 
 
         TaggedCallbacks.create(opts)();
-    }, [blocksStore, namedBlocksRef, dialogs]);
+    }, [blocksStore, blocksUserTagsDB, dialogs, updateBlockTags]);
 };
 
+export interface IHasLinksBlockTarget {
+    id: BlockIDStr;
+    content: HasLinks;
+};
 
-
-export namespace BlockContentUtils {
-
-    export interface IHasLinksBlockTarget {
-        id: BlockIDStr;
-        content: HasLinks;
-    };
+export const useUpdateBlockTags = () => {
+    const blocksStore = useBlocksStore();
+    const blocksUserTagsDB = useBlocksUserTagsDB();
 
     /**
-     * @param blocksStore BlocksStore instance
-     * @param targets An array of targets to updated @see IHasLinksBlockTarget
+     * @param targets An array of targets to updated
      * @param tags The new tags
-     * @param strategy The strategy on how to calculate the new tags for a target @see Tags.ComputeNewTagsStrategy
+     * @param strategy The strategy on how to calculate the new tags for a target
+     *
+     * TODO: This function is a disaster and needs to be refactored 🤷
      */
-    export function updateTags(
-        blocksStore: IBlocksStore,
-        targets: ReadonlyArray<IHasLinksBlockTarget>,
-        tags: ReadonlyArray<Tag>,
-        strategy: Tags.ComputeNewTagsStrategy = 'set'
-    ): void {
-        const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
+    return React.useCallback((targets: ReadonlyArray<IHasLinksBlockTarget>,
+                              tags: ReadonlyArray<Tag>,
+                              strategy: Tags.ComputeNewTagsStrategy = 'set'): void => {
+
+        const getBlockIDFromTag = (tag: Tag): BlockIDStr | undefined => {
+            const block = blocksStore.getBlockByName(tag.label);
+
+            if (! block || ! BlockPredicates.isNamedBlock(block)) {
+                return undefined;
+            }
+
+            return block.id
+        };
+
+        const getNonExistentTagBlocks = (): ReadonlyArray<IBlockContentStructure<INameContent>> => {
+
+            const toContentStructure = ({ label }: Tag): IBlockContentStructure<INameContent> => {
+                return {
+                    id: Hashcodes.createRandomID(),
+                    content: new NameContent({ type: 'name', data: label, links: [] }).toJSON(),
+                    children: [],
+                };
+            };
+
+            return tags.filter(tag => ! getBlockIDFromTag(tag)).map(toContentStructure);
+        };
+        
+        const updateTarget = ({ id, content }: IHasLinksBlockTarget): IHasLinksBlockTarget => {
+
             const newTags = Tags.computeNewTags(Tags.toMap(content.getTags()), tags, strategy);
 
             const newTagLinks = newTags.map(({ label }) => {
-                const getBlockID = (): string => {
-                    const block = blocksStore.getBlockByName(label);
+                
+                const tagBlock = blocksStore.getBlockByName(label);
 
-                    if (block) {
-                        return block.id;
-                    }
+                if (! tagBlock) {
+                    throw new Error('Tag block not found');
+                }
 
-                    const content = new NameContent({ type: 'name', data: label, links: [] });
-                    return blocksStore.createNewNamedBlock({ content });
-                };
-
-                const blockID = getBlockID();
-
-                return { text: `${TAG_IDENTIFIER}${label}`, id: blockID };
+                return { text: `${TAG_IDENTIFIER}${label}`, id: tagBlock.id };
             });
 
-            const block = blocksStore.getBlockForMutation(id);
+            const newContent = new HasLinks({ links: [...content.wikiLinks, ...newTagLinks] });
+            
 
-            if (! block) {
-                return;
-            }
-
-            const wikiLinks = block.content.wikiLinks;
-
-            const newContent = block.content;
-            newContent.updateLinks([...wikiLinks, ...newTagLinks]);
-
-            blocksStore.setBlockContent(id, newContent);
+            return { id, content: newContent };
         };
 
-        targets.forEach(updateTarget);
-    }
+        const computeTagLinksDelta = (before: HasLinks, after: HasLinks) => {
+            const beforeTagLinksIDs = new Set(before.tagLinks.map(({ id }) => id));
+            const afterTagLinksIDs = new Set(after.tagLinks.map(({ id }) => id));
+            
+            return {
+                added: after.tagLinks.filter(({ id }) => ! beforeTagLinksIDs.has(id)),
+                removed: before.tagLinks.filter(({ id }) => ! afterTagLinksIDs.has(id)),
+            };
+        };
+
+        const updatedTargetToBlockContentStructure = (target: IHasLinksBlockTarget): IBlockContentStructure | undefined => {
+            const block = blocksStore.getBlockForMutation(target.id);
+
+            if (! block) {
+                return undefined;
+            }
+
+            const { content } = block;
+
+            const { removed, added } = computeTagLinksDelta(content, target.content);
+
+            if (removed.length === 0 && added.length === 0) {
+                return undefined;
+            }
+
+            if (BlockPredicates.canHaveLinks(block)) {
+                const canHaveLinksContent = block.content;
+
+                const markdown = BlockTextContentUtils.getTextContentMarkdown(canHaveLinksContent);
+
+                const newMarkdown = removed.reduce((acc, item) => {
+                    return acc.replace(new RegExp(`\s?\\[\\[${item.text}\\]\\]`), '');
+                }, markdown);
+
+                const linksMarkdown = added.map(({ text }) => `[[${text}]]`).join(' ');
+                
+                const newContent = BlockTextContentUtils
+                    .updateTextContentMarkdown(canHaveLinksContent, `${newMarkdown} ${linksMarkdown}`);
+
+                newContent.updateLinks(target.content.links);
+
+                return {
+                    id: target.id,
+                    content: newContent,
+                    children: [],
+                };
+            } else {
+                content.updateLinks(target.content.links);
+
+                return {
+                    id: target.id,
+                    content,
+                    children: [],
+                };
+            }
+
+        };
+
+        const nonExistentBlocks = getNonExistentTagBlocks();
+
+        // 1. Create notes for non existent tags
+        if (nonExistentBlocks.length > 0) {
+            blocksStore.insertFromBlockContentStructure(nonExistentBlocks);
+        }
+
+        // 2. Update targets
+        const updatedTargets = targets.map(updateTarget);
+        const updatedBlocks = arrayStream(updatedTargets)
+            .map(updatedTargetToBlockContentStructure)
+            .filterPresent()
+            .collect();
+
+        if (updatedBlocks.length > 0) {
+            blocksStore.setBlockContents(updatedBlocks);
+        }
+
+        // 3. Commit new tags to UserTagsDB
+        const newUserTags = arrayStream(tags)
+            .map((tag) => {
+                const blockID = getBlockIDFromTag(tag);
+
+                if (! blockID || blocksUserTagsDB.exists(blockID)) {
+                    return undefined;
+                }
+
+                return { id: blockID, label: tag.label }; 
+            }).filterPresent()
+            .collect();
+
+
+        if (newUserTags.length > 0) {
+            newUserTags.forEach(tag => blocksUserTagsDB.register(tag));
+            blocksUserTagsDB.commit().catch(console.error); 
+        }
+
+        /**
+         * TODO: Ideally the above 3 operations should be done in 1 batch
+         */
+
+    }, [blocksStore, blocksUserTagsDB]);
+};
+
+export namespace BlockContentUtils {
 
     /**
      * A Generic Utility function to update the content of a block.

@@ -1,4 +1,3 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocInfo} from 'polar-shared/src/metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -18,7 +17,6 @@ import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {IDocMeta} from 'polar-shared/src/metadata/IDocMeta';
 import {DocViewerSnapshots} from "../../doc/src/DocViewerSnapshots";
 
-const log = Logger.create();
 
 export class RepoDocAnnotationDataObjectIndex extends DataObjectIndex<IDocAnnotation> {
 
@@ -173,7 +171,7 @@ export class RepoDocMetaManager {
 
         docMeta.docInfo = new DocInfo(docInfo);
 
-        log.info("Writing out updated DocMeta");
+        console.log("Writing out updated DocMeta");
 
         await persistenceLayer.writeDocMeta(docMeta);
 
