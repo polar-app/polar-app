@@ -98,7 +98,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             return {};
         }
 
-        log.notice("Initializing FirebaseDatastore...");
+        console.log("Initializing FirebaseDatastore...");
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
@@ -128,7 +128,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         this.initialized = true;
 
-        log.notice("Initializing FirebaseDatastore...done");
+        console.log("Initializing FirebaseDatastore...done");
 
         return {};
 
@@ -182,14 +182,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 batchIDs[consistency]++;
 
             } catch (e) {
-                log.error("Could not handle snapshot: ", e);
+                console.error("Could not handle snapshot: ", e);
                 errorListener(e);
             }
 
         };
 
         const onSnapshotError = (err: Error) => {
-            log.error("Could not handle snapshot: ", err);
+            console.error("Could not handle snapshot: ", err);
             errorListener(err);
         };
 
@@ -252,7 +252,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const firestore = this.firestore!;
 
-        log.info("delete: ", docMetaFileRef);
+        console.log("delete: ", docMetaFileRef);
 
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
 
@@ -425,7 +425,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
         if (! recordHolder) {
-            log.warn("Could not get docMeta with id: " + id);
+            console.warn("Could not get docMeta with id: " + id);
             return null;
         }
 
@@ -460,7 +460,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         let latch = this.pendingFileWrites[pendingFileWriteKey];
 
         if (latch) {
-            log.warn("Write already pending.  Going to return latch.");
+            console.warn("Write already pending.  Going to return latch.");
             return this.pendingFileWrites[pendingFileWriteKey].get();
         }
 
@@ -487,7 +487,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                     await fileRef.updateMetadata(meta);
 
-                    log.info("File metadata updated with: ", meta);
+                    console.log("File metadata updated with: ", meta);
 
                     return this.getFile(backend, ref);
 
@@ -575,7 +575,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const duration = now - started;
 
                 const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-                log.notice('Upload is ' + percentage + '% done');
+                console.log('Upload is ' + percentage + '% done');
 
                 const progress: ProgressMessage = {
                     id: progressID,
@@ -787,7 +787,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const dataLen = data.length;
 
-            log.notice(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
+            console.log(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
 
             const [docMetaRef, docInfoRef] = createDocRefs();
 
@@ -1097,7 +1097,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 id: batchID,
                 terminated: true,
             }
-        }).catch(err => log.error("Unable to dispatch event listener: ", err));
+        }).catch(err => console.error("Unable to dispatch event listener: ", err));
 
         log.debug("onSnapshot... done");
 
@@ -1260,4 +1260,4 @@ export class DefaultWriteOpts implements WriteOpts {
     public readonly visibility = Visibility.PRIVATE;
 }
 
-const ERR_HANDLER = (err: Error) => log.error("Could not create snapshot for account: ", err);
+const ERR_HANDLER = (err: Error) => console.error("Could not create snapshot for account: ", err);

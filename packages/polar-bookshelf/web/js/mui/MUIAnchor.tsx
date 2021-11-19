@@ -6,7 +6,6 @@ import {URLStr} from 'polar-shared/src/util/Strings';
 import {deepMemo} from "../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
-
     createStyles({
         root: {
             "& a:link": {
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         }
     })
-
 );
 
 export interface IAnchorProps {

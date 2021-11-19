@@ -1,9 +1,7 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const ID = 'polar-progress-bar';
 
-const log = Logger.create();
 
 /**
  * Simple progress bar that we can display at any time on a page without
@@ -21,11 +19,11 @@ export class IndeterminateProgressBars {
             if (progressElement.parentElement !== null) {
                 progressElement.parentElement.removeChild(progressElement);
             } else {
-                log.warn("No parent element for progress bar.");
+                console.warn("No parent element for progress bar.");
             }
 
         } else {
-            // log.warn("No progress bar to destroy.");
+            // console.warn("No progress bar to destroy.");
         }
 
     }

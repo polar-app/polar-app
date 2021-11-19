@@ -9,6 +9,8 @@ import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import {BlocksFolderSidebar} from "../folders/BlocksFolderSidebar";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 namespace main {
 
@@ -16,9 +18,13 @@ namespace main {
         <DocRepoTable2/>
     ));
 
-    export const Folders = React.memo(() => (
-        <FolderSidebar2/>
-    ));
+    export const Folders = React.memo(() => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+        return notesIntegrationEnabled
+            ? <BlocksFolderSidebar />
+            : <FolderSidebar2 />;
+    });
 
 }
 
@@ -36,6 +42,7 @@ namespace devices {
     export const Desktop = React.memo(function Desktop() {
 
         const theme = useTheme();
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         const AddContentHeader = () => (
             <AddContent.Desktop style={{
@@ -52,7 +59,9 @@ namespace devices {
                     id: "dock-panel-left",
                     type: 'fixed',
                     // side: 'left',
-                    component: <FolderSidebar2 header={<AddContentHeader/>}/>,
+                    component: notesIntegrationEnabled
+                        ? <BlocksFolderSidebar header={<AddContentHeader/>} />
+                        : <FolderSidebar2 header={<AddContentHeader/>} />,
                     width: 300,
                     style: {
                         display: 'flex',

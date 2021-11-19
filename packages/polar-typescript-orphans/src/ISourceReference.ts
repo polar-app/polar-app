@@ -1,4 +1,10 @@
-export type SourceType = 'main' | 'test';
+/**
+ * main: a main source file which is just regular code.
+ * test: a unit test of a main source file
+ * entry: an entrypoint to the system where we start classifying code
+ * exclude: an exclude that we do not index as part of the system
+ */
+export type SourceType = 'main' | 'test' | 'entry' | 'exclude';
 
 export interface ISourceReference {
 

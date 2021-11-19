@@ -49,6 +49,9 @@ export namespace BlockPredicates {
         return IBlockPredicates.isNamedBlock(block);
     }
 
+    /**
+     * Does the block support written backlinks
+     */
     export function canHaveLinks(block: Readonly<Block>): block is Block<HasLinksContent> {
         return IBlockPredicates.canHaveLinks(block);
     }
