@@ -13,7 +13,7 @@ import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates"
 import {useDocRepoCallbacks} from "../doc_repo/DocRepoStore2";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
-import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
+import {BlockTextContentUtils, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
 
 type IMemberPredicate = (block: IBlock) => boolean;
 
@@ -22,10 +22,12 @@ class BlocksFolderSidebarStore {
     private readonly _blocksStore: IBlocksStore;
     private readonly _memberPredicate: IMemberPredicate;
 
+    /* eslint-disable functional/prefer-readonly-type */
     @observable private _filter: string = "";
     @observable private _tags: ReadonlyArray<Tag> = [];
     @observable private _selected: Set<Tags.TagID> = new Set();
     @observable private _expanded: Set<Tags.TagID> = new Set();
+    /* eslint-enable functional/prefer-readonly-type */
 
     constructor(blocksStore: IBlocksStore, memberPredicate: IMemberPredicate) {
         this._blocksStore = blocksStore;
@@ -149,8 +151,8 @@ class BlocksFolderSidebarStore {
 }
 
 interface IUseNewBlocksFolderSidebarStoreOpts {
-    onSelectedTagsChange: (tags: ReadonlyArray<Tag>) => void;
-    memberPredicate: IMemberPredicate;
+    readonly onSelectedTagsChange: (tags: ReadonlyArray<Tag>) => void;
+    readonly memberPredicate: IMemberPredicate;
 }
 
 const useNewBlocksFolderSidebarStore = (opts: IUseNewBlocksFolderSidebarStoreOpts) => {
@@ -211,6 +213,7 @@ export const DocRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) 
 
 export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) => {
     const annotationRepoStore = useBlocksAnnotationRepoStore();
+    const updateBlockTags = useUpdateBlockTags();
 
     const onSelectedTagsChange = React.useCallback((tags: ReadonlyArray<Tag>) => 
         annotationRepoStore.setFilter({ tags }), [annotationRepoStore]);
@@ -242,14 +245,18 @@ export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ child
     });
 
     const dropHandler = React.useCallback((tagID: BlockIDStr) => {
-        const [target] = Tags.lookupByTagLiteral(store.tags, [tagID]);
+        const [tag] = Tags.lookupByTagLiteral(store.tags, [tagID]);
 
-        if (! target) {
+        if (! tag) {
             return;
         }
 
-        // Assign tag
-    }, [store]);
+
+        const targets = blocksStore.idsToBlocks(Array.from(annotationRepoStore.selected));
+
+        updateBlockTags(targets, [tag], 'add');
+
+    }, [store, annotationRepoStore, blocksStore, updateBlockTags]);
 
     const value = React.useMemo(() => ({ store, dropHandler }), [store, dropHandler]);
 

@@ -608,6 +608,30 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>) {
+        const identifiers = blocks.map(({ id }) => id);
+
+        const redo = () => {
+            const update = ({ id, content }: IBlockContentStructure) => {
+                const block = this.getBlockForMutation(id);
+
+                if (block) {
+
+                    block.withMutation(() => {
+                        block.setContent(content);
+                    });
+
+                    this.doPut([block]);
+
+                }
+            };
+
+            blocks.forEach(update);
+        };
+
+        return this.doUndoPush('setBlockContents', identifiers, redo);
+    }
+
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
 

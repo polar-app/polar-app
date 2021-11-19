@@ -14,7 +14,7 @@ import {useBlocksFolderSidebarDropHandler, useBlocksFolderSidebarStore} from "..
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {observer} from "mobx-react-lite";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {useCreateBlockUserTag, useRenameBlockUserTag} from "./BlocksTagsHooks";
+import {useCreateBlockUserTag, useDeleteBlockUserTags, useRenameBlockUserTag} from "./BlocksTagsHooks";
 import {Paths} from "polar-shared/src/util/Paths";
 import {BlocksFolderSidebarMenu} from "./BlocksFolderSidebarMenu";
 import {TagType} from "polar-shared/src/tags/Tags";
@@ -34,6 +34,9 @@ const useStyles = makeStyles(() =>
             display: 'flex',
             alignItems: 'center',
             padding: '2px 10px'
+        },
+        tagsList: {
+            overflowY: 'auto',
         },
     }),
 );
@@ -100,6 +103,33 @@ export const useRenameBlockUserTagDialog = () => {
     }, [dialogs, folderSidebarStore, renameBlockUserTag]);
 };
 
+export const useDeleteBlockUserTagDialog = () => {
+    const dialogs = useDialogManager();
+    const deleteBlockUserTag = useDeleteBlockUserTags();
+    const folderSidebarStore = useBlocksFolderSidebarStore();
+
+    return React.useCallback(() => {
+
+        const onAccept = () => deleteBlockUserTag(folderSidebarStore.selected);
+
+        dialogs.confirm({
+            title: `Are you sure you want to delete these tags/folders?`,
+            subtitle: (
+                <div>
+                    <p>
+                        This is a permanent operation and can't be undone
+                        <br />
+                        This will also delete the note that's associated with this tag
+                    </p>
+                </div>
+            ),
+            onCancel: NULL_FUNCTION,
+            type: 'danger',
+            onAccept,
+        });
+    }, [dialogs, deleteBlockUserTag, folderSidebarStore]);
+};
+
 export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
 
     const classes = useStyles();
@@ -143,7 +173,7 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
 
             </MUIPaperToolbar>
 
-            <Box display="flex" flexGrow="1" flexDirection="column" p={1}>
+            <Box display="flex" flexGrow="1" flexDirection="column" p={1} className={classes.tagsList}>
                 {folderSidebarStore.foldersRoot && (
                     <Box ml={1}>
                         <FoldersContextMenu>

@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockContentStructure, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
@@ -28,6 +28,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 
 export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
 
@@ -173,48 +175,155 @@ export const useUpdateBlockTags = () => {
      * @param targets An array of targets to updated
      * @param tags The new tags
      * @param strategy The strategy on how to calculate the new tags for a target
+     *
+     * TODO: This function is a disaster and needs to be refactored 🤷
      */
     return React.useCallback((targets: ReadonlyArray<IHasLinksBlockTarget>,
                               tags: ReadonlyArray<Tag>,
                               strategy: Tags.ComputeNewTagsStrategy = 'set'): void => {
+
+        const getBlockIDFromTag = (tag: Tag): BlockIDStr | undefined => {
+            const block = blocksStore.getBlockByName(tag.label);
+
+            if (! block || ! BlockPredicates.isNamedBlock(block)) {
+                return undefined;
+            }
+
+            return block.id
+        };
+
+        const getNonExistentTagBlocks = (): ReadonlyArray<IBlockContentStructure<INameContent>> => {
+
+            const toContentStructure = ({ label }: Tag): IBlockContentStructure<INameContent> => {
+                return {
+                    id: Hashcodes.createRandomID(),
+                    content: new NameContent({ type: 'name', data: label, links: [] }).toJSON(),
+                    children: [],
+                };
+            };
+
+            return tags.filter(tag => ! getBlockIDFromTag(tag)).map(toContentStructure);
+        };
         
-        const updateTarget = ({ id, content }: IHasLinksBlockTarget) => {
+        const updateTarget = ({ id, content }: IHasLinksBlockTarget): IHasLinksBlockTarget => {
+
             const newTags = Tags.computeNewTags(Tags.toMap(content.getTags()), tags, strategy);
 
             const newTagLinks = newTags.map(({ label }) => {
-                const getBlockID = (): string => {
-                    const block = blocksStore.getBlockByName(label);
+                
+                const tagBlock = blocksStore.getBlockByName(label);
 
-                    if (block) {
-                        return block.id;
-                    }
+                if (! tagBlock) {
+                    throw new Error('Tag block not found');
+                }
 
-                    const content = new NameContent({ type: 'name', data: label, links: [] });
-                    return blocksStore.createNewNamedBlock({ content });
-                };
-
-                const blockID = getBlockID();
-
-                return { text: `${TAG_IDENTIFIER}${label}`, id: blockID };
+                return { text: `${TAG_IDENTIFIER}${label}`, id: tagBlock.id };
             });
 
-            const block = blocksStore.getBlockForMutation(id);
+            const newContent = new HasLinks({ links: [...content.wikiLinks, ...newTagLinks] });
+            
 
-            if (! block) {
-                return;
-            }
-
-            const wikiLinks = block.content.wikiLinks;
-
-            const newContent = block.content;
-            newContent.updateLinks([...wikiLinks, ...newTagLinks]);
-
-            blocksStore.setBlockContent(id, newContent);
-            newTagLinks.forEach(({ id, text }) => blocksUserTagsDB.register({ id, label: text.slice(1) }));
+            return { id, content: newContent };
         };
 
-        targets.forEach(updateTarget);
-        blocksUserTagsDB.commit().catch(console.error); 
+        const computeTagLinksDelta = (before: HasLinks, after: HasLinks) => {
+            const beforeTagLinksIDs = new Set(before.tagLinks.map(({ id }) => id));
+            const afterTagLinksIDs = new Set(after.tagLinks.map(({ id }) => id));
+            
+            return {
+                added: after.tagLinks.filter(({ id }) => ! beforeTagLinksIDs.has(id)),
+                removed: before.tagLinks.filter(({ id }) => ! afterTagLinksIDs.has(id)),
+            };
+        };
+
+        const updatedTargetToBlockContentStructure = (target: IHasLinksBlockTarget): IBlockContentStructure | undefined => {
+            const block = blocksStore.getBlockForMutation(target.id);
+
+            if (! block) {
+                return undefined;
+            }
+
+            const { content } = block;
+
+            const { removed, added } = computeTagLinksDelta(content, target.content);
+
+            if (removed.length === 0 && added.length === 0) {
+                return undefined;
+            }
+
+            if (BlockPredicates.canHaveLinks(block)) {
+                const canHaveLinksContent = block.content;
+
+                const markdown = BlockTextContentUtils.getTextContentMarkdown(canHaveLinksContent);
+
+                const newMarkdown = removed.reduce((acc, item) => {
+                    return acc.replace(new RegExp(`\s?\\[\\[${item.text}\\]\\]`), '');
+                }, markdown);
+
+                const linksMarkdown = added.map(({ text }) => `[[${text}]]`).join(' ');
+                
+                const newContent = BlockTextContentUtils
+                    .updateTextContentMarkdown(canHaveLinksContent, `${newMarkdown} ${linksMarkdown}`);
+
+                newContent.updateLinks(target.content.links);
+
+                return {
+                    id: target.id,
+                    content: newContent,
+                    children: [],
+                };
+            } else {
+                content.updateLinks(target.content.links);
+
+                return {
+                    id: target.id,
+                    content,
+                    children: [],
+                };
+            }
+
+        };
+
+        const nonExistentBlocks = getNonExistentTagBlocks();
+
+        // 1. Create notes for non existent tags
+        if (nonExistentBlocks.length > 0) {
+            blocksStore.insertFromBlockContentStructure(nonExistentBlocks);
+        }
+
+        // 2. Update targets
+        const updatedTargets = targets.map(updateTarget);
+        const updatedBlocks = arrayStream(updatedTargets)
+            .map(updatedTargetToBlockContentStructure)
+            .filterPresent()
+            .collect();
+
+        if (updatedBlocks.length > 0) {
+            blocksStore.setBlockContents(updatedBlocks);
+        }
+
+        // 3. Commit new tags to UserTagsDB
+        const newUserTags = arrayStream(tags)
+            .map((tag) => {
+                const blockID = getBlockIDFromTag(tag);
+
+                if (! blockID || blocksUserTagsDB.exists(blockID)) {
+                    return undefined;
+                }
+
+                return { id: blockID, label: tag.label }; 
+            }).filterPresent()
+            .collect();
+
+
+        if (newUserTags.length > 0) {
+            newUserTags.forEach(tag => blocksUserTagsDB.register(tag));
+            blocksUserTagsDB.commit().catch(console.error); 
+        }
+
+        /**
+         * TODO: Ideally the above 3 operations should be done in 1 batch
+         */
 
     }, [blocksStore, blocksUserTagsDB]);
 };

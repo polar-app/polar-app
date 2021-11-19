@@ -30,7 +30,7 @@ const FoldersContextMenu = createContextMenu(FoldersMenu);
 const TagsContextMenu = createContextMenu(TagsMenu);
 
 interface IProps {
-    header?: JSX.Element;
+    readonly header?: JSX.Element;
 }
 
 export const FolderSidebar2 = React.memo((props: IProps) => {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";

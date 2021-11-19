@@ -450,15 +450,12 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     /**
      * Start the tag migration once the main migration is complete
-     * TODO: Enable this after we reimplement the new folder sidebar
      */
-    /*
     React.useEffect(() => {
         if (migrationStatus === 'completed' && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
             tagsMigrationExecutor();
         }
     }, [tagsMigrationExecutor, migrationStatus, tagsMigrationStatus]);
-     */
 
     const handleStart = React.useCallback(() => {
 

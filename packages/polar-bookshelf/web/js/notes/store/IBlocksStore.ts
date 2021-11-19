@@ -145,6 +145,7 @@ export interface IBlocksStore {
     navNext(root: BlockIDStr, opts: NavOpts): void;
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
+    setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>): void;
     setHighlightAnnotationBlockContent(id: BlockIDStr, content: IAnnotationHighlightContent, docMeta: IDocMeta): void;
 
     moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void

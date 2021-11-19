@@ -1,5 +1,6 @@
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Tag, TagType} from "polar-shared/src/tags/Tags";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Paths} from "polar-shared/src/util/Paths";
 import React from "react";
@@ -52,15 +53,52 @@ export const useCreateBlockUserTag = () => {
 
 
 
-// TODO: this is not ready yet
-export const useDeleteBlockUserTag = () => {
+export const useDeleteBlockUserTags = () => {
     const blocksStore = useBlocksStore();
     const blocksUserTagsDB = useBlocksUserTagsDB();
 
-    return React.useCallback((id: BlockIDStr) => {
-        blocksStore.deleteBlocks([id]);
+    return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
+        if (ids.length === 0) {
+            return;
+        }
 
-        blocksUserTagsDB.delete(id);
+        const toBeRemovedSet = new Set(ids);
+
+        const getUpdatedBlock = (id: BlockIDStr): IBlockContentStructure | undefined => {
+            const block = blocksStore.getBlockForMutation(id);
+
+            if (! block) {
+                return;
+            }
+
+            const { content } = block;
+
+            const newTagLinks = block.content.tagLinks.filter(({ id }) => ! toBeRemovedSet.has(id));
+            content.updateLinks([...block.content.wikiLinks, ...newTagLinks]);
+
+            return {
+                id,
+                content: content.toJSON(),
+                children: [],
+            };
+        };
+
+        const deleteFromDocumentBlocks = () => {
+            const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
+
+            const contents = arrayStream(documentBlockIDs)
+                .map(getUpdatedBlock)
+                .filterPresent()
+                .collect();
+
+            blocksStore.setBlockContents(contents);
+        };
+
+        deleteFromDocumentBlocks();
+        
+        blocksStore.deleteBlocks(ids);
+
+        ids.forEach(id => blocksUserTagsDB.delete(id));
         blocksUserTagsDB.commit().catch(console.error);
     }, [blocksStore, blocksUserTagsDB]);
 };

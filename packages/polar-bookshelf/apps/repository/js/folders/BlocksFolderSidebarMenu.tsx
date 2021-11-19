@@ -3,7 +3,9 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import * as React from "react";
 import {TagType} from "polar-shared/src/tags/Tags";
 import {Strings} from "polar-shared/src/util/Strings";
-import {useCreateBlockUserTagDialog} from "./BlocksFolderSidebar";
+import {useCreateBlockUserTagDialog, useDeleteBlockUserTagDialog} from "./BlocksFolderSidebar";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import {Divider} from "@material-ui/core";
 
 interface IProps {
     readonly type: TagType;
@@ -13,6 +15,7 @@ export const BlocksFolderSidebarMenu: React.FC<IProps> = (props) => {
 
     const { type } = props;
     const handleCreateUserTag = useCreateBlockUserTagDialog();
+    const handleDeleteUserTag = useDeleteBlockUserTagDialog();
     /*
     const folderSidebarStore = useBlocksFolderSidebarStore();
     const handleRenameUserTag = useRenameBlockUserTagDialog();
@@ -37,13 +40,11 @@ export const BlocksFolderSidebarMenu: React.FC<IProps> = (props) => {
             }
             */}
 
-            {/*
-            <Divider/>
+            <Divider />
 
             <MUIMenuItem text="Delete"
-                         icon={<DeleteForeverIcon/>}
-                         onClick={handleDelete}/>
-            */}
+                         icon={<DeleteForeverIcon />}
+                         onClick={handleDeleteUserTag} />
         </>
     );
 

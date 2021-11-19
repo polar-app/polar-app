@@ -839,7 +839,7 @@ describe('BlocksStore', function() {
             },
             "_activeBlocksIndex": {},
             "_reverse": {
-                "index": {
+                "_index": {
                     "102": [
                         "110"
                     ],
@@ -854,6 +854,9 @@ describe('BlocksStore', function() {
                         "117",
                     ],
                 }
+            },
+            "_tagsIndex": {
+                "_index": {},
             },
             "_interstitials": {},
             "_selected": {},
@@ -2228,7 +2231,7 @@ describe('BlocksStore', function() {
             const index = new ReverseIndex();
 
             assertJSON(index, {
-                "index": {}
+                "_index": {}
             });
 
             index.add('102', '101');

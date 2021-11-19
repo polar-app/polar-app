@@ -9,7 +9,9 @@ const PREFS_KEY = 'userTags';
  */
 export class BlocksUserTagsDB {
 
+    /* eslint-disable functional/prefer-readonly-type */
     private backing: Map<BlockIDStr, Tag> = new Map();
+    /* eslint-enable functional/prefer-readonly-type */
 
     constructor(private readonly persistentPrefs: IPersistentPrefs) {}
 
