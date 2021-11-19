@@ -12,4 +12,8 @@ export namespace ElectronIpcRenderers {
 
     }
 
+    export function send(message: string) {
+        ipcRenderer.send(message)
+    }
+
 }

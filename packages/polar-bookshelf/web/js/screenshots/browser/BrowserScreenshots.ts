@@ -16,26 +16,6 @@ export class BrowserScreenshots {
 
         if (chrome && chrome.runtime && isPresent(chrome.runtime.sendMessage)) {
 
-            const captureWithRemoteCrop = async () => {
-
-                const request = {
-                    type: 'browser-screenshot',
-                    rect
-                };
-
-                const response: BrowserScreenshot
-                    = await WebExtensions.Messaging.sendMessage(request);
-
-                if (! response) {
-                    throw new Error("No response from web extension");
-                }
-
-                const result: Result<BrowserScreenshot> = Results.create(response);
-
-                return result.get();
-
-            };
-
             const captureWithLocalCrop = async () => {
 
                 const annotationToggler = new AnnotationToggler();
