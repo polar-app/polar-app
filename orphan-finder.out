@@ -21,7 +21,7 @@
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/ICodeContent.ts
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/ILatexContent.ts
 /Users/burton/projects/polar-app/packages/polar-blocks/src/blocks/content/IPlayerContent.ts
-/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/DiskDatastore.ts
+/Users/burton/projects/polar-app/packages/polar-bookshelf/web/js/datastore/Directories.ts
 /Users/burton/projects/polar-app/packages/polar-cloud-progress/src/CloudProgress.ts
 /Users/burton/projects/polar-app/packages/polar-cloud-progress/src/CloudProgressTestN.ts
 /Users/burton/projects/polar-app/packages/polar-content-capture/src/capture/ContentCapture.ts
@@ -106,6 +106,7 @@
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Lazy.ts
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Locations.ts
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Lorems.ts
+/Users/burton/projects/polar-app/packages/polar-shared/src/util/Mutexes.ts
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/Points.ts
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/rects/ILTRects.ts
 /Users/burton/projects/polar-app/packages/polar-shared/src/util/RecursiveTaskDecompositor.ts
