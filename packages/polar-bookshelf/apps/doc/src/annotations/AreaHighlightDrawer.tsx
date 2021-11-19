@@ -11,7 +11,7 @@ import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({

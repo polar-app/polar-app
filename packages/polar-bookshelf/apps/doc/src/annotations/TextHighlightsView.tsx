@@ -7,7 +7,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {PageAnnotations} from "./PageAnnotations";
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 interface ITextHighlightsViewRendererProps {
     docMeta: IDocMeta;

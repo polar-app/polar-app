@@ -1,7 +1,7 @@
 import {assert} from "chai";
 import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
 import {BlocksStoreTests} from "../store/BlocksStoreTests";

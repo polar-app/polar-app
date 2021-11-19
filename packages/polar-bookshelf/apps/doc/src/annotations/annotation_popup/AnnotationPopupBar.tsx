@@ -20,7 +20,7 @@ import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {useNotesIntegrationEnabled} from "../../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();

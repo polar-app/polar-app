@@ -45,7 +45,7 @@ import {Analytics} from "../../../web/js/analytics/Analytics";
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
 import {ActiveHighlightData} from "./annotations/annotation_popup/AnnotationPopupHooks";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {useBlockTagEditorDialog} from "../../../web/js/notes/NoteUtils";
+import {useBlockTagEditorDialog, useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 import {getBlockForDocument} from "../../../web/js/notes/HighlightBlocksHooks";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
@@ -53,7 +53,6 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import ScaleDelta = PDFScales.ScaleDelta;
-import {useNotesIntegrationEnabled} from "../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 /**
  * Lightweight metadata describing the currently loaded document.

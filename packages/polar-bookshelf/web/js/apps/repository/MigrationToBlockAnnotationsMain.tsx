@@ -14,23 +14,27 @@ interface IProps {
     readonly started?: boolean;
 }
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexGrow: 1,
             height: '100%',
+            padding: `${theme.spacing(2)}px ${theme.spacing(8)}px`,
         },
         progress: {
             flexGrow: 1,
         },
-        buttonsHolder: {
-            '& > * + *': {
-                marginLeft: 16,
-            },
-        },
         textSection: {
-            margin: '10px 0',
+            marginBottom: theme.spacing(4),
+        },
+        buttonsHolder: {
+            width: '100%',
+            marginBottom: theme.spacing(3),
+
+            '& > * + *': {
+                marginTop: theme.spacing(1),
+            },
         },
     }),
 );
@@ -42,81 +46,70 @@ export const MigrationToBlockAnnotationsMain = (props: IProps) => {
 
     return (
         <Grid item className={classes.root}>
-            <Box m={2}
+            <Box my={2}
                  display="flex"
                  textAlign="center"
                  flexGrow={1}
                  alignItems="center"
-                 justifyContent="space-between"
                  flexDirection="column">
 
-                <Box m={2}>
+                <Box mb={2}>
                     <LogoAndTextSideBySide/>
                 </Box>
 
                 {started && (
                     <>
-                        <Box>
-                            <Typography variant="h5">
-                                <b>
-                                    Just a Moment
-                                </b>
-                            </Typography>
-                            <Typography className={classes.textSection} variant="body1">
-                                We're migrating you to the latest version of Polar
-                            </Typography>
-                            {! progress && (
-                                <Typography variant="body1" className={classes.textSection}>
-                                    Fetching required data... Please make sure you have a stable internet connection while the migration is running
-                                </Typography>
-                            )}
-                            <Box my={2} display="flex" justifyContent="flex-start" style={{ width: '100%' }}>
-                                {progress
-                                    ? <LinearProgressWithLabel className={classes.progress} value={progress} />
-                                    : <LinearProgress className={classes.progress} />}
-                            </Box>
+                        <Typography variant="h5" className={classes.textSection}>
+                            <b>New features on the way</b>
+                        </Typography>
 
+                        <Box display="flex"
+                             mb={6}
+                             justifyContent="flex-start"
+                             style={{ width: '100%' }}>
+                            {progress
+                                ? <LinearProgressWithLabel className={classes.progress} value={progress} />
+                                : <LinearProgress className={classes.progress} />}
                         </Box>
-                        <Typography variant="caption">
-                            <Box m={2} textAlign="center" justifyContent="center">
-                                As part of Polar's recent updates, we're migrating the backend which can take up to a
-                                couple minutes, depending on the size of your repository. This is a one time migration.
-                            </Box>
+
+                        <Typography variant="subtitle1" className={classes.textSection}>
+                            We're migrating you to the latest version  of Polar. which can take up to 20 minutes, depending on the size of your library.
                         </Typography>
                     </>
                 )}
 
                 {! started && (
                     <>
-                        <Box m={1}>
-                            <Typography variant="h3" className={classes.textSection}>
-                                Hello
-                            </Typography>
-                            <Typography variant="body1" className={classes.textSection}>
-                                To be able to enjoy the latest features in polar
-                                you need to migrate your data to the latest version.
-                                <br />
-                                <br />
-                                This is a one-time migration.
-                                <br />
-                                <br />
-                            </Typography>
-                        </Box>
+                        <Typography variant="h5" className={classes.textSection}>
+                            <b>It's time to level up</b>
+                        </Typography>
+
                         <div className={classes.buttonsHolder}>
+                            <Button color="primary"
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={onStart}>
+                                Level up now
+                            </Button>
+
                             {skippable && (
                                 <Button variant="text"
+                                        fullWidth
                                         onClick={onSkip}>
-                                    Skip for now
+                                    Skip
                                 </Button>
                             )}
-                            <Button color="primary"
-                                variant="contained"
-                                onClick={onStart}>
-                                Start the migration
-                            </Button>
                         </div>
+
+                        <Typography variant="subtitle1" className={classes.textSection}>
+                            We're rolling out new features, in order to use them we need to move your library to our latest version. This may take up to 20 minutes, depending on the size of your library.
+                        </Typography>
                     </>
                 )}
+
+                <Typography variant="caption">
+                    This is a one time migration
+                </Typography>
             </Box>
         </Grid>
     );

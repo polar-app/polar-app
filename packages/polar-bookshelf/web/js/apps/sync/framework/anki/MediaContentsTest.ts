@@ -1,5 +1,5 @@
 import {MediaContents} from './MediaContents';
-import {assertJSON} from '../../../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('MediaContents', function() {
 

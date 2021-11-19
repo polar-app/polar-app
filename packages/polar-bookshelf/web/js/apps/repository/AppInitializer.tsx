@@ -1,6 +1,5 @@
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 import {PinchToZoom} from "../../ui/Gestures";
-import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {PlatformStyles} from "../../ui/PlatformStyles";
 import {AppOrigin} from "../AppOrigin";
@@ -60,10 +59,6 @@ export class AppInitializer {
         renderLoadingSplash();
 
         PinchToZoom.disable();
-
-        // enable the navigation block.  This enables it by default and then turns
-        // it on again after login is completed.
-        ExternalNavigationBlock.set(true);
 
         const persistenceLayerProvider = () => persistenceLayerManager.get();
         const persistenceLayerController = persistenceLayerManager;
