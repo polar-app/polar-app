@@ -23,7 +23,40 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
 import {Comparators} from "polar-shared/src/util/Comparators";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
+import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
+export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
+
+export const useNotesIntegrationEnabled = () => {
+    return useFeatureToggle(NOTES_INTEGRATION_FEATURE_TOGGLE_NAME);
+};
+
+
+export const useDocumentBlockFromDocInfoCreator = () => {
+    const blocksStore = useBlocksStore();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+    return React.useCallback((docInfo: IDocInfo) => {
+        const documentBlockExists = !! blocksStore.indexByDocumentID[docInfo.fingerprint];
+
+        if (notesIntegrationEnabled && ! documentBlockExists) {
+            const cleanDocInfo = Dictionaries.onlyDefinedProperties(docInfo);
+            const namedBlocks = blocksStore.namedBlocks.map(block => block.toJSON());
+
+            const { docContentStructure, tagContentsStructure } = DocMetaBlockContents
+                .getFromDocInfo(cleanDocInfo, namedBlocks);
+
+            blocksStore.insertFromBlockContentStructure([
+                docContentStructure,
+                ...tagContentsStructure,
+            ], { isUndoable: false });
+            
+        }
+    }, [blocksStore, notesIntegrationEnabled]);
+};
 
 export const sortNamedBlocks = (blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
     const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {

@@ -4,7 +4,7 @@ import {MutableUserFacts, SplashEngine, SplashEventHandlers} from './SplashEngin
 import {MockStorageBackend, StorageBackends} from '../../../../web/js/util/LocalPrefs';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
-import {assertJSON} from '../../../../web/js/test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Duration, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 

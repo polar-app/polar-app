@@ -16,17 +16,14 @@ import {Devices} from "polar-shared/src/util/Devices";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import Paper from "@material-ui/core/Paper";
 import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
+import { RepositoryToolbar } from "../../../../web/js/apps/repository/RepositoryToolbar";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-            paddingRight: theme.spacing(1),
         }
     }),
 );
@@ -82,9 +79,9 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
     return (
         <>
             <DeviceRouter.Desktop>
-                <Paper square className={classes.root}>
+                <RepositoryToolbar className={classes.root}>
                     <DocRepoTableToolbarMain/>
-                </Paper>
+                </RepositoryToolbar>
             </DeviceRouter.Desktop>
 
             <DeviceRouter.Handheld>

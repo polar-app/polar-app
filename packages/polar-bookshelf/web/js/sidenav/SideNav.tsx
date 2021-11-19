@@ -32,6 +32,7 @@ import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
+import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from '../notes/NoteUtils';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -335,14 +336,17 @@ export const SideNav = React.memo(function SideNav() {
                             <HomeButton/>
                             <AnnotationsButton/>
 
-                            <FeatureToggleEnabled featureName="notes-enabled">
+                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
                                 <NotesButton/>
                             </FeatureToggleEnabled>
 
                             <DeviceRouter desktop={<StatsButton/>} />
 
-                            <SideNavDivider/>
-                            <DailyNotesButton/>
+
+                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
+                                <SideNavDivider/>
+                                <DailyNotesButton/>
+                            </FeatureToggleEnabled>
 
                             {tabs.length > 0 && (
                                 <SideNavDivider/>

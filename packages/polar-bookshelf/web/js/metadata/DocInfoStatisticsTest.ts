@@ -1,4 +1,4 @@
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {DocInfoStatistics} from './DocInfoStatistics';
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";

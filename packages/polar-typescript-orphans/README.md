@@ -1,13 +1,55 @@
+# Overview
+
+This is a basic but very functional reference counting garbage collector for
+deleting stale files from Typecript-base monorepos.
+
+It parses import statements, computes the full file path of the reference, then it will increment the count.
+
+Anything with zero references is considered an orphan and flagged for deletion.
+
+# Execution
+
+It must be run from the root of the monorepo as Main.ts is configured to check based on cwd (we should probably
+implement arg parsing in the future to accept a full path)
+
+Running with:
+
+
+Will print out files that can be purged.
+
+One main problem is that it will also flag NEW files that the team just started
+to work on and these can often be considered orphans.
+
+I have a hack for this now where we need to compute files that were recently
+updated by the team and then remove them from the list of duplicates to remove.
+
+## To compute the recent file names:
+
+git log --since="30 days ago" --pretty=format: --name-only | sort | sed -r '/^\s*$/d'| sort | uniq > recent-git-updates.txt
+
+node packages/polar-typescript-orphans/src/Main.js  2> orphan-finder.err > orphan-finder.out
+
+The file orphan-finder.out lists the files it's ok to delete.
+
+cat orphan-finder.out |grep polar-bookshelf |xargs git rm 
+
+# TODO
+
+DocViewerURLAppURLs.ts is kept but DocViewerURLAppURLsTest.ts is purged. 
+
+
+# NOTES
+
 V2 of stale finding of Typescript code.
 
-Last version was done by an intern and the code wasn't very good.  
+Last version was done by an intern and the code wasn't very good.
 
-We needed something that is module aware... 
+We needed something that is module aware...
 
 TODO:
-    - tests need to be handled in a special manner because we ALSO have to purge 
-      them when they import a class and they are the only import.  Otherwise, we
-      are going to not be able to purge some code.
+- tests need to be handled in a special manner because we ALSO have to purge
+them when they import a class and they are the only import.  Otherwise, we
+are going to not be able to purge some code.
 
         - The problem is that we're going to have to report these as only being 
           used by tests and then after we also have to purge the test ... 

@@ -75,7 +75,7 @@ export const ChromeExtensionInstallButton = deepMemo(function ChromeExtensionIns
         return null;
     }
 
-    if (AppRuntime.isElectron()) {
+    if (AppRuntime.isElectronRenderer()) {
         // we're on electron so we can't install the chrome extension.
         return null;
     }

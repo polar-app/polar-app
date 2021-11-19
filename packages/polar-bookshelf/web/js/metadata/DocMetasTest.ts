@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {MetadataSerializer} from 'polar-shared/src/metadata/MetadataSerializer';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';

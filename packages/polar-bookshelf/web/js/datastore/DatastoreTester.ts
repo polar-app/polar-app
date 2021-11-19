@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import os from 'os';

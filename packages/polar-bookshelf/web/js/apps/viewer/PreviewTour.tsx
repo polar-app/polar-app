@@ -31,7 +31,7 @@ export class PreviewTour extends React.Component<IProps, IState> {
 
         const run =
             ! LifecycleToggle.isMarked(LifecycleEvents.PREVIEW_TOUR_TERMINATED) &&
-            AppRuntime.isElectron();
+            AppRuntime.isElectronRenderer();
 
         this.state = {
             run

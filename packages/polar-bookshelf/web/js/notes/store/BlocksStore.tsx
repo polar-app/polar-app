@@ -180,6 +180,7 @@ export interface NavOpts {
 
 export interface IInsertBlocksContentStructureOpts {
     ref?: BlockIDStr;
+    isUndoable?: boolean;
 }
 
 export type InterstitialTypes = 'image';
@@ -596,6 +597,8 @@ export class BlocksStore implements IBlocksStore {
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
 
+        const { ref, isUndoable = true } = opts;
+
         const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
                structure.children.reduce((acc, substructure) =>
                    [...acc, ...toIDs(substructure)], [structure.id]);
@@ -622,31 +625,34 @@ export class BlocksStore implements IBlocksStore {
                             if (newBlock) {
                                 storeBlocks(children, newBlock.id, true);
                             }
-                        } else {
-                            if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
+                        } else if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
 
-                                const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
+                            const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
 
-                                if (savedBlockID) {
-                                    storeBlocks(children, savedBlockID, true);
-                                }
-
+                            if (savedBlockID) {
+                                storeBlocks(children, savedBlockID, true);
                             }
+
                         }
 
                     });
             };
 
-            storeBlocks(blocks, opts.ref, false);
+            storeBlocks(blocks, ref, false);
 
             return ids;
         };
 
         const identifiers = [
             ...ids,
-            ...(opts.ref ? [opts.ref] : []),
+            ...(ref ? [ref] : []),
         ];
-        return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+
+        if (isUndoable) {
+            return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+        } else {
+            return this.doSave('insertFromBlockContentStructure', identifiers, redo);
+        }
     }
 
     public hasSelected(): boolean {
@@ -2468,6 +2474,18 @@ export class BlocksStore implements IBlocksStore {
 
         return this.createSnapshot(identifiers)
             .map(current => removeMutation(current));
+
+    }
+
+    private doSave<T>(id: IDStr,
+                      identifiers: ReadonlyArray<BlockIDStr>,
+                      redoDelegate: () => T): T {
+
+        if (ENABLE_UNDO_TRACING) {
+            console.log(`doSave: ${id} `, new Error("SAVE"));
+        }
+
+        return BlocksStoreUndoQueues.doSave(this, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
 
     }
 

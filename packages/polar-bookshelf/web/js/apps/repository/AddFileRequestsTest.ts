@@ -1,4 +1,4 @@
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {AddFileRequests} from './AddFileRequests';
 
 describe('AddFileRequests', function() {

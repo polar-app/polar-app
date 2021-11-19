@@ -200,7 +200,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image: "/web/assets/images/web.svg",
                 placement: 'center',
-                disabled: AppRuntime.isElectron()
+                disabled: AppRuntime.isElectronRenderer()
             }),
 
             // JoyrideTours.createImageStep({
@@ -253,7 +253,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image:
                     <Icon className="fas fa-cloud-upload-alt"/>,
-                disabled: ! AppRuntime.isElectron()
+                disabled: ! AppRuntime.isElectronRenderer()
 
             }),
             //
