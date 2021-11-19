@@ -14,10 +14,6 @@ export const useStyles = makeStyles((theme) =>
             flexGrow: 1,
             margin: theme.spacing(1),
         },
-        button: {
-            // flexGrow: 1,
-            // margin: theme.spacing(1),
-        }
     })
 );
 export const RegisterForBetaPending = () => {
