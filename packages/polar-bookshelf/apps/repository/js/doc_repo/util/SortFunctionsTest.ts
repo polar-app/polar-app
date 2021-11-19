@@ -1,5 +1,5 @@
 import {SortFunctions} from "./SortFunctions";
-import {assertJSON} from "../../../../../web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('SortFunctions', function() {
 

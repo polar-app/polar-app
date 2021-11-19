@@ -33,6 +33,11 @@ The file orphan-finder.out lists the files it's ok to delete.
 
 cat orphan-finder.out |grep polar-bookshelf |xargs git rm 
 
+# TODO
+
+DocViewerURLAppURLs.ts is kept but DocViewerURLAppURLsTest.ts is purged. 
+
+
 # NOTES
 
 V2 of stale finding of Typescript code.

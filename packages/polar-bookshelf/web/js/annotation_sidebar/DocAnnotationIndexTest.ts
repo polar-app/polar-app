@@ -2,7 +2,7 @@ import {IDocAnnotation} from './DocAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assert} from 'chai';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
@@ -503,7 +503,7 @@ describe('DocAnnotationIndex', function() {
 
         const docAnnotations = toDocAnnotations(docAnnotationIndex);
 
-        assertJSON(docAnnotations, expected, "main output wrong (1)");
+        assertJSON(docAnnotations, expected);
 
     });
 
@@ -517,7 +517,7 @@ describe('DocAnnotationIndex', function() {
 
         assertJSON(docAnnotationIndex.getDocAnnotations().map(current => current.id), [
             "textarea1",
-        ], "textarea1 is wrong");
+        ]);
 
         const children = docAnnotationIndex.get('textarea1')!.getChildren();
 

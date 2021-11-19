@@ -1,5 +1,5 @@
 import {DateContents} from "./DateContents";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assert} from 'chai';

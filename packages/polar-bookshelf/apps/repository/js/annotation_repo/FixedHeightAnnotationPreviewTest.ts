@@ -1,4 +1,4 @@
-import {assertJSON} from "../../../../web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {calculateTextPreviewHeight} from "./FixedHeightAnnotationPreview";
 
 describe('FixedHeightAnnotationPreview', function() {

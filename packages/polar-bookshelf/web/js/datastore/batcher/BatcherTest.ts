@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {ActiveBatch, Batcher, PassiveBatch} from './Batcher';
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Batcher', function() {
 

@@ -1,6 +1,6 @@
 import {Reactor} from './Reactor';
 import {assert} from 'chai';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Reactor', function() {
 

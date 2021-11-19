@@ -16,6 +16,7 @@ import {Reporters} from "./Reporters";
 export namespace OrphanFinder {
 
 
+    import IImportRanking = DependencyIndex.IImportRanking;
 
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
@@ -285,28 +286,47 @@ export namespace OrphanFinder {
             readonly imported: PathStr;
         }
 
-        function computeOrphanTests(): ReadonlyArray<IOrphanTest> {
+        interface IOrphan {
+            readonly path: string;
+        }
 
-            return arrayStream(importRankings)
-                .filter(current => current.orphan)
-                .filter(current => current.nrTestRefs === 1)
-                .map((current): IOrphanTest => {
+        function computeMainOrphans(): ReadonlyArray<IImportRanking> {
+            return importRankings.filter(current => current.orphan);
+        }
+
+        const mainOrphans = computeMainOrphans();
+
+        function computeTestOrphans(mainOrphans: ReadonlyArray<IImportRanking>): ReadonlyArray<IOrphanTest> {
+
+            // from the orphans that we're going to delete, compute the tests
+            // that they use so that they can ALSO be deleted
+
+            function toTestOrphans(importRanking: IImportRanking): ReadonlyArray<IOrphanTest> {
+
+                return importRanking.testRefs.map(current => {
                     return {
-                        path: current.testRefs[0],
-                        imported: current.path
+                        path: current,
+                        imported: importRanking.path
                     }
                 })
+
+            }
+
+            return arrayStream(mainOrphans)
+                .filter(current => current.orphan)
+                .map(current => toTestOrphans(current))
+                .flatMap(current => current)
                 .sort((a, b) => a.path.localeCompare(b.path))
                 .collect()
 
         }
 
-        const orphanedTests = computeOrphanTests();
+        const testOrphans = computeTestOrphans(mainOrphans);
 
         function computeOrphanedTestsReport() {
             const grid = TextGrid.createFromHeaders('path', 'imported', 'orphan');
             grid.title("Orphan tests")
-            orphanedTests.forEach(current => grid.row(current.path, current.imported, true))
+            testOrphans.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
@@ -328,12 +348,8 @@ export namespace OrphanFinder {
                 return arrayStream(paths).toLookup(current => current);
             }
 
-            interface IOrphan {
-                readonly path: string;
-            }
-
             const rawOrphans: ReadonlyArray<IOrphan> = [
-                ...orphanedTests,
+                ...testOrphans,
                 ...importRankings.filter(current => current.orphan)
             ].sort((a, b) => a.path.localeCompare(b.path));
 

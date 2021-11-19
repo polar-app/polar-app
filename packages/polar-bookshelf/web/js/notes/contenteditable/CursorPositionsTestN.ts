@@ -1,6 +1,6 @@
 import {ConstructorOptions, JSDOM} from "jsdom";
 import {CursorPositions} from "./CursorPositions";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('CursorPositions', function() {
 

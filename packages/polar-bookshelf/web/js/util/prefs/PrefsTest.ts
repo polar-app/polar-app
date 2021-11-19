@@ -1,6 +1,6 @@
 import {DictionaryPrefs} from "./Prefs";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Prefs', function() {
 

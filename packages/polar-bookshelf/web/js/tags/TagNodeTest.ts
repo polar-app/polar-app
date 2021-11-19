@@ -1,4 +1,4 @@
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {TagPaths} from './TagPaths';
 import {TagNodes} from "./TagNodes";
