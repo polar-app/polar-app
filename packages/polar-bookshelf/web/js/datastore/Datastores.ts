@@ -5,7 +5,6 @@ import {
     DocMetaSnapshotEventListener,
     SnapshotResult
 } from './Datastore';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
@@ -20,7 +19,6 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 export class Datastores {
 

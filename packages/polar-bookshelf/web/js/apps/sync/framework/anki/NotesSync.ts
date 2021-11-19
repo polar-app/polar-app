@@ -2,7 +2,6 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient, IAddNoteClient} from './clients/AddNoteClient';
 import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
 import {SyncQueue} from '../SyncQueue';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/StoreMediaFileClient';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {MediaContents} from './MediaContents';
@@ -13,7 +12,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import * as util from "util";
 import {SyncEntities} from "../../../../om/SyncEntities";
 
-const log = Logger.create();
 
 /**
  * Performs sync of notes once we are certain the decks are created.

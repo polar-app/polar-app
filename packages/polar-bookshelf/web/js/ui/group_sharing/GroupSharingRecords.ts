@@ -4,11 +4,9 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
 import {Group} from '../../datastore/sharing/db/Groups';
 import {Contact} from 'polar-firebase/src/firebase/om/ContactCollection';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
-const log = Logger.create();
 
 export class GroupSharingRecords {
 

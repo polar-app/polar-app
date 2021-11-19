@@ -5,12 +5,10 @@ import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Collections} from "polar-firestore-like/src/Collections";
 
-const log = Logger.create();
 
 export class GroupMemberInvitations {
 

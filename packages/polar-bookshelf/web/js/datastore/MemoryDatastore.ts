@@ -19,7 +19,6 @@ import {
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
@@ -33,7 +32,6 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 export class MemoryDatastore extends AbstractDatastore implements Datastore {
 

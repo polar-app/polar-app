@@ -1,4 +1,3 @@
-import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotationRef} from "../../DocAnnotation";
 import {IRef, Refs} from "polar-shared/src/metadata/Refs";
 import {Comments} from "../../../metadata/Comments";
@@ -9,7 +8,6 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {Analytics} from "../../../analytics/Analytics";
 
-const log = Logger.create();
 
 /**
  * Actions that can be performed on comments in the UI

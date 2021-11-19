@@ -1,10 +1,8 @@
-import {Logger} from "polar-shared/src/logger/Logger";
 import {ProgressInfo} from "builder-util-runtime";
 import {ipcRenderer} from 'electron';
 import {DeterminateProgressBar} from "../ui/progress_bar/DeterminateProgressBar";
 import {RestartForUpdateButtons} from './RestartForUpdateButtons';
 
-const log = Logger.create();
 
 export class UpdatesController {
 

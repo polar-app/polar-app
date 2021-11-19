@@ -1,5 +1,4 @@
 import ua, {EventParams} from 'universal-analytics';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {CIDs} from './CIDs';
 import {Stopwatch, TrackedDuration} from 'polar-shared/src/util/Stopwatch';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
@@ -24,7 +23,6 @@ const visitorOptions: ua.VisitorOptions = {
 
 const visitor = ua(TRACKING_ID, visitorOptions).debug(DEBUG);
 
-const log = Logger.create();
 
 const defaultCallback = (err: Error, response: any, body: any) => {
 

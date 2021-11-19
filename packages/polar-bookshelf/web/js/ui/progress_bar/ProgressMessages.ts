@@ -2,10 +2,8 @@ import {Broadcasters} from '../../ipc/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from "../../AppRuntime";
 
-const log = Logger.create();
 
 export class ProgressMessages {
 

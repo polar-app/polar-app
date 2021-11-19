@@ -1,10 +1,8 @@
 import {Progress} from 'polar-shared/src/util/ProgressTracker';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const ID = 'polar-determinate-progress-bar';
 
-const log = Logger.create();
 
 const FAST_PROGRESS_CUTOFF = 100;
 

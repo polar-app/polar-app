@@ -1,4 +1,3 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {FirebaseDatastore} from '../FirebaseDatastore';
@@ -9,7 +8,6 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {TracedDatastore} from '../TracedDatastore';
 import {DataFileCacheDatastore} from '../DataFileCacheDatastore';
 
-const log = Logger.create();
 
 export class WebPersistenceLayerFactory {
 

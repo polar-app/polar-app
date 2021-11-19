@@ -15,7 +15,6 @@ import {
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {AbstractPersistenceLayer, PersistenceLayer, WriteOpts} from './PersistenceLayer';
@@ -35,7 +34,6 @@ import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 /**
  * First layer before the raw datastore. At one point we allowed the datastore

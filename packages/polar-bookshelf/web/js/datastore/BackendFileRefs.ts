@@ -1,12 +1,10 @@
 import {Either, LeftEither} from '../util/Either';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {DocInfoLike} from "polar-shared/src/metadata/DocInfo";
 
-const log = Logger.create();
 
 export class BackendFileRefs {
 

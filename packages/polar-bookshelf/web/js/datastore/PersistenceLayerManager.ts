@@ -1,13 +1,11 @@
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
-const log = Logger.create();
 
 const RESET_KEY = 'polar-persistence-layer-reset';
 

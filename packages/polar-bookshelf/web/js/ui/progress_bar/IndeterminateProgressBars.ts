@@ -1,9 +1,7 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const ID = 'polar-progress-bar';
 
-const log = Logger.create();
 
 /**
  * Simple progress bar that we can display at any time on a page without

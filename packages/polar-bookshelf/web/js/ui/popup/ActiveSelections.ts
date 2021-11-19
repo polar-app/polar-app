@@ -1,11 +1,9 @@
 import {Point} from 'polar-shared/src/util/Point';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 import {MouseDirection} from "./MouseDirection";
 import {Devices} from 'polar-shared/src/util/Devices';
 
-const log = Logger.create();
 
 const IS_HANDHELD = ! Devices.isDesktop();
 

@@ -3,10 +3,8 @@ import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import * as _ from 'lodash';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
-const log = Logger.create();
 
 export class FlashcardDescriptors {
 

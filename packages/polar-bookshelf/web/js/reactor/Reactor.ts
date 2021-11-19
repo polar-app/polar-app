@@ -1,9 +1,7 @@
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Event} from './Event';
 import {EventListener, RegisteredEventListener} from './EventListener';
-import {Logger} from 'polar-shared/src/logger/Logger';
 
-const log = Logger.create();
 
 export class Reactor<V> implements IReactor<V> {
 

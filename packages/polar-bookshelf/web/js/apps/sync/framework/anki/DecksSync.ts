@@ -2,12 +2,10 @@ import {DeckDescriptor} from './DeckDescriptor';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {SyncQueue} from '../SyncQueue';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {SyncTaskResult} from '../SyncTask';
 
-const log = Logger.create();
 
 /**
  * Code that synchronizes decks by creating new decks when the required decks
