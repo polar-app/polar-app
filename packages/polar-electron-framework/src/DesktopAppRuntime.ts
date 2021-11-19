@@ -1,4 +1,4 @@
-import {ipcMain, ipcRenderer} from 'electron';
+import {ipcMain, ipcRenderer} from '../../polar-bookshelf/web/js/electron';
 
 /**
  * Used to determine if we're running in Electron or Chrome.
