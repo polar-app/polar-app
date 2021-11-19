@@ -6,7 +6,6 @@ import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdverti
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {SharingDatastores} from '../SharingDatastores';
 import {TracedDatastore} from '../TracedDatastore';
 import {DataFileCacheDatastore} from '../DataFileCacheDatastore';
 
@@ -18,17 +17,12 @@ export class WebPersistenceLayerFactory {
 
         const toDatastore = () => {
 
-            if (SharingDatastores.isSupported()) {
-                return SharingDatastores.create();
-            } else {
-                FirebaseBrowser.init();
+            FirebaseBrowser.init();
 
-                const firebaseDatastore = new FirebaseDatastore();
-                const dataFileCacheDatastore = new DataFileCacheDatastore(firebaseDatastore);
-                const tracedDatastore = new TracedDatastore(dataFileCacheDatastore, 'traced-firebase');
-                return tracedDatastore;
-
-            }
+            const firebaseDatastore = new FirebaseDatastore();
+            const dataFileCacheDatastore = new DataFileCacheDatastore(firebaseDatastore);
+            const tracedDatastore = new TracedDatastore(dataFileCacheDatastore, 'traced-firebase');
+            return tracedDatastore;
 
         };
 

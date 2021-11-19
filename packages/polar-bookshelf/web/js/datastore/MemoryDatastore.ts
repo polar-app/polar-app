@@ -27,7 +27,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
@@ -57,7 +56,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     }
 
     // noinspection TsLint
-    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<any> {
         return {};
     }
 

@@ -65,6 +65,7 @@ export namespace DependencyIndex {
 
             switch (type) {
                 case "main":
+                case "entry":
                     index[imported].mainRefs[importer] = true;
                     break;
                 case "test":

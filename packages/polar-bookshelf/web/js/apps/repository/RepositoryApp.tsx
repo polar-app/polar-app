@@ -75,6 +75,7 @@ import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
+import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
 
 interface IProps {
     readonly app: App;
@@ -345,7 +346,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                                    component={EnableFeatureToggle}/>
 
-                                            <FeatureToggleEnabled featureName="notes-enabled">
+                                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
 
                                                 <>
 

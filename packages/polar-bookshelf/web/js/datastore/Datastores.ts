@@ -5,8 +5,6 @@ import {
     DocMetaSnapshotEventListener,
     SnapshotResult
 } from './Datastore';
-import {MemoryDatastore} from './MemoryDatastore';
-import {DiskDatastore} from './DiskDatastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
@@ -24,22 +22,7 @@ import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 
-const ENV_POLAR_DATASTORE = 'POLAR_DATASTORE';
-
 export class Datastores {
-
-    public static create(): Datastore {
-
-        const name = process.env[ENV_POLAR_DATASTORE];
-
-        if (name === 'MEMORY') {
-            log.info("Using memory datastore");
-            return new MemoryDatastore();
-        }
-
-        return new DiskDatastore();
-
-    }
 
     public static async getDocMetas(datastore: Datastore,
                                     listener: DocMetaListener,

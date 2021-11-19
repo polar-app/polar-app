@@ -1,6 +1,6 @@
 import {DecksSync} from './DecksSync';
 import {DeckDescriptor} from './DeckDescriptor';
-import {assertJSON} from '../../../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {DeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 import {CreateDeckClient} from './clients/CreateDeckClient';
 import {Abortable} from '../Abortable';
