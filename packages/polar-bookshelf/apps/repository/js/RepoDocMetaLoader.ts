@@ -1,4 +1,3 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
 import {MinimalDocMetaMutation, MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
@@ -14,7 +13,6 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {Progress, ProgressTrackers} from "polar-shared/src/util/ProgressTracker";
 
-const log = Logger.create();
 
 export interface RepoDocMetaUpdater {
     update(docMeta: IDocMeta, mutationType: MutationType): Promise<void>;

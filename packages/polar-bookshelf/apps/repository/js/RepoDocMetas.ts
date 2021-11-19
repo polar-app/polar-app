@@ -1,12 +1,10 @@
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepoDocAnnotations} from './RepoDocAnnotations';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
-const log = Logger.create();
 
 export class RepoDocMetas {
 
