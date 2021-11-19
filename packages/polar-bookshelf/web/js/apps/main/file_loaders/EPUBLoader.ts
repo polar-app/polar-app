@@ -5,7 +5,7 @@ import IViewerURL = ViewerURLs.IViewerURL;
 export class EPUBLoader {
 
     public static createViewerURL(fingerprint: string): IViewerURL {
-        const url = ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
+        const url = ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`);
         return {url};
     }
 
