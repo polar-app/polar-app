@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {UndoQueues} from "./UndoQueues";
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import UndoFunction = UndoQueues.UndoFunction;
 
 describe('UndoQueues', function() {

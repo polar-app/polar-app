@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {DiskDatastore} from './DiskDatastore';
 
 import os from 'os';

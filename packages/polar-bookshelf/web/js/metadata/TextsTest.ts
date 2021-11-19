@@ -1,6 +1,6 @@
 import {TextType} from 'polar-shared/src/metadata/TextType';
 import {Texts} from 'polar-shared/src/metadata/Texts';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Texts', function() {
 

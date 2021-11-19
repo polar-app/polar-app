@@ -1,4 +1,4 @@
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Flashcards} from './Flashcards';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {TextType} from 'polar-shared/src/metadata/TextType';

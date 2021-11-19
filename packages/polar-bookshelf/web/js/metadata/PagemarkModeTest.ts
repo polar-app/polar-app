@@ -1,4 +1,4 @@
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {PagemarkModes} from './PagemarkModes';
 
 describe('PagemarkMode', function() {

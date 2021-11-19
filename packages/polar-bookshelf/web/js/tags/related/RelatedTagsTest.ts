@@ -1,5 +1,5 @@
 import {DocTagsIndex, RelatedTagsManager, TagDocsIndex} from './RelatedTagsManager';
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {assert} from 'chai';
 import {Tags} from "polar-shared/src/tags/Tags";
 

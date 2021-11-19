@@ -1,4 +1,4 @@
-import {assertJSON} from '../../../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {NotesSync} from './NotesSync';
 import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient} from './clients/AddNoteClient';

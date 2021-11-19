@@ -2,7 +2,7 @@ import {IDocAnnotation} from './DocAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assert} from 'chai';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TextHighlights} from 'polar-shared/src/metadata/TextHighlights';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
