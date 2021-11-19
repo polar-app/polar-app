@@ -91,12 +91,16 @@ export const useDeleteBlockUserTags = () => {
                 .filterPresent()
                 .collect();
 
-            blocksStore.setBlockContents(contents);
+            if (contents.length > 0) {
+                blocksStore.setBlockContents(contents);
+            }
         };
 
         deleteFromDocumentBlocks();
         
-        blocksStore.deleteBlocks(ids);
+        if (ids.length > 0) {
+            blocksStore.deleteBlocks(ids);
+        }
 
         ids.forEach(id => blocksUserTagsDB.delete(id));
         blocksUserTagsDB.commit().catch(console.error);

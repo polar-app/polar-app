@@ -18,7 +18,6 @@ import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {useRefWithUpdates} from "../hooks/ReactHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {HasLinks, TAG_IDENTIFIER} from "./content/HasLinks";
@@ -128,9 +127,9 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
 
 export const useBlockTagEditorDialog = () => {
     const blocksStore = useBlocksStore();
-    const namedBlocksRef = useRefWithUpdates(blocksStore.namedBlockEntries);
     const dialogs = useDialogManager();
     const updateBlockTags = useUpdateBlockTags();
+    const blocksUserTagsDB = useBlocksUserTagsDB();
 
     return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
         const blocks = arrayStream(ids)
@@ -152,14 +151,14 @@ export const useBlockTagEditorDialog = () => {
 
         const opts: TaggedCallbacks.TaggedCallbacksOpts<ITaggedBlock> = {
             targets: () => blocks.map(toTarget),
-            tagsProvider: () => namedBlocksRef.current,
+            tagsProvider: () => blocksUserTagsDB.tags(),
             dialogs,
             doTagged: updateBlockTags,
         };
 
 
         TaggedCallbacks.create(opts)();
-    }, [blocksStore, namedBlocksRef, dialogs, updateBlockTags]);
+    }, [blocksStore, blocksUserTagsDB, dialogs, updateBlockTags]);
 };
 
 export interface IHasLinksBlockTarget {
