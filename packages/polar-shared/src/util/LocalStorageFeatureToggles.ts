@@ -3,7 +3,7 @@ const PREFIX = 'feature:';
 /**
  * Toggle features based on settings specific for each user.
  *
- * @Deprecated this should go away in favor of prefs - which are not bound to
+ * @deprecated this should go away in favor of prefs - which are not bound to
  * localStorage
  */
 export class LocalStorageFeatureToggles {
@@ -11,7 +11,7 @@ export class LocalStorageFeatureToggles {
     /**
      * Get the current value of a feature toggle.
      *
-     * @Deprecated
+     * @deprecated
      * @param name The name of the feature.
      * @param defaultValue The default value of the feature toggle.
      */

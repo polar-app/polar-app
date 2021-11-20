@@ -3,6 +3,8 @@ import {useDocRepoCallbacks} from "./doc_repo/DocRepoStore2";
 import {useHistory} from "react-router-dom";
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
+// TODO: these key bindings won't work because they conflict with the browser's
+// key bindings.
 const globalKeyMap = keyMapWithGroup(
     {
         group: "Navigation",
@@ -11,7 +13,6 @@ const globalKeyMap = keyMapWithGroup(
                 name: "Go to Documents",
                 description: "Go to the documents view.",
                 sequences: [
-
                     {
                         keys: 'command+1',
                         platforms: ['macos']

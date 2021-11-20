@@ -50,7 +50,7 @@ export class DeviceRouter extends React.Component<IProps> {
     }
 
     /**
-     * @Deprecated use DeviceRouters.Desktop
+     * @deprecated use DeviceRouters.Desktop
      */
     public static Desktop = React.memo((props: IChildrenProps) => {
 
@@ -63,7 +63,7 @@ export class DeviceRouter extends React.Component<IProps> {
     }, isEqual);
 
     /**
-     * @Deprecated use DeviceRouters.Handheld
+     * @deprecated use DeviceRouters.Handheld
      */
     public static Handheld = React.memo((props: IChildrenProps) => {
 

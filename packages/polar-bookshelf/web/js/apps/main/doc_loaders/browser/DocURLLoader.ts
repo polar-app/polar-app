@@ -4,7 +4,7 @@ import {useLinkLoader} from "../../../../ui/util/LinkLoaderHook";
 export namespace DocURLLoader {
 
     /**
-     * @Deprecated
+     * @deprecated
      */
     export function create(): (url: string) => void {
 
