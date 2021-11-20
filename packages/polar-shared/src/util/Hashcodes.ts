@@ -5,6 +5,7 @@ import {InputData, InputSources} from './input/InputSources';
 import {Preconditions} from '../Preconditions';
 import {HashAlgorithm, Hashcode, HashEncoding} from "../metadata/Hashcode";
 import {BS58} from "./BS58";
+import * as nodeCrypto from 'crypto'
 
 // TODO: migrate this to use types or build our own API for base58check direclty.
 const base58check = require("base58check");
@@ -54,36 +55,6 @@ export class Hashcodes {
         }
     }
 
-    /**
-     * Create a Base58Check encoded KECCAK256 hashcode by using the stream API
-     * on a given stream.
-     *
-     * @param readableStream The stream for which we should create a hashcode.
-     */
-    public static async createFromStream(readableStream: NodeJS.ReadableStream): Promise<string> {
-
-        const hasher = keccak256.create();
-
-        return new Promise<string>((resolve, reject) => {
-
-            readableStream.on('end', chunk => {
-                resolve(base58check.encode(hasher.hex()));
-            });
-
-            readableStream.on('error', err => {
-                reject(err);
-            });
-
-            // data resumes the paused stream so end/error have to be added
-            // first.
-            readableStream.on('data', chunk => {
-                hasher.update(chunk);
-            });
-
-        });
-
-    }
-
     public static async createFromInputSource(inputSource: InputSource): Promise<string> {
 
         const hasher = keccak256.create();
@@ -113,7 +84,7 @@ export class Hashcodes {
      * @param obj {Object} The object to has to form the ID.
      * @param [len] The length of the hash you want to create.
      */
-    public static createID(obj: any, len: number = 10) {
+    public static createID(obj: any, len: number = 10): string {
 
         const id = this.create(JSON.stringify(obj));
 
@@ -140,6 +111,19 @@ export class Hashcodes {
      */
     public static createRandomID2(seed?: string | number[]) {
 
+        function getRandomValues(): Uint8Array {
+
+            if (typeof window !== 'undefined') {
+                // crypto is only found in the browser and not in NodeJS
+                const rand = new Uint8Array(32);
+                crypto.getRandomValues(rand);
+                return rand;
+            } else {
+                return nodeCrypto.randomBytes(32);
+            }
+
+        }
+
         // provide more randomness to the secure ID generation.
 
         const now = Date.now();
@@ -150,8 +134,7 @@ export class Hashcodes {
             hasher.update(seed);
         }
 
-        const rand = new Uint8Array(32);
-        crypto.getRandomValues(rand);
+        const rand = getRandomValues();
 
         hasher.update([now]);
         hasher.update(rand);
