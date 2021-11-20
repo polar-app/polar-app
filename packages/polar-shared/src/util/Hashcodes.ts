@@ -124,7 +124,7 @@ export class Hashcodes {
 
     /**
      * Create a random ID which is the the same format as createID() (opaque).
-     * @Deprecated this isn't as secure as v2 with createRandomID2
+     * @deprecated this isn't as secure as v2 with createRandomID2
      */
     public static createRandomID(len: number = 10) {
         // TODO: uuid v4 is random and only has 112 bits so this isn't as secure
