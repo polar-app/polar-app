@@ -32,7 +32,7 @@ export namespace UserBackupCreator {
     export async function create(uid: IDStr): Promise<IUserDataArchive> {
         const now = ISODateTimeStrings.create();
 
-        const filename = `${Hashcodes.createRandomID()}-${now}.zip`;
+        const filename = `${Hashcodes.createRandomID2()}-${now}.zip`;
         const storageFile = createFileInTmpBucket(`snapshots/${filename}`);
 
         const writeStream = storageFile.createWriteStream();
@@ -123,7 +123,6 @@ export namespace UserBackupCreator {
         const bucket = storage().bucket(bucketName);
         return new File(bucket, storagePath.path);
     }
-
 
     /**
      * Create a file reference in the temporary Google Cloud Storage bucket
