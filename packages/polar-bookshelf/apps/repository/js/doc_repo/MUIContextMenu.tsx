@@ -23,6 +23,7 @@ export namespace MouseEvents {
 
 /**
  * Used so that we can use either the native mouse events or the react ones.
+ * @deprecated USE MUIContextMenu2
  */
 export interface IMouseEvent {
 
@@ -46,6 +47,9 @@ interface IContextMenuCallbacks {
     readonly onContextMenu: OnContextMenuCallback;
 }
 
+/**
+ * @deprecated USE MUIContextMenu2
+ */
 export const ContextMenuContext
     = React.createContext<IContextMenuCallbacks>({onContextMenu: NULL_FUNCTION});
 
@@ -57,6 +61,7 @@ interface IContextMenuProps {
 
 /**
  * Interface describing where the original context menu was created.
+ * @deprecated USE MUIContextMenu2
  */
 export interface IEventOrigin {
 
@@ -71,11 +76,17 @@ export interface IEventOrigin {
 
 }
 
+/**
+ * @deprecated
+ */
 export interface MenuComponentProps<O = unknown> {
     readonly origin: O | undefined;
     readonly disabled?: boolean;
 }
 
+/**
+ * @deprecated
+ */
 export function computeEventOrigin(event: React.MouseEvent<HTMLElement>): IEventOrigin {
 
     const origin: IEventOrigin = {
@@ -216,6 +227,9 @@ export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): ICont
 
 }
 
+/**
+ * @deprecated
+ */
 interface MUIContextMenuProps {
 
     readonly mouseX: number;
@@ -235,6 +249,9 @@ interface MUIContextMenuProps {
 
 }
 
+/**
+ * @deprecated
+ */
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
 
     const handleClose = React.useCallback(() => {
