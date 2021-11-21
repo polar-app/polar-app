@@ -1,6 +1,6 @@
 import {BlocksToGraph} from "./BlocksToGraph";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 
 describe("BlocksToGraph", function() {

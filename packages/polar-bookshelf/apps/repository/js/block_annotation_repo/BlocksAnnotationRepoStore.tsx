@@ -88,6 +88,10 @@ export class BlocksAnnotationRepoStore {
         return this._filter;
     }
 
+    get selected() {
+        return this._selected;
+    }
+
     @action setFilter(filter: Partial<BlocksAnnotationRepoFilters.Filter>): void {
         this._filter = { ...this._filter, ...filter };
     }

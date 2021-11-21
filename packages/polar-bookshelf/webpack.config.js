@@ -168,17 +168,17 @@ function createRules() {
 
     if (target !== 'electron-renderer') {
 
-        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js');
-
-        if (!fs.existsSync(electronPath)) {
-            throw new Error("Electron dir doesn't exist: " + electronPath);
-        }
-
-        console.log("Adding null-loader for electron libraries: " + electronPath);
+        console.log("Adding null-loader for electron libraries");
         rules.push({
-            test: electronPath,
+            test: /\/electron\/index.js$/,
             use: 'null-loader'
         });
+
+        rules.push({
+            test: /\/electron$/,
+            use: 'null-loader'
+        });
+
     }
 
     return rules;

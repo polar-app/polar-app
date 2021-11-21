@@ -394,17 +394,18 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             let transactions: ReadonlyArray<IAsyncTransaction<void>>;
             const newTag: Tag = { ...newTagData, id: newTagData.label };
+
             switch (type) {
-            case "tag":
-                transactions = [renameTag(tagToBeRenamed, newTag)];
-                break;
-            case "folder":
-                const foldersToBeRenamed = store.tags.filter(tag => tag.id.startsWith(tagToBeRenamed.id));
-                transactions = foldersToBeRenamed.map(folder => {
-                    const newPath = folder.id.replace(tagToBeRenamed.id, newTagData.label);
-                    return renameTag(folder, { ...folder, label: newPath, id: newPath });
-                });
-                break;
+                case "tag":
+                    transactions = [renameTag(tagToBeRenamed, newTag)];
+                    break;
+                case "folder":
+                    const foldersToBeRenamed = store.tags.filter(tag => tag.id.startsWith(tagToBeRenamed.id));
+                    transactions = foldersToBeRenamed.map(folder => {
+                        const newPath = folder.id.replace(tagToBeRenamed.id, newTagData.label);
+                        return renameTag(folder, { ...folder, label: newPath, id: newPath });
+                    });
+                    break;
             }
 
             const doAsync = async () => {

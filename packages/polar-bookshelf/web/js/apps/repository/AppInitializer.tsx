@@ -1,13 +1,11 @@
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 import {PinchToZoom} from "../../ui/Gestures";
-import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {PlatformStyles} from "../../ui/PlatformStyles";
 import {AppOrigin} from "../AppOrigin";
 import {IEventDispatcher, SimpleReactor} from "../../reactor/SimpleReactor";
 import {SyncBarProgress} from "../../ui/sync_bar/SyncBar";
 import {AuthHandlers} from "./auth_handler/AuthHandler";
-import {UpdatesController} from "../../auto_updates/UpdatesController";
 import {ProgressService} from "../../ui/progress_bar/ProgressService";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Version} from "polar-shared/src/util/Version";
@@ -21,6 +19,7 @@ import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLay
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MailingList} from "./auth_handler/MailingList";
+import {UpdatesController} from "../../electron/UpdatesController";
 
 const log = Logger.create();
 
@@ -60,10 +59,6 @@ export class AppInitializer {
         renderLoadingSplash();
 
         PinchToZoom.disable();
-
-        // enable the navigation block.  This enables it by default and then turns
-        // it on again after login is completed.
-        ExternalNavigationBlock.set(true);
 
         const persistenceLayerProvider = () => persistenceLayerManager.get();
         const persistenceLayerController = persistenceLayerManager;

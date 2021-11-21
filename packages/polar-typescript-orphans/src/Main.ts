@@ -118,7 +118,8 @@ async function doAsync() {
 
     function createModuleReport() {
 
-        const sorted = [...modules].sort((a, b) => a.name.localeCompare(b.name));
+        const sorted = [...modules]
+            .sort((a, b) => a.name.localeCompare(b.name));
 
         const grid = TextGrid.create(2);
         grid.title("Working with the following modules")
@@ -157,7 +158,13 @@ async function doAsync() {
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, verbose});
+    const excludesFilter = [
+        "\/polar-test\/.*",
+        "NavigationGlobalHotKeys",
+        "ActiveKeyboardShortcuts2"
+    ]
+
+    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, excludesFilter, verbose});
 
 }
 

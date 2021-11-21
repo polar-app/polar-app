@@ -1,13 +1,11 @@
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
-const log = Logger.create();
 
 const RESET_KEY = 'polar-persistence-layer-reset';
 
@@ -37,7 +35,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (this.requiresReset()) {
 
-            log.info("Going go reset and deactivate current datastore: " + type);
+            console.log("Going go reset and deactivate current datastore: " + type);
 
             const deactivatePersistenceLayer = this.createPersistenceLayer(type);
 
@@ -92,7 +90,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (this.persistenceLayer) {
 
-            log.info("Stopping persistence layer...");
+            console.log("Stopping persistence layer...");
 
             this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
@@ -103,7 +101,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             await this.persistenceLayer.stop();
 
-            log.info("Stopped persistence layer...");
+            console.log("Stopped persistence layer...");
 
             this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
@@ -115,7 +113,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
 
-        log.info("Changed to persistence layer: " + type);
+        console.log("Changed to persistence layer: " + type);
 
         await this.persistenceLayer.init(err => {
             // noop
@@ -123,7 +121,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
-        log.info("Initialized persistence layer: " + type);
+        console.log("Initialized persistence layer: " + type);
 
         // Analytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
 
@@ -132,7 +130,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     }
 
     public reset() {
-        log.info("Datastore reset");
+        console.log("Datastore reset");
         window.localStorage.setItem(RESET_KEY, 'true');
     }
 
@@ -149,7 +147,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         if (AppRuntime.isBrowser()) {
 
             if (type !== 'web') {
-                log.warn(`Only web type supported in browsers (requested type: ${type})`);
+                console.warn(`Only web type supported in browsers (requested type: ${type})`);
                 type = 'web';
             }
 
@@ -211,7 +209,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         whenChanged((type) => {
 
             this.change(type)
-                .catch(err => log.error("Unable to change to type: " + type));
+                .catch(err => console.error("Unable to change to type: " + type));
 
         });
 

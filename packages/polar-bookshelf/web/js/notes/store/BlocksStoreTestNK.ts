@@ -1,6 +1,6 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {BlockContent, BlockContentMap, BlocksStore, Interstitial} from "./BlocksStore";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
@@ -17,9 +17,8 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks} from "../HTMLToBlocks";
-import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
@@ -839,7 +838,7 @@ describe('BlocksStore', function() {
             },
             "_activeBlocksIndex": {},
             "_reverse": {
-                "index": {
+                "_index": {
                     "102": [
                         "110"
                     ],
@@ -854,6 +853,9 @@ describe('BlocksStore', function() {
                         "117",
                     ],
                 }
+            },
+            "_tagsIndex": {
+                "_index": {},
             },
             "_interstitials": {},
             "_selected": {},
@@ -2228,7 +2230,7 @@ describe('BlocksStore', function() {
             const index = new ReverseIndex();
 
             assertJSON(index, {
-                "index": {}
+                "_index": {}
             });
 
             index.add('102', '101');
@@ -2731,7 +2733,7 @@ describe('BlocksStore', function() {
                     children: [
                         {id: block103.id, content: block103.content.toJSON(), children: []},
                         {
-                            id: block104.id, 
+                            id: block104.id,
                             content: block104.content.toJSON(),
                             children: [
                                 {id: block116.id, content: block116.content.toJSON(), children: []}

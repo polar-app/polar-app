@@ -6,24 +6,23 @@ import {URLStr} from 'polar-shared/src/util/Strings';
 import {deepMemo} from "../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
-
     createStyles({
         root: {
             "& a:link": {
-                color: theme.palette.info.main,
+                color: theme.palette.type === 'dark' ? '#B388FF' : '#7E57C2',
             },
             "& a:visited": {
-                color: theme.palette.info.light,
+                color: theme.palette.type === 'dark' ? '#7E57C2' : '#6200EA',
             },
             "& a:hover": {
-                color: theme.palette.info.dark,
+                color: theme.palette.type === 'dark' ? '#D1C4E9': '#B388FF',
             },
             "& a:active": {
-                color: theme.palette.info.contrastText,
+                color: theme.palette.type === 'dark' ? '#6200EA': '#4527A0',
+                textDecoration: 'none'
             },
         }
     })
-
 );
 
 export interface IAnchorProps {

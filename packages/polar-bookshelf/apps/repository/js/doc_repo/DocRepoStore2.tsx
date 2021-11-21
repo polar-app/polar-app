@@ -41,7 +41,7 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
-import {BlockContentUtils, useBlockTagEditorDialog} from "../../../../web/js/notes/NoteUtils";
+import {BlockContentUtils, IHasLinksBlockTarget, useBlockTagEditorDialog, useNotesIntegrationEnabled, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
@@ -49,7 +49,6 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 
 interface IDocRepoStore {
 
@@ -244,6 +243,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     const blockTagEditorDialog = useBlockTagEditorDialog();
     const blocksStore = useBlocksStore();
     const notesIntegrationEnabled = useNotesIntegrationEnabled();
+    const updateBlockTags = useUpdateBlockTags();
 
     function firstSelected() {
         const selected = selectedProvider();
@@ -554,7 +554,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
         if (notesIntegrationEnabled) {
-            const toTarget = (repoDocInfo: RepoDocInfo): BlockContentUtils.IHasLinksBlockTarget | null => {
+            const toTarget = (repoDocInfo: RepoDocInfo): IHasLinksBlockTarget | null => {
                 const block = getBlockForDocument(blocksStore, repoDocInfo.fingerprint);
 
                 return block ? { id: block.id, content: block.content } : null;
@@ -562,7 +562,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
             const targets = arrayStream(repoDocInfos).map(toTarget).filterPresent().collect();
 
-            BlockContentUtils.updateTags(blocksStore, targets, [tag], 'add');
+            updateBlockTags(targets, [tag], 'add');
         } else {
 
             doTagged(repoDocInfos, [tag], 'add');

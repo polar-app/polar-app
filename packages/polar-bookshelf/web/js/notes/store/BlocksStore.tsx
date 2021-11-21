@@ -180,6 +180,7 @@ export interface NavOpts {
 
 export interface IInsertBlocksContentStructureOpts {
     ref?: BlockIDStr;
+    isUndoable?: boolean;
 }
 
 export type InterstitialTypes = 'image';
@@ -357,6 +358,8 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     @observable _interstitials: InterstitialMap = {};
+    
+    @observable _tagsIndex: ReverseIndex = new ReverseIndex();
 
     /*
      * Used to keep track of cursor positions in every note
@@ -404,6 +407,10 @@ export class BlocksStore implements IBlocksStore {
 
     @computed get reverse() {
         return this._reverse;
+    }
+
+    @computed get tagsIndex() {
+        return this._tagsIndex;
     }
 
     @computed get expanded() {
@@ -544,16 +551,24 @@ export class BlocksStore implements IBlocksStore {
             }
 
             /**
-             * Update links indices
+             * Update links & tag indices
              */
             if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
+
+                for (const tagLink of existingBlock.content.tagLinks) {
+                    this._tagsIndex.remove(tagLink.id, block.id);
+                }
             }
 
             for (const link of block.content.links) {
                 this._reverse.add(link.id, block.id);
+            }
+
+            for (const tagLink of block.content.tagLinks) {
+                this._tagsIndex.add(tagLink.id, block.id);
             }
 
             /**
@@ -593,8 +608,34 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>) {
+        const identifiers = blocks.map(({ id }) => id);
+
+        const redo = () => {
+            const update = ({ id, content }: IBlockContentStructure) => {
+                const block = this.getBlockForMutation(id);
+
+                if (block) {
+
+                    block.withMutation(() => {
+                        block.setContent(content);
+                    });
+
+                    this.doPut([block]);
+
+                }
+            };
+
+            blocks.forEach(update);
+        };
+
+        return this.doUndoPush('setBlockContents', identifiers, redo);
+    }
+
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
+
+        const { ref, isUndoable = true } = opts;
 
         const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
                structure.children.reduce((acc, substructure) =>
@@ -622,31 +663,34 @@ export class BlocksStore implements IBlocksStore {
                             if (newBlock) {
                                 storeBlocks(children, newBlock.id, true);
                             }
-                        } else {
-                            if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
+                        } else if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
 
-                                const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
+                            const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
 
-                                if (savedBlockID) {
-                                    storeBlocks(children, savedBlockID, true);
-                                }
-
+                            if (savedBlockID) {
+                                storeBlocks(children, savedBlockID, true);
                             }
+
                         }
 
                     });
             };
 
-            storeBlocks(blocks, opts.ref, false);
+            storeBlocks(blocks, ref, false);
 
             return ids;
         };
 
         const identifiers = [
             ...ids,
-            ...(opts.ref ? [opts.ref] : []),
+            ...(ref ? [ref] : []),
         ];
-        return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+
+        if (isUndoable) {
+            return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+        } else {
+            return this.doSave('insertFromBlockContentStructure', identifiers, redo);
+        }
     }
 
     public hasSelected(): boolean {
@@ -740,16 +784,22 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public getBlockByName(name: BlockNameStr): Block | undefined {
+    public getBlockByName(name: BlockNameStr): Block<NamedContent> | undefined {
 
         const lowercaseName = name.toLowerCase();
         const blockRefByName = this._indexByName[lowercaseName];
 
-        if (blockRefByName) {
-            return this._index[blockRefByName] || undefined;
+        if (! blockRefByName) {
+            return undefined;
         }
 
-        return undefined;
+        const block: Block | undefined = this._index[blockRefByName];
+
+        if (! block || ! BlockPredicates.isNamedBlock(block)) {
+            return undefined;
+        }
+
+        return block;
 
     }
 
@@ -1477,7 +1527,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
                                      rawTargetName: BlockNameStr,
-                                     content: MarkdownStr) {
+                                     content: MarkdownStr): BlockIDStr {
 
         const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
@@ -1528,6 +1578,8 @@ export class BlocksStore implements IBlocksStore {
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }
+
+            return targetBlockID;
         };
 
         return this.doUndoPush('createLinkToBlock', [sourceBlockID, targetID], redo);
@@ -2468,6 +2520,18 @@ export class BlocksStore implements IBlocksStore {
 
         return this.createSnapshot(identifiers)
             .map(current => removeMutation(current));
+
+    }
+
+    private doSave<T>(id: IDStr,
+                      identifiers: ReadonlyArray<BlockIDStr>,
+                      redoDelegate: () => T): T {
+
+        if (ENABLE_UNDO_TRACING) {
+            console.log(`doSave: ${id} `, new Error("SAVE"));
+        }
+
+        return BlocksStoreUndoQueues.doSave(this, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
 
     }
 

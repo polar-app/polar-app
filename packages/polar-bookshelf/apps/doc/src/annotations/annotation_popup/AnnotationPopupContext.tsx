@@ -37,7 +37,7 @@ import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
-import {useNotesIntegrationEnabled} from "../../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",

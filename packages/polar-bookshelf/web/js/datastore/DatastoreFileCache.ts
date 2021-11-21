@@ -1,11 +1,9 @@
 import {DocFileMeta, DocFileURLMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
-const log = Logger.create();
 
 /**
  * A simple cache so that we can immediately make the blob ref available locally
@@ -30,7 +28,7 @@ export class DatastoreFileCache {
 
         const status = entry ? 'hit' : 'miss';
 
-        log.debug("DatastoreFileCache status: " + status);
+        console.debug("DatastoreFileCache status: " + status);
 
         return Optional.of(entry);
     }

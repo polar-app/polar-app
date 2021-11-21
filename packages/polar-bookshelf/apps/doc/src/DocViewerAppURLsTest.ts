@@ -1,5 +1,5 @@
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
-import {assertJSON} from "../../../web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('DocViewerAppURLs', function() {
 
