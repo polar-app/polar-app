@@ -1,7 +1,10 @@
+```js
 // export type FilterQuestionType = 'none' | 'stopwords' | 'part-of-speech' | 'part-of-speech-noun' | 'part-of-speech-noun-adj';
+```
 
 The following properties can be set:
 
+```js
 // model controls how the answer is calculated
 model: ada | babbage | currie | davinci
 
@@ -24,6 +27,7 @@ rerank_elasticsearch_size: number
 // to spend money!!! ada is already $0.10 per query for large queries.  
 
 rerank_elasticsearch_model: ada | babbage | currie | davinci
+```
 
 You can set the parameters below and these are the defaults.
 
