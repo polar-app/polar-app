@@ -19,8 +19,6 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
-import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {BlockTextContentUtils} from "../NoteUtils";

@@ -12,10 +12,8 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
-
 import {DocMetadata} from "./DocMetadata";
-import {OnWriteController} from "../upload/UploadHandlers";
-
+import {PersistenceLayerProvider} from "../../../datastore/PersistenceLayer";
 
 export interface ImportedFile {
 

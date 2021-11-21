@@ -41,11 +41,16 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
-import {BlockContentUtils, IHasLinksBlockTarget, useBlockTagEditorDialog, useNotesIntegrationEnabled, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
+import {
+    BlockContentUtils,
+    IHasLinksBlockTarget,
+    useBlockTagEditorDialog,
+    useNotesIntegrationEnabled,
+    useUpdateBlockTags
+} from "../../../../web/js/notes/NoteUtils";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
