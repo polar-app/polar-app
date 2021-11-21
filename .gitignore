@@ -13,3 +13,6 @@ tsconfig.tsbuildinfo
 
 TESTS*.xml
 *.d.ts
+
+# ignore MacOS specific metadata folder.
+.DS_Store
