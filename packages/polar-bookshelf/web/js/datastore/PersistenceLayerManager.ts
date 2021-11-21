@@ -92,7 +92,7 @@ export class PersistenceLayerManager implements IProvider<PersistenceLayer> {
 
             console.log("Stopping persistence layer...");
 
-            // this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
             // Create a backup first.  This only applies to the DiskDatastore
             // but this way we have a backup before we go online to the cloud
@@ -103,7 +103,7 @@ export class PersistenceLayerManager implements IProvider<PersistenceLayer> {
 
             console.log("Stopped persistence layer...");
 
-            // this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
         }
 
@@ -111,7 +111,7 @@ export class PersistenceLayerManager implements IProvider<PersistenceLayer> {
 
         this.persistenceLayer = this.createPersistenceLayer(type);
 
-        // this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
 
         console.log("Changed to persistence layer: " + type);
 
@@ -119,7 +119,7 @@ export class PersistenceLayerManager implements IProvider<PersistenceLayer> {
             // noop
         }, this.opts);
 
-        // this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
         console.log("Initialized persistence layer: " + type);
 

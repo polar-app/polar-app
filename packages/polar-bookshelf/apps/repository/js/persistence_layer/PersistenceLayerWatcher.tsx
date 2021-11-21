@@ -1,3 +1,4 @@
+import LinearProgress from '@material-ui/core/LinearProgress';
 import * as React from 'react';
 import {PersistenceLayer, PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {
@@ -69,7 +70,7 @@ export const PersistenceLayerWatcher = React.memo(function PersistenceLayerWatch
 
     return (
         <div className="NoPersistenceLayer">
-
+            <LinearProgress />
         </div>
     );
 
