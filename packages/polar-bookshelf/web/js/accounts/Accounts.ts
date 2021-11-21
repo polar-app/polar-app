@@ -35,7 +35,7 @@ export namespace Accounts {
     }
 
     /**
-     * @Deprecated use a snapshot / hook version of this
+     * @deprecated use a snapshot / hook version of this
      */
     export async function get(): Promise<IAccount | undefined> {
 

@@ -139,7 +139,7 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 /**
  *
- * @Deprecated use MUIContextMenu2
+ * @deprecated use MUIContextMenu2
  */
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
                                      opts: CreateContextMenuOpts<O> = {}): (props: IContextMenuProps) => JSX.Element {
@@ -198,7 +198,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
 /**
  *
- * @Deprecated use MUIContextMenu2
+ * @deprecated use MUIContextMenu2
  */
 export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks {
 

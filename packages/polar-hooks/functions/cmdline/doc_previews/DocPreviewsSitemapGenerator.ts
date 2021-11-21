@@ -15,7 +15,7 @@ interface SitemapURL {
 }
 
 /**
- * @Deprecated using cloud function to generate this now.
+ * @deprecated using cloud function to generate this now.
  */
 export class DocPreviewsSitemapGenerator {
 

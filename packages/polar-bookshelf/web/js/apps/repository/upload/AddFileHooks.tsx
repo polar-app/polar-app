@@ -14,7 +14,6 @@ import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/Accoun
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
 import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
@@ -31,7 +30,6 @@ export namespace AddFileHooks {
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
-        const diskDatastoreMigration = useDiskDatastoreMigration();
         const batchUploader = useBatchUploader();
         const analytics = useAnalytics();
         const createDocumentBlockFromDocInfo = useDocumentBlockFromDocInfoCreator();
@@ -62,7 +60,7 @@ export namespace AddFileHooks {
 
 
                     createDocumentBlockFromDocInfo(importedFile.docInfo);
-                    
+
 
                     console.log("Imported file: ", importedFile);
 
@@ -161,16 +159,10 @@ export namespace AddFileHooks {
                 return;
             }
 
-            const migration = DiskDatastoreMigrations.prepare(uploads);
+            doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
+                .catch(err => log.error("Unable to handle upload: ", err));
 
-            if (migration.required) {
-                diskDatastoreMigration(migration);
-            } else {
-                doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
-                    .catch(err => log.error("Unable to handle upload: ", err));
-            }
-
-        }, [log, diskDatastoreMigration, doDirectUpload]);
+        }, [log, doDirectUpload]);
 
     }
 

@@ -30,7 +30,6 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/ISelectedContent";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {GlobalHotKeys} from "react-hotkeys";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
@@ -38,6 +37,7 @@ import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlig
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
+import {InputEscapeListener} from "../../../../../web/js/mui/complete_listeners/InputEscapeListener";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -225,7 +225,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 if (notesIntegrationEnabled) {
                     const content = BlockContentAnnotationTree.toTextHighlightAnnotation(
                         docMeta,
-                        pageNum, 
+                        pageNum,
                         textHighlight,
                     );
 
@@ -361,20 +361,17 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         aiFlashcardStatus: state.aiFlashcardStatus,
     };
 
-    const activeHandlers = React.useMemo(() => ({
-        ESCAPE: () => {
-            setActiveHighlight(undefined);
-            selectionEvent?.selection.empty();
-            dispatch({ type: ACTIONS.RESET, payload: undefined });
-        },
-    }), [dispatch, selectionEvent, setActiveHighlight]);
+    const handleEscape = React.useCallback(() => {
+        setActiveHighlight(undefined);
+        selectionEvent?.selection.empty();
+        dispatch({ type: ACTIONS.RESET, payload: undefined });
+    }, [dispatch, selectionEvent, setActiveHighlight]);
 
     return (
         <>
-            {(annotation || selectionEvent) && (
-                <GlobalHotKeys keyMap={escapeMap} handlers={activeHandlers} />
-            )}
-            <AnnotationPopupContext.Provider value={value} {...restProps} />
+            <InputEscapeListener onEscape={handleEscape}>
+                <AnnotationPopupContext.Provider value={value} {...restProps} />
+            </InputEscapeListener>
         </>
     );
 };

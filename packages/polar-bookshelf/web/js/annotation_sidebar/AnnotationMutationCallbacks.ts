@@ -86,7 +86,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
         /**
          *
-         * @Deprecated migrate to handleUpdate2 and using IAnnotationMutationHolder
+         * @deprecated migrate to handleUpdate2 and using IAnnotationMutationHolder
          * @param mutation The mutation to execute along with the annotations.
          * @param annotationMutator The mutator to mutate the annotations.
          */

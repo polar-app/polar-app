@@ -1,17 +1,13 @@
-import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {FirebaseDatastore} from '../FirebaseDatastore';
-import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdvertisingPersistenceLayer';
-import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
-import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
+import {PersistenceLayer} from '../PersistenceLayer';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {TracedDatastore} from '../TracedDatastore';
 import {DataFileCacheDatastore} from '../DataFileCacheDatastore';
 
-
 export class WebPersistenceLayerFactory {
 
-    public static create(): ListenablePersistenceLayer {
+    public static create(): PersistenceLayer {
 
         const toDatastore = () => {
 
@@ -28,23 +24,9 @@ export class WebPersistenceLayerFactory {
 
         console.log("Using datastore: " + datastore.id);
 
-        return new NullListenablePersistenceLayer(new DefaultPersistenceLayer(datastore));
+        return new DefaultPersistenceLayer(datastore);
 
     }
 
 }
-
-export class NullListenablePersistenceLayer extends AbstractAdvertisingPersistenceLayer {
-
-    public readonly id: PersistenceLayerID = 'null';
-
-    constructor(delegate: PersistenceLayer) {
-        super(delegate);
-    }
-
-    protected broadcastEvent(event: PersistenceLayerEvent): void {
-    }
-
-}
-
 

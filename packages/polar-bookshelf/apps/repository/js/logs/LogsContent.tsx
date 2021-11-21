@@ -1,5 +1,4 @@
 import * as React from 'react';
-import ReactJson from 'react-json-view';
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 import {isPresent} from 'polar-shared/src/Preconditions';
@@ -90,9 +89,7 @@ export const LogsContent = () => {
             }
 
             return (
-                <ReactJson src={current.params}
-                           theme='twilight'
-                           shouldCollapse={() => true}/>
+                <div>{JSON.stringify(value, null, '  ')}</div>
             )
 
         }
