@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
-import isElectron = AppRuntime.isElectron;
 
 interface ILocation {
     readonly hash?: string;
@@ -73,7 +72,7 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
 
         function createWindow() {
 
-            const initialURL = isElectron() && typeof location === 'string' ? location : '';
+            const initialURL = AppRuntime.isElectronRenderer() && typeof location === 'string' ? location : '';
 
             console.log("Creating new window: " + initialURL);
             return window.open(initialURL, '_blank');

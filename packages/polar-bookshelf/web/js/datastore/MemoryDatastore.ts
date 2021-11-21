@@ -15,7 +15,6 @@ import {
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
@@ -23,7 +22,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
@@ -35,7 +33,6 @@ import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
 import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 import FileMeta = FirebaseDatastores.FileMeta;
 
-const log = Logger.create();
 
 export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
@@ -58,7 +55,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     }
 
     // noinspection TsLint
-    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<any> {
         return {};
     }
 
@@ -149,7 +146,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         const nrDocs = Object.keys(this.docMetas).length;
 
-        log.info(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`);
+        console.log(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`);
 
         return this.docMetas[fingerprint];
     }

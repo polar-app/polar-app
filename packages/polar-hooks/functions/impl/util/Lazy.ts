@@ -2,7 +2,7 @@
 export type LazyProvider<T> = () => T;
 
 /**
- * @Deprecated
+ * @deprecated
  */
 export namespace Lazy {
 

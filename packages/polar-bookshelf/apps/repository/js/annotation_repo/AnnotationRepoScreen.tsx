@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
@@ -23,7 +22,9 @@ import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnot
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
-import {useNotesIntegrationEnabled} from "../../../../web/js/apps/repository/MigrationToBlockAnnotations";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
+import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
+import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
@@ -33,9 +34,9 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
     const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
-        <MUIPaperToolbar id="header-filter">
+        <RepositoryToolbar>
 
-            <Box pt={0.3} pb={0.3} style={{
+            <Box style={{
                 display: 'flex',
                 alignItems: 'center',
             }}>
@@ -63,7 +64,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
 
             </Box>
 
-        </MUIPaperToolbar>
+        </RepositoryToolbar>
     );
 });
 
@@ -257,6 +258,7 @@ namespace Desktop {
 
 
     export const Main = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -271,7 +273,9 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        <FolderSidebar2 header={<StartReviewHeader/>}/>
+                        notesIntegrationEnabled
+                            ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                            : <FolderSidebar2 header={<StartReviewHeader/>} />
                     ),
                     width: 300
                 },
@@ -296,6 +300,7 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
         const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
@@ -317,7 +322,10 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            <FolderSidebar2 header={<StartReviewHeader/>}/>
+                            {notesIntegrationEnabled
+                                ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                                : <FolderSidebar2 header={<StartReviewHeader/>} />
+                            }
                         </SideCar>
 
                         <DeviceRouter phone={

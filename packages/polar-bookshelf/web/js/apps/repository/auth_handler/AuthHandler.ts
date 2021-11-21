@@ -114,7 +114,7 @@ export function toUserInfo(user: firebase.User, account: IAccount | undefined): 
 export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
     /**
-     * @Deprecated useUserInfoContext
+     * @deprecated useUserInfoContext
      */
     public async userInfo(): Promise<Optional<UserInfo>> {
 

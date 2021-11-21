@@ -1,9 +1,9 @@
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
-import {cloneDeep} from "lodash";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 describe('BlocksStoreMutations', () => {
@@ -159,7 +159,7 @@ describe('BlocksStoreMutations', () => {
 
         it("insert after", () => {
             const current = PositionalArrays.create(['1']);
-            const before = cloneDeep(current);
+            const before = Dictionaries.deepCopy(current);
 
 
             PositionalArrays.insert(
@@ -182,7 +182,7 @@ describe('BlocksStoreMutations', () => {
 
         it("insert before", () => {
             const current = PositionalArrays.create(['1']);
-            const before = cloneDeep(current);
+            const before = Dictionaries.deepCopy(current);
 
             PositionalArrays.insert(
                 current,
@@ -205,7 +205,7 @@ describe('BlocksStoreMutations', () => {
 
         it("Change position of an item", () => {
             const current = PositionalArrays.create(['1', '2', '3']);
-            const before = cloneDeep(current);
+            const before = Dictionaries.deepCopy(current);
 
             PositionalArrays.remove(
                 current,

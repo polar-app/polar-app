@@ -1,11 +1,12 @@
 import {OrphanFinder} from "./OrphanFinder";
 import {Files} from "polar-shared/src/util/Files";
-import { FilePaths } from "polar-shared/src/util/FilePaths";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 import * as fs from "fs";
 import {PathStr} from "polar-shared/src/util/Strings";
 import {IModuleReference} from "./IModuleReference";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
+import {Reporters} from "./Reporters";
 
 async function doAsync() {
 
@@ -117,9 +118,11 @@ async function doAsync() {
 
     function createModuleReport() {
 
-        const sorted = [...modules].sort((a, b) => a.name.localeCompare(b.name));
+        const sorted = [...modules]
+            .sort((a, b) => a.name.localeCompare(b.name));
 
         const grid = TextGrid.create(2);
+        grid.title("Working with the following modules")
         grid.headers('name', 'dir');
 
         sorted.forEach(current => grid.row(current.name, current.srcDir));
@@ -128,28 +131,40 @@ async function doAsync() {
 
     }
 
-    console.log("Working with the following modules: ")
-    console.log("====================================")
-    console.log(createModuleReport());
+    const verbose = true;
 
+    const reporter = Reporters.create(verbose);
+
+    reporter.verbose(createModuleReport());
+
+    // NOTE: This won't work well with stories (for now) because they're tightly
+    // bound against StoryApp.tsx.  This will be fixed when we migrate to
+    // storybook
 
     const testsFilter = [
-        "Test.ts$",
-        "TestN.ts$",
-        "TestK.ts$",
-        "TestNK.ts$",
-        "TestKN.ts$",
-        "Story.tsx",
+        "Test\.ts$",
+        "TestN\.ts$",
+        "TestK\.ts$",
+        "TestNK\.ts$",
+        "TestKN\.ts$",
+        // "Story\.tsx$",
     ]
 
     const entriesFilter = [
         "\/entry\.tsx?$",
         "\/index\.tsx?$",
+        "\/StoryApp\.tsx?$",
         'login\.ts$',
         'service-worker-registration\.ts$'
     ];
 
-    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter });
+    const excludesFilter = [
+        "\/polar-test\/.*",
+        "NavigationGlobalHotKeys",
+        "ActiveKeyboardShortcuts2"
+    ]
+
+    await OrphanFinder.doFind({ modules, entriesFilter, testsFilter, excludesFilter, verbose});
 
 }
 

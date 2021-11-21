@@ -13,7 +13,6 @@ import {
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {AbstractPersistenceLayer, PersistenceLayer, WriteOpts} from './PersistenceLayer';
@@ -36,7 +35,6 @@ import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores"
 import BinaryFileData = FirebaseDatastores.BinaryFileData;
 import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
-const log = Logger.create();
 
 /**
  * First layer before the raw datastore. At one point we allowed the datastore
@@ -176,10 +174,10 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
             await this.userTagsDB?.commit();
 
-            log.debug("Wrote tags to TagsDB: ", tags);
+            console.debug("Wrote tags to TagsDB: ", tags);
 
         } catch (e) {
-            log.error("Failed to write docMeta tags: ", e);
+            console.error("Failed to write docMeta tags: ", e);
         }
     }
 
@@ -197,7 +195,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         if (! (docMeta instanceof DocMeta)) {
             const msg = "Can not sync anything other than DocMeta";
-            log.warn(msg + ': ', docMeta);
+            console.warn(msg + ': ', docMeta);
             // check to make sure nothing from JS-land can call this
             // incorrectly.
             throw new Error(msg);
@@ -247,7 +245,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
         // update the sequence before we write it out to disk.
         docMeta.docInfo.uuid = UUIDs.create();
 
-        log.info(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
+        console.log(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
 
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with

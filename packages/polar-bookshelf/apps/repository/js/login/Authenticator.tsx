@@ -480,32 +480,12 @@ export const LogoAndTextSideBySide = () => {
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
-                        <Typography variant="h2" component="div">
+                        <Typography variant="h2" component="div" style={{ fontWeight: 400 }}>
                             POLAR
                         </Typography>
                     </Box>
                 </div>
             </div>
-        </div>
-    )
-}
-
-const FlexLayoutForm = () => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
-                <EmailTokenAuthButton/>
-
-            </div>
-
         </div>
     )
 }
@@ -526,6 +506,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
             <div className="AuthContent"
                  style={{
                      height: "100vh",
+                     maxHeight: '650px',
                      textAlign: 'center',
                      flexGrow: 1,
                      display: 'flex',

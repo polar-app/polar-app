@@ -124,7 +124,6 @@ export namespace UserBackupCreator {
         return new File(bucket, storagePath.path);
     }
 
-
     /**
      * Create a file reference in the temporary Google Cloud Storage bucket
      * where files expire in 72 hours

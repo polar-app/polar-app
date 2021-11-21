@@ -1,7 +1,7 @@
 import {SaveToPolarHandler} from "./SaveToPolarHandler";
 import {MockChrome} from "../MockChrome";
 import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {assert} from 'chai';
 

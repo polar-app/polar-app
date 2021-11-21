@@ -13,6 +13,10 @@
     - [`migration-to-block-annotations-started` Migration to Block Annotations Started](#migration-to-block-annotations-started-migration-to-block-annotations-started)
     - [`migration-to-block-annotations-finished` Migration to Block Annotations Finished](#migration-to-block-annotations-finished-migration-to-block-annotations-finished)
     - [`migration-to-block-annotations-failed` Migration to Block Annotations Failed](#migration-to-block-annotations-failed-migration-to-block-annotations-failed)
+  - [User Tags Migration](#user-tags-migration)
+    - [`block-user-tags-migration-started` User Tags Migration Started](#block-user-tags-migration-started-user-tags-migration-started)
+    - [`block-user-tags-migration-finished` User Tags Migration Finished](#block-user-tags-migration-finished-user-tags-migration-finished)
+    - [`block-user-tags-migration-failed` User Tags Migration Failed](#block-user-tags-migration-failed-user-tags-migration-failed)
   - [Anki](#anki)
     - [`anki-syncStarted` Anki Sync Started](#anki-syncstarted-anki-sync-started)
     - [`anki-syncFailed` Anki Sync Started](#anki-syncfailed-anki-sync-started)
@@ -81,6 +85,19 @@
 
 ### `migration-to-block-annotations-failed` Migration to Block Annotations Failed
 *No extra data*
+
+## User Tags Migration
+
+### `block-user-tags-migration-started` User Tags Migration Started
+*No extra data*
+
+### `block-user-tags-migration-finished` User Tags Migration Finished
+*No extra data*
+
+### `block-user-tags-migration-failed` User Tags Migration Failed
+*No extra data*
+
+
 
 ## Document
 

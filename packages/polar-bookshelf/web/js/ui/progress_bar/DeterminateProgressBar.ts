@@ -1,10 +1,8 @@
 import {Progress} from 'polar-shared/src/util/ProgressTracker';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const ID = 'polar-determinate-progress-bar';
 
-const log = Logger.create();
 
 const FAST_PROGRESS_CUTOFF = 100;
 
@@ -67,11 +65,11 @@ export class DeterminateProgressBar {
                 if (progressElement.parentElement !== null) {
                     progressElement.parentElement.removeChild(progressElement);
                 } else {
-                    log.warn("No parent element for progress bar.");
+                    console.warn("No parent element for progress bar.");
                 }
 
             } else {
-                // log.warn("No progress bar to destroy.");
+                // console.warn("No progress bar to destroy.");
             }
 
         };

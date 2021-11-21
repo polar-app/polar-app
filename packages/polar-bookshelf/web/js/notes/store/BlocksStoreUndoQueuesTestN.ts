@@ -1,5 +1,5 @@
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {assertJSON} from "../../test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {BlocksStore} from "./BlocksStore";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";

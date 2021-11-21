@@ -41,6 +41,7 @@
     "polar-shared-document-importer": "0.0.0"
   },
   "devDependencies": {
+    "polar-test": "0.0.0",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.114",
     "@types/mocha": "=9.0.0",

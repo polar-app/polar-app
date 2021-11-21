@@ -14,7 +14,8 @@ import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores"
 import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 
 import {DocMetadata} from "./DocMetadata";
-import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
+import {OnWriteController} from "../upload/UploadHandlers";
+
 
 export interface ImportedFile {
 
@@ -99,7 +100,7 @@ export namespace DocImporter {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-        console.info(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
+        console.log(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
 
         const docMetadata = opts.docImport || await DocMetadata.getMetadata(docPathOrURL, docType);
 
@@ -169,7 +170,7 @@ export namespace DocImporter {
 
             // TODO(webapp): make this into a toBlob function call
             if (URLs.isURL(docPathOrURL)) {
-                console.info("Reading data from URL: ", docPathOrURL);
+                console.log("Reading data from URL: ", docPathOrURL);
                 const response = await fetch(docPathOrURL);
                 return await response.blob();
             }

@@ -1,6 +1,4 @@
 import React from "react";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import VideoCallIcon from '@material-ui/icons/VideoCall';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
@@ -10,8 +8,6 @@ import {useActiveKeyboardShortcutsCallbacks} from "../hotkeys/ActiveKeyboardShor
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import {FADiscordIcon} from "../mui/MUIFontAwesome";
 import {Nav} from "../ui/util/Nav";
-import {useZest} from "../zest/ZestInjector";
-import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {SideNavQuestionMenuItem} from "./SideNavQuestionMenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -66,40 +62,6 @@ export namespace MenuItems {
                                      secondary="Get the latest documentation on Polar"
                                      onClick={onClick}/>
         );
-    });
-
-    export const SendVideoFeedback = React.forwardRef<HTMLLIElement, {}>((props, ref) => {
-
-        const zest = useZest();
-        const dialogs = useDialogManager();
-
-        const handleClick = React.useCallback(() => {
-
-            Analytics.event2('featureTriggered', {name: 'QuestionButton.SendVideoFeedback'})
-
-            if (zest.supported) {
-                zest.trigger();
-            } else {
-
-                dialogs.confirm({
-                    title: "Video Feedback Not Support",
-                    subtitle: "Video feedback is not supported on this platform. Please use our web application to send video feedback.",
-                    type: 'error',
-                    onAccept: NULL_FUNCTION
-                });
-
-            }
-
-        }, [dialogs, zest]);
-
-        return (
-            <SideNavQuestionMenuItem text="Video Feedback"
-                                     ref={ref}
-                                     secondary="Have a bug to report or a feature suggestion?  Send in a video report and let us know."
-                                     icon={VideoCallIcon}
-                                     onClick={handleClick}/>
-        );
-
     });
 
     export const RequestFeatures = React.forwardRef<HTMLLIElement, {}>((props, ref) => {
@@ -216,8 +178,6 @@ export function SideNavQuestionButton() {
                 <MenuItems.Documentation/>
 
                 <Divider/>
-
-                {/*<MenuItems.SendVideoFeedback/>*/}
 
                 <MenuItems.RequestFeatures/>
 

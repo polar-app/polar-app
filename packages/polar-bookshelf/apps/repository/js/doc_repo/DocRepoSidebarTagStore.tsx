@@ -1,4 +1,5 @@
 import React from "react";
+import {DocRepoBlocksFolderSidebarStoreProvider} from "../folder_sidebar/BlocksFolderSidebarStore";
 import {
     createFolderSidebarStore,
     FolderSidebarCallbacksContext,
@@ -30,7 +31,9 @@ export const DocRepoSidebarTagStore = (props: IProps) => {
     return (
         <DocRepoSidebarTagStoreProvider>
             <StoreBinder>
-                {props.children}
+                <DocRepoBlocksFolderSidebarStoreProvider>
+                    {props.children}
+                </DocRepoBlocksFolderSidebarStoreProvider>
             </StoreBinder>
         </DocRepoSidebarTagStoreProvider>
     )

@@ -18,7 +18,6 @@ import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
@@ -136,6 +135,4 @@ export interface WriteOpts extends WriteOptsBase<IDocInfo> {
 export type PersistenceLayerID = string;
 
 export type PersistenceLayerProvider = () => PersistenceLayer;
-
-export type ListenablePersistenceLayerProvider = () => ListenablePersistenceLayer;
 

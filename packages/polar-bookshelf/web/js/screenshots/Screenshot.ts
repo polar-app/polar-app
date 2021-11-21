@@ -1,7 +1,7 @@
 import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {DataURL} from 'polar-shared/src/util/DataURLs';
-import {IDimensions} from "../util/IDimensions";
 import {ImageType} from "polar-shared/src/util/ImageType";
+import {IDimensions} from "polar-shared/src/util/IDimensions";
 
 export interface Screenshot {
 

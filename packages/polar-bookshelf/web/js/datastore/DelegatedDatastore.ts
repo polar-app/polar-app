@@ -11,7 +11,6 @@ import {
     InitResult,
     SnapshotResult,
 } from './Datastore';
-import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from 'polar-shared/src/datastore/Backend';
@@ -32,10 +31,6 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id: DatastoreID;
 
-    public readonly directories: Directories;
-
-    public readonly filesDir: string;
-
     protected readonly delegate: Datastore;
 
     constructor(delegate: Datastore) {
@@ -43,8 +38,6 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         Preconditions.assertPresent(delegate, 'delegate');
         this.id = 'delegated:' + delegate.id;
         this.delegate = delegate;
-        this.directories = new Directories();
-        this.filesDir = this.directories.filesDir;
 
     }
 

@@ -1,12 +1,10 @@
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";
 import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
 
-const log = Logger.create();
 
 const COLLECTION_NAME = "account";
 
@@ -37,7 +35,7 @@ export namespace Accounts {
     }
 
     /**
-     * @Deprecated use a snapshot / hook version of this
+     * @deprecated use a snapshot / hook version of this
      */
     export async function get(): Promise<IAccount | undefined> {
 
@@ -133,4 +131,4 @@ export namespace Accounts {
 
 }
 
-const ERR_HANDLER = (err: ErrorType) => log.error("Could not create snapshot for account: ", err);
+const ERR_HANDLER = (err: ErrorType) => console.error("Could not create snapshot for account: ", err);

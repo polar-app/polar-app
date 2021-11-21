@@ -149,7 +149,7 @@ export namespace DocumentDataUpdater {
 
             if (! repoDocInfo) {
                 // This technically should never happen.
-                return console.error(`DocMeta record was not found for doc ID: ${fingerprint}. skipping update...`);
+                return console.log(`DocMeta record was not found for doc ID: ${fingerprint}. skipping update...`);
             }
 
             const docMeta = repoDocInfo.docMeta;

@@ -1,9 +1,9 @@
 import {assert} from 'chai';
-import { EventMaps} from './Engine';
+import {EventMaps} from './Engine';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import {assertJSON} from '../../../../../web/js/test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('Engine', function() {
 

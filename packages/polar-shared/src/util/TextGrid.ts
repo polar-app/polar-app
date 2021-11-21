@@ -8,6 +8,7 @@ export namespace TextGrid {
     export type TextData = string | number | boolean;
 
     export interface ITextGrid {
+        title: (title: string) => void;
         headers: (...cols: ReadonlyArray<string>) => void;
         row: (...cols: ReadonlyArray<TextData>) => void;
         format: () => string;
@@ -21,9 +22,9 @@ export namespace TextGrid {
 
     }
 
-    // TODO: change this to require the names of the headers and this way we
-    // don't need a headers() method and can compute nrColumns from the number
-    // of headers.
+    /**
+     * @deprecated
+     */
     export function create(nrColumns: number) {
 
         let _rows: ReadonlyArray<TextData>[] = [];
@@ -32,8 +33,15 @@ export namespace TextGrid {
 
         let col_padding = 2;
 
+        let _title: string | undefined;
+
+        function title(title: string) {
+            _title = title;
+        }
+
         /**
          * Provide optional headers.
+         * @deprecated
          */
         function headers(...cols: ReadonlyArray<string>) {
             _headers = [...cols];
@@ -79,6 +87,13 @@ export namespace TextGrid {
 
             let buff = '';
 
+            if (_title !== undefined) {
+                buff += _title + ":"
+                buff += "\n"
+                buff += Strings.generate(_title.length, "-") + "-"
+                buff += "\n"
+            }
+
             if (_headers.length > 0) {
 
                 buff += formatToColumnWidth(_headers);
@@ -95,7 +110,7 @@ export namespace TextGrid {
 
         }
 
-        return {headers, row, format}
+        return {headers, row, format, title}
 
     }
 
