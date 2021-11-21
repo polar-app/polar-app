@@ -13,3 +13,5 @@ tsconfig.tsbuildinfo
 
 TESTS*.xml
 *.d.ts
+
+.DS_Store
