@@ -30,7 +30,7 @@ const myDict = Readonly<{[key: string]: string}>;
 
 ```
 
-## interfaces
+## Interfaces
 
 To define readonly properties in interfaces:
 
