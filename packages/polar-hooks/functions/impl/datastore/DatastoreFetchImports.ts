@@ -13,6 +13,7 @@ import {URLs} from "polar-shared/src/util/URLs";
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import {HashcodeStreams} from "polar-shared/src/util/HashcodeStreams";
 
 const log = Logger.create();
 
@@ -67,7 +68,7 @@ export class DatastoreFetchImports {
         response.body.pipe(tmpFile.stream);
         response.body.pipe(hashcodeStream);
 
-        const hashcodePromise = Hashcodes.createFromStream(hashcodeStream);
+        const hashcodePromise = HashcodeStreams.createFromStream(hashcodeStream);
         const hashcode = await hashcodePromise;
 
         // wait for the file to be written to cloud storage.

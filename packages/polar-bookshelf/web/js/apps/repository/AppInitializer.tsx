@@ -15,7 +15,7 @@ import {PersistenceLayerController, PersistenceLayerManager} from "../../datasto
 import * as ReactDOM from "react-dom";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import * as React from "react";
-import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MailingList} from "./auth_handler/MailingList";
@@ -36,7 +36,7 @@ export interface App {
 
     // readonly authStatus: AuthStatus;
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 

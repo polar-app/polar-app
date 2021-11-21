@@ -23,7 +23,7 @@ export namespace TextGrid {
     }
 
     /**
-     * @Deprecated
+     * @deprecated
      */
     export function create(nrColumns: number) {
 
@@ -41,7 +41,7 @@ export namespace TextGrid {
 
         /**
          * Provide optional headers.
-         * @Deprecated
+         * @deprecated
          */
         function headers(...cols: ReadonlyArray<string>) {
             _headers = [...cols];

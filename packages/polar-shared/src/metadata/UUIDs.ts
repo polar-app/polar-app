@@ -31,7 +31,7 @@ export namespace UUIDs {
     }
 
     /**
-     * @Deprecated use compare2 as that uses the proper compare semantics.
+     * @deprecated use compare2 as that uses the proper compare semantics.
      */
     export function compare(u0?: UUID, u1?: UUID) {
 
@@ -71,7 +71,7 @@ export namespace UUIDs {
 
     /**
      * @VisibleForTesting Only used so that we can test the same compare function we're using internally.
-     * @Deprecated use cmp2 as that uses the proper compare semantics.
+     * @deprecated use cmp2 as that uses the proper compare semantics.
      */
     export function cmp(s0: string, s1: string) {
         // TODO: It's better to NOT use localeCompare but couldn't find an

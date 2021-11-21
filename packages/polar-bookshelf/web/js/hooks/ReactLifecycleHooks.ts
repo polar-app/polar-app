@@ -3,6 +3,9 @@ import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {AsyncOptions, useAsync} from 'react-async';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
+/**
+ * @deprecated Just use useEffect now
+ */
 export function useComponentDidMount(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
 
@@ -11,6 +14,9 @@ export function useComponentDidMount(delegate: () => void) {
     useEffect(() => delegate(), []);
 }
 
+/**
+ * @deprecated Just use useEffect now
+ */
 export function useComponentWillUnmount(delegate: () => void) {
     // if we return a function it will only execute on unmount
 
