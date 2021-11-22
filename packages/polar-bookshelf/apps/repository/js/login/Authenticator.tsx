@@ -458,7 +458,7 @@ export const LogoAndTextSideBySide = () => {
                     </Typography>
                 </Box>
             </div>
-        </div
+        </div>
     )
 }
 
