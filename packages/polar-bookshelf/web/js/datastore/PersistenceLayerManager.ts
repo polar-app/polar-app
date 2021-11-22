@@ -1,19 +1,19 @@
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {IProvider} from "polar-shared/src/util/Providers";
-import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
+import {PersistenceLayer} from "./PersistenceLayer";
 
 
 const RESET_KEY = 'polar-persistence-layer-reset';
 
-export class PersistenceLayerManager implements IProvider<ListenablePersistenceLayer> {
+export class PersistenceLayerManager implements IProvider<PersistenceLayer> {
 
     private readonly persistenceLayerManagerEventDispatcher: IEventDispatcher<PersistenceLayerManagerEvent> = new SimpleReactor();
 
-    private persistenceLayer?: ListenablePersistenceLayer;
+    private persistenceLayer?: PersistenceLayer;
 
     /**
      * The current persistence type in place.
@@ -57,7 +57,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     }
 
-    public get(): ListenablePersistenceLayer {
+    public get(): PersistenceLayer {
         return this.persistenceLayer!;
     }
 
@@ -65,7 +65,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      * Get but waits for the first persistence layer to be initialized and after
      * that returns just the current one.
      */
-    public async getAsync(): Promise<ListenablePersistenceLayer> {
+    public async getAsync(): Promise<PersistenceLayer> {
         await this.initialized.get();
         return this.get();
 
@@ -142,7 +142,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         return window.localStorage.removeItem(RESET_KEY);
     }
 
-    private createPersistenceLayer(type: PersistenceLayerType): ListenablePersistenceLayer {
+    private createPersistenceLayer(type: PersistenceLayerType): PersistenceLayer {
 
         if (AppRuntime.isBrowser()) {
 
@@ -237,7 +237,7 @@ export interface PersistenceLayerManagerEvent {
 
     readonly state: PersistenceLayerState;
 
-    readonly persistenceLayer: ListenablePersistenceLayer;
+    readonly persistenceLayer: PersistenceLayer;
 
 }
 

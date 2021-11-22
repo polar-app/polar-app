@@ -1,22 +1,9 @@
 import {assert} from 'chai';
-
-import {Hashcodes} from './Hashcodes';
 import {FilePaths} from './FilePaths';
 import {Files} from './Files';
+import {HashcodeStreams} from "./HashcodeStreams";
 
-describe('Hashcodes', function() {
-
-    describe('create', function() {
-
-        it("basic", function () {
-
-            const hashcode = Hashcodes.create("asdf");
-
-            assert.equal(hashcode, "1aibZzMnnHwqHd9cmMb2QrRdgyBj5ppNHgCTqxqggN8KRN4jtu");
-
-        });
-
-    });
+describe('HashcodeStreams', function() {
 
     describe('createFromStream', function() {
 
@@ -28,13 +15,12 @@ describe('Hashcodes', function() {
 
             await Files.writeFileAsync(path, data);
 
-            const hashcode = await Hashcodes.createFromStream(Files.createReadStream(path));
+            const hashcode = await HashcodeStreams.createFromStream(Files.createReadStream(path));
 
             assert.equal(hashcode, "12DPFtaSkqZ1BDBXxY47ThYmzinkWJ6jCMmuJvVZfCdaNViiRwu");
 
         });
 
     });
-
 
 });

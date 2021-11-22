@@ -358,7 +358,7 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     @observable _interstitials: InterstitialMap = {};
-    
+
     @observable _tagsIndex: ReverseIndex = new ReverseIndex();
 
     /*
@@ -2203,12 +2203,12 @@ export class BlocksStore implements IBlocksStore {
             const block = this._index[blockID];
 
             if (! block) {
-                console.log("No block for ID: " + blockID)
+                console.log("computeNextActive: No block for ID: " + blockID)
                 return undefined;
             }
 
             if (! block.parent) {
-                console.log("No parent for ID: " + blockID)
+                console.log("computeNextActive: No parent for ID: " + blockID)
                 return undefined;
             }
 

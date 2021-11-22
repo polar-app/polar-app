@@ -2,7 +2,7 @@ import React from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
 import {useUserTagsDB} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
-import {ListenablePersistenceLayerProvider,} from "../../../../web/js/datastore/PersistenceLayer";
+import {PersistenceLayerProvider,} from "../../../../web/js/datastore/PersistenceLayer";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 import {RepoDataLoader} from "./RepoDataLoader";
@@ -34,7 +34,7 @@ export interface ITagDescriptorsContext {
 }
 
 export interface IPersistenceLayerContext {
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 export interface IPersistenceContext extends ITagsContext, IPersistenceLayerContext {
@@ -81,7 +81,7 @@ interface IUserTagsDataLoaderDataProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly tagsType: TagsType;
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly children: JSX.Element;
 }
@@ -159,7 +159,7 @@ interface IRepoDataLoaderDataProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly tagsType: TagsType;
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly children: JSX.Element;
 }
@@ -185,7 +185,7 @@ interface IPersistenceLayerAppDataProps {
      */
     readonly tagsType: TagsType;
 
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 
     readonly children: JSX.Element;
 
@@ -226,7 +226,7 @@ export interface IProps {
 
 export const PersistenceLayerApp = React.memo(function PersistenceLayerApp(props: IProps) {
 
-    const Component = (dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
+    const Component = (dataProps: {persistenceLayerProvider: PersistenceLayerProvider}) => (
         <PersistenceLayerAppData {...props} persistenceLayerProvider={dataProps.persistenceLayerProvider}>
             {props.children}
         </PersistenceLayerAppData>

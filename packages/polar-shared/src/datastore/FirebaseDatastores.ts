@@ -21,7 +21,7 @@ export interface StorageSettings {
 export type FirebaseDocMetaID = string;
 
 /**
- * @Deprecated use the version from Strings
+ * @deprecated use the version from Strings
  */
 export type UserIDStr = string;
 
