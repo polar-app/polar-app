@@ -12,11 +12,11 @@ large_image: https://i.imgur.com/ifCQPCH.png
 
 <img alt="Polar x Notes" src="https://i.imgur.com/995TM0p.png">
 
-Today, we've released non-linear notes in Polar. Some of you have already been trying out the beta notes feature. This is a major stepping stone toward Polar 3.0. Highlights will now be treated like non-linear notes, including backlinks between individual text highlights and notes, direct editing, and all the other good stuff that comes with notes.
+Today, we've released non-linear notes in Polar. Some of you have already been trying out the beta notes feature 🚀 This is a major stepping stone toward Polar 3.0 🎉 Highlights will now be treated like non-linear notes, including backlinks between individual text highlights and notes, direct editing, and all the other good stuff that comes with notes 📈
 
-Please note, using the latest Polar version will require you to do a one-time migration. Please migrate within the next month to avoid any data loss.
+Please note, using the latest Polar version will require you to do a one-time migration. Please migrate within the next month to avoid any data loss ⚡
 
-Before we go into any details, check out this short clip summarizing the main updates:
+Before we go into any details, check out this short clip summarizing the main updates 🎥
 
 [![Notes in Polar](https://i.imgur.com/SXNH4av.png)](https://youtu.be/oxfSNOuIaK0 "Notes in Polar")
 
