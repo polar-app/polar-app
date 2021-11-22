@@ -25,10 +25,15 @@ export namespace MouseEvents {
     }
 }
 
+
+
 /**
- * Used so that we can use either the native mouse events or the react ones.
+ * Used so that we can use either the native mouse events or the react ones but also
+ * make this easy to test.
  */
 export interface IMouseEvent {
+
+    // TODO: migrate to Pick on this.
 
     readonly clientX: number;
     readonly clientY: number;

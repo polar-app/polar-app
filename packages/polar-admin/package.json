@@ -27,6 +27,7 @@
     "@google-cloud/firestore": "=4.15.1",
     "firebase-admin": "=10.0.0",
     "polar-firebase": "0.0.0",
+    "polar-firebase-admin": "0.0.0",
     "polar-shared": "0.0.0"
   }
 }
