@@ -299,12 +299,26 @@ jobs:
       - run:
           name: build and verify webapp
           command: |
-            cd /home/circleci/project/packages/polar-bookshelf && \
-            free -m && \
-            pnpm run build-webapp && \
-            echo "Webapp Built Successfully" && \
-            cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
-            find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
+            set -e
+            cd /home/circleci/project/packages/polar-bookshelf
+            free -m
+            pnpm run build-webapp
+            echo "Webapp Built Successfully"
+
+            verify_file_max() {
+              path="${1}"
+              limit="${2}"
+
+              find ${path} -size +${limit}c |tee /dev/stderr| egrep '.*'
+            }
+
+            verify_file_max dist/public/repository-bundle.js 7000000
+            verify_file_max dist/public/repository-bundle.js.gz 1300000
+
+          # TODO: we have to assert the size of the raw .js file as well as the .js.gz file here
+          # because while compression is nice, having a small .js bundle means the Javascript
+          # is evaluated faster on load
+
       - persist_to_workspace:
           root: /home/circleci/
           paths:
