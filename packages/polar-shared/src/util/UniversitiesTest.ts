@@ -1,8 +1,9 @@
 import {assert} from 'chai';
 import {arrayStream} from "./ArrayStreams";
-import {Universities, University} from "./Universities";
+import {Universities} from "./Universities";
 import {IDStr} from "./Strings";
 import {Hashcodes} from "./Hashcodes";
+import {University} from './University';
 
 describe('Universities', function() {
 
