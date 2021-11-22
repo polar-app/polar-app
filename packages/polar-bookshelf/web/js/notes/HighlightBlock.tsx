@@ -7,8 +7,8 @@ import {useBlocksStore} from "./store/BlocksStore";
 import {Box} from "@material-ui/core";
 
 interface IProps {
-    id: BlockIDStr;
-    parent: BlockIDStr;
+    readonly id: BlockIDStr;
+    readonly parent: BlockIDStr;
 }
 
 export const HighlightBlock: React.FC<IProps> = observer((props) => {

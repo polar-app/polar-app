@@ -71,7 +71,6 @@
     "@types/estree": "=0.0.50",
     "@types/expect": "=1.20.4",
     "@types/html2canvas": "0.0.35",
-    "@welldone-software/why-did-you-render": "=6.2.1",
     "@types/jquery": "=3.3.38",
     "@types/js-cookie": "=2.2.7",
     "@types/jsdom": "=16.2.13",

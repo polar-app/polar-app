@@ -539,7 +539,7 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
     /**
      * Here we start the migration in the following two cases
      * 1. The user has explicity started the migration.
-     * 2. A migration was started but never finished or a migration that failed
+     * 2. The migration was started & failed or never finished
      */
     if (started || docMetaMigrationStatus === 'started' || tagsMigrationStatus === 'started') {
         return (
