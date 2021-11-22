@@ -76,8 +76,7 @@ export const PBEmailAndReferral = (props: { alert?:boolean, pending?:boolean, em
 
                 <Button variant="contained"
                         size="large"
-                        color="primary"
-                        className={classes.button}>
+                        color="primary">
                     Join
                 </Button>
             </Box>
