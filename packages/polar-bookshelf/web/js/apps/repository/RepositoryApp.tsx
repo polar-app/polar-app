@@ -71,7 +71,7 @@ import {NotesScreen} from "../../notes/NoteScreen";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
-import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBlockAnnotations"
+import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";

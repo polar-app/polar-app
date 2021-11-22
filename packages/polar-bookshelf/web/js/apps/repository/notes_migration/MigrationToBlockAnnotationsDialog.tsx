@@ -2,15 +2,16 @@ import {Box, Button, LinearProgress, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import * as React from 'react';
-import {LinearProgressWithLabel} from '../../ui/dialogs/LinearProgressWithLabel';
-import {LogoAndTextSideBySide} from '../../../../apps/repository/js/login/Authenticator';
+import {LinearProgressWithLabel} from '../../../ui/dialogs/LinearProgressWithLabel';
+import {LogoAndTextSideBySide} from '../../../../../apps/repository/js/login/Authenticator';
 import Grid from '@material-ui/core/Grid';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 interface IProps {
     readonly progress?: number;
-    readonly onStart: () => void;
-    readonly onSkip: () => void;
-    readonly skippable: boolean;
+    readonly onStart?: () => void;
+    readonly onSkip?: () => void;
+    readonly skippable?: boolean;
     readonly started?: boolean;
 }
 
@@ -39,9 +40,15 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export const MigrationToBlockAnnotationsMain = (props: IProps) => {
+export const MigrationToBlockAnnotationsDialog = (props: IProps) => {
 
-    const { progress, onStart, onSkip, skippable, started } = props;
+    const {
+        progress,
+        onStart = NULL_FUNCTION,
+        onSkip = NULL_FUNCTION,
+        skippable = false,
+        started,
+    } = props;
     const classes = useStyles();
 
     return (

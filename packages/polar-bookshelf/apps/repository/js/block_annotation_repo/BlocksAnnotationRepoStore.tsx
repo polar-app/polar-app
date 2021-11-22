@@ -30,7 +30,7 @@ export type IRepoAnnotationTextContent = ITextHighlightAnnotationContent
 export class BlocksAnnotationRepoStore {
     private readonly _blocksStore: IBlocksStore;
 
-    @observable private _selected: Set<BlockIDStr> = new Set<BlockIDStr>();
+    @observable private _selected: Map<BlockIDStr, boolean> = new Map();
     @observable private _active: BlockIDStr | null = null;
     @observable private _filter: BlocksAnnotationRepoFilters.Filter = {};
 
@@ -89,7 +89,7 @@ export class BlocksAnnotationRepoStore {
     }
 
     get selected() {
-        return this._selected;
+        return [...this._selected.keys()];
     }
 
     @action setFilter(filter: Partial<BlocksAnnotationRepoFilters.Filter>): void {
@@ -98,7 +98,7 @@ export class BlocksAnnotationRepoStore {
 
     @action public selectItem(id: BlockIDStr, event: IMouseEvent, type: SelectRowType): void {
         const selected = SelectionEvents2.selectRow(id,
-                                                    Array.from(this._selected),
+                                                    Array.from(this._selected.keys()),
                                                     this.view,
                                                     event,
                                                     type);
@@ -107,7 +107,7 @@ export class BlocksAnnotationRepoStore {
 
         this._active = selected[0];
 
-        selected.forEach(x => this._selected.add(x));
+        selected.forEach(x => this._selected.set(x, true));
     }
 
     @action public clearSelected(): void {
@@ -115,7 +115,7 @@ export class BlocksAnnotationRepoStore {
     }
 
     public isSelected(id: BlockIDStr): boolean {
-        return this._selected.has(id);
+        return !! this._selected.get(id);
     }
 
     public idsToRepoAnnotationBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
