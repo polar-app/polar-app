@@ -1,3 +1,13 @@
+# Initial install
+
+npm install -g pnpm
+pnpm add only-allow -g
+
+pnpm install
+pnpm run compile-all
+pnpm run build
+pnpm run serve
+
 # Full Package Update Design
 
 - I could use Cloud Run to:

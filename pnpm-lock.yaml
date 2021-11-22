@@ -286,7 +286,6 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
-      firebase-functions: '=3.16.0'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
       polar-firebase: 0.0.0
@@ -297,7 +296,6 @@ importers:
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
-      firebase-functions: 3.16.0
       polar-blocks: link:../polar-blocks
       polar-firebase: link:../polar-firebase
       polar-firestore-like: link:../polar-firestore-like
