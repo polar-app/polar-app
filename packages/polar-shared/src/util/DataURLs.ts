@@ -1,9 +1,6 @@
-import {Logger} from "../logger/Logger";
 import {Base64} from "./Base64";
 import {ArrayBuffers} from "./ArrayBuffers";
 import {ImageType} from "./ImageType";
-
-const log = Logger.create();
 
 export type DataURL = string;
 
@@ -63,7 +60,7 @@ export namespace DataURLs {
             // write the ArrayBuffer to a blob, and you're done
             return { data: ab, type };
         } catch (e) {
-            log.warn("Unable to decode data URL: ", dataURL);
+            console.warn("Unable to decode data URL: ", dataURL);
             throw e;
         }
 
