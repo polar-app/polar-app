@@ -10,7 +10,10 @@ import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useRefWithUpdates} from "../../hooks/ReactHooks";
 import INodeOffset = ContentEditables.INodeOffset;
-import {DOMBlocks} from './DOMBlocks';
+import {DOMBlocks} from "./DOMBlocks";
+import {useBlocksUserTagsDB} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
+import {BlockPredicates} from '../store/BlockPredicates';
+import {BlockTextContentUtils} from '../NoteUtils';
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -89,6 +92,7 @@ interface IProps {
 function useActionExecutor(id: BlockIDStr) {
 
     const blocksTreeStore = useBlocksTreeStore();
+    const blocksUserTagsDB = useBlocksUserTagsDB();
 
     const contentEditableMarkdownReader = useContentEditableMarkdownReader();
 
@@ -119,7 +123,16 @@ function useActionExecutor(id: BlockIDStr) {
             updateSelection();
 
             const content = contentEditableMarkdownReader();
-            blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
+            const targetID = blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
+            const targetBlock = blocksTreeStore.getBlock(targetID);
+
+            if (type === 'tag' && targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
+                blocksUserTagsDB.register({
+                    id: targetID, 
+                    label: BlockTextContentUtils.getTextContentMarkdown(targetBlock.content)
+                });
+                blocksUserTagsDB.commit().catch(console.error);
+            }
         }
 
         switch (actionOp.type) {
@@ -134,7 +147,7 @@ function useActionExecutor(id: BlockIDStr) {
 
         }
 
-    }, [contentEditableMarkdownReader, blocksTreeStore, id])
+    }, [contentEditableMarkdownReader, blocksUserTagsDB, blocksTreeStore, id])
 
 }
 

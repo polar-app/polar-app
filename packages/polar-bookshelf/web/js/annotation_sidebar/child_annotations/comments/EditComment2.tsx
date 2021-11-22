@@ -8,7 +8,6 @@ import {deepMemo} from "../../../react/ReactUtils";
 import {InputCompleteListener} from "../../../mui/complete_listeners/InputCompleteListener";
 import {CancelButton} from "../CancelButton";
 
-
 interface IProps {
 
     readonly id?: string;

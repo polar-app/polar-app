@@ -90,7 +90,6 @@ export function useElevationBackground2(elevation: Elevation) {
 
 interface IProps {
     readonly elevation: Elevation;
-    readonly children?: React.ReactElement;
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly highlighted?: boolean;
@@ -101,7 +100,7 @@ interface IProps {
  *
  * https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
  */
-export const MUIElevation = deepMemo(function MUIElevation(props: IProps) {
+export const MUIElevation: React.FC<IProps> = deepMemo(function MUIElevation(props) {
 
     const elevation = useElevationBackground(props.elevation);
     const backgroundColor = props.highlighted ? elevation.highlighted : elevation.default;

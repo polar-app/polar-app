@@ -3,7 +3,13 @@ import {observer} from "mobx-react-lite";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import React from "react";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {BlockComponentProps, HiddenBlockComponentProps, IntersectionList, ListValue, VisibleComponentProps} from "../../../../web/js/intersection_list/IntersectionList";
+import {
+    BlockComponentProps,
+    HiddenBlockComponentProps,
+    IntersectionList,
+    ListValue,
+    VisibleComponentProps
+} from "../../../../web/js/intersection_list/IntersectionList";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {BlocksAnnotationRepoTableMenu} from "./BlocksAnnotationRepoContextMenu";
 import {useAnnotationRepoViewBlockIDs, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
@@ -88,12 +94,16 @@ export const BlocksAnnotationRepoTable = observer(function BlocksAnnotationRepoT
                            size="medium"
                            aria-label="enhanced table">
 
+                        <BlocksAnnotationRepoTableContextMenu>
+
                             <IntersectionList values={highlightBlockIDs}
-                                              root={root}
-                                              blockSize={10}
-                                              BlockComponent={BlockComponent}
-                                              HiddenBlockComponent={HiddenBlockComponent}
-                                              VisibleComponent={VisibleComponent} />
+                                                  root={root}
+                                                  blockSize={10}
+                                                  BlockComponent={BlockComponent}
+                                                  HiddenBlockComponent={HiddenBlockComponent}
+                                                  VisibleComponent={VisibleComponent} />
+
+                        </BlocksAnnotationRepoTableContextMenu>
                     </Table>
                 )}
             </TableContainer>

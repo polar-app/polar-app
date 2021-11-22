@@ -36,7 +36,6 @@ import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
-import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
@@ -76,6 +75,7 @@ import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBloc
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
+import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 
 interface IProps {
     readonly app: App;
@@ -194,18 +194,20 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     const DataProviders: React.FC = React.useCallback(({children}) => (
         <PrefsContext2>
             <UserTagsDataLoader>
-                <BlockStoreDefaultContextProvider>
-                    <BlocksStoreProvider>
-                        <PersistenceLayerApp tagsType="documents"
-                                             repoDocMetaManager={repoDocMetaManager}
-                                             repoDocMetaLoader={repoDocMetaLoader}
-                                             persistenceLayerManager={persistenceLayerManager}>
-                            <DocRepoStore2>
-                                {children}
-                            </DocRepoStore2>
-                        </PersistenceLayerApp>
-                    </BlocksStoreProvider>
-                </BlockStoreDefaultContextProvider>
+                <BlocksUserTagsDataLoader>
+                    <BlockStoreDefaultContextProvider>
+                        <BlocksStoreProvider>
+                            <PersistenceLayerApp tagsType="documents"
+                                                 repoDocMetaManager={repoDocMetaManager}
+                                                 repoDocMetaLoader={repoDocMetaLoader}
+                                                 persistenceLayerManager={persistenceLayerManager}>
+                                <DocRepoStore2>
+                                    {children}
+                                </DocRepoStore2>
+                            </PersistenceLayerApp>
+                        </BlocksStoreProvider>
+                    </BlockStoreDefaultContextProvider>
+                </BlocksUserTagsDataLoader>
             </UserTagsDataLoader>
         </PrefsContext2>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
@@ -252,10 +254,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                 <AnnotationRepoStore>
                     <BlocksAnnotationRepoStoreProvider>
                         <AnnotationRepoSidebarTagStore>
-                            <>
-                                <ReviewRouter/>
-                                <AnnotationRepoScreen/>
-                            </>
+                            <ReviewRouter/>
+                            <AnnotationRepoScreen/>
                         </AnnotationRepoSidebarTagStore>
                     </BlocksAnnotationRepoStoreProvider>
                 </AnnotationRepoStore>
@@ -281,10 +281,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <Route exact path="/error">
                     <ErrorScreen/>
-                </Route>
-
-                <Route exact path="/migration/phz">
-                    <PHZMigrationScreen/>
                 </Route>
 
                 <AuthRequired>

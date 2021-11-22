@@ -232,7 +232,7 @@ export namespace Dictionaries {
      * Create a deep copy of the given dictionary.
      *
      * @param dict
-     * @Deprecated use deepCopy which can handle arrays.
+     * @deprecated use deepCopy which can handle arrays.
      */
     export function copyOf(dict: any): any {
 

@@ -76,7 +76,7 @@ export namespace TextHighlighter {
 
         const {highlightColor, docMeta, pageNum, pageElement, selectedContent, docScale} = opts;
 
-        log.info("createTextHighlight");
+        console.log("createTextHighlight");
 
         const {rectTexts} = selectedContent;
 
@@ -97,7 +97,7 @@ export namespace TextHighlighter {
 
         // TODO: there are no screenshots here but we should keep them.
 
-        log.info("Added text highlight to model");
+        console.log("Added text highlight to model");
 
         const textHighlight = textHighlightRecord.value;
         const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);

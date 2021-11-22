@@ -1,4 +1,4 @@
-import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
+import {ResourcePaths} from '../../../util/ResourcePaths';
 import {ViewerURLs} from "../doc_loaders/ViewerURLs";
 
 export namespace PDFLoader {
@@ -15,7 +15,7 @@ export namespace PDFLoader {
 
         const {fingerprint, page} = opts;
 
-        const url = ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
+        const url = ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`);
 
         if (page) {
             const initialUrl = url + `#?page=${page}`;

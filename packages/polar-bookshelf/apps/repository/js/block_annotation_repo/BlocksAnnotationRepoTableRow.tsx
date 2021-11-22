@@ -24,6 +24,8 @@ import {observer} from "mobx-react-lite";
 import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 
 const MAX_IMG_HEIGHT = 300;
 
@@ -161,25 +163,30 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
     const block = blocksStore.getBlock(blockID)?.toJSON();
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
+
         if (block) {
             blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
         }
+
     }, [blocksAnnotationRepoStore, block]);
+
+    const onContextMenu = React.useCallback((event: IMouseEvent) => {
+
+        if (block) {
+            blocksAnnotationRepoStore.selectItem(block.id, event, 'context');
+        }
+
+    }, [block, blocksAnnotationRepoStore]);
+
+    const contextMenuHandlers = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
 
     if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
         return null;
     }
 
-    /*
-    const onContextMenu = React.useCallback((event: IMouseEvent) => {
-        blocksAnnotationRepoStore.selectItem(block.id, event, 'context');
-    }, [blocksAnnotationRepoStore, block.id]);
-
-    const contextMenuCallbacks = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
-     */
-
     return (
         <TableRow role="checkbox"
+                  {...contextMenuHandlers}
                   onClick={onClick}
                   selected={blocksAnnotationRepoStore.isSelected(block.id)}
                   style={{ userSelect: 'none' }}

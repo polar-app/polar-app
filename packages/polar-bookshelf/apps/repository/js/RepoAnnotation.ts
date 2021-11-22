@@ -51,7 +51,7 @@ export interface RepoAnnotation {
 
 /**
  * Additional metadata on a highlight.
- * @Deprecated
+ * @deprecated
  */
 export interface RepoHighlightInfo {
     color?: HighlightColor;
