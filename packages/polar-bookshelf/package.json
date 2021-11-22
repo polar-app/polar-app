@@ -146,7 +146,7 @@
     "mobx-react-lite": "=3.2.0",
     "moment": "=2.29.1",
     "path-to-regexp": "=3.2.0",
-    "pdfjs-dist": "=2.8.250-polar.4",
+    "pdfjs-dist": "=2.8.250-polar.3",
     "polar-accounts": "0.0.0",
     "polar-answers-api": "0.0.0",
     "polar-assets": "0.0.0",

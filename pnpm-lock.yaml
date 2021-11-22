@@ -411,7 +411,7 @@ importers:
       mocha: '=9.1.1'
       moment: '=2.29.1'
       path-to-regexp: '=3.2.0'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-accounts: 0.0.0
       polar-answers-api: 0.0.0
       polar-assets: 0.0.0
@@ -540,7 +540,7 @@ importers:
       mobx-react-lite: 3.2.0_7e8915efb8617305a7bfbed08f2cda09
       moment: 2.29.1
       path-to-regexp: 3.2.0
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-accounts: link:../polar-accounts
       polar-answers-api: link:../polar-answers-api
       polar-assets: link:../polar-assets
@@ -1518,14 +1518,14 @@ importers:
       chai: 4.2.0
       jsdom: '=16.7.0'
       mocha: '=9.1.1'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
       '@types/node': 14.17.9
       canvas: 2.8.0
       jsdom: 16.7.0_canvas@2.8.0
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
@@ -2091,7 +2091,7 @@ importers:
       chai: 4.2.0
       jszip: '=3.7.1'
       mocha: '=9.1.1'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-assets: 0.0.0
       polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
@@ -2137,7 +2137,7 @@ importers:
       '@types/react-dom': 17.0.2
       chai: 4.2.0
       mocha: 9.1.1
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
       polar-test: link:../polar-test
       react: 17.0.2
@@ -16285,8 +16285,8 @@ packages:
       sha.js: 2.4.11
     dev: true
 
-  /pdfjs-dist/2.8.250-polar.4_worker-loader@3.0.8:
-    resolution: {integrity: sha512-tnB/sb8MkmWyGssiZt16h5/U2IFEpOnlAALvIk2bqHg1cQqd8EjMwFHJw7DVhPqRLUwKYmKra2fphZqFqLVZnw==}
+  /pdfjs-dist/2.8.250-polar.3_worker-loader@3.0.8:
+    resolution: {integrity: sha512-eASYNVQy1B/9qiP8FhtN7Bsvq389xYu2WBPBJjxOVQ5aNiCn0HRutPvGt08TMc11iNjYJBZU73t0f3YwHseyMA==}
     peerDependencies:
       worker-loader: ^3.0.7
     dependencies:
