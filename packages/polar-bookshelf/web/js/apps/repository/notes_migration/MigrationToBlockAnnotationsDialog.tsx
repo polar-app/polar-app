@@ -2,8 +2,8 @@ import {Box, Button, LinearProgress, Typography} from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import * as React from 'react';
-import {LinearProgressWithLabel} from '../../ui/dialogs/LinearProgressWithLabel';
-import {LogoAndTextSideBySide} from '../../../../apps/repository/js/login/Authenticator';
+import {LinearProgressWithLabel} from '../../../ui/dialogs/LinearProgressWithLabel';
+import {LogoAndTextSideBySide} from '../../../../../apps/repository/js/login/Authenticator';
 import Grid from '@material-ui/core/Grid';
 
 interface IProps {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export const MigrationToBlockAnnotationsMain = (props: IProps) => {
+export const MigrationToBlockAnnotationsDialog = (props: IProps) => {
 
     const { progress, onStart, onSkip, skippable, started } = props;
     const classes = useStyles();

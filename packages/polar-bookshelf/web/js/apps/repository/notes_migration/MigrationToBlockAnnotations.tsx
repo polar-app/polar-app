@@ -1,38 +1,38 @@
 import React from "react";
 import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {AdaptiveDialog} from "../../mui/AdaptiveDialog";
-import {useMigrationSnapshotByName} from "./UseMigrationSnapshot";
-import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
+import {AdaptiveDialog} from "../../../mui/AdaptiveDialog";
+import {useMigrationSnapshotByName} from "../UseMigrationSnapshot";
+import {useFirestore} from "../../../../../apps/repository/js/FirestoreProvider";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
-import {JSONRPC, JSONRPCError} from "../../datastore/sharing/rpc/JSONRPC";
-import {useStateRef} from "../../hooks/ReactHooks";
+import {JSONRPC, JSONRPCError} from "../../../datastore/sharing/rpc/JSONRPC";
+import {useStateRef} from "../../../hooks/ReactHooks";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
+import {MigrationToBlockAnnotationsDialog} from "./MigrationToBlockAnnotationsDialog";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {ErrorType} from "../../ui/data_loader/UseSnapshotSubscriber";
+import {ErrorType} from "../../../ui/data_loader/UseSnapshotSubscriber";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Analytics} from "../../analytics/Analytics";
+import {Analytics} from "../../../analytics/Analytics";
 import {IFirestoreTypedQuerySnapshot} from "polar-firestore-like/src/FirestoreSnapshots";
-import {useBlocksStore} from "../../notes/store/BlocksStore";
-import {useUserTagsDB} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
+import {useBlocksStore} from "../../../notes/store/BlocksStore";
+import {useUserTagsDB} from "../../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {Contents} from "../../notes/content/Contents";
+import {Contents} from "../../../notes/content/Contents";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IBlocksStore} from "../../notes/store/IBlocksStore";
-import {NameContent} from "../../notes/content/NameContent";
+import {IBlocksStore} from "../../../notes/store/IBlocksStore";
+import {NameContent} from "../../../notes/content/NameContent";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
-import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
+import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../../notes/NoteUtils";
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 
 interface IProps {
     readonly children: JSX.Element;
@@ -522,7 +522,7 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
 
     return (
         <AdaptiveDialog>
-            <MigrationToBlockAnnotationsMain
+            <MigrationToBlockAnnotationsDialog
                 onSkip={handleSkip}
                 onStart={handleStart}
                 progress={percentage}

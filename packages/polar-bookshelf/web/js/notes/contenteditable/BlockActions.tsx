@@ -20,6 +20,11 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                   .replace(/.\]\]$/, '');
     }, []);
 
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-link" as const,
+        target: id,
+    }), []);
+
     return (
         <BlockAction id={id}
                      trigger="[["
@@ -28,10 +33,7 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-link",
-                        target: id
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
@@ -45,6 +47,11 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
         return str.replace(new RegExp(`^${TAG_IDENTIFIER}`), '');
     }, []);
 
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-tag" as const,
+        target: `${TAG_IDENTIFIER}${id}`,
+    }), []);
+
     return (
         <BlockAction id={id}
                      trigger={TAG_IDENTIFIER}
@@ -53,10 +60,7 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-tag",
-                        target: `${TAG_IDENTIFIER}${id}`
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
@@ -92,8 +96,6 @@ export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props
     }, [blocksStore]);
 
     const noteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
-
-
 
     return (
         <WikiLinksBlockAction disabled={! canHaveLinks} id={id} noteActionsProvider={noteActionsProvider}>
