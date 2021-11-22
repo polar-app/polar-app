@@ -154,11 +154,13 @@ importers:
       firebase-admin: '=10.0.0'
       firebase-tools: '=9.16.0'
       polar-firebase: 0.0.0
+      polar-firebase-admin: 0.0.0
       polar-shared: 0.0.0
     dependencies:
       '@google-cloud/firestore': 4.15.1
       firebase-admin: 10.0.0
       polar-firebase: link:../polar-firebase
+      polar-firebase-admin: link:../polar-firebase-admin
       polar-shared: link:../polar-shared
     devDependencies:
       firebase-tools: 9.16.0
