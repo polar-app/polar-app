@@ -312,8 +312,10 @@ jobs:
               find ${path} -size +${limit}c |tee /dev/stderr| egrep '.*'
             }
 
+            cat dist/public/repository-bundle.js | gzip -9 -c > dist/public/repository-bundle.js.gz
+
             verify_file_max dist/public/repository-bundle.js 7000000
-            verify_file_max dist/public/repository-bundle.js.gz 1300000
+            verify_file_max dist/public/repository-bundle.js.gz 1800000
 
           # TODO: we have to assert the size of the raw .js file as well as the .js.gz file here
           # because while compression is nice, having a small .js bundle means the Javascript
