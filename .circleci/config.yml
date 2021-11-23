@@ -334,8 +334,7 @@ jobs:
             VERSION=$(semver $CURRENT_VERSION -i)
             NEW_VERSION="\\\""$VERSION"\\\""
             git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
-            sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
-            pnpm -r exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json
+            pnpm -r --no-bail exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json || true
             git tag -a "$VERSION" -m "automated tag version $VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
