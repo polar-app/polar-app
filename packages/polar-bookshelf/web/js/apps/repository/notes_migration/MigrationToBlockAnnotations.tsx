@@ -213,23 +213,27 @@ function useMigrationExecutor() {
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationStarted(firestore, user.uid, started);
 
+        console.info('doc_meta migration has started');
+
         let failCount = 0;
 
         for (const { id } of unmigratedDocMetas) {
             try {
+                console.info(`Migrating doc_meta record with the id: ${id}`);
                 await MigrationToBlockAnnotationsHelpers.migrateDocMeta(id);
             } catch (e) {
+                console.error(`Migration of doc_meta with the id: ${id} has failed`, e);
+
                 if (e instanceof JSONRPCError) {
-                    console.log(`Migration of doc_meta with the id: ${id} has failed`, e);
                     failCount += 1;
                 } else {
-
 
                     // Network error I think
                     throw e;
                 }
             }
 
+            console.info(`Migration of doc_meta record with the id: ${id} is complete`);
             setProgressData(({
                 total,
                 started,
@@ -243,6 +247,7 @@ function useMigrationExecutor() {
         await MigrationToBlockAnnotationsHelpers
             .writeMigrationCompleted(firestore, user.uid, started, ISODateTimeStrings.create());
 
+        console.info('doc_meta migration has finished');
     }, [setProgressData, progressDataRef, firestore, user]);
 
     /**
@@ -340,6 +345,7 @@ function useTagsMigrationExecutor() {
             });
 
             Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-started`);
+            console.info('tags migration has started');
 
             const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
             const documentBlockStructures = blocksStore.createBlockContentStructure(documentBlockIDs);
@@ -369,16 +375,18 @@ function useTagsMigrationExecutor() {
             });
 
             Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-completed`);
+
+            console.info('tags migration has finished');
         };
 
         migrateData().catch((err) => {
+            console.error('MigrationToBlockAnnotations failed with error', err);
             setError(err);
 
             if (! user) {
                 return console.error('useMigratorExecutor: user not found');
             }
 
-            console.error('MigrationToBlockAnnotations failed with error', err);
             Analytics.event2(`${ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX}-failed`);
 
             MigrationCollection.write(firestore, {
