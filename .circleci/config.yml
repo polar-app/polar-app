@@ -315,8 +315,17 @@ jobs:
               min="${2}"
               max="${3}"
 
-              find ${path} -size -${min}c |tee /dev/stderr| egrep '.*'
-              find ${path} -size +${max}c |tee /dev/stderr| egrep '.*'
+              filesize=$(stat -c%s "$path")
+
+              if [ $filesize < $min ]; then
+                echo "File too small: ${path}"
+                return 1
+              fi
+
+              if [ $filesize < $max ]; then
+                echo "File too large: ${path}"
+                return 1
+              fi
 
             }
 
