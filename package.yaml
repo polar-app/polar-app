@@ -14,7 +14,7 @@ scripts:
     "test-all": "pnpm m run test"
     "test-ci-all": "pnpm m run test-ci"
     "karma-all": "pnpm m run karma"
-    "publish-all": "pnpm m publish"
+    "publish-all": "pnpm m --config.use-beta-cli=true publish --no-git-checks"
     "clean": "git clean -Xfd && git clean -fd"
     "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)"
     "serve": "(cd packages/polar-bookshelf && pnpm run webpack-serve)"
