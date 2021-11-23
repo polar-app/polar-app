@@ -82,7 +82,8 @@
     "stripe": "=8.119.0",
     "uuid": "3.3.3",
     "yargs": "=15.3.1",
-    "@sentry/node": "6.15.0"
+    "@sentry/node": "6.15.0",
+    "form-data": "=4.0.0"
   },
   "devDependencies": {
     "@types/archiver": "=5.1.1",
