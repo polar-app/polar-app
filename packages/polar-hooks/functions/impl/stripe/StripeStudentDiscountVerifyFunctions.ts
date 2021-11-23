@@ -1,7 +1,7 @@
 import {IDUser} from "../util/IDUsers";
 import {StudentDiscountUniversities, StudentDiscountVerifications} from "./StripeStudentDiscountFunctions";
 import {StripeMode, StripeUtils} from "./StripeUtils";
-import {University} from "polar-shared/src/util/Universities";
+import {University} from "polar-shared/src/util/University";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 export interface StripeStudentDiscountVerifyRequest {
