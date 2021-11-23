@@ -1,3 +1,0 @@
- - have to set workspaces in packages.json to packages/*
- - yarn login isn't prompting for a password and is not using our repository (isn't finding packages) 
- - 

@@ -2,9 +2,6 @@
   "name": "polar-assets",
   "version": "0.0.0",
   "description": "",
-  "scripts": {
-    "dist": "echo noop"
-  },
   "devDependencies": {},
   "dependencies": {},
   "repository": {
@@ -18,7 +15,6 @@
     "url": "https://github.com/burtonator/polar-app-public/issues"
   },
   "homepage": "https://github.com/burtonator/polar-app-public",
-  "type": "images",
   "files": [
     "**/*.svg",
     "**/*.png",
@@ -28,5 +24,6 @@
     "*.d.ts",
     "images.d.ts",
     "package.json"
-  ]
+  ],
+  "scripts": {}
 }
