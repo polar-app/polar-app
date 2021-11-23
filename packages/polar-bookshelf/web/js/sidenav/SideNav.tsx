@@ -30,9 +30,8 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
-import {FeatureToggleEnabled} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
-import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from '../notes/NoteUtils';
+import {WithNotesIntegration} from '../notes/NoteUtils';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -321,7 +320,7 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-        <SideNavInitializer />
+            <SideNavInitializer />
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
@@ -336,17 +335,17 @@ export const SideNav = React.memo(function SideNav() {
                             <HomeButton/>
                             <AnnotationsButton/>
 
-                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
-                                <NotesButton/>
-                            </FeatureToggleEnabled>
+                            <WithNotesIntegration>
+                                <NotesButton />
+                            </WithNotesIntegration>
 
                             <DeviceRouter desktop={<StatsButton/>} />
 
 
-                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
+                            <WithNotesIntegration>
                                 <SideNavDivider/>
                                 <DailyNotesButton/>
-                            </FeatureToggleEnabled>
+                            </WithNotesIntegration>
 
                             {tabs.length > 0 && (
                                 <SideNavDivider/>

@@ -1,46 +1,41 @@
 import React from "react";
 import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {AdaptiveDialog} from "../../mui/AdaptiveDialog";
-import {useMigrationSnapshotByName} from "./UseMigrationSnapshot";
-import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
+import {AdaptiveDialog} from "../../../mui/AdaptiveDialog";
+import {useMigrationSnapshotByName} from "../UseMigrationSnapshot";
+import {useFirestore} from "../../../../../apps/repository/js/FirestoreProvider";
 import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
 import {DocMetaHolder} from "polar-shared/src/metadata/DocMetaHolder";
-import {JSONRPC, JSONRPCError} from "../../datastore/sharing/rpc/JSONRPC";
-import {useStateRef} from "../../hooks/ReactHooks";
+import {JSONRPC, JSONRPCError} from "../../../datastore/sharing/rpc/JSONRPC";
+import {useStateRef} from "../../../hooks/ReactHooks";
 import {MigrationCollection} from "polar-firebase/src/firebase/om/MigrationCollection";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {MigrationToBlockAnnotationsMain} from "./MigrationToBlockAnnotationsMain";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
+import {MigrationToBlockAnnotationsDialog} from "./MigrationToBlockAnnotationsDialog";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {ErrorType} from "../../ui/data_loader/UseSnapshotSubscriber";
+import {ErrorType} from "../../../ui/data_loader/UseSnapshotSubscriber";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Analytics} from "../../analytics/Analytics";
+import {Analytics} from "../../../analytics/Analytics";
 import {IFirestoreTypedQuerySnapshot} from "polar-firestore-like/src/FirestoreSnapshots";
-import {useBlocksStore} from "../../notes/store/BlocksStore";
-import {useUserTagsDB} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
+import {useBlocksStore} from "../../../notes/store/BlocksStore";
+import {useUserTagsDB} from "../../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {Contents} from "../../notes/content/Contents";
+import {Contents} from "../../../notes/content/Contents";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IBlocksStore} from "../../notes/store/IBlocksStore";
-import {NameContent} from "../../notes/content/NameContent";
+import {IBlocksStore} from "../../../notes/store/IBlocksStore";
+import {NameContent} from "../../../notes/content/NameContent";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
-import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
+import {NotesIntegrationContext} from "../../../notes/NoteUtils";
 
-interface IProps {
-    readonly children: JSX.Element;
-}
-
-const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
-const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
+export const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
 const TAGS_MIGRATION_NAME = 'block-usertagsdb';
+const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const ANALYTICS_MIGRATION_EVENT_PREFIX = 'migration-to-block-annotations';
 const ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX = 'user-tags-migration';
 
@@ -365,16 +360,6 @@ function useTagsMigrationExecutor() {
             // Commit 💩
             await userTagsDB.commit();
 
-            await firestore.collection('user_pref')
-                .doc(user.uid)
-                .update({
-                    [`value.${NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}`]: {
-                        key: NOTES_INTEGRATION_FEATURE_TOGGLE_NAME,
-                        value: "true",
-                        written: ISODateTimeStrings.create(),
-                    }
-                });
-
             await MigrationCollection.write(firestore, {
                 uid: user.uid,
                 name: TAGS_MIGRATION_NAME,
@@ -410,7 +395,9 @@ function useTagsMigrationExecutor() {
     return { migrationExecutor, error };
 }
 
-const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQuerySnapshot<MigrationCollection.IMigration> | undefined): 'notstarted' | 'started' | 'completed' | undefined => {
+type IMigrationStatus = 'notstarted' | 'started' | 'completed' | undefined;
+
+export const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQuerySnapshot<MigrationCollection.IMigration> | undefined): IMigrationStatus => {
     if (! migrationSnapshot) {
         return undefined;
     }
@@ -426,21 +413,17 @@ const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQueryS
     return 'started';
 };
 
-export const MIGRATION_TO_BLOCKS_ENABLED = LocalStorageFeatureToggles.get('migration-to-block-annotations');
+interface IProps {
+    readonly docMetaMigrationStatus: IMigrationStatus;
+    readonly tagsMigrationStatus: IMigrationStatus;
+}
 
-export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
+export const MigrationToBlockAnnotationsRenderer: React.FC<IProps> = React.memo((props) => {
+    const { docMetaMigrationStatus, tagsMigrationStatus } = props;
 
-    const [migrationSnapshot, migrationSnapshotError] = useMigrationSnapshotByName(MIGRATION_TO_BLOCK_ANNOTATIONS_NAME);
-    const [tagsMigrationSnapshot, tagsMigrationSnapshotError] = useMigrationSnapshotByName(TAGS_MIGRATION_NAME);
     const { progressData, error: migrationError, migrationExecutor } = useMigrationExecutor();
     const { migrationExecutor: tagsMigrationExecutor, error: tagsMigrationError } = useTagsMigrationExecutor();
     const [docMetaSnapshot, docMetasSnapshotError] = MigrationToBlockAnnotationsHelpers.useDocMetaMigrationSnapshotFromServer();
-    const [skipped, setSkipped] = React.useState<boolean>(false);
-
-    const handleSkip = React.useCallback(() => setSkipped(true), [setSkipped]);
-
-    const migrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(migrationSnapshot), [migrationSnapshot]);
-    const tagsMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(tagsMigrationSnapshot), [tagsMigrationSnapshot]);
 
     /**
      * If the migration was started but not finished
@@ -448,53 +431,35 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
      */
     React.useEffect(() => {
 
-        if (migrationStatus === 'started' && docMetaSnapshot) {
+        if (docMetaSnapshot && 
+            (docMetaMigrationStatus === 'started' || docMetaMigrationStatus === 'notstarted')) {
             migrationExecutor(docMetaSnapshot);
         }
 
-    }, [migrationStatus, docMetaSnapshot, migrationExecutor]);
+    }, [docMetaMigrationStatus, docMetaSnapshot, migrationExecutor]);
 
     /**
      * Start the tag migration once the main migration is complete
      */
     React.useEffect(() => {
 
-        if (migrationStatus === 'completed'
+        if (docMetaMigrationStatus === 'completed'
             && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
             setTimeout(() => tagsMigrationExecutor(), 4000);
         }
-    }, [tagsMigrationExecutor, migrationStatus, tagsMigrationStatus]);
-
-    const handleStart = React.useCallback(() => {
-
-        if (migrationStatus === 'notstarted' && docMetaSnapshot) {
-            migrationExecutor(docMetaSnapshot);
-        }
-
-    }, [migrationExecutor, migrationStatus, docMetaSnapshot]);
+    }, [tagsMigrationExecutor, docMetaMigrationStatus, tagsMigrationStatus]);
 
     const percentage = React.useMemo(() => {
+
         if (tagsMigrationStatus === 'started' || ! progressData) {
             return undefined;
         }
         
         return Percentages.calculate(progressData.current, progressData.total);
+
     }, [progressData, tagsMigrationStatus]);
 
-    if (! migrationSnapshot || ! tagsMigrationSnapshot) {
-        return <LinearProgress />;
-    }
-
-
-    if (! MIGRATION_TO_BLOCKS_ENABLED || skipped || (migrationStatus === 'completed' && tagsMigrationStatus === 'completed')) {
-
-        return props.children;
-    }
-
-    const genericError = migrationSnapshotError
-                         || migrationError
-                         || tagsMigrationSnapshotError
-                         || tagsMigrationError;
+    const genericError = migrationError || tagsMigrationError;
 
     if (genericError) {
         return (
@@ -518,15 +483,68 @@ export const MigrationToBlockAnnotations = React.memo((props: IProps) => {
         );
     }
 
-    const started = migrationStatus === 'started' || migrationStatus === 'completed';
+    return (
+        <AdaptiveDialog>
+            <MigrationToBlockAnnotationsDialog
+                progress={percentage}
+                started
+            />
+        </AdaptiveDialog>
+    );
+});
+
+export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
+    const [docMetaMigrationSnapshot, docMetaMigrationSnapshotError] = useMigrationSnapshotByName(MIGRATION_TO_BLOCK_ANNOTATIONS_NAME);
+    const [tagsMigrationSnapshot, tagsMigrationSnapshotError] = useMigrationSnapshotByName(TAGS_MIGRATION_NAME);
+
+    const docMetaMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(docMetaMigrationSnapshot), [docMetaMigrationSnapshot]);
+    const tagsMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(tagsMigrationSnapshot), [tagsMigrationSnapshot]);
+
+    const [skipped, setSkipped] = React.useState<boolean>(false);
+    const [started, setStarted] = React.useState<boolean>(false);
+
+    const handleSkip = React.useCallback(() => setSkipped(true), [setSkipped]);
+    const handleStart = React.useCallback(() => setStarted(true), [setStarted]);
+
+    const isDone = docMetaMigrationStatus === 'completed' && tagsMigrationStatus === 'completed';
+
+    if (! docMetaMigrationSnapshot || ! tagsMigrationSnapshot) {
+        return <LinearProgress />;
+    }
+
+    if (skipped || isDone) {
+        return <NotesIntegrationContext.Provider value={isDone} children={props.children} />
+    }
+
+    const error = docMetaMigrationSnapshotError || tagsMigrationSnapshotError;
+
+    if (error) {
+        return (
+            <Alert severity="error">
+                We're unable to migrate your data: <q>{error.message}</q>
+            </Alert>
+        );
+    }
+    
+    /**
+     * Here we start the migration in the following two cases
+     * 1. The user has explicity started the migration.
+     * 2. The migration was started & failed or never finished
+     */
+    if (started || docMetaMigrationStatus === 'started' || tagsMigrationStatus === 'started') {
+        return (
+            <MigrationToBlockAnnotationsRenderer
+                docMetaMigrationStatus={docMetaMigrationStatus}
+                tagsMigrationStatus={tagsMigrationStatus}
+            />
+        );
+    }
 
     return (
         <AdaptiveDialog>
-            <MigrationToBlockAnnotationsMain
+            <MigrationToBlockAnnotationsDialog
                 onSkip={handleSkip}
                 onStart={handleStart}
-                progress={percentage}
-                started={started}
                 skippable
             />
         </AdaptiveDialog>
