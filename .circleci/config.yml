@@ -309,17 +309,22 @@ jobs:
           name: Verify webapp budget
           command: |
 
-            verify_file_max() {
-              path="${1}"
-              limit="${2}"
+            verify_file_size() {
 
-              find ${path} -size +${limit}c |tee /dev/stderr| egrep '.*'
+              path="${1}"
+              min="${2}"
+              max="${3}"
+
+              find ${path} -size -${min}c |tee /dev/stderr| egrep '.*'
+              find ${path} -size +${max}c |tee /dev/stderr| egrep '.*'
+
             }
 
+            cd /home/circleci/project/packages/polar-bookshelf
             cat dist/public/repository-bundle.js | gzip -9 -c > dist/public/repository-bundle.js.gz
 
-            verify_file_max dist/public/repository-bundle.js 7000000
-            verify_file_max dist/public/repository-bundle.js.gz 1800000
+            verify_file_size dist/public/repository-bundle.js 6000000 7000000
+            verify_file_size dist/public/repository-bundle.js.gz 1000000 1800000
 
       - persist_to_workspace:
           root: /home/circleci/
