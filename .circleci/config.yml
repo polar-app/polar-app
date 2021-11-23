@@ -318,7 +318,7 @@ jobs:
               filesize=$(stat -c%s "$path")
 
               if [ $filesize < $min ]; then
-                echo "File too small: ${path}"
+                echo "File too small: ${path}. This is a GOOD thing but it means you need to update CI to adjust the budgets."
                 return 1
               fi
 
