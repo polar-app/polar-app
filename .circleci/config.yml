@@ -297,13 +297,17 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: build and verify webapp
+          name: Build webapp
           command: |
             set -e
             cd /home/circleci/project/packages/polar-bookshelf
             free -m
             pnpm run build-webapp
             echo "Webapp Built Successfully"
+
+      - run:
+          name: Verify webapp budget
+          command: |
 
             verify_file_max() {
               path="${1}"
@@ -316,10 +320,6 @@ jobs:
 
             verify_file_max dist/public/repository-bundle.js 7000000
             verify_file_max dist/public/repository-bundle.js.gz 1800000
-
-          # TODO: we have to assert the size of the raw .js file as well as the .js.gz file here
-          # because while compression is nice, having a small .js bundle means the Javascript
-          # is evaluated faster on load
 
       - persist_to_workspace:
           root: /home/circleci/
