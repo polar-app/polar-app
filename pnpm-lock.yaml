@@ -379,7 +379,6 @@ importers:
       '@types/toastr': '=2.1.35'
       '@types/universal-analytics': '=0.4.5'
       '@types/use-persisted-state': '=0.3.0'
-      '@types/uuid': 3.4.5
       amplitude-js: '=8.3.1'
       base58check: 2.0.0
       blueimp-md5: 2.16.0
@@ -487,7 +486,6 @@ importers:
       typemoq: '=2.1.0'
       use-local-storage-state: '=6.0.0'
       userflow.js: '=2.2.0'
-      uuid: 3.3.3
       wait-for-expect: 3.0.1
       workbox-cli: '=5.1.3'
     dependencies:
@@ -610,7 +608,6 @@ importers:
       throttle-debounce: 3.0.1
       typemoq: 2.1.0
       use-local-storage-state: 6.0.0_react@17.0.2
-      uuid: 3.3.3
     devDependencies:
       '@types/amplitude-js': 7.0.1
       '@types/blueimp-md5': 2.18.0
@@ -639,7 +636,6 @@ importers:
       '@types/toastr': 2.1.35
       '@types/universal-analytics': 0.4.5
       '@types/use-persisted-state': 0.3.0
-      '@types/uuid': 3.4.5
       chai: 4.2.0
       cypress: 8.2.0
       dotenv: 8.6.0
@@ -1153,24 +1149,20 @@ importers:
       '@google-cloud/storage': '=5.8.5'
       '@sentry/node': 6.15.0
       '@types/escape-html': 0.0.20
-      '@types/uuid': 3.4.5
       escape-html: '=1.0.3'
       firebase-functions: '=3.16.0'
       polar-backend-shared: 0.0.0
       polar-firebase: 0.0.0
       polar-webapp-dist: 0.0.0
-      uuid: 3.3.3
     dependencies:
       '@google-cloud/storage': 5.8.5
       '@sentry/node': 6.15.0
       '@types/escape-html': 0.0.20
-      '@types/uuid': 3.4.5
       escape-html: 1.0.3
       firebase-functions: 3.16.0
       polar-backend-shared: link:../polar-backend-shared
       polar-firebase: link:../polar-firebase
       polar-webapp-dist: link:../polar-webapp-dist
-      uuid: 3.3.3
 
   packages/polar-hooks/functions:
     specifiers:
@@ -1192,7 +1184,6 @@ importers:
       '@types/node-fetch': 2.5.7
       '@types/prompts': '=2.0.14'
       '@types/stripe': '=6.32.13'
-      '@types/uuid': 3.4.5
       '@types/yargs': '=13.0.12'
       archiver: '=5.3.0'
       base58check: 2.0.0
@@ -1239,7 +1230,6 @@ importers:
       prerender-node: '=3.2.5'
       prompts: '=2.4.1'
       stripe: '=8.119.0'
-      uuid: 3.3.3
       yargs: '=15.3.1'
     dependencies:
       '@amplitude/node': 1.8.0
@@ -1255,7 +1245,6 @@ importers:
       '@types/http-proxy-middleware': 0.19.3
       '@types/node-fetch': 2.5.7
       '@types/prompts': 2.0.14
-      '@types/uuid': 3.4.5
       '@types/yargs': 13.0.12
       archiver: 5.3.0
       base58check: 2.0.0
@@ -1299,7 +1288,6 @@ importers:
       prerender-node: 3.2.5
       prompts: 2.4.1
       stripe: 8.119.0
-      uuid: 3.3.3
       yargs: 15.3.1
     devDependencies:
       '@types/archiver': 5.1.1
@@ -1785,7 +1773,6 @@ importers:
       '@types/node-fetch': 2.5.7
       '@types/stopword': '=0.3.0'
       '@types/twitter-text': '=2.0.0'
-      '@types/uuid': 3.4.5
       base-x: '=3.0.8'
       base58check: 2.0.0
       blueimp-md5: 2.16.0
@@ -1799,7 +1786,6 @@ importers:
       stopword: '=0.3.4'
       timekeeper: 2.2.0
       twitter-text: '=3.1.0'
-      uuid: 3.3.3
       wait-for-expect: 3.0.1
     dependencies:
       base-x: 3.0.8
@@ -1812,7 +1798,6 @@ importers:
       stopword: 0.3.4
       timekeeper: 2.2.0
       twitter-text: 3.1.0
-      uuid: 3.3.3
     devDependencies:
       '@types/blueimp-md5': 2.18.0
       '@types/chai': 4.2.11
@@ -1822,7 +1807,6 @@ importers:
       '@types/node-fetch': 2.5.7
       '@types/stopword': 0.3.0
       '@types/twitter-text': 2.0.0
-      '@types/uuid': 3.4.5
       chai: 4.2.0
       mocha: 9.1.1
       polar-test: link:../polar-test
@@ -7011,11 +6995,6 @@ packages:
     dependencies:
       '@types/react': 17.0.34
     dev: true
-
-  /@types/uuid/3.4.5:
-    resolution: {integrity: sha512-MNL15wC3EKyw1VLF+RoVO4hJJdk9t/Hlv3rt1OL65Qvuadm4BYo6g9ZJQqoq7X8NBFSsQXgAujWciovh2lpVjA==}
-    dependencies:
-      '@types/node': 14.17.9
 
   /@types/verror/1.10.5:
     resolution: {integrity: sha512-9UjMCHK5GPgQRoNbqdLIAvAy0EInuiqbW0PBMtVP6B5B2HQJlvoJHM+KodPZMEjOa5VkSc+5LH7xy+cUzQdmHw==}
@@ -19651,12 +19630,6 @@ packages:
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
     dev: true
-
-  /uuid/3.3.3:
-    resolution: {integrity: sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==}
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-    hasBin: true
-    dev: false
 
   /uuid/3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
