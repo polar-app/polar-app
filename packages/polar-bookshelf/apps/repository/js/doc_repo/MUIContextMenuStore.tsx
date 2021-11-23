@@ -17,7 +17,7 @@ export class MUIContextMenuStore<O> {
 
     constructor() {
         this._active = undefined;
-        this._id = Hashcodes.createRandomID(8)
+        this._id = Hashcodes.createRandomID({len: 8})
         makeObservable(this);
     }
 
