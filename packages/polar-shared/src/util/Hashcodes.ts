@@ -114,7 +114,7 @@ export namespace Hashcodes {
 
         function getRandomValues(): Uint8Array {
 
-            if (typeof window !== 'undefined') {
+            if (typeof window!== 'undefined' && typeof crypto !== 'undefined') {
 
                 // crypto is only found in the browser and not in NodeJS and is
                 // a global object so we don't need to import anything
