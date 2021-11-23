@@ -4,7 +4,6 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import {useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
-import {Sets} from "polar-shared/src/util/Sets";
 
 export const BlocksAnnotationRepoTableMenu = observer(function BlocksAnnotationRepoTableMenu() {
 
@@ -13,8 +12,8 @@ export const BlocksAnnotationRepoTableMenu = observer(function BlocksAnnotationR
 
     const handleDelete = React.useCallback(() => {
         const selected = blocksAnnotationRepoStore.selected;
-        console.log("Performing delete on N annotations: ", selected.size)
-        blocksStore.deleteBlocks(Sets.toArray(selected));
+        console.log("Performing delete on N annotations: ", selected.length)
+        blocksStore.deleteBlocks(selected);
     }, [blocksAnnotationRepoStore.selected, blocksStore])
 
     return (

@@ -25,17 +25,21 @@ import {Comparators} from "polar-shared/src/util/Comparators";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
-import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 
-export const NOTES_INTEGRATION_FEATURE_TOGGLE_NAME = 'notes-integration';
+export const NotesIntegrationContext = React.createContext<boolean>(false);
 
 export const useNotesIntegrationEnabled = () => {
-    return useFeatureToggle(NOTES_INTEGRATION_FEATURE_TOGGLE_NAME);
+    return React.useContext(NotesIntegrationContext);
 };
 
+export const WithNotesIntegration: React.FC = (props) => {
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+    return notesIntegrationEnabled ? <>{props.children}</> : null;
+};
 
 export const useDocumentBlockFromDocInfoCreator = () => {
     const blocksStore = useBlocksStore();
@@ -162,8 +166,8 @@ export const useBlockTagEditorDialog = () => {
 };
 
 export interface IHasLinksBlockTarget {
-    id: BlockIDStr;
-    content: HasLinks;
+    readonly id: BlockIDStr;
+    readonly content: HasLinks;
 };
 
 export const useUpdateBlockTags = () => {

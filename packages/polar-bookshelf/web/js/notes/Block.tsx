@@ -260,7 +260,7 @@ export const BlockInner = observer((props: IProps) => {
     );
 });
 
-export const Block = observer(function Note(props: IProps) {
+export const Block = React.memo(function Note(props: IProps) {
 
     return (
         <BlockContextMenu>
