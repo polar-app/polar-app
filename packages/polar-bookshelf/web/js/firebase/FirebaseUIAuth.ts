@@ -167,17 +167,6 @@ export namespace FirebaseUIAuth {
 
     }
 
-    export async function loginWithCustomToken(customToken: string) {
-
-        Preconditions.assertPresent(firebaseui, 'firebaseui');
-        Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
-
-        const auth = firebase.auth();
-
-        const userCredential = await auth.signInWithCustomToken(customToken);
-
-    }
-
     interface IProviderAuthOpts {
         readonly signInSuccessUrl?: string;
     }
