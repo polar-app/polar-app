@@ -31,11 +31,11 @@ import {NameContent} from "../../../notes/content/NameContent";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
-import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../../notes/NoteUtils";
+import {NotesIntegrationContext} from "../../../notes/NoteUtils";
 
-const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
-const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
+export const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
 const TAGS_MIGRATION_NAME = 'block-usertagsdb';
+const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const ANALYTICS_MIGRATION_EVENT_PREFIX = 'migration-to-block-annotations';
 const ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX = 'user-tags-migration';
 
@@ -360,16 +360,6 @@ function useTagsMigrationExecutor() {
             // Commit 💩
             await userTagsDB.commit();
 
-            await firestore.collection('user_pref')
-                .doc(user.uid)
-                .update({
-                    [`value.${NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}`]: {
-                        key: NOTES_INTEGRATION_FEATURE_TOGGLE_NAME,
-                        value: "true",
-                        written: ISODateTimeStrings.create(),
-                    }
-                });
-
             await MigrationCollection.write(firestore, {
                 uid: user.uid,
                 name: TAGS_MIGRATION_NAME,
@@ -407,7 +397,7 @@ function useTagsMigrationExecutor() {
 
 type IMigrationStatus = 'notstarted' | 'started' | 'completed' | undefined;
 
-const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQuerySnapshot<MigrationCollection.IMigration> | undefined): IMigrationStatus => {
+export const getMigrationStatusFromSnapshot = (migrationSnapshot: IFirestoreTypedQuerySnapshot<MigrationCollection.IMigration> | undefined): IMigrationStatus => {
     if (! migrationSnapshot) {
         return undefined;
     }
@@ -523,7 +513,7 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
     }
 
     if (skipped || isDone) {
-        return <>{props.children}</>;
+        return <NotesIntegrationContext.Provider value={isDone} children={props.children} />
     }
 
     const error = docMetaMigrationSnapshotError || tagsMigrationSnapshotError;

@@ -115,7 +115,7 @@ export class BlocksAnnotationRepoStore {
     }
 
     public isSelected(id: BlockIDStr): boolean {
-        return !! this._selected.get(id);
+        return this._selected.get(id) === true;
     }
 
     public idsToRepoAnnotationBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
