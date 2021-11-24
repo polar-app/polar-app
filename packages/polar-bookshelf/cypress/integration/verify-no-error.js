@@ -2,7 +2,7 @@ describe('Verify we do not have any errors', () => {
 
     beforeEach(() => {
         // run the following "it" tests with the specified width/height viewport
-        // cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
+        cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
 
         cy.clearLocalStorage()
         cy.clearCookies();
