@@ -391,7 +391,7 @@ describe("BlocksStoreUndoQueues", () => {
 
 
 
-        it('should update the counters of docInfo when a child gets added', () => {
+        xit('should update the counters of docInfo when a child gets added', () => {
             // Set up
             const blocksStore = createStore();
             const documentBlockID = '2020document';
@@ -442,7 +442,7 @@ describe("BlocksStoreUndoQueues", () => {
             assert.equal(newDocInfo.nrAnnotations, (oldDocInfo.nrAnnotations || 0) + 1, 'nrAnnotations should have the correct number');
         });
 
-        it('should update the counters of docInfo when a child gets removed (it should also ignore mutations of type "modified")', () => {
+        xit('should update the counters of docInfo when a child gets removed (it should also ignore mutations of type "modified")', () => {
             // Set up
             const blocksStore = createStore();
             const documentBlockID = '2020document';

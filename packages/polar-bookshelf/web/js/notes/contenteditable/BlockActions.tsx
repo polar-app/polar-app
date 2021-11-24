@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {ActionMenuItemsProvider, createActionsProvider} from "../../mui/action_menu/ActionStore";
@@ -20,6 +21,11 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                   .replace(/.\]\]$/, '');
     }, []);
 
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-link" as const,
+        target: id,
+    }), []);
+
     return (
         <BlockAction id={id}
                      trigger="[["
@@ -28,10 +34,7 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-link",
-                        target: id
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
@@ -45,6 +48,11 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
         return str.replace(new RegExp(`^${TAG_IDENTIFIER}`), '');
     }, []);
 
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-tag" as const,
+        target: `${TAG_IDENTIFIER}${id}`,
+    }), []);
+
     return (
         <BlockAction id={id}
                      trigger={TAG_IDENTIFIER}
@@ -53,10 +61,7 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-tag",
-                        target: `${TAG_IDENTIFIER}${id}`
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
@@ -75,7 +80,7 @@ interface IBlockActionsProviderProps extends IBlockActionToggles {
     id: BlockIDStr;
 }
 
-export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props) => {
+export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = observer((props) => {
     const { id, children } = props;
 
     const blocksStore = useBlocksStore();
@@ -89,11 +94,9 @@ export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props
                 text: label,
             };
         });
-    }, [blocksStore]);
+    }, [blocksStore.namedBlockEntries]);
 
     const noteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
-
-
 
     return (
         <WikiLinksBlockAction disabled={! canHaveLinks} id={id} noteActionsProvider={noteActionsProvider}>
@@ -102,5 +105,5 @@ export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props
             </TagsBlockAction>
         </WikiLinksBlockAction>
     );
-};
+});
 

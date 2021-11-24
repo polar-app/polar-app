@@ -139,6 +139,15 @@ function categorizeMessages(messages: ReadonlyArray<IConsoleMessage>): 'invalid-
                 "Not registering service worker - localhost/webpack-dev-server",
                 "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
                 "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
+            ],
+            [
+                "@firebase/firestore:",
+                "Material-UI: The `css` function is deprecated. Use the `styleFunctionSx` instead.",
+                "Material-UI: useResizeContainer - The parent of the grid has an empty height.",
+                "Material-UI: useResizeContainer - The parent of the grid has an empty height.",
+                "Not registering service worker - localhost/webpack-dev-server",
+                "Warning: forwardRef render functions accept exactly two parameters: props and ref. %s",
+                "Warning: React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead."
             ]
         ];
 
