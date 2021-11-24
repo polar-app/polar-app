@@ -1,5 +1,4 @@
 import {OccupationSelect} from "./selectors/OccupationSelect";
-import {University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
@@ -12,6 +11,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {PolarLogoImage} from "../../nav/PolarLogoImage";
 import {PolarLogoText} from "../../nav/PolarLogoText";
+import {University} from "polar-shared/src/util/University";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -24,11 +24,20 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export interface AcademicOccupationProfile {
+export interface AcademicOccupationProfileV0 {
+    readonly ver: 'v0';
+    readonly occupation: AcademicOccupation;
+    readonly fieldOfStudy: FieldOfStudy;
+}
+
+export interface AcademicOccupationProfileV1 {
+    readonly ver: 'v1';
     readonly occupation: AcademicOccupation;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
+
+export type AcademicOccupationProfile = AcademicOccupationProfileV0 | AcademicOccupationProfileV1;
 
 export interface BusinessOccupationProfile {
     readonly occupation: BusinessOccupation;
@@ -222,7 +231,7 @@ export const ProfileConfigurator = (props: IProps) => {
 
                     {state.occupation && state.occupation.type === 'academic' &&
                         <AcademicProfileConfigurator occupation={state.occupation}
-                                                     form={state.form as FormData<AcademicOccupationProfile>}
+                                                     form={state.form as FormData<AcademicOccupationProfileV0>}
                                                      onForm={form => onForm(form)}/>}
 
                     {/*{state.occupation && state.occupation.type === 'business' &&*/}

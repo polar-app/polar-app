@@ -296,7 +296,10 @@ module.exports = {
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
-        // new BundleAnalyzerPlugin(),
+        // NOTE: uncomment the following line to add the webpack bundle analyzer
+        // plugin.  This is important to keep becuase it allows us to figure out
+        // why/when our app is becoming bloated.
+        // new (require('webpack-bundle-analyzer')).BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
         //
