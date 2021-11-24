@@ -4,8 +4,8 @@
   "description": "An internal package to contain our assets for bundling with the webapp so that we can just depend on the bundle to include our assets.",
   "main": "index.js",
   "scripts": {
-    "dist": "rm -rf public && mkdir -p public && cd ../polar-bookshelf && yarn run build-webapp && cp -rp dist/public/* ../polar-webapp-dist/public",
-    "prepublishOnly": "yarn run dist"
+    "dist": "rm -rf public && mkdir -p public && cd ../polar-bookshelf && pnpm run build-webapp && cp -rp dist/public/* ../polar-webapp-dist/public",
+    "prepublishOnly": "pnpm run dist"
   },
   "keywords": [],
   "author": "",

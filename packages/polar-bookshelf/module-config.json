@@ -1,5 +1,6 @@
 {
   "Typescript": true,
   "Mocha": true,
-  "Karma": false
+  "Karma": false,
+  "KarmaDelete": false
 }

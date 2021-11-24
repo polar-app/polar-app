@@ -27,20 +27,22 @@ export const BlocksAnnotationInlineViewer = observer(function AnnotationInlineVi
     }
 
     return (
-        <Box m={1} style={{ flex: 1 }}>
+        <Box m={1} flex="1">
             <NoteProviders>
                 <BlocksTreeProvider root={activeBlock.id} autoExpandRoot>
-                    <Block
-                        id={activeBlock.id}
-                        parent={activeBlock.parent}
-                        alwaysExpanded
-                        noBullet
-                        dontRenderChildren
-                    />
-                    <BlockItems
-                        blockIDs={activeBlock.itemsAsArray}
-                        indent={false}
-                        parent={activeBlock.id} />
+                    <Box display="flex" flexDirection="column">
+                        <Block
+                            id={activeBlock.id}
+                            parent={activeBlock.parent}
+                            alwaysExpanded
+                            noBullet
+                            dontRenderChildren
+                        />
+                        <BlockItems
+                            blockIDs={activeBlock.itemsAsArray}
+                            indent={false}
+                            parent={activeBlock.id} />
+                    </Box>
                 </BlocksTreeProvider>
             </NoteProviders>
         </Box>

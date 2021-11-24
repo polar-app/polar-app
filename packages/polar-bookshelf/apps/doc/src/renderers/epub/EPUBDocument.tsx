@@ -88,6 +88,13 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
 
             console.log("linkClicked: ", href);
 
+            // Whenever a link is opened inside the mobile app, handle it natively through the native browser
+            if ((window as any).isNativeApp) {
+                // Set by packages-isolated/mobile/InAppLiteServer/util/injectedJavaScriptBeforeContentLoaded.tsx,
+                window.open(href);
+                return;
+            }
+
             linkLoader(href, {focus: true, newWindow: true});
 
             event.stopPropagation();

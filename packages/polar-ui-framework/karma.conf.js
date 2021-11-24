@@ -9,7 +9,6 @@ const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production'
 const isDev = mode === 'development';
 const path = require("path");
 const fs = require("fs");
-
 module.exports = (config) => {
     config.set({
         client: {
@@ -26,7 +25,6 @@ module.exports = (config) => {
         },
         // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
-
         customHeaders: [
             {
                 match: '.*',
@@ -39,10 +37,8 @@ module.exports = (config) => {
                 value: 'require-corp',
             }
         ],
-
         // make sure to include webpack as a framework
         frameworks: ['mocha', 'webpack'],
-
         plugins: [
             'karma-chrome-launcher',
             'karma-webpack',
@@ -50,24 +46,18 @@ module.exports = (config) => {
             'karma-spec-reporter',
             'karma-junit-reporter'
         ],
-
         files: [
-
             { pattern: 'src/**/*.ts', watched: false },
-
         ],
         exclude: [
           'src/**/*.d.ts'
         ],
-
         preprocessors: {
             // add webpack as preprocessor
             'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
-
         reporters: ['junit', 'spec'],
-
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
         webpack: {
@@ -117,16 +107,12 @@ module.exports = (config) => {
                                     // from 20s to about 10s
                                     transpileOnly: isDev,
                                     experimentalWatchApi: true,
-
                                     // IMPORTANT! use happyPackMode mode to speed-up
                                     // compilation and reduce errors reported to webpack
                                     happyPackMode: true
-
                                 }
                             }
-
                         ]
-
                     },
                     {
                         // make SVGs use data URLs.
@@ -174,12 +160,10 @@ module.exports = (config) => {
                     {
                         // We have to use a null-loader for Electron because if we don't require()
                         // will attempt to use 'fs' which doesn't exist in the browser.
-                        test: path.resolve(__dirname, '../../node_modules/electron/index.js'),
+                        test: /\/electron\/index.js$/,
                         use: 'null-loader'
                     }
-
                 ]
-
             },
             // plugins: [
             //     // ...webpackConfig.plugins,
@@ -198,7 +182,6 @@ module.exports = (config) => {
                     electron: false
                 }
             },
-
         },
     });
 }

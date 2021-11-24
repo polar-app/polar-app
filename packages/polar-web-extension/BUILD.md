@@ -1,6 +1,6 @@
 # Doing a release
 
-yarn run clean
+pnpm run clean
 npx webpack
 export POLAR_EXTENSION_TYPE=BETA
 ./dist.sh

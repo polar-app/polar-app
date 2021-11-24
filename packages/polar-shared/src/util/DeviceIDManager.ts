@@ -20,7 +20,7 @@ export namespace DeviceIDManager {
     }
 
     function generateDeviceID(): DeviceIDStr {
-        return Hashcodes.createRandomID2();
+        return Hashcodes.createRandomID({len: Infinity});
     }
 
     function writeDeviceID(deviceID: DeviceIDStr): DeviceIDStr {

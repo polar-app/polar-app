@@ -48,7 +48,7 @@ export class DatastoreFetchImports {
 
         // create a random ID so we can use this with google cloud functions and write the data there for
         // just a moment.
-        const tmpName = Hashcodes.createRandomID(20);
+        const tmpName = Hashcodes.createRandomID({len: 20});
 
         log.notice("Fetching URL: " + docURL);
 

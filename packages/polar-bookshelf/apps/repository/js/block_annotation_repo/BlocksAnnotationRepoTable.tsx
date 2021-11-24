@@ -97,11 +97,11 @@ export const BlocksAnnotationRepoTable = observer(function BlocksAnnotationRepoT
                         <BlocksAnnotationRepoTableContextMenu>
 
                             <IntersectionList values={highlightBlockIDs}
-                                                  root={root}
-                                                  blockSize={10}
-                                                  BlockComponent={BlockComponent}
-                                                  HiddenBlockComponent={HiddenBlockComponent}
-                                                  VisibleComponent={VisibleComponent} />
+                                              root={root}
+                                              blockSize={10}
+                                              BlockComponent={BlockComponent}
+                                              HiddenBlockComponent={HiddenBlockComponent}
+                                              VisibleComponent={VisibleComponent} />
 
                         </BlocksAnnotationRepoTableContextMenu>
                     </Table>

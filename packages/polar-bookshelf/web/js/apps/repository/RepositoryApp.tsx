@@ -38,7 +38,7 @@ import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotatio
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
@@ -71,10 +71,10 @@ import {NotesScreen} from "../../notes/NoteScreen";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
-import {MigrationToBlockAnnotations} from "../../apps/repository/MigrationToBlockAnnotations"
+import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
-import {NOTES_INTEGRATION_FEATURE_TOGGLE_NAME} from "../../notes/NoteUtils";
+import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 
 interface IProps {
@@ -342,28 +342,24 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                                    component={EnableFeatureToggle}/>
 
-                                            <FeatureToggleEnabled featureName={NOTES_INTEGRATION_FEATURE_TOGGLE_NAME}>
+                                            <WithNotesIntegration>
+                                                <PersistentRoute path={RoutePathNames.NOTES}
+                                                                 exact
+                                                                 strategy="display">
+                                                    <NotesRepoScreen/>
+                                                </PersistentRoute>
 
-                                                <>
+                                                <PersistentRoute path={RoutePathNames.DAILY}
+                                                                 strategy="display"
+                                                                 exact>
+                                                    <NotesScreen/>
+                                                </PersistentRoute>
 
-                                                    <PersistentRoute path={RoutePathNames.NOTES}
-                                                                     exact
-                                                                     strategy="display">
-                                                        <NotesRepoScreen/>
-                                                    </PersistentRoute>
+                                                <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                       component={NotesScreen}/>
 
-                                                    <PersistentRoute path={RoutePathNames.DAILY}
-                                                                     strategy="display"
-                                                                     exact>
-                                                        <NotesScreen/>
-                                                    </PersistentRoute>
 
-                                                    <Route path={`${RoutePathNames.NOTES}/:id`}
-                                                           component={NotesScreen}/>
-
-                                                </>
-
-                                            </FeatureToggleEnabled>
+                                            </WithNotesIntegration>
 
                                             <Route path="/hello-ssr"
                                                    component={HelloServerSideRender}/>

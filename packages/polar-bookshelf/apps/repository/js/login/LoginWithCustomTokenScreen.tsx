@@ -1,11 +1,11 @@
 import React from 'react';
-import {FirebaseUIAuth, FirebaseUIAuthOptions} from "../../../../web/js/firebase/FirebaseUIAuth";
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';
 import {useLogger} from "../../../../web/js/mui/MUILogger";
+import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
 
-interface IProps extends FirebaseUIAuthOptions {
+interface IProps {
 
 }
 
@@ -24,7 +24,7 @@ export const LoginWithCustomTokenScreen = React.memo(function LoginWithCustomTok
     const handleAuth = React.useCallback((customToken: string) => {
 
         async function doAsync() {
-            await FirebaseUIAuth.loginWithCustomToken(customToken);
+            await FirebaseAuth.loginWithCustomToken(customToken);
             document.location.href = '/';
         }
 
