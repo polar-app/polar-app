@@ -32,14 +32,19 @@ describe('Hashcodes', function() {
         assert.isNotNull(hashcode);
         assert.isDefined(hashcode);
 
+        assert.equal(hashcode.length, 10);
+
     });
 
-    it("createRandomID2", function () {
+    it("createRandomID with full length", function () {
 
-        const hashcode = Hashcodes.createRandomID2();
+        const hashcode = Hashcodes.createRandomID({len: Infinity});
         assert.isNotNull(hashcode);
         assert.isDefined(hashcode);
 
+        assert.equal(hashcode.length, 44);
+
     });
+
 
 });

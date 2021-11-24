@@ -24,7 +24,7 @@ export class Contacts {
      * have to use an index to determine if we have a group invitation.
      */
     public static createID() {
-        return Hashcodes.createRandomID(20);
+        return Hashcodes.createRandomID({len: 20});
     }
 
     public static async createOrUpdate(batch: IWriteBatch<unknown>, idUser: IDUser, contactInit: ContactInit) {

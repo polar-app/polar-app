@@ -30,12 +30,10 @@
   },
   "dependencies": {
     "@types/escape-html": "0.0.20",
-    "@types/uuid": "3.4.5",
     "escape-html": "=1.0.3",
     "polar-backend-shared": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-webapp-dist": "0.0.0",
-    "uuid": "3.3.3",
     "firebase-functions": "=3.16.0",
     "@sentry/node": "6.15.0",
     "@google-cloud/storage": "=5.8.5"
