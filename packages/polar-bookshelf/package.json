@@ -88,7 +88,7 @@
         "@types/universal-analytics": "=0.4.5",
         "@types/use-persisted-state": "=0.3.0",
         "chai": "4.2.0",
-        "cypress": "=8.2.0",
+        "cypress": "=9.1.0",
         "dotenv": "=8.6.0",
         "dtsmake": "0.0.10",
         "install": "=0.12.2",
