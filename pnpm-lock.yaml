@@ -243,16 +243,6 @@ importers:
       mocha: 9.1.1
       polar-test: link:../polar-test
 
-  packages/polar-backend-datastore:
-    specifiers:
-      '@material-ui/styles': '=4.11.4'
-      polar-bookshelf: 0.0.0
-      polar-shared: 0.0.0
-    dependencies:
-      '@material-ui/styles': 4.11.4
-      polar-bookshelf: link:../polar-bookshelf
-      polar-shared: link:../polar-shared
-
   packages/polar-backend-shared:
     specifiers:
       '@types/chai': 4.2.11
@@ -440,6 +430,7 @@ importers:
       polar-react: 0.0.0
       polar-release-metadata: 0.0.0
       polar-shared: 0.0.0
+      polar-shared-datastore: 0.0.0
       polar-shared-webserver: 0.0.0
       polar-snapshot-cache: 0.0.0
       polar-spaced-repetition: 0.0.0
@@ -566,6 +557,7 @@ importers:
       polar-react: link:../polar-react
       polar-release-metadata: link:../polar-release-metadata
       polar-shared: link:../polar-shared
+      polar-shared-datastore: link:../polar-shared-datastore
       polar-shared-webserver: link:../polar-shared-webserver
       polar-snapshot-cache: link:../polar-snapshot-cache
       polar-spaced-repetition: link:../polar-spaced-repetition
@@ -1118,6 +1110,9 @@ importers:
       mocha: 9.1.1
       polar-test: link:../polar-test
 
+  packages/polar-google-cloud-storage-like:
+    specifiers: {}
+
   packages/polar-google-fonts:
     specifiers: {}
 
@@ -1151,7 +1146,6 @@ importers:
       '@types/escape-html': 0.0.20
       escape-html: '=1.0.3'
       firebase-functions: '=3.16.0'
-      polar-backend-shared: 0.0.0
       polar-firebase: 0.0.0
       polar-webapp-dist: 0.0.0
     dependencies:
@@ -1160,7 +1154,6 @@ importers:
       '@types/escape-html': 0.0.20
       escape-html: 1.0.3
       firebase-functions: 3.16.0
-      polar-backend-shared: link:../polar-backend-shared
       polar-firebase: link:../polar-firebase
       polar-webapp-dist: link:../polar-webapp-dist
 
@@ -1223,6 +1216,7 @@ importers:
       polar-sendgrid: 0.0.0
       polar-sentry-cloud-functions: 0.0.0
       polar-shared: 0.0.0
+      polar-shared-datastore: 0.0.0
       polar-shared-webserver: 0.0.0
       polar-test: 0.0.0
       polar-url: 0.0.0
@@ -1284,6 +1278,7 @@ importers:
       polar-sendgrid: link:../../polar-sendgrid
       polar-sentry-cloud-functions: link:../../polar-sentry-cloud-functions
       polar-shared: link:../../polar-shared
+      polar-shared-datastore: link:../../polar-shared-datastore
       polar-shared-webserver: link:../../polar-shared-webserver
       polar-url: link:../../polar-url
       polar-webapp-dist: link:../../polar-webapp-dist
@@ -1818,6 +1813,41 @@ importers:
       polar-test: link:../polar-test
       wait-for-expect: 3.0.1
 
+  packages/polar-shared-datastore:
+    specifiers:
+      '@types/chai': 4.2.11
+      '@types/mocha': '=9.0.0'
+      chai: 4.2.0
+      mocha: '=9.1.1'
+      polar-firestore-like: 0.0.0
+      polar-shared: 0.0.0
+      polar-test: 0.0.0
+    dependencies:
+      polar-firestore-like: link:../polar-firestore-like
+      polar-shared: link:../polar-shared
+    devDependencies:
+      '@types/chai': 4.2.11
+      '@types/mocha': 9.0.0
+      chai: 4.2.0
+      mocha: 9.1.1
+      polar-test: link:../polar-test
+
+  packages/polar-shared-document-importer:
+    specifiers:
+      '@material-ui/styles': '=4.11.4'
+      polar-bookshelf: 0.0.0
+      polar-epub: 0.0.0
+      polar-pdf: 0.0.0
+      polar-shared: 0.0.0
+      polar-shared-datastore: 0.0.0
+    dependencies:
+      '@material-ui/styles': 4.11.4
+      polar-bookshelf: link:../polar-bookshelf
+      polar-epub: link:../polar-epub
+      polar-pdf: link:../polar-pdf
+      polar-shared: link:../polar-shared
+      polar-shared-datastore: link:../polar-shared-datastore
+
   packages/polar-shared-webserver:
     specifiers:
       '@types/chai': 4.2.11
@@ -2085,7 +2115,6 @@ importers:
       mocha: '=9.1.1'
       pdfjs-dist: '=2.8.250-polar.3'
       polar-assets: 0.0.0
-      polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
       polar-content-capture: 0.0.0
       polar-epub-generator: 0.0.0
@@ -2095,6 +2124,8 @@ importers:
       polar-page-metadata-parser: 0.0.0
       polar-react: 0.0.0
       polar-shared: 0.0.0
+      polar-shared-datastore: 0.0.0
+      polar-shared-document-importer: 0.0.0
       polar-test: 0.0.0
       polar-web-capture: 0.0.0
       polar-web-extension-api: 0.0.0
@@ -2108,7 +2139,6 @@ importers:
       '@material-ui/icons': 4.11.2_8f76ac0a517dc414459d6962f6e4d50b
       jszip: 3.7.1
       polar-assets: link:../polar-assets
-      polar-backend-datastore: link:../polar-backend-datastore
       polar-bookshelf: link:../polar-bookshelf
       polar-content-capture: link:../polar-content-capture
       polar-epub-generator: link:../polar-epub-generator
@@ -2117,6 +2147,7 @@ importers:
       polar-page-metadata-parser: link:../polar-page-metadata-parser
       polar-react: link:../polar-react
       polar-shared: link:../polar-shared
+      polar-shared-document-importer: link:../polar-shared-document-importer
       polar-web-capture: link:../polar-web-capture
       polar-web-extension-api: link:../polar-web-extension-api
       react: 17.0.2
@@ -2134,6 +2165,7 @@ importers:
       mocha: 9.1.1
       pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
+      polar-shared-datastore: link:../polar-shared-datastore
       polar-test: link:../polar-test
 
   packages/polar-web-extension-api:
