@@ -1,45 +1,62 @@
 import { JSDOM } from "jsdom";
 import { ReadabilityCapture } from "polar-web-capture/src/capture/ReadabilityCapture";
 import { CapturedContentEPUBGenerator } from "polar-web-capture/src/captured/CapturedContentEPUBGenerator";
-import fetch from 'node-fetch';
-import { writeFileSync, mkdtempSync} from "fs";
+import fetch, { Response } from 'node-fetch';
+import { writeFileSync, mkdtempSync, createWriteStream } from "fs";
 import { EPUBMetadataUsingNode } from "polar-epub/src/EPUBMetadataUsingNode";
 import { PDFMetadata } from "polar-pdf/src/pdf/PDFMetadata";
-export namespace urlCapture {
+import { FileUpload } from './fileUpload';
+import { FirebaseAdminSecrets } from 'polar-firebase-admin/src/FirebaseAdminSecrets';
+export namespace UrlCapture {
 
     type CaptureType = 'pdf' | 'epub';
 
     const PDF_TYPE = "application/pdf";
 
+    const MAX_CONTENT_LENGTH = 104857600; // 100 MiB
 
     export async function fetchUrl(url: string): Promise<void> {
         const response = await fetch(url);
 
-        let path;
+        checkContentLength(response);
+
+        const { path, file, stream } = FileUpload.init();
         
         if (response.headers.get('content-type') === PDF_TYPE) {
-            const pdf = await response.arrayBuffer();
 
-            path = writeTempFile(pdf, 'pdf');
-            
-            console.log(await PDFMetadata.getMetadata(path));
-        } else {
-            const epub = await generateEPUB(await response.text(), url);
 
-            path = writeTempFile(epub, 'epub');
-            
-            console.log(await EPUBMetadataUsingNode.getMetadata(path));
+            async function writeStream() {
+                return await new Promise((resolve, reject) => {
+                    response.body.pipe(stream);
+
+                    response.body.on("error", (error) => {
+                        reject(error);
+                    });
+
+                    stream.on('finish', () => {
+                        stream.end();
+                        resolve(null);
+                    })
+                    
+                })
+            }
+
+            await writeStream();
+
+            // console.log(await PDFMetadata.getMetadata(path));
         }
     }
 
-    function writeTempFile(arrayBuffer: ArrayBuffer, type: CaptureType): string {
-        const file = new Uint8Array(arrayBuffer);
+    function checkContentLength(response: Response) {
 
-        const relativePath = mkdtempSync('temp-') + `temp.${type}`
+        const contentLength = response.headers.get('Content-Length');
 
-        writeFileSync(relativePath, file);
+        if (contentLength !== null) {
+            if (parseInt(contentLength) > MAX_CONTENT_LENGTH) {
+                throw new Error("Content exceeds maximum length");
+            }
+        }
 
-        return `${__dirname}/../${relativePath}`;
     }
 
     export async function generateEPUB(html: string, url: string): Promise<ArrayBuffer> {
