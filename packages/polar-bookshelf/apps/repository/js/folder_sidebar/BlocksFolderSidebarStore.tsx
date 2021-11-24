@@ -252,7 +252,7 @@ export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ child
         }
 
 
-        const targets = blocksStore.idsToBlocks(Array.from(annotationRepoStore.selected));
+        const targets = blocksStore.idsToBlocks(annotationRepoStore.selected);
 
         updateBlockTags(targets, [tag], 'add');
 

@@ -15,8 +15,8 @@ interface IBlockItemsStylesProps {
 const useStyles = makeStyles<Theme, IBlockItemsStylesProps>(() =>
     createStyles({
         root: ({ indent }) => ({
-            flexGrow: 1,
             paddingLeft: indent ? 18 : 0,
+            flex: 1,
         }),
     }),
 );
