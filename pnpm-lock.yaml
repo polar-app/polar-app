@@ -1191,6 +1191,7 @@ importers:
       '@types/node': '=14.17.9'
       '@types/node-fetch': 2.5.7
       '@types/prompts': '=2.0.14'
+      '@types/react': 17.0.2
       '@types/stripe': '=6.32.13'
       '@types/uuid': 3.4.5
       '@types/yargs': '=13.0.12'
@@ -1225,7 +1226,6 @@ importers:
       polar-migration-block-annotations: 0.0.0
       polar-pdf: 0.0.0
       polar-private-beta: 0.0.0
-      polar-react: 0.0.0
       polar-rpc: 0.0.0
       polar-search: 0.0.0
       polar-search-api: 0.0.0
@@ -1239,6 +1239,8 @@ importers:
       polar-webapp-links: 0.0.0
       prerender-node: '=3.2.5'
       prompts: '=2.4.1'
+      react: '=17.0.2'
+      react-dom: '=17.0.2'
       stripe: '=8.119.0'
       uuid: 3.3.3
       yargs: '=15.3.1'
@@ -1287,7 +1289,6 @@ importers:
       polar-migration-block-annotations: link:../../polar-migration-block-annotations
       polar-pdf: link:../../polar-pdf
       polar-private-beta: link:../../polar-private-beta
-      polar-react: link:../../polar-react
       polar-rpc: link:../../polar-rpc
       polar-search: link:../../polar-search
       polar-search-api: link:../../polar-search-api
@@ -1300,6 +1301,8 @@ importers:
       polar-webapp-links: link:../../polar-webapp-links
       prerender-node: 3.2.5
       prompts: 2.4.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
       stripe: 8.119.0
       uuid: 3.3.3
       yargs: 15.3.1
@@ -1308,6 +1311,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
+      '@types/react': 17.0.2
       '@types/stripe': 6.32.13
       chai: 4.2.0
       mocha: 9.1.1
