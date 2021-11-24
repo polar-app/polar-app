@@ -413,7 +413,7 @@ importers:
       mocha: '=9.1.1'
       moment: '=2.29.1'
       path-to-regexp: '=3.2.0'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-accounts: 0.0.0
       polar-answers-api: 0.0.0
       polar-assets: 0.0.0
@@ -514,8 +514,6 @@ importers:
       '@sentry/tracing': 6.2.3
       '@stripe/stripe-js': 1.11.0
       '@types/mousetrap': 1.6.3
-      '@types/react': 17.0.2
-      '@types/react-dom': 17.0.2
       amplitude-js: 8.3.1
       base58check: 2.0.0
       blueimp-md5: 2.16.0
@@ -542,7 +540,7 @@ importers:
       mobx-react-lite: 3.2.0_7e8915efb8617305a7bfbed08f2cda09
       moment: 2.29.1
       path-to-regexp: 3.2.0
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-accounts: link:../polar-accounts
       polar-answers-api: link:../polar-answers-api
       polar-assets: link:../polar-assets
@@ -627,6 +625,8 @@ importers:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       '@types/prop-types': 15.7.4
+      '@types/react': 17.0.2
+      '@types/react-dom': 17.0.2
       '@types/react-helmet': 6.1.0
       '@types/react-router-dom': 5.1.5
       '@types/react-virtualized': 9.21.10
@@ -1191,6 +1191,7 @@ importers:
       '@types/node': '=14.17.9'
       '@types/node-fetch': 2.5.7
       '@types/prompts': '=2.0.14'
+      '@types/react': '=17.0.2'
       '@types/stripe': '=6.32.13'
       '@types/uuid': 3.4.5
       '@types/yargs': '=13.0.12'
@@ -1204,6 +1205,7 @@ importers:
       express: '=4.17.1'
       firebase-admin: '=10.0.0'
       firebase-functions: '=3.16.0'
+      form-data: '=4.0.0'
       js-sha3: 0.8.0
       mailgun.js: '=3.3.0'
       mocha: '=9.1.1'
@@ -1224,7 +1226,6 @@ importers:
       polar-migration-block-annotations: 0.0.0
       polar-pdf: 0.0.0
       polar-private-beta: 0.0.0
-      polar-react: 0.0.0
       polar-rpc: 0.0.0
       polar-search: 0.0.0
       polar-search-api: 0.0.0
@@ -1238,6 +1239,8 @@ importers:
       polar-webapp-links: 0.0.0
       prerender-node: '=3.2.5'
       prompts: '=2.4.1'
+      react: '=17.0.2'
+      react-dom: '=17.0.2'
       stripe: '=8.119.0'
       uuid: 3.3.3
       yargs: '=15.3.1'
@@ -1266,6 +1269,7 @@ importers:
       express: 4.17.1
       firebase-admin: 10.0.0
       firebase-functions: 3.16.0_firebase-admin@10.0.0
+      form-data: 4.0.0
       js-sha3: 0.8.0
       mailgun.js: 3.3.0
       node-fetch: 2.6.1
@@ -1285,7 +1289,6 @@ importers:
       polar-migration-block-annotations: link:../../polar-migration-block-annotations
       polar-pdf: link:../../polar-pdf
       polar-private-beta: link:../../polar-private-beta
-      polar-react: link:../../polar-react
       polar-rpc: link:../../polar-rpc
       polar-search: link:../../polar-search
       polar-search-api: link:../../polar-search-api
@@ -1298,6 +1301,8 @@ importers:
       polar-webapp-links: link:../../polar-webapp-links
       prerender-node: 3.2.5
       prompts: 2.4.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
       stripe: 8.119.0
       uuid: 3.3.3
       yargs: 15.3.1
@@ -1306,6 +1311,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
+      '@types/react': 17.0.2
       '@types/stripe': 6.32.13
       chai: 4.2.0
       mocha: 9.1.1
@@ -1520,14 +1526,14 @@ importers:
       chai: 4.2.0
       jsdom: '=16.7.0'
       mocha: '=9.1.1'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
       '@types/node': 14.17.9
       canvas: 2.8.0
       jsdom: 16.7.0_canvas@2.8.0
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
@@ -2093,7 +2099,7 @@ importers:
       chai: 4.2.0
       jszip: '=3.7.1'
       mocha: '=9.1.1'
-      pdfjs-dist: '=2.8.250-polar.4'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-assets: 0.0.0
       polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
@@ -2129,6 +2135,9 @@ importers:
       polar-shared: link:../polar-shared
       polar-web-capture: link:../polar-web-capture
       polar-web-extension-api: link:../polar-web-extension-api
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-router-dom: 5.2.0_react@17.0.2
       readability: 0.2.0-polar.2
     devDependencies:
       '@types/chai': 4.2.11
@@ -2139,12 +2148,9 @@ importers:
       '@types/react-dom': 17.0.2
       chai: 4.2.0
       mocha: 9.1.1
-      pdfjs-dist: 2.8.250-polar.4_worker-loader@3.0.8
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
       polar-test: link:../polar-test
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-router-dom: 5.2.0_react@17.0.2
 
   packages/polar-web-extension-api:
     specifiers:
@@ -11974,6 +11980,15 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.34
 
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.34
+    dev: false
+
   /formidable/1.2.2:
     resolution: {integrity: sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==}
     dev: false
@@ -12789,6 +12804,7 @@ packages:
       tiny-invariant: 1.2.0
       tiny-warning: 1.0.3
       value-equal: 1.0.1
+    dev: false
 
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=}
@@ -12806,6 +12822,7 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
 
   /home-dir/1.0.0:
     resolution: {integrity: sha1-KRfrRL3JByztqUJXlUOEfjAX/k4=}
@@ -15236,6 +15253,7 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
       tiny-warning: 1.0.3
+    dev: false
 
   /mini-css-extract-plugin/2.4.3_webpack@5.61.0:
     resolution: {integrity: sha512-zekavl9mZuGyk7COjsfFY/f655AX61EKE0AthXPrmDk+oZyjZ9WzO4WPjXnnO9xl8obK2kmM6rAQrBEmk+WK1g==}
@@ -16287,8 +16305,8 @@ packages:
       sha.js: 2.4.11
     dev: true
 
-  /pdfjs-dist/2.8.250-polar.4_worker-loader@3.0.8:
-    resolution: {integrity: sha512-tnB/sb8MkmWyGssiZt16h5/U2IFEpOnlAALvIk2bqHg1cQqd8EjMwFHJw7DVhPqRLUwKYmKra2fphZqFqLVZnw==}
+  /pdfjs-dist/2.8.250-polar.3_worker-loader@3.0.8:
+    resolution: {integrity: sha512-eASYNVQy1B/9qiP8FhtN7Bsvq389xYu2WBPBJjxOVQ5aNiCn0HRutPvGt08TMc11iNjYJBZU73t0f3YwHseyMA==}
     peerDependencies:
       worker-loader: ^3.0.7
     dependencies:
@@ -16907,6 +16925,7 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
 
   /react-draggable/4.4.3:
     resolution: {integrity: sha512-jV4TE59MBuWm7gb6Ns3Q1mxX8Azffb7oTtDtBgFkxRvhDp38YAARmRplrj0+XGkhOJB5XziArX+4HUUABtyZ0w==}
@@ -17045,6 +17064,7 @@ packages:
       react-router: 5.2.0_react@17.0.2
       tiny-invariant: 1.2.0
       tiny-warning: 1.0.3
+    dev: false
 
   /react-router/5.2.0_react@17.0.2:
     resolution: {integrity: sha512-smz1DUuFHRKdcJC0jobGo8cVbhO3x50tCL4icacOlcwDOEQPq4TMqwx3sY1TP+DvtTgz4nm3thuo7A+BK2U0Dw==}
@@ -17062,6 +17082,7 @@ packages:
       react-is: 16.13.1
       tiny-invariant: 1.2.0
       tiny-warning: 1.0.3
+    dev: false
 
   /react-side-effect/2.1.1_react@17.0.2:
     resolution: {integrity: sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==}
@@ -17180,6 +17201,7 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: false
 
   /read-config-file/6.0.0:
     resolution: {integrity: sha512-PHjROSdpceKUmqS06wqwP92VrM46PZSTubmNIMJ5DrMwg1OgenSTSEHIkCa6TiOJ+y/J0xnG1fFwG3M+Oi1aNA==}
@@ -17512,6 +17534,7 @@ packages:
 
   /resolve-pathname/3.0.0:
     resolution: {integrity: sha512-C7rARubxI8bXFNB/hqcp/4iUeIXJhJZvFPFPiSPRnhU5UPxzMFIl+2E6yY6c4k9giDJAhtV+enfA+G89N6Csng==}
+    dev: false
 
   /resolve-url/0.2.1:
     resolution: {integrity: sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=}
@@ -17802,6 +17825,7 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: false
 
   /schema-utils/2.7.0:
     resolution: {integrity: sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==}
@@ -19034,9 +19058,11 @@ packages:
 
   /tiny-invariant/1.2.0:
     resolution: {integrity: sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==}
+    dev: false
 
   /tiny-warning/1.0.3:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
+    dev: false
 
   /tinycolor2/1.4.2:
     resolution: {integrity: sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==}
@@ -19684,6 +19710,7 @@ packages:
 
   /value-equal/1.0.1:
     resolution: {integrity: sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==}
+    dev: false
 
   /vary/1.1.2:
     resolution: {integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=}
