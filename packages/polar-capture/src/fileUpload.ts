@@ -1,15 +1,24 @@
-import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
 import { Datastores } from "polar-hooks/functions/impl/datastore/Datastores";
+import { File } from "@google-cloud/storage"
+import { Hashcodes } from 'polar-shared/src/util/Hashcodes';
+export namespace FileUpload {
 
-export namespace fileUpload {
+    export function init() {
 
-    function init() {
-        const project = Datastores.createStorage().config.project;
+        const { config, storage} = Datastores.createStorage();
+    
+        const tmpName = "testcapture.pdf";
 
-        const bucketName = `gs://${project}.appspot.com`;
+        const bucketName = `gs://${config.project}.appspot.com`;
 
-        const bucketRef = FirebaseAdmin.createApp().storage().bucket(bucketName);
+        const bucket = storage.bucket(bucketName);
 
-        return bucketRef;
+        const path = `tmpCapture/${tmpName}`;
+
+        const file = new File(bucket, path);
+
+        const stream = file.createWriteStream();
+
+        return {path, file, stream};
     }
 }
