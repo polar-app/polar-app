@@ -24,3 +24,9 @@ test_results.xml
 # local testing scripts to ignore
 scripts/test.sh
 scripts/node-script.js
+
+# ignore script output
+module-packages-output.json
+
+# ignore MacOS specific metadata folder.
+.DS_Store

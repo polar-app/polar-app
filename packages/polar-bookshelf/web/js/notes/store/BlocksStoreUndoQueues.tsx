@@ -11,8 +11,6 @@ import {IBlocksStore} from "./IBlocksStore";
 import {BlockPredicates} from "./BlockPredicates";
 import {DocumentContent} from "../content/DocumentContent";
 import moment from "moment";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -660,6 +658,7 @@ export namespace BlocksStoreUndoQueues {
          *
          * Note: Blocks are only counted if their root block is of type 'document'
          */
+        /*
         const computeDeltas = () => {
             const deltaMap = new Map<BlockIDStr, Record<AnnotationContentType | 'other', number>>();
             const idsSet = new Set(identifiers);
@@ -727,6 +726,7 @@ export namespace BlocksStoreUndoQueues {
         };
 
         const deltaMap = computeDeltas();
+         */
 
         /**
          * Reflect the change in counters on the root document block.
@@ -734,9 +734,8 @@ export namespace BlocksStoreUndoQueues {
          * @see computeDeltas for more info
          */
         const update = (block: Block<DocumentContent>) => {
-            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
-
-            
+         
+            /*
             const getUpdatedDocumentContent = (): IDocumentContent | null => {
                 const deltaRecord = deltaMap.get(block.id);
                 const content = block.content.toJSON();
@@ -773,17 +772,14 @@ export namespace BlocksStoreUndoQueues {
 
                 return content;
             };
+            */
 
 
+            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
             const shouldUpdateTimestamps = moment(opts.updated).diff(block.updated, 'minutes') >= 1; // Check if 1 minute had passed since the last update
-            const updatedDocumentContent = getUpdatedDocumentContent();
 
-            if (shouldUpdateTimestamps || updatedDocumentContent) {
-                block.withMutation(() => {
-                    if (updatedDocumentContent) {
-                        block.setContent(updatedDocumentContent);
-                    }
-                }, opts);
+            if (shouldUpdateTimestamps) {
+                block.withMutation(() => {}, opts);
 
                 blocksStore.doPut([block]);
             }

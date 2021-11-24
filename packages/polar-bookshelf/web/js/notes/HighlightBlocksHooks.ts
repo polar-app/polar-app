@@ -12,7 +12,7 @@ import {Block} from "./store/Block";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
-import {autorun} from "mobx";
+import {comparer, reaction} from "mobx";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {FileType} from "../apps/main/file_loaders/FileType";
@@ -27,7 +27,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
-type IUseHighlightBlocks<T extends IHighlightContentType> = {
+type IUseHighlightBlocks = {
     /**
      * The ID of the document that the highlights belong to.
      */
@@ -36,7 +36,7 @@ type IUseHighlightBlocks<T extends IHighlightContentType> = {
     /**
      * The type of the highlights we want to fetch @see IHighlightContentType
      */
-    type?: T;
+    type?: IHighlightContentType;
 };
 
 const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
@@ -48,11 +48,11 @@ const isHighlightBlockOfType = <T extends IHighlightContentType>(type?: T) =>
  *
  * @param opts Options object.
  *
- * @return {ReadonlyArray<Block<AnnotationContentTypeMap[T]>>}
+ * @return {ReadonlyArray<BlockIDStr>}
  */
-export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHighlightBlocks<T>): ReadonlyArray<Block<AnnotationContentTypeMap[T]>> => {
+export const useHighlightBlockIDs = (opts: IUseHighlightBlocks): ReadonlyArray<BlockIDStr> => {
     const { docID, type } = opts;
-    const [highlights, setHighlights] = React.useState<ReadonlyArray<Block<AnnotationContentTypeMap[T]>>>([]);
+    const [highlights, setHighlights] = React.useState<ReadonlyArray<BlockIDStr>>([]);
     const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
@@ -60,24 +60,59 @@ export const useHighlightBlocks = <T extends IHighlightContentType>(opts: IUseHi
             return;
         }
 
-        const updateHighlights = () => {
+        const updateHighlights = (ids: ReadonlyArray<BlockIDStr>) => setHighlights(ids);
+
+        const getHighlights = (): ReadonlyArray<BlockIDStr> => {
             const documentBlock = getBlockForDocument(blocksStore, docID);
 
             if (! documentBlock) {
-                return;
+                return [];
             }
 
-            const blocks = blocksStore
+            return blocksStore
                 .idsToBlocks(documentBlock.itemsAsArray)
                 .filter(isHighlightBlockOfType(type))
-
-            setHighlights(blocks);
+                .map(({ id }) => id);
         };
 
-        return autorun(updateHighlights);
+        updateHighlights(getHighlights());
+
+        return reaction(getHighlights, updateHighlights, { equals: comparer.structural });
     }, [docID, blocksStore, type]);
 
     return highlights;
+};
+
+interface IUseBlockItemsOpts {
+    id: BlockIDStr;
+}
+
+/**
+ * Get the items of a specific block
+ *
+ * @param opts Options object.
+ *
+ * @return {ReadonlyArray<BlockIDStr>}
+ */
+export const useBlockItems = (opts: IUseBlockItemsOpts): ReadonlyArray<BlockIDStr> => {
+    const { id } = opts;
+    const blocksStore = useBlocksStore();
+    const [blockItems, setBlockItems] = React.useState<ReadonlyArray<BlockIDStr>>([]);
+
+    React.useEffect(() => {
+        const getBlockItems = () => {
+            const block = blocksStore.getBlock(id);   
+
+            return block ? block.itemsAsArray : [];
+        };
+
+        const updateBlockItems = (items: ReadonlyArray<BlockIDStr>) => setBlockItems(items);
+
+        updateBlockItems(getBlockItems());
+        return reaction(getBlockItems, updateBlockItems, { equals: comparer.structural });
+    }, [blocksStore, id]);
+
+    return blockItems;
 };
 
 /**

@@ -200,7 +200,7 @@ const SelectionButtonsWithinTableCell = React.memo(function SelectionButtonsWith
     const classes = useStyles();
 
     return(
-        <TableCell className={classes.th} style={{ display: 'table-cell', width: '200px'}}>
+        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
             <SelectionOrToggleButtons/>
         </TableCell>
     );
