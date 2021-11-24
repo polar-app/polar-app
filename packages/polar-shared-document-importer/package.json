@@ -3,17 +3,18 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "eslint": "eslint -c ./.eslintrc.json . --no-error-on-unmatched-pattern",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "cieslint": "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
-    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
-    "tsc": "tsc",
-    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tscwatch; fi;",
-    "tscwatch": "tsc --watch",
-    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "citest": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "cimocha": "mocha -p --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
+    "eslint": "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern",
+    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;",
+    "tsc": "tsc --project ./tsconfig.json",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;",
+    "mocha": "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "karma": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestK.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else timeout 5m karma start; fi;",
+    "eslint-fix": "eslint -c ../../.eslintrc.json . --fix",
+    "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "tsc-watch": "tsc --project ./tsconfig.json --watch",
+    "test-ci": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;",
+    "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
   },
   "author": "Polar",
   "license": "ISC",
@@ -21,11 +22,9 @@
     "polar-bookshelf": "0.0.0",
     "polar-shared": "0.0.0",
     "polar-shared-datastore": "0.0.0",
+    "@material-ui/styles": "=4.11.4",
     "polar-pdf": "0.0.0",
     "polar-epub": "0.0.0"
   },
-  "devDependencies": {
-    "polar-eslint": "0.0.0",
-    "polar-typescript": "0.0.0"
-  }
+  "devDependencies": {}
 }

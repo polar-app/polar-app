@@ -5,7 +5,7 @@ Never use mutable values in an API.
 If you return string[] in a function that data can be changed by other callers and 
 yield unexpected behavior.
 
-Instead use Readonly and ReadonlyArray.
+Instead, use Readonly and ReadonlyArray.
 
 For example
 
@@ -30,7 +30,7 @@ const myDict = Readonly<{[key: string]: string}>;
 
 ```
 
-## interfaces
+## Interfaces
 
 To define readonly properties in interfaces:
 
@@ -51,6 +51,18 @@ casts your code to 'any' they can mutate your values.
 
 Just don't ever do that.  Instead, perform a deep copy of datastructures and
 mutate your copy.
+
+# Type hacks
+
+## Exclude, Pick
+
+Exclude can be used to extend a type.
+
+Pick can be used to just have a set of a few properties from another type.
+
+## Require at least one
+
+https://stackoverflow.com/questions/40510611/typescript-interface-require-one-of-two-properties-to-exist/49725198#49725198
 
 # Running with Scissors... unknown, any, types
 

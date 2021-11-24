@@ -116,13 +116,13 @@ function FooterMobile() {
               >
                 Demo Videos
               </Button> */}
-              <Button
+              {/* <Button
                 className={classes.navChoices}
                 color="inherit"
                 href="/pricing"
               >
                 Pricing
-              </Button>
+              </Button> */}
               <Button
                 className={classes.navChoices}
                 color="inherit"
@@ -239,13 +239,13 @@ function FooterDesktop() {
               {/* <Button className={classes.navChoices} color="inherit" href="/docs">
                 Demo Videos
               </Button> */}
-              <Button
+              {/* <Button
                 className={classes.navChoices}
                 color="inherit"
                 href="/pricing"
               >
                 Pricing
-              </Button>
+              </Button> */}
               <Button className={classes.navChoices} color="inherit" href="/blog">
                 Blog
               </Button>

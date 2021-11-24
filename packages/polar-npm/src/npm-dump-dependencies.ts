@@ -33,7 +33,8 @@ function readPackageData(): PackageData {
 function exec() {
 
     if (! fs.existsSync('./package.json')) {
-        die("package.json does not exist");
+        console.log("no package.json at root");
+        return;
     }
 
     const packageData = readPackageData();

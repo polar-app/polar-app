@@ -7,7 +7,6 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
-import {useFeatureToggle} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {useKeyboardShortcutHandlers} from "../../keyboard_shortcuts/KeyboardShortcuts";
 
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10;
@@ -49,7 +48,6 @@ type KeydownHandlerOpts = {
     blocksTreeStore: BlocksTreeStore;
     blockID: BlockIDStr;
     readonly: boolean;
-    isMultilineNavEnabled: boolean;
 };
 
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
@@ -209,8 +207,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    enter: ({ event, blockID, blocksTreeStore, contentEditableElem, isMultilineNavEnabled }) => {
-        if (isMultilineNavEnabled && modifierPredicate(['shift'], event)) {
+    enter: ({ event, blockID, blocksTreeStore, contentEditableElem }) => {
+        if (modifierPredicate(['shift'], event)) {
             return;
         }
 
@@ -330,7 +328,6 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
     const { contentEditableRef, blockID, onKeyDown, readonly = false } = opts;
     const blocksTreeStore = useBlocksTreeStore();
     const platform = React.useMemo(() => Platforms.get(), []);
-    const isMultilineNavEnabled = useFeatureToggle('notes-multiline-nav');
 
     const globalKeyboardShortcutHandler = useKeyboardShortcutHandlers();
 
@@ -357,7 +354,6 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 blocksTreeStore,
                 blockID,
                 readonly,
-                isMultilineNavEnabled,
             });
 
         } else if (readonly && ! hasModifiers(event, false)) {
@@ -377,7 +373,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [readonly, blocksTreeStore, globalKeyboardShortcutHandler, onKeyDown, platform, blockID, isMultilineNavEnabled]);
+    }, [readonly, blocksTreeStore, globalKeyboardShortcutHandler, onKeyDown, platform, blockID]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;

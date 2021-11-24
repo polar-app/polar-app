@@ -15,7 +15,7 @@ export class MachineIDs {
         if (result) {
             return result;
         } else {
-            const id = Hashcodes.createRandomID(20);
+            const id = Hashcodes.createRandomID({len: 20});
             localStorage.setItem(KEY, id);
             return id;
         }

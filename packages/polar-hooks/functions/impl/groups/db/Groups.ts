@@ -42,7 +42,7 @@ export class Groups {
             return Hashcodes.createID(slug, HASHCODE_LEN);
         }
 
-        return Hashcodes.createRandomID(HASHCODE_LEN);
+        return Hashcodes.createRandomID({len: HASHCODE_LEN});
 
     }
 

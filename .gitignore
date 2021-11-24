@@ -1,17 +1,34 @@
-node_modules
-lerna-debug.log
-.idea
+# pnpm Folders
 .cache
-tsconfig.tsbuildinfo
-test_results.xml
+.pnpm-store
+node_modules
+
+# pnpm log
+.pnpm-debug.log
 
 # Ignore IntelliJ related configuration
+.idea
 *.iml
 
+# Typescript
+*.d.ts
 tsconfig.tsbuildinfo
+
+# Webpack cache
 .webpack-cache-loader
 
+# Compile test reports
 TESTS*.xml
-*.d.ts
+test_results.xml
+
+# local testing scripts to ignore
+scripts/test.sh
+scripts/node-script.js
+
+# ignore script output
+module-packages-output.json
+
+# ignore MacOS specific metadata folder.
+.DS_Store
 
 .DS_Store

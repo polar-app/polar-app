@@ -1,14 +1,6 @@
 import {DATA} from "./UniversitiesData";
 import {IDStr} from "./Strings";
-
-export type CountryNameStr = string;
-export type TwoLetterCountryCode = string;
-export type DomainNameStr = string;
-
-export interface Country {
-    readonly code: TwoLetterCountryCode;
-    readonly name: CountryNameStr;
-}
+import {CountryNameStr, DomainNameStr, TwoLetterCountryCode, University} from "./University";
 
 export interface DomainNameToUniversityMap {
     [name: string]: University;
@@ -27,14 +19,6 @@ export type UniversityTuple = [
     IDStr
 ];
 
-
-export interface University {
-    readonly name: string;
-    readonly domains: ReadonlyArray<DomainNameStr>;
-    readonly country: Country;
-    readonly domain: string;
-    readonly id: IDStr;
-}
 
 function createUniversities(): ReadonlyArray<University> {
 

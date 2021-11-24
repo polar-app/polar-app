@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Universities, University} from "polar-shared/src/util/Universities";
+import {Universities} from "polar-shared/src/util/Universities";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {isPresent} from "polar-shared/src/Preconditions";
 import TextField from "@material-ui/core/TextField";
@@ -10,6 +10,7 @@ import {ListChildComponentProps, VariableSizeList} from "react-window";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Typography from "@material-ui/core/Typography";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
+import {University} from "polar-shared/src/util/University";
 
 // use a large limit so that the user sees a bunch of universities and then
 // realizes that they need to type for it...
