@@ -6,7 +6,7 @@ import {IImage, ImageType} from "polar-shared/src/metadata/IImage";
 export class Images {
 
     public static createID() {
-        return Hashcodes.createRandomID(20);
+        return Hashcodes.createRandomID({len: 20});
     }
 
     public static toExt(type: ImageType): string {
