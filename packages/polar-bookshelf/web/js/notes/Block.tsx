@@ -2,7 +2,6 @@ import React from "react";
 import {BlockEditor} from "./BlockEditor";
 import {BlockItems} from "./BlockItems";
 import {BlockBulletButton} from "./BlockBulletButton";
-import useTheme from "@material-ui/core/styles/useTheme";
 import {BlockExpandToggleButton} from "./BlockExpandToggleButton";
 import {observer} from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -12,46 +11,79 @@ import {BlockDragIndicator} from "./BlockDragIndicator";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {Divider} from "@material-ui/core";
+import {Box, Theme} from "@material-ui/core";
 import {useDragDropHandler} from "./DropHandler";
 import {Interstitial} from "./Interstitial";
 import {BlockContextMenu, useBlockContextMenu} from "./BlockContextMenu";
 
-const useStyles = makeStyles((theme) =>
+interface IUseStylesProps {
+    readonly hasGutter: boolean;
+}
+
+export const NOTES_GUTTER_SIZE = 20;
+
+const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     createStyles({
         selected: {
             background: theme.palette.primary.main
         },
         titleBlock: {
             fontWeight: 'bold',
-            fontSize: 24,
+            fontSize: 32,
             letterSpacing: 0.5,
             lineHeight: 1.66,
         },
+        titleBlockWrapper: {
+            marginLeft: 28,
+        },
+        iconButtonWrapper: {
+            width: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        iconButton: {
+            width: 20,
+            height: 20,
+            display: 'block',
+        },
+        expandButtonWrapper: ({ hasGutter }) => ({
+            marginRight: hasGutter ? NOTES_GUTTER_SIZE : 0,
+        }),
     }),
 );
 
 interface IProps {
     readonly parent: BlockIDStr | undefined;
     readonly id: BlockIDStr;
-    readonly withHeader?: boolean;
-    readonly noExpand?: boolean;
+    readonly isHeader?: boolean;
+    readonly alwaysExpanded?: boolean;
     readonly noBullet?: boolean;
+    readonly hasGutter?: boolean;
+    readonly dontRenderChildren?: boolean;
 }
 
 
 export const BlockInner = observer((props: IProps) => {
     const blocksTreeStore = useBlocksTreeStore();
 
-    const {id, parent, withHeader = false, noExpand = false, noBullet = false} = props;
+    const {
+        id,
+        parent,
+        isHeader = false,
+        alwaysExpanded = false,
+        noBullet = false,
+        hasGutter = false,
+        dontRenderChildren = false,
+    } = props;
+
     const {root} = blocksTreeStore;
     const isRoot = id === root;
-    const dragDropBinds = useDragDropHandler({ id, isRoot });
+    const dragDropCallbacks = useDragDropHandler({ id, isRoot });
 
-    const classes = useStyles();
+    const classes = useStyles({ hasGutter });
     const undoQueue = useUndoQueue();
 
-    const theme = useTheme();
     const contextMenuHandlers = useBlockContextMenu();
 
     const expanded = blocksTreeStore.isExpanded(id);
@@ -164,70 +196,71 @@ export const BlockInner = observer((props: IProps) => {
         return null;
     }
 
-    const items = blocksTreeStore.lookup(block.itemsAsArray || []);
+    const childrenIDs = block.itemsAsArray;
 
-    const hasItems = items.length > 0;
+    const hasItems = childrenIDs.length > 0;
 
+    // TODO: on the root element below (Block), add the drag and drop handlers.
+    // For now it doesn't work and we disabled it for now.
     return (
         <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
-             className={clsx('Block', { [classes.selected]: selected }) }
-             {...dragDropBinds}>
+             className={clsx('Block', { [classes.selected]: selected }) }>
 
-            {topInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
+            {topInterstitials.map(interstitial =>
+                <Interstitial key={interstitial.id}
+                              interstitial={interstitial}
+                              hasGutter={hasGutter} />
+            )}
             <BlockDragIndicator id={id}>
-                <>
-                    <div {...contextMenuHandlers}
-                         style={{
-                             display: 'flex',
-                             alignItems: 'flex-start',
-                             boxSizing: 'border-box',
-                             paddingTop: theme.spacing(0.5),
-                             paddingBottom: theme.spacing(0.5),
-                             // background: dropActive ? 'red' : 'inherit'
-                         }}>
+                <Box {...contextMenuHandlers}
+                    display="flex"
+                    my={0.3}
+                    mx={0.25}
+                    className={clsx({ [classes.titleBlockWrapper]: isHeader })}>
 
-                        {! (noExpand && noBullet) && (
-                            <div style={{
-                                     display: 'flex',
-                                     alignItems: 'center',
-                                     minWidth: 40,
-                                     justifyContent: 'flex-end',
-                                     marginRight: theme.spacing(0.5),
-                                 }}>
-
-
-                                {hasItems && !noExpand && (
-                                    <BlockExpandToggleButton id={id}/>
+                    {! (alwaysExpanded && noBullet) && (
+                        <Box display="flex" alignItems="stretch" style={{ height: 28 }}>
+                            <div className={clsx(classes.iconButtonWrapper, classes.expandButtonWrapper)}>
+                                {hasItems && ! alwaysExpanded && (
+                                    <BlockExpandToggleButton className={classes.iconButton} id={id} />
                                 )}
-
-                                {! noBullet && <BlockBulletButton target={id}/>}
-
                             </div>
-                        )}
 
-                        <BlockEditor
-                            parent={parent}
-                            id={id}
-                            className={withHeader && isRoot ? classes.titleBlock : ""}
-                        />
-                    </div>
+                            <div className={classes.iconButtonWrapper}>
+                                {! noBullet && <BlockBulletButton className={classes.iconButton} target={id}/>}
+                            </div>
 
-                    {withHeader && isRoot &&
-                        <Divider style={{ margin: '4px 0 8px 0' }} />
-                    }
-
-                    {(expanded || (isRoot && noExpand)) && (
-                        <BlockItems parent={id} notes={items} indent={!withHeader} />
+                        </Box>
                     )}
-                </>
+
+                    <BlockEditor
+                        parent={parent}
+                        id={id}
+                        className={isHeader ? classes.titleBlock : ""}
+                    />
+
+                </Box>
+
+                {(expanded || alwaysExpanded) && ! dontRenderChildren && (
+                    <Box display="flex" pl={! isHeader && hasGutter ? `${NOTES_GUTTER_SIZE}px` : 0}>
+                        <BlockItems parent={id}
+                                    blockIDs={childrenIDs}
+                                    hasGutter={isHeader && hasGutter}
+                                    indent={! isHeader} />
+                    </Box>
+                )}
             </BlockDragIndicator>
-            {bottomInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
+            {bottomInterstitials.map(interstitial =>
+                <Interstitial key={interstitial.id}
+                              interstitial={interstitial}
+                              hasGutter={hasGutter} />
+            )}
         </div>
     );
 });
 
-export const Block = observer(function Note(props: IProps) {
+export const Block = React.memo(function Note(props: IProps) {
 
     return (
         <BlockContextMenu>

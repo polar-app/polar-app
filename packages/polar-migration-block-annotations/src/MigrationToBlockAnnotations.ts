@@ -18,6 +18,7 @@ import {RecordHolder} from "polar-shared/src/metadata/RecordHolder";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export namespace MigrationToBlockAnnotations {
 
@@ -55,7 +56,7 @@ export namespace MigrationToBlockAnnotations {
         const documentBlock = await getDocumentBlockByFingerprint(idUser, firestore, docMeta.value.docInfo.fingerprint);
 
         if (docMeta.value.ver === 3 || documentBlock) {
-            throw new Error(`docMeta object with the ID: ${docMetaID} has already been migrated`);
+            return;
         }
 
         await migrateDocMeta(idUser, firestore, docMeta);
@@ -214,8 +215,8 @@ export namespace MigrationToBlockAnnotations {
             .blockContentStructureToBlockSnapshot(userID.uid, tagContentsStructure);
 
         const writeToBatch = (block: IBlock) => {
-            const data = purgeUndefinedProperties(block);
-            batch.set(blockCollection.doc(block.id), data);
+            const data = Dictionaries.onlyDefinedProperties(block);
+            batch.create(blockCollection.doc(block.id), data);
         };
 
 
@@ -314,26 +315,5 @@ export namespace MigrationToBlockAnnotations {
         return existingNamedBlocks;
     }
 
-    /**
-     * Remove undefined properties from an object
-     *
-     * @param obj a javascript object
-     */
-    function purgeUndefinedProperties<T extends Record<string, any>>(obj: T): T {
-        if (obj === null || typeof obj === 'function' || typeof obj !== 'object' ) {
-            return obj;
-        }
-
-        Object.keys(obj).forEach(key => {
-            if (obj[key] === undefined) {
-                delete obj[key];
-                return;
-            }
-
-            purgeUndefinedProperties(obj[key]);
-        });
-
-        return obj;
-    }
 }
 

@@ -17,9 +17,9 @@ import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -38,6 +38,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
     const {update: updateBlockAreaHighlight} = useBlockAreaHighlight();
     const {fileType} = useDocViewerContext();
     const docViewerElements = useDocViewerElementsContext();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
@@ -98,7 +99,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
         // get the most recent area highlight as since this is using state
         // we can have a stale highlight.
 
-        if (NEW_NOTES_ANNOTATION_BAR_ENABLED && docScale) {
+        if (notesIntegrationEnabled && docScale) {
             const docViewerElement = docViewerElements.getDocViewerElement();
 
             updateBlockAreaHighlight(id, {
@@ -118,7 +119,17 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
         return undefined;
 
-    }, [docScale, docViewerElements, updateBlockAreaHighlight, id, pageNum, fileType, docMeta, onAreaHighlightUpdated]);
+    }, [
+        docScale,
+        docViewerElements,
+        updateBlockAreaHighlight,
+        id,
+        pageNum,
+        fileType,
+        docMeta,
+        onAreaHighlightUpdated,
+        notesIntegrationEnabled,
+    ]);
 
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 

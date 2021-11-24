@@ -1,0 +1,77 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    setup_circle_ci
+  end
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    match(type: "appstore")
+    app_store_connect_api_key
+    vnum = latest_testflight_build_number + 1
+    increment_build_number({ build_number: vnum })
+    increment_version_number({ version_number: vnum.to_s })
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+    upload_to_testflight
+  end
+
+  lane :release do
+    match(type: "appstore")
+
+    # Connect to the app store programmatically
+    api_key = app_store_connect_api_key
+
+    # Get the latest build number from the live or TestFlight build
+    build_num = app_store_build_number(
+        api_key: api_key,
+        live: false
+    )
+
+    # Increment the build number with +1
+    increment_build_number(build_number: lane_context[SharedValues::LATEST_BUILD_NUMBER]+1)
+
+    # Set the version number to match the build number, to avoid any confusion
+    increment_version_number(version_number: lane_context[SharedValues::BUILD_NUMBER])
+
+    # Build the binary locally
+    build_app(export_method: "app-store", workspace: "PolarReactNative.xcworkspace", scheme: "PolarReactNative", xcargs: "-allowProvisioningUpdates")
+
+    # Upload the binary to live track and submit for review
+    upload_to_app_store(
+        force: true, # Skip HTMl report verification
+        skip_screenshots: true,
+        submit_for_review: true,
+        precheck_include_in_app_purchases: false,
+
+        # Should the app be automatically released once it's approved?
+        automatic_release: true,
+
+        # Rejects the previously submitted build if it's in a state where it's possible
+        reject_if_possible: true,
+
+        submission_information: {
+          export_compliance_uses_encryption: false,
+          add_id_info_uses_idfa: true,
+        },
+        release_notes: {
+            "default"=>"Bugfixes",
+            "en-US"=>"Bugfixes",
+        }
+    )
+  end
+end

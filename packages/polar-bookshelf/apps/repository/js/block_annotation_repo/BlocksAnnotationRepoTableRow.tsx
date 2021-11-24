@@ -1,6 +1,11 @@
 import {Box, createStyles, makeStyles, TableCell, TableRow, Theme, useTheme} from "@material-ui/core";
-import {AnnotationContentType, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {IBlock} from "polar-blocks/src/blocks/IBlock";
+import {
+    AnnotationContentType,
+    IAreaHighlightAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {DocFileResolvers} from "../../../../web/js/datastore/DocFileResolvers";
 import {Images} from "../../../../web/js/metadata/Images";
@@ -10,12 +15,17 @@ import {ColorStr} from "../../../../web/js/ui/colors/ColorSelectorBox";
 import {DateTimeTableCell} from "../DateTimeTableCell";
 import {usePersistenceLayerContext} from "../persistence_layer/PersistenceLayerApp";
 import {calculateTextPreviewHeight} from "../annotation_repo/FixedHeightAnnotationPreview";
-import {IRepoAnnotationContent, useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
+import {
+    BlocksAnnotationRepoStore,
+    IRepoAnnotationContent,
+    useBlocksAnnotationRepoStore
+} from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
-import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 
 const MAX_IMG_HEIGHT = 300;
 
@@ -44,7 +54,7 @@ export const useFixedHeightBlockAnnotationCalculator = () => {
 };
 
 interface IHighlightPreviewParentProps {
-    readonly block: IBlock<IRepoAnnotationContent>; 
+    readonly block: IBlock<IRepoAnnotationContent>;
 }
 
 interface IUseHighlightPreviewParentStylesProps {
@@ -142,33 +152,46 @@ export const HighlightPreview: React.FC<IHighlightPreviewProps> = ({ block }) =>
 interface IBlocksAnnotationRepoTableRowProps {
     readonly viewIndex: number;
     readonly rowSelected: boolean;
-    readonly block: IBlock<IRepoAnnotationContent>;
+    readonly blockID: BlockIDStr;
 }
 
-export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRowProps> = React.memo(observer(function BlocksAnnotationRepoTableRow(props) {
-    const { block } = props;
+export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRowProps> = observer(function BlocksAnnotationRepoTableRow(props) {
+    const { blockID } = props;
     const theme = useTheme();
+    const blocksStore = useBlocksStore();
     const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
-
+    const block = blocksStore.getBlock(blockID)?.toJSON();
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
-        blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
-    }, [blocksAnnotationRepoStore, block.id]);
+
+        if (block) {
+            blocksAnnotationRepoStore.selectItem(block.id, event, 'click');
+        }
+
+    }, [blocksAnnotationRepoStore, block]);
 
     const onContextMenu = React.useCallback((event: IMouseEvent) => {
-        blocksAnnotationRepoStore.selectItem(block.id, event, 'context');
-    }, [blocksAnnotationRepoStore, block.id]);
 
-    const contextMenuCallbacks = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
+        if (block) {
+            blocksAnnotationRepoStore.selectItem(block.id, event, 'context');
+        }
+
+    }, [block, blocksAnnotationRepoStore]);
+
+    const contextMenuHandlers = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
+
+    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
+        return null;
+    }
 
     return (
         <TableRow role="checkbox"
+                  {...contextMenuHandlers}
                   onClick={onClick}
                   selected={blocksAnnotationRepoStore.isSelected(block.id)}
                   style={{ userSelect: 'none' }}
                   draggable
-                  hover
-                  {...contextMenuCallbacks}>
+                  hover>
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>
@@ -184,4 +207,4 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             </TableCell>
         </TableRow>
     );
-}));
+});

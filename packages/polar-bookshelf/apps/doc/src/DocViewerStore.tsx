@@ -44,9 +44,8 @@ import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
 import {ActiveHighlightData} from "./annotations/annotation_popup/AnnotationPopupHooks";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {useBlockTagEditorDialog} from "../../../web/js/notes/NoteUtils";
+import {useBlockTagEditorDialog, useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 import {getBlockForDocument} from "../../../web/js/notes/HighlightBlocksHooks";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
@@ -347,6 +346,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
     const blocksStore = useBlocksStore();
     const blockTagEditorDialog = useBlockTagEditorDialog();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     // HACK: this is a hack until we find a better way memoize our variables.
     // I really hate this aspect of hook.
@@ -877,7 +877,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             mutator(docMeta);
 
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 const documentBlock = getBlockForDocument(blocksStore, docMeta.docInfo.fingerprint);
 
                 if (! documentBlock) {
@@ -938,7 +938,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 return;
             }
 
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 const blockID = blocksStore.indexByDocumentID[docMeta.docInfo.fingerprint];
 
                 if (blockID) {
@@ -1086,8 +1086,19 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             toggleAreaHighlightMode,
             setAreaHighlightMode
         };
-    }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
-        dialogs, annotationMutationCallbacksFactory, setStore, storeProvider, blocksStore, blockTagEditorDialog]);
+    }, [
+        log,
+        docMetaContext,
+        persistenceLayerContext,
+        annotationSidebarCallbacks,
+        dialogs,
+        annotationMutationCallbacksFactory,
+        setStore,
+        storeProvider,
+        blocksStore,
+        blockTagEditorDialog,
+        notesIntegrationEnabled,
+    ]);
 
 }
 

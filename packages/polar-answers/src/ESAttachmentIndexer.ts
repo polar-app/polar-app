@@ -3,7 +3,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ESRequests} from "./ESRequests";
 
 /**
- * @Deprecated PDFText can now extract the content for us.
+ * @deprecated PDFText can now extract the content for us.
  */
 export namespace ESAttachmentIndexer {
 

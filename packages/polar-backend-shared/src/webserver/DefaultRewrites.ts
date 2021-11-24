@@ -21,6 +21,7 @@ export class DefaultRewrites {
                     "/logout",
                     "/login",
                     "/beta-register",
+                    "/private-beta/waiting-users",
                     "/login-with-custom-token",
                     "/sign-in",
                     "/create-account",
@@ -35,6 +36,7 @@ export class DefaultRewrites {
                     "/profile",
                     "/device",
                     "/error",
+                    "/daily"
                 ],
                 "destination": "/apps/repository/index.html"
             },

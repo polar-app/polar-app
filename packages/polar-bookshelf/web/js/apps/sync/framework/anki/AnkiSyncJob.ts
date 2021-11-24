@@ -5,9 +5,7 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {DecksSync} from './DecksSync';
 import {SyncQueue} from '../SyncQueue';
 import {NotesSync} from './NotesSync';
-import {Logger} from 'polar-shared/src/logger/Logger';
 
-const log = Logger.create();
 
 abstract class AnkiSyncJob {
 
@@ -46,7 +44,7 @@ export class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
 
         const decksSync = new DecksSync(syncQueue);
 
-        log.info("Starting anki sync job with deckDescriptors: ", this.deckDescriptors)
+        console.log("Starting anki sync job with deckDescriptors: ", this.deckDescriptors)
 
         decksSync.enqueue(this.deckDescriptors);
 

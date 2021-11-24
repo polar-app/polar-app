@@ -332,6 +332,14 @@ export class ArrayStream<T> {
 
     }
 
+    /**
+     * Compute a quick lookup map where the entry is a string and the value is
+     * just boolean true.
+     */
+    public toLookup(toKey: (value: T, index: number) => string): Readonly<{[key: string]: boolean}> {
+        return this.toMap2(toKey, () => true)
+    }
+
     public toMap2<V>(toKey: (value: T, index: number) => string,
                      toValue: (value: T, index: number) => V ): {[key: string]: V} {
 

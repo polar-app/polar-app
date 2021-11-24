@@ -36,10 +36,9 @@ import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
-import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {FeatureToggleEnabled, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
@@ -49,7 +48,6 @@ import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
-import {NotesScreen} from '../../notes/NoteScreen';
 import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
@@ -68,6 +66,16 @@ import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
+import {NotesScreen} from "../../notes/NoteScreen";
+import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
+import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
+import {ListUsers} from "./private-beta/ListUsers";
+import {ConsoleError} from './ConsoleError';
+import {WithNotesIntegration} from "../../notes/NoteUtils";
+import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 
 interface IProps {
     readonly app: App;
@@ -186,18 +194,20 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     const DataProviders: React.FC = React.useCallback(({children}) => (
         <PrefsContext2>
             <UserTagsDataLoader>
-                <BlockStoreDefaultContextProvider>
-                    <BlocksStoreProvider>
-                        <PersistenceLayerApp tagsType="documents"
-                                             repoDocMetaManager={repoDocMetaManager}
-                                             repoDocMetaLoader={repoDocMetaLoader}
-                                             persistenceLayerManager={persistenceLayerManager}>
-                            <DocRepoStore2>
-                                {children}
-                            </DocRepoStore2>
-                        </PersistenceLayerApp>
-                    </BlocksStoreProvider>
-                </BlockStoreDefaultContextProvider>
+                <BlocksUserTagsDataLoader>
+                    <BlockStoreDefaultContextProvider>
+                        <BlocksStoreProvider>
+                            <PersistenceLayerApp tagsType="documents"
+                                                 repoDocMetaManager={repoDocMetaManager}
+                                                 repoDocMetaLoader={repoDocMetaLoader}
+                                                 persistenceLayerManager={persistenceLayerManager}>
+                                <DocRepoStore2>
+                                    {children}
+                                </DocRepoStore2>
+                            </PersistenceLayerApp>
+                        </BlocksStoreProvider>
+                    </BlockStoreDefaultContextProvider>
+                </BlocksUserTagsDataLoader>
             </UserTagsDataLoader>
         </PrefsContext2>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
@@ -220,12 +230,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 <BrowserRouter>
                                     <UseLocationChangeRoot>
                                         <MUIDialogController>
-                                            <AddFileDropzoneRoot>
-                                                <>
-                                                    <AndroidHistoryListener/>
-                                                    {children}
-                                                </>
-                                            </AddFileDropzoneRoot>
+                                            <>
+                                                <AndroidHistoryListener/>
+                                                {children}
+                                            </>
                                         </MUIDialogController>
                                     </UseLocationChangeRoot>
                                 </BrowserRouter>
@@ -246,10 +254,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                 <AnnotationRepoStore>
                     <BlocksAnnotationRepoStoreProvider>
                         <AnnotationRepoSidebarTagStore>
-                            <>
-                                <ReviewRouter/>
-                                <AnnotationRepoScreen/>
-                            </>
+                            <ReviewRouter/>
+                            <AnnotationRepoScreen/>
                         </AnnotationRepoSidebarTagStore>
                     </BlocksAnnotationRepoStoreProvider>
                 </AnnotationRepoStore>
@@ -259,6 +265,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     return (
         <GlobalProviders>
+            <ConsoleError/>
             <Switch>
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>
@@ -276,89 +283,110 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                     <ErrorScreen/>
                 </Route>
 
-                <Route exact path="/migration/phz">
-                    <PHZMigrationScreen/>
-                </Route>
-
                 <AuthRequired>
                     <DataProviders>
-                        <div className={classes.root}>
+                        <MigrationToBlockAnnotations>
+                            <AddFileDropzoneRoot>
+                                <div className={classes.root}>
 
-                            <Initializers/>
+                                    <Initializers/>
 
-                            <SideNav/>
-                            <DeviceRouters.NotDesktop>
-                                <MUIBottomNavigation/>
-                            </DeviceRouters.NotDesktop>
-                            <Intercom/>
+                                <ActiveKeyboardShortcuts/>
+                                <JumpToNoteKeyboardCommand/>
+                                <JumpToDocumentKeyboardCommand/>
 
-                            <RouteContainer>
+                                    <SideNav/>
+                                    <DeviceRouters.NotDesktop>
+                                        <MUIBottomNavigation/>
+                                    </DeviceRouters.NotDesktop>
+                                    <Intercom/>
 
-                                <Route exact path="/cdk-demo">
-                                    <CDKDemo/>
-                                </Route>
+                                    <RouteContainer>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
-                                    <DocRepoSidebarTagStore>
-                                        <DocRepoScreen2/>
-                                    </DocRepoSidebarTagStore>
-                                </PersistentRoute>
+                                        <Route exact path="/cdk-demo">
+                                            <CDKDemo/>
+                                        </Route>
 
-                                <PersistentRoute strategy="display" exact path={RoutePathNames.ANNOTATIONS}>
-                                    <RenderAnnotationRepoScreen/>
-                                </PersistentRoute>
+                                        <Route exact path="/private-beta/waiting-users">
+                                            <ListUsers/>
+                                        </Route>
 
-                                <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
-                                    <SwitchScreen/>
-                                </PersistentRoute>
+                                        <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
+                                            <DocRepoSidebarTagStore>
+                                                <DocRepoScreen2/>
+                                            </DocRepoSidebarTagStore>
+                                        </PersistentRoute>
 
-                                <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
-                                    <AddFilesMobileScreen/>
-                                </PersistentRoute>
+                                        <PersistentRoute strategy="display" exact path={RoutePathNames.ANNOTATIONS}>
+                                            <RenderAnnotationRepoScreen/>
+                                        </PersistentRoute>
 
-                                <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
-                                    <AccountPageMobile/>
-                                </PersistentRoute>
+                                        <PersistentRoute strategy="display" path={RoutePathNames.SWITCH}>
+                                            <SwitchScreen/>
+                                        </PersistentRoute>
 
-                                <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
-                                                repoDocMetaManager={props.repoDocMetaManager}
-                                                repoDocMetaLoader={props.repoDocMetaLoader}
-                                                persistenceLayerManager={props.persistenceLayerManager}/>
+                                        <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
+                                            <AddFilesMobileScreen/>
+                                        </PersistentRoute>
 
-                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                                    <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
-                                           component={EnableFeatureToggle}/>
+                                        <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
+                                            <AccountPageMobile/>
+                                        </PersistentRoute>
 
-                                    <FeatureToggleEnabled featureName="notes-enabled">
-                                        <Route path={RoutePathNames.NOTES}
-                                               component={NotesScreen}/>
-                                    </FeatureToggleEnabled>
+                                        <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
+                                                        repoDocMetaManager={props.repoDocMetaManager}
+                                                        repoDocMetaLoader={props.repoDocMetaLoader}
+                                                        persistenceLayerManager={props.persistenceLayerManager}/>
 
-                                    <Route path="/hello-ssr"
-                                           component={HelloServerSideRender}/>
+                                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                            <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
+                                                   component={EnableFeatureToggle}/>
+
+                                            <WithNotesIntegration>
+                                                <PersistentRoute path={RoutePathNames.NOTES}
+                                                                 exact
+                                                                 strategy="display">
+                                                    <NotesRepoScreen/>
+                                                </PersistentRoute>
+
+                                                <PersistentRoute path={RoutePathNames.DAILY}
+                                                                 strategy="display"
+                                                                 exact>
+                                                    <NotesScreen/>
+                                                </PersistentRoute>
+
+                                                <Route path={`${RoutePathNames.NOTES}/:id`}
+                                                       component={NotesScreen}/>
+
+
+                                            </WithNotesIntegration>
+
+                                            <Route path="/hello-ssr"
+                                                   component={HelloServerSideRender}/>
+
+                                        </Switch>
+
+                                        <SharedRoutes/>
+                                    </RouteContainer>
+                                </div>
+
+                                {/* the following are small popup screens that can exist anywhere */}
+                                <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+                                    <Route path="#welcome" component={WelcomeScreen}/>
+
+                                    <Route path="#account" component={AccountDialogScreen}/>
+
+                                    <Route path="#add">
+                                        <PersistenceLayerContext.Provider
+                                            value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                                            <AddFileDropzoneScreen/>
+                                        </PersistenceLayerContext.Provider>
+                                    </Route>
 
                                 </Switch>
-
-                                <SharedRoutes/>
-                            </RouteContainer>
-                        </div>
-
-                        {/* the following are small popup screens that can exist anywhere */}
-                        <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                            <Route path="#welcome" component={WelcomeScreen}/>
-
-                            <Route path="#account" component={AccountDialogScreen}/>
-
-                            <Route path="#add">
-                                <PersistenceLayerContext.Provider
-                                    value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
-                                    <AddFileDropzoneScreen/>
-                                </PersistenceLayerContext.Provider>
-                            </Route>
-
-                        </Switch>
-
+                            </AddFileDropzoneRoot>
+                        </MigrationToBlockAnnotations>
                     </DataProviders>
                 </AuthRequired>
 

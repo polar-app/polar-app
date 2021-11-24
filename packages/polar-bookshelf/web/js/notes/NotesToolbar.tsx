@@ -1,22 +1,22 @@
-import {Button, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
-import {Link} from "react-router-dom";
+import {Button, Box, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
 import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../apps/doc/src/DocViewer';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 import {MUIMenu} from '../mui/menu/MUIMenu';
 import {MUIMenuItem} from '../mui/menu/MUIMenuItem';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import DeleteIcon from '@material-ui/icons/Delete';
 import BorderAllIcon from '@material-ui/icons/BorderAll';
 import {useHistory} from "react-router";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {NameContent} from "./content/NameContent";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
+import {DateContent} from './content/DateContent';
+import moment from 'moment';
+import { RepositoryToolbar } from '../apps/repository/RepositoryToolbar';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -24,17 +24,27 @@ export const useCreateNoteDialog = () => {
     const blocksStore = useBlocksStore();
 
     return React.useCallback(() => {
+        const getContent = (text: string) => {
+            const date = moment(text);
+
+            if (date.isValid()) {
+                return new DateContent({
+                    type: 'date',
+                    format: 'YYYY-MM-DD',
+                    data: date.format('YYYY-MM-DD'),
+                    links: [],
+                });
+            }
+
+            return new NameContent({ type: 'name', data: text, links: [] });
+        };
+
         dialogs.prompt({
             title: "Create new named note",
             autoFocus: true,
             onCancel: NULL_FUNCTION,
             onDone: (text) => {
-                const content = new NameContent({
-                    type: 'name',
-                    data: text,
-                    links: [],
-                });
-                const id = blocksStore.createNewNamedBlock({ content });
+                const id = blocksStore.createNewNamedBlock({ content: getContent(text) });
                 history.push(RoutePathNames.NOTE(id));
             }
         });
@@ -63,18 +73,12 @@ export const useHandlePurgeDocumentBlocks = () => {
     }, [blocksStore, dialogs]);
 };
 
-const useDesktopStyles = makeStyles(() =>
+const useDesktopStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
-            padding: '0 26px',
-        },
-        divider: {
-            padding: '0 26px',
+            alignItems: 'center'
         },
         left: {
             flexShrink: 0,
@@ -82,70 +86,48 @@ const useDesktopStyles = makeStyles(() =>
             alignItems: 'center',
         },
         right: {
-            flexShrink: 0,
+            flex: 1,
+            maxWidth: 340,
             display: 'flex',
             alignItems: 'center',
-        },
-        mid: {
-            flex: '0 1 522px',
-            maxWidth: 522,
-            margin: '0 20px',
         }
     }),
 );
 
 const DesktopNotesToolbar = () => {
     const classes = useDesktopStyles();
-    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
     const handleCreateNote = useCreateNoteDialog();
 
     return (
-        <>
-            <div className={classes.root}>
-                <div className={classes.left}>
-                    <SidenavTriggerIconButton />
-                    <Link style={{ textDecoration: 'none' }} to={RoutePathNames.NOTES_REPO}>
-                        <Button variant="outlined" disableElevation>All Notes</Button>
-                    </Link>
-                    {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            style={{ height: 38, marginLeft: 10 }}
-                            disableElevation
-                            onClick={handlePurgeDocumentNotes}
-                        >
-                            Purge document blocks
-                        </Button>
-                    )}
-                </div>
-                <div className={classes.mid}><SearchForNote /></div>
-                <div className={classes.right}>
-                    <Button color="primary"
-                            style={{ height: 38 }}
-                            variant="contained"
-                            disableElevation
-                            startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
-                            onClick={handleCreateNote}
-                            size="medium">
-                        New
-                    </Button>
-                </div>
-            </div>
-            <div className={classes.divider}><Divider /></div>
-        </>
+        <RepositoryToolbar className={classes.root}>
+            <Box px={1} py={1} className={classes.left}>
+                <Button color="primary"
+                        style={{ height: 38, width: 284 }}
+                        variant="contained"
+                        disableElevation
+                        startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
+                        onClick={handleCreateNote}
+                        size="medium">
+                    Create a new note
+                </Button>
+            </Box>
+            <Box px={1} py={1} className={classes.right}>
+                <SearchForNote />
+            </Box>
+        </RepositoryToolbar>
     );
 };
 
-const useHandHeldStyles = makeStyles(() =>
+const useHandHeldStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flex: '0 0 55px',
-            height: 55,
+            flex: '0 0 50px',
+            height: 50,
             padding: '0 14px',
+            background: theme.palette.background.paper
         },
         divider: {
             padding: '0 14px',
@@ -158,18 +140,16 @@ const HandheldNotesToolbar = () => {
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
 
-    const handlePurgeDocumentNotes = useHandlePurgeDocumentBlocks();
-
-    const handleAllNotesNavigation = React.useCallback(() =>
-        history.push(RoutePathNames.NOTES_REPO), [history]);
+    const handleDailyNotesNavigation = React.useCallback(() =>
+        history.push(RoutePathNames.DAILY), [history]);
 
     return (
         <>
             <div className={classes.root}>
                 <div>
                     <SidenavTriggerIconButton />
-                    <Tooltip title="All Notes">
-                        <IconButton size="small" onClick={handleAllNotesNavigation}>
+                    <Tooltip title="Daily Notes">
+                        <IconButton size="small" onClick={handleDailyNotesNavigation}>
                             <BorderAllIcon />
                         </IconButton>
                     </Tooltip>
@@ -181,11 +161,6 @@ const HandheldNotesToolbar = () => {
                             <MUIMenuItem text="Create Note"
                                          icon={<AddCircleOutlineIcon />}
                                          onClick={createNoteDialog} />
-                            {NEW_NOTES_ANNOTATION_BAR_ENABLED && (
-                                <MUIMenuItem text="Purge Document Blocks"
-                                             icon={<DeleteIcon />}
-                                             onClick={handlePurgeDocumentNotes} />
-                            )}
                         </div>
                     </MUIMenu>
                 </div>

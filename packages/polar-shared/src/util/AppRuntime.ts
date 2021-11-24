@@ -13,7 +13,7 @@ export namespace AppRuntime {
         }
 
         if (window?.process?.type) {
-            return 'electron';
+            return 'electron-renderer';
         }
 
         if (navigator.userAgent.indexOf('polar-desktop-app') !== -1) {
@@ -21,15 +21,15 @@ export namespace AppRuntime {
             // polar-desktop-app and this is the only way to know for certain as
             // we're trying to get the Electron build to be just a simple browser
             // app like the mobile apps.
-            return 'electron';
+            return 'electron-renderer';
         }
 
         return 'browser';
 
     }
 
-    export function isElectron() {
-        return get() === 'electron'
+    export function isElectronRenderer() {
+        return get() === 'electron-renderer'
     }
 
     export function isBrowser() {
@@ -42,5 +42,5 @@ export namespace AppRuntime {
 
 }
 
-export type AppRuntimeID = 'electron' | 'browser' | 'node';
+export type AppRuntimeID = 'electron-renderer' | 'browser' | 'node';
 

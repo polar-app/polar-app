@@ -124,7 +124,7 @@ export class TextHighlights {
     }
 
     /**
-     * @Deprecated use ITextHighlights.toHTML
+     * @deprecated use ITextHighlights.toHTML
      * @param textHighlight
      */
     public static toHTML(textHighlight: ITextHighlight): HTMLStr | undefined {

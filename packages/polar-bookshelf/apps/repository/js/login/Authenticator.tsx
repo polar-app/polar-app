@@ -5,7 +5,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Typography} from '@material-ui/core';
+import {Box, Typography, Divider} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -18,7 +18,7 @@ import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
-import { EmailAddressParser } from '../../../../web/js/util/EmailAddressParser';
+import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -402,7 +402,7 @@ export const RegisterForBetaButton = () => {
             <BackendProgress pending={pending}/>
 
             {alert && (
-                <Alert severity={alert.type} 
+                <Alert severity={alert.type}
                         className={classes.alert}>
                     {alert.message}
                 </Alert>
@@ -471,7 +471,7 @@ const OrCreateNewAccountButton = () => {
     );
 }
 
-const LogoAndTextSideBySide = () => {
+export const LogoAndTextSideBySide = () => {
     return (
         <div>
             <div style={{display: 'flex'}}>
@@ -480,32 +480,12 @@ const LogoAndTextSideBySide = () => {
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
-                        <Typography variant="h2" component="div">
+                        <Typography variant="h2" component="div" style={{ fontWeight: 400 }}>
                             POLAR
                         </Typography>
                     </Box>
                 </div>
             </div>
-        </div>
-    )
-}
-
-const FlexLayoutForm = () => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
-                <EmailTokenAuthButton/>
-
-            </div>
-
         </div>
     )
 }
@@ -526,6 +506,7 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
             <div className="AuthContent"
                  style={{
                      height: "100vh",
+                     maxHeight: '650px',
                      textAlign: 'center',
                      flexGrow: 1,
                      display: 'flex',
@@ -544,19 +525,22 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                     <h2>
                         {props.title}
+
+                        <Box ml={2} mr={2} mt={1} mb={1} flexGrow={1}>
+                            <Divider/>
+                        </Box>
                     </h2>
 
                     {props.children}
 
                 </>
 
-                {props.alternative}
+                 {props.alternative}
 
-                <div style={{flexGrow: 1}}/>
-
-                <Box px={2}>
-                    <AuthLegalDisclaimer/>
+                <Box m={2} flexGrow={1}>
+                    <Divider/>
                 </Box>
+                    <AuthLegalDisclaimer/>
             </div>
         </>
     );

@@ -1,4 +1,3 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
 import {MinimalDocMetaMutation, MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
@@ -14,7 +13,6 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {Progress, ProgressTrackers} from "polar-shared/src/util/ProgressTracker";
 
-const log = Logger.create();
 
 export interface RepoDocMetaUpdater {
     update(docMeta: IDocMeta, mutationType: MutationType): Promise<void>;
@@ -58,7 +56,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
 
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
-        log.info("onPersistenceLayerChanged");
+        console.log("onPersistenceLayerChanged");
 
         this.addInitialProgressListener(persistenceLayer);
 
@@ -85,7 +83,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
             };
 
             doAsync()
-                .catch(err => log.error("Could not handle snapshot: ", err));
+                .catch(err => console.error("Could not handle snapshot: ", err));
 
         });
 
@@ -169,7 +167,7 @@ class ObjectConverter {
             return RepoDocMetas.convert(this.persistenceLayerProvider, fingerprint, fromCache, hasPendingWrites, docMeta);
 
         } else {
-            log.warn("No DocMeta for fingerprint: " + fingerprint);
+            console.warn("No DocMeta for fingerprint: " + fingerprint);
         }
 
         return undefined;

@@ -1,24 +1,33 @@
-import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import Divider from "@material-ui/core/Divider";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import * as React from "react";
-import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import {useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
+import {observer} from "mobx-react-lite";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 
-export const BlocksAnnotationRepoTableMenu = deepMemo(function AnnotationRepoTableMenu() {
+export const BlocksAnnotationRepoTableMenu = observer(function BlocksAnnotationRepoTableMenu() {
+
+    const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
+    const blocksStore = useBlocksStore();
+
+    const handleDelete = React.useCallback(() => {
+        const selected = blocksAnnotationRepoStore.selected;
+        console.log("Performing delete on N annotations: ", selected.length)
+        blocksStore.deleteBlocks(selected);
+    }, [blocksAnnotationRepoStore.selected, blocksStore])
 
     return (
         <>
-            <MUIMenuItem text="Tag"
-                icon={<LocalOfferIcon/>} />
+            {/*<MUIMenuItem text="Tag"*/}
+            {/*    icon={<LocalOfferIcon/>} />*/}
 
-            <MUIMenuItem text="Copy"
-                icon={<FileCopyIcon/>} />
+            {/*<MUIMenuItem text="Copy"*/}
+            {/*    icon={<FileCopyIcon/>} />*/}
 
-            <Divider/>
+            {/*<Divider/>*/}
             <MUIMenuItem text="Delete"
-                icon={<DeleteForeverIcon/>} />
+                         onClick={() => handleDelete()}
+                         icon={<DeleteForeverIcon/>} />
         </>
     );
 

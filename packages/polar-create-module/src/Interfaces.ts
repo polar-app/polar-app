@@ -12,20 +12,22 @@ export interface IPackageManifest {
 
 export interface Scripts {
     test?: string;
-    citest?: string;
+    "test-ci"?: string;
     mocha?: string;
-    cimocha?: string;
+    "mocha-ci"?: string;
     karma?: string;
     eslint?: string;
-    eslintfix?: string;
+    "eslint-fix"?: string;
+    "eslint-ci"?: string;
     compile?: string;
     watch?: string;
     tsc?: string;
-    tscwatch?: string;
+    "tsc-watch"?: string;
 }
 
 export interface ICreateModuleConfig {
-    readonly Typescript?: 'disabled';
-    readonly Mocha?: true;
-    readonly Karma?: true;
+    readonly Typescript?: Boolean;
+    readonly Mocha?: Boolean;
+    readonly Karma?: Boolean;
+    readonly KarmaDelete?: Boolean;
 }

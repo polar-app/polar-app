@@ -20,7 +20,7 @@ import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../DocViewer";
+import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
@@ -50,6 +50,7 @@ export const AnnotationPopupBar: React.FC = () => {
     const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
     const copyAnnotation = useCopyAnnotation();
     const theme = useTheme();
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const annotationPopupClasses = useAnnotationPopupStyles();
 
@@ -87,7 +88,7 @@ export const AnnotationPopupBar: React.FC = () => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                {! NEW_NOTES_ANNOTATION_BAR_ENABLED && (
+                {! notesIntegrationEnabled && (
                     <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
                         <LocalOfferIcon />
                     </ActionButton>

@@ -25,7 +25,7 @@ export const UserTagsDataLoader: React.FC = React.memo(function UserTagsDataLoad
 });
 
 export function useUserTagsDB() {
-    const userTagsDB = React.useContext(UserTagsContext)
+    const userTagsDB = React.useContext(UserTagsContext);
 
     if (!userTagsDB) {
         throw new Error("useUserTagsDB must be used within a component that's wrapped in UserTagsDataLoader");

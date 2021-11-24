@@ -25,10 +25,15 @@ export namespace MouseEvents {
     }
 }
 
+
+
 /**
- * Used so that we can use either the native mouse events or the react ones.
+ * Used so that we can use either the native mouse events or the react ones but also
+ * make this easy to test.
  */
 export interface IMouseEvent {
+
+    // TODO: migrate to Pick on this.
 
     readonly clientX: number;
     readonly clientY: number;
@@ -317,7 +322,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
     const contextMenuAnchorPos = Devices.isDesktop() || Devices.isTablet() ?
         { top: props.mouseY, left: props.mouseX}
         :
-        { top: window.innerHeight, left: 0 };
+        { top: window.innerHeight , left: 0 };
 
     const useStyles = makeStyles(theme => ({
         root: { "& .MuiPopover-paper": {
@@ -328,7 +333,6 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             }}}));
 
     const classes = useStyles();
-
     return (
         <Menu
             transitionDuration={Devices.isDesktop() ? 0 : undefined}
@@ -340,8 +344,9 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             onClose={handleCloseFromHook}
             onClick={handleClose}
             BackdropProps={backdrops}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             onContextMenu={handleContextMenu}
-            anchorReference="anchorPosition"
+            anchorReference={!Devices.isPhone() ? "anchorPosition" : "none"}
             anchorPosition={contextMenuAnchorPos}>
 
             <div>

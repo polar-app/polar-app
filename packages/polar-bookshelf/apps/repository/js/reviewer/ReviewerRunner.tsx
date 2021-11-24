@@ -3,32 +3,35 @@ import {Percentages} from "polar-shared/src/util/Percentages";
 import {ReviewFinished} from "./ReviewFinished";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {ReviewerCard} from "./cards/ReviewerCard";
-import {useReviewerStore} from './ReviewerStore';
+import {ReviewerStore, ReviewerStoreContext} from './ReviewerStore';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {observer} from 'mobx-react-lite';
 import {MUILoading} from "../../../../web/js/mui/MUILoading";
+import {ITaskAction} from './ReviewerTasks';
 
-export const ReviewerRunner = deepMemo(function ReviewerRunner() {
+interface IReviewerRunnerProps {
+    store: ReviewerStore<ITaskAction> | undefined;
+}
 
-    const {taskRep, finished, total, initialized} = useReviewerStore(['taskRep', 'finished', 'total', 'initialized']);
+export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: IReviewerRunnerProps) {
 
-    if (! initialized) {
-        // we're still loading
-        return <MUILoading/>;
+    const { store } = props;
+
+    if (! store) {
+        return <MUILoading />
     }
 
-    if (! taskRep) {
+    if (! store.currentTaskRep) {
 
         // no more task reps... we're finished.
-        return (
-            <ReviewFinished/>
-        );
+        return <ReviewFinished/>;
 
     }
 
-    const perc = Math.floor(Percentages.calculate(finished, total));
+    const perc = Math.floor(Percentages.calculate(store.finished, store.total));
 
     return (
-        <>
+        <ReviewerStoreContext.Provider value={store}>
             <div className="mb-1">
 
                 <LinearProgress variant="determinate"
@@ -37,11 +40,11 @@ export const ReviewerRunner = deepMemo(function ReviewerRunner() {
 
             </div>
 
-            <ReviewerCard key={taskRep.id}
-                          taskRep={taskRep}/>
+            <ReviewerCard key={store.currentTaskRep.id}
+                          taskRep={store.currentTaskRep}/>
 
-        </>
+        </ReviewerStoreContext.Provider>
 
     );
 
-});
+}));

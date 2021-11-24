@@ -9,9 +9,8 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IBlocksStore} from "./IBlocksStore";
 import {BlockPredicates} from "./BlockPredicates";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocumentContent} from "../content/DocumentContent";
-import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import moment from "moment";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -48,6 +47,21 @@ export namespace BlocksStoreUndoQueues {
 
     export interface IUndoCaptureOpts {
         readonly noExpand?: boolean;
+    }
+
+    export function doSave<T>(blocksStore: BlocksStore,
+                              identifiers: ReadonlyArray<BlockIDStr>,
+                              blocksPersistenceWriter: BlocksPersistenceWriter,
+                              redoDelegate: () => T): T {
+
+        const undoCapture = createUndoCapture(blocksStore, identifiers, blocksPersistenceWriter);
+
+        const value = redoDelegate();
+
+        undoCapture.capture();
+        undoCapture.persist();
+
+        return value;
     }
 
     /**
@@ -644,6 +658,7 @@ export namespace BlocksStoreUndoQueues {
          *
          * Note: Blocks are only counted if their root block is of type 'document'
          */
+        /*
         const computeDeltas = () => {
             const deltaMap = new Map<BlockIDStr, Record<AnnotationContentType | 'other', number>>();
             const idsSet = new Set(identifiers);
@@ -711,6 +726,7 @@ export namespace BlocksStoreUndoQueues {
         };
 
         const deltaMap = computeDeltas();
+         */
 
         /**
          * Reflect the change in counters on the root document block.
@@ -718,9 +734,9 @@ export namespace BlocksStoreUndoQueues {
          * @see computeDeltas for more info
          */
         const update = (block: Block<DocumentContent>) => {
-            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
-
-            const getNewContent = (): IDocumentContent | null => {
+         
+            /*
+            const getUpdatedDocumentContent = (): IDocumentContent | null => {
                 const deltaRecord = deltaMap.get(block.id);
                 const content = block.content.toJSON();
                 let updated = false;
@@ -756,17 +772,18 @@ export namespace BlocksStoreUndoQueues {
 
                 return content;
             };
+            */
 
-            block.withMutation(() => {
-                const updatedContent = getNewContent();
 
-                if (updatedContent) {
-                    block.setContent(updatedContent);
-                }
+            const opts = { updated: ISODateTimeStrings.create(), mutation: block.mutation + 1 };
+            const shouldUpdateTimestamps = moment(opts.updated).diff(block.updated, 'minutes') >= 1; // Check if 1 minute had passed since the last update
 
-            }, opts);
+            if (shouldUpdateTimestamps) {
+                block.withMutation(() => {}, opts);
 
-            blocksStore.doPut([block]);
+                blocksStore.doPut([block]);
+            }
+
         };
 
         blocksStore.idsToBlocks(identifiers).filter(BlockPredicates.isDocumentBlock).forEach(update);

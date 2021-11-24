@@ -5,7 +5,7 @@ import {Sorting} from "./Sorting";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {RepoDocInfo} from "../RepoDocInfo";
-import {assertJSON} from "../../../../web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import TypeConverter = Sorting.TypeConverter;
 

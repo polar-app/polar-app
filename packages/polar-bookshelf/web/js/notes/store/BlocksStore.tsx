@@ -1,6 +1,6 @@
 import * as React from "react";
-import {createReactiveStore} from "../../react/store/ReactiveStore";
-import {action, computed, makeObservable, observable} from "mobx"
+import {createStoreContext} from "../../react/store/StoreContext";
+import {action, comparer, computed, makeObservable, observable} from "mobx"
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -34,7 +34,18 @@ import {
 } from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {IBlockContentStructure, NewChildPos, BlockIDStr, IBlock, IBlockContent, IBlockLink, INewChildPosition, NamespaceIDStr, UIDStr, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {
+    BlockIDStr,
+    IBlock,
+    IBlockContent,
+    IBlockContentStructure,
+    IBlockLink,
+    INamedContent,
+    INewChildPosition,
+    NamespaceIDStr,
+    NewChildPos,
+    UIDStr
+} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
@@ -44,7 +55,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
-import {BlockTextContentUtils} from "../NoteUtils";
+import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
@@ -169,6 +180,7 @@ export interface NavOpts {
 
 export interface IInsertBlocksContentStructureOpts {
     ref?: BlockIDStr;
+    isUndoable?: boolean;
 }
 
 export type InterstitialTypes = 'image';
@@ -293,6 +305,12 @@ export interface IComputeLinearTreeOpts {
     root?: BlockIDStr;
 };
 
+export type INamedBlockEntry = {
+    id: BlockIDStr;
+    type: INamedContent['type'];
+    label: string;
+};
+
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
@@ -341,6 +359,8 @@ export class BlocksStore implements IBlocksStore {
 
     @observable _interstitials: InterstitialMap = {};
 
+    @observable _tagsIndex: ReverseIndex = new ReverseIndex();
+
     /*
      * Used to keep track of cursor positions in every note
      */
@@ -370,16 +390,27 @@ export class BlocksStore implements IBlocksStore {
         return this._indexByDocumentID;
     }
 
-    /**
-     * Get all the nodes by name.
-     */
-    getNamedBlocks(): ReadonlyArray<string> {
-        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NamedContent>>;
-        return blocks.map(block => BlockTextContentUtils.getTextContentMarkdown(block.content));
+    @computed get namedBlocks(): ReadonlyArray<Block<NamedContent>> {
+        const namedBlocksIDs = Object.values(this._indexByName);
+        return this.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
+    }
+
+    @computed({ equals: comparer.structural }) get namedBlockEntries(): ReadonlyArray<INamedBlockEntry> {
+        const sorted = sortNamedBlocks(this.namedBlocks);
+
+        return sorted.map(({ id, content }) => ({
+            id,
+            type: content.type,
+            label: BlockTextContentUtils.getTextContentMarkdown(content),
+        }));
     }
 
     @computed get reverse() {
         return this._reverse;
+    }
+
+    @computed get tagsIndex() {
+        return this._tagsIndex;
     }
 
     @computed get expanded() {
@@ -520,16 +551,24 @@ export class BlocksStore implements IBlocksStore {
             }
 
             /**
-             * Update links indices
+             * Update links & tag indices
              */
             if (existingBlock) {
                 for (const link of existingBlock.content.links) {
                     this._reverse.remove(link.id, block.id);
                 }
+
+                for (const tagLink of existingBlock.content.tagLinks) {
+                    this._tagsIndex.remove(tagLink.id, block.id);
+                }
             }
 
             for (const link of block.content.links) {
                 this._reverse.add(link.id, block.id);
+            }
+
+            for (const tagLink of block.content.tagLinks) {
+                this._tagsIndex.add(tagLink.id, block.id);
             }
 
             /**
@@ -569,8 +608,34 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>) {
+        const identifiers = blocks.map(({ id }) => id);
+
+        const redo = () => {
+            const update = ({ id, content }: IBlockContentStructure) => {
+                const block = this.getBlockForMutation(id);
+
+                if (block) {
+
+                    block.withMutation(() => {
+                        block.setContent(content);
+                    });
+
+                    this.doPut([block]);
+
+                }
+            };
+
+            blocks.forEach(update);
+        };
+
+        return this.doUndoPush('setBlockContents', identifiers, redo);
+    }
+
     @action public insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                                    opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
+
+        const { ref, isUndoable = true } = opts;
 
         const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
                structure.children.reduce((acc, substructure) =>
@@ -580,12 +645,13 @@ export class BlocksStore implements IBlocksStore {
         // mutates the blocks that belong to these ids in the same order specified here
         // The reason why we have to reverse them is because when undoing this operation
         // requires deleting all of the inserted blocks, and in order for that to happen
-        // we have to list children ids first before their parents, because doDelete
+        // we have to list the childrens ids before their parents, because doDelete
         // doesn't like deleting blocks that have no parents
         const ids = blocks.flatMap(blockStructure => toIDs(blockStructure).reverse());
 
         const redo = () => {
-            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref?: BlockIDStr, isParent: boolean = false) => {
+            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>,
+                                 ref?: BlockIDStr, isParent: boolean = false) => {
                 [...blocks]
                     .reverse()
                     .forEach(({ children, content, id }) => {
@@ -597,31 +663,34 @@ export class BlocksStore implements IBlocksStore {
                             if (newBlock) {
                                 storeBlocks(children, newBlock.id, true);
                             }
-                        } else {
-                            if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
-                                
-                                const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
+                        } else if (content.type === 'name' || content.type === 'date' || content.type === 'document') {
 
-                                if (savedBlockID) {
-                                    storeBlocks(children, savedBlockID, true);
-                                }
+                            const savedBlockID = this.doCreateNewNamedBlock({ content, newBlockID: id });
 
+                            if (savedBlockID) {
+                                storeBlocks(children, savedBlockID, true);
                             }
+
                         }
 
                     });
             };
 
-            storeBlocks(blocks, opts.ref, false);
+            storeBlocks(blocks, ref, false);
 
             return ids;
         };
 
         const identifiers = [
             ...ids,
-            ...(opts.ref ? [opts.ref] : []),
+            ...(ref ? [ref] : []),
         ];
-        return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+
+        if (isUndoable) {
+            return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
+        } else {
+            return this.doSave('insertFromBlockContentStructure', identifiers, redo);
+        }
     }
 
     public hasSelected(): boolean {
@@ -715,16 +784,22 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public getBlockByName(name: BlockNameStr): Block | undefined {
+    public getBlockByName(name: BlockNameStr): Block<NamedContent> | undefined {
 
         const lowercaseName = name.toLowerCase();
         const blockRefByName = this._indexByName[lowercaseName];
 
-        if (blockRefByName) {
-            return this._index[blockRefByName] || undefined;
+        if (! blockRefByName) {
+            return undefined;
         }
 
-        return undefined;
+        const block: Block | undefined = this._index[blockRefByName];
+
+        if (! block || ! BlockPredicates.isNamedBlock(block)) {
+            return undefined;
+        }
+
+        return block;
 
     }
 
@@ -1452,7 +1527,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createLinkToBlock(sourceBlockID: BlockIDStr,
                                      rawTargetName: BlockNameStr,
-                                     content: MarkdownStr) {
+                                     content: MarkdownStr): BlockIDStr {
 
         const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
@@ -1503,6 +1578,8 @@ export class BlocksStore implements IBlocksStore {
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }
+
+            return targetBlockID;
         };
 
         return this.doUndoPush('createLinkToBlock', [sourceBlockID, targetID], redo);
@@ -2126,12 +2203,12 @@ export class BlocksStore implements IBlocksStore {
             const block = this._index[blockID];
 
             if (! block) {
-                console.log("No block for ID: " + blockID)
+                console.log("computeNextActive: No block for ID: " + blockID)
                 return undefined;
             }
 
             if (! block.parent) {
-                console.log("No parent for ID: " + blockID)
+                console.log("computeNextActive: No parent for ID: " + blockID)
                 return undefined;
             }
 
@@ -2446,6 +2523,18 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    private doSave<T>(id: IDStr,
+                      identifiers: ReadonlyArray<BlockIDStr>,
+                      redoDelegate: () => T): T {
+
+        if (ENABLE_UNDO_TRACING) {
+            console.log(`doSave: ${id} `, new Error("SAVE"));
+        }
+
+        return BlocksStoreUndoQueues.doSave(this, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
+
+    }
+
     private doUndoPush<T>(id: IDStr,
                           identifiers: ReadonlyArray<BlockIDStr>,
                           redoDelegate: () => T): T {
@@ -2467,7 +2556,7 @@ export class BlocksStore implements IBlocksStore {
 
 }
 
-export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
+export const [BlocksStoreProvider, useBlocksStoreDelegate] = createStoreContext(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
     const blocksPersistenceWriter = useBlocksPersistenceWriter();

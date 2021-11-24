@@ -1,13 +1,13 @@
 import React from "react";
 import {useBlocksStore} from "../notes/store/BlocksStore";
 import {NoteProviders} from "../notes/NoteScreen";
-import {Block} from "../notes/Block";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
-import {useHighlightBlocks} from "../notes/HighlightBlocksHooks";
+import {useNotesIntegrationEnabled} from "../notes/NoteUtils";
+import {useHighlightBlockIDs} from "../notes/HighlightBlocksHooks";
+import {HighlightBlock} from "../notes/HighlightBlock";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (props) => {
+const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = React.memo((props) => {
     const { docFingerprint } = props;
     const classes = useStyles();
 
@@ -35,7 +35,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
 
     const documentBlock = blocksStore.getBlock(blocksStore.indexByDocumentID[docFingerprint]);
 
-    const annotationBlocks = useHighlightBlocks({ docID: docFingerprint });
+    const annotationBlockIDs = useHighlightBlockIDs({ docID: docFingerprint });
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>
@@ -46,16 +46,10 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
         <div className={classes.root}>
             <NoteProviders>
                 <BlocksTreeProvider root={documentBlock.id} autoExpandRoot>
-                    {annotationBlocks.length
+                    {annotationBlockIDs.length
                         ? (
-                            annotationBlocks.map(block => (
-                                <Block
-                                    key={block.id}
-                                    parent={documentBlock.id}
-                                    id={block.id}
-                                    noExpand
-                                    noBullet
-                                />
+                            annotationBlockIDs.map(id => (
+                                <HighlightBlock key={id} id={id} parent={documentBlock.id} />
                             ))
                         ) : (
                             <NoAnnotations />
@@ -66,16 +60,17 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = (pr
             </NoteProviders>
         </div>
     );
-};
+});
 
 export const AnnotationSidebar = () => {
     const { docMeta } = useDocViewerStore(['docMeta']);
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    if (! notesIntegrationEnabled) {
         return <AnnotationSidebar2 />
     }
 

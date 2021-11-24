@@ -1,31 +1,39 @@
-import {action, computed, observable} from "mobx"
+import {action, computed, makeObservable, observable} from "mobx"
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export class ReverseIndex {
 
-    @observable private index: { [key: string]: BlockIDStr[] } = {};
+    @observable private _index: { [key: string]: BlockIDStr[] } = {};
 
-    @computed get(target: BlockIDStr): ReadonlyArray<BlockIDStr> {
-        return this.index[target] || [];
+    constructor() {
+        makeObservable(this);
+    }
+
+    @computed get index() {
+        return this._index;
+    }
+
+    get(target: BlockIDStr): ReadonlyArray<BlockIDStr> {
+        return this._index[target] || [];
     }
 
     @action add(target: BlockIDStr, inbound: BlockIDStr) {
 
-        const current = this.index[target];
+        const current = this._index[target];
 
         if (current) {
             if (current.indexOf(inbound) === -1) {
                 current.push(inbound);
             }
         } else {
-            this.index[target] = [inbound];
+            this._index[target] = [inbound];
         }
 
     }
 
     @action remove(target: BlockIDStr, inbound: BlockIDStr) {
 
-        const current = this.index[target];
+        const current = this._index[target];
 
         if (current) {
 
@@ -38,7 +46,7 @@ export class ReverseIndex {
             }
 
             if (current.length === 0) {
-                delete this.index[target];
+                delete this._index[target];
             }
 
         }
@@ -46,7 +54,7 @@ export class ReverseIndex {
     }
 
     public toJSON(): string {
-        return JSON.stringify(this.index);
+        return JSON.stringify(this._index);
     }
 
 }

@@ -10,7 +10,6 @@ import TagID = Tags.TagID;
 
 interface IProps {
     readonly root: TagNode<TagDescriptorSelected>;
-    readonly toggleExpanded: (nodes: ReadonlyArray<string>) => void;
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
 
     readonly collapseNode: (node: string) => void;

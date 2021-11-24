@@ -40,7 +40,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
     const {filter, foldersRoot, selected, expanded, tagsView, isProcessing}
         = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView', 'isProcessing']);
 
-    const {onDrop, onCreateUserTag, setFilter, toggleExpanded, selectRow, collapseNode, expandNode} = useFolderSidebarCallbacks();
+    const {onDrop, onCreateUserTag, setFilter, selectRow, collapseNode, expandNode} = useFolderSidebarCallbacks();
 
     const handleDrop = React.useCallback((event: React.DragEvent, tagID: TagIDStr) => {
 
@@ -109,14 +109,12 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                         <div style={{marginLeft: '8px'}}>
                             <FoldersContextMenu disabled={isProcessing}>
                                 <MUITreeView root={foldersRoot}
-                                             toggleExpanded={toggleExpanded}
                                              selectRow={selectRow}
                                              collapseNode={collapseNode}
                                              expandNode={expandNode}
                                              selected={selected}
                                              expanded={expanded}
-                                             onDrop={handleDrop}
-                                             />
+                                             onDrop={handleDrop} />
                             </FoldersContextMenu>
                         </div>}
 

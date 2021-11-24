@@ -39,6 +39,6 @@ source "${CREDENTIALS_FILE}"
 
 # TODO: this is no longer needed with the new release system.
 
-git clean -f -d && git reset --hard HEAD && git pull && npm install && yarn run dist-${target}
+git clean -f -d && git reset --hard HEAD && git pull && npm install && pnpm run dist-${target}
 
-# yarn run dist-${target}
+# pnpm run dist-${target}

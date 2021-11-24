@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
@@ -13,7 +12,7 @@ import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
-import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
+import {Box, createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -21,22 +20,25 @@ import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotati
 import {AnnotationRepoTable} from './AnnotationRepoTable';
 import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnotationInlineViewer';
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from '../../../doc/src/DocViewer';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
+import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
+import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
 }
 
 const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
-    return (
-        <MUIPaperToolbar id="header-filter"
-                         padding={1}>
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
-            <div style={{
+    return (
+        <RepositoryToolbar>
+
+            <Box style={{
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
 
                 <SidenavTriggerIconButton />
@@ -47,7 +49,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     justifyContent: 'flex-end'
                 }}>
                     {
-                        NEW_NOTES_ANNOTATION_BAR_ENABLED
+                        notesIntegrationEnabled
                             ? <BlocksAnnotationRepoFilterBar />
                             : <AnnotationRepoFilterBar />
                     }
@@ -60,9 +62,9 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     )}
                 </div>
 
-            </div>
+            </Box>
 
-        </MUIPaperToolbar>
+        </RepositoryToolbar>
     );
 });
 
@@ -104,17 +106,18 @@ namespace Phone {
         const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
         const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
         const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
 
         const annotation = React.useMemo(() => {
-            if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (notesIntegrationEnabled) {
                 return blocksAnnotationRepoStore.activeBlock;
             } else {
                 return selected.length > 0
                     ? view.filter(current => current.id === selected[0])[0]
                     : undefined;
             }
-        }, [blocksAnnotationRepoStore.activeBlock, selected, view]);
+        }, [blocksAnnotationRepoStore.activeBlock, selected, view, notesIntegrationEnabled]);
 
         const classes = useStyles();
 
@@ -127,7 +130,7 @@ namespace Phone {
 
         return (
             <>
-                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                {notesIntegrationEnabled
                     ? <BlocksAnnotationRepoTable />
                     : <AnnotationListView />
                 }
@@ -139,7 +142,7 @@ namespace Phone {
                     className={classes.drawer}
                     classes={{ root: classes.drawer, paper: classes.drawer }}
                 >
-                    {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                    {notesIntegrationEnabled
                         ? <BlocksAnnotationInlineViewer />
                         : <AnnotationInlineViewer />
                     }
@@ -153,30 +156,34 @@ namespace Phone {
 namespace Tablet {
 
 
-    export const Main = () => (
-        <DockLayout.Root dockPanels={[
-            {
-                id: 'dock-panel-center',
-                type: 'fixed',
-                style: {
-                    overflow: 'visible',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0,
+    export const Main = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
+
+        return (
+            <DockLayout.Root dockPanels={[
+                {
+                    id: 'dock-panel-center',
+                    type: 'fixed',
+                    style: {
+                        overflow: 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        minHeight: 0,
+                    },
+                    component: notesIntegrationEnabled ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
+                    width: 400
                 },
-                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
-                width: 400
-            },
-            {
-                id: 'dock-panel-right',
-                type: 'grow',
-                component: NEW_NOTES_ANNOTATION_BAR_ENABLED ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
-            }
-        ]}>
-            <DockLayout.Main/>
-        </DockLayout.Root>
-    );
+                {
+                    id: 'dock-panel-right',
+                    type: 'grow',
+                    component: notesIntegrationEnabled ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
+                }
+            ]}>
+                <DockLayout.Main/>
+            </DockLayout.Root>
+        );
+    };
 
 
 }
@@ -184,6 +191,7 @@ namespace Tablet {
 namespace Desktop {
 
     const Right = React.memo(function Right() {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <div style={{
@@ -214,7 +222,7 @@ namespace Desktop {
                                 flexDirection: 'column',
                                 minHeight: 0
                             }}>
-                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                {notesIntegrationEnabled
                                     ? <BlocksAnnotationRepoTable />
                                     : <AnnotationRepoTable />
                                 }
@@ -233,7 +241,7 @@ namespace Desktop {
                                               flexGrow: 1,
                                               display: 'flex'
                                           }}>
-                                {NEW_NOTES_ANNOTATION_BAR_ENABLED
+                                {notesIntegrationEnabled
                                     ? <BlocksAnnotationInlineViewer />
                                     : <AnnotationInlineViewer />
                                 }
@@ -250,6 +258,7 @@ namespace Desktop {
 
 
     export const Main = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -264,7 +273,9 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        <FolderSidebar2 header={<StartReviewHeader/>}/>
+                        notesIntegrationEnabled
+                            ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                            : <FolderSidebar2 header={<StartReviewHeader/>} />
                     ),
                     width: 300
                 },
@@ -289,6 +300,7 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
+        const notesIntegrationEnabled = useNotesIntegrationEnabled();
         const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
@@ -310,7 +322,10 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            <FolderSidebar2 header={<StartReviewHeader/>}/>
+                            {notesIntegrationEnabled
+                                ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                                : <FolderSidebar2 header={<StartReviewHeader/>} />
+                            }
                         </SideCar>
 
                         <DeviceRouter phone={

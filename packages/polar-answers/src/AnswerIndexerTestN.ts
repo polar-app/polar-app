@@ -8,7 +8,7 @@ import getUID = AnswerTests.getUID;
 
 describe("AnswerIndexer", function() {
 
-    this.timeout(30000000);
+    this.timeout(120000);
 
     const app = FirebaseAdmin.app()
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Table, TableCell, TableHead, TableRow, Theme} from '@material-ui/core';
+import {createStyles, makeStyles, Table, TableCell, TableHead, TableBody, TableRow, Theme} from '@material-ui/core';
 import {useHistory} from 'react-router-dom';
 import {useDocRepoStore} from '../../../../apps/repository/js/doc_repo/DocRepoStore2';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
@@ -73,7 +73,7 @@ export const SwitchScreen = () => {
     const classes = useStyles();
     const history = useHistory();
 
-    const orderedTabsByRecency = useSortedDocInfos();
+    const sortedDocInfos = useSortedDocInfos();
 
     return (
         <AdaptivePageLayout title="Recent Documents" fullWidth noBack>
@@ -82,16 +82,16 @@ export const SwitchScreen = () => {
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table">
 
-                    {orderedTabsByRecency.length > 0 ?
+                    {sortedDocInfos.length > 0 ?
                         <>
-                            {orderedTabsByRecency.map( column =>
-                                <TableHead key={column.uuid}>
+                            {sortedDocInfos.map( column =>
+                                <TableBody key={column.uuid}>
                                     <TableRow onClick={()=>history.push('/doc/'+column.fingerprint)}>
                                         <TableCell key={column.uuid} className={classes.th}>
-                                            {column.title}
+                                            {column.title || "Untitled"}
                                         </TableCell>
                                     </TableRow>
-                                </TableHead>
+                                </TableBody>
                             )}
                         </>
                         :

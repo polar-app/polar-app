@@ -8,9 +8,10 @@ import {NotesInbound} from "./NotesInbound";
 import {Block} from "./Block";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTitle} from "./BlockTitle";
-import {NotesInnerContainer} from "./NotesContainer";
 import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
+import {BlockTargetStr} from "./NoteLinkLoader";
+import {NoteStack} from "./stacks/NoteStack";
 
 interface INoteRootParams {
     id: BlockIDStr;
@@ -21,6 +22,31 @@ interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}
 export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
     const { match: { params } } = props;
     const target = React.useMemo(() => decodeURIComponent(params.id), [params.id]);
+    const blocksStore = useBlocksStore();
+    const root = React.useMemo(() => blocksStore.getBlockByTarget(target), [target, blocksStore]);
+
+    if (! root) {
+        return <NoteNotFound target={target} />;
+    }
+
+    return (
+        <>
+            <NotesToolbar />
+            <BlockTitle id={root.id} />
+            <NoteStack target={target}>
+                <NoteRenderer target={target} />
+            </NoteStack>
+        </>
+    );
+};
+
+interface INoteRendererProps {
+    target: BlockTargetStr;
+}
+
+export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => {
+    const { target } = props;
+
     const blocksStore = useBlocksStore();
 
     const root = React.useMemo(() => blocksStore.getBlockByTarget(target), [target, blocksStore]);
@@ -38,30 +64,40 @@ export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
         }
     }, [root, blocksStore]);
 
-    if (! root) {
-        return (
-            <Box mt={5} display="flex" justifyContent="center">
-                <Typography variant="h5">Note {target} was not found.</Typography>
-            </Box>
-        );
-    }
-
-    const rootID = root.id;
 
     return (
-        <>
-            <NotesToolbar />
-            <BlockTitle id={rootID}/>
-            <NotesInnerContainer>
-                <NotePaper>
-                    <BlocksTreeProvider root={rootID} autoExpandRoot>
-                        <Block parent={undefined} id={rootID} withHeader noExpand noBullet />
+        <NotePaper>
+            {root 
+                ? (
+                    <BlocksTreeProvider root={root.id} autoExpandRoot>
+                        <Block id={root.id}
+                               parent={undefined}
+                               isHeader
+                               alwaysExpanded
+                               hasGutter
+                               noBullet />
                         <div style={{ marginTop: 64 }}>
-                            <NotesInbound id={rootID} />
+                            <NotesInbound id={root.id} />
                         </div>
                     </BlocksTreeProvider>
-                </NotePaper>
-            </NotesInnerContainer>
-        </>
+                ) : (
+                    <NoteNotFound target={target} />
+                )
+            }
+        </NotePaper>
+    );
+});
+
+interface INoteNotFoundProps {
+    target: BlockTargetStr;
+}
+
+export const NoteNotFound: React.FC<INoteNotFoundProps> = (props) => {
+    const { target } = props;
+
+    return (
+        <Box mt={5} display="flex" justifyContent="center">
+            <Typography variant="h5">Note {target} was not found.</Typography>
+        </Box>
     );
 };

@@ -4,129 +4,52 @@ import {
     OptionalTaskRepResolver,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
-import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Reducers} from "polar-shared/src/util/Reducers";
 import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {ReadingTaskAction} from "./cards/ReadingTaskAction";
-import {Strings} from "polar-shared/src/util/Strings";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IReadingTaskAction} from "./cards/ReadingTaskAction";
+import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
+
+export const DEFAULT_READING_TASKS_LIMIT = 10;
+export const DEFAULT_FLASHCARD_TASKS_LIMIT = 10;
+export const DEFAULT_LIMIT = 10;
+
+export type ITaskAction<T = unknown> = IReadingTaskAction<T> | IFlashcardTaskAction<T>;
+
+export namespace TaskActionPredicates {
+    export function isReadingTaskRep<T>(taskRep: TaskRep<ITaskAction<T>>): taskRep is TaskRep<IReadingTaskAction<T>> {
+        return taskRep.action.type === 'reading';
+    }
+
+    export function isFlashcardTaskRep<T>(taskRep: TaskRep<ITaskAction<T>>): taskRep is TaskRep<IFlashcardTaskAction<T>> {
+        return taskRep.action.type === 'flashcard';
+    }
+}
 
 /**
  * Take tasks and then build a
  */
-export interface TasksBuilder<A> {
-    (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<A>>;
+export interface TasksBuilder<A, B> {
+    (data: ReadonlyArray<A>): ReadonlyArray<Task<B>>;
 }
 
 export class ReviewerTasks {
 
-    public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
-                                           limit: number = 10): Promise<CalculatedTaskReps<ReadingTaskAction>> {
-
-        const mode = 'reading';
-
-        const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
-
-            const toTask = (docAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
-                const color = HighlightColors.withDefaultColor(docAnnotation.color);
-                return {
-                    id: docAnnotation.guid || docAnnotation.id,
-                    action: {
-                        docAnnotation
-                    },
-                    created: docAnnotation.created,
-                    color,
-                    mode
-                };
-            };
-
-            const predicate = (annotation: IDocAnnotation): boolean => {
-
-                if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-                    return annotation.img !== undefined;
-                }
-
-                if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-                    return ! Strings.empty(annotation.text);
-                }
-
-                return false;
-
-            };
-
-            return repoDocAnnotations
-                .filter(current => predicate(current))
-                .map(toTask);
-
-        };
-
-        return this.createTasks(repoDocAnnotations, mode, taskBuilder, limit);
-
-    }
-
-    public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
-                                             limit: number = 10): Promise<CalculatedTaskReps<FlashcardTaskAction>> {
-
-        const mode = 'flashcard';
-
-        const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
-
-            const toTasks = (docAnnotation: IDocAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
-
-                const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
-
-                    return {
-                        id: docAnnotation.guid || docAnnotation.id,
-                        action,
-                        created: docAnnotation.created,
-                        mode
-                    };
-
-                };
-
-                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original, docAnnotation);
-
-                return actions.map(toTask);
-
-            };
-
-            if (repoDocAnnotations.length === 0) {
-                // nothing to do.
-                return [];
-            }
-
-            return repoDocAnnotations
-                .filter(current => current.annotationType === AnnotationType.FLASHCARD)
-                .map(toTasks)
-                .reduce(Reducers.FLAT, []);
-
-        };
-
-        return this.createTasks(repoDocAnnotations, mode, taskBuilder, limit);
-
-    }
-
-    public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
-                                       mode: RepetitionMode,
-                                       tasksBuilder: TasksBuilder<A>,
-                                       limit: number = 10): Promise<CalculatedTaskReps<A>> {
+    public static async createTasks<A, B>(data: ReadonlyArray<A>,
+                                          mode: RepetitionMode,
+                                          tasksBuilder: TasksBuilder<A, B>,
+                                          limit: number = 10): Promise<CalculatedTaskReps<B>> {
 
         Preconditions.assertPresent(mode, 'mode');
 
         // TODO: we also need to be able to review images.... we also need a dedicated provider to
         // return the right type of annotation type...
 
-        const potential: ReadonlyArray<Task<A>> = tasksBuilder(repoDocAnnotations);
+        const potential: ReadonlyArray<Task<B>> = tasksBuilder(data);
         const uid = await FirebaseBrowser.currentUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
 
@@ -138,8 +61,8 @@ export class ReviewerTasks {
 
         const spacedRepsMap = IDMaps.create(spacedReps);
 
-        const optionalTaskRepResolver: OptionalTaskRepResolver<A>
-            = async (task: Task<A>): Promise<TaskRep<A> | undefined> => {
+        const optionalTaskRepResolver: OptionalTaskRepResolver<B>
+            = async (task: Task<B>): Promise<TaskRep<B> | undefined> => {
 
             const spacedRep = spacedRepsMap[task.id];
 

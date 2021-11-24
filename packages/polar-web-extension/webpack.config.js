@@ -148,26 +148,18 @@ module.exports = {
             patterns: [
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
-                { from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
-                { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' }
+                { from: 'node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
+                { from: 'node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' }
             ],
         }),
     ],
     optimization: {
-        // minimize: ! isDev,
-        minimize: true,
-        minimizer: [new TerserPlugin({
-            // disable caching to:  node_modules/.cache/terser-webpack-plugin/
-            // because intellij will index this data and lock up my machine
-            // and generally waste space and CPU
-            // cache: ".terser-webpack-plugin",
-            terserOptions: {
-                output: { ascii_only: true },
-            }})
-        ],
-        // usedExports: true,
+        // NOTE: for the chrome extension we disable minimization.  I had bugs with terser handling unicode
+        // and ascii and the only way to fix it was to just disable minimization.  The resulting .zip was
+        // the same size either way so looks like it really doesn't matter much as zip encoding fixes the
+        // problem for us.
+        minimize: false,
         // removeAvailableModules: true,
         // removeEmptyChunks: true,
-        // splitChunks: false,
     }
 };

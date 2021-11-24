@@ -1,5 +1,4 @@
 import * as React from "react";
-import {useState} from "react";
 import isEqual from "react-fast-compare";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,8 +10,6 @@ import {TransitionProps} from "@material-ui/core/transitions";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
-import {useHistory} from "react-router-dom";
-import {useReviewerCallbacks} from "./ReviewerStore";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -34,23 +31,15 @@ const Transition = React.forwardRef(function Transition(
 interface IProps {
     readonly className?: string;
     readonly children: any;
+    readonly onClose: () => void;
 }
 
 export const ReviewerDialog = React.memo(function ReviewerDialog(props: IProps) {
 
     const classes = useStyles();
-    const [open, setOpen] = useState<boolean>(true);
-    const history = useHistory();
-    const {onSuspended} = useReviewerCallbacks();
-
-    const handleClose = React.useCallback(() => {
-        setOpen(false);
-        onSuspended();
-        history.replace({pathname: "/annotations", hash: ""});
-    }, [history, onSuspended]);
 
     return (
-        <Dialog fullScreen open={open}
+        <Dialog fullScreen open
                 TransitionComponent={Transition}>
 
             <>
@@ -65,7 +54,7 @@ export const ReviewerDialog = React.memo(function ReviewerDialog(props: IProps) 
                         </Typography>
                         <IconButton edge="start"
                                     color="inherit"
-                                    onClick={handleClose}
+                                    onClick={props.onClose}
                                     aria-label="close">
                             <CloseIcon />
                         </IconButton>

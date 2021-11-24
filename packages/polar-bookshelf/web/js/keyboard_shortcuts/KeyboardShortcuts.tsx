@@ -9,13 +9,15 @@ import {
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
 
-type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
+export type KeyboardEventLike = React.KeyboardEvent | KeyboardEvent;
+
+type KeyboardEventHandlerPredicate = (event: KeyboardEventLike) => boolean;
 
 export const isModifier = (key: string): key is Modifier => ['shift', 'alt', 'command', 'ctrl'].indexOf(key) > -1;
 
 export type Modifier = 'ctrl' | 'alt' | 'shift' | 'command';
 
-export const modifierPredicate = (pressed: Modifier[], event: KeyboardEvent | React.KeyboardEvent) => {
+export const modifierPredicate = (pressed: Modifier[], event: KeyboardEventLike) => {
     const unpressed: Modifier[] = (['ctrl', 'alt', 'shift', 'command'] as Modifier[])
         .filter(mod => pressed.indexOf(mod) === -1);
 
@@ -81,7 +83,7 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
     return createPredicate();
 }
 
-function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
+function isIgnorableKeyboardEvent(event: KeyboardEventLike): boolean {
 
     // By default, all key events that originate from <input>, <select> or
     // <textarea>, or have a isContentEditable attribute of true
@@ -92,12 +94,14 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
             return true;
         }
 
-        if (event.target.getAttribute('isContentEditable') === 'true') {
-            return true;
-        }
+        // if (event.target.getAttribute('isContentEditable') === 'true') {
+        //     return true;
+        // }
 
         if (event.target.getAttribute('contenteditable') === 'true') {
-            return true;
+
+            return ! event.ctrlKey && ! event.metaKey && ! event.altKey;
+
         }
 
     }
@@ -107,11 +111,13 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 }
 type SequenceToKeyboardEventHandlerPredicate = [IKeyboardShortcutWithHandler, KeyBinding, KeyboardEventHandlerPredicate];
 
-export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
+export type OnKeyDown = (event: KeyboardEventLike) => boolean;
+
+export function useKeyboardShortcutHandlers(): OnKeyDown  {
 
     const {shortcuts, active} = useKeyboardShortcutsStore(['shortcuts', 'active']);
-    const shortcutsRef = useRefWithUpdates(shortcuts);
     const activeRef = useRefWithUpdates(active);
+    const shortcutsRef = useRefWithUpdates(shortcuts);
 
     function computeKeyToHandlers() {
 
@@ -138,11 +144,11 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     const keyToHandlers = useRefProvider(() =>  computeKeyToHandlers());
 
-    const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
+    const handleKeyDown = React.useCallback((event: KeyboardEventLike): boolean => {
 
         if (! activeRef.current) {
             // key bindings are deactivated.
-            return;
+            return false;
         }
 
         for (const [shortcut, seq, predicate] of keyToHandlers.current) {
@@ -151,20 +157,30 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             if (predicate(event)) {
 
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
-                    return;
+                    return false;
                 }
 
                 event.stopPropagation();
                 event.preventDefault();
 
-                console.log("Executing handler for sequence: " + seq);
+                console.log("Executing handler for sequence: ", seq);
                 setTimeout(() => shortcut.handler(event), 1);
-                break;
+                return true;
             }
 
         }
 
+        return false;
+
     }, [activeRef, keyToHandlers]);
+
+    return handleKeyDown;
+
+}
+
+export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
+
+    const handleKeyDown = useKeyboardShortcutHandlers();
 
     React.useEffect(() => {
 

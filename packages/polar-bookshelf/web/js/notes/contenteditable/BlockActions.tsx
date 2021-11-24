@@ -1,10 +1,10 @@
+import {observer} from "mobx-react-lite";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
 import {ActionMenuItemsProvider, createActionsProvider} from "../../mui/action_menu/ActionStore";
-import {useBlocksTreeStore} from "../BlocksTree";
 import {TAG_IDENTIFIER} from "../content/HasLinks";
-import {BlockTextContentUtils, useNamedBlocks} from "../NoteUtils";
 import {BlockPredicates} from "../store/BlockPredicates";
+import {useBlocksStore} from "../store/BlocksStore";
 import {BlockAction} from "./BlockAction";
 
 interface IBlockActionProps {
@@ -21,6 +21,11 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                   .replace(/.\]\]$/, '');
     }, []);
 
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-link" as const,
+        target: id,
+    }), []);
+
     return (
         <BlockAction id={id}
                      trigger="[["
@@ -29,21 +34,24 @@ const WikiLinksBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-link",
-                        target: id
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
 };
 
 const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
+
     const { children, id, noteActionsProvider, disabled } = props;
 
     const computeLinkActionInputText = React.useCallback((str: string): string => {
         return str.replace(new RegExp(`^${TAG_IDENTIFIER}`), '');
     }, []);
+
+    const handleAction = React.useCallback((id: string) => ({
+        type: "block-tag" as const,
+        target: `${TAG_IDENTIFIER}${id}`,
+    }), []);
 
     return (
         <BlockAction id={id}
@@ -53,10 +61,7 @@ const TagsBlockAction: React.FC<IBlockActionProps> = (props) => {
                      actionsProvider={noteActionsProvider}
                      computeActionInputText={computeLinkActionInputText}
                      disabled={disabled}
-                     onAction={(id) => ({
-                        type: "block-tag",
-                        target: `${TAG_IDENTIFIER}${id}`
-                    })}>
+                     onAction={handleAction}>
             {children}
         </BlockAction>
     );
@@ -75,27 +80,23 @@ interface IBlockActionsProviderProps extends IBlockActionToggles {
     id: BlockIDStr;
 }
 
-export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props) => {
+export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = observer((props) => {
     const { id, children } = props;
 
-    const namedBlocks = useNamedBlocks();
-    const blocksTreeStore = useBlocksTreeStore();
-    const block = React.useMemo(() => blocksTreeStore.getBlock(id), [blocksTreeStore, id]);
+    const blocksStore = useBlocksStore();
+    const block = React.useMemo(() => blocksStore.getBlock(id), [blocksStore, id]);
     const canHaveLinks = React.useMemo(() => block && BlockPredicates.canHaveLinks(block), [block]);
 
     const noteLinkActions = React.useMemo(() => {
-        return namedBlocks.map((block) => {
-            const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
+        return blocksStore.namedBlockEntries.map(({ label }) => {
             return {
-                id: name,
-                text: name,
+                id: label,
+                text: label,
             };
         });
-    }, [namedBlocks]);
+    }, [blocksStore.namedBlockEntries]);
 
     const noteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
-
-
 
     return (
         <WikiLinksBlockAction disabled={! canHaveLinks} id={id} noteActionsProvider={noteActionsProvider}>
@@ -104,5 +105,5 @@ export const BlockActionsProvider: React.FC<IBlockActionsProviderProps> = (props
             </TagsBlockAction>
         </WikiLinksBlockAction>
     );
-};
+});
 

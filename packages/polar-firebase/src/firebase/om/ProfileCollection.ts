@@ -98,7 +98,7 @@ export namespace ProfileCollection {
     export const COLLECTION = 'profile';
 
     export function createID() {
-        return Hashcodes.createRandomID(20);
+        return Hashcodes.createRandomID({len: 20});
     }
 
     export async function get(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<IProfile | undefined> {

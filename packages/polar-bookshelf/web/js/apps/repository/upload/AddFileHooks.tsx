@@ -14,10 +14,10 @@ import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/Accoun
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
 import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
+import {useDocumentBlockFromDocInfoCreator} from "../../../notes/NoteUtils";
 
 export namespace AddFileHooks {
 
@@ -30,9 +30,9 @@ export namespace AddFileHooks {
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
-        const diskDatastoreMigration = useDiskDatastoreMigration();
         const batchUploader = useBatchUploader();
         const analytics = useAnalytics();
+        const createDocumentBlockFromDocInfo = useDocumentBlockFromDocInfoCreator();
 
         const handleUploads = React.useCallback(async (uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> => {
 
@@ -47,12 +47,20 @@ export namespace AddFileHooks {
                     const docInfo = {
                         tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
                         bytes: blob.size
+                    };
+
+                    if (! docInfo.tags) {
+                        delete docInfo.tags;
                     }
 
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
                                                                       URL.createObjectURL(blob),
                                                                       FilePaths.basename(upload.name),
                                                                       {progressListener: uploadProgress, docInfo, onController});
+
+
+                    createDocumentBlockFromDocInfo(importedFile.docInfo);
+
 
                     console.log("Imported file: ", importedFile);
 
@@ -67,7 +75,7 @@ export namespace AddFileHooks {
 
             return await batchUploader(uploadHandlers);
 
-        }, [batchUploader, persistenceLayerProvider]);
+        }, [batchUploader, persistenceLayerProvider, createDocumentBlockFromDocInfo]);
 
         const promptToOpenFiles = React.useCallback((importedFiles: ReadonlyArray<ImportedFile>) => {
 
@@ -151,16 +159,10 @@ export namespace AddFileHooks {
                 return;
             }
 
-            const migration = DiskDatastoreMigrations.prepare(uploads);
+            doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
+                .catch(err => log.error("Unable to handle upload: ", err));
 
-            if (migration.required) {
-                diskDatastoreMigration(migration);
-            } else {
-                doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
-                    .catch(err => log.error("Unable to handle upload: ", err));
-            }
-
-        }, [log, diskDatastoreMigration, doDirectUpload]);
+        }, [log, doDirectUpload]);
 
     }
 

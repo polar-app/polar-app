@@ -11,6 +11,11 @@ import {useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockPredicates} from './store/BlockPredicates';
 import {Selections} from "../highlights/text/selection/Selections";
+import {ContentEditables} from "./ContentEditables";
+import {useBlocksStore} from './store/BlocksStore';
+import {DOMBlocks} from './contenteditable/DOMBlocks';
+import {BlockContentCanonicalizer} from './contenteditable/BlockContentCanonicalizer';
+import {MarkdownContentConverter} from './MarkdownContentConverter';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -20,7 +25,7 @@ const useStyles = makeStyles((theme) =>
             paddingBottom: '5px',
             zIndex: 10,
             transform: 'translateX(-50%)',
-            userSelect: 'none',
+            userSelect: 'none'
         },
         fakeRange: {
             position: 'absolute',
@@ -71,6 +76,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const block = blocksTreeStore.getBlock(props.id);
     const selected = blocksTreeStore.selected;
     const isBlockEditable = !! (block && BlockPredicates.isEditableBlock(block));
+    const canHaveWikiLinks = !! (block && BlockPredicates.canHaveLinks(block));
 
     const handleSetMode = React.useCallback((mode: BarMode) => {
         const container = containerRef.current;
@@ -232,6 +238,12 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         noteFormatHandlers.onLink(url);
     }, [noteFormatHandlers, restore]);
 
+    const createWikiLinkFromSelection = useCreateWikiLinkFromSelection();
+
+    const handleWikiLinkFromSelection = React.useCallback(() => {
+        createWikiLinkFromSelection(props.id);
+    }, [createWikiLinkFromSelection, props.id]);
+
     return (
 
         <div onMouseDown={onMouseDown}
@@ -254,6 +266,8 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
                             <NoteFormatBar {...noteFormatHandlers}
                                            onDispose={clearPopup}
                                            mode={mode}
+                                           onWikiLinkFromSelection={handleWikiLinkFromSelection}
+                                           canHaveWikiLinks={canHaveWikiLinks}
                                            setMode={handleSetMode}
                                            onLink={onLink}/>
 
@@ -267,6 +281,40 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     );
 
 });
+
+const useCreateWikiLinkFromSelection = () => {
+    const blocksStore = useBlocksStore();
+
+    return React.useCallback((id: BlockIDStr) => {
+        const range = ContentEditables.currentRange();
+        const block = blocksStore.getBlock(id);
+
+        if (! range || range.collapsed || ! block || !BlockPredicates.canHaveLinks(block)) {
+            return;
+        }
+
+        const blockElement = DOMBlocks.findBlockParent(range.startContainer);
+
+        if (! blockElement) {
+            return;
+        }
+
+        const target = range.toString().trim();
+
+        if (target.length === 0) {
+            return;
+        }
+
+        range.deleteContents();
+        range.insertNode(DOMBlocks.createWikiLinkAnchorElement('link', target));
+
+        const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
+        
+        const markdown = MarkdownContentConverter.toMarkdown(html);
+
+        blocksStore.createLinkToBlock(id, target, markdown);
+    }, [blocksStore]);
+};
 
 const useRangeSaver = () => {
     const rangeRef = React.useRef<Range | undefined>();

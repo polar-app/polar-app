@@ -4,15 +4,16 @@ import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {LearningRatingButtons} from "./LearningRatingButtons";
 import {ReviewRatingButtons} from "./ReviewRatingButtons";
+import {ITaskAction} from '../ReviewerTasks';
 
-export interface IProps<A> {
+export interface IProps {
 
-    readonly taskRep: TaskRep<A>;
+    readonly taskRep: TaskRep<ITaskAction>;
     readonly stage: Stage;
 
 }
 
-export const RatingButtons = deepMemo(function<A>(props: IProps<A>) {
+export const RatingButtons = deepMemo(function RatingButtons(props: IProps) {
 
     if (['new', 'learning'].includes(props.stage)) {
         return <LearningRatingButtons {...props}/>;

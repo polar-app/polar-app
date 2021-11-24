@@ -1,12 +1,10 @@
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepoDocAnnotations} from './RepoDocAnnotations';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
-const log = Logger.create();
 
 export class RepoDocMetas {
 
@@ -31,12 +29,12 @@ export class RepoDocMetas {
                           docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (! docMeta) {
-            log.warn("No docMeta for file: ", fingerprint);
+            console.warn("No docMeta for file: ", fingerprint);
             return undefined;
         }
 
         if (! docMeta.docInfo) {
-            log.warn("No docInfo for file: ", fingerprint);
+            console.warn("No docInfo for file: ", fingerprint);
             return undefined;
         }
 

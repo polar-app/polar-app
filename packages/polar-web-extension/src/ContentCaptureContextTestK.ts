@@ -1,5 +1,5 @@
 import {ContentCaptureContextEPUB} from "./ContentCaptureContextEPUB";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {MockChrome} from "./MockChrome";
 
 describe("ContentCaptureContext", function() {
@@ -17,15 +17,28 @@ describe("ContentCaptureContext", function() {
 
         // TODO: click the button or do what the button does directly
 
-        assertJSON(interactions, [
+        function canonicalizeInteractions(interactions: any) {
+
+            function canonicalizeURL(url: string) {
+                return url.replace(/^http:\/\/localhost:[0-9]+/, "http://localhost:1234");
+            }
+
+            interactions[0].message.value.url = canonicalizeURL(interactions[0].message.value.url);
+            interactions[0].message.value.icon = canonicalizeURL(interactions[0].message.value.icon);
+
+            return interactions;
+
+        }
+
+        assertJSON(canonicalizeInteractions(interactions), [
             {
                 "op": "chrome.runtime.sendMessage",
                 "message": {
                     "type": "save-to-polar",
                     "strategy": "epub",
                     "value": {
-                        "icon": "http://localhost:9876/favicon.ico",
-                        "url": "http://localhost:9876/context.html",
+                        "icon": "http://localhost:1234/favicon.ico",
+                        "url": "http://localhost:1234/context.html",
                         "text": "hello world",
                         "content": "<div>hello world</div>"
                     }

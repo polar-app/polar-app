@@ -6,47 +6,76 @@ import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useHighlightBlocks} from "../../../../web/js/notes/HighlightBlocksHooks";
-import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
+import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
+import {useHighlightBlockIDs} from "../../../../web/js/notes/HighlightBlocksHooks";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {observer} from "mobx-react-lite";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 
 interface IAreaHighlightsViewRenderer {
     docMeta: IDocMeta;
 }
 
 export const BlockAreaHighlightsViewRenderer: React.FC<IAreaHighlightsViewRenderer> = ({ docMeta }) => {
-    const annotationContainers = useAnnotationContainers();
-    const highlights = useHighlightBlocks({
+
+    const highlightIDs = useHighlightBlockIDs({
         docID: docMeta.docInfo.fingerprint,
         type: AnnotationContentType.AREA_HIGHLIGHT
     });
     
-    const pageHighlights = React.useMemo(() =>
-        highlights.map(({ content, id }) => {
-            const { value, pageNum, docID } = content.toJSON();
-            return {
-                annotation: {
-                    id,
-                    ...value,
-                },
-                fingerprint: docID,
-                pageNum,
-            };
-        })
-    , [highlights]);
-
-    const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageHighlights);
-
-    const rendered = visiblePageAnnotations.map(current =>
-                                             <AreaHighlightRenderer
-                                                 key={current.annotation.id}
-                                                 id={current.annotation.id}
-                                                 container={current.container}
-                                                 pageNum={current.pageNum}
-                                                 fingerprint={docMeta.docInfo.fingerprint}
-                                                 areaHighlight={current.annotation}/>);
-    return <>{rendered}</>;
+    return (
+        <>
+            {highlightIDs.map(id => (
+                <BlockAreaHighlightRenderer key={id} id={id} />)
+            )}
+        </>
+    );
 };
 
+interface IBlockAreaHighlightRendererProps {
+    id: BlockIDStr;
+}
+
+export const BlockAreaHighlightRenderer: React.FC<IBlockAreaHighlightRendererProps> = observer((props) => {
+    const { id } = props;
+
+    const annotationContainers = useAnnotationContainers();
+    const blocksStore = useBlocksStore();
+    const block = blocksStore.getBlock(id);
+
+    const pageHighlight = React.useMemo(() => {
+        if (! block || ! BlockPredicates.isAnnotationAreaHighlightBlock(block)) {
+            return null;
+        }
+
+        const { value, pageNum, docID } = block.content.toJSON();
+        
+        return {
+            annotation: { ...value, id },
+            fingerprint: docID,
+            pageNum,
+        };
+    }, [block, id]);
+
+    if (! pageHighlight) {
+        return null;
+    }
+
+    const pageAnnotation = AnnotationContainers.visibleAnnotation(annotationContainers, pageHighlight);
+
+    if (! pageAnnotation) {
+        return null;
+    }
+
+    return (
+        <AreaHighlightRenderer id={pageAnnotation.annotation.id}
+                               container={pageAnnotation.container}
+                               pageNum={pageAnnotation.pageNum}
+                               fingerprint={pageAnnotation.fingerprint}
+                               areaHighlight={pageAnnotation.annotation} />
+    );
+});
 
 
 export const DocMetaAreaHighlightsView = () => {
@@ -77,12 +106,13 @@ export const DocMetaAreaHighlightsView = () => {
 export const AreaHighlightsView = React.memo(function AreaHighlightsView() {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
+    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+    if (notesIntegrationEnabled) {
         return <BlockAreaHighlightsViewRenderer docMeta={docMeta} />
     }
 

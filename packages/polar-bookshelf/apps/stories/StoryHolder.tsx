@@ -33,7 +33,7 @@ export const StoryHolder = (props: IProps) => {
                        flexDirection: 'column',
                    }}>
 
-                <Box p={2} m={2}>
+                <Box p={2} m={2} flex={1}>
                     {props.children}
                 </Box>
 

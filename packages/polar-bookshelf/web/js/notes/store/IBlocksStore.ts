@@ -20,6 +20,8 @@ import {
     NavOpts,
     NavPosition,
     StringSetMap,
+    INamedBlockEntry,
+    NamedContent,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -48,10 +50,13 @@ export interface IBlocksStore {
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+    tagsIndex: ReverseIndex;
     indexByName: BlocksIndexByName;
     indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
     relatedTagsManager: RelatedTagsManager;
+    namedBlockEntries: ReadonlyArray<INamedBlockEntry>;
+    namedBlocks: ReadonlyArray<Block<NamedContent>>;
 
     hasSnapshot: boolean;
 
@@ -69,7 +74,7 @@ export interface IBlocksStore {
 
     setActive(active: BlockIDStr | undefined): void;
 
-    getBlockByName(name: BlockNameStr): Block | undefined;
+    getBlockByName(name: BlockNameStr): Block<NamedContent> | undefined;
     getBlockByTarget(target: BlockIDStr | BlockNameStr): Block | undefined;
 
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
@@ -117,7 +122,7 @@ export interface IBlocksStore {
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
-                                                               content: MarkdownStr): void;
+                                                               content: MarkdownStr): BlockIDStr;
 
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                     opts?: IInsertBlocksContentStructureOpts): ReadonlyArray<BlockIDStr>;
@@ -139,9 +144,8 @@ export interface IBlocksStore {
     navPrev(root: BlockIDStr, opts: NavOpts): void;
     navNext(root: BlockIDStr, opts: NavOpts): void;
 
-    getNamedBlocks(): ReadonlyArray<string>;
-
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
+    setBlockContents(blocks: ReadonlyArray<IBlockContentStructure>): void;
     setHighlightAnnotationBlockContent(id: BlockIDStr, content: IAnnotationHighlightContent, docMeta: IDocMeta): void;
 
     moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void

@@ -1,0 +1,51 @@
+{
+  "name": "polar-mobile-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "workspaces": {
+    "nohoist": [
+      "*react-native*",
+      "*react-native*/**"
+    ]
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "=1.15.9",
+    "react": "=17.0.2",
+    "react-native": "0.64.1",
+    "react-native-device-info": "=8.3.1",
+    "react-native-fs": "=2.18.0",
+    "react-native-iap": "=7.2.1",
+    "react-native-static-server": "=0.5.0",
+    "react-native-webview": "=11.6.4"
+  },
+  "devDependencies": {
+    "@babel/core": "=7.14.8",
+    "@babel/runtime": "=7.14.8",
+    "@react-native-community/eslint-config": "=2.0.0",
+    "@types/jest": "=26.0.24",
+    "@types/react-native": "=0.64.5",
+    "@types/react-test-renderer": "=17.0.1",
+    "babel-jest": "=26.6.3",
+    "eslint": "=7.32.0",
+    "jest": "=26.6.3",
+    "metro-react-native-babel-preset": "=0.64.0",
+    "react-test-renderer": "17.0.2"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

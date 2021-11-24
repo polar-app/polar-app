@@ -4,7 +4,6 @@ import {
     OccupationProfile
 } from "../../../../apps/repository/js/configure/profile/ProfileConfigurator";
 import {useAnalytics} from "../../analytics/Analytics";
-import {Slugs} from "polar-shared/src/util/Slugs";
 import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import {useHistory} from 'react-router-dom';
 import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
@@ -25,9 +24,9 @@ export const WelcomeScreen = React.memo(function WelcomeScreen() {
         if (isAcademicOccupationProfile(profile)) {
             analytics.traits({
                 user_field_of_study: profile.fieldOfStudy.id,
-                user_university_id: profile.university.id,
-                user_university_name_slug: Slugs.calculate(profile.university.name),
-                user_university_domain: profile.university.domain
+                // user_university_id: profile.university.id,
+                // user_university_name_slug: Slugs.calculate(profile.university.name),
+                // user_university_domain: profile.university.domain
             });
         }
 

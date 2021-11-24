@@ -1,7 +1,6 @@
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import firebase from 'firebase/app'
-import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./login/SignInSuccessURLs";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
@@ -49,9 +48,6 @@ window.addEventListener('load', () => {
     InitialLogin.sentAnalytics();
 
 });
-
-// disable the external navigation block during login for now.
-ExternalNavigationBlock.set(false);
 
 FirebaseBrowser.init();
 

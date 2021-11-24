@@ -24,7 +24,7 @@ interface IProps {
  */
 export function usePrefsContext(): IPersistentPrefs {
     const snapshot = useUserPrefContextSnapshot();
-    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot.value), [snapshot]);
+    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
     return persistentPrefs;
 }
@@ -42,11 +42,11 @@ export function useFeatureToggle(featureName: string): boolean {
 /**
  * Return a feature toggler function so that we can change the value of a feature toggle.
  */
-export function useFeatureToggler(): (featureName: string) => Promise<void> {
+export function useFeatureToggler() {
     const prefs = usePrefsContext();
 
-    return React.useCallback(async featureName => {
-        prefs.mark(featureName);
+    return React.useCallback(async (featureName, state: boolean = true) => {
+        prefs.mark(featureName, state);
         await prefs.commit();
     }, [prefs]);
 
@@ -54,18 +54,17 @@ export function useFeatureToggler(): (featureName: string) => Promise<void> {
 
 interface IFeatureToggleProps {
     readonly featureName: string;
-    readonly children: JSX.Element;
 }
 
 /**
  * Only render the child component if a feature toggle is ENABLED.
  */
-export const FeatureToggleEnabled = React.memo((props: IFeatureToggleProps) => {
+export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
     const toggled = useFeatureToggle(props.featureName);
 
     if (toggled) {
-        return props.children;
+        return <>{props.children}</>;
     }
 
     return null;
@@ -75,12 +74,12 @@ export const FeatureToggleEnabled = React.memo((props: IFeatureToggleProps) => {
 /**
  * Only render the child component if a feature toggle is DISABLED.
  */
-export const FeatureToggleDisabled = React.memo((props: IFeatureToggleProps) => {
+export const FeatureToggleDisabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
     const toggled = useFeatureToggle(props.featureName);
 
     if (!toggled) {
-        return props.children;
+        return <>{props.children}</>;
     }
 
     return null;

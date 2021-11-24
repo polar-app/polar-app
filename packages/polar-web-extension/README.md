@@ -26,9 +26,13 @@ This is compiled by webpack into content-bundle.js
 It's job, once loaded/injected into the web page the user is trying to capture,
 is to capture as either PDF or EPUB - depending on the content type of the page.
 
+## Karma setup | potential testing errors fix
 
+You need to have **chromium** and **pnpm** installed on your system also make sure you have `CHROME_BIN` env variable defined:
 
-
+```bash
+$ export CHROME_BIN='/usr/bin/chromium'
+```
 
 
 # Design

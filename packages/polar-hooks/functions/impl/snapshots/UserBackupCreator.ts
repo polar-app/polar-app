@@ -8,7 +8,7 @@ import {File} from '@google-cloud/storage';
 import {ArchiveWritable} from "./ArchiveWritable";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SnapshotTransformer} from "./SnapshotTransformer";
-import {FileRef} from "../polar-shared/datastore/Datastore";
+import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {ZipStreamChunk} from "./ZipStreamChunk";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
@@ -123,7 +123,6 @@ export namespace UserBackupCreator {
         const bucket = storage().bucket(bucketName);
         return new File(bucket, storagePath.path);
     }
-
 
     /**
      * Create a file reference in the temporary Google Cloud Storage bucket

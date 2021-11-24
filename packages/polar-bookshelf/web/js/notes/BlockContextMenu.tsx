@@ -46,7 +46,7 @@ const computeOrigin = (event: IMouseEvent): IBlockContextMenuOrigin | undefined 
         return {
             blockID,
             type: 'wiki-link',
-            href: target.href,
+            href,
         };
     }
 

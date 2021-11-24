@@ -1,4 +1,12 @@
-- for query snapshots, we have to write a record for each document so that we can fetch them faster.
+- I could ditch FirebaseDatastore and make this entire thing use snapshots.
+
+- docChanges could be used to speed up React rendering and we might want to
+  consider keeping that functionality.
+
+- for query snapshots, we have to write a record for each document so that we
+  can fetch them faster when fetching them individually but maybe we just don't
+  support this model at all.
+
 - TODO:
     - maybe query snapshots aren't actually materialized but we store them as as
       document pointers ... and commit out the results.

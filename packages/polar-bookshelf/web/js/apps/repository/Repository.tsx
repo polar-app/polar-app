@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {AppInstance} from '../../electron/framework/AppInstance';
+import {AppInstance} from 'polar-electron-framework/src/AppInstance';
 import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
@@ -13,7 +13,6 @@ import {RepositoryApp} from './RepositoryApp';
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
-import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 import {SentryBrowser} from "../../logger/SentryBrowser";
 import {LicenseInfo} from '@material-ui/x-grid';
 
@@ -32,7 +31,6 @@ export class Repository {
     public async start() {
 
         SentryBrowser.initWhenNecessary();
-        ConsoleRecorder.start();
 
         console.log("Starting repository with app runtime: " + AppRuntime.get());
 

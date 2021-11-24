@@ -2,7 +2,7 @@ import {BufferWriter} from './writers/BufferWriter';
 import {JSONExporter} from './JSONExporter';
 import {Comments} from '../Comments';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {assertJSON} from '../../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {MockReadableBinaryDatastore} from "../../datastore/MockDatastore";
 

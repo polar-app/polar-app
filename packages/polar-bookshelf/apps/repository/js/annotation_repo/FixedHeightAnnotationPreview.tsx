@@ -160,6 +160,7 @@ export function useFixedHeightAnnotationCalculator() {
     const margin = theme.spacing(3);
 
     return (annotation: IDocAnnotation): number => {
+
         if (annotation.img) {
             return Math.min(annotation.img.height, MAX_IMG_HEIGHT) + margin;
         }

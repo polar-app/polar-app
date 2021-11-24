@@ -7,20 +7,54 @@ import {IFlashcardCreate, useAnnotationMutationsContext} from "./AnnotationMutat
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {Analytics} from "../analytics/Analytics";
+import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
+import {useAnnotationBlockManager} from '../notes/HighlightBlocksHooks';
 
-export type AutoFlashcardHandlerState = 'idle' | 'waiting';
+export type IAutoFlashcardHandlerState = 'idle' | 'waiting';
 
-export type AutoFlashcardHandler = () => Promise<void>;
+export type IAutoFlashcardHandler = (text: string) => Promise<{ front: string, back: string }>;
+export type IAutoFlashcardCreator = () => Promise<void>;
 
-export type AutoFlashcardHandlerTuple = [AutoFlashcardHandlerState, AutoFlashcardHandler];
+export type IAutoFlashcardHandlerTuple = [IAutoFlashcardHandlerState, IAutoFlashcardHandler];
 
-export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlashcardHandlerTuple {
-
+export function useAIFlashcardHandler(): IAutoFlashcardHandlerTuple  {
     const log = useLogger();
+    const [state, setState] = React.useState<IAutoFlashcardHandlerState>('idle');
+
+    const handler = React.useCallback(async (text: string) => {
+
+        try {
+
+            setState('waiting');
+
+            const response = await AutoFlashcardRequests.exec({ query_text: text });
+
+            if (AutoFlashcards.isError(response)) {
+                log.error("Unable to automatically compute flashcard: ", response.error);
+                throw response;
+            }
+
+            return {
+                front: response.front,
+                back: response.back
+            };
+
+        } finally {
+            setState('idle');
+        }
+
+    }, [setState, log]);
+
+    return [state, handler];
+}
+
+export type IAutoFlashcardCreatorTuple = [IAutoFlashcardHandlerState, IAutoFlashcardCreator];
+
+export function useAutoFlashcardCreator(annotation: IDocAnnotationRef): IAutoFlashcardCreatorTuple {
+
     const annotationMutations = useAnnotationMutationsContext();
     const createFlashcard = annotationMutations.createFlashcardCallback(annotation);
-
-    const [state, setState] = React.useState<AutoFlashcardHandlerState>('idle');
+    const [state, aiFlashcardHandler] = useAIFlashcardHandler();
 
     const handler = React.useCallback(async () => {
 
@@ -31,38 +65,46 @@ export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlas
             return;
         }
 
-        try {
+        const fields = await aiFlashcardHandler(annotation.text);
 
-            setState('waiting');
+        const mutation: IFlashcardCreate = {
+            type: 'create',
+            flashcardType: FlashcardType.BASIC_FRONT_BACK,
+            fields,
+            parent: Refs.createRef(annotation)
+        };
 
-            const response = await AutoFlashcardRequests.exec({query_text: annotation.text});
+        Analytics.event2('ai-flashcard-created');
 
-            if (AutoFlashcards.isError(response)) {
-                log.error("Unable to automatically compute flashcard: ", response.error);
-                throw response;
-            }
+        createFlashcard(mutation);
 
-            const fields = {
-                front: response.front,
-                back: response.back
-            };
 
-            const mutation: IFlashcardCreate = {
-                type: 'create',
-                flashcardType: FlashcardType.BASIC_FRONT_BACK,
-                fields,
-                parent: Refs.createRef(annotation)
-            };
+    }, [annotation, createFlashcard, aiFlashcardHandler]);
 
-            Analytics.event2('ai-flashcard-created');
+    return [state, handler];
 
-            createFlashcard(mutation);
+}
 
-        } finally {
-            setState('idle');
-        }
+export type IAutoFlashcardBlockCreator = (parentID: BlockIDStr, text: string) => Promise<void>;
+export type IAutoFlashcardBlockCreatorTuple = [IAutoFlashcardHandlerState, IAutoFlashcardBlockCreator];
 
-    }, [annotation, createFlashcard, log]);
+export function useAutoFlashcardBlockCreator(): IAutoFlashcardBlockCreatorTuple {
+
+    const [state, aiFlashcardHandler] = useAIFlashcardHandler();
+    const { createFlashcard } = useAnnotationBlockManager();
+
+    const handler = React.useCallback(async (parentID: BlockIDStr, text: string) => {
+
+        const fields = await aiFlashcardHandler(text);
+
+        createFlashcard(parentID, {
+            type: FlashcardType.BASIC_FRONT_BACK,
+            ...fields,
+        });
+
+        Analytics.event2('ai-flashcard-created');
+
+    }, [createFlashcard, aiFlashcardHandler]);
 
     return [state, handler];
 

@@ -5,6 +5,7 @@ import {IRepoAnnotationContent, IRepoAnnotationTextContent} from './BlocksAnnota
 import {IBlockPredicates} from '../../../../web/js/notes/store/IBlockPredicates';
 import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
 import {BlockLinksMatcher, BlockTextContentUtils} from '../../../../web/js/notes/NoteUtils';
+import {Tag} from "polar-shared/src/tags/Tags";
 
 
 /**
@@ -30,7 +31,7 @@ export namespace BlocksAnnotationRepoFilters {
 
         readonly text?: string;
 
-        readonly tags?: ReadonlyArray<IBlockLink>;
+        readonly tags?: ReadonlyArray<Tag>;
 
         readonly annotationTypes?: ReadonlyArray<AnnotationContentType | 'markdown'>;
 
@@ -93,8 +94,12 @@ export namespace BlocksAnnotationRepoFilters {
                 return block.content.type !== AnnotationContentType.AREA_HIGHLIGHT;
             };
 
-            const matchesFilter = (block: IBlock<IRepoAnnotationTextContent>): boolean =>
-                BlockTextContentUtils.getTextContentMarkdown(block.content).indexOf(normalizedFilterText) >= 0;
+            const matchesFilter = (block: IBlock<IRepoAnnotationTextContent>): boolean => {
+                const normalizedAnnotationText = BlockTextContentUtils
+                    .getTextContentMarkdown(block.content)
+                    .toLowerCase();
+                return normalizedAnnotationText.indexOf(normalizedFilterText) >= 0;
+            };
 
             return blockAnnotations
                 .filter(hasText)
@@ -109,15 +114,11 @@ export namespace BlocksAnnotationRepoFilters {
     function doFilterByTags(blockAnnotations: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
                             filter: Filter): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
 
-        if (! filter.tags) {
+        if (! filter.tags || filter.tags.length === 0) {
             return blockAnnotations;
         }
 
-        const links = filter.tags.filter(current => current.id !== '/');
-
-        if (links.length === 0) {
-            return blockAnnotations;
-        }
+        const links: ReadonlyArray<IBlockLink> = filter.tags.map(({ id, label }) => ({ id, text: label }));
 
         return BlockLinksMatcher.filter(blockAnnotations, links);
     }

@@ -1,14 +1,14 @@
 import * as React from "react";
 import List from "@material-ui/core/List";
-import {MUICommandMenuItem} from "./MUICommandMenuItem";
-import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {IMUICommandMenuItemBaseProps, MUICommandMenuItem} from "./MUICommandMenuItem";
+import {GenericInputEvent, IKeyboardShortcutEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Input from "@material-ui/core/Input";
 import {Box} from "@material-ui/core";
-
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -16,12 +16,14 @@ const useStyles = makeStyles((theme) =>
             padding: theme.spacing(1),
             color: theme.palette.text.hint,
             fontWeight: 'bold',
-            fontSize: '1.0rem !important'
+            fontSize: '1.0rem !important',
+            userSelect: 'none'
         },
         textField: {
             padding: theme.spacing(1),
-
-            fontSize: '1.2rem !important'
+            fontSize: '1.2rem !important',
+            flexGrow: 1,
+            display: 'flex'
         },
         item: {
             fontSize: '1.2rem !important',
@@ -35,7 +37,9 @@ const useStyles = makeStyles((theme) =>
  * Provide a list of action items we should execute and provide a prompt to
  * filter the results such that the set of actions is applicable to the prompt.
  */
-export type CommandsProvider = () => ReadonlyArray<ICommand>;
+export type CommandsProvider<C extends ICommand> = () => ReadonlyArray<C>;
+
+export type OnCommandHandler<C extends ICommand> = (command: C, event: GenericInputEvent) => void;
 
 export interface ICommand {
 
@@ -65,7 +69,11 @@ export interface ICommand {
 
 }
 
-interface IProps {
+export interface ICommandWithHandler extends ICommand {
+    readonly handler: (event: IKeyboardShortcutEvent) => void;
+}
+
+interface IProps<C extends ICommand> extends IMUICommandMenuItemBaseProps {
 
     readonly title?: string;
 
@@ -77,7 +85,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (command: ICommand) => void;
+    readonly onCommand: OnCommandHandler<C>;
 
     /**
      * Called when the command menu should be closed.
@@ -87,7 +95,7 @@ interface IProps {
     /**
      * A provider for resolving the items that the user can select form their input.
      */
-    readonly commandsProvider: CommandsProvider;
+    readonly commandsProvider: CommandsProvider<C>;
 
     readonly className?: string;
 
@@ -95,7 +103,7 @@ interface IProps {
 
 }
 
-export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) {
+export const MUICommandMenu = <C extends ICommand>(props: IProps<C>) => {
 
     const classes = useStyles();
     const {commandsProvider, onCommand, onClose} = props;
@@ -109,12 +117,30 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
         return filter === undefined || command.text.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     }, [filter]);
 
-    const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
+    const hasActiveFilter = React.useCallback(() => {
+        return filter !== undefined && filter.trim() !== '';
+    }, [filter]);
 
-    const handleCommandExecuted = React.useCallback((command: ICommand) => {
+    const commandsFiltered = React.useMemo(() => {
 
-        onCommand(command);
+        // TODO if there is no active filter, then I need to restore a previous
+        // history of commands.
+
+        return arrayStream(commands)
+                   .filter(filterPredicate)
+                   .head(50)
+                   .sort((a, b) => a.text.localeCompare(b.text))
+                   .collect();
+
+    }, [commands, filterPredicate]);
+
+    const handleCommandExecuted = React.useCallback((command: C, event: GenericInputEvent) => {
+
+        // do the close first so that the menu vanishes as the command might
+        // take a while to execute and we want the UI to appear timely/fast.
         onClose('executed');
+
+        onCommand(command, event);
 
     }, [onClose, onCommand]);
 
@@ -174,7 +200,10 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
             setIndex(newIndex);
         }
 
-        if (event.key === 'ArrowDown') {
+        // we have to manually handle scrolling here because it WILL scroll only
+        // it will do so by small little deltas...
+
+        if (event.key === 'ArrowDown' || event.key === 'Tab') {
             stopHandlingEvent();
             handleNewIndex(1);
         }
@@ -193,7 +222,7 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
             stopHandlingEvent();
             if (index !== undefined) {
                 const command = commandsFiltered[index];
-                handleCommandExecuted(command);
+                handleCommandExecuted(command, event);
             }
         }
 
@@ -227,11 +256,10 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
                             </div>
                         )}
 
-                        <Input autoFocus={true}
-                               disableUnderline={true}
-                               className={classes.textField}
-                               placeholder="Type a command or search ..."
-                               onChange={event => setFilter(event.target.value) }/>
+                        <TextField autoFocus={true}
+                                   className={classes.textField}
+                                   placeholder="Type a command or search ..."
+                                   onChange={event => setFilter(event.target.value) }/>
                     </>
                 </Box>
 
@@ -240,16 +268,17 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
                     {commandsFiltered.map((command, idx) => {
 
                         const selected = index === idx;
-                        const key = (command.group || '') + ':' + command.text + ':' + selected;
 
                         return (
-                            <MUICommandMenuItem key={key}
+                            <MUICommandMenuItem key={command.id}
                                                 className={classes.item}
                                                 text={command.text}
                                                 icon={command.icon}
                                                 selected={selected}
                                                 sequences={command.sequences}
-                                                onSelected={() => handleCommandExecuted(command)}/>
+                                                enableIcons={props.enableIcons || false}
+                                                enableKeyboardShortcuts={props.enableKeyboardShortcuts || false}
+                                                onSelected={(event) => handleCommandExecuted(command, event)}/>
                         );
                     })}
 
@@ -259,4 +288,4 @@ export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) 
 
     );
 
-});
+};

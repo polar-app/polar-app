@@ -56,7 +56,7 @@ export class BlocksTreeStore {
         return this.blocksStore.createNewNamedBlock(opts);
     }
 
-    createLinkToBlock(sourceID: BlockIDStr, targetName: BlockNameStr, content: MarkdownStr): void {
+    createLinkToBlock(sourceID: BlockIDStr, targetName: BlockNameStr, content: MarkdownStr): BlockIDStr {
         return this.blocksStore.createLinkToBlock(sourceID, targetName, content);
     };
 
@@ -158,10 +158,6 @@ export class BlocksTreeStore {
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>,
                                     opts: IInsertBlocksContentStructureOpts = {}): ReadonlyArray<BlockIDStr> {
         return this.blocksStore.insertFromBlockContentStructure(blocks, opts);
-    }
-
-    getNamedBlocks(): ReadonlyArray<string> {
-        return this.blocksStore.getNamedBlocks();
     }
 
     getBlockByName(name: BlockNameStr): Block | undefined {

@@ -1,6 +1,19 @@
 import * as React from 'react';
-import {EventBus, PDFFindController, PDFLinkService, PDFRenderingQueue, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
-import {LinkTarget, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
+import {
+    Destination,
+    EventBus,
+    IEventBus,
+    IPDFFindController,
+    IPDFLinkService,
+    IPDFRenderingQueue,
+    IPDFViewer,
+    IPDFViewerOptions,
+    PDFFindController,
+    PDFLinkService,
+    PDFRenderingQueue,
+    PDFViewer
+} from 'polar-pdf/src/pdf/PDFJSViewer';
+import {IPDFDocumentLoadingTask, IPDFDocumentProxy, LinkTarget, Outline} from 'polar-pdf/src/pdf/PDFJS'
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -13,7 +26,6 @@ import {IDocDescriptor, IDocScale, useDocViewerCallbacks,} from "../../DocViewer
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
-
 import 'pdfjs-dist/web/pdf_viewer.css';
 import './PDFDocument.css';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -36,15 +48,13 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
-import Outline = _pdfjs.Outline;
-import Destination = _pdfjs.Destination;
 
 interface DocViewer {
-    readonly eventBus: EventBus;
-    readonly findController: PDFFindController;
-    readonly viewer: PDFViewer;
-    readonly linkService: PDFLinkService;
-    readonly renderingQueue: PDFRenderingQueue;
+    readonly eventBus: IEventBus;
+    readonly findController: IPDFFindController;
+    readonly viewer: IPDFViewer;
+    readonly linkService: IPDFLinkService;
+    readonly renderingQueue: IPDFRenderingQueue;
     readonly containerElement: HTMLElement;
 }
 
@@ -66,7 +76,7 @@ function createDocViewer(docID: string): DocViewer {
 
     const {containerElement, viewerElement} = ViewerElements.find(docID);
 
-    const viewerOpts: PDFViewerOptions = {
+    const viewerOpts: IPDFViewerOptions = {
         container: containerElement,
         viewer: viewerElement,
         textLayerMode: 2,
@@ -119,7 +129,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
-    const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
+    const docRef = React.useRef<IPDFDocumentProxy | undefined>(undefined);
     const pageNavigatorRef = React.useRef<PageNavigator | undefined>(undefined);
     const pdfUpgrader = usePDFUpgrader();
 
@@ -217,6 +227,19 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     }, [setScale, setStoreScale]);
 
+    const loadingTaskRef = React.useRef<IPDFDocumentLoadingTask | undefined>();
+
+    const createProgressTracker = React.useCallback((total: number) => {
+
+        return new ProgressTracker({
+            id: 'pdf-download-' + props.docMeta.docInfo.fingerprint,
+            total: total
+        })
+
+    }, [props.docMeta.docInfo.fingerprint]);
+
+    const progressTrackerRef = React.useRef<ProgressTracker | undefined>(undefined);
+
     const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
         if (! docViewer.containerElement) {
@@ -226,27 +249,23 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             return;
         }
 
-        const loadingTask = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
+        loadingTaskRef.current = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
 
-        let progressTracker: ProgressTracker | undefined;
-        loadingTask.onProgress = (progress) => {
+        loadingTaskRef.current.onProgress = (progress) => {
 
-            if (! progressTracker) {
-                progressTracker = new ProgressTracker({
-                    id: 'pdf-download',
-                    total: progress.total
-                });
+            if (! progressTrackerRef.current) {
+                progressTrackerRef.current = createProgressTracker(progress.total);
             }
 
             if (progress.loaded > progress.total) {
                 return;
             }
 
-            ProgressMessages.broadcast(progressTracker!.abs(progress.loaded));
+            ProgressMessages.broadcast(progressTrackerRef.current!.abs(progress.loaded));
 
         };
 
-        docRef.current = await loadingTask.promise;
+        docRef.current = await loadingTaskRef.current.promise;
 
         const page = await docRef.current.getPage(1);
 
@@ -258,9 +277,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
-
-            // PageContextMenus.start()
-
             onPagesInit();
         });
 
@@ -315,7 +331,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         setOutlineNavigator(async (destination: any) => docViewer.linkService.goToDestination(destination as Destination));
 
-        function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
+        function createPageNavigator(pdfDocumentProxy: IPDFDocumentProxy): PageNavigator {
 
             const count = pdfDocumentProxy.numPages;
 
@@ -421,10 +437,9 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         onLoaded()
 
-    }, [dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
-        onPagesInit, pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler,
-        setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator,
-        setResizer, setScaleLeveler]);
+    }, [createProgressTracker, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded, onPagesInit,
+        pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler, setDocScale, setFinder,
+        setOutline, setOutlineNavigator, setPageNavigator, setResizer, setScaleLeveler]);
 
     React.useEffect(() => {
 
@@ -441,6 +456,42 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
     }, [doLoad, log, props.docMeta.docInfo.fingerprint]);
+
+    React.useEffect(() => {
+
+        return () => {
+
+            async function doAsync() {
+
+                if (loadingTaskRef.current) {
+
+                    console.log("Terminating PDF loading task...")
+
+                    try {
+                        await loadingTaskRef.current.destroy()
+                        console.log("Terminating PDF loading task...done")
+                    } finally {
+
+                        if (progressTrackerRef.current) {
+                            console.log("Terminating PDF progress tracker.")
+                            ProgressMessages.broadcast(progressTrackerRef.current.terminate());
+                        } else {
+                            console.warn("No PDF progress tracker to terminate");
+                        }
+
+                    }
+
+                } else {
+                    console.warn("No PDF loading task to terminate.");
+                }
+
+            }
+
+            doAsync()
+                .catch(err => console.error("Unable to destroy loading task: ", err));
+
+        }
+    }, []);
 
     useDocumentViewerVisibleElemFocus(
         props.docMeta.docInfo.fingerprint,

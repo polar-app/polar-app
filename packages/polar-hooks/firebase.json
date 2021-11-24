@@ -17,6 +17,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/daily",
+        "destination": "/apps/doc/index.html"
+      },
+      {
         "source": "/sitemap-doc-preview.xml",
         "function": "docPreviewSitemap"
       },
@@ -132,10 +136,6 @@
       {
         "source": "/hello-ssr",
         "function": "SSRFunction"
-      },
-      {
-        "source": "/polar3-0-migrate",
-        "function": "Polar3DocMetaMigratorFunction"
       },
       {
         "source": "**",

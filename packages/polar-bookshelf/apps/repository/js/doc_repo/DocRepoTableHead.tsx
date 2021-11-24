@@ -16,7 +16,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import ArchiveIcon from "@material-ui/icons/Archive";
 import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
-import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
 import {SelectionActiveButtons} from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -140,36 +140,20 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
 
     const columns = useDocRepoColumns();
 
-    const {view, selected} = useDocRepoStore(['view','selected']);
-    const callbacks = useDocRepoCallbacks();
-
-    const {setSelected} = callbacks;
-
-    const handleCheckbox = React.useCallback((checked: boolean) => {
-        // TODO: this is wrong... the '-' button should remove the checks...
-        // just like gmail.
-        if (checked) {
-            setSelected('all')
-        } else {
-            setSelected('none');
-        }
-    }, [setSelected]);
-
     return (
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
                     <DeviceRouters.NotDesktop>
-                        <TableCell className={classes.th} style={{width: '55px'}}>
-                            <MUICheckboxIconButton
-                                indeterminate={selected.length > 0 && selected.length < view.length}
-                                checked={selected.length === view.length && view.length !== 0}
-                                onChange={(_event, checked) => handleCheckbox(checked)}/>
+                        <TableCell style={{width:'50px'}}>
+                            <MUICheckboxHeaderIconButton/>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
-                    <DeviceRouters.Desktop>
-                        <Check/>
-                    </DeviceRouters.Desktop>
+                    
+                    {/* This is just a placeholder to align the table, it doesn't do much else */}
+                    <DeviceRouters.Desktop>      
+                        <Check/>                      
+                    </DeviceRouters.Desktop>                            
 
                     {columns.map((column) => {
 
@@ -201,15 +185,23 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                         )
                     })}
                     <DeviceRouters.NotDesktop>
-                        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
-                            <SelectionOrToggleButtons/>
-                        </TableCell>
+                        <SelectionButtonsWithinTableCell/>
                     </DeviceRouters.NotDesktop>
 
-                    <DeviceRouters.Desktop>
+                    <DeviceRouters.Desktop>                            
                         <ColumnSelector/>
                     </DeviceRouters.Desktop>
                 </TableRow>
             </TableHead>
+    );
+});
+
+const SelectionButtonsWithinTableCell = React.memo(function SelectionButtonsWithinTableCell() {
+    const classes = useStyles();
+
+    return(
+        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
+            <SelectionOrToggleButtons/>
+        </TableCell>
     );
 });

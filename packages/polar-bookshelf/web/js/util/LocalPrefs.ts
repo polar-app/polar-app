@@ -2,7 +2,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DurationMS, DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 
 /**
- * @Deprecated use the new IPrefs systems
+ * @deprecated use the new IPrefs systems
  */
 export class LocalPrefs {
 

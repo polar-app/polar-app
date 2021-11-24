@@ -86,9 +86,10 @@ export namespace DocMetaBlockContents {
     };
 
     /**
-     * Convert block tag links into name blocks
+     * Convert a IDocMeta object into blocks
      *
-     * @param tagLinks tag wiki links objects
+     * @param docMeta The IDocMeta object to convert
+     * @param existingNamedBlocks The existing named blocks that a user has
      */
     export function getFromDocMeta(docMeta: IDocMeta,
                                    existingNamedBlocks: ReadonlyArray<IBlock<INamedContent>>): IDocMetaBlockContents {
@@ -114,6 +115,30 @@ export namespace DocMetaBlockContents {
             tagContentsStructure: tagLinksToIdentifiableContentStructure(linkTracker.getTagLinks()),
         };
 
+    }
+
+
+    /**
+     * Convert a IDocInfo object into blocks
+     *
+     * @param docInfo The IDocInfo object to convert
+     * @param existingNamedBlocks The existing named blocks that the user has
+     */
+    export function getFromDocInfo(docInfo: IDocInfo,
+                                   existingNamedBlocks: ReadonlyArray<IBlock<INamedContent>>): IDocMetaBlockContents {
+
+        const linkTracker = new BlockTagLinkTracker(existingNamedBlocks);
+
+        const documentContent = getDocumentBlockContent(linkTracker, docInfo);
+
+        return {
+            docContentStructure: {
+                id: Hashcodes.createRandomID(),
+                content: documentContent,
+                children: [],
+            },
+            tagContentsStructure: tagLinksToIdentifiableContentStructure(linkTracker.getTagLinks()),
+        };
     }
 
     /**

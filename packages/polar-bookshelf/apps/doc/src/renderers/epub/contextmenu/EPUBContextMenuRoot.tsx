@@ -1,6 +1,6 @@
 import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
 import React from "react";
-import {createQuerySelector} from "../../../../../dev2/QuerySelector";
+import {createQuerySelector} from "./QuerySelector";
 import {EPUBContextMenuFinderContext} from "./EPUBContextMenuFinderContext";
 import {useDocViewerElementsContext} from "../../DocViewerElementsContext";
 import {useDocViewerStore} from "../../../DocViewerStore";

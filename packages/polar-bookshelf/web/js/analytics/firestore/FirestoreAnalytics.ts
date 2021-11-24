@@ -1,11 +1,9 @@
 import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {HeartbeatCollection} from "polar-firebase/src/firebase/om/HeartbeatCollection";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {UserTraits} from "../../datastore/firebase/UserTraits";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-const log = Logger.create();
 
 export class FirestoreAnalytics implements IAnalytics {
 
@@ -49,7 +47,7 @@ export class FirestoreAnalytics implements IAnalytics {
         };
 
         doWrite()
-            .catch(err => log.error(err));
+            .catch(err => console.error(err));
 
     }
 

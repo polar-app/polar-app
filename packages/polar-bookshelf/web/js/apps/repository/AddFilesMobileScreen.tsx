@@ -58,7 +58,7 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
     }, [addFileImporter, history]);
 
     return(
-        <AdaptivePageLayout title="Add">
+        <AdaptivePageLayout noBack title="Add">
 
             <div className={classes.root}>
                 <label htmlFor={id} className={classes.container}>

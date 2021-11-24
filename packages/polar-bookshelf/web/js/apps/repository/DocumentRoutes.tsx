@@ -1,7 +1,7 @@
 import {RepoDocMetaLoader} from "../../../../apps/repository/js/RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../../../../apps/repository/js/RepoDocMetaManager";
 import React from "react";
-import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {PersistenceLayerManager} from "../../datastore/PersistenceLayerManager";
 import {useSideNavStore} from "../../sidenav/SideNavStore";
 import {PersistentRoute} from "./PersistentRoute";
@@ -19,7 +19,7 @@ import {DocFindStore} from "../../../../apps/doc/src/DocFindStore";
 import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 
 interface IDocumentsScreensProps {
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerManager: PersistenceLayerManager;
@@ -52,7 +52,7 @@ export const DocumentRoutes: React.FC<IDocumentsScreensProps> = React.memo(funct
 
 
 interface RepositoryDocViewerScreenProps {
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerManager: PersistenceLayerManager;

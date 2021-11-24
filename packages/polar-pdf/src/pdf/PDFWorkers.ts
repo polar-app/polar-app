@@ -1,5 +1,5 @@
-import * as PDFJS from "pdfjs-dist";
 import {Paths} from "polar-shared/src/util/Paths";
+import {PDFJS} from "./PDFJS";
 
 export namespace PDFWorkers {
 

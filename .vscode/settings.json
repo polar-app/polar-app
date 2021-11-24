@@ -128,5 +128,11 @@
       "italic": false
     }
   ],
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  //"eslint.workingDirectories": [{ "mode": "auto" }],
+  "editor.bracketPairColorization.enabled": true,
+  "files.exclude": {
+    ".pytest_cache": true,
+    ".pnpm-store": true,
+    ".idea": true
+  }
 }

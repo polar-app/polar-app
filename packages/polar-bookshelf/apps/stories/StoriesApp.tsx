@@ -40,7 +40,11 @@ import {GraphVisualization} from './impl/GraphVisualization';
 import {FeedbackButtonStory} from "./impl/FeedbackButtonStory";
 import {AdaptivePageLayoutStory} from './impl/AdaptivePageLayoutStory';
 import {AutoHideOnScrollStory} from "./impl/AutoHideOnScrollStory";
-import { PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending } from './impl/PrivateBetaRegisteration';
+import {PBEmailAndReferral, RegisterForBetaError, RegisterForBetaPending} from './impl/PrivateBetaRegisteration';
+import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnotationsMainStory";
+import {MUIAnchorButtonStory} from '../../web/js/mui/MUIAnchorButtonStory';
+import {MUIAnchorStory} from '../../web/js/mui/MUIAnchorStory';
+import {SettingsScreenStory} from "./impl/SettingsScreenStory";
 
 interface IStory {
     readonly name: string;
@@ -65,6 +69,22 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 
 const stories = createStoryIndex([
 
+    {
+        name: "MigrationToBlockAnnotationsMain",
+        component: <MigrationToBlockAnnotationsMainStory/>
+    },
+    {
+        name: "MUIAnchor",
+        component: <MUIAnchorStory/>
+    },
+    {
+        name: "MUIAnchorButton",
+        component: <MUIAnchorButtonStory/>
+    },
+    {
+        name: "New Settings Component",
+        component: <SettingsScreenStory/>
+    },
     {
         name: "Auth Hide on Scroll",
         component: <AutoHideOnScrollStory/>

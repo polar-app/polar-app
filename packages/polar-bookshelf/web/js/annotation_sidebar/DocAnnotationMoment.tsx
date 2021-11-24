@@ -4,7 +4,6 @@ import Moment from 'react-moment';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
-import isEqual from "react-fast-compare";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly created: ISODateTimeString;
     readonly style?: React.CSSProperties;
-    readonly className?: string; 
+    readonly className?: string;
 }
 
 /**
@@ -33,14 +32,12 @@ export const DocAnnotationMoment = React.memo(function DocAnnotationMoment(props
 
     return (
         <div style={style} className={clsx(classes.root, className)}>
-            <Moment style={{
-                        fontSize: '12px'
-                    }}
-                    withTitle={true}
+            <Moment style={{ fontSize: '12px' }}
+                    withTitle
                     titleFormat="D MMM YYYY hh:MM A" fromNow>
                 {created}
             </Moment>
         </div>
     );
 
-}, isEqual);
+});

@@ -1,5 +1,4 @@
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 import {Billing} from "polar-accounts/src/Billing";
@@ -7,7 +6,6 @@ import {useAccounting} from "../../apps/repository/accounting/Accounting";
 import V2Plan = Billing.V2Plan;
 import IRequiredPlan = AccountUpgrades.IRequiredPlan;
 
-const log = Logger.create();
 
 export interface IAccountUpgrade extends IRequiredPlan {
     readonly required: boolean;
@@ -39,7 +37,7 @@ export function useAccountUpgrader(): IAccountUpgrade | undefined {
     const required = plan.level !== planRequiredForAccount.plan.level;
 
     if (required) {
-        log.warn(`Current account needs to be upgrade from ${plan.level} to ${planRequiredForAccount.plan}`);
+        console.warn(`Current account needs to be upgrade from ${plan.level} to ${planRequiredForAccount.plan}`);
     }
 
     return {

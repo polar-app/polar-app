@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, ClickAwayListener, createStyles, debounce, Grow, makeStyles, Popper} from "@material-ui/core";
+import {Box, ClickAwayListener, createStyles, debounce, Grow, makeStyles, Popper, CircularProgress} from "@material-ui/core";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
 import {useHistory} from "react-router";
@@ -22,6 +22,9 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {useBlockTagEditorDialog} from "../../NoteUtils";
+import {useAIFlashcardVerifiedAction} from "../../../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
+import {useAutoFlashcardBlockCreator} from "../../../annotation_sidebar/AutoFlashcardHook";
+import FlashAutoIcon from "@material-ui/icons/FlashAuto";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -57,10 +60,12 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
     const classes = useStyles();
     const [hovered, setHovered] = React.useState(false);
 
-    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 50), [setHovered]);
-    const handleShow = React.useCallback(() => {
+    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 100), [setHovered]);
+
+    const handleShow = React.useCallback((event: React.MouseEvent) => {
         handleHide.clear();
         setHovered(true);
+        event.stopPropagation();
     }, [setHovered, handleHide]);
 
     return (
@@ -192,18 +197,21 @@ interface IUseSharedAnnotationBlockActionsOpts {
     actions?: ISharedActionType[];
 }
 
-export type ISharedActionType = 'createFlashcard' | 'changeColor' | 'remove' | 'open' | 'editTags';
+export type ISharedActionType = 'createFlashcard' | 'createAIFlashcard' | 'changeColor' | 'remove' | 'open' | 'editTags';
 
 type ISharedActionMap = {
     [key in ISharedActionType]: React.FC;
 }
 
 export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): React.ReactElement[] => {
-    const { annotation, id, actions = ['createFlashcard',  'changeColor', 'remove', 'open'] } = opts;
+    const { annotation, id, actions = ['createFlashcard', 'createAIFlashcard',  'changeColor', 'remove', 'open', 'editTags'] } = opts;
     const blocksTreeStore = useBlocksTreeStore();
     const { getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();
     const blockTagEditorDialog = useBlockTagEditorDialog();
+    const [aiFlashcardCreatorState, aiFlashcardCreatorHandler] = useAutoFlashcardBlockCreator();
+
+    const verifiedAction = useAIFlashcardVerifiedAction();
 
     const handleDelete = React.useCallback(() => {
         blocksTreeStore.deleteBlocks([id]);
@@ -248,6 +256,17 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
         createFlashcard(id, { type: FlashcardType.BASIC_FRONT_BACK, front: '', back });
     }, [id, annotation, createFlashcard]);
 
+    const handleCreateAIFlashcard = React.useCallback(() => {
+        if (annotation.type !== AnnotationContentType.TEXT_HIGHLIGHT) {
+            return console.error("AI flashcards can only be created under text highlights!");
+        }
+
+        verifiedAction(() => {
+            aiFlashcardCreatorHandler(id, BlockTextHighlights.toText(annotation.value))
+                .catch((e) => console.error("Could not handle verified action: ", e));
+        });
+    }, [id, verifiedAction, aiFlashcardCreatorHandler, annotation]);
+
     const color = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';
 
@@ -269,6 +288,12 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
                 icon={<FlashOnIcon />}
                 onClick={handleCreateFlashcard}
             />,
+            createAIFlashcard: () => <BlockAnnotationAction
+                icon={aiFlashcardCreatorState === 'idle'
+                    ? <FlashAutoIcon />
+                    : <CircularProgress size="100%" color="secondary" /> }
+                onClick={handleCreateAIFlashcard}
+            />,
             changeColor: () => <BlockAnnotationColorPickerAction
                 color={color}
                 onChange={handleColorChange}
@@ -282,5 +307,15 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
         return Object.entries(actionMap)
             .filter(([key]) => actions.indexOf(key as ISharedActionType) > -1)
             .map(([key, Action]) => <Action key={key} />);
-    }, [handleDelete, handleOpen, color, editTags, handleColorChange, handleCreateFlashcard, actions]);
+    }, [
+        handleDelete,
+        handleOpen,
+        color,
+        editTags,
+        handleColorChange,
+        handleCreateFlashcard,
+        aiFlashcardCreatorState,
+        handleCreateAIFlashcard,
+        actions,
+    ]);
 };

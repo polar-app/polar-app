@@ -9,8 +9,14 @@ import {PathStr} from "polar-shared/src/util/Strings";
 import {TextGrid} from "polar-shared/src/util/TextGrid";
 import {Predicates} from "polar-shared/src/util/Predicates";
 import {PathRegexFilterPredicates} from "./PathRegexFilterPredicates";
+import * as process from "process";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Reporters} from "./Reporters";
 
 export namespace OrphanFinder {
+
+
+    import IImportRanking = DependencyIndex.IImportRanking;
 
     export async function _computeSourceReferences(modules: ReadonlyArray<IModuleReference>) {
 
@@ -24,7 +30,8 @@ export namespace OrphanFinder {
 
     }
 
-    export function _filterSourceReferences(sourceReferences: ReadonlyArray<ISourceReference>, predicate: Predicates.Predicate<PathStr>) {
+    export function _filterSourceReferences<R extends ISourceReference>(sourceReferences: ReadonlyArray<R>,
+                                                                        predicate: Predicates.Predicate<PathStr>) {
 
         return sourceReferences.filter(current => predicate(current.fullPath));
 
@@ -172,8 +179,17 @@ export namespace OrphanFinder {
          */
         readonly entriesFilter?: ReadonlyArray<PathRegexStr>;
 
+        /**
+         * These patterns are never matches as either tests or entries.
+         */
+        readonly excludesFilter?: ReadonlyArray<PathRegexStr>;
+
         readonly modules: ReadonlyArray<IModuleReference>;
+
+        readonly verbose: boolean;
+
     }
+
 
     export async function doFind(opts: IDoFindOpts) {
 
@@ -181,31 +197,50 @@ export namespace OrphanFinder {
 
         const entriesFilter = opts.entriesFilter || [];
         const testsFilter = opts.testsFilter || [];
+        const excludesFilter = opts.excludesFilter || [];
 
         const dependencyIndex = DependencyIndex.create();
 
-        console.log("Scanning modules...")
+        const reporter = Reporters.create(opts.verbose);
 
-        const sourceTypeClassifier = (path: PathStr) => {
+        reporter.verbose("Scanning modules...")
+
+        const sourceTypeClassifier = (path: PathStr): SourceType => {
 
             const testPredicate = PathRegexFilterPredicates.createMatchAny(testsFilter);
+            const entryPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
+            const excludePredicate = PathRegexFilterPredicates.createMatchAny(excludesFilter);
 
             if (testPredicate(path)) {
                 return 'test';
+            } else if (entryPredicate(path)) {
+                return 'entry';
+            } else if (excludePredicate(path)) {
+                return 'exclude';
             } else {
                 return 'main';
             }
 
         }
 
-        const sourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+        const rawSourceReferences = await _computeSourceReferencesForTypescriptFiles(modules, sourceTypeClassifier);
+
+        reporter.verbose(`Scanning modules...done (found ${rawSourceReferences.length} source references)`);
 
         // *** the main source references is the actual source code, not including tests.
 
-        function computeMainSourceReferences() {
+        type MainSourceReferencesResult = [ReadonlyArray<ISourceReferenceWithType>, ReadonlyArray<ISourceReferenceWithType>];
 
-            const predicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter]));
-            return _filterSourceReferences(sourceReferences, predicate);
+        function computeMainSourceReferences(sourceReferences: ReadonlyArray<ISourceReferenceWithType>): MainSourceReferencesResult {
+
+            const acceptPredicate = Predicates.not(PathRegexFilterPredicates.createMatchAny([...entriesFilter, ...testsFilter, ...excludesFilter]));
+            const rejectPredicate = Predicates.not(acceptPredicate);
+
+            const accepted = _filterSourceReferences(sourceReferences, acceptPredicate);
+            const rejected = _filterSourceReferences(sourceReferences, rejectPredicate);
+
+            return [accepted, rejected];
+
 
         }
         //
@@ -216,26 +251,25 @@ export namespace OrphanFinder {
         //
         // }
 
-        const mainSourceReferences = computeMainSourceReferences();
+        const [mainSourceReferences] = computeMainSourceReferences(rawSourceReferences);
         // const testSourceReferences = computeTestSourceReferences();
 
-        console.log(`Scanning modules...done (found ${sourceReferences.length} source references)`);
+        reporter.verbose("Scanning imports...")
 
-        console.log("Scanning imports...")
+        const imports = await computeImports(rawSourceReferences);
 
-        // Note that these imports have to be computed over the
-        // mainSourceReferences NOT the sourceReferences because unit tests
-        // shouldn't count against ref numbers because if they do then we would
-        // never get down to zero and they would never be orphans.
-        const imports = await computeImports(sourceReferences);
-
-        console.log(`Scanning imports...done (found ${imports.length} imports)`);
+        reporter.verbose(`Scanning imports...done (found ${imports.length} imports)`);
 
         // ** register all files so that they get a ref count of zero..
-        sourceReferences
+        mainSourceReferences
             .forEach(current => dependencyIndex.register(current.fullPath, current.type));
 
-        // *** this should register all the imports...
+        // ** register all test so that they get a ref count of zero..
+        rawSourceReferences
+            .filter(current => current.type === 'test')
+            .forEach(current => dependencyIndex.register(current.fullPath, current.type));
+
+        // *** this should register all the imports from these files
         imports.map(current => dependencyIndex.registerDependency(current.importer, current.type, current.imported))
 
         // *** now we just need to score them..
@@ -243,52 +277,128 @@ export namespace OrphanFinder {
 
         function createImportRankingsReport() {
 
-            const grid = TextGrid.create(4);
-
             const entriesPredicate = PathRegexFilterPredicates.createMatchAny(entriesFilter);
 
-            grid.headers("path", "main refs", "test refs", "orphan");
+            const grid = TextGrid.createFromHeaders("path", "type", "main refs", "test refs", "orphan");
+
+            grid.title("Import rankings")
             importRankings
                 .filter(current => current.type === 'main')
                 .filter(current => ! entriesPredicate(current.path))
-                .forEach(current => grid.row(current.path, current.nrMainRefs, current.nrTestRefs, current.orphan));
+                .forEach(current => grid.row(current.path, current.type, current.nrMainRefs, current.nrTestRefs, current.orphan,));
 
             return grid.format();
 
         }
 
-        console.log(createImportRankingsReport());
+        reporter.verbose(createImportRankingsReport());
+
+        function createSourceReferenceTypeReport(sourceType: SourceType) {
+
+            const grid = TextGrid.createFromHeaders("full path", "module", "type");
+
+            grid.title(`Source type ${sourceType}`)
+            rawSourceReferences
+                .filter(current => current.type === sourceType)
+                .forEach(current => grid.row(current.fullPath, current.module, current.type));
+
+            return grid.format();
+
+        }
+
+        reporter.verbose(createSourceReferenceTypeReport('main'));
+        reporter.verbose(createSourceReferenceTypeReport('test'));
+        reporter.verbose(createSourceReferenceTypeReport('exclude'));
+        reporter.verbose(createSourceReferenceTypeReport('entry'));
 
         interface IOrphanTest {
             readonly path: PathStr;
             readonly imported: PathStr;
         }
 
-        function computeOrphanTests(): ReadonlyArray<IOrphanTest> {
+        interface IOrphan {
+            readonly path: string;
+        }
 
-            return arrayStream(importRankings)
-                .filter(current => current.orphan)
-                .filter(current => current.nrTestRefs === 1)
-                .map((current): IOrphanTest => {
+        function computePrimaryOrphans(): ReadonlyArray<IImportRanking> {
+            return importRankings
+                .filter(current => ['main'].includes(current.type))
+                .filter(current => current.orphan);
+
+        }
+
+        const mainOrphans = computePrimaryOrphans();
+
+        function computeTestOrphans(mainOrphans: ReadonlyArray<IImportRanking>): ReadonlyArray<IOrphanTest> {
+
+            // from the orphans that we're going to delete, compute the tests
+            // that they use so that they can ALSO be deleted
+
+            function toTestOrphans(importRanking: IImportRanking): ReadonlyArray<IOrphanTest> {
+
+                return importRanking.testRefs.map(current => {
                     return {
-                        path: current.testRefs[0],
-                        imported: current.path
+                        path: current,
+                        imported: importRanking.path
                     }
                 })
+
+            }
+
+            return arrayStream(mainOrphans)
+                .filter(current => current.orphan)
+                .map(current => toTestOrphans(current))
+                .flatMap(current => current)
+                .sort((a, b) => a.path.localeCompare(b.path))
                 .collect()
 
         }
 
-        function computeOrphanTestsReport() {
-            const orphanTest = computeOrphanTests();
-            const grid = TextGrid.create(3);
-            grid.headers('path', 'imported', 'orphan');
-            orphanTest.forEach(current => grid.row(current.path, current.imported, true))
+        const testOrphans = computeTestOrphans(mainOrphans);
+
+        function computeOrphanedTestsReport() {
+            const grid = TextGrid.createFromHeaders('path', 'imported', 'orphan');
+            grid.title("Orphan tests")
+            testOrphans.forEach(current => grid.row(current.path, current.imported, true))
             return grid.format();
         }
 
-        console.log("Orphan tests: ================")
-        console.log(computeOrphanTestsReport());
+        reporter.verbose(computeOrphanedTestsReport());
+
+        async function generateOrphansReport() {
+
+            type RecentGitUpdates = Readonly<{[path: string]: boolean}>;
+
+            async function computeRecentGitUpdates(): Promise<RecentGitUpdates> {
+                // this is a hack for now...
+                const buff = await Files.readFileAsync('./recent-git-updates.txt')
+                const content = buff.toString('utf-8');
+                const lines = content.split('\n').filter(current => current.trim() !== '');
+
+                const cwd = process.cwd();
+                const paths = lines.map(current => FilePaths.join(cwd, current))
+
+                return arrayStream(paths).toLookup(current => current);
+            }
+
+            const rawOrphans: ReadonlyArray<IOrphan> = [
+                ...testOrphans,
+                ...mainOrphans
+            ].sort((a, b) => a.path.localeCompare(b.path));
+
+            const recentGitUpdates = await computeRecentGitUpdates();
+
+            const orphans = rawOrphans.filter(current => !recentGitUpdates[current.path])
+
+            const delta = Math.abs(orphans.length - rawOrphans.length);
+
+            reporter.verbose(`Removed ${delta} orphans due to being recently updated: `);
+
+            orphans.forEach(current => reporter.info(current.path))
+
+        }
+
+        await generateOrphansReport();
 
     }
 

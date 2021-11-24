@@ -1,23 +1,20 @@
-const path = require('path');
-const webpack = require('webpack');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const {GenerateSW} = require('workbox-webpack-plugin');
-const os = require('os');
-const fs = require('fs');
-const CopyPlugin = require('copy-webpack-plugin');
-const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
-const svgToMiniDataURI = require('mini-svg-data-uri');
+const path = require("path");
+const webpack = require("webpack");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { GenerateSW } = require("workbox-webpack-plugin");
+const os = require("os");
+const CopyPlugin = require("copy-webpack-plugin");
+const svgToMiniDataURI = require("mini-svg-data-uri");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-
-const isDevServer = process.argv.includes('serve');
-const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
-const isDev = mode === 'development';
-const target = process.env.WEBPACK_TARGET || 'web';
-const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
+const isDevServer = process.argv.includes("serve");
+const mode =
+    process.env.NODE_ENV || (isDevServer ? "development" : "production");
+const isDev = mode === "development";
+const target = process.env.WEBPACK_TARGET || "web";
+const devtool = isDev
+    ? process.env.WEBPACK_DEVTOOL || "inline-source-map"
+    : "source-map";
 const useWorkbox = !isDevServer;
 const bundle = determineBundle();
 const port = determinePort(bundle);
@@ -25,16 +22,21 @@ const openPage = determineOpenPage(bundle);
 
 const workers = os.cpus().length - 1;
 
-const output = process.env.OUTPUT_PATH || path.resolve(__dirname, 'dist/public');
+const output =
+    process.env.OUTPUT_PATH || path.resolve(__dirname, "dist/public");
 
 console.log("Usage: ===================");
 
-console.log(" - export WEBPACK_BUNDLE to 'stories' or 'repository' (default) to change the bundle being built");
-console.log(" - export WEBPACK_DEVTOOL to 'inline-source-map' for better symbols (but slower build)");
+console.log(
+    " - export WEBPACK_BUNDLE to 'stories' or 'repository' (default) to change the bundle being built"
+);
+console.log(
+    " - export WEBPACK_DEVTOOL to 'inline-source-map' for better symbols (but slower build)"
+);
 
 console.log("Environment: =============");
-console.log("WEBPACK_TARGET: " + process.env['WEBPACK_DEVTOOL']);
-console.log("WEBPACK_BUNDLE: " + process.env['WEBPACK_BUNDLE']);
+console.log("WEBPACK_TARGET: " + process.env["WEBPACK_DEVTOOL"]);
+console.log("WEBPACK_BUNDLE: " + process.env["WEBPACK_BUNDLE"]);
 
 console.log("Config: ==================");
 
@@ -55,42 +57,40 @@ console.log("__dirname:    " + __dirname);
 
 if (isDev && bundle === null) {
     console.error("ERROR: WEBPACK_BUNDLE not defined!");
-    console.error("MUST export WEBPACK_BUNDLE to either 'repository' or 'stories' in serve mode.");
+    console.error(
+        "MUST export WEBPACK_BUNDLE to either 'repository' or 'stories' in serve mode."
+    );
     process.exit(1);
 }
 
 function createRules() {
-
     const rules = [
-
         // https://github.com/webpack-contrib/cache-loader
         //
         // looks like with the cache loader the initial compile is about 10%
         // longer but 2x faster once the cache is running.
         {
-            loader: 'cache-loader',
+            loader: "cache-loader",
             options: {
-                cacheDirectory: '.webpack-cache-loader'
+                cacheDirectory: ".webpack-cache-loader"
             }
         },
         {
             test: /\.(jsx|tsx|ts)$/,
-            exclude: [
-                /node_modules/,
-            ],
+            exclude: [/node_modules/],
             use: [
                 {
-                    loader: 'thread-loader',
+                    loader: "thread-loader",
                     options: {
                         // there should be 1 cpu for the fork-ts-checker-webpack-plugin
                         workers,
                         // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
                         workerParallelJobs: 100,
-                        poolTimeout: 2000,
+                        poolTimeout: 2000
                     }
                 },
                 {
-                    loader: 'ts-loader',
+                    loader: "ts-loader",
                     options: {
                         // performance: this improved performance by about 2x.
                         // from 20s to about 10s
@@ -100,26 +100,23 @@ function createRules() {
                         // IMPORTANT! use happyPackMode mode to speed-up
                         // compilation and reduce errors reported to webpack
                         happyPackMode: true
-
                     }
                 }
-
             ]
-
         },
         {
             test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
             exclude: [],
             use: [
                 {
-                    loader: 'file-loader',
+                    loader: "file-loader",
                     options: {
-                        name: '[name]-[contenthash].[ext]',
-                        outputPath: 'assets',
-                        publicPath: '/assets'
+                        name: "[name]-[contenthash].[ext]",
+                        outputPath: "assets",
+                        publicPath: "/assets"
                     }
-                },
-            ],
+                }
+            ]
         },
         {
             // make SVGs use data URLs.
@@ -127,139 +124,119 @@ function createRules() {
             exclude: [],
             use: [
                 {
-                    loader: 'url-loader',
+                    loader: "url-loader",
                     options: {
                         limit: 32768,
-                        generator: (content) => svgToMiniDataURI(content.toString()),
+                        generator: (content) =>
+                            svgToMiniDataURI(content.toString())
                     }
-                },
-            ],
+                }
+            ]
         },
         {
             test: /\.css$/i,
             exclude: [],
             use: [
                 {
-                    loader: 'style-loader',
+                    loader: "style-loader"
                 },
                 {
-                    loader: 'css-loader'
+                    loader: "css-loader"
                 }
             ]
         },
         {
             test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
+            use: ["style-loader", "css-loader", "sass-loader"]
         },
         {
             test: /fonts\.googleapis\.com\/css/,
             use: [
                 {
-                    loader: 'file-loader',
+                    loader: "file-loader",
                     options: {
-                        name: '[name]-[contenthash].[ext]',
-                        outputPath: 'assets',
-                        publicPath: '/assets'
+                        name: "[name]-[contenthash].[ext]",
+                        outputPath: "assets",
+                        publicPath: "/assets"
                     }
-                },
-            ],
-        },
-
+                }
+            ]
+        }
     ];
 
-    if (target !== 'electron-renderer') {
-
-        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js');
-
-        if (!fs.existsSync(electronPath)) {
-            throw new Error("Electron dir doesn't exist: " + electronPath);
-        }
-
-        console.log("Adding null-loader for electron libraries: " + electronPath);
+    if (target !== "electron-renderer") {
+        console.log("Adding null-loader for electron libraries");
         rules.push({
-            test: electronPath,
-            use: 'null-loader'
+            test: /\/electron\/index.js$/,
+            use: "null-loader"
+        });
+
+        rules.push({
+            test: /\/electron$/,
+            use: "null-loader"
         });
     }
 
     return rules;
-
 }
 
 function determineBundle() {
+    switch (process.env["WEBPACK_BUNDLE"]) {
+        case "stories":
+            return "stories";
 
-    switch (process.env['WEBPACK_BUNDLE']) {
+        case "repository":
+            return "repository";
 
-        case 'stories':
-            return 'stories';
-
-        case 'repository':
-            return 'repository';
-
-        case 'both':
-            return 'body';
+        case "both":
+            return "body";
 
         default:
-            return 'body';
-
+            return "body";
     }
-
 }
 
 function determinePort(bundle) {
-
     switch (bundle) {
-
-        case 'stories':
+        case "stories":
             return 8051;
 
-        case 'repository':
+        case "repository":
         default:
             return 8050;
     }
-
 }
 
 function determineOpenPage(bundle) {
-
     switch (bundle) {
+        case "stories":
+            return "apps/stories";
 
-        case 'stories':
-            return 'apps/stories';
-
-        case 'repository':
+        case "repository":
         default:
-            return '';
+            return "";
     }
-
 }
 
 function createEntries(bundle) {
-
     switch (bundle) {
-
-        case 'stories':
-
+        case "stories":
             return {
-                "stories": "./apps/stories/index.tsx",
+                stories: "./apps/stories/index.tsx"
             };
 
-        case 'repository':
+        case "repository":
             return {
-                "repository": "./apps/repository/js/entry.tsx",
+                repository: "./apps/repository/js/entry.tsx"
             };
 
-        case 'both':
+        case "both":
         default:
-
             return {
-                "stories": "./apps/stories/index.tsx",
-                "repository": "./apps/repository/js/entry.tsx",
+                stories: "./apps/stories/index.tsx",
+                repository: "./apps/repository/js/entry.tsx"
             };
-
-
     }
-
 }
 
 const entries = createEntries(bundle);
@@ -271,14 +248,14 @@ module.exports = {
     // stats: 'verbose',
     target,
     cache: {
-        type: 'memory'
+        type: "memory"
     },
     entry: entries,
     module: {
         rules: createRules()
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        extensions: [".tsx", ".ts", ".js", ".jsx"],
         alias: {},
         fallback: {
             fs: false,
@@ -290,7 +267,7 @@ module.exports = {
     devtool,
     output: {
         path: output,
-        filename: '[name]-bundle.js',
+        filename: "[name]-bundle.js"
     },
     plugins: [
         new webpack.ProgressPlugin({
@@ -304,7 +281,7 @@ module.exports = {
             profile: false,
             dependencies: true,
             dependenciesCount: 10000,
-            percentBy: null,
+            percentBy: null
         }),
         new NodePolyfillPlugin(),
 
@@ -319,107 +296,123 @@ module.exports = {
         }),
         isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
-        // new BundleAnalyzerPlugin(),
+        // NOTE: uncomment the following line to add the webpack bundle analyzer
+        // plugin.  This is important to keep becuase it allows us to figure out
+        // why/when our app is becoming bloated.
+        // new (require('webpack-bundle-analyzer')).BundleAnalyzerPlugin(),
         new ForkTsCheckerWebpackPlugin({}),
         // WARNING: this will ONLY be rebuilt when:
         //
         // - running with webpack (not webpack-dev-server because it will break)
         //
         // - when the .webpack-cache-loader directory is first removed
-        !isDevServer && new CopyPlugin({
-            patterns: [
-
-                // ***** pdf.js
-                //
-                // this is a bit of a hack and it would be better if we supported
-                // this better and managed as part of webpack directly and copied
-                // these as assets I think but the main issue is that the paths
-                // need to be preserved AND they actually need to be loaded but
-                // PDF.js doesn't link to them directly
-
-                {from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
-                {from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps'},
-                {from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist'},
-
-                // ***** apps
-                {from: './apps/**/*.html', to: './'},
-                {from: './apps/**/*.css', to: './'},
-                {from: './apps/**/*.svg', to: './'},
-                {from: './apps/init.js', to: './apps'},
-                {from: './apps/service-worker-registration.js', to: './apps'},
-                {from: './pdfviewer-custom/**/*.css', to: './'},
-
-                // ***** misc root directory files
-
-                {from: './*.ico', to: './'},
-                {from: './*.png', to: './'},
-                {from: './*.svg', to: './'},
-                {from: './sitemap*.xml', to: './'},
-                {from: './robots.txt', to: './'},
-                {from: './manifest.json', to: './'},
-                {from: './apps/repository/index.html', to: './'},
-
-            ],
-        }),
-        !isDevServer && new GenerateSW({
-            // include: [
-            //     "**"
-            // ],
-            cleanupOutdatedCaches: true,
-            skipWaiting: true,
-            directoryIndex: 'index.html',
-            // stripPrefix: 'dist/public',
-            maximumFileSizeToCacheInBytes: 150000000,
-            swDest: 'service-worker.js',
-            runtimeCaching: [
-                {
-                    urlPattern: /https:\/\/widget\.intercom\.io\/widget\//,
-                    handler: 'CacheFirst'
-                },
-                {
-                    urlPattern: /https:\/\/canny\.io\/sdk\.js\//,
-                    handler: 'CacheFirst'
-                },
-                {
-                    // cache document URLs returned by polar so that they are
-                    // available for reading offline...
+        !isDevServer &&
+            new CopyPlugin({
+                patterns: [
+                    // ***** pdf.js
                     //
-                    // if we setup custom domains for hosting polar apps in the
-                    // future this will have to be configured.
-                    //
-                    // https://storage.googleapis.com/polar-32b0f.appspot.com/stash/12qGEt93LdQiyfC86gd3zNabtvZcb86spmbhkwuv.epub
+                    // this is a bit of a hack and it would be better if we supported
+                    // this better and managed as part of webpack directly and copied
+                    // these as assets I think but the main issue is that the paths
+                    // need to be preserved AND they actually need to be loaded but
+                    // PDF.js doesn't link to them directly
 
-                    urlPattern: /https:\/\/storage\.google\.com\/polar-32b0f\.appspot\.com\/stash/,
-                    handler: 'CacheFirst'
-                },
-                {
-                    // these URLs are immutable based on content hash as computed by
-                    // webpack so just use cacheFirst which only fetches them the
-                    // first time
-                    urlPattern: /https:\/\/storage.google.com\/stash/,
-                    handler: 'CacheFirst'
-                },
-                {
-                    urlPattern: /https:\/\/fonts.google.com\//,
-                    handler: 'CacheFirst'
-                },
-                {
-                    urlPattern: /https:\/\/lh5.googleusercontent.com\//,
-                    handler: 'CacheFirst'
-                },
-                {
-                    urlPattern: /https:\/\/js\.stripe\.com\/v3/,
-                    handler: 'StaleWhileRevalidate'
+                    {
+                        from: "./node_modules/pdfjs-dist/web/pdf_viewer.css",
+                        to: "."
+                    },
+                    {
+                        from: "./node_modules/pdfjs-dist/cmaps",
+                        to: "./pdfjs-dist/cmaps"
+                    },
+                    {
+                        from: "./node_modules/pdfjs-dist/build/pdf.worker.js",
+                        to: "./pdfjs-dist"
+                    },
+
+                    // ***** apps
+                    { from: "./apps/**/*.html", to: "./" },
+                    { from: "./apps/**/*.css", to: "./" },
+                    { from: "./apps/**/*.svg", to: "./" },
+                    { from: "./apps/init.js", to: "./apps" },
+                    {
+                        from: "./apps/service-worker-registration.js",
+                        to: "./apps"
+                    },
+                    { from: "./pdfviewer-custom/**/*.css", to: "./" },
+
+                    // ***** misc root directory files
+
+                    { from: "./*.ico", to: "./" },
+                    { from: "./*.png", to: "./" },
+                    { from: "./*.svg", to: "./" },
+                    { from: "./sitemap*.xml", to: "./" },
+                    { from: "./robots.txt", to: "./" },
+                    { from: "./manifest.json", to: "./" },
+                    { from: "./apps/repository/index.html", to: "./" }
+                ]
+            }),
+        !isDevServer &&
+            new GenerateSW({
+                // include: [
+                //     "**"
+                // ],
+                cleanupOutdatedCaches: true,
+                skipWaiting: true,
+                directoryIndex: "index.html",
+                // stripPrefix: 'dist/public',
+                maximumFileSizeToCacheInBytes: 150000000,
+                swDest: "service-worker.js",
+                runtimeCaching: [
+                    {
+                        urlPattern: /https:\/\/widget\.intercom\.io\/widget\//,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        urlPattern: /https:\/\/canny\.io\/sdk\.js\//,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        // cache document URLs returned by polar so that they are
+                        // available for reading offline...
+                        //
+                        // if we setup custom domains for hosting polar apps in the
+                        // future this will have to be configured.
+                        //
+                        // https://storage.googleapis.com/polar-32b0f.appspot.com/stash/12qGEt93LdQiyfC86gd3zNabtvZcb86spmbhkwuv.epub
+
+                        urlPattern:
+                            /https:\/\/storage\.google\.com\/polar-32b0f\.appspot\.com\/stash/,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        // these URLs are immutable based on content hash as computed by
+                        // webpack so just use cacheFirst which only fetches them the
+                        // first time
+                        urlPattern: /https:\/\/storage.google.com\/stash/,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        urlPattern: /https:\/\/fonts.google.com\//,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        urlPattern: /https:\/\/lh5.googleusercontent.com\//,
+                        handler: "CacheFirst"
+                    },
+                    {
+                        urlPattern: /https:\/\/js\.stripe\.com\/v3/,
+                        handler: "StaleWhileRevalidate"
+                    }
+                ],
+                modifyURLPrefix: {
+                    // Remove a '/dist' prefix from the URLs:
+                    "/dist/public": ""
                 }
-            ],
-            modifyURLPrefix: {
-                // Remove a '/dist' prefix from the URLs:
-                '/dist/public': ''
-            }
-        })
+            })
     ].filter(Boolean),
     optimization: {
-        minimize: !isDev,
+        minimize: !isDev
         // minimizer: [new TerserPlugin({
         //     // // disable caching to:  node_modules/.cache/terser-webpack-plugin/
         //     // // because intellij will index this data and lock up my machine
@@ -441,22 +434,28 @@ module.exports = {
     },
     watchOptions: {},
     devServer: {
-        contentBase: path.resolve('dist/public'),
+        static: [
+            path.resolve("dist/public"),
+            {
+                watch: true
+            }
+        ],
         compress: true,
         port,
         open: false,
-        openPage,
-        overlay: true,
         hot: true,
-        watchContentBase: false,
-        writeToDisk: true,
-        disableHostCheck: true,
+        allowedHosts: "all",
+        client: {
+            overlay: true
+        },
+        devMiddleware: {
+            writeToDisk: true
+        },
         historyApiFallback: {
             rewrites: [
-                // TODO: load DefaultRewrites here and convert them...
-                {from: /^\/login$/, to: '/apps/repository/index.html'},
-                {from: /^\/apps\/stories/, to: '/apps/stories/index.html'},
+                { from: /^\/login$/, to: "/apps/repository/index.html" },
+                { from: /^\/apps\/stories/, to: "/apps/stories/index.html" }
             ]
         }
-    },
+    }
 };

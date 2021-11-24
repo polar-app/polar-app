@@ -11,21 +11,19 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
-import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
+// import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {Devices} from "polar-shared/src/util/Devices";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import Paper from "@material-ui/core/Paper";
+import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
+import { RepositoryToolbar } from "../../../../web/js/apps/repository/RepositoryToolbar";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexDirection: Devices.isDesktop() ? 'row-reverse': 'row',
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-            paddingRight: theme.spacing(1),
         }
     }),
 );
@@ -43,7 +41,7 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
                 <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>
                 <MUIDocFlagButton onClick={callbacks.onFlagged} size={Devices.isDesktop()?"medium":"small"}/>
-                <Divider orientation="vertical" variant="middle" flexItem/>
+                <Divider orientation="vertical" flexItem/>
 
                 <MUIDocDeleteButton size={Devices.isDesktop()?"medium":"small"}
                                     onClick={callbacks.onDeleted}/>
@@ -53,22 +51,22 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
 });
 
 const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
-    const {selected} = useDocRepoStore(['selected']);
+    const {view, selected} = useDocRepoStore(['view', 'selected']);
 
     return (
-
         <>
-            <SidenavTriggerIconButton/>
-
+            {/* <SidenavTriggerIconButton/> */}
             <DeviceRouter.Desktop>
                 <ChromeExtensionInstallBar/>
             </DeviceRouter.Desktop>
-
-            <div style={{ display: 'flex' }}>
-                {Devices.isDesktop() && selected.length > 0 && <SelectionActiveButtons/> }
-            </div>
-
             <DocRepoFilterBar/>
+            <DeviceRouter.Desktop>
+                <div style={{display: 'flex',marginRight: 'auto'}}>
+                    <MUICheckboxHeaderIconButton/>
+                    
+                    {selected.length > 0 && <SelectionActiveButtons/>}
+                </div>
+            </DeviceRouter.Desktop>
         </>
     );
 
@@ -80,11 +78,10 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
     return (
         <>
-
             <DeviceRouter.Desktop>
-                <Paper square className={classes.root}>
+                <RepositoryToolbar className={classes.root}>
                     <DocRepoTableToolbarMain/>
-                </Paper>
+                </RepositoryToolbar>
             </DeviceRouter.Desktop>
 
             <DeviceRouter.Handheld>
@@ -95,7 +92,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
                 </AppBar>
             </DeviceRouter.Handheld>
-
         </>
     );
 }, isEqual);

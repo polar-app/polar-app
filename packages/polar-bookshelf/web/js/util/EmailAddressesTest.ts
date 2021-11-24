@@ -1,5 +1,5 @@
 import {EmailAddresses} from './EmailAddresses';
-import {assertJSON} from '../test/Assertions';
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('EmailAddress', function() {
 

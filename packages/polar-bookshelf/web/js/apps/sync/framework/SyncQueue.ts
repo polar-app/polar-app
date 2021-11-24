@@ -3,11 +3,9 @@ import {Abortable} from './Abortable';
 import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
 import {SyncTask} from './SyncTask';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
-const log = Logger.create();
 
 /**
  * A queue that supports adding tasks and executing/draining draining all tasks.
@@ -70,7 +68,7 @@ export class SyncQueue {
         while ((syncTask = this.pending.shift()) !== undefined) {
 
             if (this.abortable.aborted) {
-                log.info("Aborting sync.");
+                console.log("Aborting sync.");
                 return;
             }
 
