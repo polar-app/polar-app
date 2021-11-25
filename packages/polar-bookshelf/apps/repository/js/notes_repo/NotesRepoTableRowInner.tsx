@@ -12,6 +12,13 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 
+        cell: {
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+
         colText: {
             width: 'auto',
             overflow: 'hidden',
@@ -70,31 +77,58 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
                 {/*</AutoBlur>*/}
             </TableCell>
 
-            <TableCell scope="row"
-                       className={classes.colText}
-                       padding="none"
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
-                {props.title || 'Untitled'}
-            </TableCell>
+            {tableGridStore.columnDescriptors.map(columnDescriptor => (
 
-            <TableCell padding="none"
-                       className={classes.colCreated}
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
+                <TableCell className={classes.cell}
+                           key={columnDescriptor.id}
+                           padding={columnDescriptor.disablePadding ? 'none' : undefined}
+                           style={{width: columnDescriptor.width}}
+                           onClick={selectRowClickHandler}
+                           onContextMenu={contextMenuHandler}>
 
-                <DateTimeTableCell datetime={props.created}/>
+                    {columnDescriptor.type === 'text' && (
+                        props[columnDescriptor.id] || columnDescriptor.defaultLabel || ""
+                    )}
 
-            </TableCell>
+                    {columnDescriptor.type === 'date' && (
+                        <DateTimeTableCell datetime={props[columnDescriptor.id]}/>
+                    )}
 
-            <TableCell padding="none"
-                       className={classes.colUpdated}
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
+                    {columnDescriptor.type === 'number' && (
+                        <>
+                            {props[columnDescriptor.id]}
+                        </>
+                    )}
 
-                <DateTimeTableCell datetime={props.updated}/>
+                </TableCell>
 
-            </TableCell>
+            ))}
+
+            {/*<TableCell scope="row"*/}
+            {/*           className={classes.colText}*/}
+            {/*           padding="none"*/}
+            {/*           onClick={selectRowClickHandler}*/}
+            {/*           onContextMenu={contextMenuHandler}>*/}
+            {/*    {props.title || 'Untitled'}*/}
+            {/*</TableCell>*/}
+
+            {/*<TableCell padding="none"*/}
+            {/*           className={classes.colCreated}*/}
+            {/*           onClick={selectRowClickHandler}*/}
+            {/*           onContextMenu={contextMenuHandler}>*/}
+
+            {/*    <DateTimeTableCell datetime={props.created}/>*/}
+
+            {/*</TableCell>*/}
+
+            {/*<TableCell padding="none"*/}
+            {/*           className={classes.colUpdated}*/}
+            {/*           onClick={selectRowClickHandler}*/}
+            {/*           onContextMenu={contextMenuHandler}>*/}
+
+            {/*    <DateTimeTableCell datetime={props.updated}/>*/}
+
+            {/*</TableCell>*/}
 
             <TableCell align="right"
                        padding="none"

@@ -26,7 +26,7 @@ export interface IColumnDescriptor<R extends BaseR> {
 
     readonly label: string;
 
-    readonly numeric: boolean;
+    readonly defaultLabel?: string;
 
     readonly width: string;
 
@@ -37,6 +37,8 @@ export interface IColumnDescriptor<R extends BaseR> {
      * show this on all devices.
      */
     readonly devices?: ReadonlyArray<Device>;
+
+    readonly type: 'number' | 'text' | 'date'
 
 }
 

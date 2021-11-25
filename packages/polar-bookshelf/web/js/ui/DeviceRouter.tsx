@@ -123,4 +123,28 @@ export namespace DeviceRouters {
     export const NotTablet = createRejects(['tablet']);
     export const NotDesktop = createRejects(['desktop']);
 
+    interface IAnyProps {
+        readonly devices?: ReadonlyArray<Device>;
+        readonly children: React.ReactElement | null;
+    }
+
+    /**
+     * Render on any of the given devices or if non given, render on any device.
+     */
+    export const Any = React.memo((props: IAnyProps) => {
+        const device = Devices.get();
+
+        if (props.devices === undefined) {
+            return props.children;
+        }
+
+        if (props.devices.includes(device)) {
+            return props.children;
+        }
+
+        return null;
+
+    });
+
+
 }

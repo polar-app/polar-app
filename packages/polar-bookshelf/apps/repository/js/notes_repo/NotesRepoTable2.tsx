@@ -95,9 +95,9 @@ export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore(
     order: 'asc',
     orderBy: 'title',
     columnDescriptors: [
-        { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: 'auto', defaultOrder: 'asc' },
-        { id: 'created', numeric: false, disablePadding: true, label: 'Created', width: '7em', defaultOrder: 'desc' },
-        { id: 'updated', numeric: false, disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
+        { id: 'title', type: 'text', disablePadding: true, label: 'Title', defaultLabel: "Untitled", width: 'auto', defaultOrder: 'asc' },
+        { id: 'created', type: 'date', disablePadding: true, label: 'Created', width: '7em', defaultOrder: 'desc' },
+        { id: 'updated', type: 'date', disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
     ]
 });
 
