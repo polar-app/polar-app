@@ -149,7 +149,8 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
                                 style={{
                                     flexGrow: 1,
                                     // height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
-                                    height: '100%'
+                                    height: '100%',
+                                    overflowX: 'hidden'
                                 }}>
                     <Table
                         stickyHeader

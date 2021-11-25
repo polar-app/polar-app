@@ -76,6 +76,7 @@ import {ConsoleError} from './ConsoleError';
 import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
+import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
 
 interface IProps {
     readonly app: App;
@@ -343,11 +344,22 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                    component={EnableFeatureToggle}/>
 
                                             <WithNotesIntegration>
-                                                <PersistentRoute path={RoutePathNames.NOTES}
-                                                                 exact
-                                                                 strategy="display">
-                                                    <NotesRepoScreen/>
-                                                </PersistentRoute>
+
+                                                <DeviceRouters.Desktop>
+                                                    <PersistentRoute path={RoutePathNames.NOTES}
+                                                                     exact
+                                                                     strategy="display">
+                                                        <NotesRepoScreen/>
+                                                    </PersistentRoute>
+                                                </DeviceRouters.Desktop>
+
+                                                <DeviceRouters.NotDesktop>
+                                                    <PersistentRoute path={RoutePathNames.NOTES}
+                                                                     exact
+                                                                     strategy="display">
+                                                        <NotesRepoScreen2/>
+                                                    </PersistentRoute>
+                                                </DeviceRouters.NotDesktop>
 
                                                 <PersistentRoute path={RoutePathNames.DAILY}
                                                                  strategy="display"
