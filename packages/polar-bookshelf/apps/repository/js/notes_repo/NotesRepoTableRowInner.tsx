@@ -4,6 +4,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import isEqual from "react-fast-compare";
 import {DateTimeTableCell} from "../DateTimeTableCell";
 import {IBlockRepoRow} from "./NotesRepoTable2";
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -58,19 +59,19 @@ export const NotesRepoTableRowInner = React.memo(function NotesRepoTableRowInner
     return (
         <>
 
-            {/*<TableCell padding="none">*/}
-            {/*    /!*<AutoBlur>*!/*/}
-            {/*        <MUICheckboxIconButton checked={selected}*/}
-            {/*                               onChange={selectRowClickHandler}/>*/}
-            {/*    /!*</AutoBlur>*!/*/}
-            {/*</TableCell>*/}
+            <TableCell padding="none">
+                {/*<AutoBlur>*/}
+                    <MUICheckboxIconButton checked={selected}
+                                           onChange={selectRowClickHandler}/>
+                {/*</AutoBlur>*/}
+            </TableCell>
 
             <TableCell scope="row"
                        className={classes.colText}
                        padding="none"
                        onClick={selectRowClickHandler}
                        onContextMenu={contextMenuHandler}>
-                {props.text || 'Untitled'}
+                {props.title || 'Untitled'}
             </TableCell>
 
             <TableCell padding="none"

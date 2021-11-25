@@ -18,6 +18,7 @@ import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
+import {NotesRepoTableHead} from './NotesRepoTableHead';
 
 const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<IBlockRepoRow>) {
 
@@ -68,7 +69,7 @@ const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: Hid
 });
 
 export interface IBlockRepoRow {
-    readonly text: string;
+    readonly title: string;
     readonly created: Date,
     readonly updated: Date,
     readonly id: string;
@@ -87,7 +88,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
     const rows: ReadonlyArray<IBlockRepoRow> = React.useMemo(() => (
         blocksStore.namedBlocks.map(block => block.toJSON())
             .map((current): IBlockRepoRow => ({
-                text: BlockTextContentUtils.getTextContentMarkdown(current.content),
+                title: BlockTextContentUtils.getTextContentMarkdown(current.content),
                 created: new Date(current.created),
                 id: current.id,
                 updated: new Date(current.updated),
@@ -127,7 +128,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
                         size={'medium'}
                         aria-label="enhanced table">
 
-                        {/*<DocRepoTableHead/>*/}
+                        <NotesRepoTableHead/>
 
                         {/*<DocRepoContextMenu>*/}
                             {root && (
