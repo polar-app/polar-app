@@ -17,6 +17,7 @@ import {useNoteLinkLoader} from "../../../../web/js/notes/NoteLinkLoader";
 import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 
 const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<IBlockRepoRow>) {
 
@@ -107,7 +108,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
             <>
 
-                {/*<DocRepoTableToolbar />*/}
+                <NotesRepoTableToolbar />
 
                 <TableContainer ref={setRoot}
                                 style={{

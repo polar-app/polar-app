@@ -1,23 +1,16 @@
 import React from "react";
-import Divider from "@material-ui/core/Divider";
-import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
-import {MUIDocTagButton} from "./buttons/MUIDocTagButton";
-import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
-import {MUIDocFlagButton} from "./buttons/MUIDocFlagButton";
-import {MUIDocDeleteButton} from "./buttons/MUIDocDeleteButton";
-import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
-// import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {Devices} from "polar-shared/src/util/Devices";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {MUICheckboxHeaderIconButton} from "./MUICheckboxHeaderIconButton";
 import {RepositoryToolbar} from "../../../../web/js/apps/repository/RepositoryToolbar";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MUIDocTagButton} from "../doc_repo/buttons/MUIDocTagButton";
+import {MUICheckboxHeaderIconButton} from "../doc_repo/MUICheckboxHeaderIconButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -33,33 +26,24 @@ interface IProps {
 }
 
 export const SelectionActiveButtons = React.memo(function SelectionActiveButtons(props: IProps) {
-    const callbacks = useDocRepoCallbacks();
 
     return (
         <MUIButtonBar className={props.className}>
             <>
-                <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
-                <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>
-                <MUIDocFlagButton onClick={callbacks.onFlagged} size={Devices.isDesktop()?"medium":"small"}/>
-                <Divider orientation="vertical" flexItem/>
-
-                <MUIDocDeleteButton size={Devices.isDesktop()?"medium":"small"}
-                                    onClick={callbacks.onDeleted}/>
+                <MUIDocTagButton onClick={NULL_FUNCTION} size={Devices.isDesktop()?"medium":"small"}/>
             </>
         </MUIButtonBar>
     );
 });
 
-const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
-    const {view, selected} = useDocRepoStore(['view', 'selected']);
+const NotesRepoTableToolbarMain =  React.memo(function NotesRepoTableToolbarMain() {
+
+    // const {view, selected} = useDocRepoStore(['view', 'selected']);
+
+    const selected = [];
 
     return (
         <>
-            {/* <SidenavTriggerIconButton/> */}
-            <DeviceRouter.Desktop>
-                <ChromeExtensionInstallBar/>
-            </DeviceRouter.Desktop>
-            <DocRepoFilterBar/>
             <DeviceRouter.Desktop>
                 <div style={{display: 'flex',marginRight: 'auto'}}>
                     <MUICheckboxHeaderIconButton/>
@@ -72,7 +56,7 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
 
 });
 
-export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
+export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar() {
 
     const classes = useStyles();
 
@@ -80,14 +64,14 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
         <>
             <DeviceRouter.Desktop>
                 <RepositoryToolbar className={classes.root}>
-                    <DocRepoTableToolbarMain/>
+                    <NotesRepoTableToolbarMain/>
                 </RepositoryToolbar>
             </DeviceRouter.Desktop>
 
             <DeviceRouter.Handheld>
                 <AppBar color={"inherit"} position="static">
                     <Toolbar>
-                        <DocRepoTableToolbarMain/>
+                        <NotesRepoTableToolbarMain/>
                     </Toolbar>
                 </AppBar>
             </DeviceRouter.Handheld>
