@@ -9,11 +9,11 @@ import {NoteStyle} from "./NoteStyle";
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import {NotesRepoScreen} from './NotesRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
 import {SideCar} from '../sidenav/SideNav';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
+import {NotesRepoScreen2} from "../../../apps/repository/js/notes_repo/NotesRepoScreen2";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -65,7 +65,7 @@ export const NotesScreen: React.FC = observer(() => {
                 <Switch>
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
                     <Route path={RoutePathNames.DAILY} component={DailyNotesScreen} />
-                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
+                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen2} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>
