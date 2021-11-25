@@ -6,7 +6,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {useTableGridStore} from "./TableGridStore";
+import {useTableGridStore} from "./NotesRepoTable2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

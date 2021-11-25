@@ -20,9 +20,11 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {useTableGridStore} from "./TableGridStore";
+import {BaseR, createTableGridStore, Order} from "./TableGridStore";
 import {createContextMenu} from '../doc_repo/MUIContextMenu2';
 import {NotesRepoContextMenu} from "./NotesRepoContextMenu";
+import {Comparators} from "polar-shared/src/util/Comparators";
+import Comparator = Comparators.Comparator;
 
 const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
 
@@ -87,6 +89,12 @@ interface NotesRepoContextMenuOrigin {
 
 export const [NotesRepoContextMenuProvider, useNotesRepoContextMenu]
     = createContextMenu<NotesRepoContextMenuOrigin>(NotesRepoContextMenu, {name: 'notes-repo'});
+
+export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore({
+    comparatorFactory,
+    order: 'asc',
+    orderBy: 'title'
+});
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
@@ -171,3 +179,33 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 });
 
 const HEIGHT = 40;
+
+function createComparator<R extends BaseR>(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
+
+    switch (field) {
+
+        case "title":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.title.localeCompare(b.title);
+            }
+        case "created":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.created.localeCompare(b.created);
+            }
+        case "updated":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.updated.localeCompare(b.updated);
+            }
+        case "id":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.id.localeCompare(b.id);
+            }
+
+    }
+
+}
+
+function comparatorFactory(field: keyof INotesRepoRow, order: Order): Comparator<INotesRepoRow> {
+    const comparator = createComparator(field);
+    return order === 'asc' ? comparator : Comparators.reverse(comparator);
+}

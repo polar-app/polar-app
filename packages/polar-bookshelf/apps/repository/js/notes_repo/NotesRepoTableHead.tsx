@@ -6,10 +6,9 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
-import {INotesRepoRow} from "./NotesRepoTable2";
+import {INotesRepoRow, useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
 import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
-import {useTableGridStore} from "./TableGridStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

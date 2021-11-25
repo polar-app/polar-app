@@ -1,32 +1,42 @@
 import {action, computed, makeObservable, observable} from "mobx";
-import {INotesRepoRow} from "./NotesRepoTable2";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
-import {Comparators} from "polar-shared/src/util/Comparators";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Comparators} from "polar-shared/src/util/Comparators";
 import Comparator = Comparators.Comparator;
 
 export type Order = 'asc' | 'desc';
 
 export type Opener = (id: IDStr) => void;
 
-export class TableGridStore {
+export interface BaseR {
+    readonly id: string;
+}
+
+export class TableGridStore<R extends BaseR> {
 
     @observable _order: Order = 'asc';
 
-    @observable _orderBy: keyof INotesRepoRow = 'title';
+    @observable _orderBy: keyof R;
 
-    @observable _data: ReadonlyArray<INotesRepoRow> = [];
+    @observable _data: ReadonlyArray<R> = [];
 
-    @observable _view: ReadonlyArray<INotesRepoRow> = [];
+    @observable _view: ReadonlyArray<R> = [];
 
     @observable _selected: ReadonlyArray<IDStr> = [];
 
     @observable _opener: Opener = NULL_FUNCTION;
 
-    constructor() {
+    public comparatorFactory: ComparatorFactory<R>;
+
+    constructor(opts: ICreateTableGridStoreOpts<R>) {
+
+        this.comparatorFactory = opts.comparatorFactory;
+        this._order = opts.order;
+        this._orderBy = opts.orderBy;
+
         makeObservable(this);
     }
 
@@ -46,27 +56,27 @@ export class TableGridStore {
         return this._selected;
     }
 
-    @action public setOrderBy(orderBy: keyof INotesRepoRow, order: Order) {
+    @action public setOrderBy(orderBy: keyof R, order: Order) {
         this._orderBy = orderBy;
         this._order = order;
         this.updateView();
     }
 
-    @action public setData(data: ReadonlyArray<INotesRepoRow>) {
+    @action public setData(data: ReadonlyArray<R>) {
         this._data = data;
         this.updateView();
     }
 
     @action private updateView() {
 
-        const comparator = createComparatorWithOrder(this._orderBy, this._order);
+        const comparator = this.comparatorFactory(this._orderBy, this._order);
         const view = [...this._data].sort(comparator);
 
         this.setView(view)
 
     }
 
-    @action public setView(view: ReadonlyArray<INotesRepoRow>) {
+    @action public setView(view: ReadonlyArray<R>) {
         this._view = view;
     }
 
@@ -115,40 +125,31 @@ export class TableGridStore {
 
 }
 
-export const [TableGridStoreProvider, useTableGridStoreDelegate] = createStoreContext(() => {
-    return React.useMemo(() => new TableGridStore(), []);
-})
+type ComparatorFactory<R extends BaseR> = (field: keyof R, order: Order) => Comparator<R>;
 
-export function useTableGridStore() {
-    return useTableGridStoreDelegate();
-}
+export interface ICreateTableGridStoreOpts<R extends BaseR> {
 
-function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
+    /**
+     * Factory to build comparators to sort fields.
+     */
+    readonly comparatorFactory: ComparatorFactory<R>;
 
-    switch (field) {
+    /**
+     * The initial order (asc or desc)
+     */
+    readonly order: Order;
 
-        case "title":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.title.localeCompare(b.title);
-            }
-        case "created":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.created.localeCompare(b.created);
-            }
-        case "updated":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.updated.localeCompare(b.updated);
-            }
-        case "id":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.id.localeCompare(b.id);
-            }
-
-    }
+    /**
+     * The initial / default orderBy
+     */
+    readonly orderBy: keyof R;
 
 }
 
-function createComparatorWithOrder(field: keyof INotesRepoRow, order: Order): Comparator<INotesRepoRow> {
-    const comparator = createComparator(field);
-    return order === 'asc' ? comparator : Comparators.reverse(comparator);
+export function createTableGridStore<R extends BaseR>(opts: ICreateTableGridStoreOpts<R>) {
+
+    return createStoreContext(() => {
+        return React.useMemo(() => new TableGridStore<R>(opts), []);
+    })
+
 }

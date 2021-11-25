@@ -2,11 +2,10 @@ import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DateTimeTableCell} from "../DateTimeTableCell";
-import {INotesRepoRow, useNotesRepoContextMenu} from "./NotesRepoTable2";
+import {INotesRepoRow, useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {observer} from "mobx-react-lite";
 import {Devices} from "polar-shared/src/util/Devices";
-import {useTableGridStore} from "./TableGridStore";
 import {StandardIconButton} from "../doc_repo/buttons/StandardIconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
