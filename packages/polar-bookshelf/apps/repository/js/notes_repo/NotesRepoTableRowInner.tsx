@@ -5,8 +5,8 @@ import {DateTimeTableCell} from "../DateTimeTableCell";
 import {INotesRepoRow} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {observer} from "mobx-react-lite";
-import {useNotesRepoStore} from "./NotesRepoStore";
 import {Devices} from "polar-shared/src/util/Devices";
+import {useTableGridStore} from "./TableGridStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,7 +39,7 @@ interface IProps extends INotesRepoRow {
 export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(props: IProps) {
 
     const classes = useStyles();
-    const notesRepoStore = useNotesRepoStore();
+    const tableGridStore = useTableGridStore();
 
     const {selected} = props;
 
@@ -50,13 +50,13 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
 
     const selectRowClickHandler = React.useCallback((event: React.MouseEvent) => {
 
-        notesRepoStore.selectRow(props.id, event, 'click');
+        tableGridStore.selectRow(props.id, event, 'click');
 
         if (Devices.isTablet() || Devices.isPhone()) {
-            notesRepoStore.onOpen(props.id);
+            tableGridStore.onOpen(props.id);
         }
 
-    }, [notesRepoStore, props.id]);
+    }, [tableGridStore, props.id]);
 
     return (
         <>

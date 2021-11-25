@@ -19,14 +19,14 @@ import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
-import {useNotesRepoStore} from "./NotesRepoStore";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {useTableGridStore} from "./TableGridStore";
 
 const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
 
-    const notesRepoStore = useNotesRepoStore()
+    const tableGridStore = useTableGridStore()
 
-    const {selected} = notesRepoStore;
+    const {selected} = tableGridStore;
 
     const viewIndex = props.index;
     const row = props.value;
@@ -87,13 +87,13 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
-    const notesRepoStore = useNotesRepoStore();
+    const tableGridStore = useTableGridStore();
 
-    const {view} = notesRepoStore;
+    const {view} = tableGridStore;
 
     React.useEffect(() => {
-        notesRepoStore.setOpener(id => noteLinkLoader(id))
-    }, [notesRepoStore, noteLinkLoader])
+        tableGridStore.setOpener(id => noteLinkLoader(id))
+    }, [tableGridStore, noteLinkLoader])
 
     // FIXME: this should useNamedBlocks and the standard comparator we used? The same one
     // in the search bar.
@@ -108,8 +108,8 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
     ), [blocksStore.namedBlocks]);
 
     React.useEffect(() => {
-        notesRepoStore.setData(data);
-    }, [notesRepoStore, data]);
+        tableGridStore.setData(data);
+    }, [tableGridStore, data]);
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 

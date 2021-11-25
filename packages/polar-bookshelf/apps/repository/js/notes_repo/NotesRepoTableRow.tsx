@@ -4,7 +4,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
 import {INotesRepoRow} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
-import {useNotesRepoStore} from "./NotesRepoStore";
+import {useTableGridStore} from "./TableGridStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,7 +41,7 @@ const Delegate = observer(function Delegate(props: IProps) {
     const classes = useStyles();
     const {selected} = props;
 
-    const notesRepoStore = useNotesRepoStore();
+    const tableGridStore = useTableGridStore();
 
     // {...contextMenuHandlers}
     // onDragStart={callbacks.onDragStart}
@@ -55,7 +55,7 @@ const Delegate = observer(function Delegate(props: IProps) {
             role="checkbox"
             aria-checked={selected}
             draggable
-            onDoubleClick={() => notesRepoStore.onOpen(props.id)}
+            onDoubleClick={() => tableGridStore.onOpen(props.id)}
             selected={selected}>
 
             <NotesRepoTableRowInner {...props}/>

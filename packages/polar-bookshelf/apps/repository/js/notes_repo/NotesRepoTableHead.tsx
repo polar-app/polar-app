@@ -7,9 +7,9 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
 import {INotesRepoRow} from "./NotesRepoTable2";
-import {useNotesRepoStore} from "./NotesRepoStore";
 import {observer} from "mobx-react-lite";
 import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
+import {useTableGridStore} from "./TableGridStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -121,9 +121,9 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const classes = useStyles();
 
-    const notesRepoStore = useNotesRepoStore();
+    const tableGridStore = useTableGridStore();
 
-    const {order, orderBy} = useNotesRepoStore();
+    const {order, orderBy} = tableGridStore;
 
     const columns = useNotesRepoColumns();
 
@@ -160,7 +160,7 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
                                 active={orderBy === column.id}
                                 direction={order}
                                 hideSortIcon
-                                onClick={() => notesRepoStore.setOrderBy(column.id, newOrder)}>
+                                onClick={() => tableGridStore.setOrderBy(column.id, newOrder)}>
                                 {column.label}
                                 {orderBy === column.id ? (
                                     <span className={classes.visuallyHidden}>
