@@ -113,6 +113,8 @@ function createComparatorWithOrder(field: keyof INotesRepoRow, order: Order): Co
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
+    console.log("FIXME: NotesRepoTable2 render")
+
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
     const notesRepoStore = useNotesRepoStore();

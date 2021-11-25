@@ -121,7 +121,11 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const classes = useStyles();
 
-    const {order, orderBy, setOrderBy} = useNotesRepoStore();
+    const notesRepoStore = useNotesRepoStore();
+
+    const {order, orderBy} = useNotesRepoStore();
+
+    console.log("FIXME: NotesRepoTableHead render")
 
     const columns = useNotesRepoColumns();
 
@@ -158,7 +162,7 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
                                 active={orderBy === column.id}
                                 direction={order}
                                 hideSortIcon
-                                onClick={() => setOrderBy(column.id, newOrder)}>
+                                onClick={() => notesRepoStore.setOrderBy(column.id, newOrder)}>
                                 {column.label}
                                 {orderBy === column.id ? (
                                     <span className={classes.visuallyHidden}>
