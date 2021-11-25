@@ -97,7 +97,6 @@ export class TableGridStore {
     }
 
     @action public onOpen(id: IDStr) {
-        console.log("FIXME: onOpen: " + id);
         this._opener(id);
     }
 
@@ -118,12 +117,12 @@ export class TableGridStore {
 
 }
 
-export const [NotesRepoStoreProvider, useNotesRepoStoreDelegate] = createStoreContext(() => {
+export const [TableGridStoreProvider, useTableGridStoreDelegate] = createStoreContext(() => {
     return React.useMemo(() => new TableGridStore(), []);
 })
 
-export function useNotesRepoStore() {
-    return useNotesRepoStoreDelegate();
+export function useTableGridStore() {
+    return useTableGridStoreDelegate();
 }
 
 function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
