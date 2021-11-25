@@ -75,7 +75,7 @@ import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
-import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
+import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 
 interface IProps {
     readonly app: App;
@@ -346,7 +346,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 <PersistentRoute path={RoutePathNames.NOTES}
                                                                  exact
                                                                  strategy="display">
-                                                    <NotesRepoScreen2/>
+                                                    <NotesRepoScreen/>
                                                 </PersistentRoute>
 
                                                 <PersistentRoute path={RoutePathNames.DAILY}
