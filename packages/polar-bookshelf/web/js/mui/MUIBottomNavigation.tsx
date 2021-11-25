@@ -51,7 +51,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
     return React.useMemo(() => ([
         {
             id: 'home',
-            label: 'Home',
+            label: 'Docs',
             href: '/',
             icon: <HomeIcon/>
         },

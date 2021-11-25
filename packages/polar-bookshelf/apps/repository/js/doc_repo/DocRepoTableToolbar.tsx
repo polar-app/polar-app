@@ -16,8 +16,8 @@ import {Devices} from "polar-shared/src/util/Devices";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
-import { RepositoryToolbar } from "../../../../web/js/apps/repository/RepositoryToolbar";
+import {MUICheckboxHeaderIconButton} from "./MUICheckboxHeaderIconButton";
+import {RepositoryToolbar} from "../../../../web/js/apps/repository/RepositoryToolbar";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -63,7 +63,7 @@ const DocRepoTableToolbarMain =  React.memo(function DocRepoTableToolbarMain() {
             <DeviceRouter.Desktop>
                 <div style={{display: 'flex',marginRight: 'auto'}}>
                     <MUICheckboxHeaderIconButton/>
-                    
+
                     {selected.length > 0 && <SelectionActiveButtons/>}
                 </div>
             </DeviceRouter.Desktop>
@@ -89,7 +89,6 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
                     <Toolbar>
                         <DocRepoTableToolbarMain/>
                     </Toolbar>
-
                 </AppBar>
             </DeviceRouter.Handheld>
         </>
