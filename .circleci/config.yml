@@ -598,7 +598,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
       #     attach-workspace: true
@@ -611,7 +611,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
       #     attach-workspace: true
@@ -624,7 +624,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
       #     attach-workspace: true
