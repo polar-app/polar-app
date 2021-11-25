@@ -12,7 +12,7 @@ export type Order = 'asc' | 'desc';
 
 export type Opener = (id: IDStr) => void;
 
-export class NotesRepoStore {
+export class TableGridStore {
 
     @observable _order: Order = 'asc';
 
@@ -119,7 +119,7 @@ export class NotesRepoStore {
 }
 
 export const [NotesRepoStoreProvider, useNotesRepoStoreDelegate] = createStoreContext(() => {
-    return React.useMemo(() => new NotesRepoStore(), []);
+    return React.useMemo(() => new TableGridStore(), []);
 })
 
 export function useNotesRepoStore() {
