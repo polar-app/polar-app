@@ -8,6 +8,7 @@ import {observer} from "mobx-react-lite";
 import {Devices} from "polar-shared/src/util/Devices";
 import {StandardIconButton} from "../doc_repo/buttons/StandardIconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -79,28 +80,35 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
 
             {tableGridStore.columnDescriptors.map(columnDescriptor => (
 
-                <TableCell className={classes.cell}
-                           key={columnDescriptor.id}
-                           padding={columnDescriptor.disablePadding ? 'none' : undefined}
-                           style={{width: columnDescriptor.width}}
-                           onClick={selectRowClickHandler}
-                           onContextMenu={contextMenuHandler}>
+                <React.Fragment key={columnDescriptor.id}>
 
-                    {columnDescriptor.type === 'text' && (
-                        props[columnDescriptor.id] || columnDescriptor.defaultLabel || ""
-                    )}
+                    <DeviceRouters.Any devices={columnDescriptor.devices}>
 
-                    {columnDescriptor.type === 'date' && (
-                        <DateTimeTableCell datetime={props[columnDescriptor.id]}/>
-                    )}
+                        <TableCell className={classes.cell}
+                                   padding={columnDescriptor.disablePadding ? 'none' : undefined}
+                                   style={{width: columnDescriptor.width}}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
 
-                    {columnDescriptor.type === 'number' && (
-                        <>
-                            {props[columnDescriptor.id]}
-                        </>
-                    )}
+                            {columnDescriptor.type === 'text' && (
+                                props[columnDescriptor.id] || columnDescriptor.defaultLabel || ""
+                            )}
 
-                </TableCell>
+                            {columnDescriptor.type === 'date' && (
+                                <DateTimeTableCell datetime={props[columnDescriptor.id]}/>
+                            )}
+
+                            {columnDescriptor.type === 'number' && (
+                                <>
+                                    {props[columnDescriptor.id]}
+                                </>
+                            )}
+
+                        </TableCell>
+
+                    </DeviceRouters.Any>
+
+                </React.Fragment>
 
             ))}
 
