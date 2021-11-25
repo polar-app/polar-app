@@ -5,6 +5,8 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Comparators} from "polar-shared/src/util/Comparators";
+import {Sorting} from "../doc_repo/Sorting";
+import {Device} from "polar-shared/src/util/Devices";
 import Comparator = Comparators.Comparator;
 
 export type Order = 'asc' | 'desc';
@@ -14,6 +16,31 @@ export type Opener = (id: IDStr) => void;
 export interface BaseR {
     readonly id: string;
 }
+
+
+export interface IColumnDescriptor<R extends BaseR> {
+
+    readonly disablePadding: boolean;
+
+    readonly id: keyof R;
+
+    readonly label: string;
+
+    readonly numeric: boolean;
+
+    readonly width: string;
+
+    readonly defaultOrder: Sorting.Order;
+
+    /**
+     * Specify the devices on which this column is supported. When undefined we
+     * show this on all devices.
+     */
+    readonly devices?: ReadonlyArray<Device>;
+
+}
+
+export type ColumnDescriptors<R extends BaseR> = ReadonlyArray<IColumnDescriptor<R>>;
 
 export class TableGridStore<R extends BaseR> {
 
@@ -31,9 +58,12 @@ export class TableGridStore<R extends BaseR> {
 
     public comparatorFactory: ComparatorFactory<R>;
 
+    public columnDescriptors: ColumnDescriptors<R>;
+
     constructor(opts: ICreateTableGridStoreOpts<R>) {
 
         this.comparatorFactory = opts.comparatorFactory;
+        this.columnDescriptors = opts.columnDescriptors;
         this._order = opts.order;
         this._orderBy = opts.orderBy;
 
@@ -143,6 +173,8 @@ export interface ICreateTableGridStoreOpts<R extends BaseR> {
      * The initial / default orderBy
      */
     readonly orderBy: keyof R;
+
+    readonly columnDescriptors: ColumnDescriptors<R>;
 
 }
 

@@ -93,7 +93,12 @@ export const [NotesRepoContextMenuProvider, useNotesRepoContextMenu]
 export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore({
     comparatorFactory,
     order: 'asc',
-    orderBy: 'title'
+    orderBy: 'title',
+    columnDescriptors: [
+        { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: 'auto', defaultOrder: 'asc' },
+        { id: 'created', numeric: false, disablePadding: true, label: 'Created', width: '7em', defaultOrder: 'desc' },
+        { id: 'updated', numeric: false, disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
+    ]
 });
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {

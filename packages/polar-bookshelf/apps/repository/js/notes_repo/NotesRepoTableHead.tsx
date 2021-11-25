@@ -6,7 +6,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
-import {INotesRepoRow, useTableGridStore} from "./NotesRepoTable2";
+import {useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
 import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
 
@@ -52,25 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
-
-export interface NotesRepoColumnDescriptor {
-    disablePadding: boolean;
-    id: keyof INotesRepoRow;
-    label: string;
-    numeric: boolean;
-    width: string;
-    defaultOrder: Sorting.Order;
-}
-
-export const COLUMNS: ReadonlyArray<NotesRepoColumnDescriptor> = [
-    { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: 'auto', defaultOrder: 'asc' },
-    { id: 'created', numeric: false, disablePadding: true, label: 'Created', width: '7em', defaultOrder: 'desc' },
-    { id: 'updated', numeric: false, disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
-];
-
-export function useNotesRepoColumns() {
-    return COLUMNS;
-}
 
 const Check = React.memo(function Check() {
     return (
@@ -124,8 +105,6 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const {order, orderBy} = tableGridStore;
 
-    const columns = useNotesRepoColumns();
-
     return (
 
         <TableHead className={classes.root}>
@@ -141,7 +120,7 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
                     <Check/>
                 </DeviceRouters.Desktop>
 
-                {columns.map((column) => {
+                {tableGridStore.columnDescriptors.map((column) => {
 
                     const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
 
