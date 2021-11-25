@@ -91,8 +91,6 @@ export class TableGridStore {
     }
 
     @action public setOpener(opener: Opener) {
-        console.log("FIXME: setOpener: " );
-
         this._opener = opener;
     }
 
