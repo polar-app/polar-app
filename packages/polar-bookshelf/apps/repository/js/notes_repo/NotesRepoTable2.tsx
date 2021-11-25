@@ -89,7 +89,11 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
     const noteLinkLoader = useNoteLinkLoader();
     const notesRepoStore = useNotesRepoStore();
 
-    const {order, orderBy, view} = notesRepoStore;
+    const {view} = notesRepoStore;
+
+    React.useEffect(() => {
+        notesRepoStore.setOpener(id => noteLinkLoader(id))
+    }, [notesRepoStore, noteLinkLoader])
 
     // FIXME: this should useNamedBlocks and the standard comparator we used? The same one
     // in the search bar.
@@ -105,7 +109,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
     React.useEffect(() => {
         notesRepoStore.setData(data);
-    }, [data]);
+    }, [notesRepoStore, data]);
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 

@@ -5,9 +5,12 @@ import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {Comparators} from "polar-shared/src/util/Comparators";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Comparator = Comparators.Comparator;
 
 export type Order = 'asc' | 'desc';
+
+export type Opener = (id: IDStr) => void;
 
 export class NotesRepoStore {
 
@@ -20,6 +23,8 @@ export class NotesRepoStore {
     @observable _view: ReadonlyArray<INotesRepoRow> = [];
 
     @observable _selected: ReadonlyArray<IDStr> = [];
+
+    @observable _opener: Opener = NULL_FUNCTION;
 
     constructor() {
         makeObservable(this);
@@ -67,6 +72,17 @@ export class NotesRepoStore {
 
     @action public setSelected(selected: ReadonlyArray<IDStr>) {
         this._selected = selected;
+    }
+
+    @action public setOpener(opener: Opener) {
+        console.log("FIXME: setOpener: " );
+
+        this._opener = opener;
+    }
+
+    @action public onOpen(id: IDStr) {
+        console.log("FIXME: onOpen: " + id);
+        this._opener(id);
     }
 
     @action public selectRow(viewID: IDStr,

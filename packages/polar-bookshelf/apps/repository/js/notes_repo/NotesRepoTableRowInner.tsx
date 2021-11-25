@@ -6,6 +6,7 @@ import {INotesRepoRow} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {observer} from "mobx-react-lite";
 import {useNotesRepoStore} from "./NotesRepoStore";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,7 +41,7 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
     const classes = useStyles();
     const notesRepoStore = useNotesRepoStore();
 
-    const {viewIndex, selected} = props;
+    const {selected} = props;
 
     const contextMenuHandler = React.useCallback((event: React.MouseEvent) => {
     //     selectRow(row.id, event, 'context');
@@ -51,17 +52,17 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
 
         notesRepoStore.selectRow(props.id, event, 'click');
 
-        // FIXME:
-        // if (Devices.isTablet() || Devices.isPhone()) {
-        //     callbacks.onOpen();
-        // }
+        if (Devices.isTablet() || Devices.isPhone()) {
+            notesRepoStore.onOpen(props.id);
+        }
 
-    }, [props]);
+    }, [notesRepoStore, props.id]);
 
     return (
         <>
 
-            <TableCell padding="none">
+            <TableCell padding="none"
+                       onDoubleClick={event => event.stopPropagation()}>
                 {/*<AutoBlur>*/}
                     <MUICheckboxIconButton checked={selected}
                                            onChange={selectRowClickHandler}/>
