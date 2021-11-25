@@ -71,10 +71,11 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
         <>
 
             <TableCell padding="none"
+                       onClick={event => event.stopPropagation()}
                        onDoubleClick={event => event.stopPropagation()}>
                 {/*<AutoBlur>*/}
                     <MUICheckboxIconButton checked={selected}
-                                           onChange={selectRowClickHandler}/>
+                                           onChange={(event) => tableGridStore.selectRow(props.id, event, 'checkbox')}/>
                 {/*</AutoBlur>*/}
             </TableCell>
 
