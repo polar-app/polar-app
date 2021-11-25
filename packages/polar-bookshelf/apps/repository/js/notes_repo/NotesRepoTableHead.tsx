@@ -125,28 +125,32 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
                     const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
 
                     return (
-                        <TableCell key={column.id}
-                                   className={classes.th}
-                                   style={{
-                                       width: column.width,
-                                       minWidth: column.width
-                                   }}
-                                   padding={column.disablePadding ? 'none' : 'default'}
-                                   sortDirection={orderBy === column.id ? order : false}>
+                        <React.Fragment key={column.id}>
+                            <DeviceRouters.Any devices={column.devices}>
 
-                            <TableSortLabel
-                                active={orderBy === column.id}
-                                direction={order}
-                                hideSortIcon
-                                onClick={() => tableGridStore.setOrderBy(column.id, newOrder)}>
-                                {column.label}
-                                {orderBy === column.id ? (
-                                    <span className={classes.visuallyHidden}>
-                                            {order === 'asc' ? 'sorted ascending' : 'sorted descending'}
-                                        </span>
-                                ) : null}
-                            </TableSortLabel>
-                        </TableCell>
+                                <TableCell className={classes.th}
+                                           style={{
+                                               width: column.width,
+                                               minWidth: column.width
+                                           }}
+                                           padding={column.disablePadding ? 'none' : 'default'}
+                                           sortDirection={orderBy === column.id ? order : false}>
+
+                                    <TableSortLabel
+                                        active={orderBy === column.id}
+                                        direction={order}
+                                        hideSortIcon
+                                        onClick={() => tableGridStore.setOrderBy(column.id, newOrder)}>
+                                        {column.label}
+                                        {orderBy === column.id ? (
+                                            <span className={classes.visuallyHidden}>
+                                                    {order === 'asc' ? 'sorted ascending' : 'sorted descending'}
+                                                </span>
+                                        ) : null}
+                                    </TableSortLabel>
+                                </TableCell>
+                            </DeviceRouters.Any>
+                        </React.Fragment>
                     )
                 })}
 
