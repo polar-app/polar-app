@@ -36,7 +36,7 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
     );
 });
 
-const NotesRepoTableToolbarMain =  React.memo(function NotesRepoTableToolbarMain() {
+const NotesRepoTableToolbarMain = React.memo(function NotesRepoTableToolbarMain() {
 
     // const {view, selected} = useDocRepoStore(['view', 'selected']);
 
