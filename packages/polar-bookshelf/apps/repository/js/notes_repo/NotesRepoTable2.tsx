@@ -83,6 +83,8 @@ export interface INotesRepoRow {
 
 function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
 
+    console.log("FIXME: Creating comparator for: " + field)
+
     switch (field) {
 
         case "title":
@@ -112,8 +114,6 @@ function createComparatorWithOrder(field: keyof INotesRepoRow, order: Order): Co
 }
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
-
-    console.log("FIXME: NotesRepoTable2 render")
 
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();

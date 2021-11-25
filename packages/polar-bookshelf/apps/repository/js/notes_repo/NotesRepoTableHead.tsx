@@ -125,8 +125,6 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const {order, orderBy} = useNotesRepoStore();
 
-    console.log("FIXME: NotesRepoTableHead render")
-
     const columns = useNotesRepoColumns();
 
     return (

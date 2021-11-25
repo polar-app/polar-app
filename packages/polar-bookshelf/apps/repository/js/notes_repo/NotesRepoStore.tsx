@@ -1,4 +1,4 @@
-import {action, computed, observable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 import {INotesRepoRow} from "./NotesRepoTable2";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import * as React from "react";
@@ -11,6 +11,10 @@ export class NotesRepoStore {
 
     @observable _orderBy: keyof INotesRepoRow = 'title';
 
+    constructor() {
+        makeObservable(this);
+    }
+
     @computed get orderBy() {
         return this._orderBy;
     }
@@ -20,8 +24,6 @@ export class NotesRepoStore {
     }
 
     @action public setOrderBy(orderBy: keyof INotesRepoRow, order: Order) {
-
-        console.log("FIXME: setOrderBy: ", orderBy, order);
         this._orderBy = orderBy;
         this._order = order;
     }
