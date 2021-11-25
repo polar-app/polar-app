@@ -5,7 +5,10 @@ import {TableGridStoreProvider} from './TableGridStore';
 export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
     return (
         <TableGridStoreProvider>
-            <NotesRepoTable2/>
+            <>
+                {/*<NotesToolbar/>*/}
+                <NotesRepoTable2/>
+            </>
         </TableGridStoreProvider>
     )
 })

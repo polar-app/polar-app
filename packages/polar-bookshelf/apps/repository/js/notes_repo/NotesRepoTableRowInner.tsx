@@ -104,12 +104,6 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
                 <TableGridOverflowMenuButton id={props.id}/>
             </TableCell>
 
-            {/*<TableCell align="right"*/}
-            {/*           padding="none"*/}
-            {/*           onClick={event => event.stopPropagation()}*/}
-            {/*           onDoubleClick={event => event.stopPropagation()}>*/}
-            {/*    {props.text}*/}
-            {/*</TableCell>*/}
         </>
     );
 
