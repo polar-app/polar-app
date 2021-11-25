@@ -6,7 +6,30 @@ orbs:
   cypress: cypress-io/cypress@1.28.0
   slack: circleci/slack@4.4.4
 
-# ~ Pre-Script Steps to Execute before Jobs
+# @ Define Custom Executors
+executors:
+  # ! Default Executor for most jobs
+  xlarge:
+    docker:
+      - image: getpolarized/ci:latest
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+    resource_class: xlarge
+
+  # ! Android Jobs
+  android:
+    docker:
+      - image: circleci/android:api-30-node
+    resource_class: xlarge
+
+  # ! Cypress Jobs
+  ff-chrome:
+    docker:
+      - image: cypress/browsers:node14.17.0-chrome88-ff89
+    resource_class: xlarge
+
+# @ Pre-Script Steps to Execute before Jobs
 commands:
   # & Tag Publishing Setup
   tag_publishing_setup:
@@ -580,26 +603,6 @@ jobs:
             bundle update fastlane
             pod install
             bundle exec fastlane release
-
-# ~ Define Custom Executors
-executors:
-  # ! Default Executor for most jobs
-  xlarge:
-    docker:
-      - image: circleci/node:14.17.0-buster
-    resource_class: xlarge
-  large:
-    docker:
-      - image: circleci/node:14.17.0-buster
-    resource_class: large
-  android:
-    docker:
-      - image: circleci/android:api-30-node
-    resource_class: xlarge
-  ff-chrome:
-    docker:
-      - image: cypress/browsers:node14.17.0-chrome88-ff89
-    resource_class: xlarge
 
 # ~ Define Workflow Steps
 workflows:
