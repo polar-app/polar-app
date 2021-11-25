@@ -19,14 +19,14 @@ import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
-import {Order, useNotesRepoStore} from "./NotesRepoStore";
-import {Comparators} from "polar-shared/src/util/Comparators";
+import {useNotesRepoStore} from "./NotesRepoStore";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import Comparator = Comparators.Comparator;
 
-const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
+const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
 
-    // const {selected} = useDocRepoStore(['selected']);
+    const notesRepoStore = useNotesRepoStore()
+
+    const {selected} = notesRepoStore;
 
     const viewIndex = props.index;
     const row = props.value;
@@ -34,7 +34,7 @@ const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleCompon
     return (
         <NotesRepoTableRow viewIndex={viewIndex}
                            key={viewIndex}
-                           selected={false}
+                           selected={selected.includes(row.id)}
                            {...props.value}/>
     );
 
@@ -82,35 +82,6 @@ export interface INotesRepoRow {
 // export const [DocRepoContextMenu, useDocRepoContextMenu]
 //     = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {name: 'doc-repo'});
 
-function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
-
-    switch (field) {
-
-        case "title":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.title.localeCompare(b.title);
-            }
-        case "created":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.created.localeCompare(b.created);
-            }
-        case "updated":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.updated.localeCompare(b.updated);
-            }
-        case "id":
-            return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.id.localeCompare(b.id);
-            }
-
-    }
-
-}
-
-function createComparatorWithOrder(field: keyof INotesRepoRow, order: Order): Comparator<INotesRepoRow> {
-    const comparator = createComparator(field);
-    return order === 'asc' ? comparator : Comparators.reverse(comparator);
-}
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
@@ -118,7 +89,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
     const noteLinkLoader = useNoteLinkLoader();
     const notesRepoStore = useNotesRepoStore();
 
-    const {order, orderBy} = notesRepoStore;
+    const {order, orderBy, view} = notesRepoStore;
 
     // FIXME: this should useNamedBlocks and the standard comparator we used? The same one
     // in the search bar.
@@ -132,10 +103,9 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
             }))
     ), [blocksStore.namedBlocks]);
 
-    const view = React.useMemo(() => {
-        const comparator = createComparatorWithOrder(orderBy, order);
-        return [...data].sort(comparator);
-    }, [data, orderBy, order])
+    React.useEffect(() => {
+        notesRepoStore.setData(data);
+    }, [data]);
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 

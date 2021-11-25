@@ -1,10 +1,11 @@
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import isEqual from "react-fast-compare";
 import {DateTimeTableCell} from "../DateTimeTableCell";
 import {INotesRepoRow} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import {observer} from "mobx-react-lite";
+import {useNotesRepoStore} from "./NotesRepoStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,9 +35,10 @@ interface IProps extends INotesRepoRow {
     readonly viewIndex: number;
 }
 
-export const NotesRepoTableRowInner = React.memo(function NotesRepoTableRowInner(props: IProps) {
+export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(props: IProps) {
 
     const classes = useStyles();
+    const notesRepoStore = useNotesRepoStore();
 
     const {viewIndex, selected} = props;
 
@@ -46,14 +48,15 @@ export const NotesRepoTableRowInner = React.memo(function NotesRepoTableRowInner
     }, []);
 
     const selectRowClickHandler = React.useCallback((event: React.MouseEvent) => {
-        //
-        // selectRow(row.id, event, 'click');
-        //
+
+        notesRepoStore.selectRow(props.id, event, 'click');
+
+        // FIXME:
         // if (Devices.isTablet() || Devices.isPhone()) {
         //     callbacks.onOpen();
         // }
 
-    }, []);
+    }, [props]);
 
     return (
         <>
@@ -100,6 +103,6 @@ export const NotesRepoTableRowInner = React.memo(function NotesRepoTableRowInner
         </>
     );
 
-}, isEqual);
+});
 
 
