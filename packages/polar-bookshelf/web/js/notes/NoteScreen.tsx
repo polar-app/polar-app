@@ -11,7 +11,6 @@ import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
-import {SideCar} from '../sidenav/SideNav';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {NotesRepoScreen} from "./NotesRepoScreen";
 import {DeviceRouters} from '../ui/DeviceRouter';
@@ -61,9 +60,6 @@ export const NotesScreen: React.FC = observer(() => {
     return (
         <NotesContainer>
             <NoteProviders>
-                <SideCar>
-                    <div style={{ padding: 12 }}>Empty for now</div>
-                </SideCar>
                 <Switch>
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
                     <Route path={RoutePathNames.DAILY} component={DailyNotesScreen} />

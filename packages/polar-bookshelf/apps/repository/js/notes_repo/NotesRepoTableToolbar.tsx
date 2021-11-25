@@ -10,6 +10,9 @@ import {RepositoryToolbar} from "../../../../web/js/apps/repository/RepositoryTo
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDocTagButton} from "../doc_repo/buttons/MUIDocTagButton";
 import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
+import {UserAvatarIconButton} from "../../../../web/js/ui/cloud_auth/UserAvatarIconButton";
+import {RoutePathNames} from "../../../../web/js/apps/repository/RoutePathNames";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -58,6 +61,7 @@ const NotesRepoTableToolbarMain = React.memo(function NotesRepoTableToolbarMain(
 export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar() {
 
     const classes = useStyles();
+    const history = useHistory();
 
     return (
         <>
@@ -70,7 +74,12 @@ export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar()
             <DeviceRouter.Handheld>
                 <AppBar color={"inherit"} position="static">
                     <Toolbar>
-                        <NotesRepoTableToolbarMain/>
+
+                        <span>Notes</span>
+
+                        <UserAvatarIconButton onClick={()=>history.push(RoutePathNames.ACCOUNT_MOBILE)}
+                                              style={{marginLeft: 'auto'}}/>
+
                     </Toolbar>
                 </AppBar>
             </DeviceRouter.Handheld>
