@@ -21,6 +21,8 @@ import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {useTableGridStore} from "./TableGridStore";
+import {createContextMenu} from '../doc_repo/MUIContextMenu2';
+import {NotesRepoContextMenu} from "./NotesRepoContextMenu";
 
 const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
 
@@ -79,9 +81,12 @@ export interface INotesRepoRow {
     readonly id: string;
 }
 
-// export const [DocRepoContextMenu, useDocRepoContextMenu]
-//     = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {name: 'doc-repo'});
+interface NotesRepoContextMenuOrigin {
 
+}
+
+export const [NotesRepoContextMenuProvider, useNotesRepoContextMenu]
+    = createContextMenu<NotesRepoContextMenuOrigin>(NotesRepoContextMenu, {name: 'notes-repo'});
 
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
@@ -146,7 +151,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
                         <NotesRepoTableHead/>
 
-                        {/*<DocRepoContextMenu>*/}
+                        <NotesRepoContextMenuProvider>
                             {root && (
                                 <IntersectionList values={view}
                                                   root={root}
@@ -154,7 +159,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
                                                   BlockComponent={DocRepoBlockComponent}
                                                   HiddenBlockComponent={HiddenBlockComponent}
                                                   VisibleComponent={VisibleComponent}/>)}
-                        {/*</DocRepoContextMenu>*/}
+                        </NotesRepoContextMenuProvider>
 
                     </Table>
                 </TableContainer>

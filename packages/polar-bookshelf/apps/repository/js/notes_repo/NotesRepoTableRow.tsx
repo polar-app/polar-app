@@ -2,7 +2,7 @@ import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
-import {INotesRepoRow} from "./NotesRepoTable2";
+import {INotesRepoRow, useNotesRepoContextMenu} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
 import {useTableGridStore} from "./TableGridStore";
 
@@ -43,6 +43,8 @@ const Delegate = observer(function Delegate(props: IProps) {
 
     const tableGridStore = useTableGridStore();
 
+    const contextMenuHandlers = useNotesRepoContextMenu();
+
     // {...contextMenuHandlers}
     // onDragStart={callbacks.onDragStart}
     // onDragEnd={callbacks.onDragEnd}
@@ -50,6 +52,7 @@ const Delegate = observer(function Delegate(props: IProps) {
 
     return (
         <TableRow
+            {...contextMenuHandlers}
             hover
             className={classes.tr}
             role="checkbox"

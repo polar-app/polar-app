@@ -1,5 +1,4 @@
 import React from "react";
-import isEqual from "react-fast-compare";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -77,4 +76,4 @@ export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar()
             </DeviceRouter.Handheld>
         </>
     );
-}, isEqual);
+});
