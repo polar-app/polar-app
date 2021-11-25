@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
         colText: {
             width: 'auto',
-
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             userSelect: 'none',

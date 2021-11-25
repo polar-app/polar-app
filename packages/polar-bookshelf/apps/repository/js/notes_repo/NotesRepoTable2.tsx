@@ -21,6 +21,7 @@ import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
 import {Order, useNotesRepoStore} from "./NotesRepoStore";
 import {Comparators} from "polar-shared/src/util/Comparators";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import Comparator = Comparators.Comparator;
 
 const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
@@ -73,8 +74,8 @@ const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: Hid
 
 export interface INotesRepoRow {
     readonly title: string;
-    readonly created: Date,
-    readonly updated: Date,
+    readonly created: ISODateTimeString,
+    readonly updated: ISODateTimeString,
     readonly id: string;
 }
 
@@ -82,8 +83,6 @@ export interface INotesRepoRow {
 //     = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {name: 'doc-repo'});
 
 function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
-
-    console.log("FIXME: Creating comparator for: " + field)
 
     switch (field) {
 
@@ -93,11 +92,11 @@ function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow>
             }
         case "created":
             return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.created.getTime() - b.created.getTime();
+                return a.created.localeCompare(b.created);
             }
         case "updated":
             return (a: INotesRepoRow, b: INotesRepoRow) => {
-                return a.updated.getTime() - b.updated.getTime();
+                return a.updated.localeCompare(b.updated);
             }
         case "id":
             return (a: INotesRepoRow, b: INotesRepoRow) => {
@@ -127,9 +126,9 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
         blocksStore.namedBlocks.map(block => block.toJSON())
             .map((current): INotesRepoRow => ({
                 title: BlockTextContentUtils.getTextContentMarkdown(current.content),
-                created: new Date(current.created),
+                created: current.created,
                 id: current.id,
-                updated: new Date(current.updated),
+                updated: current.updated,
             }))
     ), [blocksStore.namedBlocks]);
 
