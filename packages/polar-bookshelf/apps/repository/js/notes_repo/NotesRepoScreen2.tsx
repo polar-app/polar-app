@@ -1,11 +1,11 @@
 import React from 'react';
-import {NotesRepoStoreProvider} from './NotesRepoStore';
 import {NotesRepoTable2} from './NotesRepoTable2';
+import {TableGridStoreProvider} from './TableGridStore';
 
 export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
     return (
-        <NotesRepoStoreProvider>
+        <TableGridStoreProvider>
             <NotesRepoTable2/>
-        </NotesRepoStoreProvider>
+        </TableGridStoreProvider>
     )
 })
