@@ -11,12 +11,9 @@ export class NotesRepoStore {
 
     @observable orderBy: keyof INotesRepoRow = 'title';
 
-    @action public setOrder(order: Order) {
-        this.order = order;
-    }
-
-    @action public setOrderBy(orderBy: keyof INotesRepoRow) {
+    @action public setOrderBy(orderBy: keyof INotesRepoRow, order: Order) {
         this.orderBy = orderBy;
+        this.order = order;
     }
 
 }

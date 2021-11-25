@@ -8,6 +8,8 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
 import {MUICheckboxHeaderIconButton} from "../doc_repo/MUICheckboxHeaderIconButton";
 import {INotesRepoRow} from "./NotesRepoTable2";
+import {useNotesRepoStore} from "./NotesRepoStore";
+import {observer} from "mobx-react-lite";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -115,18 +117,11 @@ const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() 
     return null;
 });
 
-export const NotesRepoTableHead = React.memo(function NotesRepoTableHead() {
+export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const classes = useStyles();
 
-    // const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
-    // const {setSort} = useDocRepoCallbacks();
-
-    const order: 'asc' | 'desc' = 'asc';
-    const orderBy = 'title';
-    const setSort = (newOrder: string, id: string) => {
-
-    };
+    const {order, orderBy, setOrderBy} = useNotesRepoStore();
 
     const columns = useNotesRepoColumns();
 
@@ -163,7 +158,7 @@ export const NotesRepoTableHead = React.memo(function NotesRepoTableHead() {
                                 active={orderBy === column.id}
                                 direction={order}
                                 hideSortIcon
-                                onClick={() => setSort(newOrder, column.id)}>
+                                onClick={() => setOrderBy(column.id, newOrder)}>
                                 {column.label}
                                 {orderBy === column.id ? (
                                     <span className={classes.visuallyHidden}>
