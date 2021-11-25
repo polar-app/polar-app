@@ -58,7 +58,7 @@ export function useAccountingUsage(): IAccountingUsage {
 
         const value = accounting.storageInBytes;
         const limit = computeStorageForPlan(userInfoContext?.userInfo?.creationTime, plan);
-        const usage = Percentages.calculate(value, limit);
+        const usage = Math.min(Math.floor(100 * (value / limit)), 100);
 
         return {
             value, limit, usage
