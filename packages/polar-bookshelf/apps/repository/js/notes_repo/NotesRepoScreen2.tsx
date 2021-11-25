@@ -1,8 +1,11 @@
 import React from 'react';
+import {NotesRepoStoreProvider} from './NotesRepoStore';
 import {NotesRepoTable2} from './NotesRepoTable2';
 
 export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
     return (
-        <NotesRepoTable2/>
+        <NotesRepoStoreProvider>
+            <NotesRepoTable2/>
+        </NotesRepoStoreProvider>
     )
 })

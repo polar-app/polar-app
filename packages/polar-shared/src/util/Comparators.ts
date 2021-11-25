@@ -27,4 +27,15 @@ export namespace Comparators {
 
     }
 
+    /**
+     * Just return the reverse comparator.
+     */
+    export function reverse<C>(comparator: Comparator<C>): Comparator<C> {
+
+        return (a, b) => {
+            return comparator(b, a);
+        }
+
+    }
+
 }

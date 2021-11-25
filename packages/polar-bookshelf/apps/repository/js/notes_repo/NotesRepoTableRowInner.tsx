@@ -3,7 +3,7 @@ import TableCell from "@material-ui/core/TableCell";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import isEqual from "react-fast-compare";
 import {DateTimeTableCell} from "../DateTimeTableCell";
-import {IBlockRepoRow} from "./NotesRepoTable2";
+import {INotesRepoRow} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps extends IBlockRepoRow {
+interface IProps extends INotesRepoRow {
     readonly selected: boolean;
     readonly viewIndex: number;
 }

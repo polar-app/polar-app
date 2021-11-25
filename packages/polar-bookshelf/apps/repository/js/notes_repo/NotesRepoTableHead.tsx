@@ -7,7 +7,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
 import {MUICheckboxHeaderIconButton} from "../doc_repo/MUICheckboxHeaderIconButton";
-import {IBlockRepoRow} from "./NotesRepoTable2";
+import {INotesRepoRow} from "./NotesRepoTable2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface NotesRepoColumnDescriptor {
     disablePadding: boolean;
-    id: keyof IBlockRepoRow;
+    id: keyof INotesRepoRow;
     label: string;
     numeric: boolean;
     width: string;

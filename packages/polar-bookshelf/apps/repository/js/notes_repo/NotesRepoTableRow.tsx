@@ -2,7 +2,7 @@ import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
-import {IBlockRepoRow} from "./NotesRepoTable2";
+import {INotesRepoRow} from "./NotesRepoTable2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps extends IBlockRepoRow {
+interface IProps extends INotesRepoRow {
     readonly viewIndex: number;
     readonly selected: boolean;
 }

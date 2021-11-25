@@ -19,8 +19,11 @@ import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
+import {Order, useNotesRepoStore} from "./NotesRepoStore";
+import {Comparators} from "polar-shared/src/util/Comparators";
+import Comparator = Comparators.Comparator;
 
-const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<IBlockRepoRow>) {
+const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
 
     // const {selected} = useDocRepoStore(['selected']);
 
@@ -36,7 +39,7 @@ const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleCompon
 
 });
 
-const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent(props: BlockComponentProps<IBlockRepoRow>) {
+const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent(props: BlockComponentProps<INotesRepoRow>) {
 
     const height = Numbers.sum(...props.values.map(current => HEIGHT));
 
@@ -53,7 +56,7 @@ const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent(props: Blo
 
 });
 
-const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<IBlockRepoRow>) {
+const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<INotesRepoRow>) {
 
     const height = Numbers.sum(...props.values.map(current => HEIGHT));
 
@@ -68,7 +71,7 @@ const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: Hid
 
 });
 
-export interface IBlockRepoRow {
+export interface INotesRepoRow {
     readonly title: string;
     readonly created: Date,
     readonly updated: Date,
@@ -78,22 +81,60 @@ export interface IBlockRepoRow {
 // export const [DocRepoContextMenu, useDocRepoContextMenu]
 //     = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {name: 'doc-repo'});
 
+function createComparator(field: keyof INotesRepoRow): Comparator<INotesRepoRow> {
+
+    switch (field) {
+
+        case "title":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.title.localeCompare(b.title);
+            }
+        case "created":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.created.getTime() - b.created.getTime();
+            }
+        case "updated":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.updated.getTime() - b.updated.getTime();
+            }
+        case "id":
+            return (a: INotesRepoRow, b: INotesRepoRow) => {
+                return a.id.localeCompare(b.id);
+            }
+
+    }
+
+}
+
+function createComparatorWithOrder(field: keyof INotesRepoRow, order: Order): Comparator<INotesRepoRow> {
+    const comparator = createComparator(field);
+    return order === 'asc' ? comparator : Comparators.reverse(comparator);
+}
+
 export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
+    const notesRepoStore = useNotesRepoStore();
+
+    const {order, orderBy} = notesRepoStore;
 
     // FIXME: this should useNamedBlocks and the standard comparator we used? The same one
     // in the search bar.
-    const rows: ReadonlyArray<IBlockRepoRow> = React.useMemo(() => (
+    const data: ReadonlyArray<INotesRepoRow> = React.useMemo(() => (
         blocksStore.namedBlocks.map(block => block.toJSON())
-            .map((current): IBlockRepoRow => ({
+            .map((current): INotesRepoRow => ({
                 title: BlockTextContentUtils.getTextContentMarkdown(current.content),
                 created: new Date(current.created),
                 id: current.id,
                 updated: new Date(current.updated),
             }))
     ), [blocksStore.namedBlocks]);
+
+    const view = React.useMemo(() => {
+        const comparator = createComparatorWithOrder(orderBy, order);
+        return [...data].sort(comparator);
+    }, [data, orderBy, order])
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 
@@ -132,7 +173,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
 
                         {/*<DocRepoContextMenu>*/}
                             {root && (
-                                <IntersectionList values={rows}
+                                <IntersectionList values={view}
                                                   root={root}
                                                   blockSize={25}
                                                   BlockComponent={DocRepoBlockComponent}
