@@ -70,8 +70,24 @@ export class NotesRepoStore {
         this._view = view;
     }
 
-    @action public setSelected(selected: ReadonlyArray<IDStr>) {
-        this._selected = selected;
+    @action public setSelected(selected: ReadonlyArray<IDStr> | 'all' | 'none') {
+
+        switch (selected) {
+
+            case 'all':
+                this._selected = this._view.map(current => current.id)
+                break;
+
+            case 'none':
+                this._selected = [];
+                break;
+
+            default:
+                this._selected = selected;
+                break;
+
+        }
+
     }
 
     @action public setOpener(opener: Opener) {

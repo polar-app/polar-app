@@ -6,10 +6,10 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {Sorting} from "../doc_repo/Sorting";
-import {MUICheckboxHeaderIconButton} from "../doc_repo/MUICheckboxHeaderIconButton";
 import {INotesRepoRow} from "./NotesRepoTable2";
 import {useNotesRepoStore} from "./NotesRepoStore";
 import {observer} from "mobx-react-lite";
+import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -73,7 +73,6 @@ export function useNotesRepoColumns() {
     return COLUMNS;
 }
 
-
 const Check = React.memo(function Check() {
     return (
         <TableCell key="left-checkbox"
@@ -117,6 +116,7 @@ const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() 
     return null;
 });
 
+
 export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const classes = useStyles();
@@ -133,7 +133,7 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
             <TableRow className={classes.row}>
                 <DeviceRouters.NotDesktop>
                     <TableCell style={{width:'50px'}}>
-                        <MUICheckboxHeaderIconButton/>
+                        <NotesRepoTableHeadCheck/>
                     </TableCell>
                 </DeviceRouters.NotDesktop>
 

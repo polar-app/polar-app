@@ -10,7 +10,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {RepositoryToolbar} from "../../../../web/js/apps/repository/RepositoryToolbar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDocTagButton} from "../doc_repo/buttons/MUIDocTagButton";
-import {MUICheckboxHeaderIconButton} from "../doc_repo/MUICheckboxHeaderIconButton";
+import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -46,7 +46,7 @@ const NotesRepoTableToolbarMain =  React.memo(function NotesRepoTableToolbarMain
         <>
             <DeviceRouter.Desktop>
                 <div style={{display: 'flex',marginRight: 'auto'}}>
-                    <MUICheckboxHeaderIconButton/>
+                    <NotesRepoTableHeadCheck/>
 
                     {selected.length > 0 && <SelectionActiveButtons/>}
                 </div>
