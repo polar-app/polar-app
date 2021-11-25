@@ -171,9 +171,10 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
                         </TableCell>
                     )
                 })}
-                <DeviceRouters.NotDesktop>
-                    <SelectionButtonsWithinTableCell/>
-                </DeviceRouters.NotDesktop>
+
+                <TableCell style={{width:'30px'}} padding="none">
+                    {/*<Check/>*/}
+                </TableCell>
 
             </TableRow>
         </TableHead>
