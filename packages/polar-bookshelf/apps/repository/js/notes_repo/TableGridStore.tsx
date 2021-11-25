@@ -13,6 +13,10 @@ export type Order = 'asc' | 'desc';
 
 export type Opener = (id: IDStr) => void;
 
+export interface BaseD {
+    readonly id: string;
+}
+
 export interface BaseR {
     readonly id: string;
 }
@@ -44,13 +48,13 @@ export interface IColumnDescriptor<R extends BaseR> {
 
 export type ColumnDescriptors<R extends BaseR> = ReadonlyArray<IColumnDescriptor<R>>;
 
-export class TableGridStore<R extends BaseR> {
+export class TableGridStore<D extends BaseD, R extends BaseR> {
 
     @observable _order: Order = 'asc';
 
     @observable _orderBy: keyof R;
 
-    @observable _data: ReadonlyArray<R> = [];
+    @observable _data: ReadonlyArray<D> = [];
 
     @observable _view: ReadonlyArray<R> = [];
 
@@ -58,14 +62,18 @@ export class TableGridStore<R extends BaseR> {
 
     @observable _opener: Opener = NULL_FUNCTION;
 
-    public comparatorFactory: ComparatorFactory<R>;
+    public comparatorFactory: ComparatorFactory<D, R>;
 
     public columnDescriptors: ColumnDescriptors<R>;
 
-    constructor(opts: ICreateTableGridStoreOpts<R>) {
+    public toRow: DataToRowConverter<D, R>;
+
+    constructor(opts: ICreateTableGridStoreOpts<D, R>) {
 
         this.comparatorFactory = opts.comparatorFactory;
         this.columnDescriptors = opts.columnDescriptors;
+        this.toRow = opts.toRow;
+
         this._order = opts.order;
         this._orderBy = opts.orderBy;
 
@@ -94,15 +102,18 @@ export class TableGridStore<R extends BaseR> {
         this.updateView();
     }
 
-    @action public setData(data: ReadonlyArray<R>) {
+    @action public setData(data: ReadonlyArray<D>) {
         this._data = data;
         this.updateView();
     }
 
     @action private updateView() {
 
+        // TODO: this would be much faster if we did this with docChanges rather than mapping
+        // over all them again.
+
         const comparator = this.comparatorFactory(this._orderBy, this._order);
-        const view = [...this._data].sort(comparator);
+        const view = [...this._data].sort(comparator).map(current => this.toRow(current))
 
         this.setView(view)
 
@@ -157,14 +168,16 @@ export class TableGridStore<R extends BaseR> {
 
 }
 
-type ComparatorFactory<R extends BaseR> = (field: keyof R, order: Order) => Comparator<R>;
+type ComparatorFactory<D extends BaseD, R extends BaseR> = (field: keyof R, order: Order) => Comparator<D>;
 
-export interface ICreateTableGridStoreOpts<R extends BaseR> {
+type DataToRowConverter<D extends BaseD, R extends BaseR> = (data: D) => R;
+
+export interface ICreateTableGridStoreOpts<D extends BaseD, R extends BaseR> {
 
     /**
      * Factory to build comparators to sort fields.
      */
-    readonly comparatorFactory: ComparatorFactory<R>;
+    readonly comparatorFactory: ComparatorFactory<D, R>;
 
     /**
      * The initial order (asc or desc)
@@ -178,12 +191,17 @@ export interface ICreateTableGridStoreOpts<R extends BaseR> {
 
     readonly columnDescriptors: ColumnDescriptors<R>;
 
+    /**
+     * Convert raw data to a row
+     */
+    readonly toRow: DataToRowConverter<D, R>;
+
 }
 
-export function createTableGridStore<R extends BaseR>(opts: ICreateTableGridStoreOpts<R>) {
+export function createTableGridStore<D extends BaseD, R extends BaseR>(opts: ICreateTableGridStoreOpts<D, R>) {
 
     return createStoreContext(() => {
-        return React.useMemo(() => new TableGridStore<R>(opts), []);
+        return React.useMemo(() => new TableGridStore<D, R>(opts), []);
     })
 
 }
