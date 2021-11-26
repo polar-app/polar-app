@@ -16,7 +16,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import ArchiveIcon from "@material-ui/icons/Archive";
 import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
-import { MUICheckboxHeaderIconButton } from "./MUICheckboxHeaderIconButton";
+import {MUICheckboxHeaderIconButton} from "./MUICheckboxHeaderIconButton";
 import {SelectionActiveButtons} from "./DocRepoTableToolbar";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         row: {
             "& th": {
-                paddingTop: theme.spacing(1),
-                paddingBottom: theme.spacing(1),
+                paddingTop: theme.spacing(0),
+                paddingBottom: theme.spacing(0),
                 paddingLeft: 0,
                 paddingRight: 0,
                 borderCollapse: 'collapse',
@@ -149,11 +149,11 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <MUICheckboxHeaderIconButton/>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
-                    
+
                     {/* This is just a placeholder to align the table, it doesn't do much else */}
-                    <DeviceRouters.Desktop>      
-                        <Check/>                      
-                    </DeviceRouters.Desktop>                            
+                    <DeviceRouters.Desktop>
+                        <Check/>
+                    </DeviceRouters.Desktop>
 
                     {columns.map((column) => {
 
@@ -188,7 +188,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                         <SelectionButtonsWithinTableCell/>
                     </DeviceRouters.NotDesktop>
 
-                    <DeviceRouters.Desktop>                            
+                    <DeviceRouters.Desktop>
                         <ColumnSelector/>
                     </DeviceRouters.Desktop>
                 </TableRow>
