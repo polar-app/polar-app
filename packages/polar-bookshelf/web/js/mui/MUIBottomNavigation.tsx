@@ -55,14 +55,12 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             href: '/',
             icon: <HomeIcon/>
         },
-        ...(notesEnabled
-                ? [{
-                    id: 'notes',
-                    label: 'Notes',
-                    href: RoutePathNames.NOTES,
-                    icon: <NotesIcon />
-                }] : []
-        ),
+        {
+            id: 'notes',
+            label: 'Notes',
+            href: RoutePathNames.NOTES,
+            icon: <NotesIcon/>
+        },
         {
             id: 'add',
             label: 'Add',

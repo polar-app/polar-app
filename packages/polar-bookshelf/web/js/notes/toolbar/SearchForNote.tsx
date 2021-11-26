@@ -7,9 +7,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import {useBlocksStore} from '../store/BlocksStore';
 import {MUIDialog} from '../../ui/dialogs/MUIDialog';
-import {ICommand, MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
+import {MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
 import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import {useJumpToNoteKeyboardCommands} from "../JumpToNoteKeyboardCommand";
+import {StandardIconButton} from "../../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 export const SearchForNote: React.FC = observer(() => {
 
@@ -76,33 +78,30 @@ const useSearchForNoteHandheldStyles = makeStyles((theme) =>
 
 export const SearchForNoteHandheld: React.FC = observer(() => {
     const classes = useSearchForNoteHandheldStyles();
-    const blocksStore = useBlocksStore();
-    const namedBlocks = blocksStore.namedBlockEntries;
-    const noteLinkLoader = useNoteLinkLoader();
-
-    const commandsProvider = React.useCallback(() => {
-        return namedBlocks.map(({ id, label }) => ({ id, text: label }));
-    }, [namedBlocks]);
-
     const [active, setActive] = React.useState(false);
 
-    const handleCommand = React.useCallback((command: ICommand) =>
-        noteLinkLoader(command.id), [noteLinkLoader]);
+    const [commandsProvider, handleCommand] = useJumpToNoteKeyboardCommands();
 
     return (
         <>
             <Tooltip title="Search">
-                <IconButton size="small" onClick={() => setActive(true)}>
+                <StandardIconButton tooltip="Search for note"
+                                    size="small"
+                                    onClick={() => setActive(true)}>
                     <SearchIcon />
-                </IconButton>
+                </StandardIconButton>
             </Tooltip>
-            <MUIDialog fullWidth open={active} className={classes.dialog}>
+            <MUIDialog fullWidth
+                       open={active}
+                       className={classes.dialog}>
+
                 <IconButton size="small" className={classes.closeButton} onClick={() => setActive(false)}>
                     <CloseIcon />
                 </IconButton>
+
                 <MUICommandMenu onCommand={handleCommand}
-                                className={classes.commandMenu}
                                 title="Search for note"
+                                className={classes.commandMenu}
                                 onClose={() => setActive(false)}
                                 commandsProvider={commandsProvider}/>
 

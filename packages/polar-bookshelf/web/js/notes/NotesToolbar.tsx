@@ -1,14 +1,12 @@
-import {Button, Box, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Box, Button, createStyles, makeStyles} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
-import {SidenavTriggerIconButton} from '../sidenav/SidenavTriggerIconButton';
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 import {MUIMenu} from '../mui/menu/MUIMenu';
 import {MUIMenuItem} from '../mui/menu/MUIMenuItem';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import BorderAllIcon from '@material-ui/icons/BorderAll';
 import {useHistory} from "react-router";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {NameContent} from "./content/NameContent";
@@ -16,7 +14,9 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
 import {DateContent} from './content/DateContent';
 import moment from 'moment';
-import { RepositoryToolbar } from '../apps/repository/RepositoryToolbar';
+import {RepositoryToolbar} from '../apps/repository/RepositoryToolbar';
+import NotesIcon from "@material-ui/icons/Notes";
+import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -135,24 +135,19 @@ const useHandHeldStyles = makeStyles((theme) =>
     }),
 );
 
-const HandheldNotesToolbar = () => {
+const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
     const classes = useHandHeldStyles();
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
-
-    const handleDailyNotesNavigation = React.useCallback(() =>
-        history.push(RoutePathNames.DAILY), [history]);
 
     return (
         <>
             <div className={classes.root}>
                 <div>
-                    <SidenavTriggerIconButton />
-                    <Tooltip title="Daily Notes">
-                        <IconButton size="small" onClick={handleDailyNotesNavigation}>
-                            <BorderAllIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <StandardIconButton tooltip="Back to notes"
+                                        onClick={() => history.push("/notes")}>
+                        <NotesIcon />
+                    </StandardIconButton>
                 </div>
                 <div>
                     <SearchForNoteHandheld />
@@ -165,16 +160,15 @@ const HandheldNotesToolbar = () => {
                     </MUIMenu>
                 </div>
             </div>
-            <div className={classes.divider}><Divider /></div>
         </>
     )
-};
+});
 
-export const NotesToolbar = () => {
+export const NotesToolbar = React.memo(function NotesToolbar() {
     return (
         <>
             <DeviceRouters.Handheld><HandheldNotesToolbar /></DeviceRouters.Handheld>
             <DeviceRouters.Desktop><DesktopNotesToolbar /></DeviceRouters.Desktop>
         </>
     );
-};
+});
