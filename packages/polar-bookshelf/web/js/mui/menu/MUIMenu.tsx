@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
         popper: {
             zIndex: 1000
         },
+        iconButton: {
+            color: theme.palette.text.secondary
+        },
         paper: {
             // marginRight: theme.spacing(2),
             // marginTop: theme.spacing(1),
@@ -119,6 +122,7 @@ export const MUIMenu: React.FC<IProps> = React.memo(React.forwardRef((props) => 
 
             {props.button.icon && ! props.button.text &&
                 <IconButton {...buttonProps}
+                            className={classes.iconButton}
                             size={buttonProps.size === 'large' ? 'medium' : buttonProps.size}>
                     {props.button.icon}
                 </IconButton>}
