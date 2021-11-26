@@ -100,7 +100,7 @@ export namespace MarkdownContentConverter {
         return `${' '.repeat(start)}${str}${' '.repeat(end)}`;
     }
 
-    export function toMarkdown(srcHTML: HTMLStr) {
+    export function toMarkdown(srcHTML: HTMLStr): MarkdownStr {
         const whitespaceCount = getWhitespaceCount(Elements.createWrapperElementHTML(srcHTML));
 
         const result = Mappers.create(srcHTML)

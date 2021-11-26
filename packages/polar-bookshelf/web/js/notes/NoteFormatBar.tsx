@@ -37,8 +37,10 @@ const useStyles = makeStyles((theme) =>
 
 interface FormatButtonProps {
 
-    readonly children: JSX.Element;
+    readonly size?: 'small' | 'medium';
     readonly onClick?: (event: React.MouseEvent) => void;
+
+    readonly children: JSX.Element;
 
 }
 
@@ -61,7 +63,7 @@ const FormatButton = (props: FormatButtonProps) => {
 
 
     return (
-        <IconButton size="small"
+        <IconButton size={props.size || 'small'}
                     className={classes.button}
                     onMouseDown={abortEvent}
                     onMouseUp={abortEvent}
@@ -161,6 +163,8 @@ const LinkBar = (props: LinkBarProps) => {
 
 interface NoteFormatBarInnerProps {
 
+    readonly size?: 'small' | 'medium';
+
     readonly onBold?: () => void;
     readonly onItalic?: () => void;
     readonly onQuote?: () => void;
@@ -174,6 +178,7 @@ interface NoteFormatBarInnerProps {
     readonly onWikiLinkFromSelection?: () => void;
 
     readonly canHaveWikiLinks?: boolean;
+
 }
 
 const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
@@ -183,11 +188,11 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
     return (
         <>
 
-            <FormatButton onClick={props.onBold}>
+            <FormatButton size={props.size} onClick={props.onBold}>
                 <FABoldIcon className={classes.icon}/>
             </FormatButton>
 
-            <FormatButton onClick={props.onItalic}>
+            <FormatButton size={props.size} onClick={props.onItalic}>
                 <FAItalicIcon className={classes.icon}/>
             </FormatButton>
 
@@ -199,28 +204,28 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
             {/*    <FAUnderlineIcon className={classes.icon}/>*/}
             {/*</FormatButton>*/}
 
-            <FormatButton onClick={props.onStrikethrough}>
+            <FormatButton size={props.size} onClick={props.onStrikethrough}>
                 <FAStrikethroughIcon className={classes.icon}/>
             </FormatButton>
 
-            <FormatButton onClick={props.onSubscript}>
+            <FormatButton size={props.size} onClick={props.onSubscript}>
                 <FASubscriptIcon className={classes.icon}/>
             </FormatButton>
 
-            <FormatButton onClick={props.onSuperscript}>
+            <FormatButton size={props.size} onClick={props.onSuperscript}>
                 <FASuperscriptIcon className={classes.icon}/>
             </FormatButton>
 
-            <FormatButton onClick={props.onLink}>
+            <FormatButton size={props.size} onClick={props.onLink}>
                 <FALinkIcon className={classes.icon}/>
             </FormatButton>
 
-            <FormatButton onClick={props.onRemoveFormat}>
+            <FormatButton size={props.size} onClick={props.onRemoveFormat}>
                 <FormatClearIcon className={classes.icon}/>
             </FormatButton>
 
             {props.canHaveWikiLinks && (
-                <FormatButton onClick={props.onWikiLinkFromSelection}>
+                <FormatButton size={props.size} onClick={props.onWikiLinkFromSelection}>
                     <BacklinkIconButton className={classes.icon} />
                 </FormatButton>
             )}
@@ -252,6 +257,11 @@ export interface NoteFormatBarProps extends FormatBarActions {
     readonly setMode: (mode: BarMode) => void;
 
     readonly canHaveWikiLinks?: boolean;
+
+    readonly size?: 'small' | 'medium';
+
+    readonly style?: React.CSSProperties;
+
 }
 
 export type BarMode = 'link' | 'format';
@@ -275,13 +285,14 @@ export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormat
     }, []);
 
     return (
-        <Paper className={classes.root}>
+        <Paper className={classes.root} style={props.style}>
             <MUIButtonBar onMouseDown={handleMouseEvent}
                           onMouseUp={handleMouseEvent}>
 
                 {props.mode === 'format' && (
                     <NoteFormatBarInner
                         {...props}
+                        size={props.size}
                         onLink={changeToLinkMode}
                         onWikiLinkFromSelection={props.onWikiLinkFromSelection}
                         canHaveWikiLinks={props.canHaveWikiLinks}

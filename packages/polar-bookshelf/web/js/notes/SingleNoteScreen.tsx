@@ -12,10 +12,13 @@ import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
 import {BlockTargetStr} from "./NoteLinkLoader";
 import {NoteStack} from "./stacks/NoteStack";
+import {NoteFormatBar} from "./NoteFormatBar";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useNoteFormatHandlers} from "./NoteFormatHooks";
 
 interface INoteRootParams {
     id: BlockIDStr;
-};
+}
 
 interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}
 
@@ -64,10 +67,23 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
         }
     }, [root, blocksStore]);
 
+    // FIXME: the update handler has to be calle...
+    //   - must convert from HTML to markdown via MarkdownContentConverter.toMarkdown(getCurrentContent());
+    //   - then run
+    //       const handleBlockContentChange = useBlockContentUpdater({ id });
+    //   - so we need to figure out which ID is being updated
+    //   - how do we get the content from that element once it is changed.
+
+
+    // FIXME: these are wrong...
+    const noteFormatHandlers = useNoteFormatHandlers(true, NULL_FUNCTION);
+
+    // FIXMEL there are no actions here because I didn't pass them to the note format bar
+    // FIXME: the note format bar is rounded, not square
 
     return (
         <NotePaper>
-            {root 
+            {root
                 ? (
                     <BlocksTreeProvider root={root.id} autoExpandRoot>
                         <Block id={root.id}
@@ -76,6 +92,18 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
                                alwaysExpanded
                                hasGutter
                                noBullet />
+
+                        <NoteFormatBar {...noteFormatHandlers}
+                                       size="medium"
+                                       mode="format"
+                                       setMode={NULL_FUNCTION}
+                                       style={{
+                                           position: 'absolute',
+                                           bottom: 0,
+                                           left: 0,
+                                           width: '100%'
+                                       }}/>
+
                         <div style={{ marginTop: 64 }}>
                             <NotesInbound id={root.id} />
                         </div>

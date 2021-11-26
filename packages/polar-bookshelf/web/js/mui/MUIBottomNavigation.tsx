@@ -129,7 +129,7 @@ export const MUIBottomNavigation = ()  => {
         return null;
     }
 
-    if (location.pathname.startsWith('/note/') || location.pathname.startsWith('/daily')) {
+    if (location.pathname.startsWith('/notes/') || location.pathname.startsWith('/daily')) {
         // hack to disable when opening up docs.
         return null;
     }
