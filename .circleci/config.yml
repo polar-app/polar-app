@@ -179,7 +179,7 @@ jobs:
       - checkout
       - restore_pnpm_cache
       - bootstrap
-      # - eslint_diff
+      - eslint_diff
       - check_duplicates
 
   # @ Run Karma Test Suite
