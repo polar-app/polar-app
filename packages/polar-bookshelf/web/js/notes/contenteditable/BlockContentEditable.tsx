@@ -17,6 +17,7 @@ import {BlockPredicates} from '../store/BlockPredicates';
 import {DOMBlocks} from './DOMBlocks';
 import {BlockActionsProvider} from './BlockActions';
 import {useScrollIntoViewUsingLocation} from "../../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
+import {DeviceRouters} from '../../ui/DeviceRouter';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -250,7 +251,7 @@ export const BlockContentEditable = (props: IProps) => {
             <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
                 <BlockActionsProvider id={props.id}>
-                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
+                    <NoteFormatPopperDeviceRouter onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
                              onPaste={handlePaste}
                              onClick={props.onClick}
@@ -268,7 +269,7 @@ export const BlockContentEditable = (props: IProps) => {
                                  ...props.style
                              }}
                              dangerouslySetInnerHTML={{__html: content}} />
-                    </NoteFormatPopper>
+                    </NoteFormatPopperDeviceRouter>
                 </BlockActionsProvider>
             </div>
 
@@ -277,6 +278,34 @@ export const BlockContentEditable = (props: IProps) => {
 
 };
 
+interface NoteFormatPopperDeviceRouterProps {
+    readonly id: BlockIDStr;
+    readonly onUpdated: () => void;
+
+    readonly children: JSX.Element;
+
+}
+
+// This is a workaround until we properly implement the note format bar at the
+// root on all devices. This way we can put the NoteFormatBar at the root
+const NoteFormatPopperDeviceRouter = (props: NoteFormatPopperDeviceRouterProps) => {
+
+    return (
+        <>
+            <DeviceRouters.Desktop>
+                <NoteFormatPopper onUpdated={props.onUpdated} id={props.id}>
+                    {props.children}
+                </NoteFormatPopper>
+            </DeviceRouters.Desktop>
+
+            <DeviceRouters.NotDesktop>
+                {props.children}
+            </DeviceRouters.NotDesktop>
+
+        </>
+    );
+
+}
 
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.
