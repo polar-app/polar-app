@@ -1,16 +1,22 @@
 import React from 'react';
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
-import {SnapshotSubscriber} from "./UseSnapshot";
+import {createSnapshotStore, SnapshotSubscriber} from "./UseSnapshot";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type QuerySnapshotSubscriber<SM = unknown> = SnapshotSubscriber<IQuerySnapshot<SM>>;
+
+interface FirestoreSnapshotProps {
+    readonly fallback: JSX.Element;
+    readonly children: JSX.Element;
+}
 
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
  */
-export function createFirestoreUserCollectionSnapshot(collectionName: string) {
+export function createFirestoreSnapshotForUserCollection(collectionName: string) {
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
@@ -19,7 +25,9 @@ export function createFirestoreUserCollectionSnapshot(collectionName: string) {
     const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata>>(() => {
 
         if (uid === null || uid === undefined) {
-            return NULL_FUNCTION;
+            return (o) => {
+                return NULL_FUNCTION;
+            };
         }
 
         return (onNext, onError) => {
@@ -32,13 +40,13 @@ export function createFirestoreUserCollectionSnapshot(collectionName: string) {
 
     }, [collectionName, uid]);
 
-    const FirestoreSnapshotProvider = () => {
+    const FirestoreSnapshotProvider = React.memo((props: FirestoreSnapshotProps) => {
         return (
             <SnapshotStoreProvider subscriber={subscriber} fallback={props.fallback}>
                 {props.children}
             </SnapshotStoreProvider>
         );
-    }
+    });
 
     return [FirestoreSnapshotProvider, useSnapshotStore];
 

@@ -1,6 +1,6 @@
 import {ErrorType} from "polar-shared/src/util/Errors";
 import * as React from "react";
-import {createValueStore} from "./ValueStore";
+import {createValueStore, ValueStoreProvider} from "./ValueStore";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export interface ISnapshotLeft {
@@ -20,7 +20,7 @@ export interface ISnapshotRight<S> {
  */
 export type ISnapshot<S> = ISnapshotRight<S> | ISnapshotLeft;
 
-interface SnapshotStoreProviderProps {
+interface SnapshotStoreProviderProps<S> {
     readonly subscriber: SnapshotSubscriber<S>;
     readonly fallback: JSX.Element;
     readonly children: JSX.Element;
@@ -32,10 +32,19 @@ export type OnNextCallback<S> = (value: S) => void;
 
 export type SnapshotSubscriber<S> = (onNext: OnNextCallback<S>, onError: OnErrorCallback) => SnapshotUnsubscriber;
 
+export type SnapshotStoreProvider<S> = React.FC<SnapshotStoreProviderProps<S>>;
+
+export type UseSnapshotStore<S> = () => ISnapshot<S>;
+
+export type SnapshotStoreTuple<S> = Readonly<[
+    SnapshotStoreProvider<S>,
+    UseSnapshotStore<S>
+]>;
+
 /**
  * Create a snapshot store of a given type that is initially undefined, then a value is provide for us.
  */
-export function createSnapshotStore<S>() {
+export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     // TODO: investigate react suspense for the fallback
 
@@ -44,7 +53,7 @@ export function createSnapshotStore<S>() {
 
     const [ValueStoreProvider, useValue, valueSetter] = createValueStore<ISnapshot<S> | undefined>();
 
-    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps> = React.memo(function SnapshotStoreProviderInner(props) {
+    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
 
         const value = useValue();
 
@@ -73,14 +82,14 @@ export function createSnapshotStore<S>() {
 
     });
 
-    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps> = React.memo(function SnapshotStoreProvider(props) {
+    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
                 <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>
                     {props.children}
                 </SnapshotStoreProviderInner>
             </ValueStoreProvider>
-        )
+        );
     });
 
     const useSnapshotStore = (): ISnapshot<S> => {
