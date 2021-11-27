@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
-import {createSnapshotStore, SnapshotSubscriber} from "./UseSnapshot";
+import {createSnapshotStore, SnapshotSubscriber} from "./SnapshotStore";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
