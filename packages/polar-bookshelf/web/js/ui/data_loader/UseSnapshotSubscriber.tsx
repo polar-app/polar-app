@@ -1,11 +1,9 @@
 import React from 'react';
-import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
+import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {
     OnErrorCallback,
     OnNextCallback,
-    SnapshotSubscriber,
     SnapshotSubscriberWithID,
-    SnapshotTuple,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import {IDStr} from "polar-shared/src/util/Strings";
@@ -94,37 +92,6 @@ export function useSnapshotSubscriber<T>(subscriber: SnapshotSubscriberWithID<T>
     }
 
     useSnapshotSubscriberUsingCallbacks(subscriber, onNext, onError);
-
-    return state;
-
-}
-
-export function useSnapshots<T>(subscriber: SnapshotSubscriber<T>): SnapshotTuple<T> {
-
-    const [state, setState] = React.useState<SnapshotTuple<T>>([undefined, undefined]);
-
-    const unsubscriberRef = React.useRef<SnapshotUnsubscriber | undefined>(undefined);
-
-    function onNext(value: T | undefined) {
-        setState([value, undefined]);
-    }
-
-    function onError(error: unknown) {
-        setState([undefined, error]);
-    }
-
-    useComponentDidMount(() => {
-        unsubscriberRef.current = subscriber(onNext, onError);
-    });
-
-    useComponentWillUnmount(() => {
-
-        if (unsubscriberRef.current) {
-            // we're unmounting and we need to unsubscribe to snapshots
-            unsubscriberRef.current();
-        }
-
-    })
 
     return state;
 
