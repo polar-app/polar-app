@@ -7,6 +7,11 @@ export interface ISnapshotLeft {
     readonly left: ErrorType;
 }
 
+/**
+ * Snapshot right value.  Right is the correct value (pun for correct).
+ *
+ * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
+ */
 export interface ISnapshotRight<S> {
     readonly right: S;
 }
@@ -42,14 +47,18 @@ export type SnapshotStoreTuple<S> = Readonly<[
 ]>;
 
 /**
- * Create a snapshot store of a given type that is initially undefined, then a value is provide for us.
+ * Create a snapshot store of a given type that is initially undefined, then a
+ * value is provided for us by the underlying snapshot provider.
+ *
+ * The values are stored in an Either:
+ *
+ * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
+ *
+ * This is not Firestore specific and can support any type of value that can be updated.
  */
 export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     // TODO: investigate react suspense for the fallback
-
-    // TODO: how do we use multiple snapshots for performance reasons and
-    // trigger them all at once
 
     const [ValueStoreProvider, useValue, valueSetter] = createValueStore<ISnapshot<S> | undefined>();
 
@@ -75,7 +84,6 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
         if (value === undefined) {
             return props.fallback;
-
         }
 
         return props.children;
