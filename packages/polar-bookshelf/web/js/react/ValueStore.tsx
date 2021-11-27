@@ -46,12 +46,13 @@ export type ValueStoreProvider<V> = React.FC<ValueStoreProviderProps<V>>;
 
 export type UseValueStore<V> = () => V;
 
+export type ValueStoreSetter<V> = (value: V) => void;
+
 export type ValueStoreTuple<V> = Readonly<[
     ValueStoreProvider<V>,
-    UseValueStore<V>
+    UseValueStore<V>,
+    ValueStoreSetter<V>
 ]>;
-
-
 
 /**
  * Create a ValueStore which is a much cleaner way to share values and update
@@ -107,6 +108,11 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     }
 
-    return [ValueStoreProvider, useValueStore];
+    const valueSetter = (value: V) => {
+        const valueStore = React.useContext(Context);
+        valueStore.setValue(value);
+    }
+
+    return [ValueStoreProvider, useValueStore, valueSetter];
 
 }

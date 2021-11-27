@@ -1,7 +1,7 @@
 import {ErrorType} from "polar-shared/src/util/Errors";
 import * as React from "react";
-import {createStoreContext} from "./store/StoreContext";
-import {ValueStore} from "./ValueStore";
+import {createValueStore} from "./ValueStore";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export interface ISnapshotLeft {
     readonly left: ErrorType;
@@ -12,26 +12,88 @@ export interface ISnapshotRight<S> {
 }
 
 /**
- * This provides for three values.
+ * Provides two main states that are exposed to the user.
  *
- * - undefined no snapshot yet. This is the initial value because will be
- *   receiving one in the future but we have no value yet.
+ * - right: aka the CORRECT, state (right is a pun for correct) and is the primary value we should have.
+ *
+ * - left: the incorrect state, and only happens during errors.
  */
 export type ISnapshot<S> = ISnapshotRight<S> | ISnapshotLeft;
+
+interface SnapshotStoreProviderProps {
+    readonly fallback: JSX.Element;
+    readonly children: JSX.Element;
+}
+
+export type OnErrorCallback = (err: ErrorType) => void;
+
+export type OnNextCallback<S> = (value: S) => void;
+
+export type SnapshotSubscriber<S> = (onNext: OnNextCallback<S>, onError: OnErrorCallback) => SnapshotUnsubscriber;
 
 /**
  * Create a snapshot store of a given type that is initially undefined, then a value is provide for us.
  */
-export function createSnapshotStore<S>(initialValue: S | undefined) {
+export function createSnapshotStore<S>(subscriber: SnapshotSubscriber<S>) {
 
-    // TODO: we need to take a spinner component while we're waiting for the
-    // initial snapshot here because we can't just NOT render anything.  We should
-    // use suspense for this I think.
+    // TODO: investigate react suspense for the fallback
 
-    const [Provider, useStore] = createStoreContext(() => {
-        return React.useMemo(() => new ValueStore<S | undefined>(initialValue), []);
-    })
+    // TODO: how do we use multiple snapshots for performance reasons and
+    // trigger them all at once
 
-    return [Provider, useStore];
+    const [ValueStoreProvider, useValue, valueSetter] = createValueStore<ISnapshot<S> | undefined>();
+
+    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps> = React.memo(function SnapshotStoreProviderInner(props) {
+
+        const value = useValue();
+
+        const handleNext = React.useCallback((snapshot: S) => {
+
+            valueSetter({right: snapshot});
+
+        }, [valueSetter]);
+
+        const handleError = React.useCallback((err: ErrorType) => {
+
+            valueSetter({left: err});
+
+        }, [valueSetter]);
+
+        React.useEffect(() => {
+            return subscriber(handleNext, handleError);
+        }, [subscriber, handleNext, handleError])
+
+        if (value === undefined) {
+            return props.fallback;
+
+        }
+
+        return props.children;
+
+    });
+
+    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps> = React.memo(function SnapshotStoreProvider(props) {
+        return (
+            <ValueStoreProvider initialStore={undefined}>
+                <SnapshotStoreProviderInner fallback={props.fallback}>
+                    {props.children}
+                </SnapshotStoreProviderInner>
+            </ValueStoreProvider>
+        )
+    });
+
+    const useSnapshotStore = (): ISnapshot<S> => {
+
+        const value = useValue();
+
+        // WARN: this seems dangerous but it is safe because
+        // SnapshotStoreProviderInner only triggers renders on children when the
+        // value is not null.  This way all users will receive ISnapshot
+        // properly
+        return value!;
+
+    }
+
+    return [SnapshotStoreProvider, useSnapshotStore]
 
 }
