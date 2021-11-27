@@ -21,6 +21,7 @@ export interface ISnapshotRight<S> {
 export type ISnapshot<S> = ISnapshotRight<S> | ISnapshotLeft;
 
 interface SnapshotStoreProviderProps {
+    readonly subscriber: SnapshotSubscriber<S>;
     readonly fallback: JSX.Element;
     readonly children: JSX.Element;
 }
@@ -34,7 +35,7 @@ export type SnapshotSubscriber<S> = (onNext: OnNextCallback<S>, onError: OnError
 /**
  * Create a snapshot store of a given type that is initially undefined, then a value is provide for us.
  */
-export function createSnapshotStore<S>(subscriber: SnapshotSubscriber<S>) {
+export function createSnapshotStore<S>() {
 
     // TODO: investigate react suspense for the fallback
 
@@ -60,8 +61,8 @@ export function createSnapshotStore<S>(subscriber: SnapshotSubscriber<S>) {
         }, [valueSetter]);
 
         React.useEffect(() => {
-            return subscriber(handleNext, handleError);
-        }, [subscriber, handleNext, handleError])
+            return props.subscriber(handleNext, handleError);
+        }, [props.subscriber, handleNext, handleError])
 
         if (value === undefined) {
             return props.fallback;
@@ -75,7 +76,7 @@ export function createSnapshotStore<S>(subscriber: SnapshotSubscriber<S>) {
     const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps> = React.memo(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
-                <SnapshotStoreProviderInner fallback={props.fallback}>
+                <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>
                     {props.children}
                 </SnapshotStoreProviderInner>
             </ValueStoreProvider>
