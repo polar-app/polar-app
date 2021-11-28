@@ -2,14 +2,13 @@ import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DateTimeTableCell} from "../DateTimeTableCell";
-import {useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
+import {useTableGridStore} from "./NotesRepoTable2";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {observer} from "mobx-react-lite";
 import {Devices} from "polar-shared/src/util/Devices";
-import {StandardIconButton} from "../doc_repo/buttons/StandardIconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {BaseR} from "./TableGridStore";
+import {TableGridOverflowMenuButton} from "./TableGridOverflowMenuButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,7 +28,7 @@ interface IProps {
     readonly viewIndex: number;
 }
 
-export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner<R extends BaseR>(props: IProps & R) {
+export const NotesRepoTableCells = observer(function NotesRepoTableCells<R extends BaseR>(props: IProps & R) {
 
     const classes = useStyles();
     const tableGridStore = useTableGridStore();
@@ -108,31 +107,3 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner<R
     );
 
 });
-
-interface ITableGridOverflowMenuButtonProps {
-    readonly id: string;
-}
-
-export const TableGridOverflowMenuButton = observer(function TableGridOverflowMenuButton(props: ITableGridOverflowMenuButtonProps) {
-
-    const tableGridStore = useTableGridStore();
-
-    const contextMenuHandlers = useNotesRepoContextMenu();
-
-    const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
-        tableGridStore.selectRow(props.id, event, 'click');
-        contextMenuHandlers.onContextMenu(event)
-    }, []);
-
-    return (
-        <StandardIconButton tooltip="More"
-                            // aria-controls="doc-dropdown-menu"
-                            aria-haspopup="true"
-                            onClick={handleDropdownMenu}
-                            size="small">
-            <MoreVertIcon/>
-        </StandardIconButton>
-    );
-
-});
-

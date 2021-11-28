@@ -12,71 +12,18 @@ import {
 import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {observer} from "mobx-react-lite";
-import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {NotesRepoTableHead} from './NotesRepoTableHead';
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BaseD, BaseR, createTableGridStore, ICreateTableGridStoreOpts} from "./TableGridStore";
 import {ContextMenuComponent, createContextMenu} from '../doc_repo/MUIContextMenu2';
-
-const VisibleComponent = observer(function VisibleComponent<R extends BaseR>(props: VisibleComponentProps<R>) {
-
-    const tableGridStore = useTableGridStore()
-
-    const {selected} = tableGridStore;
-
-    const viewIndex = props.index;
-    const row = props.value;
-
-    return (
-        <NotesRepoTableRow viewIndex={viewIndex}
-                           key={viewIndex}
-                           selected={selected.includes(row.id)}
-                           {...props.value}/>
-    );
-
-});
-
-const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent<R extends BaseR>(props: BlockComponentProps<R>) {
-
-    const height = Numbers.sum(...props.values.map(current => HEIGHT));
-
-    return (
-        <TableBody ref={props.innerRef}
-                   style={{
-                       height,
-                       minHeight: height,
-                       flexGrow: 1
-                   }}>
-            {props.children}
-        </TableBody>
-    );
-
-});
-
-const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<INotesRepoRow>) {
-
-    const height = Numbers.sum(...props.values.map(current => HEIGHT));
-
-    return (
-        <TableRow style={{
-            minHeight: `${height}px`,
-            height: `${height}px`,
-        }}>
-
-        </TableRow>
-    );
-
-});
-
-export interface INotesRepoRow {
-    readonly title: string;
-    readonly created: ISODateTimeString,
-    readonly updated: ISODateTimeString,
-    readonly id: string;
-}
-
+import {TableCell} from "@material-ui/core";
+import {TableGridOverflowMenuButton} from './TableGridOverflowMenuButton';
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import {DateTimeTableCell} from "../DateTimeTableCell";
+import {Devices} from "polar-shared/src/util/Devices";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 interface CreateTableGridOpts<D extends BaseD, R extends BaseR, O> extends ICreateTableGridStoreOpts<D, R> {
     readonly ContextMenu: ContextMenuComponent<O>;
@@ -89,6 +36,183 @@ export function createTableGrids<D extends BaseD, R extends BaseR, O>(opts: Crea
     });
 
     const [ContextMenuProvider, useContextMenu] = createContextMenu(opts.ContextMenu, {});
+
+    const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<R>) {
+
+        const tableGridStore = useTableGridStore()
+        const contextMenuHandlers = useContextMenu();
+
+        const {selected} = tableGridStore;
+
+        const viewIndex = props.index;
+        const row = props.value;
+
+        return (
+            <TableGridRow viewIndex={viewIndex}
+                          key={viewIndex}
+                          onOpen={id => tableGridStore.onOpen(id)}
+                          onContextMenu={event => contextMenuHandlers.onContextMenu(event)}
+                          selected={selected.includes(row.id)}
+                          {...props.value}/>
+        );
+
+    });
+
+    const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent(props: BlockComponentProps<R>) {
+
+        const height = Numbers.sum(...props.values.map(() => HEIGHT));
+
+        return (
+            <TableBody ref={props.innerRef}
+                       style={{
+                           height,
+                           minHeight: height,
+                           flexGrow: 1
+                       }}>
+                {props.children}
+            </TableBody>
+        );
+
+    });
+
+    const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<R>) {
+
+        const height = Numbers.sum(...props.values.map(() => HEIGHT));
+
+        return (
+            <TableRow style={{
+                minHeight: `${height}px`,
+                height: `${height}px`,
+            }}>
+
+            </TableRow>
+        );
+
+    });
+
+
+    interface TableGridRowProps extends BaseR {
+        readonly viewIndex: number;
+        readonly selected: boolean;
+        readonly onContextMenu: (event: React.MouseEvent) => void;
+        readonly onOpen: (id: string) => void;
+    }
+
+    const TableGridRow = React.memo(function TableGridRow(props: TableGridRowProps & R) {
+
+        return (
+            <TableRow
+                hover
+                role="checkbox"
+                aria-checked={props.selected}
+                draggable
+                onContextMenu={event => props.onContextMenu(event)}
+                onDoubleClick={() => props.onOpen(props.id)}
+                selected={props.selected}>
+
+                <TableGridCells {...props}/>
+
+            </TableRow>
+        );
+    });
+
+
+    interface TableGridCellsProps {
+        readonly selected: boolean;
+        readonly viewIndex: number;
+    }
+
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+
+            cell: {
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                userSelect: 'none',
+                textOverflow: 'ellipsis'
+            },
+
+        }),
+    );
+
+    const TableGridCells = observer(function TableGridCells(props: TableGridCellsProps & R) {
+
+        const classes = useStyles();
+        const tableGridStore = useTableGridStore();
+
+        const {selected} = props;
+
+        const contextMenuHandler = React.useCallback((event: React.MouseEvent) => {
+        //     selectRow(row.id, event, 'context');
+        //     rawContextMenuHandler(event);
+        }, []);
+
+        const selectRowClickHandler = React.useCallback((event: React.MouseEvent) => {
+
+            tableGridStore.selectRow(props.id, event, 'click');
+
+            if (Devices.isTablet() || Devices.isPhone()) {
+                tableGridStore.onOpen(props.id);
+            }
+
+        }, [tableGridStore, props.id]);
+
+        return (
+            <>
+
+                <TableCell padding="none"
+                           onClick={event => event.stopPropagation()}
+                           onDoubleClick={event => event.stopPropagation()}>
+                    <MUICheckboxIconButton checked={selected}
+                                           onChange={(event) => tableGridStore.selectRow(props.id, event, 'checkbox')}/>
+                </TableCell>
+
+                {tableGridStore.columnDescriptors.map(columnDescriptor => (
+
+                    <React.Fragment key={columnDescriptor.id as string}>
+
+                        <DeviceRouters.Any devices={columnDescriptor.devices}>
+
+                            <TableCell className={classes.cell}
+                                       padding={columnDescriptor.disablePadding ? 'none' : undefined}
+                                       style={{width: columnDescriptor.width}}
+                                       onClick={selectRowClickHandler}
+                                       onContextMenu={contextMenuHandler}>
+
+                                {columnDescriptor.type === 'text' && (
+                                    props[columnDescriptor.id] || columnDescriptor.defaultLabel || ""
+                                )}
+
+                                {columnDescriptor.type === 'date' && props[columnDescriptor.id] && (
+                                    <DateTimeTableCell datetime={props[columnDescriptor.id] as unknown as string}/>
+                                )}
+
+                                {columnDescriptor.type === 'number' && (
+                                    <>
+                                        {props[columnDescriptor.id]}
+                                    </>
+                                )}
+
+                            </TableCell>
+
+                        </DeviceRouters.Any>
+
+                    </React.Fragment>
+
+                ))}
+
+                <TableCell align="right"
+                           padding="none"
+                           onClick={event => event.stopPropagation()}
+                           onDoubleClick={event => event.stopPropagation()}>
+                    <TableGridOverflowMenuButton id={props.id}/>
+                </TableCell>
+
+            </>
+        );
+
+    });
+
 
     const TableGrid = observer(function TableGrid() {
 

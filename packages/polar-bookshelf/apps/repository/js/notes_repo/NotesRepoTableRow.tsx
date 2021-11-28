@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "@material-ui/core/TableRow";
-import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
+import {NotesRepoTableCells} from "./NotesRepoTableCells";
 import {BaseR} from "./TableGridStore";
 
 interface IProps extends BaseR {
@@ -22,7 +22,7 @@ export const NotesRepoTableRow = React.memo(function NotesRepoTableRow(props: IP
             onDoubleClick={() => props.onOpen(props.id)}
             selected={props.selected}>
 
-            <NotesRepoTableRowInner {...props}/>
+            <NotesRepoTableCells {...props}/>
 
         </TableRow>
     );
