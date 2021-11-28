@@ -13,7 +13,6 @@ import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {observer} from "mobx-react-lite";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
 import {BaseD, BaseR, createTableGridStore, ICreateTableGridStoreOpts} from "./TableGridStore";
 import {ContextMenuComponent, createContextMenu} from '../doc_repo/MUIContextMenu2';
 import {IconButton, TableCell} from "@material-ui/core";
@@ -36,7 +35,7 @@ interface CreateTableGridOpts<D extends BaseD, R extends BaseR, O> extends ICrea
     readonly ContextMenu: ContextMenuComponent<O>;
 }
 
-export function createTableGrids<D extends BaseD, R extends BaseR, O>(opts: CreateTableGridOpts<D, R, O>) {
+export function createTableGrid<D extends BaseD, R extends BaseR, O>(opts: CreateTableGridOpts<D, R, O>) {
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -407,7 +406,7 @@ export function createTableGrids<D extends BaseD, R extends BaseR, O>(opts: Crea
 
                     <>
 
-                        <NotesRepoTableToolbar/>
+                        {/*<NotesRepoTableToolbar/>*/}
 
                         <TableContainer ref={setRoot}
                                         style={{

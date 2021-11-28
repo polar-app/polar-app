@@ -1,8 +1,5 @@
 import {observer} from "mobx-react-lite";
-import {useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
 import React from "react";
-import {StandardIconButton} from "../doc_repo/buttons/StandardIconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 interface TableGridOverflowMenuButtonProps {
     readonly id: string;
@@ -10,24 +7,26 @@ interface TableGridOverflowMenuButtonProps {
 
 export const TableGridOverflowMenuButton = observer(function TableGridOverflowMenuButton(props: TableGridOverflowMenuButtonProps) {
 
-    const tableGridStore = useTableGridStore();
+    // const tableGridStore = useTableGridStore();
+    //
+    // const contextMenuHandlers = useNotesRepoContextMenu();
+    //
+    // const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
+    //     tableGridStore.selectRow(props.id, event, 'click');
+    //     contextMenuHandlers.onContextMenu(event)
+    // }, []);
+    //
+    // return (
+    //     <StandardIconButton tooltip="More"
+    //         // aria-controls="doc-dropdown-menu"
+    //                         aria-haspopup="true"
+    //                         onClick={handleDropdownMenu}
+    //                         size="small">
+    //         <MoreVertIcon/>
+    //     </StandardIconButton>
+    // );
 
-    const contextMenuHandlers = useNotesRepoContextMenu();
-
-    const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
-        tableGridStore.selectRow(props.id, event, 'click');
-        contextMenuHandlers.onContextMenu(event)
-    }, []);
-
-    return (
-        <StandardIconButton tooltip="More"
-            // aria-controls="doc-dropdown-menu"
-                            aria-haspopup="true"
-                            onClick={handleDropdownMenu}
-                            size="small">
-            <MoreVertIcon/>
-        </StandardIconButton>
-    );
+    return null;
 
 });
 

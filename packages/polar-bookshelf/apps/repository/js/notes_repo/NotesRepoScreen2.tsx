@@ -1,5 +1,5 @@
 import React from 'react';
-import {NotesRepoTable2, TableGridStoreProvider} from './NotesRepoTable2';
+import {NotesRepoTable2} from './NotesRepoTable2';
 import {MUICalendarMonthDayIcon} from "../../../../web/js/mui/MUICalendarMonthDayIcon";
 import {DeviceRouters} from '../../../../web/js/ui/DeviceRouter';
 import Fab from '@material-ui/core/Fab';
@@ -26,15 +26,13 @@ export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
 
 
     return (
-        <TableGridStoreProvider>
-            <>
-                <NotesRepoTable2/>
+        <>
+            <NotesRepoTable2/>
 
-                <DeviceRouters.NotDesktop>
-                    <MobileDailyNotesFab/>
-                </DeviceRouters.NotDesktop>
-            </>
-        </TableGridStoreProvider>
+            <DeviceRouters.NotDesktop>
+                <MobileDailyNotesFab/>
+            </DeviceRouters.NotDesktop>
+        </>
     )
 })
 

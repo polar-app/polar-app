@@ -1,81 +1,12 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
-import {
-    BlockComponentProps,
-    HiddenBlockComponentProps,
-    IntersectionList,
-    VisibleComponentProps
-} from "../../../../web/js/intersection_list/IntersectionList";
-import TableRow from '@material-ui/core/TableRow';
-import {Numbers} from "polar-shared/src/util/Numbers";
-import {observer} from "mobx-react-lite";
-import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
-import {useNoteLinkLoader} from "../../../../web/js/notes/NoteLinkLoader";
 import {BlockTextContentUtils, namedBlocksComparator} from "../../../../web/js/notes/NoteUtils";
-import {NotesRepoTableRow} from "./NotesRepoTableRow";
-import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
-import {NotesRepoTableHead} from './NotesRepoTableHead';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {BaseR, createTableGridStore, Order} from "./TableGridStore";
-import {createContextMenu} from '../doc_repo/MUIContextMenu2';
+import {BaseR, Order} from "./TableGridStore";
 import {NotesRepoContextMenu} from "./NotesRepoContextMenu";
 import {Comparators} from "polar-shared/src/util/Comparators";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {createTableGrid} from "./TableGrid";
 import Comparator = Comparators.Comparator;
-
-const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
-
-    const tableGridStore = useTableGridStore()
-
-    const {selected} = tableGridStore;
-
-    const viewIndex = props.index;
-    const row = props.value;
-
-    return (
-        <NotesRepoTableRow viewIndex={viewIndex}
-                           key={viewIndex}
-                           selected={selected.includes(row.id)}
-                           {...props.value}/>
-    );
-
-});
-
-const DocRepoBlockComponent = deepMemo(function DocRepoBlockComponent(props: BlockComponentProps<INotesRepoRow>) {
-
-    const height = Numbers.sum(...props.values.map(current => HEIGHT));
-
-    return (
-        <TableBody ref={props.innerRef}
-                   style={{
-                       height,
-                       minHeight: height,
-                       flexGrow: 1
-                   }}>
-            {props.children}
-        </TableBody>
-    );
-
-});
-
-const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<INotesRepoRow>) {
-
-    const height = Numbers.sum(...props.values.map(current => HEIGHT));
-
-    return (
-        <TableRow style={{
-            minHeight: `${height}px`,
-            height: `${height}px`,
-        }}>
-
-        </TableRow>
-    );
-
-});
 
 export interface INotesRepoRow {
     readonly title: string;
@@ -84,14 +15,8 @@ export interface INotesRepoRow {
     readonly id: string;
 }
 
-interface NotesRepoContextMenuOrigin {
-
-}
-
-export const [NotesRepoContextMenuProvider, useNotesRepoContextMenu]
-    = createContextMenu<NotesRepoContextMenuOrigin>(NotesRepoContextMenu);
-
-export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore<IBlock<INamedContent>, INotesRepoRow>({
+export const [NotesRepoTable2] = createTableGrid({
+    ContextMenu: NotesRepoContextMenu,
     comparatorFactory,
     order: 'asc',
     orderBy: 'title',
@@ -101,82 +26,86 @@ export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore<
         { id: 'updated', type: 'date', disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc', devices: ['desktop', 'tablet'] },
     ],
     toRow
-});
+})
 
-export const NotesRepoTable2 = observer(function NotesRepoTable2() {
+// createTableGrid<IBlock<INamedContent>, INotesRepoRow>>({
+// });
+//
 
-    const blocksStore = useBlocksStore();
-    const noteLinkLoader = useNoteLinkLoader();
-    const tableGridStore = useTableGridStore();
+//
+// export const NotesRepoTable2 = observer(function NotesRepoTable2() {
+//
+//     const blocksStore = useBlocksStore();
+//     const noteLinkLoader = useNoteLinkLoader();
+//     const tableGridStore = useTableGridStore();
+//
+//     const {view} = tableGridStore;
+//
+//     React.useEffect(() => {
+//         tableGridStore.setOpener(id => noteLinkLoader(id))
+//     }, [tableGridStore, noteLinkLoader])
+//
+//     const data = React.useMemo(() => blocksStore.namedBlocks, [blocksStore.namedBlocks]);
+//
+//     React.useEffect(() => {
+//         tableGridStore.setData(data);
+//     }, [tableGridStore, data]);
+//
+//     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
+//
+//     return (
+//
+//         <MUIElevation elevation={0}
+//                       style={{
+//                           width: '100%',
+//                           height: '100%',
+//                           display: 'flex',
+//                           flexDirection: 'column'
+//                       }}>
+//
+//             <>
+//
+//                 <NotesRepoTableToolbar />
+//
+//                 <TableContainer ref={setRoot}
+//                                 style={{
+//                                     flexGrow: 1,
+//                                     // height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
+//                                     height: '100%',
+//                                     overflowX: 'hidden'
+//                                 }}>
+//                     <Table
+//                         stickyHeader
+//                         style={{
+//                             minWidth: 0,
+//                             maxWidth: '100%',
+//                             tableLayout: 'fixed'
+//                         }}
+//                         aria-labelledby="tableTitle"
+//                         size={'medium'}
+//                         aria-label="enhanced table">
+//
+//                         <NotesRepoTableHead/>
+//
+//                         <NotesRepoContextMenuProvider>
+//                             {root && (
+//                                 <IntersectionList values={view}
+//                                                   root={root}
+//                                                   blockSize={25}
+//                                                   BlockComponent={DocRepoBlockComponent}
+//                                                   HiddenBlockComponent={HiddenBlockComponent}
+//                                                   VisibleComponent={VisibleComponent}/>)}
+//                         </NotesRepoContextMenuProvider>
+//
+//                     </Table>
+//                 </TableContainer>
+//             </>
+//
+//         </MUIElevation>
+//     );
+//
+// });
 
-    const {view} = tableGridStore;
-
-    React.useEffect(() => {
-        tableGridStore.setOpener(id => noteLinkLoader(id))
-    }, [tableGridStore, noteLinkLoader])
-
-    const data = React.useMemo(() => blocksStore.namedBlocks, [blocksStore.namedBlocks]);
-
-    React.useEffect(() => {
-        tableGridStore.setData(data);
-    }, [tableGridStore, data]);
-
-    const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
-
-    return (
-
-        <MUIElevation elevation={0}
-                      style={{
-                          width: '100%',
-                          height: '100%',
-                          display: 'flex',
-                          flexDirection: 'column'
-                      }}>
-
-            <>
-
-                <NotesRepoTableToolbar />
-
-                <TableContainer ref={setRoot}
-                                style={{
-                                    flexGrow: 1,
-                                    // height: Devices.isDesktop()? '100%':'calc(100% - 124px)'
-                                    height: '100%',
-                                    overflowX: 'hidden'
-                                }}>
-                    <Table
-                        stickyHeader
-                        style={{
-                            minWidth: 0,
-                            maxWidth: '100%',
-                            tableLayout: 'fixed'
-                        }}
-                        aria-labelledby="tableTitle"
-                        size={'medium'}
-                        aria-label="enhanced table">
-
-                        <NotesRepoTableHead/>
-
-                        <NotesRepoContextMenuProvider>
-                            {root && (
-                                <IntersectionList values={view}
-                                                  root={root}
-                                                  blockSize={25}
-                                                  BlockComponent={DocRepoBlockComponent}
-                                                  HiddenBlockComponent={HiddenBlockComponent}
-                                                  VisibleComponent={VisibleComponent}/>)}
-                        </NotesRepoContextMenuProvider>
-
-                    </Table>
-                </TableContainer>
-            </>
-
-        </MUIElevation>
-    );
-
-});
-
-const HEIGHT = 40;
 
 function toRow(data: IBlock<INamedContent>): INotesRepoRow {
 

@@ -1,14 +1,7 @@
 import React from "react";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {Sorting} from "../doc_repo/Sorting";
-import {useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
-import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
 import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,67 +56,69 @@ const CheckPlaceholder = React.memo(function Check() {
 });
 
 export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
+    //
+    // const classes = useStyles();
+    //
+    // const tableGridStore = useTableGridStore();
+    //
+    // const {order, orderBy} = tableGridStore;
+    //
+    // return (
+    //
+    //     <TableHead className={classes.root}>
+    //         <TableRow className={classes.row}>
+    //             <DeviceRouters.NotDesktop>
+    //                 <TableCell style={{width:'50px'}}>
+    //                     <NotesRepoTableHeadCheck/>
+    //                 </TableCell>
+    //             </DeviceRouters.NotDesktop>
+    //
+    //             {/* This is just a placeholder to align the table, it doesn't do much else */}
+    //             <DeviceRouters.Desktop>
+    //                 <CheckPlaceholder/>
+    //             </DeviceRouters.Desktop>
+    //
+    //             {tableGridStore.columnDescriptors.map((column) => {
+    //
+    //                 const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
+    //
+    //                 return (
+    //                     <React.Fragment key={column.id}>
+    //                         <DeviceRouters.Any devices={column.devices}>
+    //
+    //                             <TableCell className={classes.th}
+    //                                        style={{
+    //                                            width: column.width,
+    //                                            minWidth: column.width
+    //                                        }}
+    //                                        padding={column.disablePadding ? 'none' : 'default'}
+    //                                        sortDirection={orderBy === column.id ? order : false}>
+    //
+    //                                 <TableSortLabel
+    //                                     active={orderBy === column.id}
+    //                                     direction={order}
+    //                                     hideSortIcon
+    //                                     onClick={() => tableGridStore.setOrderBy(column.id, newOrder)}>
+    //                                     {column.label}
+    //                                     {orderBy === column.id ? (
+    //                                         <span className={classes.visuallyHidden}>
+    //                                                 {order === 'asc' ? 'sorted ascending' : 'sorted descending'}
+    //                                             </span>
+    //                                     ) : null}
+    //                                 </TableSortLabel>
+    //                             </TableCell>
+    //                         </DeviceRouters.Any>
+    //                     </React.Fragment>
+    //                 )
+    //             })}
+    //
+    //             <TableCell style={{width:'30px'}} padding="none">
+    //                 {/*<Check/>*/}
+    //             </TableCell>
+    //
+    //         </TableRow>
+    //     </TableHead>
+    // );
 
-    const classes = useStyles();
-
-    const tableGridStore = useTableGridStore();
-
-    const {order, orderBy} = tableGridStore;
-
-    return (
-
-        <TableHead className={classes.root}>
-            <TableRow className={classes.row}>
-                <DeviceRouters.NotDesktop>
-                    <TableCell style={{width:'50px'}}>
-                        <NotesRepoTableHeadCheck/>
-                    </TableCell>
-                </DeviceRouters.NotDesktop>
-
-                {/* This is just a placeholder to align the table, it doesn't do much else */}
-                <DeviceRouters.Desktop>
-                    <CheckPlaceholder/>
-                </DeviceRouters.Desktop>
-
-                {tableGridStore.columnDescriptors.map((column) => {
-
-                    const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
-
-                    return (
-                        <React.Fragment key={column.id}>
-                            <DeviceRouters.Any devices={column.devices}>
-
-                                <TableCell className={classes.th}
-                                           style={{
-                                               width: column.width,
-                                               minWidth: column.width
-                                           }}
-                                           padding={column.disablePadding ? 'none' : 'default'}
-                                           sortDirection={orderBy === column.id ? order : false}>
-
-                                    <TableSortLabel
-                                        active={orderBy === column.id}
-                                        direction={order}
-                                        hideSortIcon
-                                        onClick={() => tableGridStore.setOrderBy(column.id, newOrder)}>
-                                        {column.label}
-                                        {orderBy === column.id ? (
-                                            <span className={classes.visuallyHidden}>
-                                                    {order === 'asc' ? 'sorted ascending' : 'sorted descending'}
-                                                </span>
-                                        ) : null}
-                                    </TableSortLabel>
-                                </TableCell>
-                            </DeviceRouters.Any>
-                        </React.Fragment>
-                    )
-                })}
-
-                <TableCell style={{width:'30px'}} padding="none">
-                    {/*<Check/>*/}
-                </TableCell>
-
-            </TableRow>
-        </TableHead>
-    );
+    return null;
 });
