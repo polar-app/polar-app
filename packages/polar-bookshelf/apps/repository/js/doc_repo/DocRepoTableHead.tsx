@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         row: {
             "& th": {
-                paddingTop: theme.spacing(0),
-                paddingBottom: theme.spacing(0),
+                paddingTop: Devices.isDesktop() ? theme.spacing(1) : theme.spacing(0),
+                paddingBottom: Devices.isDesktop() ? theme.spacing(1) : theme.spacing(0),
                 paddingLeft: 0,
                 paddingRight: 0,
                 borderCollapse: 'collapse',

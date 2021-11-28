@@ -9,6 +9,7 @@ import {Sorting} from "../doc_repo/Sorting";
 import {useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
 import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         row: {
             "& th": {
-                paddingTop: theme.spacing(0),
-                paddingBottom: theme.spacing(0),
+                paddingTop: Devices.isDesktop() ? theme.spacing(1) : theme.spacing(0),
+                paddingBottom: Devices.isDesktop() ? theme.spacing(1) : theme.spacing(0),
                 paddingLeft: 0,
                 paddingRight: 0,
                 borderCollapse: 'collapse',
