@@ -2,8 +2,9 @@ import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
-import {INotesRepoRow, useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
+import {useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
+import {BaseR} from "./TableGridStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps extends INotesRepoRow {
+interface IProps extends BaseR {
     readonly viewIndex: number;
     readonly selected: boolean;
 }

@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Check = React.memo(function Check() {
+const CheckPlaceholder = React.memo(function Check() {
     return (
         <TableCell key="left-checkbox"
                    padding="checkbox">
@@ -118,7 +118,7 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
                 {/* This is just a placeholder to align the table, it doesn't do much else */}
                 <DeviceRouters.Desktop>
-                    <Check/>
+                    <CheckPlaceholder/>
                 </DeviceRouters.Desktop>
 
                 {tableGridStore.columnDescriptors.map((column) => {

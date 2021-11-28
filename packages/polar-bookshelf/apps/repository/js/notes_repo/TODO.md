@@ -1,5 +1,3 @@
-- test mobile
-- bulk operations component
-- context menu
-- the grid component will need a schema for column widths
-- 
+- bulk operations component in the table head
+- need a filter bar and bulk operations bar 
+- how do we inject useTableGridStore since it's generic?
