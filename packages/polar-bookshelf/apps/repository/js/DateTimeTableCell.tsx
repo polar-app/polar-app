@@ -19,7 +19,7 @@ export const DateTimeTableCell = React.memo(function DateTimeTableCell(props: IP
 
         return typeof props.datetime === 'string' ? props.datetime : ISODateTimeStrings.create(props.datetime);
 
-    }, [])
+    }, [props.datetime])
 
     if (isPresent(datetime)) {
 
