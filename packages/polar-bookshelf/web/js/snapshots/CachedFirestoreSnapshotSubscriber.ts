@@ -27,6 +27,9 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
 
 }
 
+/**
+ * @deprecated Move to the new react/UseSnapshot system
+ */
 export function createCachedFirestoreSnapshotSubscriber<V>(opts: CachedFirestoreSnapshotSubscriberOpts<V>) {
 
     const cacheKey = LocalCache.createKey(opts.id);

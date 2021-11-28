@@ -23,6 +23,7 @@ export type IFirestoreSnapshotTuple<SM = unknown> = [IQuerySnapshot<SM>| undefin
 /**
  * Get a snapshot from Firestore but also allow the user to subscribe by types
  * to it and receive updates.
+ * @deprecated
  */
 export function useFirestoreSnapshot(collectionName: CollectionNameStr, opts: IFirestoreSnapshotOpts = {}): IFirestoreSnapshotTuple {
 
