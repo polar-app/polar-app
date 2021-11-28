@@ -62,42 +62,6 @@ const CheckPlaceholder = React.memo(function Check() {
     )
 });
 
-const SelectionOrToggleButtons = React.memo(function SelectionOrToggleButtons() {
-    const classes = useStyles();
-    // const {filters, selected} = useDocRepoStore(['filters', 'selected']);
-    // const callbacks = useDocRepoCallbacks();
-
-    const selected = [];
-
-    // const {setFilters} = callbacks;
-    //
-    // return(<>
-    //     {selected.length > 0 ?
-    //         <SelectionActiveButtons className={classes.reverseRow}/>
-    //         :
-    //         <div className={classes.selectionIconsContainer}>
-    //             <MUIToggleButton id="toggle-archived"
-    //                              iconOnly
-    //                              tooltip="Toggle archived docs"
-    //                              size={'small'}
-    //                              icon={<ArchiveIcon/>}
-    //                              initialValue={filters.archived}
-    //                              onChange={(value: any) => setFilters({...filters, archived: value})}/>
-    //             <MUIToggleButton id="toggle-flagged"
-    //                              iconOnly
-    //                              tooltip="Show only flagged docs"
-    //                              size={'small'}
-    //                              icon={<FlagIcon/>}
-    //                              initialValue={filters.flagged}
-    //                              onChange={(value: any) => setFilters({...filters, flagged: value})}/>
-    //         </div>
-    //     }
-    // </>);
-
-    return null;
-});
-
-
 export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
     const classes = useStyles();
@@ -161,15 +125,5 @@ export const NotesRepoTableHead = observer(function NotesRepoTableHead() {
 
             </TableRow>
         </TableHead>
-    );
-});
-
-const SelectionButtonsWithinTableCell = React.memo(function SelectionButtonsWithinTableCell() {
-    const classes = useStyles();
-
-    return(
-        <TableCell className={classes.th} style={{ display: 'table-cell'}}>
-            <SelectionOrToggleButtons/>
-        </TableCell>
     );
 });

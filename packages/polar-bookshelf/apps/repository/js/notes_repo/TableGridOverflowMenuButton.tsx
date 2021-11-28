@@ -4,11 +4,11 @@ import React from "react";
 import {StandardIconButton} from "../doc_repo/buttons/StandardIconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-interface ITableGridOverflowMenuButtonProps {
+interface TableGridOverflowMenuButtonProps {
     readonly id: string;
 }
 
-export const TableGridOverflowMenuButton = observer(function TableGridOverflowMenuButton(props: ITableGridOverflowMenuButtonProps) {
+export const TableGridOverflowMenuButton = observer(function TableGridOverflowMenuButton(props: TableGridOverflowMenuButtonProps) {
 
     const tableGridStore = useTableGridStore();
 
