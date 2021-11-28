@@ -1,4 +1,4 @@
-import {Box, Button, createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Box, Button, createStyles, makeStyles} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
