@@ -128,10 +128,7 @@ const useHandHeldStyles = makeStyles((theme) =>
             height: 50,
             padding: '0 14px',
             background: theme.palette.background.paper
-        },
-        divider: {
-            padding: '0 14px',
-        },
+        }
     }),
 );
 
