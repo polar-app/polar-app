@@ -1,4 +1,4 @@
-import {Button, Box, createStyles, Divider, IconButton, makeStyles, Tooltip} from '@material-ui/core';
+import {Box, Button, createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
@@ -16,7 +16,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DeviceRouters} from '../ui/DeviceRouter';
 import {DateContent} from './content/DateContent';
 import moment from 'moment';
-import { RepositoryToolbar } from '../apps/repository/RepositoryToolbar';
+import {RepositoryToolbar} from '../apps/repository/RepositoryToolbar';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -128,10 +128,7 @@ const useHandHeldStyles = makeStyles((theme) =>
             height: 50,
             padding: '0 14px',
             background: theme.palette.background.paper
-        },
-        divider: {
-            padding: '0 14px',
-        },
+        }
     }),
 );
 
@@ -165,7 +162,6 @@ const HandheldNotesToolbar = () => {
                     </MUIMenu>
                 </div>
             </div>
-            <div className={classes.divider}><Divider /></div>
         </>
     )
 };
