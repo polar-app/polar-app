@@ -90,7 +90,7 @@ export namespace ConsoleRecorder {
                 const consoleMessage: IConsoleMessage = {
                     created,
                     level,
-                    message,
+                    message: `${message}`,
                     params: optionalParams
                 }
 
