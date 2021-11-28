@@ -87,12 +87,18 @@ export namespace ConsoleRecorder {
 
                 optionalParams = optionalParams.map(visitObject);
 
-                messages.push({
+                const consoleMessage: IConsoleMessage = {
                     created,
                     level,
                     message,
                     params: optionalParams
-                });
+                }
+
+                messages.push(consoleMessage);
+
+                if (level == 'error' || level === 'warn') {
+                    broadcastMessage(consoleMessage);
+                }
 
             }
 
@@ -113,13 +119,11 @@ export namespace ConsoleRecorder {
 
             console.warn = (message: any, ...optionalParams: any[]) => {
                 recordMessage('warn', message, ...optionalParams);
-                broadcastMessage(message);
                 delegates.warn(message, ...optionalParams);
             }
 
             console.error = (message: any, ...optionalParams: any[]) => {
                 recordMessage('error', message, ...optionalParams);
-                broadcastMessage(message);
                 delegates.error(message, ...optionalParams);
             }
 
@@ -157,7 +161,7 @@ export namespace ConsoleRecorder {
             window.postMessage({
                 type: CHANNEL,
                 message
-            })
+            }, window.origin)
         }
 
     }
