@@ -97,7 +97,7 @@ export const BlockContextMenuItems: React.FC<MenuComponentProps<IBlockContextMen
 };
 
 const [BlockContextMenu, useBlockContextMenu]
-    = createContextMenu<IBlockContextMenuOrigin>(BlockContextMenuItems, {name: 'notes', computeOrigin });
+    = createContextMenu<IBlockContextMenuOrigin>(BlockContextMenuItems, {computeOrigin });
 
 const useBlockCustomContextMenu = () => {
     const contextMenuHandlers = useBlockContextMenu();

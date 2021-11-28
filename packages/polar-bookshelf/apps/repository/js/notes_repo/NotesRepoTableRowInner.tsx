@@ -21,32 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
             textOverflow: 'ellipsis'
         },
 
-        colText: {
-            width: 'auto',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-
-        colCreated: {
-            whiteSpace: 'nowrap',
-            width: '7em'
-        },
-        colUpdated: {
-            whiteSpace: 'nowrap',
-            width: '7em'
-        },
-
     }),
 );
 
-interface IProps extends BaseR {
+interface IProps {
     readonly selected: boolean;
     readonly viewIndex: number;
 }
 
-export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(props: IProps) {
+export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner<R extends BaseR>(props: IProps & R) {
 
     const classes = useStyles();
     const tableGridStore = useTableGridStore();
@@ -113,32 +96,6 @@ export const NotesRepoTableRowInner = observer(function NotesRepoTableRowInner(p
                 </React.Fragment>
 
             ))}
-
-            {/*<TableCell scope="row"*/}
-            {/*           className={classes.colText}*/}
-            {/*           padding="none"*/}
-            {/*           onClick={selectRowClickHandler}*/}
-            {/*           onContextMenu={contextMenuHandler}>*/}
-            {/*    {props.title || 'Untitled'}*/}
-            {/*</TableCell>*/}
-
-            {/*<TableCell padding="none"*/}
-            {/*           className={classes.colCreated}*/}
-            {/*           onClick={selectRowClickHandler}*/}
-            {/*           onContextMenu={contextMenuHandler}>*/}
-
-            {/*    <DateTimeTableCell datetime={props.created}/>*/}
-
-            {/*</TableCell>*/}
-
-            {/*<TableCell padding="none"*/}
-            {/*           className={classes.colUpdated}*/}
-            {/*           onClick={selectRowClickHandler}*/}
-            {/*           onContextMenu={contextMenuHandler}>*/}
-
-            {/*    <DateTimeTableCell datetime={props.updated}/>*/}
-
-            {/*</TableCell>*/}
 
             <TableCell align="right"
                        padding="none"

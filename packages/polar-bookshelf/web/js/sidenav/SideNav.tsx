@@ -273,7 +273,7 @@ const SideNavDivider = React.memo(function SideNavDivider() {
 });
 
 export const [SideNavContextMenuProvider, useSideNavContextMenu]
-    = createContextMenu(SideNavContextMenu, {name: 'sidenav'});
+    = createContextMenu(SideNavContextMenu, {});
 
 const useSideNavStyles = makeStyles(() =>
     createStyles({

@@ -62,7 +62,7 @@ const HiddenBlockComponent = deepMemo((props: HiddenBlockComponentProps<ListValu
 });
 
 export const [BlocksAnnotationRepoTableContextMenu, useBlocksAnnotationRepoTableContextMenu]
-    = createContextMenu(BlocksAnnotationRepoTableMenu, {name: 'annotation-repo2'});
+    = createContextMenu(BlocksAnnotationRepoTableMenu, {});
 
 const useBlocksAnnotationRepoTableStyles = makeStyles(() =>
     createStyles({

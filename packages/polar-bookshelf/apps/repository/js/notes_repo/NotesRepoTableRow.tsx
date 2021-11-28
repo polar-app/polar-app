@@ -1,76 +1,30 @@
 import React from "react";
 import TableRow from "@material-ui/core/TableRow";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
-import {useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
-import {observer} from "mobx-react-lite";
 import {BaseR} from "./TableGridStore";
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            height: '100%',
-        },
-        paper: {
-            width: '100%',
-            height: '100%',
-        },
-        table: {
-            minWidth: 0,
-            maxWidth: '100%',
-            tableLayout: 'fixed'
-        },
-        tr: {
-            // borderSpacing: '100px'
-        },
-        td: {
-            whiteSpace: 'nowrap'
-        },
-
-    }),
-);
 
 interface IProps extends BaseR {
     readonly viewIndex: number;
     readonly selected: boolean;
+    readonly onContextMenu: (event: React.MouseEvent) => void;
+    readonly onOpen: (id: string) => void;
 }
 
-const Delegate = observer(function Delegate(props: IProps) {
-
-    const classes = useStyles();
-    const {selected} = props;
-
-    const tableGridStore = useTableGridStore();
-
-    const contextMenuHandlers = useNotesRepoContextMenu();
-
-    // {...contextMenuHandlers}
-    // onDragStart={callbacks.onDragStart}
-    // onDragEnd={callbacks.onDragEnd}
-    // onDoubleClick={callbacks.onOpen}
+export const NotesRepoTableRow = React.memo(function NotesRepoTableRow(props: IProps) {
 
     return (
         <TableRow
-            {...contextMenuHandlers}
             hover
-            className={classes.tr}
             role="checkbox"
-            aria-checked={selected}
+            aria-checked={props.selected}
             draggable
-            onDoubleClick={() => tableGridStore.onOpen(props.id)}
-            selected={selected}>
+            onContextMenu={event => props.onContextMenu(event)}
+            onDoubleClick={() => props.onOpen(props.id)}
+            selected={props.selected}>
 
             <NotesRepoTableRowInner {...props}/>
 
         </TableRow>
-    );
-
-});
-
-export const NotesRepoTableRow = React.memo(function NotesRepoTableRow(props: IProps) {
-    return (
-        <Delegate {...props}/>
     );
 });
 

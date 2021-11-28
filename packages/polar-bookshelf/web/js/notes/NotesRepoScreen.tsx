@@ -70,7 +70,7 @@ const RowActionsDropdownItems: React.FC<MenuComponentProps<{}>> = () => {
 };
 
 export const [BlocksTableContextMenu, useBlocksTableContextMenu]
-    = createContextMenu(RowActionsDropdownItems, {name: 'notes-repo'});
+    = createContextMenu(RowActionsDropdownItems, {});
 const BlocksTableContextMenuContext = React.createContext<TableRow>(null!);
 
 const BlocksTableContextMenuProvider: React.FC<{ row: TableRow }> = ({ row, children }) => (

@@ -89,7 +89,7 @@ interface NotesRepoContextMenuOrigin {
 }
 
 export const [NotesRepoContextMenuProvider, useNotesRepoContextMenu]
-    = createContextMenu<NotesRepoContextMenuOrigin>(NotesRepoContextMenu, {name: 'notes-repo'});
+    = createContextMenu<NotesRepoContextMenuOrigin>(NotesRepoContextMenu);
 
 export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore<IBlock<INamedContent>, INotesRepoRow>({
     comparatorFactory,

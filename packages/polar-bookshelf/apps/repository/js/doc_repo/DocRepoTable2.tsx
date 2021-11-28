@@ -74,7 +74,7 @@ const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: Hid
 });
 
 export const [DocRepoContextMenu, useDocRepoContextMenu]
-    = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {name: 'doc-repo'});
+    = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems, {});
 
 export const DocRepoTable2 = deepMemo(() => {
 
