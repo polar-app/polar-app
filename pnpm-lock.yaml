@@ -695,6 +695,26 @@ importers:
       mocha: 9.1.1
       polar-test: link:../polar-test
 
+  packages/polar-capture:
+    specifiers:
+      '@google-cloud/storage': '=5.8.5'
+      '@types/node-fetch': 2.5.7
+      node-fetch: '=2.6.1'
+      polar-epub: 0.0.0
+      polar-hooks: 0.0.0
+      polar-pdf: 0.0.0
+      polar-shared: 0.0.0
+      polar-web-capture: 0.0.0
+    dependencies:
+      '@google-cloud/storage': 5.8.5
+      '@types/node-fetch': 2.5.7
+      node-fetch: 2.6.1
+      polar-epub: link:../polar-epub
+      polar-hooks: link:../polar-hooks
+      polar-pdf: link:../polar-pdf
+      polar-shared: link:../polar-shared
+      polar-web-capture: link:../polar-web-capture
+
   packages/polar-cdk:
     specifiers:
       '@aws-cdk/assert': '=1.121.0'
