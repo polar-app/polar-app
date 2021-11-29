@@ -81,7 +81,7 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = React.memo(function ValueStoreProvider(props) {
 
-        const store = React.useMemo(() => new ValueStore(props.initialStore), []);
+        const store = React.useMemo(() => new ValueStore(props.initialStore), [props.initialStore]);
 
         return (
             <Context.Provider value={store}>
@@ -108,11 +108,11 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     }
 
-    const valueSetter = (value: V) => {
+    const ValueSetter = (value: V) => {
         const valueStore = React.useContext(Context);
         valueStore.setValue(value);
     }
 
-    return [ValueStoreProvider, useValueStore, valueSetter];
+    return [ValueStoreProvider, useValueStore, ValueSetter];
 
 }
