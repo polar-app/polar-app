@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <iframe sandbox="allow-same-origin allow-scripts" src="test-iframe.html"></iframe>
+    </body>
+
+    // TODO:
+    //
+    // - I could load the iframe with a custom
+
+    <script>
+        function test() {
+            const iframe = document.querySelector("iframe");
+
+            iframe.contentDocument.body.addEventListener("click", () => console.log("click"));
+            console.log("Event listener registered");
+        }
+    </script>
+
+    <button onclick="test()">test</button>
+
+</html>

@@ -1,6 +1,6 @@
 {
   "name": "epubjs",
-  "version": "0.3.89-polar.21",
+  "version": "0.3.89-polar.23",
   "description": "Parse and Render Epubs",
   "main": "lib/index.js",
   "module": "src/index.js",

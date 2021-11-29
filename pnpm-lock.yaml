@@ -393,7 +393,7 @@ importers:
       dotenv: '=8.6.0'
       dtsmake: 0.0.10
       email-addresses: '=3.0.3'
-      epubjs: '=0.3.89-polar.21'
+      epubjs: '=0.3.89-polar.23'
       file-exists-promise: '=1.0.2'
       file-selector: '=0.1.19'
       firebase: '=8.10.0'
@@ -522,7 +522,7 @@ importers:
       debug-stream: 3.0.1
       deep-equal: 1.0.1
       email-addresses: 3.0.3
-      epubjs: 0.3.89-polar.21
+      epubjs: 0.3.89-polar.23
       file-exists-promise: 1.0.2
       file-selector: 0.1.19
       firebase: 8.10.0
@@ -896,7 +896,7 @@ importers:
   packages/polar-epub:
     specifiers:
       '@types/mocha': '=9.0.0'
-      epubjs: '=0.3.89-polar.21'
+      epubjs: '=0.3.89-polar.23'
       fast-xml-parser: '=3.19.0'
       jsdom: '=16.7.0'
       mocha: '=9.1.1'
@@ -904,7 +904,7 @@ importers:
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
-      epubjs: 0.3.89-polar.21
+      epubjs: 0.3.89-polar.23
       fast-xml-parser: 3.19.0
       jsdom: 16.7.0
       node-stream-zip: 1.14.0
@@ -10637,8 +10637,8 @@ packages:
     hasBin: true
     dev: true
 
-  /epubjs/0.3.89-polar.21:
-    resolution: {integrity: sha512-4SeP0Csef2wCcdVzbVz8EW37nKGCT4E1YJanPPXcr6cU6sc+JvPxIWuQpsFi4ogCBdVobE7OKJBmQkA5SAhGjw==}
+  /epubjs/0.3.89-polar.23:
+    resolution: {integrity: sha512-AUPWLhFyKFqVSO3+KY4Id/9Z+BQ2iuhr8Ck35lCf5PQ6J7vXgeJrUyS63f+0OSE4QxyxltvZea4JUM3GfB7H2g==}
     dependencies:
       core-js: 3.19.1
       event-emitter: 0.3.5
