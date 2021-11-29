@@ -8,7 +8,14 @@ ARG GROUP_ID
 # ! Install pnpm & only-allow to force it's usage
 RUN npm install -g pnpm only-allow
 
-# ? Install jq for bumping versions
+# ? Install Chromium for Karma
+RUN apt update 
+RUN apt-get install chromium -y --fix-missing
+
+# ! Add env variables
+ENV CHROME_BIN='/usr/bin/chromium' POLAR_EXTENSION_TYPE="PROD" ENV_NAME="master"
+
+# ? Install jq
 RUN wget "http://stedolan.github.io/jq/download/linux64/jq" -O /bin/jq && chmod 755 /bin/jq
 
 # ? Change the UID of the user and group so files created/modified by this user

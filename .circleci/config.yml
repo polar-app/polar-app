@@ -6,25 +6,40 @@ orbs:
   cypress: cypress-io/cypress@1.28.0
   slack: circleci/slack@4.4.4
 
-# ~ Pre-Script Steps to Execute before Jobs
-commands:
-  # & Tag Publishing Setup
-  tag_publishing_setup:
-    description: Tag Publishing Setup
-    steps:
-      # ! Install Go,ghr,config git
-      - run:
-          name: Tag Publishing Setup
-          command: |
-            mkdir ~/.ssh
-            sudo apt install golang-go
-            go get -u github.com/tcnksm/ghr
-            export GOPATH="$HOME/go"
-            PATH="$GOPATH/bin:$PATH"
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-            git config --global user.email "$CI_PUBLISHER_EMAIL"
-            git config --global user.name "$CI_PUBLISHER_NAME"
+# @ Define Custom Executors
+executors:
+  # ! Default Executor for most jobs
+  large:
+    docker:
+      - image: polarciops/ci:latest
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+    resource_class: large
 
+  # ! Hefty Jobs like Deployment
+  xlarge:
+    docker:
+      - image: polarciops/ci:latest
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+    resource_class: xlarge
+
+  # ! Android Jobs
+  android:
+    docker:
+      - image: cimg/android:2021.10.2-node
+    resource_class: xlarge
+
+  # ! Cypress Jobs
+  ff-chrome:
+    docker:
+      - image: cypress/browsers:node14.17.0-chrome88-ff89
+    resource_class: xlarge
+
+# @ Pre-Script Steps to Execute before Jobs
+commands:
   # & Publishing setup steps
   publishing_setup:
     description: set the SSH keys and Hashes required to deploy
@@ -37,20 +52,6 @@ commands:
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
-  # & Install Global Modules
-  global_modules_setup:
-    description: install global modules
-    steps:
-      # ! Install Basic Modules { pnpm, npm, firebase tools }
-      - run:
-          name: Install global node_modules
-          command: |
-            sudo yarn global add pnpm
-            sudo pnpm add npm@7.19.1 --global
-            sudo pnpm add firebase-tools@9.16.0 --global
-            sudo pnpm add only-allow --global
-            sudo pnpm add semver --global
-
   # & Download/Restore pnpm-lock.yaml cache
   restore_pnpm_cache:
     description: Restore all bootstraped module
@@ -59,34 +60,10 @@ commands:
           keys:
             - pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
 
-  # & Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
-  install_linux_dependencies:
-    description: Download/Install all our linux Dependencies/Binaries
-    steps:
-      - run:
-          name: Required Linux packages
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt update -y && sudo apt install libvips libvips-dev pngquant -y; fi
-
   # & output debug info
   debug_installed:
     description: Debug installed libraries/modules
     steps:
-      # ? Debug Step for Node/Npm/Pnpm/Firebase Versions
-      - run:
-          name: DEBUG(Node, NPM, PNPM & Firebase Versions)
-          command: |
-            echo -e "Node version: $(node --version) \n"
-            echo -e "NPM version: $(npm --version) \n"
-            echo -e "Pnpm version: $(pnpm --version) \n"
-            echo -e "firebase version: $(firebase --version) \n"
-
-      # ? Debug Step for OS version
-      - run:
-          name: DEBUG(OS Environment)
-          command: |
-            echo $OSTYPE
-            uname -a
-
       # ? Debug step for Npm/Pnpm Configuration
       - run:
           name: DEBUG(NPM/Pnpm Setup)
@@ -95,8 +72,6 @@ commands:
             cat ~/.npmrc
             echo "npm ping: ======"
             npm ping
-            echo "npm config ls -l: ======"
-            npm config ls -l
             echo "pnpm config list: ======"
             pnpm config list
 
@@ -153,10 +128,10 @@ commands:
             git reset --hard
             git checkout $CIRCLE_BRANCH
             sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' ./.eslintrc.json
-            pnpm run eslint-ci-all --no-bail >> branch-output.txt || true
-            sed -i '/^\//!d' forkpoint-output.txt
-            sed -i '/^\//!d' branch-output.txt
-            OUTPUT=$(join -v 2 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
+            pnpm run eslint-ci-all >> branch-output.txt || true
+            sed -i '/Error - /!d' forkpoint-output.txt
+            sed -i '/Error - /!d' branch-output.txt
+            OUTPUT=$(comm -13 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
             RED='\033[0;31m'
             NC='\033[0m'
             if [ ! -z "$OUTPUT" ]; then echo -e "\n ${RED} Please Fix the Following Errors: \n ${NC} $OUTPUT" && exit 1; fi;
@@ -185,10 +160,8 @@ jobs:
     executor: << parameters.executor>>
     description: build the application for all the following steps
     steps:
-      - global_modules_setup
       - checkout
       - restore_pnpm_cache
-      - install_linux_dependencies
       - debug_installed
       - bootstrap
       - compile
@@ -203,11 +176,13 @@ jobs:
     executor: << parameters.executor>>
     description: Check the code Code-Quality
     steps:
-      - global_modules_setup
       - checkout
       - restore_pnpm_cache
       - bootstrap
-      # - eslint_diff
+      - run:
+          name: eslint
+          command: pnpm run eslint-ci-all
+      - eslint_diff
       - check_duplicates
 
   # @ Run Karma Test Suite
@@ -220,17 +195,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - global_modules_setup
       - run:
           name: karma
-          ##
-          # Increase this as I think we might have to let mocha timeout to get the core error
-          # BUT it can't because CircleCI times out first.
           no_output_timeout: 120m
-          command: |
-            sudo apt update -y && sudo apt install chromium --fix-missing -y
-            export CHROME_BIN='/usr/bin/chromium'
-            pnpm run karma-all
+          command: pnpm run karma-all
       - store_test_results:
           path: /home/circleci/project/packages
 
@@ -242,14 +210,11 @@ jobs:
     executor: << parameters.executor>>
     description: "Run our karma tests in the browser."
     steps:
-      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
           name: test
-          command: |
-            cd /home/circleci/project
-            pnpm run test-ci-all
+          command: (cd /home/circleci/project && pnpm run test-ci-all)
       - store_test_results:
           path: /home/circleci/project/packages
 
@@ -261,15 +226,11 @@ jobs:
     executor: << parameters.executor>>
     description: "Build the polar chrome extension"
     steps:
-      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
           name: Build
-          command: |
-            cd /home/circleci/project/packages/polar-web-extension/
-            export POLAR_EXTENSION_TYPE=PROD
-            pnpm run dist
+          command: (cd /home/circleci/project/packages/polar-web-extension/ && pnpm run dist)
 
   # @ Deploy aws CDK changes
   aws-cdk:
@@ -280,12 +241,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - global_modules_setup
+
       - run:
           name: cdk deploy
           command: |
-            cd /home/circleci/project/packages/polar-cdk
-            ENV_NAME=master npx cdk deploy --all --require-approval=never
+            cd /home/circleci/project/packages/polar-cdk && pnpm dlx cdk deploy --all --require-approval=never
 
   # @ Build Polar-Bookshelf Webapp
   build-polar-app:
@@ -294,18 +254,11 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     steps:
-      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
           name: Build webapp
-          command: |
-            set -e
-            cd /home/circleci/project/packages/polar-bookshelf
-            free -m
-            pnpm run build-webapp
-            echo "Webapp Built Successfully"
-
+          command: pnpm run build
       - run:
           name: Verify webapp budget
           command: |
@@ -350,9 +303,7 @@ jobs:
         type: string
     executor: << parameters.executor>>
     steps:
-      - global_modules_setup
       - publishing_setup
-      - tag_publishing_setup
       - attach_workspace:
           at: ~/
       - run:
@@ -462,7 +413,6 @@ jobs:
     executor: << parameters.executor >>
     description: Build node Environment
     steps:
-      - global_modules_setup
       - checkout
       - run:
           name: isolate
@@ -581,26 +531,6 @@ jobs:
             pod install
             bundle exec fastlane release
 
-# ~ Define Custom Executors
-executors:
-  # ! Default Executor for most jobs
-  xlarge:
-    docker:
-      - image: circleci/node:14.17.0-buster
-    resource_class: xlarge
-  large:
-    docker:
-      - image: circleci/node:14.17.0-buster
-    resource_class: large
-  android:
-    docker:
-      - image: circleci/android:api-30-node
-    resource_class: xlarge
-  ff-chrome:
-    docker:
-      - image: cypress/browsers:node14.17.0-chrome88-ff89
-    resource_class: xlarge
-
 # ~ Define Workflow Steps
 workflows:
   Webapp:
@@ -671,7 +601,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
       #     attach-workspace: true
@@ -684,7 +614,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
       #     attach-workspace: true
@@ -697,7 +627,7 @@ workflows:
       #     requires:
       #       - build-polar-app
       #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time pnpm run webpack-serve
+      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
       #     wait-on: "http://localhost:8050"
       #     command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
       #     attach-workspace: true
@@ -775,5 +705,3 @@ workflows:
           requires:
             - Approve-IOS-Release
             - build-setup
-
-      # write a job that echos hello world

@@ -66,7 +66,6 @@ import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
-import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesScreen} from "../../notes/NoteScreen";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
@@ -76,6 +75,8 @@ import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
+import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
+import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
 
 interface IProps {
     readonly app: App;
@@ -343,11 +344,22 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                    component={EnableFeatureToggle}/>
 
                                             <WithNotesIntegration>
-                                                <PersistentRoute path={RoutePathNames.NOTES}
-                                                                 exact
-                                                                 strategy="display">
-                                                    <NotesRepoScreen/>
-                                                </PersistentRoute>
+
+                                                <DeviceRouters.Desktop>
+                                                    <PersistentRoute path={RoutePathNames.NOTES}
+                                                                     exact
+                                                                     strategy="display">
+                                                        <NotesRepoScreen/>
+                                                    </PersistentRoute>
+                                                </DeviceRouters.Desktop>
+
+                                                <DeviceRouters.NotDesktop>
+                                                    <PersistentRoute path={RoutePathNames.NOTES}
+                                                                     exact
+                                                                     strategy="display">
+                                                        <NotesRepoScreen2/>
+                                                    </PersistentRoute>
+                                                </DeviceRouters.NotDesktop>
 
                                                 <PersistentRoute path={RoutePathNames.DAILY}
                                                                  strategy="display"
