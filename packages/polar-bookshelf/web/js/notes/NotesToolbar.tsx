@@ -1,4 +1,4 @@
-import {Box, Button, createStyles, makeStyles} from '@material-ui/core';
+import {AppBar, Box, Button, createStyles, makeStyles, Toolbar} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
@@ -118,45 +118,32 @@ const DesktopNotesToolbar = () => {
     );
 };
 
-const useHandHeldStyles = makeStyles((theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flex: '0 0 50px',
-            height: 50,
-            padding: '0 14px',
-            background: theme.palette.background.paper
-        }
-    }),
-);
-
 const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
-    const classes = useHandHeldStyles();
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
 
     return (
         <>
-            <div className={classes.root}>
-                <div>
-                    <StandardIconButton tooltip="Back to notes"
-                                        onClick={() => history.push("/notes")}>
-                        <NotesIcon />
-                    </StandardIconButton>
-                </div>
-                <div>
-                    <SearchForNoteHandheld />
-                    <MUIMenu button={{ icon: <MoreVertIcon/>, size: 'small' }}>
-                        <div>
-                            <MUIMenuItem text="Create Note"
-                                         icon={<AddCircleOutlineIcon />}
-                                         onClick={createNoteDialog} />
-                        </div>
-                    </MUIMenu>
-                </div>
-            </div>
+            <AppBar color={"inherit"} position="static">
+                <Toolbar>
+                    <div>
+                        <StandardIconButton tooltip="Back to notes"
+                                            onClick={() => history.push("/notes")}>
+                            <NotesIcon />
+                        </StandardIconButton>
+                    </div>
+                    <div style={{marginLeft: 'auto'}}>
+                        <SearchForNoteHandheld />
+                        <MUIMenu button={{ icon: <MoreVertIcon/>, size: 'small' }}>
+                            <div>
+                                <MUIMenuItem text="Create Note"
+                                             icon={<AddCircleOutlineIcon />}
+                                             onClick={createNoteDialog} />
+                            </div>
+                        </MUIMenu>
+                    </div>
+                </Toolbar>
+            </AppBar>
         </>
     )
 });
