@@ -13,7 +13,7 @@ import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
 
 type IUseStylesProps = {
-    show: boolean;
+    readonly show: boolean;
 };
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
