@@ -1,6 +1,6 @@
 import { Datastores } from "polar-hooks/functions/impl/datastore/Datastores";
-import { File } from "@google-cloud/storage"
 import { Hashcodes } from 'polar-shared/src/util/Hashcodes';
+import { File } from '@google-cloud/storage'
 export namespace FileUpload {
 
     export function init() {
