@@ -2,12 +2,15 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {action, makeObservable, observable} from "mobx";
 
 type BlockOverflowMenuState = {
-    id: BlockIDStr;
-    elem: Element;
+    readonly id: BlockIDStr;
+    readonly elem: Element;
 };
 
 export class BlockOverflowMenuStore {
+
+    /* eslint-disable functional/prefer-readonly-type */
     @observable private _state: BlockOverflowMenuState | undefined = undefined;
+    /* eslint-enable functional/prefer-readonly-type */
 
     constructor() {
         makeObservable(this);

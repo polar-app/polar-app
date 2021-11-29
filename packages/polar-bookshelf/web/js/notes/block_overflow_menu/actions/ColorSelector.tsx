@@ -64,14 +64,14 @@ export const ColorSelector: React.FC<IBlockOverflowMenuActionProps> = observer((
 });
 
 interface IColorIconProps {
-    color: ColorStr;
-    active?: boolean;
-    onClick: (color: ColorStr) => void;
+    readonly color: ColorStr;
+    readonly active?: boolean;
+    readonly onClick: (color: ColorStr) => void;
 }
 
 interface IColorIconStylesOpts {
-    color: ColorStr;
-    active: boolean;
+    readonly color: ColorStr;
+    readonly active: boolean;
 }
 
 export const useColorIconStyles = makeStyles<Theme, IColorIconStylesOpts>((theme) =>

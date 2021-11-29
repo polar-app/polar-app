@@ -7,7 +7,7 @@ import {useBlocksStore} from "../store/BlocksStore";
 import {BLOCK_ACTIONS_BY_TYPE} from "./BlockOverflowMenuPopper";
 
 interface IProps {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export const BlockOverflowMenuButton: React.FC<IProps> = (props) => {

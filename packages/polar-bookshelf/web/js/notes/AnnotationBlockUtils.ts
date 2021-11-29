@@ -16,7 +16,7 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 
 interface IUseHighlightBlockColorOpts {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export const useHighlightBlockColor = ({ id }: IUseHighlightBlockColorOpts): ColorStr | undefined => {

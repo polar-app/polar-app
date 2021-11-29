@@ -14,7 +14,7 @@ import {Remove} from "./actions/Remove";
 import {useBlockOverflowMenuStore} from "./BlockOverflowMenu";
 
 export interface IBlockOverflowMenuActionProps {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export type IBlockOverflowMenuAction = 'createFlashcard'
@@ -25,7 +25,7 @@ export type IBlockOverflowMenuAction = 'createFlashcard'
                                        | 'editTags'
                                        | 'switchFlashcardType';
 
-export const BLOCK_ACTIONS_BY_TYPE: Record<IBlockContent['type'], IBlockOverflowMenuAction[]> = {
+export const BLOCK_ACTIONS_BY_TYPE: Record<IBlockContent['type'], ReadonlyArray<IBlockOverflowMenuAction>> = {
     'date': [],
     'name': [],
     'image': [],
@@ -77,7 +77,7 @@ export const BlockOverflowMenuPopper: React.FC = observer(() => {
 });
 
 interface IBlockOverflowMenuProps {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export const BlockOverflowMenu: React.FC<IBlockOverflowMenuProps> = (props) => {
