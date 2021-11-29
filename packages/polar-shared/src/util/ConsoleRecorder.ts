@@ -96,7 +96,7 @@ export namespace ConsoleRecorder {
 
                 messages.push(consoleMessage);
 
-                if (level == 'error' || level === 'warn') {
+                if (level === 'error' || level === 'warn') {
                     broadcastMessage(consoleMessage);
                 }
 
