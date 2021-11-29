@@ -82,7 +82,7 @@ export const useColorIconStyles = makeStyles<Theme, IColorIconStylesOpts>((theme
             borderRadius: '50%',
             cursor: 'pointer',
             backgroundColor: color,
-            border: active ? '1px solid cyan' : 'none',
+            border: active ? `2px solid ${theme.palette.text.primary}` : 'none',
         }),
     })
 );

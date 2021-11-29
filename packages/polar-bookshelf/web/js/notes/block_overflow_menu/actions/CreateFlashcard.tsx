@@ -7,11 +7,13 @@ import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {IBlockPredicates} from "../../store/IBlockPredicates";
 import {useBlocksStore} from "../../store/BlocksStore";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {useBlockOverflowMenuStore} from "../BlockOverflowMenu";
 
 export const CreateFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) => {
     const { id } = props;
     const { createFlashcard } = useAnnotationBlockManager();
     const blocksStore = useBlocksStore();
+    const blockOverflowMenuStore = useBlockOverflowMenuStore();
 
     const handleCreateFlashcard = React.useCallback(() => {
         const block = blocksStore.getBlock(id);
@@ -21,7 +23,8 @@ export const CreateFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) 
             : '';
 
         createFlashcard(id, { type: FlashcardType.BASIC_FRONT_BACK, front: '', back });
-    }, [id, blocksStore, createFlashcard]);
+        blockOverflowMenuStore.clear();
+    }, [id, blocksStore, blockOverflowMenuStore, createFlashcard]);
 
     return <MUIMenuItem onClick={handleCreateFlashcard}
                         icon={<FlashOnIcon />}

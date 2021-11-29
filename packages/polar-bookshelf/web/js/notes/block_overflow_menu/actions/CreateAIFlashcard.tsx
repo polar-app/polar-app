@@ -8,12 +8,14 @@ import {IBlockPredicates} from "../../store/IBlockPredicates";
 import {useAIFlashcardVerifiedAction} from "../../../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 import {useAutoFlashcardBlockCreator} from "../../../annotation_sidebar/AutoFlashcardHook";
 import {CircularProgress} from "@material-ui/core";
+import {useBlockOverflowMenuStore} from "../BlockOverflowMenu";
 
 export const CreateAIFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) => {
     const { id } = props;
     const verifiedAction = useAIFlashcardVerifiedAction();
     const [aiFlashcardCreatorState, aiFlashcardCreatorHandler] = useAutoFlashcardBlockCreator();
     const blocksStore = useBlocksStore();
+    const blockOverflowMenuStore = useBlockOverflowMenuStore();
 
     const handleCreateAIFlashcard = React.useCallback(() => {
         if (aiFlashcardCreatorState === 'waiting') {
@@ -28,9 +30,17 @@ export const CreateAIFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props
 
         verifiedAction(() => {
             aiFlashcardCreatorHandler(id, BlockTextHighlights.toText(block.content.value))
+                .then(() => blockOverflowMenuStore.clear())
                 .catch(e => console.error("Could not handle verified action: ", e));
         });
-    }, [blocksStore, id, verifiedAction, aiFlashcardCreatorHandler, aiFlashcardCreatorState]);
+    }, [
+        blockOverflowMenuStore,
+        blocksStore,
+        id,
+        verifiedAction,
+        aiFlashcardCreatorHandler,
+        aiFlashcardCreatorState
+    ]);
 
     return <MUIMenuItem onClick={handleCreateAIFlashcard}
                         disabled={aiFlashcardCreatorState === 'waiting'}

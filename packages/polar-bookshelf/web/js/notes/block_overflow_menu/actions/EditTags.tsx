@@ -3,12 +3,19 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {IBlockOverflowMenuActionProps} from "../BlockOverflowMenuPopper";
 import {MUIMenuItem} from "../../../mui/menu/MUIMenuItem";
 import {useBlockTagEditorDialog} from "../../NoteUtils";
+import {useBlockOverflowMenuStore} from "../BlockOverflowMenu";
 
 export const EditTags: React.FC<IBlockOverflowMenuActionProps> = (props) => {
     const { id } = props;
     const editTags = useBlockTagEditorDialog();
+    const blockOverflowMenuStore = useBlockOverflowMenuStore();
 
-    return <MUIMenuItem onClick={() => editTags([id])}
+    const handleClick = React.useCallback(() => {
+        editTags([id]);
+        blockOverflowMenuStore.clear();
+    }, [id, blockOverflowMenuStore, editTags]);
+
+    return <MUIMenuItem onClick={handleClick}
                         icon={<LocalOfferIcon />}
                         text="Edit tags" />;
 };
