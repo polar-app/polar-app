@@ -11,10 +11,9 @@ import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
-import {useFeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 type IUseStylesProps = {
-    show: boolean;
+    readonly show: boolean;
 };
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
@@ -46,7 +45,6 @@ interface IBottomNavLocation {
 }
 
 const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
-    const notesEnabled = useFeatureToggle('notes-enabled');
 
     return React.useMemo(() => ([
         {
@@ -73,7 +71,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             href: RoutePathNames.SWITCH,
             icon: <CarouselIcon/>
         },
-    ]), [notesEnabled]);
+    ]), []);
 };
 
 export const MUIBottomNavigation = ()  => {

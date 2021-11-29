@@ -122,27 +122,28 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
-    const {firestore, uid} = useFirestore();
-
-    const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata>>(() => {
-
-        if (uid === null || uid === undefined) {
-            return () => {
-                return NULL_FUNCTION;
-            };
-        }
-
-        return (onNext, onError) => {
-
-            return firestore.collection(collectionName)
-                            .where('uid', '==', uid)
-                            .onSnapshot(next => onNext(next), err => onError(err));
-
-        }
-
-    }, [collectionName, uid]);
-
     const FirestoreSnapshotProvider = React.memo((props: FirestoreSnapshotProps) => {
+
+        const {firestore, uid} = useFirestore();
+
+        const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata>>(() => {
+
+            if (uid === null || uid === undefined) {
+                return () => {
+                    return NULL_FUNCTION;
+                };
+            }
+
+            return (onNext, onError) => {
+
+                return firestore.collection(collectionName)
+                    .where('uid', '==', uid)
+                    .onSnapshot(next => onNext(next), err => onError(err));
+
+            }
+
+        }, [firestore, uid]);
+
         return (
             <SnapshotStoreProvider subscriber={subscriber} fallback={props.fallback}>
                 {props.children}

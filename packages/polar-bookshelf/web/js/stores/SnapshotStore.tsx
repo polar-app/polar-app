@@ -1,6 +1,6 @@
 import {ErrorType} from "polar-shared/src/util/Errors";
 import * as React from "react";
-import {createValueStore, ValueStoreProvider} from "./ValueStore";
+import {createValueStore} from "./ValueStore";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export interface ISnapshotLeft {
@@ -70,17 +70,17 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
             valueSetter({right: snapshot});
 
-        }, [valueSetter]);
+        }, []);
 
         const handleError = React.useCallback((err: ErrorType) => {
 
             valueSetter({left: err});
 
-        }, [valueSetter]);
+        }, []);
 
         React.useEffect(() => {
             return props.subscriber(handleNext, handleError);
-        }, [props.subscriber, handleNext, handleError])
+        }, [props, handleNext, handleError])
 
         if (value === undefined) {
             return props.fallback;

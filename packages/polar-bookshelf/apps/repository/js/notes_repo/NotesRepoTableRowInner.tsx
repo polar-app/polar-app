@@ -164,7 +164,7 @@ export const TableGridOverflowMenuButton = observer(function TableGridOverflowMe
     const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
         tableGridStore.selectRow(props.id, event, 'click');
         contextMenuHandlers.onContextMenu(event)
-    }, []);
+    }, [contextMenuHandlers, props.id, tableGridStore]);
 
     return (
         <StandardIconButton tooltip="More"
