@@ -1,4 +1,4 @@
-git_url("git@github.com:polar-app/fastlane-signing-certs.git")
+git_url("https://github.com/polar-app/fastlane-signing-certs.git")
 
 storage_mode("git")
 

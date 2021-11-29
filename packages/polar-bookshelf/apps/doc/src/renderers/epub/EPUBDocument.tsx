@@ -74,7 +74,12 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
 
     for (const link of links) {
 
+        alert(link);
+
         link.addEventListener('click', (event) => {
+
+            alert(85);
+            alert(event);
 
             const href = link.getAttribute('href');
 

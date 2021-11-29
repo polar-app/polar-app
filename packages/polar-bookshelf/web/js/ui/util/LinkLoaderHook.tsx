@@ -53,6 +53,7 @@ export function useLinkLoaderRef() {
 function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
 
     return (location: ILocationOrLink) => {
+        alert(location);
 
         if (typeof location === 'string') {
             const parsedURL = new URL(location);

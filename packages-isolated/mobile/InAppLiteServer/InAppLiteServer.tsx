@@ -23,7 +23,7 @@ export class InAppLiteServer extends Component<Props, State> {
         // Initial state
         this.state = {
             isRunning: !useEmbeddedServer,
-            url: !useEmbeddedServer ? 'https://app.getpolarized.io' : '',
+            url: !useEmbeddedServer ? 'http://192.168.1.50:8050' : '',
         };
 
         if (useEmbeddedServer) {
@@ -123,7 +123,10 @@ export class InAppLiteServer extends Component<Props, State> {
                 }
             }}
             onNavigationStateChange={(event) => {
+                console.log('dzh3::');
+                console.log(event);
                 if (InAppLiteServer.isExternalUrl(event.url)) {
+                    alert('is external');
                     this.webview?.stopLoading();
                     Linking.openURL(event.url)
                         .then()
@@ -137,7 +140,7 @@ export class InAppLiteServer extends Component<Props, State> {
     }
 
     private static isExternalUrl(url: string) {
-        return !url.includes('app.getpolarized.io');
+        return !url.includes('app.getpolarized.io') && !url.includes('192.168.');
     }
 
     componentWillUnmount() {
