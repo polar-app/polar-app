@@ -500,3 +500,4 @@ export namespace BlockLinksMatcher {
     }
 
 }
+
