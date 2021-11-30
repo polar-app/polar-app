@@ -49,7 +49,13 @@ module.exports = (config) => {
 
         files: [
 
-            {pattern: './web/**/*TestK.ts', watched: false}
+            {pattern: './apps/**/*TestK.ts', watched: false},
+            {pattern: './apps/**/*TestNK.ts', watched: false},
+            {pattern: './apps/**/*TestK.tsx', watched: false},
+
+            {pattern: './web/**/*TestK.ts', watched: false},
+            {pattern: './web/**/*TestNK.ts', watched: false},
+            {pattern: './web/**/*TestK.tsx', watched: false}
 
         ],
         exclude: [
