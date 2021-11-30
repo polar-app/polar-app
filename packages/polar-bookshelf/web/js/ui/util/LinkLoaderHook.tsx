@@ -30,14 +30,14 @@ export function useLinkLoader(): LinkLoaderDelegate {
     // We can't use window.history as react-router doesn't listen to it. Instead
     // we have to useHistory which mutates the router
 
-    const history = useHistory();
+    const mobileLinkLoader = useMobileLinkLoader();
 
     switch (Devices.get()) {
 
         case "phone":
-            return createMobileLinkLoader(history);
+            return mobileLinkLoader;
         case "tablet":
-            return createMobileLinkLoader(history);
+            return mobileLinkLoader;
         case "desktop":
             return createDesktopLinkLoader();
 
@@ -50,9 +50,20 @@ export function useLinkLoaderRef() {
     return React.useRef(linkLoader);
 }
 
-function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
+function useMobileLinkLoader(): LinkLoaderDelegate {
 
-    return (location: ILocationOrLink) => {
+    const history = useHistory();
+
+    return React.useCallback((location: ILocationOrLink) => {
+
+        console.log("Loading URL with mobile link loader: " + location);
+
+        // Whenever a link is opened inside the mobile app, handle it natively through the native browser
+        if (typeof location === 'string' && (window as any).isNativeApp) {
+            // Set by packages-isolated/mobile/InAppLiteServer/util/injectedJavaScriptBeforeContentLoaded.tsx,
+            window.open(location);
+            return;
+        }
 
         if (typeof location === 'string') {
             const parsedURL = new URL(location);
@@ -62,7 +73,7 @@ function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
             history.push(location);
         }
 
-    }
+    }, [history]);
 
 }
 

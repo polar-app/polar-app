@@ -61,7 +61,7 @@ function forwardEvents(target: HTMLElement) {
 
 }
 
-function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
+function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, baseURL: string | undefined) {
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
 
@@ -82,20 +82,22 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
                 return;
             }
 
-            if (!href.startsWith('http')) {
-                return;
+            function resolveURL(href: string) {
+
+                if (! href.startsWith('http:') && ! href.startsWith("https:")) {
+                    // The URL is not fully resolved so we have to resolve it properly.
+                    return new URL(href, baseURL).toString();
+                }
+
+                return href;
+
             }
 
-            console.log("linkClicked: ", href);
+            const url = resolveURL(href);
 
-            // Whenever a link is opened inside the mobile app, handle it natively through the native browser
-            if ((window as any).isNativeApp) {
-                // Set by packages-isolated/mobile/InAppLiteServer/util/injectedJavaScriptBeforeContentLoaded.tsx,
-                window.open(href);
-                return;
-            }
+            console.log("linkClicked: ", url);
 
-            linkLoader(href, {focus: true, newWindow: true});
+            linkLoader(url, {focus: true, newWindow: true});
 
             event.stopPropagation();
             event.preventDefault();
@@ -233,7 +235,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             handleSection(section);
 
             forwardEvents(pageElement);
-            handleLinkClicks(pageElement, linkLoader);
+            handleLinkClicks(pageElement, linkLoader, docMeta.docInfo.url);
 
             // applyCSS();
             incrRenderIter();
