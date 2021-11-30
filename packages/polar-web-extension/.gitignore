@@ -1,3 +1,4 @@
 .terser-webpack-plugin
 dist
 polar-web-extension.zip
+coverage

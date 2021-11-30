@@ -23,26 +23,6 @@ import {useDocRepoColumns} from "./DocRepoTableHead";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            width: '100%',
-            height: '100%',
-        },
-        paper: {
-            width: '100%',
-            height: '100%',
-            // marginBottom: theme.spacing(2),
-        },
-        table: {
-            minWidth: 0,
-            maxWidth: '100%',
-            tableLayout: 'fixed'
-        },
-        tr: {
-            // borderSpacing: '100px'
-        },
-        td: {
-            whiteSpace: 'nowrap'
-        },
         progress: {
             width: COLUMN_MAP.progress.width,
             background: theme.palette.grey['300'],
@@ -176,7 +156,6 @@ export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(pro
             case 'title':
                 return (
                     <TableCell key={id}
-                               component="th"
                                id={labelId}
                                scope="row"
                                className={classes.colTitle}

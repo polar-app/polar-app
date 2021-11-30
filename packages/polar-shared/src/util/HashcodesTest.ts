@@ -42,7 +42,7 @@ describe('Hashcodes', function() {
         assert.isNotNull(hashcode);
         assert.isDefined(hashcode);
 
-        assert.equal(hashcode.length, 44);
+        assert.isTrue(hashcode.length === 43 || hashcode.length === 44);
 
     });
 

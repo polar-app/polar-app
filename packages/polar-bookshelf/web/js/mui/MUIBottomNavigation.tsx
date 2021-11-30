@@ -11,10 +11,9 @@ import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
-import {useFeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 type IUseStylesProps = {
-    show: boolean;
+    readonly show: boolean;
 };
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
@@ -46,23 +45,20 @@ interface IBottomNavLocation {
 }
 
 const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
-    const notesEnabled = useFeatureToggle('notes-enabled');
 
     return React.useMemo(() => ([
         {
             id: 'home',
-            label: 'Home',
+            label: 'Docs',
             href: '/',
             icon: <HomeIcon/>
         },
-        ...(notesEnabled
-                ? [{
-                    id: 'notes',
-                    label: 'Notes',
-                    href: RoutePathNames.NOTES,
-                    icon: <NotesIcon />
-                }] : []
-        ),
+        {
+            id: 'notes',
+            label: 'Notes',
+            href: RoutePathNames.NOTES,
+            icon: <NotesIcon/>
+        },
         {
             id: 'add',
             label: 'Add',
@@ -75,7 +71,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             href: RoutePathNames.SWITCH,
             icon: <CarouselIcon/>
         },
-    ]), [notesEnabled]);
+    ]), []);
 };
 
 export const MUIBottomNavigation = ()  => {
@@ -126,6 +122,11 @@ export const MUIBottomNavigation = ()  => {
 
     if (location.pathname.startsWith('/doc/')) {
         // hack to disable when opening up docs.
+        return null;
+    }
+
+    if (location.pathname.startsWith('/notes/')) {
+        // hack to disable when opening up notes.
         return null;
     }
 
