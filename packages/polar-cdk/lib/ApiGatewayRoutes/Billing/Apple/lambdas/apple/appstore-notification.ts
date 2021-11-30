@@ -93,6 +93,7 @@ export const handler = async (event: {
 
                 const error = "Failed to change user's plan due to an internal error";
                 console.error(error);
+                console.error(e);
                 return {
                     statusCode: 500,
                     body: JSON.stringify({error}),
