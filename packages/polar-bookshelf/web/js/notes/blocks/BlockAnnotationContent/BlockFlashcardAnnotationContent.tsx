@@ -6,22 +6,14 @@ import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMome
 import {BlockEditorGenericProps} from "../../BlockEditor";
 import {FlashcardAnnotationContent} from "../../content/AnnotationContent";
 import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
-import {
-    BlockAnnotationAction,
-    BlockAnnotationActionsWrapper,
-    useSharedAnnotationBlockActions
-} from "./BlockAnnotationActions";
-import CachedIcon from '@material-ui/icons/Cached';
-import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockTextContentUtils} from "../../NoteUtils";
 import {BlockPredicates} from "../../store/BlockPredicates";
 import {BlockTagsSection} from "./BlockHighlightContentWrapper";
 import {useBlocksTreeStore} from "../../BlocksTree";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -46,66 +38,15 @@ export const useStyles = makeStyles((theme) =>
 export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
     const {
         annotation,
-        id,
         onClick,
     } = props;
     const classes = useStyles();
 
     const flashcard = annotation.value;
-    const actions = useSharedAnnotationBlockActions({
-        id,
-        annotation,
-        actions: ['remove', 'editTags'],
-    });
-    const { getBlock } = useAnnotationBlockManager();
-    const blocksTreeStore = useBlocksTreeStore();
 
-    const handleChangeType = React.useCallback(() => {
-        const block = getBlock(id, AnnotationContentType.FLASHCARD);
-        if (! block) {
-            return;
-        }
-
-        const getText = (): string => {
-            if (! block.parent) {
-                return '';
-            }
-            const parent = getBlock(block.parent)!;
-
-            if (parent.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
-                const highlight = parent.content.toJSON().value;
-                return BlockTextHighlights.toText(highlight);
-            }
-
-            return '';
-        };
-
-        const getNewContent = (): IFlashcardAnnotationContent => {
-            const text = getText();
-            if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
-                return {
-                    ...contentJSON,
-                    value: BlockFlashcards.createCloze(text),
-                };
-            } else {
-                return {
-                    ...contentJSON,
-                    value: BlockFlashcards.createFrontBack('', text),
-                };
-            }
-        };
-
-        const contentJSON = block.content.toJSON();
-        blocksTreeStore.setBlockContent(id, getNewContent());
-    }, [blocksTreeStore, getBlock, id, flashcard]);
 
     return (
-        <BlockAnnotationActionsWrapper
-            actions={[
-                ...actions,
-                <BlockAnnotationAction key="switch" icon={<CachedIcon />} onClick={handleChangeType} />
-            ]}
-        >
+        <>
             <div className={classes.flashcardWrapper}>
                 {flashcard.type === FlashcardType.CLOZE
                     ? (
@@ -122,7 +63,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
                 }
             </div>
             <BlockTagsSection onClick={onClick} links={annotation.links} />
-        </BlockAnnotationActionsWrapper>
+        </>
     );
 };
 

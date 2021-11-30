@@ -15,6 +15,7 @@ import {Box, Theme} from "@material-ui/core";
 import {useDragDropHandler} from "./DropHandler";
 import {Interstitial} from "./Interstitial";
 import {BlockContextMenu, useBlockContextMenu} from "./BlockContextMenu";
+import {BlockOverflowMenuButton} from "./block_overflow_menu/BlockOverflowMenuButton";
 
 interface IUseStylesProps {
     readonly hasGutter: boolean;
@@ -39,6 +40,7 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
         iconButtonWrapper: {
             width: 20,
             display: 'flex',
+            height: theme.spacing(3.5),
             alignItems: 'center',
             justifyContent: 'center',
         },
@@ -219,27 +221,32 @@ export const BlockInner = observer((props: IProps) => {
                     mx={0.25}
                     className={clsx({ [classes.titleBlockWrapper]: isHeader })}>
 
-                    {! (alwaysExpanded && noBullet) && (
-                        <Box display="flex" alignItems="stretch" style={{ height: 28 }}>
+                    <Box mr={0.2} display="flex">
+                        {! alwaysExpanded && (
                             <div className={clsx(classes.iconButtonWrapper, classes.expandButtonWrapper)}>
                                 {hasItems && ! alwaysExpanded && (
                                     <BlockExpandToggleButton className={classes.iconButton} id={id} />
                                 )}
                             </div>
+                        )}
 
+                        <div className={classes.iconButtonWrapper}>
+                            <BlockOverflowMenuButton id={id} />
+                        </div>
+
+                        {! noBullet && (
                             <div className={classes.iconButtonWrapper}>
-                                {! noBullet && <BlockBulletButton className={classes.iconButton} target={id}/>}
+                                <BlockBulletButton className={classes.iconButton} target={id}/>
                             </div>
+                        )}
+                    </Box>
 
-                        </Box>
-                    )}
 
                     <BlockEditor
                         parent={parent}
                         id={id}
                         className={isHeader ? classes.titleBlock : ""}
                     />
-
                 </Box>
 
                 {(expanded || alwaysExpanded) && ! dontRenderChildren && (
