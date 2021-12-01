@@ -38,6 +38,7 @@ import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
+import {RenditionOptions} from "epubjs/types/rendition";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 
 interface IProps {
@@ -185,14 +186,23 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         //
         // test no width but set the iframe CSS style to width
 
-        const rendition = book.renderTo(pageElement, {
+        // NOTE: types are wrong here and method CAN be set.
+
+        interface IExtendedRenditionOptions extends RenditionOptions {
+            readonly method: 'blobUrl' | 'srcdoc'
+        }
+
+        const opts: IExtendedRenditionOptions = {
             flow: "scrolled-doc",
             width: '100%',
             resizeOnOrientationChange: false,
             stylesheet,
+            method: 'blobUrl'
             // height: '100%',
             // layout: 'pre-paginated'
-        });
+        }
+
+        const rendition = book.renderTo(pageElement, opts as any);
 
         rendition.on('locationChanged', (event: any) => {
             // noop... this is called when the location of the book is changed
