@@ -39,6 +39,7 @@ import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {RenditionOptions} from "epubjs/types/rendition";
+import {Browsers} from "polar-browsers/src/Browsers";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 
 interface IProps {
@@ -197,7 +198,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             width: '100%',
             resizeOnOrientationChange: false,
             stylesheet,
-            method: 'blobUrl'
+            method: Browsers.get()?.id === 'safari' ? 'blobUrl' : 'srcdoc'
             // height: '100%',
             // layout: 'pre-paginated'
         }
