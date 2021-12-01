@@ -75,7 +75,7 @@ export const BlockContextMenuItems: React.FC<MenuComponentProps<IBlockContextMen
         const target = createNoteWikiLinkIdentifier(origin.blockID, anchor);
         const url = RoutePathNames.NOTE(encodeURIComponent(target));
 
-        linkLoaderRef.current(url, {newWindow: true, focus: true});
+        linkLoaderRef.current(url);
     }, [origin, createNoteWikiLinkIdentifier, linkLoaderRef]);
 
     if (! origin) {

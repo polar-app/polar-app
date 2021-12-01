@@ -139,7 +139,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
             abortEvent();
             return true;
         } else {
-            linkLoaderRef.current(href, { newWindow: true, focus: true });
+            linkLoaderRef.current(href);
             abortEvent();
             return true;
 

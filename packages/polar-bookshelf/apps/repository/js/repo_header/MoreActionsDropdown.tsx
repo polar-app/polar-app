@@ -54,7 +54,7 @@ export const MoreActionsDropdown = React.memo(function MoreActionsDropdown() {
 
                     </div>
                 ),
-                onAccept: () => linkLoader('https://getpolarized.io/download/', {newWindow: true, focus: true})
+                onAccept: () => linkLoader('https://getpolarized.io/download/')
 
             })
         }

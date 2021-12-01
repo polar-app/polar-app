@@ -72,6 +72,8 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, b
 
     const links = Array.from(iframe.contentDocument.querySelectorAll('a'));
 
+    console.log("handleLinkClicks: Handling N link clicks with listeners: " + links.length);
+
     for (const link of links) {
 
         link.addEventListener('click', (event) => {
@@ -79,6 +81,7 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, b
             const href = link.getAttribute('href');
 
             if (!href) {
+                console.log("handleLinkClicks: Link has no href");
                 return;
             }
 
@@ -95,9 +98,9 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, b
 
             const url = resolveURL(href);
 
-            console.log("linkClicked: ", url);
+            console.log("handleLinkClicks: Link clicked. Loading with link loader: ", url);
 
-            linkLoader(url, {focus: true, newWindow: true});
+            linkLoader(url);
 
             event.stopPropagation();
             event.preventDefault();
