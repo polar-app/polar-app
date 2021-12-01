@@ -20,7 +20,7 @@ export class BlockOverflowMenuStore {
         return this._state;
     }
 
-    @action clear() {
+    @action clearState() {
         this._state = undefined;
     }
 
