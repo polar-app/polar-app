@@ -74,15 +74,23 @@ interface IColorIconStylesOpts {
     readonly active: boolean;
 }
 
+const SWATCH_PADDING = 0.25;
+
 export const useColorIconStyles = makeStyles<Theme, IColorIconStylesOpts>((theme) =>
     createStyles({
-        root: ({ color, active }) => ({
-            width: theme.spacing(2.75),
-            height: theme.spacing(2.75),
+        root: ({ active }) => ({
+            width: theme.spacing(2.75 + (SWATCH_PADDING * 2)),
+            height: theme.spacing(2.75 + (SWATCH_PADDING * 2)),
             borderRadius: '50%',
+            padding: theme.spacing(SWATCH_PADDING),
             cursor: 'pointer',
+            border: active ? `2px solid #00B2FF` : 'none',
+        }),
+        swatch: ({ color }) => ({
             backgroundColor: color,
-            border: active ? `2px solid ${theme.palette.text.primary}` : 'none',
+            borderRadius: '50%',
+            width: '100%',
+            height: '100%',
         }),
     })
 );
@@ -91,5 +99,5 @@ export const ColorIcon: React.FC<IColorIconProps> = (props) => {
     const { color, onClick, active = false } = props;
     const classes = useColorIconStyles({ color, active });
 
-    return <div className={classes.root} onClick={() => onClick(color)} />;
+    return <div className={classes.root} onClick={() => onClick(color)}><div className={classes.swatch} /></div>;
 };
