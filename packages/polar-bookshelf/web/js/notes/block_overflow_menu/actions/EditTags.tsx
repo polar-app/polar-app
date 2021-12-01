@@ -12,7 +12,7 @@ export const EditTags: React.FC<IBlockOverflowMenuActionProps> = (props) => {
 
     const handleClick = React.useCallback(() => {
         editTags([id]);
-        blockOverflowMenuStore.clearState();
+        blockOverflowMenuStore.clear();
     }, [id, blockOverflowMenuStore, editTags]);
 
     return <MUIMenuItem onClick={handleClick}

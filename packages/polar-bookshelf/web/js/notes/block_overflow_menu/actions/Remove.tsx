@@ -12,7 +12,7 @@ export const Remove: React.FC<IBlockOverflowMenuActionProps> = (props) => {
 
     const handleDelete = React.useCallback(() => {
         blocksStore.deleteBlocks([id])
-        blockOverflowMenuStore.clearState();
+        blockOverflowMenuStore.clear();
     }, [blocksStore, blockOverflowMenuStore, id]);
 
     return <MUIMenuItem onClick={handleDelete}

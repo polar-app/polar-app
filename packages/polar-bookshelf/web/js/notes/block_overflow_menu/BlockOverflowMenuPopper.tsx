@@ -52,7 +52,7 @@ export const BlockOverflowMenuPopper: React.FC = observer(() => {
     const { state } = blockOverflowMenuStore;
 
     const handleClear = React.useCallback(() => {
-        blockOverflowMenuStore.clearState();
+        blockOverflowMenuStore.clear();
     }, [blockOverflowMenuStore]);
 
     if (! state) {
@@ -88,7 +88,7 @@ export const BlockOverflowMenu: React.FC<IBlockOverflowMenuProps> = (props) => {
 
     React.useEffect(() => {
         if (! block) {
-            blockOverflowMenuStore.clearState();
+            blockOverflowMenuStore.clear();
         }
     }, [block, blockOverflowMenuStore]);
 

@@ -5,7 +5,6 @@ import {NoteButton} from "../NoteButton";
 import {useBlockOverflowMenuStore} from "./BlockOverflowMenu";
 import {useBlocksStore} from "../store/BlocksStore";
 import {BLOCK_ACTIONS_BY_TYPE} from "./BlockOverflowMenuPopper";
-import {useBlockActionStyles} from "../Block";
 
 interface IProps {
     readonly id: BlockIDStr;
@@ -16,7 +15,6 @@ export const BlockOverflowMenuButton: React.FC<IProps> = (props) => {
     const blockOverflowMenuStore = useBlockOverflowMenuStore();
     const blocksStore = useBlocksStore();
     const block = React.useMemo(() => blocksStore.getBlock(id), [id, blocksStore]);
-    const blockActionClasses = useBlockActionStyles();
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
         const target = event.target;
@@ -43,10 +41,8 @@ export const BlockOverflowMenuButton: React.FC<IProps> = (props) => {
     }
 
     return (
-        <div className={blockActionClasses.iconButtonWrapper}>
-            <NoteButton onClick={handleClick}>
-                <MenuIcon fontSize="small" />
-            </NoteButton>
-        </div>
+        <NoteButton onClick={handleClick}>
+            <MenuIcon fontSize="small" />
+        </NoteButton>
     );
 };

@@ -26,6 +26,7 @@ import {ProgressButtonStory} from './impl/ProgressButtonStory';
 import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import {UnmountComponentStory} from './impl/UnmountComponentStory';
 import {AbortedRenderStory} from './impl/AbortedRenderStory';
+import {ScratchStory} from "./impl/ScratchStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
 import {AccountVerificationStory} from './impl/AccountVerificationStory';
 import {WelcomeStory} from "./impl/WelcomeStory";
@@ -91,6 +92,10 @@ const stories = createStoryIndex([
     {
         name: "VerticalDynamicScroller",
         component: <VerticalDynamicScrollerStory/>
+    },
+    {
+        name: "Scratch",
+        component: <ScratchStory/>
     },
     {
         name: 'Account Verification',

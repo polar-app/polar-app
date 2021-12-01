@@ -16,7 +16,6 @@ import {NotesRepoScreen} from "./NotesRepoScreen";
 import {DeviceRouters} from '../ui/DeviceRouter';
 import {NotesRepoScreen2} from "../../../apps/repository/js/notes_repo/NotesRepoScreen2";
 import {BlockOverflowMenuProvider} from './block_overflow_menu/BlockOverflowMenu';
-import {BlockFormatBarProvider} from './note_format_bar/NoteFormatBar';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -35,20 +34,18 @@ export const NoteProviders: React.FC = ({ children }) => {
 
     return (
         <div className="NoteRoot" style={{ height: '100%', width: '100%' }}>
-            <BlockFormatBarProvider>
-                <BlockOverflowMenuProvider>
-                    <ActionMenuStoreProvider>
-                        <NoteSelectionHandler style={{ height: '100%' }}>
-                            <NoteStyle>
-                                <MUIBrowserLinkStyle className={classes.noteOuter}>
-                                    {children}
-                                    <ActionMenuPopup />
-                                </MUIBrowserLinkStyle>
-                            </NoteStyle>
-                        </NoteSelectionHandler>
-                    </ActionMenuStoreProvider>
-                </BlockOverflowMenuProvider>
-            </BlockFormatBarProvider>
+            <BlockOverflowMenuProvider>
+                <ActionMenuStoreProvider>
+                    <NoteSelectionHandler style={{ height: '100%' }}>
+                        <NoteStyle>
+                            <MUIBrowserLinkStyle className={classes.noteOuter}>
+                                {children}
+                                <ActionMenuPopup />
+                            </MUIBrowserLinkStyle>
+                        </NoteStyle>
+                    </NoteSelectionHandler>
+                </ActionMenuStoreProvider>
+            </BlockOverflowMenuProvider>
         </div>
     );
 };
