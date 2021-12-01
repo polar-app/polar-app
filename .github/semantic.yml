@@ -1,7 +1,7 @@
 # Always validate the PR title, and ignore the commits
 titleOnly: true
 
-# You can override the valid types here
+# You can override the valid types here but please don't
 types:
   - feat
   - fix
