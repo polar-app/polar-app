@@ -426,7 +426,7 @@ jobs:
           command: |
             cd /home/circleci/mobile
             sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
-            pnpm install
+            npm install
       - persist_to_workspace:
           root: /home/circleci/
           paths:
