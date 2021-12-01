@@ -1,6 +1,6 @@
 import {init} from '@sentry/browser';
 import {Integrations} from "@sentry/tracing";
-import {CaptureConsole} from '@sentry/integrations';
+import {CaptureConsole, Offline} from '@sentry/integrations';
 import {Version} from 'polar-shared/src/util/Version';
 import {DevBuild} from "../util/DevBuild";
 
@@ -33,7 +33,10 @@ export namespace SentryBrowser {
                     new CaptureConsole({
                         levels: ['error']
                     }),
-                    new Integrations.BrowserTracing()
+                    new Integrations.BrowserTracing(),
+
+                    // Buffer and cache events to IndexedDB or LocalStorage if offline
+                    new Offline(),
                 ],
 
                 release: Version.get(),
@@ -41,6 +44,8 @@ export namespace SentryBrowser {
                 // of transactions for performance monitoring.
                 // We recommend adjusting this value in production
                 tracesSampleRate: 1.0,
+
+                // debug: true,
             });
 
         } catch (e) {
