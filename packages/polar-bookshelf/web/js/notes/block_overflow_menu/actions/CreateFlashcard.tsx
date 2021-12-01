@@ -23,7 +23,7 @@ export const CreateFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) 
             : '';
 
         createFlashcard(id, { type: FlashcardType.BASIC_FRONT_BACK, front: '', back });
-        blockOverflowMenuStore.clear();
+        blockOverflowMenuStore.clearState();
     }, [id, blocksStore, blockOverflowMenuStore, createFlashcard]);
 
     return <MUIMenuItem onClick={handleCreateFlashcard}

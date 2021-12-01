@@ -30,7 +30,7 @@ export const CreateAIFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props
 
         verifiedAction(() => {
             aiFlashcardCreatorHandler(id, BlockTextHighlights.toText(block.content.value))
-                .then(() => blockOverflowMenuStore.clear())
+                .then(() => blockOverflowMenuStore.clearState())
                 .catch(e => console.error("Could not handle verified action: ", e));
         });
     }, [

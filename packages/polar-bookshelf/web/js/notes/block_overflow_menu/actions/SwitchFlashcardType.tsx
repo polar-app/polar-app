@@ -12,7 +12,7 @@ export const SwitchFlashcardType: React.FC<IBlockOverflowMenuActionProps> = (pro
     
     const handleClick = React.useCallback(() => {
         flashcardTypeChanger(id);
-        blockOverflowMenuStore.clear();
+        blockOverflowMenuStore.clearState();
     }, [id, blockOverflowMenuStore, flashcardTypeChanger]);
 
     return (

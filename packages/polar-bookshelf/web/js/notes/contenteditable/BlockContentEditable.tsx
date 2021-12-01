@@ -1,7 +1,6 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {IActiveBlock, useBlocksStore} from '../store/BlocksStore';
-import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
@@ -250,25 +249,23 @@ export const BlockContentEditable = (props: IProps) => {
             <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
                 <BlockActionsProvider id={props.id}>
-                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
-                        <div ref={handleRef}
-                             onPaste={handlePaste}
-                             onClick={props.onClick}
-                             onMouseDown={props.onMouseDown}
-                             contentEditable={true}
-                             data-content-editable-type={"block"}
-                             spellCheck={props.spellCheck}
-                             data-id={props.id}
-                             className={props.className}
-                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
-                             style={{
-                                 outline: 'none',
-                                 whiteSpace: 'pre-wrap',
-                                 wordBreak: 'break-word',
-                                 ...props.style
-                             }}
-                             dangerouslySetInnerHTML={{__html: content}} />
-                    </NoteFormatPopper>
+                    <div ref={handleRef}
+                         onPaste={handlePaste}
+                         onClick={props.onClick}
+                         onMouseDown={props.onMouseDown}
+                         contentEditable={true}
+                         data-content-editable-type={"block"}
+                         spellCheck={props.spellCheck}
+                         data-id={props.id}
+                         className={props.className}
+                         id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+                         style={{
+                             outline: 'none',
+                             whiteSpace: 'pre-wrap',
+                             wordBreak: 'break-word',
+                             ...props.style
+                         }}
+                         dangerouslySetInnerHTML={{__html: content}} />
                 </BlockActionsProvider>
             </div>
 
@@ -311,8 +308,8 @@ export function useUpdateCursorPosition() {
 }
 
 type IUseHandleLinkDeletionOpts = {
-    elem: HTMLElement | null;
-    blockID: BlockIDStr;
+    readonly elem: HTMLElement | null;
+    readonly blockID: BlockIDStr;
 };
 
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {

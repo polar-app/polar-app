@@ -12,7 +12,7 @@ export const Open: React.FC<IBlockOverflowMenuActionProps> = (props) => {
 
     const handleClick = React.useCallback(() => {
         jumpToContext(id);
-        blockOverflowMenuStore.clear();
+        blockOverflowMenuStore.clearState();
     }, [id, blockOverflowMenuStore, jumpToContext]);
 
     return <MUIMenuItem onClick={handleClick}
