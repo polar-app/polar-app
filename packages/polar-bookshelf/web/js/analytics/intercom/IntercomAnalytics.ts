@@ -37,7 +37,7 @@ export class IntercomAnalytics implements IAnalytics {
 
         const intercomData = toIntercomData(this.user);
 
-        if (! intercomData) {
+        if (!intercomData) {
             console.warn("No intercom data");
             return;
         }
@@ -67,12 +67,12 @@ export class IntercomAnalytics implements IAnalytics {
 
     private boot(intercomData: IntercomData | undefined) {
 
-        if (! this.intercomClient) {
+        if (!this.intercomClient) {
             console.warn("No intercom client");
             return;
         }
 
-        if (! intercomData) {
+        if (!intercomData) {
             console.warn("No intercom data");
             return;
         }
@@ -83,12 +83,12 @@ export class IntercomAnalytics implements IAnalytics {
 
     private update(intercomData: IntercomData | undefined) {
 
-        if (! this.intercomClient) {
+        if (!this.intercomClient) {
             console.warn("No intercom client");
             return;
         }
 
-        if (! intercomData) {
+        if (!intercomData) {
             console.warn("No intercom data");
             return;
         }
@@ -103,7 +103,7 @@ export interface IIntercomDataForAnonymousUser {
     readonly app_id: string;
 
     // now arbitrary key / value pairs for attributes.
-    [key: string]: string | number;
+    [key: string]: string | number | boolean;
 
 }
 
@@ -113,6 +113,7 @@ export interface IIntercomDataForAuthenticatedUser extends IIntercomDataForAnony
     readonly name: string;
     readonly email: string;
     readonly created_at: string;
+    readonly hide_default_launcher: boolean;
 
 }
 
@@ -121,6 +122,7 @@ export type IntercomData = IIntercomDataForAnonymousUser | IIntercomDataForAuthe
 export interface IIntercomClient {
     readonly boot: (data: IntercomData) => void;
     readonly update: (data: IntercomData) => void;
+    readonly showMessages: () => void;
 }
 
 declare var window: any;
@@ -139,7 +141,11 @@ export function createIntercomClient(): IIntercomClient | undefined {
 
         }
 
-        return {boot, update};
+        function showMessages() {
+            window.Intercom('showMessages');
+        }
+
+        return {boot, update, showMessages};
     }
 
     return undefined;
@@ -151,7 +157,7 @@ export function toIntercomData(user: IAnalyticsUser | undefined): IntercomData {
     // eslint-disable-next-line camelcase
     const app_id = "wk5j7vo0";
 
-    if (! user) {
+    if (!user) {
         return {app_id};
     }
 
@@ -163,7 +169,8 @@ export function toIntercomData(user: IAnalyticsUser | undefined): IntercomData {
         user_id: user.uid,
         name: user.displayName || "",
         email: user.email,
-        created_at: `${created_at}`
+        created_at: `${created_at}`,
+        hide_default_launcher: true,
     };
 
     return data;

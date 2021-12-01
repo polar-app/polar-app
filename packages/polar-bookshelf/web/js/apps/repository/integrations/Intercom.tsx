@@ -15,21 +15,24 @@ export function useIntercom() {
     const intercomClient = createIntercomClient();
     const intercomData = useIntercomData();
 
-    if (! Devices.isDesktop()) {
+    if (!Devices.isDesktop()) {
         // for right now, intercom on a tablet doesn't make a ton of sense.
         return;
     }
 
-    if (! intercomClient) {
+    if (!intercomClient) {
         return;
     }
 
-    if (! intercomData) {
+    if (!intercomData) {
         return;
     }
 
     if (booted.current) {
-        intercomClient.update(intercomData);
+        intercomClient.update({
+            ...intercomData,
+            hide_default_launcher: true,
+        });
     } else {
         intercomClient.boot(intercomData);
     }
@@ -73,12 +76,12 @@ const IntercomInner = () => {
 
 export const Intercom = () => {
 
-    if (document.location.href.startsWith('https://')) {
-        return (
-            <IntercomInner/>
-        )
-    }
+    // if (document.location.href.startsWith('https://')) {
+    return (
+        <IntercomInner/>
+    )
+    // }
 
-    return null;
+    // return null;
 
 }
