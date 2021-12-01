@@ -17,6 +17,7 @@ export namespace SentryBrowser {
         }
 
         if (isDevBuild()) {
+            console.log('Skipping Sentry initialization on dev build.');
             return;
         }
 
