@@ -579,15 +579,15 @@ function useEPubZoom() {
             if (iframe?.contentDocument) {
                 iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
                 const images = iframe.contentDocument.querySelectorAll('img')
-                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
 
-                items.forEach((item) => {
-                    item.setAttribute('style', 'max-width: 100% !important; display: block')
-                    const newWidth = item.clientWidth * Number(scale.value)
-                    const newHeight = item.clientHeight * Number(scale.value)
-                    item.style.width = `${newWidth}px`
-                    item.style.height = `${newHeight}px`
-                })
+                Array.from(images).forEach((image) => {
+                    image.setAttribute('style', 'max-width: 100% !important; display: block')
+                    const newWidth = image.clientWidth * Number(scale.value)
+                    const newHeight = image.clientHeight * Number(scale.value)
+                    image.style.width = `${newWidth}px`
+                    image.style.height = `${newHeight}px`
+                });
+
             }
             return Number(scale.value);
         }
