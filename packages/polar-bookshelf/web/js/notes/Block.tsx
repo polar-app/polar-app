@@ -23,6 +23,18 @@ interface IUseStylesProps {
 
 export const NOTES_GUTTER_SIZE = 20;
 
+export const useBlockActionStyles = makeStyles((theme) =>
+    createStyles({
+        iconButtonWrapper: {
+            width: theme.spacing(2.5),
+            display: 'flex',
+            height: theme.spacing(3.5),
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    })
+);
+
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     createStyles({
         selected: {
@@ -36,13 +48,6 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
         },
         titleBlockWrapper: {
             marginLeft: 28,
-        },
-        iconButtonWrapper: {
-            width: 20,
-            display: 'flex',
-            height: theme.spacing(3.5),
-            alignItems: 'center',
-            justifyContent: 'center',
         },
         iconButton: {
             width: 20,
@@ -84,6 +89,7 @@ export const BlockInner = observer((props: IProps) => {
     const dragDropCallbacks = useDragDropHandler({ id, isRoot });
 
     const classes = useStyles({ hasGutter });
+    const blockActionClasses = useBlockActionStyles();
     const undoQueue = useUndoQueue();
 
     const contextMenuHandlers = useBlockContextMenu();
@@ -223,19 +229,17 @@ export const BlockInner = observer((props: IProps) => {
 
                     <Box mr={0.2} display="flex">
                         {! alwaysExpanded && (
-                            <div className={clsx(classes.iconButtonWrapper, classes.expandButtonWrapper)}>
+                            <div className={clsx(blockActionClasses.iconButtonWrapper, classes.expandButtonWrapper)}>
                                 {hasItems && ! alwaysExpanded && (
                                     <BlockExpandToggleButton className={classes.iconButton} id={id} />
                                 )}
                             </div>
                         )}
 
-                        <div className={classes.iconButtonWrapper}>
-                            <BlockOverflowMenuButton id={id} />
-                        </div>
+                        <BlockOverflowMenuButton id={id} />
 
                         {! noBullet && (
-                            <div className={classes.iconButtonWrapper}>
+                            <div className={blockActionClasses.iconButtonWrapper}>
                                 <BlockBulletButton className={classes.iconButton} target={id}/>
                             </div>
                         )}
