@@ -235,7 +235,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             handleSection(section);
 
             forwardEvents(pageElement);
-            handleLinkClicks(pageElement, linkLoader, docMeta.docInfo.url);
+            handleLinkClicks(pageElement, linkLoader, props.docMeta.docInfo.url);
 
             // applyCSS();
             incrRenderIter();
@@ -442,7 +442,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         console.log("Loaded epub");
 
     }, [docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
-        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
+        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, props.docMeta.docInfo.url, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
         setPage, setPageNavigator, setSection, stylesheet, setResizer, setScaleLeveler, epubZoom]);
 
