@@ -142,7 +142,7 @@ export interface ISplitBlock {
 }
 
 export interface ICreateBlockContentStructureOpts {
-    useNewIDs?: boolean;
+    readonly useNewIDs?: boolean;
 }
 
 export interface INewBlockOpts {
@@ -181,19 +181,19 @@ export interface NavOpts {
 }
 
 export interface IInsertBlocksContentStructureOpts {
-    ref?: BlockIDStr;
-    isUndoable?: boolean;
+    readonly ref?: BlockIDStr;
+    readonly isUndoable?: boolean;
 }
 
 export type InterstitialTypes = 'image';
 
 export type Interstitial = {
-    position: IDropPosition;
-    blobURL: string;
-    type: InterstitialTypes;
-    id: string;
-    controller: WriteController;
-    progressTracker: ProgressTrackerManager<WriteFileProgress>;
+    readonly position: IDropPosition;
+    readonly blobURL: string;
+    readonly type: InterstitialTypes;
+    readonly id: string;
+    readonly controller: WriteController;
+    readonly progressTracker: ProgressTrackerManager<WriteFileProgress>;
 };
 
 export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
@@ -1021,6 +1021,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             return this.idsToBlocks(block.itemsAsArray)
+                // eslint-disable-next-line functional/prefer-readonly-type
                 .reduce<BlockIDStr[]>((result, item) => {
                     result.push(item.id);
                     result.push(...computeTree(item, expanded));
@@ -1321,6 +1322,8 @@ export class BlocksStore implements IBlocksStore {
      * by traversing parents all the way up the tree.
      */
     public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
+
+        // eslint-disable-next-line functional/prefer-readonly-type
         const result: Block[] = [];
 
         let block = this._index[blockID];

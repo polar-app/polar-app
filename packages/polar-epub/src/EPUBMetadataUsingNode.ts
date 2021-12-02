@@ -96,7 +96,7 @@ export namespace EPUBMetadataUsingNode {
      * On how to use the returned `file` paths:
      * @see getChapterContents()
      */
-    export async function getChapterReferences(epubFile: PathOrURLStr): Promise<IChapterReference[]> {
+    export async function getChapterReferences(epubFile: PathOrURLStr): Promise<ReadonlyArray<IChapterReference>> {
         const rootFile = await getRootFile(epubFile);
         const rootFileAsJSON = rootFile.contents;
         const pathToRootFile = path.parse(rootFile.name).dir;

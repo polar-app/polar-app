@@ -230,6 +230,6 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 }
 
 interface FileData {
-    buffer: Buffer;
-    meta: FileMeta;
+    readonly buffer: Buffer;
+    readonly meta: FileMeta;
 }

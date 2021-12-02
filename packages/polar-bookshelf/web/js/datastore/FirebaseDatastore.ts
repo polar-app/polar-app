@@ -165,6 +165,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .where('uid', '==', uid);
 
         type BatchIDMap = {
+            // eslint-disable-next-line functional/prefer-readonly-type
             [P in DatastoreConsistency]: number;
         };
 
@@ -385,7 +386,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * visibility settings are different.  Either that or stack them so that
      * the second (with different settings) is performed after the first.
      */
-    private pendingFileWrites: {[key: string]: Latch<DocFileMeta>} = {};
+    private readonly pendingFileWrites: {[key: string]: Latch<DocFileMeta>} = {};
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
@@ -1032,25 +1033,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // source is the cache.  It's a BAD API...
         return 'default';
     }
-
-}
-
-
-/**
- * The result of a FB database mutation.
- */
-interface Mutation {
-
-}
-
-interface PendingMutationIndex {
-    [id: string]: PendingMutation;
-}
-
-interface PendingMutation {
-
-    id: string;
-    type: 'delete' | 'write';
 
 }
 

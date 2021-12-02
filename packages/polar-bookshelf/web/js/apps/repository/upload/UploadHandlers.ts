@@ -55,6 +55,7 @@ export function useBatchUploader() {
 
         try {
 
+            // eslint-disable-next-line functional/prefer-readonly-type
             const results: V[] = [];
 
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {

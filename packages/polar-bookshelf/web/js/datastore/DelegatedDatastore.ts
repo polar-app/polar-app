@@ -97,7 +97,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.write(fingerprint, data, docInfo, opts);
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void> {
         return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 

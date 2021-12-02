@@ -14,22 +14,22 @@ type URLStr = string;
 type UploadFileTypes = 'image';
 
 type GenericUploadedFile = {
-    type: UploadFileTypes;
-    url: URLStr;
+    readonly type: UploadFileTypes;
+    readonly url: URLStr;
 };
 
 export type UploadedFile = ImageUploadedFile;
 
 type ImageUploadedFile = GenericUploadedFile & {
-    width: number;
-    height: number;
+    readonly width: number;
+    readonly height: number;
 };
 
 type ImageUploadFile = {
-    type: 'image';
-    name: string;
-    file: File;
-    blobURL: string;
+    readonly type: 'image';
+    readonly name: string;
+    readonly file: File;
+    readonly blobURL: string;
 };
 
 type UploadFile = ImageUploadFile;
@@ -54,8 +54,8 @@ export const randomizeFileName = (originalFileName: string) => {
 
 
 type IUseUploadHandlerOpts = {
-    file: File;
-    target: IDropTarget;
+    readonly file: File;
+    readonly target: IDropTarget;
 };
 
 export const useUploadHandler = (): (opts: IUseUploadHandlerOpts) => Promise<UploadedFile | undefined> => {

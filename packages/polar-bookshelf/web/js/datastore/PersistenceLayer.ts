@@ -69,7 +69,7 @@ export interface PersistenceLayer {
      * Make sure the docs with the given fingerprints are synchronized with
      * this datastore. Only implemented in cloud datastores.
      */
-    synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void>;
+    synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void>;
 
     /**
      * Return the DocInfo written. The DocInfo may be updated on commit

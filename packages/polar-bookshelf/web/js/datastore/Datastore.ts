@@ -224,7 +224,7 @@ export interface DatastoreOverview {
 
 export abstract class AbstractDatastore {
 
-    protected datastoreMutations: DatastoreMutations;
+    protected readonly datastoreMutations: DatastoreMutations;
 
     protected constructor() {
         this.datastoreMutations = DatastoreMutations.create('written');
@@ -307,7 +307,7 @@ export abstract class AbstractDatastore {
                           docInfo: IDocInfo,
                           opts?: WriteOpts): Promise<void>;
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void> {
         // noop
     }
 
@@ -353,7 +353,7 @@ interface WritableDatastore {
      * Make sure the docs with the given fingerprints are synchronized with
      * this datastore. Only implemented in cloud datastores.
      */
-    synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void>;
+    synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void>;
 
     createBackup(): Promise<void>;
 
@@ -743,8 +743,8 @@ export interface SnapshotResult {
 }
 
 export interface SyncDocMap {
+    // eslint-disable-next-line functional/prefer-readonly-type
     [fingerprint: string]: SyncDoc;
-
 }
 
 export class SyncDocMaps {
@@ -854,7 +854,7 @@ export interface PrefsProvider {
 
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
-    protected reactor = new SimpleReactor<IPersistentPrefs | undefined>();
+    protected readonly reactor = new SimpleReactor<IPersistentPrefs | undefined>();
 
     public abstract get(): IPersistentPrefs;
 

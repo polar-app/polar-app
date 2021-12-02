@@ -48,11 +48,11 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
     public readonly datastore: Datastore;
 
-    private datastoreMutations: DatastoreMutations;
+    private readonly datastoreMutations: DatastoreMutations;
 
-    private userTagsDB?: UserTagsDB;
+    private readonly userTagsDB?: UserTagsDB;
 
-    private initLatch = new Latch();
+    private readonly initLatch = new Latch();
 
     constructor(datastore: Datastore) {
         super();
@@ -269,7 +269,7 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void> {
         return this.datastore.synchronizeDocs(...docMetaRefs);
     }
 

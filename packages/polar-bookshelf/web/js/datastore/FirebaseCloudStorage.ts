@@ -24,7 +24,9 @@ import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
 type ProgressTrackerManagerListener<T> = (data: T) => void;
 
 export class ProgressTrackerManager<T = Percentage> {
-    public progressListener: ProgressTrackerManagerListener<T>;
+    public readonly progressListener: ProgressTrackerManagerListener<T>;
+
+    // eslint-disable-next-line functional/prefer-readonly-type
     private progressCallbacks: ProgressTrackerManagerListener<T>[] = [];
 
     constructor() {
@@ -43,9 +45,9 @@ export class ProgressTrackerManager<T = Percentage> {
 
 
 export class CloudStorage {
-    private pendingWrites: Map<string, Promise<DocFileMeta>> = new Map();
-    private uid: string;
-    private storage: firebase.storage.Storage = firebase.storage();
+    private readonly pendingWrites: Map<string, Promise<DocFileMeta>> = new Map();
+    private readonly uid: string;
+    private readonly storage: firebase.storage.Storage = firebase.storage();
 
     constructor(uid: string) {
         this.uid = uid;
