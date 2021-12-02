@@ -92,11 +92,11 @@ export type BlockContent = (MarkdownContent
                             | AnnotationContent) & IBaseBlockContent;
 
 export interface BlockContentMap extends AnnotationContentTypeMap {
-    'markdown': MarkdownContent,
-    'name': NameContent,
-    'image': ImageContent,
-    'date': DateContent,
-    'document': DocumentContent,
+    readonly 'markdown': MarkdownContent,
+    readonly 'name': NameContent,
+    readonly 'image': ImageContent,
+    readonly 'date': DateContent,
+    readonly 'document': DocumentContent,
 };
 
 export type BlockType = BlockContent['type'];
@@ -343,42 +343,52 @@ export class BlocksStore implements IBlocksStore {
     /**
      * The currently active block.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _active: IActiveBlock | undefined = undefined;
+
     /**
      * The blocks that are expanded.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _expanded: StringSetMap = {};
 
     /**
      * The nodes that are selected by the user so that they can be highlighted in the UI.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _selected: StringSetMap = {};
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _dropTarget: IDropTarget | undefined = undefined;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _dropSource: BlockIDStr | undefined = undefined;
 
     /**
      * Used so that when we change the selected blocks, that we know which is the
      * FIRST so that we can compute a from and to based on their position.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
     /**
      * True when we've received our first snapshot.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _hasSnapshot: boolean = false;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _interstitials: InterstitialMap = {};
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     @observable _tagsIndex: ReverseIndex = new ReverseIndex();
 
     /*
      * Used to keep track of cursor positions in every note
      */
-    private _activeBlocksIndex: ActiveBlocksIndex = {};
+    private readonly _activeBlocksIndex: ActiveBlocksIndex = {};
 
-    public relatedTagsManager: RelatedTagsManager = new RelatedTagsManager();
+    public readonly relatedTagsManager: RelatedTagsManager = new RelatedTagsManager();
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
