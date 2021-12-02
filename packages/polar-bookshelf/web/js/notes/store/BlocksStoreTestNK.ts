@@ -129,7 +129,12 @@ export function createUndoRunner(blocksStore: BlocksStore,
 
 }
 
-type BlockTree = ReadonlyArray<{id: BlockIDStr,  children: BlockTree}>;
+interface BlockTreeEntry {
+    readonly id: BlockIDStr;
+    readonly children: BlockTree
+}
+
+type BlockTree = ReadonlyArray<BlockTreeEntry>;
 
 const assertBlockTree = (store: BlocksStore, blockTree: BlockTree, parent?: Block) => {
     for (const item of blockTree) {
