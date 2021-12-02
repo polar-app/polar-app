@@ -3,16 +3,11 @@ import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
 import {URLStr} from 'polar-shared/src/util/Strings';
 
-export interface LinkLoaderOpts {
-    readonly focus: boolean;
-    readonly newWindow: boolean;
-}
-
-export type LinkLoaderDelegate = (location: URLStr, opts: LinkLoaderOpts) => void;
+export type LinkLoaderDelegate = (location: URLStr) => void;
 
 /**
- * Nav function that uses history to jump to the next page not forcibly changing
- * the window which doesn't use react router.
+ * A link loader will load an external URL in a new window, and then focus that
+ * window.  This is ONLY to be used when loading external URLs.
  */
 export function useLinkLoader(): LinkLoaderDelegate {
 
@@ -73,7 +68,7 @@ function useMobileLinkLoader(): LinkLoaderDelegate {
 
 function createDesktopLinkLoader(): LinkLoaderDelegate {
 
-    return (location: URLStr, opts: LinkLoaderOpts) => {
+    return (location: URLStr) => {
 
         function createWindow() {
 
@@ -83,26 +78,20 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
 
         }
 
-        const win = opts.newWindow ? createWindow() : window;
+        const win = createWindow();
 
         if (win) {
 
-            if (opts.newWindow) {
+            win.focus();
 
-                if (opts.focus) {
-                    win.focus();
+            if (win && win.document) {
+                // this is primarily for Electron as you can't access the
+                // document from electron since it's basically emulating
+                // this API.
+
+                if (typeof win.document.write === 'function') {
+                    win.document.write(LOADING_HTML);
                 }
-
-                if (win && win.document) {
-                    // this is primarily for Electron as you can't access the
-                    // document from electron since it's basically emulating
-                    // this API.
-
-                    if (typeof win.document.write === 'function') {
-                        win.document.write(LOADING_HTML);
-                    }
-                }
-
             }
 
         } else {

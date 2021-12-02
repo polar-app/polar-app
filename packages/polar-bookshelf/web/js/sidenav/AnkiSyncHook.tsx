@@ -33,7 +33,7 @@ export function useAnkiSyncCallback() {
 
                     </div>
                 ),
-                onAccept: () => linkLoader('https://getpolarized.io/download/', {newWindow: true, focus: true})
+                onAccept: () => linkLoader('https://getpolarized.io/download/')
 
             })
         }

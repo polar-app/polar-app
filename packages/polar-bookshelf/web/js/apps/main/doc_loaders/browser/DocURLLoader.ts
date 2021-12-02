@@ -22,10 +22,8 @@ export function useDocURLLoader(): (url: string) => void {
 
     const linkLoader = useLinkLoader();
 
-    const opts = {focus: true, newWindow: true};
-
     return (url: string) => {
-        linkLoader(url, opts);
+        linkLoader(url);
     }
 
 }
