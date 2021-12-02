@@ -12,6 +12,8 @@ import {ActiveTabButton} from "./ActiveTabButton";
 import {SideNavQuestionMenuItem} from "./SideNavQuestionMenuItem";
 import Menu from "@material-ui/core/Menu";
 import {Devices} from "polar-shared/src/util/Devices";
+import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
+import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
 
 function useReportFeedback() {
 
@@ -19,7 +21,7 @@ function useReportFeedback() {
 
     return React.useCallback(() => {
 
-        const url ='http://feedback.getpolarized.io/feature-requests';
+        const url = 'http://feedback.getpolarized.io/feature-requests';
 
         linkLoader(url);
 
@@ -28,6 +30,31 @@ function useReportFeedback() {
 }
 
 export namespace MenuItems {
+
+    export const Intercom = React.forwardRef<HTMLLIElement, {}>((props, ref) => {
+
+        const intercomClient = createIntercomClient();
+        const intercomData = useIntercomData();
+
+        function onClick() {
+            if (intercomData && intercomClient) {
+                intercomClient.update({
+                    ...intercomData,
+                    hide_default_launcher: false,
+                });
+                intercomClient.showMessages();
+            }
+        }
+
+        return (
+            <SideNavQuestionMenuItem icon={FADiscordIcon}
+                                     ref={ref}
+                                     text="Chat Now"
+                                     secondary="Ask us anything, or share your feedback"
+                                     onClick={onClick}/>
+        );
+
+    })
 
     export const Chat = React.forwardRef<HTMLLIElement, {}>((props, ref) => {
 
@@ -120,11 +147,11 @@ function useWindowEscapeListener(callback: () => void) {
 
     React.useEffect(() => {
 
-       window.addEventListener('keydown', handler);
+        window.addEventListener('keydown', handler);
 
-       return () => {
-           window.removeEventListener('keydown', handler);
-       }
+        return () => {
+            window.removeEventListener('keydown', handler);
+        }
 
     }, [handler]);
 
@@ -151,10 +178,10 @@ export function SideNavQuestionButton() {
                              noContextMenu={true}
                              onClick={handleClick}>
                 <div style={{
-                         userSelect: 'none',
-                         fontSize: '25px',
-                         lineHeight: '25px'
-                     }}>
+                    userSelect: 'none',
+                    fontSize: '25px',
+                    lineHeight: '25px'
+                }}>
                     ?
                 </div>
             </ActiveTabButton>
@@ -174,6 +201,7 @@ export function SideNavQuestionButton() {
                   }}
                   anchorEl={anchorEl}>
 
+                <MenuItems.Intercom/>
                 <MenuItems.Chat/>
                 <MenuItems.Documentation/>
 

@@ -171,12 +171,12 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                             variant="contained"
                             size="large"
                             onClick={() => {
-                                if (intercomData) {
-                                    intercomClient?.update({
+                                if (intercomData && intercomClient) {
+                                    intercomClient.update({
                                         ...intercomData,
                                         hide_default_launcher: false,
                                     });
-                                    intercomClient?.showMessages();
+                                    intercomClient.showMessages();
                                 }
                             }}>
 

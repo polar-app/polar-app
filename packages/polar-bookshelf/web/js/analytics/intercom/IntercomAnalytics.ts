@@ -138,12 +138,20 @@ export function createIntercomClient(): IIntercomClient | undefined {
 
         function update(data: IntercomData) {
             window.Intercom('update', data);
-
         }
 
         function showMessages() {
             window.Intercom('showMessages');
         }
+
+        // Listen for when the Intercom main window is hidden
+        window.Intercom('onHide', () => {
+            console.log("Intercom was hidden");
+            // Now hide the FAB icon as well
+            window.Intercom('update', {
+                hide_default_launcher: true,
+            })
+        });
 
         return {boot, update, showMessages};
     }
