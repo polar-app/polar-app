@@ -87,7 +87,7 @@ export const DailyNotesScreen: React.FC = observer(() => {
     return (
         <>
             <Helmet>
-                <title>Polar: Daily notes</title>
+                <title>Polar: Daily Notes</title>
             </Helmet>
             <NotesToolbar />
             <NoteStack target={RoutePathNames.DAILY} rootBannerLabel="Daily notes">

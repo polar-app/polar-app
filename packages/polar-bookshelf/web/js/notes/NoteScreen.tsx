@@ -9,11 +9,14 @@ import {NoteStyle} from "./NoteStyle";
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import {NotesRepoScreen} from './NotesRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
-import {SideCar} from '../sidenav/SideNav';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
+import {NotesRepoScreen} from "./NotesRepoScreen";
+import {DeviceRouters} from '../ui/DeviceRouter';
+import {NotesRepoScreen2} from "../../../apps/repository/js/notes_repo/NotesRepoScreen2";
+import {BlockOverflowMenuProvider} from './block_overflow_menu/BlockOverflowMenu';
+import {BlockFormatBarProvider} from './note_format_bar/NoteFormatBar';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -32,16 +35,20 @@ export const NoteProviders: React.FC = ({ children }) => {
 
     return (
         <div className="NoteRoot" style={{ height: '100%', width: '100%' }}>
-            <ActionMenuStoreProvider>
-                <NoteSelectionHandler style={{ height: '100%' }}>
-                    <NoteStyle>
-                        <MUIBrowserLinkStyle className={classes.noteOuter}>
-                            {children}
-                            <ActionMenuPopup />
-                        </MUIBrowserLinkStyle>
-                    </NoteStyle>
-                </NoteSelectionHandler>
-            </ActionMenuStoreProvider>
+            <BlockFormatBarProvider>
+                <BlockOverflowMenuProvider>
+                    <ActionMenuStoreProvider>
+                        <NoteSelectionHandler style={{ height: '100%' }}>
+                            <NoteStyle>
+                                <MUIBrowserLinkStyle className={classes.noteOuter}>
+                                    {children}
+                                    <ActionMenuPopup />
+                                </MUIBrowserLinkStyle>
+                            </NoteStyle>
+                        </NoteSelectionHandler>
+                    </ActionMenuStoreProvider>
+                </BlockOverflowMenuProvider>
+            </BlockFormatBarProvider>
         </div>
     );
 };
@@ -59,13 +66,18 @@ export const NotesScreen: React.FC = observer(() => {
     return (
         <NotesContainer>
             <NoteProviders>
-                <SideCar>
-                    <div style={{ padding: 12 }}>Empty for now</div>
-                </SideCar>
                 <Switch>
                     <Route path={RoutePathNames.NOTE(":id")} component={SingleNoteScreen} />
                     <Route path={RoutePathNames.DAILY} component={DailyNotesScreen} />
-                    <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
+
+                    <DeviceRouters.Desktop>
+                        <Route path={RoutePathNames.NOTES} component={NotesRepoScreen} />
+                    </DeviceRouters.Desktop>
+
+                    <DeviceRouters.NotDesktop>
+                        <Route path={RoutePathNames.NOTES} component={NotesRepoScreen2} />
+                    </DeviceRouters.NotDesktop>
+
                 </Switch>
             </NoteProviders>
         </NotesContainer>

@@ -6,13 +6,12 @@ export interface IStoreContextProviderProps<T> {
 
 export type StoreContextProviderComponent<T> = React.FC<IStoreContextProviderProps<T>>;
 
-export type StoreProvider<T> = () => T;
+export type UseStoreProvider<T> = () => T;
 
-export type StoreContextTuple<T> = [
+export type StoreContextTuple<T> = Readonly<[
     StoreContextProviderComponent<T>,
-    StoreProvider<T>
-];
-
+    UseStoreProvider<T>
+]>;
 
 export function createStoreContext<T>(useStoreDelegate: () => T): StoreContextTuple<T> {
 

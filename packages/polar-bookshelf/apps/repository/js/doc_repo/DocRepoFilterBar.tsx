@@ -32,7 +32,7 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
             <DeviceRouters.NotDesktop>
 
                 <>
-                    <span>My workspace</span>
+                    <span>Documents</span>
 
                     <UserAvatarIconButton onClick={()=>history.push(RoutePathNames.ACCOUNT_MOBILE)}
                                           style={{marginLeft: 'auto'}}/>

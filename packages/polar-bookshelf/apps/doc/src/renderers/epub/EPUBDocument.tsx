@@ -38,6 +38,8 @@ import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
+import {RenditionOptions} from "epubjs/types/rendition";
+import {Browsers} from "polar-browsers/src/Browsers";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 
 interface IProps {
@@ -61,7 +63,7 @@ function forwardEvents(target: HTMLElement) {
 
 }
 
-function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
+function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, baseURL: string | undefined) {
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
 
@@ -72,6 +74,8 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
 
     const links = Array.from(iframe.contentDocument.querySelectorAll('a'));
 
+    console.log("handleLinkClicks: Handling N link clicks with listeners: " + links.length);
+
     for (const link of links) {
 
         link.addEventListener('click', (event) => {
@@ -79,16 +83,26 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
             const href = link.getAttribute('href');
 
             if (!href) {
+                console.log("handleLinkClicks: Link has no href");
                 return;
             }
 
-            if (!href.startsWith('http')) {
-                return;
+            function resolveURL(href: string) {
+
+                if (! href.startsWith('http:') && ! href.startsWith("https:")) {
+                    // The URL is not fully resolved so we have to resolve it properly.
+                    return new URL(href, baseURL).toString();
+                }
+
+                return href;
+
             }
 
-            console.log("linkClicked: ", href);
+            const url = resolveURL(href);
 
-            linkLoader(href, {focus: true, newWindow: true});
+            console.log("handleLinkClicks: Link clicked. Loading with link loader: ", url);
+
+            linkLoader(url);
 
             event.stopPropagation();
             event.preventDefault();
@@ -176,14 +190,23 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         //
         // test no width but set the iframe CSS style to width
 
-        const rendition = book.renderTo(pageElement, {
+        // NOTE: types are wrong here and method CAN be set.
+
+        interface IExtendedRenditionOptions extends RenditionOptions {
+            readonly method: 'blobUrl' | 'srcdoc'
+        }
+
+        const opts: IExtendedRenditionOptions = {
             flow: "scrolled-doc",
             width: '100%',
             resizeOnOrientationChange: false,
             stylesheet,
+            method: Browsers.get()?.id === 'safari' ? 'blobUrl' : 'srcdoc'
             // height: '100%',
             // layout: 'pre-paginated'
-        });
+        }
+
+        const rendition = book.renderTo(pageElement, opts as any);
 
         rendition.on('locationChanged', (event: any) => {
             // noop... this is called when the location of the book is changed
@@ -226,7 +249,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             handleSection(section);
 
             forwardEvents(pageElement);
-            handleLinkClicks(pageElement, linkLoader);
+            handleLinkClicks(pageElement, linkLoader, props.docMeta.docInfo.url);
 
             // applyCSS();
             incrRenderIter();
@@ -433,7 +456,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         console.log("Loaded epub");
 
     }, [docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
-        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
+        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, props.docMeta.docInfo.url, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
         setPage, setPageNavigator, setSection, stylesheet, setResizer, setScaleLeveler, epubZoom]);
 
@@ -570,15 +593,15 @@ function useEPubZoom() {
             if (iframe?.contentDocument) {
                 iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
                 const images = iframe.contentDocument.querySelectorAll('img')
-                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
 
-                items.forEach((item) => {
-                    item.setAttribute('style', 'max-width: 100% !important; display: block')
-                    const newWidth = item.clientWidth * Number(scale.value)
-                    const newHeight = item.clientHeight * Number(scale.value)
-                    item.style.width = `${newWidth}px`
-                    item.style.height = `${newHeight}px`
-                })
+                Array.from(images).forEach((image) => {
+                    image.setAttribute('style', 'max-width: 100% !important; display: block')
+                    const newWidth = image.clientWidth * Number(scale.value)
+                    const newHeight = image.clientHeight * Number(scale.value)
+                    image.style.width = `${newWidth}px`
+                    image.style.height = `${newHeight}px`
+                });
+
             }
             return Number(scale.value);
         }

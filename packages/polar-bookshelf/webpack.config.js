@@ -20,7 +20,7 @@ const bundle = determineBundle();
 const port = determinePort(bundle);
 const openPage = determineOpenPage(bundle);
 
-const workers = os.cpus().length - 1;
+const workers = process.env.WORKERS || os.cpus().length - 1;
 
 const output =
     process.env.OUTPUT_PATH || path.resolve(__dirname, "dist/public");
@@ -294,7 +294,7 @@ module.exports = {
             "window.$": "jquery",
             "window.jQuery": "jquery"
         }),
-        isDevServer && new webpack.HotModuleReplacementPlugin(),
+        // isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
         // NOTE: uncomment the following line to add the webpack bundle analyzer
         // plugin.  This is important to keep becuase it allows us to figure out

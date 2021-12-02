@@ -2,9 +2,7 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import React from "react";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
-import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
-import {useHistory} from "react-router-dom";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -137,69 +135,6 @@ export function useAuthHandler() {
         .catch(err => logger.error("Can not authenticate: ", err));
 
     return status;
-
-}
-
-export function useTriggerFirebaseGoogleAuth() {
-
-    /// https://firebase.google.com/docs/auth/web/google-signin
-
-    const electronWarningForGoogle = useElectronWarningForGoogle();
-
-    return React.useCallback(async () => {
-
-        if (electronWarningForGoogle()) {
-            return;
-        }
-
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        provider.setCustomParameters({
-            prompt: 'select_account'
-        })
-
-        Analytics.event2('auth:TriggerFirebaseGoogleAuth')
-        await auth.signInWithRedirect(provider);
-
-        FirebaseUIAuth.authWithGoogle();
-
-    }, [electronWarningForGoogle]);
-
-}
-
-export function useTriggerFirebaseEmailAuth() {
-
-    const history = useHistory();
-
-    return React.useCallback(async (email: string) => {
-
-        const auth = firebase.auth();
-
-        // TODO: an alternative here is to do this on the backend and call the
-        // function ourselves but it's somewhat annoying.
-
-        // push a new history state into the path with ?email = so that
-        function createLocationWithEmail() {
-            const url = new URL(document.location.href);
-            url.searchParams.set('email', email);
-            return `${url.pathname}${url.search}${url.hash}`;
-        }
-
-        const locationWithEmail = createLocationWithEmail();
-
-        history.push(locationWithEmail);
-
-        await auth.sendSignInLinkToEmail(email, {
-            // URL you want to redirect back to. The domain (www.example.com) for this
-            // URL must be in the authorized domains list in the Firebase Console.
-            // url: 'https://app.getpolarized.io',
-            url: document.location.href,
-            handleCodeInApp: true,
-            dynamicLinkDomain: 'app.getpolarized.io'
-        })
-
-    }, [history]);
 
 }
 

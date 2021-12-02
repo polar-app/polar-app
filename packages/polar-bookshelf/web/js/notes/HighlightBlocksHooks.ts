@@ -164,6 +164,7 @@ export const useAnnotationBlockManager = () => {
         return block as Block<AnnotationContentTypeMap[T]>;
     }, [blocksStore]);
 
+    // IMPORTANT: this function is only meant to be used within the doc reader, because it requires docMeta
     const create = React.useCallback((fingerprint: DocIDStr, content: AnnotationHighlightContent): BlockIDStr | undefined => {
 
         if (! docMeta) {
@@ -189,7 +190,6 @@ export const useAnnotationBlockManager = () => {
     }, [blocksStore, doMutation, docMeta]);
 
 
-    // IMPORTANT: this function is only meant to be used within the doc reader, because it requires docMeta
     const updateHighlight = React.useCallback((id: BlockIDStr, annotation: AnnotationHighlightContent) => {
         if (! docMeta) {
             console.error('Annotation block cannot be updated due to docMeta not being available');

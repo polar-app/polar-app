@@ -15,12 +15,25 @@ import {Box, Theme} from "@material-ui/core";
 import {useDragDropHandler} from "./DropHandler";
 import {Interstitial} from "./Interstitial";
 import {BlockContextMenu, useBlockContextMenu} from "./BlockContextMenu";
+import {BlockOverflowMenuButton} from "./block_overflow_menu/BlockOverflowMenuButton";
 
 interface IUseStylesProps {
     readonly hasGutter: boolean;
 }
 
 export const NOTES_GUTTER_SIZE = 20;
+
+export const useBlockActionStyles = makeStyles((theme) =>
+    createStyles({
+        iconButtonWrapper: {
+            width: theme.spacing(2.5),
+            display: 'flex',
+            height: theme.spacing(3.5),
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    })
+);
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     createStyles({
@@ -35,12 +48,6 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
         },
         titleBlockWrapper: {
             marginLeft: 28,
-        },
-        iconButtonWrapper: {
-            width: 20,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
         iconButton: {
             width: 20,
@@ -82,6 +89,7 @@ export const BlockInner = observer((props: IProps) => {
     const dragDropCallbacks = useDragDropHandler({ id, isRoot });
 
     const classes = useStyles({ hasGutter });
+    const blockActionClasses = useBlockActionStyles();
     const undoQueue = useUndoQueue();
 
     const contextMenuHandlers = useBlockContextMenu();
@@ -219,27 +227,30 @@ export const BlockInner = observer((props: IProps) => {
                     mx={0.25}
                     className={clsx({ [classes.titleBlockWrapper]: isHeader })}>
 
-                    {! (alwaysExpanded && noBullet) && (
-                        <Box display="flex" alignItems="stretch" style={{ height: 28 }}>
-                            <div className={clsx(classes.iconButtonWrapper, classes.expandButtonWrapper)}>
+                    <Box mr={0.2} display="flex">
+                        {! alwaysExpanded && (
+                            <div className={clsx(blockActionClasses.iconButtonWrapper, classes.expandButtonWrapper)}>
                                 {hasItems && ! alwaysExpanded && (
                                     <BlockExpandToggleButton className={classes.iconButton} id={id} />
                                 )}
                             </div>
+                        )}
 
-                            <div className={classes.iconButtonWrapper}>
-                                {! noBullet && <BlockBulletButton className={classes.iconButton} target={id}/>}
+                        <BlockOverflowMenuButton id={id} />
+
+                        {! noBullet && (
+                            <div className={blockActionClasses.iconButtonWrapper}>
+                                <BlockBulletButton className={classes.iconButton} target={id}/>
                             </div>
+                        )}
+                    </Box>
 
-                        </Box>
-                    )}
 
                     <BlockEditor
                         parent={parent}
                         id={id}
                         className={isHeader ? classes.titleBlock : ""}
                     />
-
                 </Box>
 
                 {(expanded || alwaysExpanded) && ! dontRenderChildren && (

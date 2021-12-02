@@ -42,7 +42,7 @@ export const SideNavContextMenu = deepMemo(function SideNavContextMenu() {
 
     const handleOpenDocumentInBrowser = React.useCallback(() => {
 
-        withActivatedTab(tab => linkLoader(tab.url, {focus: true, newWindow: true}));
+        withActivatedTab(tab => linkLoader(tab.url));
 
     }, [linkLoader, withActivatedTab]);
 

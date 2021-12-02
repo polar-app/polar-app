@@ -68,7 +68,7 @@ export const ChromeExtensionInstallButton = deepMemo(function ChromeExtensionIns
     function onClick(): void {
         Analytics.event({category: 'chrome-extension', action: 'manual-installation-triggered'});
         const chromeStoreURL = ChromeStoreURLs.create();
-        linkLoader(chromeStoreURL, {newWindow: true, focus: true});
+        linkLoader(chromeStoreURL);
     }
 
     if (! isChrome) {

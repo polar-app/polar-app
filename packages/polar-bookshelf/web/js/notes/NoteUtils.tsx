@@ -1,5 +1,14 @@
 import React from "react";
-import {BlockIDStr, IBlock, IBlockContent, IBlockContentMap, IBlockContentStructure, IBlockLink, ITextContent} from "polar-blocks/src/blocks/IBlock";
+import {
+    BlockIDStr,
+    IBlock,
+    IBlockContent,
+    IBlockContentMap,
+    IBlockContentStructure,
+    IBlockLink,
+    INamedContent,
+    ITextContent
+} from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
@@ -28,6 +37,10 @@ import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMet
 import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
+import {ContentEditables} from "./ContentEditables";
+import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
 
 export const NotesIntegrationContext = React.createContext<boolean>(false);
 
@@ -59,51 +72,52 @@ export const useDocumentBlockFromDocInfoCreator = () => {
                 docContentStructure,
                 ...tagContentsStructure,
             ], { isUndoable: false });
-            
+
         }
     }, [blocksStore, notesIntegrationEnabled]);
 };
 
-export const sortNamedBlocks = (blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
-    const sortByTypeComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+const sortByTypeComparator = (a: Readonly<IBlock<INamedContent>>, b: Readonly<IBlock<INamedContent>>) => {
 
-        function toInt(block: Readonly<Block<NamedContent>>) {
+    function toInt(block: Readonly<IBlock<INamedContent>>) {
 
-            if (block.content.type === 'name' && block.content.data.startsWith("/")) {
-                // push this down to the end.
-                return 3;
-            }
+        if (block.content.type === 'name' && block.content.data.startsWith("/")) {
+            // push this down to the end.
+            return 3;
+        }
 
-            switch (block.content.type) {
+        switch (block.content.type) {
 
-                case "document":
-                case "name":
-                    // documents and named notes have real names
-                    return 1;
-                case "date":
-                    // then sort by date
-                    return 2;
-
-            }
+            case "document":
+            case "name":
+                // documents and named notes have real names
+                return 1;
+            case "date":
+                // then sort by date
+                return 2;
 
         }
 
-        return toInt(a) - toInt(b);
-
     }
 
-    const sortByContentComparator = (a: Readonly<Block<NamedContent>>, b: Readonly<Block<NamedContent>>) => {
+    return toInt(a) - toInt(b);
 
-        const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
-        const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
+}
 
-        return strA.localeCompare(strB);
+const sortByContentComparator = (a: Readonly<IBlock<INamedContent>>, b: Readonly<IBlock<INamedContent>>) => {
 
-    }
+    const strA = BlockTextContentUtils.getTextContentMarkdown(a.content);
+    const strB = BlockTextContentUtils.getTextContentMarkdown(b.content);
 
-    const comparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
+    return strA.localeCompare(strB);
 
-    return [...blocks].sort(comparator);
+}
+
+export const namedBlocksComparator = Comparators.chain(sortByTypeComparator, sortByContentComparator);
+
+export const sortNamedBlocks = (blocks: ReadonlyArray<Block<NamedContent>>): ReadonlyArray<Block<NamedContent>> => {
+
+    return [...blocks].sort(namedBlocksComparator);
 };
 
 /**
@@ -207,13 +221,13 @@ export const useUpdateBlockTags = () => {
 
             return tags.filter(tag => ! getBlockIDFromTag(tag)).map(toContentStructure);
         };
-        
+
         const updateTarget = ({ id, content }: IHasLinksBlockTarget): IHasLinksBlockTarget => {
 
             const newTags = Tags.computeNewTags(Tags.toMap(content.getTags()), tags, strategy);
 
             const newTagLinks = newTags.map(({ label }) => {
-                
+
                 const tagBlock = blocksStore.getBlockByName(label);
 
                 if (! tagBlock) {
@@ -224,7 +238,7 @@ export const useUpdateBlockTags = () => {
             });
 
             const newContent = new HasLinks({ links: [...content.wikiLinks, ...newTagLinks] });
-            
+
 
             return { id, content: newContent };
         };
@@ -232,7 +246,7 @@ export const useUpdateBlockTags = () => {
         const computeTagLinksDelta = (before: HasLinks, after: HasLinks) => {
             const beforeTagLinksIDs = new Set(before.tagLinks.map(({ id }) => id));
             const afterTagLinksIDs = new Set(after.tagLinks.map(({ id }) => id));
-            
+
             return {
                 added: after.tagLinks.filter(({ id }) => ! beforeTagLinksIDs.has(id)),
                 removed: before.tagLinks.filter(({ id }) => ! afterTagLinksIDs.has(id)),
@@ -264,7 +278,7 @@ export const useUpdateBlockTags = () => {
                 }, markdown);
 
                 const linksMarkdown = added.map(({ text }) => `[[${text}]]`).join(' ');
-                
+
                 const newContent = BlockTextContentUtils
                     .updateTextContentMarkdown(canHaveLinksContent, `${newMarkdown} ${linksMarkdown}`);
 
@@ -314,14 +328,14 @@ export const useUpdateBlockTags = () => {
                     return undefined;
                 }
 
-                return { id: blockID, label: tag.label }; 
+                return { id: blockID, label: tag.label };
             }).filterPresent()
             .collect();
 
 
         if (newUserTags.length > 0) {
             newUserTags.forEach(tag => blocksUserTagsDB.register(tag));
-            blocksUserTagsDB.commit().catch(console.error); 
+            blocksUserTagsDB.commit().catch(console.error);
         }
 
         /**
@@ -490,3 +504,37 @@ export namespace BlockLinksMatcher {
     }
 
 }
+
+export const useCreateBacklinkFromSelection = () => {
+    const blocksStore = useBlocksStore();
+
+    return React.useCallback((id: BlockIDStr) => {
+        const range = ContentEditables.currentRange();
+        const block = blocksStore.getBlock(id);
+
+        if (! range || range.collapsed || ! block || !BlockPredicates.canHaveLinks(block)) {
+            return;
+        }
+
+        const blockElement = DOMBlocks.findBlockParent(range.startContainer);
+
+        if (! blockElement) {
+            return;
+        }
+
+        const target = range.toString().trim();
+
+        if (target.length === 0) {
+            return;
+        }
+
+        range.deleteContents();
+        range.insertNode(DOMBlocks.createWikiLinkAnchorElement('link', target));
+
+        const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
+        
+        const markdown = MarkdownContentConverter.toMarkdown(html);
+
+        blocksStore.createLinkToBlock(id, target, markdown);
+    }, [blocksStore]);
+};
