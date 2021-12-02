@@ -125,6 +125,11 @@ export const MUIBottomNavigation = ()  => {
         return null;
     }
 
+    if (location.pathname.startsWith('/notes/')) {
+        // hack to disable when opening up notes.
+        return null;
+    }
+
     return (
         <Paper elevation={3}>
             <BottomNavigation value={value}

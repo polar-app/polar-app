@@ -37,6 +37,10 @@ import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMet
 import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
+import {ContentEditables} from "./ContentEditables";
+import {DOMBlocks} from "./contenteditable/DOMBlocks";
+import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
 
 export const NotesIntegrationContext = React.createContext<boolean>(false);
 
@@ -500,3 +504,37 @@ export namespace BlockLinksMatcher {
     }
 
 }
+
+export const useCreateBacklinkFromSelection = () => {
+    const blocksStore = useBlocksStore();
+
+    return React.useCallback((id: BlockIDStr) => {
+        const range = ContentEditables.currentRange();
+        const block = blocksStore.getBlock(id);
+
+        if (! range || range.collapsed || ! block || !BlockPredicates.canHaveLinks(block)) {
+            return;
+        }
+
+        const blockElement = DOMBlocks.findBlockParent(range.startContainer);
+
+        if (! blockElement) {
+            return;
+        }
+
+        const target = range.toString().trim();
+
+        if (target.length === 0) {
+            return;
+        }
+
+        range.deleteContents();
+        range.insertNode(DOMBlocks.createWikiLinkAnchorElement('link', target));
+
+        const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
+        
+        const markdown = MarkdownContentConverter.toMarkdown(html);
+
+        blocksStore.createLinkToBlock(id, target, markdown);
+    }, [blocksStore]);
+};

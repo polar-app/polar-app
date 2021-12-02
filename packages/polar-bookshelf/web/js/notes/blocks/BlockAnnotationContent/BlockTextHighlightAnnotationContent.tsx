@@ -2,7 +2,6 @@ import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
 import {BlockHighlightContentWrapper} from "./BlockHighlightContentWrapper";
 import {createStyles, makeStyles} from "@material-ui/core";
-import {BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {TextHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {BlockEditorGenericProps} from "../../BlockEditor";
@@ -24,14 +23,6 @@ export const useStyles = makeStyles(() =>
         root: {
             position: 'relative',
             paddingRight: 30,
-        },
-        actionsOuter: {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            '& > div + div': {
-                marginTop: 4,
-            },
         },
     }),
 );
@@ -56,23 +47,19 @@ export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => 
         return BlockTextHighlights.toText(highlight);
     }, [highlight]);
 
-    const actions = useSharedAnnotationBlockActions({ id, annotation });
-
     return (
-        <BlockAnnotationActionsWrapper actions={actions}>
-            <BlockHighlightContentWrapper color={highlight.color}>
-                <BlockContentEditable id={id}
-                                      parent={parent}
-                                      innerRef={innerRef}
-                                      style={style}
-                                      className={className}
-                                      content={text}
-                                      onKeyDown={onKeyDown}
-                                      onChange={onChange}
-                                      readonly={readonly}
-                                      onClick={onClick} />
-                <DocAnnotationMoment created={props.created} />
-            </BlockHighlightContentWrapper>
-        </BlockAnnotationActionsWrapper>
+        <BlockHighlightContentWrapper color={highlight.color}>
+            <BlockContentEditable id={id}
+                                  parent={parent}
+                                  innerRef={innerRef}
+                                  style={style}
+                                  className={className}
+                                  content={text}
+                                  onKeyDown={onKeyDown}
+                                  onChange={onChange}
+                                  readonly={readonly}
+                                  onClick={onClick} />
+            <DocAnnotationMoment created={props.created} />
+        </BlockHighlightContentWrapper>
     );
 };

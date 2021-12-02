@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             backgroundColor: theme.palette.background.paper,
-            padding: 16,
+            padding: theme.spacing(1.5),
             flex: 1,
         },
         info: {

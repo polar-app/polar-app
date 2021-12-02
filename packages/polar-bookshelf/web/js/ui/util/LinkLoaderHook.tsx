@@ -1,43 +1,27 @@
 import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
-import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {URLStr} from 'polar-shared/src/util/Strings';
 
-interface ILocation {
-    readonly hash?: string;
-    readonly pathname?: string;
-}
-
-export type ILocationOrLink = ILocation | string;
-
-interface IHistory {
-    push: (location: ILocationOrLink) => void;
-}
-
-export interface LinkLoaderOpts {
-    readonly focus: boolean;
-    readonly newWindow: boolean;
-}
-
-export type LinkLoaderDelegate = (location: ILocationOrLink, opts: LinkLoaderOpts) => void;
+export type LinkLoaderDelegate = (location: URLStr) => void;
 
 /**
- * Nav function that uses history to jump to the next page not forcibly changing
- * the window which doesn't use react router.
+ * A link loader will load an external URL in a new window, and then focus that
+ * window.  This is ONLY to be used when loading external URLs.
  */
 export function useLinkLoader(): LinkLoaderDelegate {
 
     // We can't use window.history as react-router doesn't listen to it. Instead
     // we have to useHistory which mutates the router
 
-    const history = useHistory();
+    const mobileLinkLoader = useMobileLinkLoader();
 
     switch (Devices.get()) {
 
         case "phone":
-            return createMobileLinkLoader(history);
+            return mobileLinkLoader;
         case "tablet":
-            return createMobileLinkLoader(history);
+            return mobileLinkLoader;
         case "desktop":
             return createDesktopLinkLoader();
 
@@ -50,54 +34,64 @@ export function useLinkLoaderRef() {
     return React.useRef(linkLoader);
 }
 
-function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
+function useMobileLinkLoader(): LinkLoaderDelegate {
 
-    return (location: ILocationOrLink) => {
+    const history = useHistory();
 
-        if (typeof location === 'string') {
-            const parsedURL = new URL(location);
-            const newLocation = {pathname: parsedURL.pathname, hash: parsedURL.hash};
-            history.push(newLocation);
-        } else {
-            history.push(location);
+    return React.useCallback((location: URLStr) => {
+
+        console.log("Loading URL with mobile link loader: ", location);
+
+        const parsedURL = new URL(location);
+
+        const isExternal = parsedURL.origin !== window.location.origin;
+
+        if (isExternal) {
+
+            // Whenever a link is opened inside the mobile app, handle it natively through the native browser
+            if ((window as any).isNativeApp) {
+                window.open(location);
+                return;
+            } else {
+                console.log("Creating new window: " + location);
+                window.open(location, '_blank');
+                return;
+            }
+
         }
 
-    }
+        history.push(location);
+
+    }, [history]);
 
 }
 
 function createDesktopLinkLoader(): LinkLoaderDelegate {
 
-    return (location: ILocationOrLink, opts: LinkLoaderOpts) => {
+    return (location: URLStr) => {
 
         function createWindow() {
 
-            const initialURL = AppRuntime.isElectronRenderer() && typeof location === 'string' ? location : '';
-
+            const initialURL = location;
             console.log("Creating new window: " + initialURL);
             return window.open(initialURL, '_blank');
+
         }
 
-        const win = opts.newWindow ? createWindow() : window;
+        const win = createWindow();
 
         if (win) {
 
-            if (opts.newWindow) {
+            win.focus();
 
-                if (opts.focus) {
-                    win.focus();
+            if (win && win.document) {
+                // this is primarily for Electron as you can't access the
+                // document from electron since it's basically emulating
+                // this API.
+
+                if (typeof win.document.write === 'function') {
+                    win.document.write(LOADING_HTML);
                 }
-
-                if (win && win.document) {
-                    // this is primarily for Electron as you can't access the
-                    // document from electron since it's basically emulating
-                    // this API.
-
-                    if (typeof win.document.write === 'function') {
-                        win.document.write(LOADING_HTML);
-                    }
-                }
-
             }
 
         } else {
@@ -107,15 +101,7 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
         console.log("Setting window location to: ", location);
 
         if (! isElectron()) {
-            if (typeof location === 'string') {
-                win.location.href = location;
-            } else if (location.hash) {
-                // TODO I think this is wrong as nothing is loaded yet.
-                win.location.hash = location.hash;
-            } else if (location.pathname) {
-                // TODO I think this is wrong as nothing is loaded yet.
-                win.location.href = location.pathname;
-            }
+            win.location.href = location;
         }
 
     }

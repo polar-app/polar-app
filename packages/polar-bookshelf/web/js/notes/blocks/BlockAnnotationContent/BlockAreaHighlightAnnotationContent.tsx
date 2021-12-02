@@ -6,11 +6,6 @@ import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
 import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
-import {
-    BlockAnnotationActionsWrapper,
-    ISharedActionType,
-    useSharedAnnotationBlockActions
-} from "./BlockAnnotationActions";
 import {BlockImageContent} from "../BlockImageContent";
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
@@ -45,35 +40,24 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         return Images.toImg(resolver, highlight.image);
     }, [persistenceLayerProvider, highlight.image]);
 
-    const actionsList: ISharedActionType[] = React.useMemo(() =>
-        ['createFlashcard',  'changeColor', 'remove', 'open', 'editTags'], []);
-
-    const actions = useSharedAnnotationBlockActions({
-        id,
-        annotation,
-        actions: actionsList,
-    });
-
     return (
-        <BlockAnnotationActionsWrapper actions={actions}>
-            <BlockHighlightContentWrapper color={highlight.color}>
-                {image && (
-                    <BlockImageContent
-                        id={id}
-                        parent={parent}
-                        width={image.width}
-                        height={image.height}
-                        style={style}
-                        className={className}
-                        src={image.src}
-                        innerRef={innerRef}
-                        onClick={onClick}
-                        readonly={readonly}
-                        onKeyDown={onKeyDown} />
-                )}
-                <BlockTagsSection onClick={onClick} links={annotation.links} />
-                <DocAnnotationMoment style={{ marginTop: 4 }} created={props.created} />
-            </BlockHighlightContentWrapper>
-        </BlockAnnotationActionsWrapper>
+        <BlockHighlightContentWrapper color={highlight.color}>
+            {image && (
+                <BlockImageContent
+                    id={id}
+                    parent={parent}
+                    width={image.width}
+                    height={image.height}
+                    style={style}
+                    className={className}
+                    src={image.src}
+                    innerRef={innerRef}
+                    onClick={onClick}
+                    readonly={readonly}
+                    onKeyDown={onKeyDown} />
+            )}
+            <BlockTagsSection onClick={onClick} links={annotation.links} />
+            <DocAnnotationMoment style={{ marginTop: 4 }} created={props.created} />
+        </BlockHighlightContentWrapper>
     );
 };

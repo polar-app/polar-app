@@ -44,7 +44,7 @@ const MobileDailyNotesFab = () => {
     const history = useHistory();
 
     return (
-        <Fab color="primary"
+        <Fab color="secondary"
              aria-label="add"
              onClick={() => history.push("/daily")}
              className={classes.fab}>
