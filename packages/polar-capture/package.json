@@ -25,7 +25,10 @@
     "polar-hooks": "0.0.0",
     "polar-pdf": "0.0.0",
     "polar-epub": "0.0.0",
-    "@google-cloud/storage": "=5.8.5"
+    "@google-cloud/storage": "=5.8.5",
+    "polar-firebase-admin": "0.0.0",
+    "jsdom": "=16.7.0",
+    "polar-epub-capture": "0.0.0"
   },
   "devDependencies": {
   }
