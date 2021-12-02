@@ -659,7 +659,7 @@ export class BlocksStore implements IBlocksStore {
 
         const { ref, isUndoable = true } = opts;
 
-        const toIDs = (structure: IBlockContentStructure): BlockIDStr[] =>
+        const toIDs = (structure: IBlockContentStructure): ReadonlyArray<BlockIDStr> =>
                structure.children.reduce((acc, substructure) =>
                    [...acc, ...toIDs(substructure)], [structure.id]);
 
