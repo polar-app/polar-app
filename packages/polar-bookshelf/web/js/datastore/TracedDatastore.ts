@@ -89,7 +89,7 @@ export class TracedDatastore extends DelegatedDatastore {
         return tracer.traceAsync('overview', () => this.delegate.overview());
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: ReadonlyArray<DocMetaRef>): Promise<void> {
         return tracer.traceAsync('synchronizeDocs', () => this.delegate.synchronizeDocs(...docMetaRefs));
     }
 

@@ -45,6 +45,7 @@ export class ProgressTrackerManager<T = Percentage> {
 
 
 export class CloudStorage {
+    // eslint-disable-next-line functional/prefer-readonly-type
     private readonly pendingWrites: Map<string, Promise<DocFileMeta>> = new Map();
     private readonly uid: string;
     private readonly storage: firebase.storage.Storage = firebase.storage();

@@ -40,8 +40,10 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     private readonly created: ISODateTimeString;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     protected readonly docMetas: {[fingerprint: string]: string} = {};
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     protected readonly files: {[key: string]: FileData} = {};
 
     private readonly prefs = new NonPersistentPrefs();

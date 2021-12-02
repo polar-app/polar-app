@@ -66,13 +66,22 @@ export const ENABLE_UNDO_TRACING = false;
 
 export type BlockNameStr = string;
 
+// eslint-disable-next-line functional/prefer-readonly-type
 export type ActiveBlocksIndex = {[id: string /* BlockIDStr */]: IActiveBlock };
+
+// eslint-disable-next-line functional/prefer-readonly-type
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
+
+// eslint-disable-next-line functional/prefer-readonly-type
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
+
+// eslint-disable-next-line functional/prefer-readonly-type
 export type BlocksIndexByDocumentID = {[docID: string /* IDStr */]: BlockIDStr};
 
+// eslint-disable-next-line functional/prefer-readonly-type
 export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
+// eslint-disable-next-line functional/prefer-readonly-type
 export type StringSetMap = {[key: string]: boolean};
 
 export type BlockContent = (MarkdownContent
@@ -196,6 +205,7 @@ export type Interstitial = {
     readonly progressTracker: ProgressTrackerManager<WriteFileProgress>;
 };
 
+// eslint-disable-next-line functional/prefer-readonly-type
 export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
 
 /**
@@ -292,25 +302,25 @@ export interface IComputeLinearTreeOpts {
     /*
      * Include the parent
      */
-    includeInitial?: boolean;
+    readonly includeInitial?: boolean;
 
     /*
      * Only include expanded blocks
      */
-    expanded?: boolean;
+    readonly expanded?: boolean;
 
     /*
      * A custom root block
      * This is useful when showing trees in the references section
      * Where we don't have the entire tree
      */
-    root?: BlockIDStr;
+    readonly root?: BlockIDStr;
 };
 
 export type INamedBlockEntry = {
-    id: BlockIDStr;
-    type: INamedContent['type'];
-    label: string;
+    readonly id: BlockIDStr;
+    readonly type: INamedContent['type'];
+    readonly label: string;
 };
 
 export class BlocksStore implements IBlocksStore {
@@ -319,16 +329,16 @@ export class BlocksStore implements IBlocksStore {
 
     private readonly undoQueue;
 
-    @observable _index: BlocksIndex = {};
+    @observable readonly _index: BlocksIndex = {};
 
-    @observable _indexByName: BlocksIndexByName = {};
+    @observable readonly _indexByName: BlocksIndexByName = {};
 
-    @observable _indexByDocumentID: BlocksIndexByDocumentID = {};
+    @observable readonly _indexByDocumentID: BlocksIndexByDocumentID = {};
 
     /**
      * The reverse index so that we can build references to this node.
      */
-    @observable _reverse: ReverseIndex = new ReverseIndex();
+    @observable readonly _reverse: ReverseIndex = new ReverseIndex();
 
     /**
      * The currently active block.
@@ -2467,6 +2477,7 @@ export class BlocksStore implements IBlocksStore {
         const items = parent.itemsAsArray;
         const itemPositions = idsToPositionsMap(items);
         const orderedIds = ids
+            // eslint-disable-next-line functional/prefer-readonly-type
             .map<[string, number]>(x => [x, itemPositions.get(x)!])
             .sort(([, ai], [, bi]) => ai - bi)
             .map(([x]) => x);

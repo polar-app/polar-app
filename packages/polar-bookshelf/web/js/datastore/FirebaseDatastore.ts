@@ -76,16 +76,22 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public readonly id = 'firebase';
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private app?: firebase.app.App;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private firestore?: IFirestoreClient;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private storage?: firebase.storage.Storage;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private initialized: boolean = false;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private primarySnapshot?: SnapshotResult;
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     private uid: string = '';
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
@@ -164,6 +170,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid);
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         type BatchIDMap = {
             // eslint-disable-next-line functional/prefer-readonly-type
             [P in DatastoreConsistency]: number;
@@ -386,6 +393,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * visibility settings are different.  Either that or stack them so that
      * the second (with different settings) is performed after the first.
      */
+    // eslint-disable-next-line functional/prefer-readonly-type
     private readonly pendingFileWrites: {[key: string]: Latch<DocFileMeta>} = {};
 
     public async writeFile(backend: Backend,
@@ -833,6 +841,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             return [];
         }
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         const result: DocMetaRef[] = [];
 
         for (const doc of snapshot.docs) {
