@@ -42,7 +42,7 @@ export function useAnchorClickHandler(href: string) {
     return React.useCallback((event: React.MouseEvent) => {
 
         if (href.startsWith('http:') || href.startsWith('https:')) {
-            linkLoader(href, {focus: true, newWindow: true});
+            linkLoader(href);
         } else {
             history.push(href);
         }

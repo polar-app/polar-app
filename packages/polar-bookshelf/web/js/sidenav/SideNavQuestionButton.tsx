@@ -21,7 +21,7 @@ function useReportFeedback() {
 
         const url ='http://feedback.getpolarized.io/feature-requests';
 
-        linkLoader(url, {newWindow: true, focus: true});
+        linkLoader(url);
 
     }, [linkLoader]);
 

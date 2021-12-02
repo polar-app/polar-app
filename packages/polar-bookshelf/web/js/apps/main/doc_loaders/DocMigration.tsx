@@ -20,7 +20,7 @@ export function useDocMigration(): DocMigrationHandler {
 
         const url = `https://app.getpolarized.io/migration/phz?docID=${params.docID}&url=${params.url}`;
 
-        linkLoader(url, {newWindow: true, focus: true});
+        linkLoader(url);
 
     }, [linkLoader]);
 
