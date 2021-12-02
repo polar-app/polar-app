@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Alert from "@material-ui/lab/Alert";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
-import {typedMemo} from "../../hooks/ReactHooks";
 import {useComponentDidMount, useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {ErrorType} from "./UseSnapshotSubscriber";
 
@@ -37,7 +36,10 @@ export interface IState<T> {
 }
 
 
-export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
+/**
+ * @deprecated Migrate to FirestoreSnapshotStore.tsx
+ */
+export const DataLoader2 = React.memo(function<T>(props: IProps<T>) {
 
     const {Component, Error} = props;
     const unsubscriberRef = React.useRef<Unsubscriber | undefined>(undefined)

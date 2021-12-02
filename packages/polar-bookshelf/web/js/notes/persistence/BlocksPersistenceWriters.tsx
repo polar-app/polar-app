@@ -22,9 +22,10 @@ import {RepoDocInfoDataObjectIndex} from '../../../../apps/repository/js/RepoDoc
 import {DocumentContent} from '../content/DocumentContent';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
+import {Testing} from "polar-shared/src/util/Testing";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -280,7 +281,7 @@ function createMockBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
 export function useBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
-    if (IS_NODE) {
+    if (IS_NODE || Testing.isTestingRuntime()) {
         return createMockBlocksPersistenceWriter();
     }
 

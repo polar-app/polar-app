@@ -2,6 +2,7 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {createMockSnapshot, IGenericCollectionSnapshot} from "./IGenericCollectionSnapshot";
 import {useGenericFirestoreSnapshots} from "./GenericFirestoreSnapshots";
 import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {Testing} from "polar-shared/src/util/Testing";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -20,7 +21,8 @@ export interface IBlockExpand {
 
 export function useFirestoreBlocksExpandCollectionSnapshots(listener: (snapshot: IBlockExpandCollectionSnapshot) => void) {
 
-    const {user} = useFirestore();
+    const firestoreContext = useFirestore();
+    const user = firestoreContext?.user;
 
     return useGenericFirestoreSnapshots('block_expand', ['uid', '==', user?.uid], listener);
 
@@ -28,7 +30,7 @@ export function useFirestoreBlocksExpandCollectionSnapshots(listener: (snapshot:
 
 export function useBlockExpandCollectionSnapshots(listener: (snapshot: IBlockExpandCollectionSnapshot) => void) {
 
-    if (IS_NODE) {
+    if (IS_NODE || Testing.isTestingRuntime()) {
         listener(createMockSnapshot([]));
     }
 
