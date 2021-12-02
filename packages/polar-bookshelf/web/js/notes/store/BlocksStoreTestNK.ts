@@ -17,7 +17,7 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks} from "../HTMLToBlocks";
-import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
@@ -73,11 +73,11 @@ function assertBlockParents(store: BlocksStore, parents: ReadonlyArray<BlockIDSt
     };
 }
 
-function assertBlocksStoreSnapshotsEqual(
-    snapshot1: ReadonlyArray<IBlock<IBlockContent>>,
-    snapshot2: ReadonlyArray<IBlock<IBlockContent>>,
-) {
-    const toIds = (arr: IBlock<IBlockContent>[]) =>
+function assertBlocksStoreSnapshotsEqual(snapshot1: ReadonlyArray<IBlock>,
+                                         snapshot2: ReadonlyArray<IBlock>) {
+
+    // eslint-disable-next-line functional/prefer-readonly-type
+    const toIds = (arr: IBlock[]) =>
         arr.sort((a, b) => a.id.localeCompare(b.id)).map(block => block.id);
 
     assert.deepEqual(
