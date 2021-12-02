@@ -666,6 +666,8 @@ workflows:
                 - master
 
   IOS-Android:
+    when:
+      equal: [ master, << pipeline.git.branch >> ]
     jobs:
       - Approve-Android-Internal:
           type: approval
