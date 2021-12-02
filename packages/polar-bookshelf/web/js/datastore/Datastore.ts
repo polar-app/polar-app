@@ -2,9 +2,9 @@
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DeterminateProgress, IndeterminateProgress, Progress,} from 'polar-shared/src/util/ProgressTracker';
+import {FileHandles} from 'polar-shared/src/util/Files';
+import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
+import {Progress,} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
@@ -13,12 +13,11 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {InterceptedPersistentPrefs, InterceptedPersistentPrefsFactory, IPersistentPrefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Either} from '../util/Either';
-import {BackendFileRefs} from './BackendFileRefs';
+import {Either} from 'polar-shared/src/util/Either';
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -26,6 +25,11 @@ import {SimpleReactor} from "../reactor/SimpleReactor";
 import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
 import {NetworkLayer, ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 import {ErrorType} from "../ui/data_loader/UseSnapshotSubscriber";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -321,38 +325,6 @@ export abstract class AbstractDatastore {
 
 }
 
-
-export interface WriteOptsBase<T> {
-
-    readonly consistency?: DatastoreConsistency;
-
-    readonly datastoreMutation?: DatastoreMutation<T>;
-
-    /**
-     * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
-     * and that the operations are ordered properly.
-     */
-    readonly writeFile?: BackendFileRefData;
-
-    readonly visibility?: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr>;
-
-    /**
-     * Specify a progress listener so that when you're writing a file you can
-     * keep track of the progress
-     */
-    readonly progressListener?: WriteFileProgressListener;
-
-    readonly onController?: (controller: WriteController) => void;
-
-}
-
-
-export interface WriteOpts extends WriteOptsBase<boolean> {
-
-}
-
 interface WritableDatastore {
 
     /**
@@ -408,75 +380,6 @@ export interface WritableBinaryDatastore {
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
-}
-
-export interface BaseWriteFileProgress {
-    readonly ref: BackendFileRef;
-}
-
-export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
-}
-export interface WriteFileProgressIndeterminate extends IndeterminateProgress, BaseWriteFileProgress {
-}
-
-export type WriteFileProgress = WriteFileProgressDeterminate | WriteFileProgressIndeterminate;
-
-export type WriteFileProgressListener = (progress: WriteFileProgress) => void;
-
-export interface WriteController {
-
-    /**
-     * Pauses a running task. Has no effect on a paused or failed task.
-     * @return True if the pause had an effect.
-     */
-    readonly pause: () => boolean;
-
-    /**
-     * Resume a running task. Has no effect on a paused or failed task.
-     * @return True if the pause had an effect.
-     */
-    readonly resume: () => boolean;
-
-    /**
-     * Cancels a running task. Has no effect on a complete or failed task.
-     * @return True if the cancel had an effect.
-     */
-    readonly cancel: () => boolean;
-
-}
-
-export interface WriteFileOpts {
-
-    /**
-     * @deprecated we no longer support arbitrary file metadata.
-     */
-    readonly meta?: FileMeta;
-
-    /**
-     * Set the file visibility.  Default is private.
-     */
-    readonly visibility?: Visibility;
-
-    /**
-     * Only update metadata.  Don't actually write data.
-     */
-    readonly updateMeta?: boolean;
-
-    readonly datastoreMutation?: DatastoreMutation<boolean>;
-
-    /**
-     * Specify a progress listener so that when you're writing a file you can
-     * keep track of the progress
-     */
-    readonly progressListener?: WriteFileProgressListener;
-
-    readonly onController?: (controller: WriteController) => void;
-
-}
-
-export class DefaultWriteFileOpts implements WriteFileOpts {
-    public readonly meta: FileMeta = {};
-    public readonly visibility = Visibility.PRIVATE;
 }
 
 export interface WritableBinaryMetaDatastore {
@@ -538,8 +441,6 @@ export namespace sources {
 
 }
 
-export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
-
 export type BinaryFileDataType = 'file-handle' | 'buffer' | 'string' | 'blob' | 'readable-stream';
 
 export class BinaryFileDatas {
@@ -589,23 +490,7 @@ export function isBinaryFileData(data: any): boolean {
 
 }
 
-export interface BackendFileRefData extends BackendFileRef {
-    readonly data: BinaryFileData;
-}
-
 // noinspection TsLint
-/**
- * Arbitrary settings for files specific to each storage layer.  Firebase uses
- * visibility and uid.
- */
-export interface FileMeta {
-
-    // TODO: I should also include the StorageSettings from Firebase here to
-    // give it a set of standardized fields like contentType as screenshots
-    // needs to be added with a file type.
-    [key: string]: string;
-
-}
 
 /**
  *
@@ -767,19 +652,6 @@ export interface DocMetaSnapshotBatch {
     readonly terminated: boolean;
 
 }
-
-/**
- * The consistency of the underlying data, whether it's written or committed.
- *
- * 'written' means that it was written to a WAL or a local cache but may not
- * be fully committed to a cloud store, to all replicas of a database, etc.
- *
- * 'committed' means that it's fully committed and consistent with the current
- * state of a database system.  A read that is 'committed' means it is fully
- * up to date.
- *
- */
-export type DatastoreConsistency = 'written' | 'committed';
 
 export interface SnapshotProgress extends Readonly<Progress> {
 

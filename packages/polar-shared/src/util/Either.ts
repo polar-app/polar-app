@@ -1,4 +1,4 @@
-import {isPresent} from 'polar-shared/src/Preconditions';
+import {isPresent} from '../Preconditions';
 
 /**
  * A simple either implementation similar to Optional that works for either

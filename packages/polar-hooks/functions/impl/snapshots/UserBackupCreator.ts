@@ -12,7 +12,7 @@ import {FileRef} from 'polar-shared/src/datastore/FileRef';
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {ZipStreamChunk} from "./ZipStreamChunk";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);

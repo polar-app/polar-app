@@ -7,15 +7,11 @@ import {
     Datastore,
     DatastoreCapabilities,
     DatastoreOverview,
-    DefaultWriteFileOpts,
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
-    FileMeta,
     PrefsProvider,
     SnapshotResult,
-    WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -23,7 +19,7 @@ import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
@@ -31,6 +27,11 @@ import {IPersistentPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import FileMeta = FirebaseDatastores.FileMeta;
 
 
 export class MemoryDatastore extends AbstractDatastore implements Datastore {

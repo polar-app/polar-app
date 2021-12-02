@@ -19,8 +19,8 @@ import {
 import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
-import {Either} from "../../../../web/js/util/Either";
+import {BackendFileRefs} from "polar-shared/src/datastore/BackendFileRefs";
+import {Either} from "polar-shared/src/util/Either";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {TagSidebarEventForwarder, TagSidebarEventForwarderContext} from "../store/TagSidebarEventForwarder";
@@ -41,7 +41,13 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
-import {BlockContentUtils, IHasLinksBlockTarget, useBlockTagEditorDialog, useNotesIntegrationEnabled, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
+import {
+    BlockContentUtils,
+    IHasLinksBlockTarget,
+    useBlockTagEditorDialog,
+    useNotesIntegrationEnabled,
+    useUpdateBlockTags
+} from "../../../../web/js/notes/NoteUtils";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";

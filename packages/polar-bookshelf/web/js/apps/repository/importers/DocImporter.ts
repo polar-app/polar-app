@@ -1,26 +1,19 @@
-import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
+import {DatastoreFiles} from 'polar-shared/src/datastore/DatastoreFiles';
 import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
-import {
-    BackendFileRefData,
-    BinaryFileData,
-    DatastoreConsistency,
-    WriteFileProgressListener
-} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
-import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import {BackendFileRefs} from 'polar-shared/src/datastore/BackendFileRefs';
 import {DocMetadata} from "./DocMetadata";
-import {OnWriteController} from "../upload/UploadHandlers";
-
+import {PersistenceLayerProvider} from "../../../datastore/PersistenceLayer";
 
 export interface ImportedFile {
 
@@ -51,6 +44,13 @@ export interface ImportedFile {
  * DocMeta file and importing the PDF file to the stash.
  */
 export namespace DocImporter {
+
+    import WriteFileProgressListener = FirebaseDatastores.WriteFileProgressListener;
+    import DatastoreConsistency = FirebaseDatastores.DatastoreConsistency;
+    import BinaryFileData = FirebaseDatastores.BinaryFileData;
+    import BackendFileRefData = FirebaseDatastores.BackendFileRefData;
+    import OnWriteController = FirebaseDatastores.OnWriteController;
+    import WriteOptsBase = FirebaseDatastores.WriteOptsBase;
 
     /**
      * Minimal metadata for the doc we want to import so that, in theory, we
@@ -207,7 +207,7 @@ export namespace DocImporter {
             ...fileRef,
         };
 
-        const writeFileOpts: WriteOpts = {
+        const writeFileOpts: WriteOptsBase<IDocInfo> = {
             consistency: opts.consistency,
             writeFile,
             progressListener: opts.progressListener,

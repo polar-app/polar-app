@@ -30,3 +30,5 @@ module-packages-output.json
 
 # ignore MacOS specific metadata folder.
 .DS_Store
+
+.DS_Store

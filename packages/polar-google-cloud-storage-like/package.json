@@ -1,0 +1,20 @@
+{
+  "name": "polar-google-cloud-storage-like",
+  "version": "0.0.0",
+  "description": "APIs that are similar across the Google Cloud Storage backend and frontend APIs.",
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "cieslint": "eslint -c ./.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;",
+    "tsc": "tsc --project ./tsconfig.json",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;",
+    "tscwatch": "tsc --watch",
+    "eslint-fix": "eslint -c ../../.eslintrc.json . --fix",
+    "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "tsc-watch": "tsc --project ./tsconfig.json --watch"
+  },
+  "author": "Polar",
+  "license": "ISC",
+  "devDependencies": {}
+}

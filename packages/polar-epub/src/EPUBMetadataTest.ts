@@ -1,10 +1,17 @@
-// import {EPUBMetadata} from "./EPUBMetadata";
 // import {FilePaths} from "polar-shared/src/util/FilePaths";
-
-describe('EPUBMetadata', function () {
-  it('basic', async function () {
-    // TODO: Fix the following test
-    // await EPUBMetadata.getMetadata(FilePaths.resolve(__dirname, '../test/'));
-    return true;
-  });
-});
+// import {EPUBMetadata} from "./EPUBMetadata";
+// import {assert} from "chai";
+//
+// describe('EPUBMetadata', function () {
+//
+//     it("GIVEN a valid epub on either Node or the Browser (karma) THEN it should return its metadata", async function () {
+//
+//         const path = FilePaths.resolve(__dirname, '../alice.epub');
+//
+//         const result = await EPUBMetadata.getMetadata(path);
+//
+//         assert.isDefined(result);
+//
+//     });
+//
+// });

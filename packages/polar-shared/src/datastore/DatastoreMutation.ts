@@ -1,4 +1,4 @@
-import {Latch} from "polar-shared/src/util/Latch";
+import {Latch} from "../util/Latch";
 
 /**
  * The result of a Datastore mutation including latches for whether the result
@@ -24,6 +24,7 @@ export interface DatastoreMutation<T> {
 
 abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     public static SEQUENCE = 0;
 
     public readonly id: number = AbstractDatastoreMutation.SEQUENCE++;

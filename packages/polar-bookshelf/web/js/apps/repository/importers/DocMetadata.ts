@@ -1,5 +1,5 @@
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
-import {EPUBMetadata} from "polar-epub/src/EPUBMetadata";
+import {EPUBMetadataUsingBrowser} from "polar-epub/src/EPUBMetadataUsingBrowser";
 import {FileType} from "../../main/file_loaders/FileType";
 
 export namespace DocMetadata {
@@ -9,7 +9,7 @@ export namespace DocMetadata {
         if (fileType === 'pdf') {
             return await PDFMetadata.getMetadata(docPath);
         } else if (fileType === 'epub') {
-            return await EPUBMetadata.getMetadata(docPath);
+            return await EPUBMetadataUsingBrowser.getMetadata(docPath);
         }
 
         throw new Error("Invalid type: " + fileType);

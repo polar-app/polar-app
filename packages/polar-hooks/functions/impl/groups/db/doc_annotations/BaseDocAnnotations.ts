@@ -9,9 +9,9 @@ import {DocRefs} from "./DocRefs";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {ProfileIDStr, UserIDStr, DocIDStr} from "polar-shared/src/util/Strings";
-import { IDRecord } from "polar-shared/src/util/IDMaps";
-import { FirebaseDatastores } from "polar-shared/src/datastore/FirebaseDatastores";
+import {DocIDStr, ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {IDRecord} from "polar-shared/src/util/IDMaps";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
 
 export class BaseDocAnnotations {
 

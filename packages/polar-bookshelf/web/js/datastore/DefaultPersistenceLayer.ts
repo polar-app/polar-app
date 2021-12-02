@@ -1,5 +1,4 @@
 import {
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreInitOpts,
@@ -10,7 +9,6 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     SnapshotResult,
-    WriteFileOpts
 } from './Datastore';
 import {DocMeta} from 'polar-shared/src/metadata/DocMeta';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
@@ -22,7 +20,7 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
@@ -33,6 +31,9 @@ import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 
 /**

@@ -1,50 +1,73 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
-import {EPUBDocs} from "./EPUBDocs";
 
-export class EPUBMetadata {
+export namespace EPUBMetadata {
 
-    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
+    export async function getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
 
-        const book = await EPUBDocs.getDocument({url: docPathOrURL});
+        const parser = Parsers.getParser();
 
-        const metadata = await book.loaded.metadata;
-        const spine = await book.loaded.spine;
-
-        if (! spine) {
-            throw new Error("EPUB has no spine");
-        }
-
-        const id = `${metadata.identifier}#${metadata.pubdate}`;
-        const fingerprint = Hashcodes.create(id);
-        const title = metadata.title;
-        const description = metadata.description;
-        const creator = metadata.creator;
-
-        function computePages() {
-            // epub.js has horrible types...
-            const spineItems: ReadonlyArray<ISpineItem> = (<any> spine).spineItems;
-            return spineItems.filter(current => current.linear);
-        }
-
-        const pages = computePages();
-
-        const nrPages = pages.length;
-
-        return {
-            fingerprint,
-            title,
-            description,
-            creator,
-            nrPages,
-            props: {}
-        };
+        return parser(docPathOrURL);
 
     }
+
 }
 
-interface ISpineItem {
-    readonly idref: string;
-    readonly linear: 'yes' | 'no';
+namespace Parsers {
+
+    type Parser = (docPathOrURL: PathOrURLStr) => Promise<IParsedDocMeta>
+
+    let parser: Parser | undefined;
+
+    function isNode() {
+        return typeof window === 'undefined';
+    }
+
+    function requireParserModule(moduleName: string): any {
+
+        const modulePath = `./${moduleName}.ts`
+
+        const module = require(modulePath);
+
+        if (! module) {
+            throw new Error("Could not require module: " + moduleName);
+        }
+
+        if (! module[moduleName]) {
+            throw new Error(`No moduleName ${moduleName} property in module`);
+        }
+
+        return module[moduleName];
+
+    }
+
+    function requireParser(moduleName: string): Parser {
+        const module = requireParserModule(moduleName);
+
+        if (! module.getMetadata) {
+            throw new Error(`No getMetadata function on moduleName ${moduleName}`);
+        }
+
+        return module.getMetadata;
+
+    }
+
+    function createParser(): Parser {
+        if (isNode()) {
+            return requireParser('EPUBMetadataUsingNode');
+        } else {
+            return requireParser('EPUBMetadataUsingBrowser');
+        }
+    }
+
+    export function getParser() {
+
+        if (parser) {
+            return parser;
+        }
+
+        return parser = createParser();
+
+    }
+
 }

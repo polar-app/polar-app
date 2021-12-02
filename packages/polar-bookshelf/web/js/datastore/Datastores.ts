@@ -240,7 +240,7 @@ export class Datastores {
      *
      */
     public static async checkConsistency(datastore0: Datastore,
-                                         datastore1: Datastore): Promise<DatastoreConsistency> {
+                                         datastore1: Datastore): Promise<CheckDatastoreConsistency> {
 
         // get the docMetas in both, then compare them...
 
@@ -304,7 +304,8 @@ export interface PurgeEvent {
 
 export type PurgeListener = (purgeEvent: PurgeEvent) => void;
 
-export interface DatastoreConsistency {
+
+export interface CheckDatastoreConsistency {
     readonly consistent: boolean;
     readonly manifest0: ReadonlyArray<IDocInfo>;
     readonly manifest1: ReadonlyArray<IDocInfo>;

@@ -2,20 +2,24 @@ import React from "react";
 import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
 import {FileHandles} from 'polar-shared/src/util/Files';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {BinaryFileData, DefaultWriteFileOpts, WriteController, WriteFileOpts, WriteFileProgress} from "./Datastore";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {URLs} from "polar-shared/src/util/URLs";
-import {DownloadURLs} from "./FirebaseDatastore";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {ProgressMessage} from "../ui/progress_bar/ProgressMessage";
 import firebase from "firebase/app"
 import "firebase/storage";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
 import {Percentage, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useUserInfoContext} from "../apps/repository/auth_handler/UserInfoProvider";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import {DownloadURLs} from "polar-shared-datastore/src/DownloadURLs";
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteController = FirebaseDatastores.WriteController;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
+import DefaultWriteFileOpts = FirebaseDatastores.DefaultWriteFileOpts;
 
 type ProgressTrackerManagerListener<T> = (data: T) => void;
 
@@ -55,7 +59,7 @@ export class CloudStorage {
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, {});
 
         return DownloadURLs.checkExistence(downloadURL);
 
@@ -72,7 +76,7 @@ export class CloudStorage {
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, opts);
 
         return { backend, ref, url: downloadURL };
 

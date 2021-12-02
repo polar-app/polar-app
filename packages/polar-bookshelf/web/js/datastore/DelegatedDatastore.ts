@@ -1,6 +1,5 @@
 import {
     AbstractDatastore,
-    BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreID,
@@ -11,17 +10,19 @@ import {
     DocMetaSnapshotResult,
     InitResult,
     SnapshotResult,
-    WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 /**
  * A datastore that just forwards events to the given delegate.

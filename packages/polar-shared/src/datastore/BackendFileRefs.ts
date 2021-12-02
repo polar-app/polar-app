@@ -1,10 +1,9 @@
 import {Either, LeftEither} from '../util/Either';
-import {Backend} from 'polar-shared/src/datastore/Backend';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {DocInfoLike} from "polar-shared/src/metadata/DocInfo";
-
+import {Backend} from './Backend';
+import {isPresent} from '../Preconditions';
+import {IDocMeta} from "../metadata/IDocMeta";
+import {BackendFileRef} from "./BackendFileRef";
+import {DocInfoLike} from "../metadata/DocInfo";
 
 export class BackendFileRefs {
 
@@ -53,6 +52,7 @@ export class BackendFileRefs {
      */
     public static toBackendFileRefs(either: LeftEither<IDocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
 
+        // eslint-disable-next-line functional/prefer-readonly-type
         const result: BackendFileRef[] = [];
 
         const fileRef = this.toBackendFileRef(either);

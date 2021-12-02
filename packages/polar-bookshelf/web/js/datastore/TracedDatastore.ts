@@ -1,5 +1,4 @@
 import {
-    BinaryFileData,
     Datastore,
     DatastoreID,
     DatastoreInitOpts,
@@ -9,12 +8,10 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     InitResult,
-    WriteFileOpts,
-    WriteOpts
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation} from 'polar-shared/src/datastore/DatastoreMutation';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
@@ -22,6 +19,10 @@ import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WriteOpts = FirebaseDatastores.WriteOpts;
+import BinaryFileData = FirebaseDatastores.BinaryFileData;
+import WriteFileOpts = FirebaseDatastores.WriteFileOpts;
 
 const tracer = RendererAnalytics.createTracer('datastore');
 

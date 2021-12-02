@@ -3,6 +3,7 @@ import {MockChrome} from "../MockChrome";
 import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {assert} from 'chai';
 
 describe("SaveToPolarHandler", function() {
 
@@ -23,7 +24,17 @@ describe("SaveToPolarHandler", function() {
             }
         }, {tab: {id: 101}});
 
+        assert.isDefined(interactions);
+
         const update = Arrays.last(interactions);
+
+        assert.isDefined(update);
+        assert.isNotNull(update);
+
+        console.log("Working with update: ", update);
+
+        assertJSON(Object.keys(update!), ['op', 'id', 'updateProperties']);
+
         (update as any).updateProperties.url = 'xxx'
 
         assertJSON(update, {

@@ -1,22 +1,25 @@
 import {CapturedContentEPUBGenerator} from "polar-web-capture/src/captured/CapturedContentEPUBGenerator";
-import {DatastoreWriter} from "polar-backend-datastore/src/DatastoreWriter";
+import {DatastoreWriter} from "polar-shared-document-importer/src/DatastoreWriter";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
 import {ArrayBuffers} from "polar-shared/src/util/ArrayBuffers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {WriteFileProgress, WriteFileProgressListener} from "polar-bookshelf/web/js/datastore/Datastore";
 import {ExtensionPersistenceLayers} from "./ExtensionPersistenceLayers";
 import {PHZMigrations} from "./PHZMigrations";
 import {PHZActiveMigrations} from "./PHZActiveMigrations";
 import {ExtensionContentCapture} from "polar-web-capture/src/capture/ExtensionContentCapture";
-import WrittenDoc = DatastoreWriter.WrittenDoc;
-import IWriteOpts = DatastoreWriter.IWriteOpts;
 import {ErrorType} from "polar-bookshelf/web/js/ui/data_loader/UseSnapshotSubscriber";
 import {Tabs} from "../chrome/Tabs";
+import {FirebaseDatastores} from "polar-shared-datastore/src/FirebaseDatastores";
+import WrittenDoc = DatastoreWriter.WrittenDoc;
+import IWriteOpts = DatastoreWriter.IWriteOpts;
+import WriteFileProgressListener = FirebaseDatastores.WriteFileProgressListener;
+import WriteFileProgress = FirebaseDatastores.WriteFileProgress;
 
 export namespace SaveToPolarHandler {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
+    import WriteFileProgressListener = FirebaseDatastores.WriteFileProgressListener;
 
     export interface ICapturedPDF {
         readonly url: URLStr;
