@@ -5,7 +5,7 @@
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noImplicitThis": false,
+    "noImplicitThis": true,
     "alwaysStrict": true,
     "listEmittedFiles": false,
     "noImplicitReturns": true,

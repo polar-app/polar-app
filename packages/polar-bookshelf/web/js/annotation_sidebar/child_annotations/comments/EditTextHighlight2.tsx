@@ -39,7 +39,7 @@ export const EditTextHighlight2 = (props: IProps) => {
         // }
 
         if (event.getModifierState("Control") && event.key === "Enter") {
-            this.props.onChanged(this.html);
+            // props.onChanged(props.html);
         }
 
     }

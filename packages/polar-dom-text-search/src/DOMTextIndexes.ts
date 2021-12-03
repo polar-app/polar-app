@@ -2,7 +2,7 @@ import {DOMTextIndex} from "./DOMTextIndex";
 import {IPointer} from "./IPointer";
 import {INodeText} from "./INodeText";
 import {CharPointers} from "./CharPointers";
-import { Preconditions } from "polar-shared/src/Preconditions";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace DOMTextIndexes {
 
@@ -35,8 +35,8 @@ export namespace DOMTextIndexes {
             }
 
             if (node instanceof HTMLIFrameElement && node.contentDocument) {
-                // TODO: this cold give cross origin issues...
-                this.createIndex(node.contentDocument, node.contentDocument.body);
+                // TODO: this could give cross origin issues...
+                create(node.contentDocument, node.contentDocument.body);
                 continue;
             }
 
