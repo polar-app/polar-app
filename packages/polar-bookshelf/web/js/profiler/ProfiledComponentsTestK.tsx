@@ -2,7 +2,7 @@ import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import {profiled} from "./ProfiledComponents";
 
-describe("ReactTestingLibraryButton", function() {
+describe("ProfiledComponents", function() {
 
     const BasicProfiled = profiled(function Basic() {
         return (

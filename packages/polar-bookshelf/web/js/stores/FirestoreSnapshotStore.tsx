@@ -5,6 +5,7 @@ import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
+import {profiled} from "../profiler/ProfiledComponents";
 
 type QuerySnapshotSubscriber<SM = unknown> = SnapshotSubscriber<IQuerySnapshot<SM>>;
 
@@ -122,7 +123,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
-    const FirestoreSnapshotProvider = React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
+    const FirestoreSnapshotProvider = profiled(React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
         const {firestore, uid} = useFirestore();
 
@@ -150,7 +151,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
             </SnapshotStoreProvider>
         );
 
-    });
+    }));
 
     return [FirestoreSnapshotProvider, useSnapshotStore];
 
