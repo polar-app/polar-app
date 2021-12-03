@@ -80,7 +80,7 @@ export function useTaskEventReporter(eventName: string, data: TaskEventReporterD
 
     return React.useCallback((status: 'pass' | 'fail') => {
         analyticsRef.current.event2(eventName, {...data, status});
-    }, [analyticsRef]);
+    }, [analyticsRef, data, eventName]);
 
 }
 
