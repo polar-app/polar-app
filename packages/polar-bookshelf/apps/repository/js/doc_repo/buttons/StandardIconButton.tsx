@@ -32,7 +32,9 @@ export const StandardIconButton = React.memo(function StandardIconButton(props: 
                         onClick={props.onClick}
                         disabled={props.disabled}
                         aria-label={props.tooltip.toLowerCase()}>
+
                 {props.children}
+
             </IconButton>
         </MUITooltip>
     );

@@ -87,10 +87,6 @@ export const BlockContentEditable = (props: IProps) => {
 
     }, [props, getCurrentContent]);
 
-    const updateMarkdownFromEditable = React.useCallback(() => {
-        handleChange();
-    }, [handleChange]);
-
     const onPasteImage = React.useCallback((image: IPasteImageData) => {
         console.log("Got paste: ", image);
 

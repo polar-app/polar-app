@@ -41,20 +41,16 @@ export interface BlockEditorGenericProps {
     readonly readonly?: boolean;
 }
 
-type IUseBlockContentUpdaterOpts = {
-    id: BlockIDStr;
-}
-
-const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
-    const blocksTreeStore = useBlocksTreeStore();
+export const useBlockContentUpdater = () => {
+    const blocksStore = useBlocksStore();
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
-        const doRename = (content: NameContent, data: MarkdownStr) => {
-            const exists = blocksTreeStore.getBlockByName(data);
+        const doRename = (id: BlockIDStr, content: NameContent, data: MarkdownStr) => {
+            const exists = blocksStore.getBlockByName(data);
 
             if (! exists || content.data.toLowerCase() === data.toLowerCase()) {
-                blocksTreeStore.renameBlock(id, data);
+                blocksStore.renameBlock(id, data);
             } else {
                 dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
 
@@ -67,10 +63,10 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         };
 
         return debounce(1500, doRename);
-    }, [blocksTreeStore, dialogs, id]);
+    }, [blocksStore, dialogs]);
 
-    return React.useCallback((data: MarkdownStr) => {
-        const block = blocksTreeStore.getBlock(id);
+    return React.useCallback((id: BlockIDStr, data: MarkdownStr) => {
+        const block = blocksStore.getBlock(id);
 
         if (! block || ! BlockPredicates.isEditableBlock(block)) {
             return;
@@ -79,12 +75,12 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         const content = block.content;
 
         if (content.type === 'name') {
-            handleRename(content, data);
+            handleRename(id, content, data);
         } else if (! block.readonly && content.type !== AnnotationContentType.FLASHCARD) {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
-            blocksTreeStore.setBlockContent(block.id, newContent);
+            blocksStore.setBlockContent(block.id, newContent);
         }
-    }, [id, handleRename, blocksTreeStore]);
+    }, [handleRename, blocksStore]);
 };
 
 interface INoteEditorInnerProps extends IProps {
@@ -97,9 +93,13 @@ const NoteEditorInner = function BlockEditorInner(props: INoteEditorInnerProps) 
     const {root} = useBlocksTreeStore();
     const blocksTreeStore = useBlocksTreeStore()
     const linkNavigationClickHandler = useLinkNavigationClickHandler({ id });
-    const handleBlockContentChange = useBlockContentUpdater({ id });
+    const blockContentChanger = useBlockContentUpdater();
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
+
+    const handleBlockContentChange = React.useCallback((content: MarkdownStr) => {
+        blockContentChanger(id, content);
+    }, [id, blockContentChanger]);
 
     React.useEffect(() => {
         const focusBlock = () => {
