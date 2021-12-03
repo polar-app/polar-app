@@ -8,6 +8,7 @@ import {OnlineAnalytics} from "./online/OnlineAnalytics";
 import {ConsoleAnalytics} from "./console/ConsoleAnalytics";
 import {CannyAnalytics} from "./canny/CannyAnalytics";
 import {SentryAnalytics} from "./sentry/SentryAnalytics";
+import {useRefValue} from "../hooks/ReactHooks";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -62,6 +63,46 @@ export function useAnalytics(): IAnalytics {
         }
 
     }, []);
+
+}
+
+type TaskEventReporterData = Readonly<{
+    [key: string]: string | number;
+}>;
+
+/**
+ * A task event reporter gives us a way to report success/failure for a given named operation.
+ */
+export function useTaskEventReporter(eventName: string, data: TaskEventReporterData = {}) {
+
+    const analytics = useAnalytics();
+    const analyticsRef = useRefValue(analytics);
+
+    return React.useCallback((status: 'pass' | 'fail') => {
+        analyticsRef.current.event2(eventName, {...data, status});
+    }, [analyticsRef]);
+
+}
+
+/**
+ * Run an async task and record pass/fail
+ */
+export function useTaskEventReporterHandler(eventName: string, data: TaskEventReporterData = {}) {
+
+    const taskEventReporter = useTaskEventReporter(eventName, data);
+
+    return React.useCallback(async (task: () => Promise<void>) => {
+
+        try {
+            await task();
+            taskEventReporter('pass');
+        } catch (e) {
+            taskEventReporter('fail');
+            throw e;
+        }
+
+
+    }, [taskEventReporter]);
 
 }
 

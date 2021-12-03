@@ -48,6 +48,7 @@ import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
+import {useTaskEventReporterHandler} from "../../../../../web/js/analytics/Analytics";
 
 interface DocViewer {
     readonly eventBus: IEventBus;
@@ -132,6 +133,8 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const docRef = React.useRef<IPDFDocumentProxy | undefined>(undefined);
     const pageNavigatorRef = React.useRef<PageNavigator | undefined>(undefined);
     const pdfUpgrader = usePDFUpgrader();
+
+    const docLoadEventReporterHandler = useTaskEventReporterHandler('docLoad', {type: 'pdf'});
 
     const log = useLogger();
 
@@ -407,12 +410,12 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
                 extender(extendPagemark);
 
                 // then persist it back out..
-                async function doAsync(docMeta: IDocMeta) {
+                const doAsync = async () => {
                     const persistenceLayer = persistenceLayerProvider();
                     await persistenceLayer.writeDocMeta(docMeta);
                 }
 
-                doAsync(docMeta)
+                docLoadEventReporterHandler(doAsync)
                     .catch(err => log.error("Unable to write docMeta: ", err));
 
             }
