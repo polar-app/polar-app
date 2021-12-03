@@ -17,13 +17,19 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             backgroundColor: theme.palette.background.paper,
-            padding: theme.spacing(1.5),
             flex: 1,
+            height: '100%',
+            display: 'flex',
         },
         info: {
             margin: 10,
             textAlign: 'center',
-        }
+        },
+        inner: {
+            padding: theme.spacing(1.5),
+            height: '100%',
+            overflowY: 'auto',
+        },
     }),
 );
 
@@ -45,7 +51,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = Rea
     return (
         <div className={classes.root}>
             <NoteProviders>
-                <BlocksTreeProvider root={documentBlock.id} autoExpandRoot>
+                <BlocksTreeProvider root={documentBlock.id} className={classes.inner} autoExpandRoot>
                     {annotationBlockIDs.length
                         ? (
                             annotationBlockIDs.map(id => (

@@ -2,20 +2,50 @@ import React from "react";
 import {Box, TextField} from "@material-ui/core";
 import CheckIcon from '@material-ui/icons/Check';
 import {NoteFormatBarButton} from "./NoteFormatBarButton";
+import {useBlockContentUpdater} from "../BlockEditor";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {ContentEditables} from "../ContentEditables";
 
 type IContentEditableTextStyle = 'bold'
                                  | 'italic'
                                  | 'subscript'
                                  | 'superscript'
+                                 | 'underline'
                                  | 'strikeThrough'
                                  | 'removeFormat'
                                  | 'createLink';
 
 export const useExecCommandExecutor = (command: IContentEditableTextStyle) => {
+    const blockContentUpdater = useBlockContentUpdater();
+
     return React.useCallback((value?: string) => {
+        const range = ContentEditables.currentRange();
+
+        if (! range) {
+            return;
+        }
+
+        const elem = DOMBlocks.findBlockParent(range.startContainer);
+        const id = elem ? DOMBlocks.getBlockID(elem) : undefined;
+
+        if (! elem || ! id) {
+            return;
+        }
+
         document.execCommand(command, false, value);
+
+        if (! elem) {
+            return;
+        }
+
         // Update block
-    }, [command]);
+        const div = BlockContentCanonicalizer.canonicalizeElement(elem);
+        const newContent = MarkdownContentConverter.toMarkdown(div.innerHTML);
+
+        blockContentUpdater(id, newContent);
+    }, [command, blockContentUpdater]);
 };
 
 interface ILinkCreatorProps {
