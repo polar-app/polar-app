@@ -426,7 +426,7 @@ jobs:
           command: |
             cd /home/circleci/mobile
             sed -i "s/0.0.0/$CURRENT_VERSION/g" package.json
-            pnpm install
+            npm install
       - persist_to_workspace:
           root: /home/circleci/
           paths:
@@ -667,7 +667,7 @@ workflows:
 
   IOS-Android:
     when:
-      equal: [master, << pipeline.git.branch >>]
+      equal: [ master, << pipeline.git.branch >> ]
     jobs:
       - Approve-Android-Internal:
           type: approval
