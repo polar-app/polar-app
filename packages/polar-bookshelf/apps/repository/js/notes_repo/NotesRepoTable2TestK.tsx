@@ -21,7 +21,7 @@ describe("NotesRepoTable2", function() {
         );
     }
 
-    xit("test re-render performance", async () => {
+    it("test re-render performance", async () => {
 
         render(<Test/>);
 
@@ -32,11 +32,23 @@ describe("NotesRepoTable2", function() {
 
         assertJSON(snapshot, [
             {
-                "id": "NotesRepoTable2",
+                "id": "NotesRepoTableToolbar",
                 "phase": "mount"
             },
             {
                 "id": "NotesRepoTable2",
+                "phase": "mount"
+            },
+            {
+                "id": "NotesRepoTableToolbar",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTableToolbar",
                 "phase": "update"
             },
             {
