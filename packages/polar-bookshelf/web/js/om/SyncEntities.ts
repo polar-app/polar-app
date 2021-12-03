@@ -43,7 +43,7 @@ export namespace SyncEntities {
             ['uid', '==' , uid]
         ];
 
-        return await Collections.list(this.COLLECTION,  clauses, {});
+        return await Collections.list(COLLECTION,  clauses, {});
 
     }
 

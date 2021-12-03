@@ -181,7 +181,7 @@ export namespace FilePaths {
 
         path = FilePaths.resolve(path);
 
-        if (this.SEP === '\\') {
+        if (SEP === '\\') {
 
             // handle windows properly.
 
@@ -217,9 +217,9 @@ export namespace FilePaths {
 
         // Replace the forward slash in the URL (which is safe because forward
         // slash is always the
-        let path = pathname.replace(/\//g, this.SEP);
+        let path = pathname.replace(/\//g, SEP);
 
-        if (this.SEP === '\\' && path.match(/^\\[C-Z]:/)) {
+        if (SEP === '\\' && path.match(/^\\[C-Z]:/)) {
 
             // this is a windows file path and file URLs on windows look like
             //
