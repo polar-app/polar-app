@@ -14,7 +14,6 @@ describe("NotesRepoTable2", function() {
             <BlockStoreContextProvider uid='123'>
                 <BlocksStoreProvider>
                     <TableGridStoreProvider>
-
                         <NotesRepoTable2/>
                     </TableGridStoreProvider>
                 </BlocksStoreProvider>
@@ -23,8 +22,6 @@ describe("NotesRepoTable2", function() {
     }
 
     it("test re-render performance", async () => {
-
-        // TODO: register the re-render component and track re-renders
 
         render(<Test/>);
 

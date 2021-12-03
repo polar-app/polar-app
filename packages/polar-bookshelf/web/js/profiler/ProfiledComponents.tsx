@@ -1,6 +1,6 @@
 import React, {Profiler, ProfilerOnRenderCallback} from 'react'
 
-const isDev = process.env.NODE_ENV === 'development';
+const IS_DEV = process.env.NODE_ENV === 'development';
 
 export interface IRender {
     readonly id: string;
@@ -19,20 +19,37 @@ export function createRenderSnapshotAndReset() {
     return result;
 }
 
+// TODO: profile when a hook is updated too.
+
 export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.FunctionComponent<P> {
 
-
-    if (isDev) {
+    if (IS_DEV) {
 
         return (props) => {
 
-            const handleRender: ProfilerOnRenderCallback = (id, phase) => {
+            const handleRender: ProfilerOnRenderCallback = React.useCallback((id, phase) => {
                 console.log(`id: ${id}, phase: ${phase}`);
                 RENDERS.push({id, phase});
-            }
+            }, []);
+
+            const id = React.useMemo(() => {
+
+                if (Component.name) {
+                    return Component.name;
+                }
+
+                if (Component.displayName) {
+                    return Component.displayName;
+                }
+
+                console.warn("Component has no name", Component);
+
+                return 'unknown';
+
+            }, []);
 
             return (
-                <Profiler id={Component.name || Component.displayName || 'unknown'} onRender={handleRender}>
+                <Profiler id={id} onRender={handleRender}>
                     <Component {...props}/>
                 </Profiler>
             );
@@ -46,23 +63,3 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
     }
 
 }
-
-const ObjectComponent: React.FunctionComponent<object> = () => {
-    return (
-        <div>hello world</div>
-    )
-}
-
-const ObjectComponentProfiled = profiled(ObjectComponent);
-
-interface IProps {
-    readonly foo: string;
-}
-
-const WithProps = profiled((props: IProps) => (
-    <div>hello {props.foo}</div>
-));
-
-const WithoutProps = profiled(() => (
-    <div>hello</div>
-));
