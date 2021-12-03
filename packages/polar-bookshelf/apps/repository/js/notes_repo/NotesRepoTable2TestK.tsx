@@ -47,7 +47,7 @@ describe("NotesRepoTable2", function() {
         );
     }
 
-    it("test re-render performance", async () => {
+    xit("test re-render performance", async () => {
 
         render(<Test/>);
 
