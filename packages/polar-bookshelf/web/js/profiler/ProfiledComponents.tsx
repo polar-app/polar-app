@@ -42,9 +42,7 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
                     return Component.displayName;
                 }
 
-                console.warn("Component has no name", Component);
-
-                return 'unknown';
+                throw new Error("Component has no name");
 
             }, []);
 

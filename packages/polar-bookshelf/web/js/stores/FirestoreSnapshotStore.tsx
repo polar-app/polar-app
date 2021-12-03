@@ -122,7 +122,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
-    const FirestoreSnapshotProvider = React.memo((props: FirestoreSnapshotProps) => {
+    const FirestoreSnapshotProvider = React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
         const {firestore, uid} = useFirestore();
 
@@ -149,6 +149,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
                 {props.children}
             </SnapshotStoreProvider>
         );
+
     });
 
     return [FirestoreSnapshotProvider, useSnapshotStore];

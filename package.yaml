@@ -61,6 +61,7 @@ devDependencies:
     "karma-typescript": "=5.5.2"
     "karma-typescript-es6-transform": "=5.5.2"
     "karma-webpack": "=5.0.0"
+    "karma-summary-reporter": "=3.0.0"
     "puppeteer": "=11.0.0"
 
     ## Mocha Dependencies
