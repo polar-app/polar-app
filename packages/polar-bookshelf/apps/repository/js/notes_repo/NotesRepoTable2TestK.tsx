@@ -24,7 +24,7 @@ describe("NotesRepoTable2", function() {
                 setDeleted(true)
             }
 
-        }, []);
+        }, [blocksStore]);
 
         return (
             <>
