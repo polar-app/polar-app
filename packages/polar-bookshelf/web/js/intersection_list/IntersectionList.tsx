@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {IntersectionListBlock} from './IntersectionListBlock';
+import {typedMemo} from "../hooks/ReactHooks";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
@@ -83,7 +84,7 @@ interface IProps<V extends ListValue> {
  * https://github.com/thebuilder/react-intersection-observer#readme
  * https://github.com/researchgate/react-intersection-observer
  */
-export const IntersectionList = React.memo(function<V extends ListValue>(props: IProps<V>) {
+export const IntersectionList = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
     const blockSize = props.blockSize || 25;
 

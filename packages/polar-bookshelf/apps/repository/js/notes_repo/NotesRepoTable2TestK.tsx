@@ -1,9 +1,11 @@
-import React, {Profiler, ProfilerOnRenderCallback} from 'react'
+import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import {NotesRepoTable2, TableGridStoreProvider} from "./NotesRepoTable2";
 import {BlocksStoreProvider} from '../../../../web/js/notes/store/BlocksStore';
 import {BlockStoreContextProvider} from "../../../../web/js/notes/store/BlockStoreContextProvider";
 import {assertJSON} from "polar-test/src/test/Assertions";
+import {createRenderSnapshotAndReset} from "../../../../web/js/profiler/ProfiledComponents";
+import {assert} from 'chai';
 
 describe("NotesRepoTable2", function() {
 
@@ -20,28 +22,43 @@ describe("NotesRepoTable2", function() {
         );
     }
 
-    xit("test re-render performance", async () => {
+    it("test re-render performance", async () => {
 
         // TODO: register the re-render component and track re-renders
 
-        interface IRender {
-            readonly id: string;
-            readonly phase: string;
-        }
-
-        let renders: IRender[] = [];
-
-        const handleRender: ProfilerOnRenderCallback = (id, phase) => {
-            console.log(`id: ${id}, phase: ${phase}`);
-            renders.push({id, phase});
-        }
-
-        render(<Profiler id="profiler" onRender={handleRender}><Test/></Profiler>)
+        render(<Test/>);
 
         await waitFor(() => screen.getByText("World War II"))
 
-        assertJSON(renders , []);
+        const snapshot = createRenderSnapshotAndReset()
+        assert.notDeepEqual(snapshot, []);
 
+        assertJSON(snapshot, [
+            {
+                "id": "NotesRepoTable2",
+                "phase": "mount"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            },
+            {
+                "id": "NotesRepoTable2",
+                "phase": "update"
+            }
+        ]);
 
     });
 
