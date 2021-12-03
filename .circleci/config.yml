@@ -182,7 +182,6 @@ jobs:
       - run:
           name: eslint
           command: pnpm run eslint-ci-all
-      - eslint_diff
       - check_duplicates
 
   # @ Run Karma Test Suite
@@ -667,7 +666,7 @@ workflows:
 
   IOS-Android:
     when:
-      equal: [ master, << pipeline.git.branch >> ]
+      equal: [master, << pipeline.git.branch >>]
     jobs:
       - Approve-Android-Internal:
           type: approval
