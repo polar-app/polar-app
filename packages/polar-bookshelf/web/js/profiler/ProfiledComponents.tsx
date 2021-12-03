@@ -7,7 +7,7 @@ export interface IRender {
     readonly phase: string;
 }
 
-// tslint:disable-next-line: functional/prefer-readonly-type
+// eslint-disable-next-line functional/prefer-readonly-type
 const RENDERS: IRender[] = [];
 
 /**
