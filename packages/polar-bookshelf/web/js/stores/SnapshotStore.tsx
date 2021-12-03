@@ -2,6 +2,7 @@ import {ErrorType} from "polar-shared/src/util/Errors";
 import * as React from "react";
 import {createValueStore} from "./ValueStore";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {profiled} from "../profiler/ProfiledComponents";
 
 export interface ISnapshotLeft {
     readonly left: ErrorType;
@@ -41,10 +42,10 @@ export type SnapshotStoreProvider<S> = React.FC<SnapshotStoreProviderProps<S>>;
 
 export type UseSnapshotStore<S> = () => ISnapshot<S>;
 
-export type SnapshotStoreTuple<S> = Readonly<[
+export type SnapshotStoreTuple<S> = readonly [
     SnapshotStoreProvider<S>,
     UseSnapshotStore<S>
-]>;
+];
 
 /**
  * Create a snapshot store of a given type that is initially undefined, then a
@@ -90,7 +91,7 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     });
 
-    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProvider(props) {
+    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = profiled(React.memo(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
                 <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>
@@ -98,7 +99,7 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
                 </SnapshotStoreProviderInner>
             </ValueStoreProvider>
         );
-    });
+    }));
 
     const useSnapshotStore = (): ISnapshot<S> => {
 

@@ -40,6 +40,7 @@ importers:
       karma-safari-launcher: '=1.0.0'
       karma-sourcemap-loader: '=0.3.8'
       karma-spec-reporter: '=0.0.32'
+      karma-summary-reporter: '=3.0.0'
       karma-typescript: '=5.5.2'
       karma-typescript-es6-transform: '=5.5.2'
       karma-webpack: '=5.0.0'
@@ -104,6 +105,7 @@ importers:
       karma-safari-launcher: 1.0.0_karma@6.3.8
       karma-sourcemap-loader: 0.3.8
       karma-spec-reporter: 0.0.32_karma@6.3.8
+      karma-summary-reporter: 3.0.0_karma@6.3.8
       karma-typescript: 5.5.2_karma@6.3.8+typescript@4.4.3
       karma-typescript-es6-transform: 5.5.2
       karma-webpack: 5.0.0_webpack@5.61.0
@@ -14345,6 +14347,15 @@ packages:
       karma: '>=0.9'
     dependencies:
       colors: 1.4.0
+      karma: 6.3.8
+    dev: true
+
+  /karma-summary-reporter/3.0.0_karma@6.3.8:
+    resolution: {integrity: sha512-E8O18XzS1UZ+j5fd/MPKFhg+IvzxenHudfAXocrz3zVS/yfVmurHZvmCI/hHeNo4q6ItIA3yAUThh1ZIM7AkKw==}
+    peerDependencies:
+      karma: 5.x || 6.x
+    dependencies:
+      chalk: 4.1.2
       karma: 6.3.8
     dev: true
 

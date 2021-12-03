@@ -1,5 +1,6 @@
 import * as React from "react";
 import {action, autorun, computed, makeObservable, observable} from "mobx";
+import {profiled} from "../profiler/ProfiledComponents";
 
 export interface IValueStore<V> {
     readonly value: V;
@@ -15,7 +16,8 @@ export interface IValueStore<V> {
  */
 export class ValueStore<V> implements IValueStore<V> {
 
-    @observable _value: V;
+    // eslint-disable-next-line functional/prefer-readonly-type
+    @observable private _value: V;
 
     constructor(initialValue: V) {
         this._value = initialValue;
@@ -48,11 +50,11 @@ export type UseValueStore<V> = () => V;
 
 export type ValueStoreSetter<V> = (value: V) => void;
 
-export type ValueStoreTuple<V> = Readonly<[
+export type ValueStoreTuple<V> = readonly [
     ValueStoreProvider<V>,
     UseValueStore<V>,
     ValueStoreSetter<V>
-]>;
+];
 
 /**
  * Create a ValueStore which is a much cleaner way to share values and update
@@ -79,7 +81,7 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     const Context = React.createContext<ValueStore<V>>(null!);
 
-    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = React.memo(function ValueStoreProvider(props) {
+    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = profiled(React.memo(function ValueStoreProvider(props) {
 
         const store = React.useMemo(() => new ValueStore(props.initialStore), [props.initialStore]);
 
@@ -89,7 +91,7 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
             </Context.Provider>
         );
 
-    });
+    }));
 
     const useValueStore = (): V => {
 

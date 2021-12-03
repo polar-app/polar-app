@@ -5,17 +5,21 @@ import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 import {IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 /**
  * tuple of field path, op, and value.
  */
-export type GenericClause = [string, TWhereFilterOp, any];
+export type GenericClause = readonly [string, TWhereFilterOp, any];
 
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,
                                                 listener: (snapshot: IGenericCollectionSnapshot<T>) => void) {
 
-    const {user, firestore} = useFirestore();
+    const firestoreContext = useFirestore();
+
+    const user = firestoreContext?.user;
+    const firestore = firestoreContext?.firestore;
 
     React.useEffect(() => {
 
@@ -46,6 +50,10 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
         const convertSnapshotMutateState = (current: IQuerySnapshotClient): void => {
             listener(convertSnapshot(current));
+        }
+
+        if (! firestore) {
+            return NULL_FUNCTION;
         }
 
         // we have to have an 'in' clause here...
