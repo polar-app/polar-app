@@ -33,7 +33,7 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
     return (
         <MUIButtonBar className={props.className}>
             <>
-                <MUIDocTagButton onClick={NULL_FUNCTION} size={Devices.isDesktop()?"medium":"small"}/>
+                <MUIDocTagButton onClick={NULL_FUNCTION} size={Devices.isDesktop() ? "medium" : "small"}/>
             </>
         </MUIButtonBar>
     );
@@ -59,7 +59,7 @@ const NotesRepoTableToolbarMain = React.memo(function NotesRepoTableToolbarMain(
 
 });
 
-export const NotesRepoTableToolbar = profiled(React.memo(function NotesRepoTableToolbar() {
+export const NotesRepoTableToolbar = React.memo(profiled(function NotesRepoTableToolbar() {
 
     const classes = useStyles();
     const history = useHistory();

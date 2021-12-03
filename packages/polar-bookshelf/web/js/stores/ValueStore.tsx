@@ -50,11 +50,11 @@ export type UseValueStore<V> = () => V;
 
 export type ValueStoreSetter<V> = (value: V) => void;
 
-export type ValueStoreTuple<V> = Readonly<[
+export type ValueStoreTuple<V> = readonly [
     ValueStoreProvider<V>,
     UseValueStore<V>,
     ValueStoreSetter<V>
-]>;
+];
 
 /**
  * Create a ValueStore which is a much cleaner way to share values and update

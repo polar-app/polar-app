@@ -42,10 +42,10 @@ export type SnapshotStoreProvider<S> = React.FC<SnapshotStoreProviderProps<S>>;
 
 export type UseSnapshotStore<S> = () => ISnapshot<S>;
 
-export type SnapshotStoreTuple<S> = Readonly<[
+export type SnapshotStoreTuple<S> = readonly [
     SnapshotStoreProvider<S>,
     UseSnapshotStore<S>
-]>;
+];
 
 /**
  * Create a snapshot store of a given type that is initially undefined, then a

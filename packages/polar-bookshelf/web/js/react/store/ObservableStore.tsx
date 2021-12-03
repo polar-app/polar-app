@@ -54,13 +54,13 @@ export function useObservableStoreSubject<V, R>(context: React.Context<InternalO
 
 export type StoreProvider<V> = () => V;
 export type SetStore<V> = (value: V) => void;
-export type Store<V> = [V, SetStore<V>];
+export type Store<V> = readonly [V, SetStore<V>];
 
 interface IUseObservableStoreOpts<V, K extends keyof V> extends IUseStoreHookOpts<V, K> {
     readonly enableShallowEquals: boolean;
 }
 
-type Dict = {[key: string]: any};
+type Dict = Readonly<{[key: string]: any}>;
 
 export type UseStoreReducerFilter<R> = (prev: R, next: R) => boolean;
 
@@ -232,9 +232,9 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
 }
 
-export type InternalStoreContext<V> = Readonly<[React.Context<ObservableStore<V>>]>;
+export type InternalStoreContext<V> = readonly [React.Context<ObservableStore<V>>];
 
-export type StoreContext<V> = Readonly<[React.Context<ObservableStore<V>>, ObservableStore<V>]>;
+export type StoreContext<V> = readonly [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
 function createInternalObservableStore<V>(initialValue: V): InternalObservableStore<V> {
 
@@ -303,7 +303,7 @@ export interface IUseStoreHookOpts<V, K extends keyof V> {
     // readonly mapper?: UseStoreMapper<V, K, N>;
 }
 
-export type ObservableStoreTuple<V, M extends StoreMutator, C> = Readonly<[
+export type ObservableStoreTuple<V, M extends StoreMutator, C> = readonly [
     ObservableStoreProviderComponent<V>,
     // NOTE: it's not possible to use a type for this because V is defined in the tuple
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
@@ -312,7 +312,7 @@ export type ObservableStoreTuple<V, M extends StoreMutator, C> = Readonly<[
     <R>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R,
     UseContextHook<SetStore<V>>,
     UseContextHook<StoreProvider<V>>,
-]>;
+];
 
 /**
  * Create the callbacks. Called for every useCallbacks function so that we can
@@ -370,12 +370,12 @@ export interface ObservableStoreOpts<V, M, C> {
 
 type ComponentCallbacksFactory<C> = () => C;
 
-type InitialContextValues<V, M, C> = Readonly<[
+type InitialContextValues<V, M, C> = readonly [
     M,
     ComponentCallbacksFactory<C>,
     SetStore<V>,
     StoreProvider<V>
-]>;
+];
 
 /**
  * Create the initial values of the components we're working with (store

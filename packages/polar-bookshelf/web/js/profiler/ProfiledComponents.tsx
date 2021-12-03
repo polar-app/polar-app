@@ -7,7 +7,7 @@ export interface IRender {
     readonly phase: string;
 }
 
-// tslint:disable-next-line:functional/prefer-readonly-type
+// tslint:disable-next-line: functional/prefer-readonly-type
 const RENDERS: IRender[] = [];
 
 /**
@@ -26,7 +26,7 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
 
     if (IS_DEV) {
 
-        return (props) => {
+        return React.memo((props) => {
 
             const handleRender: ProfilerOnRenderCallback = React.useCallback((id, phase) => {
                 console.log(`id: ${id}, phase: ${phase}`);
@@ -61,7 +61,7 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
                 </Profiler>
             );
 
-        }
+        });
 
     } else {
         // just return the main component and don't wrap it because we aren't in
