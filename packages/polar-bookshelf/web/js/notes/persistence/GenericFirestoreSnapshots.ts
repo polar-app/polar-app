@@ -10,7 +10,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 /**
  * tuple of field path, op, and value.
  */
-export type GenericClause = [string, TWhereFilterOp, any];
+export type GenericClause = Readonly<[string, TWhereFilterOp, any]>;
 
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,

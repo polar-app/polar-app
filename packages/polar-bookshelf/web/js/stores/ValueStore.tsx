@@ -16,7 +16,8 @@ export interface IValueStore<V> {
  */
 export class ValueStore<V> implements IValueStore<V> {
 
-    @observable _value: V;
+    // eslint-disable-next-line functional/prefer-readonly-type
+    @observable private _value: V;
 
     constructor(initialValue: V) {
         this._value = initialValue;

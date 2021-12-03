@@ -49,8 +49,10 @@ export interface IDocumentChangeIndex<D> {
 
 function createDocumentChangeIndex<D>(): IDocumentChangeIndex<D> {
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     const docs: ITypedDocument<D>[] = []
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     const idx: {[id: string]: number} = {};
 
     // TODO: we CAN maintain these sorted but we're going to have to have a
