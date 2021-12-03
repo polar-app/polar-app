@@ -60,6 +60,7 @@ interface IUseObservableStoreOpts<V, K extends keyof V> extends IUseStoreHookOpt
     readonly enableShallowEquals: boolean;
 }
 
+// eslint-disable-next-line functional/prefer-readonly-type
 type Dict = Readonly<{[key: string]: any}>;
 
 export type UseStoreReducerFilter<R> = (prev: R, next: R) => boolean;
