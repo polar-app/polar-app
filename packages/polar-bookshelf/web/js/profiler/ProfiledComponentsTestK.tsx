@@ -4,6 +4,12 @@ import {profiled} from "./ProfiledComponents";
 
 describe("ProfiledComponents", function() {
 
+    const BasicProfiledWithReactMemo = profiled(React.memo(function Basic() {
+        return (
+            <div>BasicProfiledWithReactMemo</div>
+        );
+    }));
+
     const BasicProfiled = profiled(function Basic() {
         return (
             <div>BasicProfiled</div>
@@ -13,6 +19,7 @@ describe("ProfiledComponents", function() {
     const Test = () => {
         return (
             <div>
+                <BasicProfiledWithReactMemo/>
                 <BasicProfiled/>
             </div>
         )
@@ -23,6 +30,7 @@ describe("ProfiledComponents", function() {
         render(<Test/>)
 
         await waitFor(() => screen.getByText("BasicProfiled"))
+        await waitFor(() => screen.getByText("BasicProfiledWithReactMemo"))
 
     });
 

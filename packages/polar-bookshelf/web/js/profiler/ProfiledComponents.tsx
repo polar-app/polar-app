@@ -42,6 +42,14 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
                     return Component.displayName;
                 }
 
+                if (typeof (Component as any).type === 'function') {
+
+                    if (typeof (Component as any).type?.name === 'string') {
+                        return (Component as any).type.name;
+                    }
+
+                }
+
                 throw new Error("Component has no name");
 
             }, []);
