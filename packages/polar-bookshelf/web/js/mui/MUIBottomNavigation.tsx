@@ -120,14 +120,12 @@ export const MUIBottomNavigation = ()  => {
     }, [bottomNavRef, isSidenavOpenRef]);
 
 
-    if (location.pathname.startsWith('/doc/')) {
-        // hack to disable when opening up docs.
-        return null;
-    }
+    if (location.pathname.startsWith('/doc/') ||
+        location.pathname.startsWith('/notes/') ||
+        location.pathname === '/daily') {
 
-    if (location.pathname.startsWith('/notes/')) {
-        // hack to disable when opening up notes.
         return null;
+
     }
 
     return (
