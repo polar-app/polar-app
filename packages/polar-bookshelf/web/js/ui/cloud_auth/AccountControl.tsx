@@ -89,8 +89,6 @@ export function useLogoutAction(): Callback {
 
 }
 
-declare var window: any;
-
 
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
@@ -114,7 +112,6 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         ];
         return email && canAccept.includes(email);
     }
-
 
     return (
 
