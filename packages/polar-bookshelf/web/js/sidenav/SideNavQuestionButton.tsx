@@ -201,7 +201,6 @@ export function SideNavQuestionButton() {
                   }}
                   anchorEl={anchorEl}>
 
-                <MenuItems.Intercom/>
                 <MenuItems.Chat/>
                 <MenuItems.Documentation/>
 
