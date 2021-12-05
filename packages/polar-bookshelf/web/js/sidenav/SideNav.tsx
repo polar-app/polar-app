@@ -32,6 +32,9 @@ import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
 import {WithNotesIntegration} from '../notes/NoteUtils';
+import ChatIcon from '@material-ui/icons/Chat';
+import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
+import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -215,6 +218,33 @@ const SettingsButton = React.memo(function SettingsButton() {
     )
 });
 
+const IntercomButton = React.memo(function IntercomButton() {
+
+    const classes = useStyles();
+
+    const intercomClient = createIntercomClient();
+    const intercomData = useIntercomData();
+
+    function onClick() {
+        if (intercomData && intercomClient) {
+            intercomClient.update({
+                ...intercomData,
+                hide_default_launcher: false,
+            });
+            intercomClient.showMessages();
+        }
+    }
+
+    return (
+        <ActiveTabButton title={'Chat with us'}
+                         path={RoutePathNames.SUPPORT}
+                         noContextMenu={true}
+                         onClick={onClick}>
+            <ChatIcon className={classes.secondaryIcon}/>
+        </ActiveTabButton>
+    )
+});
+
 
 const PolarButton = React.memo(function PolarButton() {
 
@@ -226,7 +256,7 @@ const PolarButton = React.memo(function PolarButton() {
     return (
         <div className={classes.logo}
              onClick={() => history.push(RoutePathNames.HOME)}>
-            <PolarSVGIcon width={ w } height={ w } />
+            <PolarSVGIcon width={w} height={w}/>
         </div>
     );
 
@@ -279,7 +309,7 @@ const useSideNavStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
-            ...(! Devices.isDesktop() && {
+            ...(!Devices.isDesktop() && {
                 position: 'absolute',
                 zIndex: 0,
                 height: '100%',
@@ -314,19 +344,19 @@ export const useSidenavWidth = () => {
 
 export const SideNav = React.memo(function SideNav() {
 
-    const { tabs } = useSideNavStore(['tabs', 'isOpen']);
+    const {tabs} = useSideNavStore(['tabs', 'isOpen']);
     const classes = useStyles();
     const sidenavClasses = useSideNavStyles();
 
     return (
         <>
-            <SideNavInitializer />
+            <SideNavInitializer/>
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
                 {Devices.isDesktop() && (
                     <ZenModeActiveContainer>
-                        <div className={classes.root} style={{ height: '100%' }}>
+                        <div className={classes.root} style={{height: '100%'}}>
 
                             <PolarButton/>
 
@@ -336,10 +366,10 @@ export const SideNav = React.memo(function SideNav() {
                             <AnnotationsButton/>
 
                             <WithNotesIntegration>
-                                <NotesButton />
+                                <NotesButton/>
                             </WithNotesIntegration>
 
-                            <DeviceRouter desktop={<StatsButton/>} />
+                            <DeviceRouter desktop={<StatsButton/>}/>
 
 
                             <WithNotesIntegration>
@@ -362,12 +392,15 @@ export const SideNav = React.memo(function SideNav() {
 
                                 <SideNavQuestionButton/>
                                 <SettingsButton/>
+
+                                <SideNavDivider/>
+                                <IntercomButton/>
                             </div>
                         </div>
                     </ZenModeActiveContainer>
                 )}
-                <Divider orientation="vertical" />
-                <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
+                <Divider orientation="vertical"/>
+                <DeviceRouter handheld={<div id="sidenav-sidecar" style={{flex: 1}}/>}/>
             </div>
         </>
     );
@@ -376,10 +409,10 @@ export const SideNav = React.memo(function SideNav() {
 
 const useSideCarStyles = makeStyles<Theme, IUseSideCarStylesProps>(() =>
     createStyles({
-        root({ sidenavWidth }) {
+        root({sidenavWidth}) {
             return {
                 height: '100%',
-                width: Devices.isDesktop() ? `calc(${sidenavWidth}px - ${SIDENAV_WIDTH}px)`: `${sidenavWidth}px`,
+                width: Devices.isDesktop() ? `calc(${sidenavWidth}px - ${SIDENAV_WIDTH}px)` : `${sidenavWidth}px`,
             };
         },
     })
@@ -390,15 +423,15 @@ interface IUseSideCarStylesProps {
     sidenavWidth: number;
 }
 
-export const SideCar: React.FC = ({ children }) => {
+export const SideCar: React.FC = ({children}) => {
     const sidenavWidth = useSidenavWidth();
-    const classes = useSideCarStyles({ sidenavWidth });
+    const classes = useSideCarStyles({sidenavWidth});
     const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), []);
     const {active} = usePersistentRouteContext();
 
-    if (! mountElem || ! active) { // This technically would never happen.
+    if (!mountElem || !active) { // This technically would never happen.
         return null;
     }
 
-    return ReactDOM.createPortal(<div className={classes.root} children={children} />, mountElem);
+    return ReactDOM.createPortal(<div className={classes.root} children={children}/>, mountElem);
 };
