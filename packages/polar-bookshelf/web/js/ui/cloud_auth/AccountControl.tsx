@@ -14,8 +14,6 @@ import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
 import {AcceptBatch} from "./AcceptBatch";
 import Subscription = Billing.Subscription;
-import {createIntercomClient} from "../../analytics/intercom/IntercomAnalytics";
-import {useIntercomData} from "../../apps/repository/integrations/IntercomHooks";
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -117,8 +115,6 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         return email && canAccept.includes(email);
     }
 
-    const intercomClient = createIntercomClient();
-    const intercomData = useIntercomData();
 
     return (
 
@@ -166,25 +162,6 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                     </div>
 
                     <ViewPlansAndPricingButton/>
-
-                    <Button color="secondary"
-                            variant="contained"
-                            size="large"
-                            onClick={() => {
-                                if (intercomData && intercomClient) {
-                                    intercomClient.update({
-                                        ...intercomData,
-                                        hide_default_launcher: false,
-                                    });
-                                    intercomClient.showMessages();
-                                }
-                            }}>
-
-                        <i className="fas fa-certificate"/>
-                        &nbsp;
-                        Open Intercom
-
-                    </Button>
 
                     {canAcceptBeta(props.userInfo.email) && <AcceptBatch/>}
                 </div>
