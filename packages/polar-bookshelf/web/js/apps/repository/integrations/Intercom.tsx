@@ -76,12 +76,13 @@ const IntercomInner = () => {
 
 export const Intercom = () => {
 
-    // if (document.location.href.startsWith('https://')) {
-    return (
-        <IntercomInner/>
-    )
-    // }
+    // Comment if you want to see Intercom locally
+    if (document.location.href.startsWith('https://')) {
+        return (
+            <IntercomInner/>
+        )
+    }
 
-    // return null;
+    return null;
 
 }
