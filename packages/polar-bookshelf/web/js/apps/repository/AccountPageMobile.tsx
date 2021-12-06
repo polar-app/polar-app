@@ -17,6 +17,7 @@ import {usePopperController} from '../../mui/menu/MUIPopper';
 import {RoutePathNames} from './RoutePathNames';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 
+const Intercom = MenuItems.Intercom;
 const Chat = MenuItems.Chat;
 const Documentation = MenuItems.Documentation;
 const RequestFeatures = MenuItems.RequestFeatures;
@@ -88,7 +89,7 @@ export const PreferencesListItems = React.memo(function PreferencesListItems() {
     const history = useHistory();
     const logoutAction = useLogoutAction();
     const popperController = usePopperController();
-    
+
     const handleClick = () => {
         setOpen(!open);
     };
@@ -98,7 +99,7 @@ export const PreferencesListItems = React.memo(function PreferencesListItems() {
     }
 
     return(
-        <List>      
+        <List>
             <Divider />
             <ListItem button onClick={() => history.push(RoutePathNames.SETTINGS)}>
                 <ListItemIcon>
@@ -124,6 +125,7 @@ export const PreferencesListItems = React.memo(function PreferencesListItems() {
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     <Paper style={{width: '100%'}}>
+                        <Intercom/>
                         <Chat/>
                         <Divider />
                         <Documentation/>
