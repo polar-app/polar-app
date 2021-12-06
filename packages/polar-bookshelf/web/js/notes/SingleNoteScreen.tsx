@@ -1,4 +1,4 @@
-import {Box, Typography} from "@material-ui/core";
+import {Box, LinearProgress, Typography} from "@material-ui/core";
 import {RouteComponentProps} from "react-router-dom";
 import React from "react";
 import {useBlocksStore} from "./store/BlocksStore";
@@ -12,36 +12,41 @@ import {focusFirstChild} from "./NoteUtils";
 import {NotesToolbar} from "./NotesToolbar";
 import {BlockTargetStr} from "./NoteLinkLoader";
 import {NoteStack} from "./stacks/NoteStack";
+import {NotesContainer} from "./NotesContainer";
+import {NoteProviders} from "./NoteProviders";
+import {observer} from "mobx-react-lite";
+import {autorun} from "mobx";
 
 interface INoteRootParams {
-    id: BlockIDStr;
+    readonly id: BlockIDStr;
 };
 
 interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}
 
-export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
+export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = observer((props) => {
     const { match: { params } } = props;
     const target = React.useMemo(() => decodeURIComponent(params.id), [params.id]);
     const blocksStore = useBlocksStore();
-    const root = React.useMemo(() => blocksStore.getBlockByTarget(target), [target, blocksStore]);
 
-    if (! root) {
-        return <NoteNotFound target={target} />;
+    if (! blocksStore.hasSnapshot) {
+        return <LinearProgress />;
     }
 
     return (
-        <>
-            <NotesToolbar />
-            <BlockTitle id={root.id} />
-            <NoteStack target={target}>
-                <NoteRenderer target={target} />
-            </NoteStack>
-        </>
+        <NotesContainer>
+            <NoteProviders>
+                <NotesToolbar />
+                <BlockTitle target={target} />
+                <NoteStack target={target}>
+                    <NoteRenderer target={target} />
+                </NoteStack>
+            </NoteProviders>
+        </NotesContainer>
     );
-};
+});
 
 interface INoteRendererProps {
-    target: BlockTargetStr;
+    readonly target: BlockTargetStr;
 }
 
 export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => {
@@ -49,35 +54,46 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
 
     const blocksStore = useBlocksStore();
 
-    const root = React.useMemo(() => blocksStore.getBlockByTarget(target), [target, blocksStore]);
+    const [rootID, setRootID] = React.useState<BlockIDStr | undefined>(undefined);
 
     React.useEffect(() => {
-        if (! root) {
+        return autorun(() => {
+            const root = blocksStore.getBlockByTarget(target);
+
+            if (root && root.id !== target) {
+                setRootID(root.id);
+            }
+        });
+    }, [target, setRootID, blocksStore]);
+
+    React.useEffect(() => {
+        if (! rootID) {
             return;
         }
 
-        const activeBlock = blocksStore.getActiveBlockForNote(root.id);
+        const activeBlock = blocksStore.getActiveBlockForNote(rootID);
+
         if (activeBlock) {
             blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
         } else {
-            focusFirstChild(blocksStore, root.id);
+            focusFirstChild(blocksStore, rootID);
         }
-    }, [root, blocksStore]);
+    }, [rootID, blocksStore]);
 
 
     return (
         <NotePaper>
-            {root 
+            {rootID
                 ? (
-                    <BlocksTreeProvider root={root.id} autoExpandRoot>
-                        <Block id={root.id}
+                    <BlocksTreeProvider root={rootID} autoExpandRoot>
+                        <Block id={rootID}
                                parent={undefined}
                                isHeader
                                alwaysExpanded
                                hasGutter
                                noBullet />
                         <div style={{ marginTop: 64 }}>
-                            <NotesInbound id={root.id} />
+                            <NotesInbound id={rootID} />
                         </div>
                     </BlocksTreeProvider>
                 ) : (
@@ -89,7 +105,7 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
 });
 
 interface INoteNotFoundProps {
-    target: BlockTargetStr;
+    readonly target: BlockTargetStr;
 }
 
 export const NoteNotFound: React.FC<INoteNotFoundProps> = (props) => {

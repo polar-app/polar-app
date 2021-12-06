@@ -1,6 +1,6 @@
 import React from "react";
 import {useBlocksStore} from "../notes/store/BlocksStore";
-import {NoteProviders} from "../notes/NoteScreen";
+import {NoteProviders} from "../notes/NoteProviders";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
