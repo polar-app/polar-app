@@ -133,11 +133,10 @@ export namespace CapturedContentEPUBGenerator {
         const readableContent = convertToHumanReadableContent(capture);
 
         function getDocument(): Document {
-            if (global.URL !== undefined) {
-                return new DOMParser().parseFromString(readableContent, "text/html");
-            } else {
-                // Running in node
+            if (typeof window === 'undefined') {
                 return new JSDOM(readableContent).window.document;
+            } else {
+                return new DOMParser().parseFromString(readableContent, "text/html");
             }
         }
 
