@@ -706,6 +706,7 @@ importers:
       jsdom: '=16.7.0'
       node-fetch: '=2.6.1'
       polar-epub: 0.0.0
+      polar-epub-generator: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-hooks: 0.0.0
       polar-pdf: 0.0.0
@@ -717,6 +718,7 @@ importers:
       jsdom: 16.7.0
       node-fetch: 2.6.1
       polar-epub: link:../polar-epub
+      polar-epub-generator: link:../polar-epub-generator
       polar-firebase-admin: link:../polar-firebase-admin
       polar-hooks: link:../polar-hooks
       polar-pdf: link:../polar-pdf
