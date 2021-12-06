@@ -132,7 +132,16 @@ export namespace CapturedContentEPUBGenerator {
 
         const readableContent = convertToHumanReadableContent(capture);
 
-        const contentDoc = new JSDOM(readableContent).window.document;
+        function getDocument(): Document {
+            if (global.URL !== undefined) {
+                return new DOMParser().parseFromString(readableContent, "text/html");
+            } else {
+                // Running in node
+                return new JSDOM(readableContent).window.document;
+            }
+        }
+
+        const contentDoc = getDocument();
 
         const imgs = Array.from(contentDoc.querySelectorAll('img'));
 
