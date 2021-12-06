@@ -461,7 +461,7 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
                     case AnnotationType.COMMENT:
                         const comment = current.original as IComment;
-                        return Texts.toHTML(this.toIText(comment.content));
+                        return Texts.toHTML(comment.content);
 
                 }
 

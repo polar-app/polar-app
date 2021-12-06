@@ -13,6 +13,7 @@ import {NotesRepoTableHeadCheck} from "./NotesRepoTableHeadCheck";
 import {UserAvatarIconButton} from "../../../../web/js/ui/cloud_auth/UserAvatarIconButton";
 import {RoutePathNames} from "../../../../web/js/apps/repository/RoutePathNames";
 import {useHistory} from "react-router-dom";
+import {profiled} from "../../../../web/js/profiler/ProfiledComponents";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -32,7 +33,7 @@ export const SelectionActiveButtons = React.memo(function SelectionActiveButtons
     return (
         <MUIButtonBar className={props.className}>
             <>
-                <MUIDocTagButton onClick={NULL_FUNCTION} size={Devices.isDesktop()?"medium":"small"}/>
+                <MUIDocTagButton onClick={NULL_FUNCTION} size={Devices.isDesktop() ? "medium" : "small"}/>
             </>
         </MUIButtonBar>
     );
@@ -58,7 +59,7 @@ const NotesRepoTableToolbarMain = React.memo(function NotesRepoTableToolbarMain(
 
 });
 
-export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar() {
+export const NotesRepoTableToolbar = React.memo(profiled(function NotesRepoTableToolbar() {
 
     const classes = useStyles();
     const history = useHistory();
@@ -85,4 +86,4 @@ export const NotesRepoTableToolbar = React.memo(function NotesRepoTableToolbar()
             </DeviceRouter.Handheld>
         </>
     );
-});
+}));

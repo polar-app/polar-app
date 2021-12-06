@@ -5,6 +5,7 @@ import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
+import {profiled} from "../profiler/ProfiledComponents";
 
 type QuerySnapshotSubscriber<SM = unknown> = SnapshotSubscriber<IQuerySnapshot<SM>>;
 
@@ -48,8 +49,10 @@ export interface IDocumentChangeIndex<D> {
 
 function createDocumentChangeIndex<D>(): IDocumentChangeIndex<D> {
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     const docs: ITypedDocument<D>[] = []
 
+    // eslint-disable-next-line functional/prefer-readonly-type
     const idx: {[id: string]: number} = {};
 
     // TODO: we CAN maintain these sorted but we're going to have to have a
@@ -122,7 +125,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
-    const FirestoreSnapshotProvider = React.memo((props: FirestoreSnapshotProps) => {
+    const FirestoreSnapshotProvider = profiled(React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
         const {firestore, uid} = useFirestore();
 
@@ -149,7 +152,8 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
                 {props.children}
             </SnapshotStoreProvider>
         );
-    });
+
+    }));
 
     return [FirestoreSnapshotProvider, useSnapshotStore];
 

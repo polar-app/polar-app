@@ -177,7 +177,7 @@ namespace Device {
 
     export const useHandheldStyles = makeStyles(() =>
         createStyles({
-            paper: { width: '100vw' },
+            paper: { width: '100vw', overflow: 'hidden' },
         })
     );
 

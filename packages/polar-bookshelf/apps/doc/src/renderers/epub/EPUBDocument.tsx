@@ -40,6 +40,7 @@ import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopu
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {RenditionOptions} from "epubjs/types/rendition";
 import {Browsers} from "polar-browsers/src/Browsers";
+import {useTaskEventReporterHandler} from "../../../../../web/js/analytics/Analytics";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 
 interface IProps {
@@ -158,6 +159,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
 
+    const docLoadEventReporterHandler = useTaskEventReporterHandler('docLoad', {type: 'epub'});
 
     const docViewerElements = useDocViewerElementsContext();
 
@@ -464,7 +466,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
     useComponentDidMount(() => {
-        doLoad()
+        docLoadEventReporterHandler(doLoad)
             .catch(err => log.error("Could not load EPUB: ", err));
     })
 

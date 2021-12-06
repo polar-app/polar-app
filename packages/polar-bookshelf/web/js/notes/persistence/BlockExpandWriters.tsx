@@ -4,6 +4,7 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IBlockExpand} from './BlockExpandCollectionSnapshots';
 import firebase from 'firebase/app';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {Testing} from "polar-shared/src/util/Testing";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -85,7 +86,7 @@ function createMockBlockExpandPersistenceWriter(): BlockExpandPersistenceWriter 
 
 export function useBlockExpandPersistenceWriter(): BlockExpandPersistenceWriter {
 
-    if (IS_NODE) {
+    if (IS_NODE || Testing.isTestingRuntime()) {
         return createMockBlockExpandPersistenceWriter();
     }
 

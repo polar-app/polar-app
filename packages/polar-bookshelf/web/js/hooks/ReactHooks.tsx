@@ -129,7 +129,7 @@ export function useLogWhenChanged<T>(name: string, value: T) {
 
 }
 
-export const typedMemo: <T>(c: T) => T = React.memo;
+export const typedMemo: <T>(component: T) => T = React.memo;
 
 export type ForceMountRefCallback = (ref: HTMLElement | HTMLDivElement | null) => void;
 

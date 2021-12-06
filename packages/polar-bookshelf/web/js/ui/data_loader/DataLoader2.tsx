@@ -37,6 +37,9 @@ export interface IState<T> {
 }
 
 
+/**
+ * @deprecated Migrate to FirestoreSnapshotStore.tsx
+ */
 export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
 
     const {Component, Error} = props;

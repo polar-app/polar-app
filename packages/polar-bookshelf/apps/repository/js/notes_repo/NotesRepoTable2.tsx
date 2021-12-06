@@ -25,6 +25,7 @@ import {createContextMenu} from '../doc_repo/MUIContextMenu2';
 import {NotesRepoContextMenu} from "./NotesRepoContextMenu";
 import {Comparators} from "polar-shared/src/util/Comparators";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {profiled} from "../../../../web/js/profiler/ProfiledComponents";
 import Comparator = Comparators.Comparator;
 
 const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {
@@ -103,7 +104,7 @@ export const [TableGridStoreProvider, useTableGridStore] = createTableGridStore<
     toRow
 });
 
-export const NotesRepoTable2 = observer(function NotesRepoTable2() {
+export const NotesRepoTable2 = profiled(observer(function NotesRepoTable2() {
 
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
@@ -174,7 +175,7 @@ export const NotesRepoTable2 = observer(function NotesRepoTable2() {
         </MUIElevation>
     );
 
-});
+}));
 
 const HEIGHT = 40;
 

@@ -8,6 +8,7 @@ import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/Bloc
 import React from 'react';
 import {IBlockPermissionUser} from "polar-firebase/src/firebase/om/IBlockPermissionUser";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Testing} from "polar-shared/src/util/Testing";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -20,7 +21,8 @@ export type BlockCollectionSnapshotsHook = () => IBlockCollectionSnapshot;
 
 export function useFirestoreBlockCollectionSnapshots(listener: (snapshot: IBlockCollectionSnapshot) => void) {
 
-    const {user} = useFirestore();
+    const firestore = useFirestore();
+    const user = firestore?.user;
     const [sharedNamespaces, setSharedNamespaces] = React.useState<ReadonlyArray<NamespaceIDStr>>([]);
     const defaultUserNamespace = React.useMemo(() => user?.uid, [user?.uid]);
     const nspaces = React.useMemo(() => [defaultUserNamespace, ...sharedNamespaces], [defaultUserNamespace, sharedNamespaces]);
@@ -54,7 +56,7 @@ export function useFirestoreBlockCollectionSnapshots(listener: (snapshot: IBlock
 
 export function useBlockCollectionSnapshots(listener: (snapshot: IBlockCollectionSnapshot) => void) {
 
-    if (IS_NODE) {
+    if (IS_NODE || Testing.isTestingRuntime()) {
         listener(createMockSnapshot(MockBlocks.create()));
     }
 

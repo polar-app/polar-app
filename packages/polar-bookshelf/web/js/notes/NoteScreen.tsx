@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {createStyles, LinearProgress, makeStyles} from '@material-ui/core';
+import {Box, createStyles, LinearProgress, makeStyles} from '@material-ui/core';
 import {useBlocksStore} from './store/BlocksStore';
 import {observer} from 'mobx-react-lite';
 import {NotesContainer} from './NotesContainer';
@@ -34,11 +34,15 @@ export const NoteProviders: React.FC = ({ children }) => {
     const classes = useStyles();
 
     return (
-        <div className="NoteRoot" style={{ height: '100%', width: '100%' }}>
+        <Box className="NoteRoot"
+             style={{ height: '100%', width: '100%' }}
+             display="flex"
+             flexDirection="column">
+
             <BlockFormatBarProvider>
                 <BlockOverflowMenuProvider>
                     <ActionMenuStoreProvider>
-                        <NoteSelectionHandler style={{ height: '100%' }}>
+                        <NoteSelectionHandler style={{ flex: 1, minHeight: 0 }}>
                             <NoteStyle>
                                 <MUIBrowserLinkStyle className={classes.noteOuter}>
                                     {children}
@@ -49,7 +53,8 @@ export const NoteProviders: React.FC = ({ children }) => {
                     </ActionMenuStoreProvider>
                 </BlockOverflowMenuProvider>
             </BlockFormatBarProvider>
-        </div>
+
+        </Box>
     );
 };
 

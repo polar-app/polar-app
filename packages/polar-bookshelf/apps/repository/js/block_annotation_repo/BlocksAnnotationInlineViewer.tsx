@@ -27,9 +27,11 @@ export const BlocksAnnotationInlineViewer = observer(function AnnotationInlineVi
     }
 
     return (
-        <Box m={1} flex="1">
-            <NoteProviders>
-                <BlocksTreeProvider root={activeBlock.id} autoExpandRoot>
+        <NoteProviders>
+            <Box p={1} style={{ height: '100%' }}>
+                <BlocksTreeProvider root={activeBlock.id}
+                                    style={{ overflowY: 'auto', height: '100%' }}
+                                    autoExpandRoot>
                     <Box display="flex" flexDirection="column">
                         <Block
                             id={activeBlock.id}
@@ -44,8 +46,8 @@ export const BlocksAnnotationInlineViewer = observer(function AnnotationInlineVi
                             parent={activeBlock.id} />
                     </Box>
                 </BlocksTreeProvider>
-            </NoteProviders>
-        </Box>
+            </Box>
+        </NoteProviders>
     );
 
 });

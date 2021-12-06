@@ -6,6 +6,7 @@ import {CursorPositions} from "./CursorPositions";
 export namespace DOMBlocks {
     export type MarkdownStyle = 'bold' | 'italic';
     export const BLOCK_ID_PREFIX = 'block-';
+    export const NOTE_TREE_ID = 'note-tree';
 
     export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
 
@@ -29,6 +30,28 @@ export namespace DOMBlocks {
 
         return isBlockElement(node) ? node : findBlockParent(node.parentElement);
     };
+
+    export function isTreeElement(node: Node): node is HTMLDivElement {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as HTMLElement;
+            if (element.id && element.id === NOTE_TREE_ID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    export function findParentTree(node: Node | null): HTMLDivElement | null {
+        if (! node) {
+            return null;
+        }
+
+        return isTreeElement(node) ? node : findParentTree(node.parentElement);
+    }
+
+    export function getTreeRoot(elem: HTMLElement) {
+        return elem.dataset.root;
+    }
 
     export function getFocusedBlock(): HTMLDivElement | null {
         const selection = document.getSelection();

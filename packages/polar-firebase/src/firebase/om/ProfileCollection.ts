@@ -1,18 +1,18 @@
 import {Image} from './Images';
 import {TagStr} from "polar-shared/src/tags/Tags";
-import {PlainTextStr, URLStr, UserIDStr, ProfileIDStr, HandleStr, EmailStr} from "polar-shared/src/util/Strings";
+import {EmailStr, HandleStr, PlainTextStr, ProfileIDStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {ProfileOwnerCollection} from "./ProfileOwnerCollection";
 import {
-    DocumentReferences,
     CacheFirstThenServerGetOptions,
+    DocumentReferences,
     IGetOptionsWithOrder
 } from "polar-firestore-like/src/DocumentReferences";
 
@@ -106,7 +106,7 @@ export namespace ProfileCollection {
     }
 
     export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<[string, IDocumentReference<unknown>]> {
-        const doc = firestore.collection(this.COLLECTION).doc(id);
+        const doc = firestore.collection(COLLECTION).doc(id);
         return [id, doc];
     }
 

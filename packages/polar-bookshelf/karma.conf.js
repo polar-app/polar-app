@@ -44,7 +44,8 @@ module.exports = (config) => {
             'karma-webpack',
             'karma-mocha',
             'karma-spec-reporter',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-summary-reporter'
         ],
 
         files: [
@@ -68,10 +69,20 @@ module.exports = (config) => {
         },
         singleRun: true,
 
-        reporters: ['junit', 'spec'],
+        reporters: ['junit', 'spec', 'summary'],
 
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
+        summaryReporter: {
+            // 'failed', 'skipped' or 'all'
+            show: 'all',
+            // Limit the spec label to this length
+            specLength: 60,
+            // Show an 'all' column as a summary
+            overviewColumn: true,
+            // Show a list of test clients, 'always', 'never' or 'ifneeded'
+            browserList: 'always'
+        },
         webpack: {
             plugins: [
                 new NodePolyfillPlugin(),
