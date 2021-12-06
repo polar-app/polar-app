@@ -1,5 +1,4 @@
-import { assert } from 'chai';
-import { UrlCapture } from './urlCapture';
+// import { UrlCapture } from './urlCapture';
 
 
 describe("Node URL capture", () => {
@@ -9,6 +8,6 @@ describe("Node URL capture", () => {
     });
 
     it("Can capture a PDF using it URL", async () => {
-        //await UrlCapture.fetchUrl("https://arxiv.org/pdf/1912.06680.pdf");
+        // await UrlCapture.fetchUrl("https://arxiv.org/pdf/2110.13947.pdf");
     });
 });
