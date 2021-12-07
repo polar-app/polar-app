@@ -187,7 +187,7 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
 
     const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
-    const outlineSize = 5
+    const outlineSize = 10;
     const outlineSizePX = `${outlineSize}px`;
 
     const resizeStyles = {
