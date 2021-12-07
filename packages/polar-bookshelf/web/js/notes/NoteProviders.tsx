@@ -29,9 +29,9 @@ export const NoteProviders: React.FC = ({ children }) => {
              display="flex"
              flexDirection="column">
 
-            <BlockFormatBarProvider>
-                <BlockOverflowMenuProvider>
-                    <ActionMenuStoreProvider>
+            <ActionMenuStoreProvider>
+                <BlockFormatBarProvider>
+                    <BlockOverflowMenuProvider>
                         <NoteSelectionHandler style={{ flex: 1, minHeight: 0 }}>
                             <NoteStyle>
                                 <MUIBrowserLinkStyle className={classes.noteOuter}>
@@ -40,9 +40,9 @@ export const NoteProviders: React.FC = ({ children }) => {
                                 </MUIBrowserLinkStyle>
                             </NoteStyle>
                         </NoteSelectionHandler>
-                    </ActionMenuStoreProvider>
-                </BlockOverflowMenuProvider>
-            </BlockFormatBarProvider>
+                    </BlockOverflowMenuProvider>
+                </BlockFormatBarProvider>
+            </ActionMenuStoreProvider>
 
         </Box>
     );

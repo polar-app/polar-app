@@ -1,19 +1,16 @@
 import React from 'react';
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
-import useTheme from '@material-ui/core/styles/useTheme';
-import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
+import {createActionsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
-import {useBlockContentEditableElement} from "./BlockContentEditable";
-import {observer} from "mobx-react-lite"
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {useRefWithUpdates} from "../../hooks/ReactHooks";
 import INodeOffset = ContentEditables.INodeOffset;
 import {DOMBlocks} from "./DOMBlocks";
 import {useBlocksUserTagsDB} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {BlockPredicates} from '../store/BlockPredicates';
 import {BlockTextContentUtils} from '../NoteUtils';
+import {TAG_IDENTIFIER} from '../content/HasLinks';
+import {useBlocksStore} from '../store/BlocksStore';
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -57,46 +54,49 @@ export type ActionType = IActionTypeWithBlockLink | IActionTypeWithBlockTag;
  */
 export type ActionHandler = (id: IDStr) => ActionType;
 
-interface IProps {
+interface IAction {
+    readonly wrapStart: string;
 
-    readonly id: BlockIDStr;
+    readonly wrapEnd: string;
 
     /**
      * The trigger characters that have to fire to bring up the dialog.
      */
     readonly trigger: string;
 
-    /**
-     * The provider for the commands which we filter for when computing the
-     * prompt and then set in the store.
-     */
-    readonly actionsProvider: ActionMenuItemsProvider;
-
-    /**
-     * Execute the action
-     */
-    readonly onAction: ActionHandler;
-
-    readonly computeActionInputText: (str: string) => string;
-
-    readonly wrapStart: string;
-
-    readonly wrapEnd: string;
-
-    readonly disabled?: boolean;
+    readonly type: ActionType['type'];
 }
+
+export const BLOCK_LINK_ACTION: IAction = {
+    trigger: '[[',
+    wrapStart: '[[ ',
+    wrapEnd: ' ]]',
+    type: 'block-link',
+};
+
+export const BLOCK_TAG_ACTION: IAction = {
+    trigger: '#',
+    wrapStart: '#',
+    wrapEnd: '',
+    type: 'block-tag',
+};
+
+const ACTIONS: IAction[] = [
+    BLOCK_LINK_ACTION,
+    BLOCK_TAG_ACTION,
+];
 
 /**
  * Performs teh action DOM mutation based on the type of action.
  */
-function useActionExecutor(id: BlockIDStr) {
+function useActionExecutor() {
 
-    const blocksTreeStore = useBlocksTreeStore();
+    const blocksStore = useBlocksStore();
     const blocksUserTagsDB = useBlocksUserTagsDB();
 
     const contentEditableMarkdownReader = useContentEditableMarkdownReader();
 
-    return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
+    return React.useCallback((id: BlockIDStr, from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 
         function createCoveringRange(): Range {
             const range = document.createRange();
@@ -108,13 +108,13 @@ function useActionExecutor(id: BlockIDStr) {
             return range;
         }
 
-        function createLink(type: DOMBlocks.IWikiLinkType) {
+        function createLink(type: DOMBlocks.IWikiLinkType, target: string) {
             const updateSelection = () => {
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
 
-                const a = DOMBlocks.createWikiLinkAnchorElement(type, actionOp.target); 
+                const a = DOMBlocks.createWikiLinkAnchorElement(type, target); 
 
 
                 coveringRange.insertNode(a);
@@ -122,9 +122,9 @@ function useActionExecutor(id: BlockIDStr) {
 
             updateSelection();
 
-            const content = contentEditableMarkdownReader();
-            const targetID = blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
-            const targetBlock = blocksTreeStore.getBlock(targetID);
+            const content = contentEditableMarkdownReader(id);
+            const targetID = blocksStore.createLinkToBlock(id, target, content);
+            const targetBlock = blocksStore.getBlock(targetID);
 
             if (type === 'tag' && targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
                 blocksUserTagsDB.register({
@@ -138,138 +138,210 @@ function useActionExecutor(id: BlockIDStr) {
         switch (actionOp.type) {
 
             case "block-link":
-                createLink('link');
+                createLink('link', actionOp.target);
                 break;
 
             case "block-tag":
-                createLink('tag');
+                createLink('tag', `${TAG_IDENTIFIER}${actionOp.target}`);
                 break;
 
         }
 
-    }, [contentEditableMarkdownReader, blocksUserTagsDB, blocksTreeStore, id])
+    }, [contentEditableMarkdownReader, blocksUserTagsDB, blocksStore])
 
 }
 
 function useContentEditableMarkdownReader() {
 
-    const divRef = useBlockContentEditableElement();
+    return React.useCallback((id: BlockIDStr) => {
 
-    return React.useCallback(() => {
+        const blockElement = DOMBlocks.getBlockElement(id);
 
+        if (! blockElement) {
+            throw new Error('Block was not found');
+        }
+        
         const converter = MarkdownContentConverter;
-        const div = divRef.current!.cloneNode(true) as HTMLElement;
+        const div = blockElement.cloneNode(true) as HTMLElement;
         const html = div.innerHTML;
         return converter.toMarkdown(html);
-
-    }, [divRef]);
-
+    }, []);
 }
 
-/**
- * Represents a prompt range with two spans for left and right and an input in the middle.
- */
-interface ActivePrompt {
+export namespace BlockActionUtils {
+
+    type ITriggerActionOpts = {
+        /**
+         * The element where the action prompt will be added
+         */
+        readonly elem: HTMLElement;
+
+        /**
+         * The action that the action prompt will perform
+         */
+        readonly action: IAction;
+
+        /**
+         * A callback that gets fired when the action prompt gets cancelled
+         */
+        readonly onCancel: (noRange?: boolean) => void;
+
+        /**
+         * A callback that gets fired when the action prompt is confirmed
+         */
+        readonly onComplete: (text: string) => void;
+
+        /**
+         * A callback that gets fired when the text contents of the action prompt changes
+         */
+        readonly onActionInputChange: (text: string) => void;
+    };
 
     /**
-     * The range for where to place the calculate the position for the menu.
+     * Compute the position on screen of an element
      */
-    readonly positionRange: Range;
+    function computePosition(elem: HTMLElement) {
+        const bcr = elem.getBoundingClientRect();
 
-    readonly actionInput: HTMLSpanElement;
-}
+        return {
+            bottom: bcr.top,
+            top: bcr.bottom,
+            left: bcr.left,
+        };
+    }
+    
 
-export const BlockAction: React.FC<IProps> = observer(function BlockAction(props) {
+    type IActionInput = {
+        
+        actionInput: HTMLElement,
 
-    const theme = useTheme();
+        computeActionInputText: () => string,
+    };
 
-    const {trigger, actionsProvider, onAction, wrapStart, wrapEnd, disabled} = props;
+    /**
+     * Create an action prompt that the user can type into
+     *
+     * @param elem The element where the prompt will be inserted
+     * @param action The type of the action that the prompt will complete when it's confirmed
+     */
+    function createActivePrompt(elem: HTMLElement, action: IAction): IActionInput | undefined {
+        const { wrapStart, wrapEnd, trigger } = action;
 
-    const computeActionInputTextRef = useRefWithUpdates(props.computeActionInputText);
+        const range = ContentEditables.currentRange();
 
-    const actionStore = useActionMenuStore();
-    const actionExecutor = useActionExecutor(props.id);
-
-    // true when the current prompt is active and we're actively selecting or
-    // creating a new note by typing in the prompt
-    const activeRef = React.useRef(false);
-
-    const initialMarkdownContentRef = React.useRef('');
-
-    const divRef = useBlockContentEditableElement();
-
-    const activePromptRef = React.useRef<ActivePrompt | undefined>(undefined);
-
-    const computeItems = React.useCallback((prompt: string) => {
-
-        return [...(prompt.length === 0 ? [] : actionsProvider(prompt))]
-               .sort((a, b) => a.text.localeCompare(b.text))
-
-    }, [actionsProvider])
-
-    const computeItemsRef = useRefWithUpdates(computeItems);
-
-
-    const handleComputeActionInputText = React.useCallback((): string => {
-        const text = activePromptRef.current?.actionInput.textContent || '';
-
-        return computeActionInputTextRef.current(text);
-    }, [computeActionInputTextRef]);
-
-    const clearActivePrompt = React.useCallback((noRange?: boolean) => {
-
-        if (! activePromptRef.current) {
+        if (! range) {
+            console.warn('No selection: could not create active prompt');
             return;
         }
 
-        const actionInput = activePromptRef.current.actionInput;
+        // Delete the existing trigggers if any
+        const split = ContentEditables.splitAtCursor(elem);
 
-        if (actionInput.parentElement) {
+        if (! split) {
+            console.warn('No selection. could not calculate split');
+            return;
+        }
 
-            const prompt = handleComputeActionInputText();
+        const prefix = ContentEditables.fragmentToText(split.prefix);
+        const wrapRange = new Range();
 
-            const newPromptText = prompt !== '' ? prompt : wrapStart.trim();
+        wrapRange.setStart(
+            range.startContainer,
+            prefix.endsWith(trigger) ? range.startOffset - trigger.length : range.startOffset
+        );
+        wrapRange.setEnd(range.endContainer, range.endOffset);
+        wrapRange.deleteContents();
 
-            // **** replace the range of the actionInput element so that it's not part of the DOM
 
-            const replaceRange = document.createRange();
-            replaceRange.setStartBefore(actionInput);
-            replaceRange.setEndAfter(actionInput);
+        // Create the input span
+        const actionInput = document.createElement('span');
+        actionInput.setAttribute('class', 'action-input');
 
-            replaceRange.deleteContents();
-            replaceRange.insertNode(document.createTextNode(newPromptText));
+        const textNode = document.createTextNode(`${wrapStart}${wrapEnd}`);
+        actionInput.appendChild(textNode);
 
-            if (! noRange) {
+        wrapRange.insertNode(actionInput);
 
-                // **** now use the last char of the replace range as the main range.
-                const range = window.getSelection()!.getRangeAt(0);
-                range.setStart(replaceRange.endContainer, replaceRange.endOffset);
-                range.setEnd(replaceRange.endContainer, replaceRange.endOffset);
+        
+        range.setStart(actionInput.firstChild!, wrapStart.length);
+        range.setEnd(actionInput.firstChild!, wrapStart.length);
 
+        const computeActionInputText = () => {
+            const text = actionInput.textContent || '';
+
+            return text.slice(wrapStart.length, text.length - wrapEnd.length);
+        };
+
+        return {
+            actionInput,
+            computeActionInputText,
+        };
+    }
+
+    /**
+     * Clears the action prompt if any
+     *
+     * @param action The action that the active action prompt was created for
+     * @param actionInput The currently active action prompt
+     */
+    export function clearActivePrompt(action: IAction, actionInput: IActionInput, noRange?: boolean) {
+        const elem = actionInput.actionInput;
+
+        if (! elem.parentElement) {
+            return;
+        }
+
+        const promptText = actionInput.computeActionInputText() || action.wrapStart;
+
+        const replaceRange = document.createRange();
+        replaceRange.setStartBefore(elem);
+        replaceRange.setEndAfter(elem);
+
+        replaceRange.deleteContents();
+        replaceRange.insertNode(document.createTextNode(promptText));
+
+        if (! noRange) {
+            const range = ContentEditables.currentRange();
+
+            if (! range) {
+                return;
             }
 
+            range.setStart(replaceRange.endContainer, replaceRange.endOffset);
+            range.setEnd(replaceRange.endContainer, replaceRange.endOffset);
         }
+    }
 
-    }, [handleComputeActionInputText, wrapStart]);
+    /**
+     * Get the initial markdown content of the contentEditable element of a block
+     * (without the text within the currently active action input)
+     *
+     * @param elem The contentEditable element where the action input is currently at
+     */
+    function getInitialMarkdownContent(elem: HTMLElement) {
+        const div = elem.cloneNode(true) as HTMLElement;
+        div.querySelector('.action-input')!.outerHTML = '';
+        const html = div.innerHTML;
+        return MarkdownContentConverter.toMarkdown(html);
+    }
 
-    const cursorWithinInput = React.useCallback((delta: number = 0): boolean => {
-
-        if (! divRef.current) {
-            return false;
-        }
-
-        if (!activePromptRef.current) {
-            return false;
-        }
+    /**
+     * Check if the user's caret is currently within an action prompt
+     *
+     * @param action The action of the currently active action input
+     * @param actionInput The currently active action input
+     * @param delta A delta value of the change in the position of the text cursor
+     */
+    function cursorWithinActionInput(action: IAction, actionInput: IActionInput, delta: number = 0): boolean {
 
         function createInputRange() {
 
-            const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current!.actionInput);
+            const inputEnd = ContentEditables.computeEndNodeOffset(actionInput.actionInput);
 
             const inputRange = document.createRange();
 
-            inputRange.setStart(activePromptRef.current!.actionInput.firstChild!, wrapStart.length);
-            inputRange.setEnd(inputEnd.node, inputEnd.offset - wrapEnd.length);
+            inputRange.setStart(actionInput.actionInput.firstChild!, action.wrapStart.length);
+            inputRange.setEnd(inputEnd.node, inputEnd.offset - action.wrapEnd.length);
 
             return inputRange;
 
@@ -277,274 +349,82 @@ export const BlockAction: React.FC<IProps> = observer(function BlockAction(props
 
         const inputRange = createInputRange();
 
-        const range = window.getSelection()!.getRangeAt(0);
+        const range = ContentEditables.currentRange();
+
+        if (! range) {
+            return false;
+        }
 
         const actualDelta = range.collapsed ? delta : 0;
 
         return inputRange.isPointInRange(range.startContainer, range.startOffset + actualDelta) &&
                inputRange.isPointInRange(range.endContainer, range.endOffset + actualDelta);
+    }
 
-    }, [divRef, wrapStart, wrapEnd]);
+    /**
+     * Create a range that surrounds the action prompt
+     *
+     * @param actionInput The currently active action input
+     */
+    function createActionRangeForHandler({ actionInput }: IActionInput) {
+        const computeFrom = () => ({
+            node: actionInput,
+            offset: 0
+        });
 
-    const createActionRangeForHandler = React.useCallback(() => {
-
-        function computeFrom() {
-            return {
-                node: activePromptRef.current!.actionInput,
-                offset: 0
-            };
-        }
-
-        function computeTo() {
-            return {
-                node: activePromptRef.current!.actionInput,
-                offset: (activePromptRef.current!.actionInput.textContent || '').length
-            }
-        }
+        const computeTo = () => ({
+            node: actionInput,
+            offset: (actionInput.textContent || '').length
+        });
 
         const from = computeFrom();
         const to = computeTo();
 
         return {from, to};
-
-    }, []);
-
-    const doReset = React.useCallback((noRange?: boolean) => {
-
-        if (activeRef.current) {
-
-            clearActivePrompt(noRange);
-
-            activeRef.current = false;
-
-            activePromptRef.current = undefined;
-
-            actionStore.setState(undefined);
-
-        }
-
-    }, [clearActivePrompt, actionStore])
-
-    const captureInitialMarkdownContent = React.useCallback(() => {
-
-        const converter = MarkdownContentConverter;
-        const div = divRef.current!.cloneNode(true) as HTMLElement;
-        div.querySelector('.action-input')!.outerHTML = '';
-        const html = div.innerHTML;
-        return converter.toMarkdown(html);
-
-    }, [divRef]);
-
-    const doComplete = React.useCallback(() => {
-
-        const prompt = handleComputeActionInputText();
-
-        const {from, to} = createActionRangeForHandler()
-
-        const undoContent = initialMarkdownContentRef.current!;
-
-        const actionType = onAction(prompt);
-
-        actionExecutor(from, to, {
-            ...actionType,
-            undoContent
-        });
-
-        doReset();
-
-    }, [handleComputeActionInputText, createActionRangeForHandler, onAction, actionExecutor, doReset]);
-
-    const doCompleteOrReset = React.useCallback(() => {
-
-        const prompt = handleComputeActionInputText();
-
-        if (prompt.length !== 0) {
-            doComplete();
-        } else {
-            doReset();
-        }
-
-    }, [handleComputeActionInputText, doComplete, doReset]);
-
-    const createActionHandler = React.useCallback(() => {
-
-        return (id: IDStr) => {
-
-            const actionType = onAction(id);
-
-            const {from, to} = createActionRangeForHandler();
-
-            const undoContent = initialMarkdownContentRef.current!;
-
-            const actionOp = {
-                ...actionType,
-                undoContent
-            };
-
-            actionExecutor(from, to, actionOp);
-
-            doReset();
-
-        }
-
-    }, [onAction, createActionRangeForHandler, actionExecutor, doReset]);
+    }
 
     /**
-     * Create the active input prompt and return a range where the menu must popup.
+     * Trigger a certain block action prompt
+     *
+     * @param opts @see ITriggerActionOpts
      */
-    const createActivePrompt = React.useCallback((): ActivePrompt => {
+    export function triggerAction(opts: ITriggerActionOpts) {
+        const { elem, action, onCancel, onComplete, onActionInputChange } = opts;
+       
+        const actionInput = createActivePrompt(elem, action);
 
-        const sel = window.getSelection();
-
-        if (sel) {
-
-            function createBracketSpan(text: string, className: string) {
-                const span = document.createElement('span');
-                span.setAttribute('class', className);
-                span.setAttribute('style', `color: ${theme.palette.text.hint};`);
-
-                const textNode = document.createTextNode(text);
-                span.appendChild(textNode);
-                return span;
-            }
-
-            function createInputSpan() {
-
-                const span = document.createElement('span');
-                span.setAttribute('class', 'action-input');
-
-                const textNode = document.createTextNode(`${wrapStart}${wrapEnd}`);
-                span.appendChild(textNode);
-
-                return span;
-            }
-
-            const range = sel.getRangeAt(0);
-
-            const wrapRange = document.createRange();
-            wrapRange.setStart(range.startContainer, range.startOffset - trigger.length);
-            wrapRange.setEnd(range.endContainer, range.endOffset);
-
-            wrapRange.deleteContents();
-
-            const actionInput = createInputSpan();
-
-            wrapRange.insertNode(actionInput);
-
-            const position = wrapStart.length;
-
-            range.setStart(actionInput.firstChild!, position);
-            range.setEnd(actionInput.firstChild!, position);
-
-            function createPositionRange() {
-                const range = document.createRange();
-                range.setStart(actionInput.firstChild!, position);
-                range.setEnd(actionInput.firstChild!, position);
-                return range;
-            }
-
-            const positionRange = createPositionRange();
-
-            return {
-                positionRange,
-                actionInput
-            };
-
+        if (! actionInput) {
+            return;
         }
 
-        throw new Error("No selection");
+        const promptText = actionInput.computeActionInputText();
+        const position = computePosition(actionInput.actionInput);
+        const initialMarkdown = getInitialMarkdownContent(elem);
 
-    }, [theme.palette.text.hint, trigger.length, wrapEnd, wrapStart]);
+        onActionInputChange(promptText);
+    
+        const doCompleteOrCancel = () => {
+            const text = actionInput.computeActionInputText();
 
-    const computePosition = React.useCallback(() => {
-
-        if (activePromptRef.current?.positionRange) {
-
-            const bcr = activePromptRef.current.positionRange.getBoundingClientRect();
-
-            const newPosition = {
-                bottom: bcr.top,
-                top: bcr.bottom,
-                left: bcr.left,
-            };
-
-            if (newPosition.top !== 0 && newPosition.left !== 0) {
-                return newPosition;
+            if (text.length === 0) {
+                doCancel();
             } else {
-                console.warn("Invalid position ", newPosition);
+                onComplete(text);
             }
+        };
 
-        } else {
-            console.warn("computePosition has no cursor range");
-        }
+        const doCancel = (noRange?: boolean) => {
+            elem.removeEventListener('keydown', handleKeyDown);
+            elem.removeEventListener('click', handleClick);
+            elem.removeEventListener('input', handleInput);
+            clearActivePrompt(action, actionInput, noRange);
 
-        return undefined;
+            onCancel();
+        };
 
-    }, []);
-
-    /**
-     * This has to be called twice. One on onKeyDown and one on onKeyUp because
-     * React (for some reason) is not reliably calling onKeyDown with Escape
-     * with an empty prompt.
-     */
-    const doResetWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
-
-        if (activeRef.current) {
-
-            switch (event.key) {
-
-                case 'Escape':
-                    doReset();
-                    return true;
-
-            }
-
-        }
-
-        return false;
-
-    }, [doReset]);
-
-    const doCompleteOrResetWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
-
-        if (activeRef.current) {
-
-            switch (event.key) {
-
-                case 'Tab':
-                case 'Enter':
-
-                    doCompleteOrReset();
-
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    return true;
-
-            }
-
-        }
-
-        return false;
-
-    }, [doCompleteOrReset]);
-
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-
-        if (activeRef.current) {
-
-            if (doResetWithKeyboardEvent(event)) {
-                return;
-            }
-
-            if (doCompleteOrResetWithKeyboardEvent(event)) {
-                return;
-            }
-
-            function computeDelta(): number {
-
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const computeDelta = (): number => {
                 switch (event.key) {
-
                     case 'ArrowLeft':
                         return -1;
 
@@ -556,41 +436,161 @@ export const BlockAction: React.FC<IProps> = observer(function BlockAction(props
 
                     default:
                         return 0;
-
                 }
+            };
 
+            switch (event.key) {
+                case 'Escape':
+                    return doCancel();
+                case 'Enter':
+                case 'Tab':
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return doCompleteOrCancel();
             }
 
             const delta = computeDelta();
 
-            if (delta !== 0 && ! cursorWithinInput(delta)) {
-
-                doCompleteOrReset();
+            if (delta !== 0 && ! cursorWithinActionInput(action, actionInput, delta)) {
+                doCompleteOrCancel();
 
                 switch (event.key) {
-
                     case 'ArrowLeft':
                     case 'Backspace':
                         event.stopPropagation();
                         event.preventDefault();
-                        return;
-
+                        break;
                 }
 
             }
+        };
 
+        const handleClick = () => doCompleteOrCancel();
+
+        const handleInput = (event: Event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const text = actionInput.computeActionInputText();
+
+            onActionInputChange(text);
+        };
+
+        elem.addEventListener('keydown', handleKeyDown);
+        elem.addEventListener('click', handleClick);
+        elem.addEventListener('input', handleInput);
+
+        return {
+            position,
+            undoContent: initialMarkdown,
+            getActionRangeForHandler: () => createActionRangeForHandler(actionInput),
+            reset: doCancel,
+        };
+    }
+}
+
+export const useBlockActionTrigger = () => {
+    const actionStore = useActionMenuStore();
+    const actionExecutor = useActionExecutor();
+    const blocksStore = useBlocksStore();
+
+    return React.useCallback((id: BlockIDStr, elem: HTMLElement, action: IAction) => {
+        const getActionsProvider = () => {
+            const namedBlocks = blocksStore.namedBlockEntries.map(({ label }) => ({
+                id: label,
+                text: label,
+            }));
+
+            return createActionsProvider(namedBlocks);
+        };
+
+        const actionsProvider = getActionsProvider();
+
+        const computeItems = (prompt: string) => {
+            return [...(prompt.length === 0 ? [] : actionsProvider(prompt))]
+                   .sort((a, b) => a.text.localeCompare(b.text))
+        };
+
+        const onCancel = () => {
+            actionStore.setState(undefined);
+        };
+
+        const onComplete = (text: string) => actionHandler(text);
+
+        const onActionInputChange = (text: string) => {
+            const items = computeItems(text);
+            actionStore.updateState(items);
+        };
+
+        const result = BlockActionUtils.triggerAction({
+            action,
+            elem,
+            onCancel,
+            onComplete,
+            onActionInputChange,
+        });
+
+        if (! result) {
+            return;
         }
 
-    }, [cursorWithinInput, doCompleteOrReset, doCompleteOrResetWithKeyboardEvent, doResetWithKeyboardEvent]);
+
+        const {
+            getActionRangeForHandler,
+            position,
+            undoContent,
+            reset
+        } = result;
+
+        const actionHandler = (target: BlockIDStr) => {
+
+            const actionType = { type: action.type, target };
+
+            const {from, to} = getActionRangeForHandler();
+
+
+            const actionOp = {
+                ...actionType,
+                undoContent
+            };
+
+            actionExecutor(id, from, to, actionOp);
+
+            reset();
+
+        };
+
+        actionStore.setState({
+            position: position,
+            items: [],
+            onAction: actionHandler,
+        });
+
+        actionStore.setReset(() => reset());
+    }, [blocksStore, actionExecutor, actionStore]);
+};
+
+interface IUseBlockActionOpts {
+
+    readonly id: BlockIDStr;
+
+    readonly ref: React.RefObject<HTMLElement>;
+}
+
+export const useBlockAction = (opts: IUseBlockActionOpts) => {
+
+    const { id, ref } = opts;
+    const triggerAction = useBlockActionTrigger();
 
     React.useEffect(() => {
-        const elem = divRef.current;
+        const elem = ref.current;
 
-        if (! elem || disabled) {
+        if (! elem) {
             return;
         };
 
         const handleInput = (e: Event) => {
+
             const event = e as InputEvent;
 
             const split = ContentEditables.splitAtCursor(elem)
@@ -601,90 +601,31 @@ export const BlockAction: React.FC<IProps> = observer(function BlockAction(props
 
             const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-            const isTriggered = () => {
-                if (trigger.length === 1) {
-                    return event.data === trigger;
-                }
+            const findTriggeredAction = () => {
 
-                return prefixText.endsWith(trigger) && event.data === trigger.slice(-1);
-            };
-
-            if (activeRef.current) {
-                const prompt = handleComputeActionInputText();
-
-                const items = computeItemsRef.current(prompt);
-                actionStore.updateState(items);
-
-            } else {
-
-                if (isTriggered()) {
-
-                    activePromptRef.current = createActivePrompt();
-
-                    const prompt = handleComputeActionInputText();
-
-                    const position = computePosition();
-                    const actionHandler = createActionHandler();
-
-                    if (position) {
-
-                        activeRef.current = true;
-
-                        initialMarkdownContentRef.current = captureInitialMarkdownContent();
-
-                        const items = computeItemsRef.current(prompt);
-
-                        actionStore.setState({
-                            position,
-                            items,
-                            onAction: actionHandler
-                        });
-
-                    } else {
-                        console.warn("No position for menu");
+                for (let action of ACTIONS) {
+                    if (action.trigger.length === 1 && event.data === action.trigger) {
+                        return action;
                     }
 
+                    if (prefixText.endsWith(action.trigger) && event.data === action.trigger.slice(-1)) {
+                        return action;
+                    }
                 }
 
+                return undefined;
+            };
+
+            const triggeredAction = findTriggeredAction();
+
+            if (triggeredAction) {
+                triggerAction(id, elem, triggeredAction);
             }
         };
 
         elem.addEventListener('input', handleInput);
 
-        return () => {
-            elem.removeEventListener('input', handleInput);
-        };
-    }, [actionStore, captureInitialMarkdownContent, computeItemsRef, computePosition, createActionHandler, createActivePrompt, disabled, divRef, handleComputeActionInputText, trigger]);
+        return () => elem.removeEventListener('input', handleInput);
+    }, [ref, id]);
 
-    const handleClick = React.useCallback(() => {
-
-        if (disabled) {
-            return;
-        }
-
-        doCompleteOrReset();
-
-    }, [doCompleteOrReset, disabled]);
-
-
-    React.useEffect(() => {
-
-        actionStore.setReset(() => {
-            doReset(true);
-        });
-
-        return () => {
-            actionStore.clearReset();
-        }
-
-    });
-
-    return (
-        <div onKeyDown={handleKeyDown}
-             onClick={handleClick}>
-            {props.children}
-        </div>
-    );
-
-});
-
+};

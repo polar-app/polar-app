@@ -141,6 +141,11 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
         if (event.key === 'Escape') {
             abortEvent();
+
+            if (actionMenuStore.reset) {
+                actionMenuStore.reset()
+            }
+
             onClose('cancel');
         }
 

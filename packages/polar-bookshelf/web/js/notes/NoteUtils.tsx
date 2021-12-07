@@ -41,6 +41,7 @@ import {ContentEditables} from "./ContentEditables";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
 import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
+import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
 
 export const NotesIntegrationContext = React.createContext<boolean>(false);
 
@@ -507,12 +508,13 @@ export namespace BlockLinksMatcher {
 
 export const useCreateBacklinkFromSelection = () => {
     const blocksStore = useBlocksStore();
+    const blockActionTrigger = useBlockActionTrigger();
 
     return React.useCallback((id: BlockIDStr) => {
         const range = ContentEditables.currentRange();
         const block = blocksStore.getBlock(id);
 
-        if (! range || range.collapsed || ! block || !BlockPredicates.canHaveLinks(block)) {
+        if (! range || ! block || ! BlockPredicates.canHaveLinks(block)) {
             return;
         }
 
@@ -522,19 +524,26 @@ export const useCreateBacklinkFromSelection = () => {
             return;
         }
 
-        const target = range.toString().trim();
+        if (range.collapsed) {
+            blockActionTrigger(id, blockElement, BLOCK_LINK_ACTION);
+        } else {
 
-        if (target.length === 0) {
-            return;
+            const target = range.toString().trim();
+
+            if (target.length === 0) {
+                return;
+            }
+
+            range.deleteContents();
+            const wikiLinkAnchor = DOMBlocks.createWikiLinkAnchorElement('link', target)
+            range.insertNode(wikiLinkAnchor);
+            range.setStartAfter(wikiLinkAnchor);
+
+            const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
+            
+            const markdown = MarkdownContentConverter.toMarkdown(html);
+
+            blocksStore.createLinkToBlock(id, target, markdown);
         }
-
-        range.deleteContents();
-        range.insertNode(DOMBlocks.createWikiLinkAnchorElement('link', target));
-
-        const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
-        
-        const markdown = MarkdownContentConverter.toMarkdown(html);
-
-        blocksStore.createLinkToBlock(id, target, markdown);
     }, [blocksStore]);
 };

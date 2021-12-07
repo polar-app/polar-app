@@ -60,11 +60,11 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
         return autorun(() => {
             const root = blocksStore.getBlockByTarget(target);
 
-            if (root && root.id !== target) {
+            if (root && root.id !== rootID) {
                 setRootID(root.id);
             }
         });
-    }, [target, setRootID, blocksStore]);
+    }, [rootID, target, setRootID, blocksStore]);
 
     React.useEffect(() => {
         if (! rootID) {
