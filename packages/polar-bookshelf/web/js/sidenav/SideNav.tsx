@@ -229,7 +229,7 @@ const IntercomButton = React.memo(function IntercomButton() {
         if (intercomData && intercomClient) {
             intercomClient.update({
                 ...intercomData,
-                hide_default_launcher: false,
+                // hide_default_launcher: false,
             });
             intercomClient.showMessages();
         }

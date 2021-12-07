@@ -113,7 +113,7 @@ export interface IIntercomDataForAuthenticatedUser extends IIntercomDataForAnony
     readonly name: string;
     readonly email: string;
     readonly created_at: string;
-    readonly hide_default_launcher: boolean;
+    // readonly hide_default_launcher: boolean;
 
 }
 
@@ -148,9 +148,9 @@ export function createIntercomClient(): IIntercomClient | undefined {
         window.Intercom('onHide', () => {
             console.log("Intercom was hidden");
             // Now hide the FAB icon as well
-            window.Intercom('update', {
-                hide_default_launcher: true,
-            })
+            // window.Intercom('update', {
+            //     hide_default_launcher: true,
+            // })
         });
 
         return {boot, update, showMessages};
@@ -178,7 +178,7 @@ export function toIntercomData(user: IAnalyticsUser | undefined): IntercomData {
         name: user.displayName || "",
         email: user.email,
         created_at: `${created_at}`,
-        hide_default_launcher: true,
+        // hide_default_launcher: false,
     };
 
     return data;
