@@ -161,7 +161,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
             }
         }
 
-    }, [index, items, handleIndexChange, onClose, handleActionExecuted]);
+    }, [index, items, handleIndexChange, onClose, handleActionExecuted, actionMenuStore]);
 
     React.useEffect(() => {
 

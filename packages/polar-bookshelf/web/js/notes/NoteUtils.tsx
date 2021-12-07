@@ -545,5 +545,5 @@ export const useCreateBacklinkFromSelection = () => {
 
             blocksStore.createLinkToBlock(id, target, markdown);
         }
-    }, [blocksStore]);
+    }, [blocksStore, blockActionTrigger]);
 };

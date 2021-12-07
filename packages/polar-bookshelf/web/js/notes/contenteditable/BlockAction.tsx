@@ -626,6 +626,6 @@ export const useBlockAction = (opts: IUseBlockActionOpts) => {
         elem.addEventListener('input', handleInput);
 
         return () => elem.removeEventListener('input', handleInput);
-    }, [ref, id]);
+    }, [ref, triggerAction, id]);
 
 };
