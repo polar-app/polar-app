@@ -23,7 +23,7 @@ RUN mkdir ~/.ssh && \
 
 # ? Install Global node_modules
 RUN sudo npm install -g pnpm && \
-    sudo pnpm add firebase-tools only-allow semver jscpd --global
+    sudo pnpm add firebase-tools only-allow semver jscpd @jscpd/leveldb-store --global
 
 # $ Set npm configurations
 RUN npm config set legacy-peer-deps true
