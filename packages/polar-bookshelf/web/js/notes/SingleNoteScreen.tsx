@@ -64,7 +64,7 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
                 setRootID(root.id);
             }
         });
-    }, [rootID, target, setRootID, blocksStore]);
+    }, [target, rootID, setRootID, blocksStore]);
 
     React.useEffect(() => {
         if (! rootID) {
