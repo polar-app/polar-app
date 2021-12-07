@@ -62,7 +62,7 @@ describe('CursorPositions', () => {
             ContentEditables.setCaretPosition(span, 'start');
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
-            assert.equal(pos, 6);
+            assert.equal(pos, 5);
         });
     });
 

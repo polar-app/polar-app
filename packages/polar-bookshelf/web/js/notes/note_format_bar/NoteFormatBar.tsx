@@ -4,6 +4,7 @@ import {NoteFormatBarPopper} from "./NoteFormatBarPopper";
 import {NoteFormatBarStore} from "./NoteFormatBarStore";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {debounce} from "throttle-debounce";
+import {ContentEditables} from "../ContentEditables";
 
 export const BLOCK_FORMAT_BAR_CONTAINER_ID = "NoteFormatBar";
 
@@ -23,7 +24,13 @@ export const useNoteFormatBar = () => {
     const blockFormatBarStore = useBlockFormatBarStore();
 
     React.useEffect(() => {
-        const showFormatBar = debounce(200, (range: Range) => {
+        const showFormatBar = debounce(200, () => {
+            const range = ContentEditables.currentRange();
+
+            if (! range || range.collapsed) {
+                return;
+            }
+
             const elem = DOMBlocks.findBlockParent(range.startContainer);
             const id = elem && DOMBlocks.getBlockID(elem);
 
@@ -54,7 +61,7 @@ export const useNoteFormatBar = () => {
             }
 
 
-            showFormatBar(range);
+            showFormatBar();
         };
 
         const handleCloseWithKeyboard = (event: KeyboardEvent) => {
