@@ -31,10 +31,8 @@ export function usePrefsContext(): IPersistentPrefs {
 
 /**
  * Return true/false based on a feature toggle name.
- *
- * @param featureName
  */
-export function useFeatureToggle(featureName: string): boolean {
+export function usePrefsFeatureToggle(featureName: string): boolean {
     const prefs = usePrefsContext();
     return prefs.isMarked(featureName);
 }
@@ -42,7 +40,8 @@ export function useFeatureToggle(featureName: string): boolean {
 /**
  * Return a feature toggler function so that we can change the value of a feature toggle.
  */
-export function useFeatureToggler() {
+export function usePrefsFeatureToggler() {
+
     const prefs = usePrefsContext();
 
     return React.useCallback(async (featureName, state: boolean = true) => {
@@ -61,7 +60,7 @@ interface IFeatureToggleProps {
  */
 export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
-    const toggled = useFeatureToggle(props.featureName);
+    const toggled = usePrefsFeatureToggle(props.featureName);
 
     if (toggled) {
         return <>{props.children}</>;
@@ -76,7 +75,7 @@ export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((p
  */
 export const FeatureToggleDisabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
-    const toggled = useFeatureToggle(props.featureName);
+    const toggled = usePrefsFeatureToggle(props.featureName);
 
     if (!toggled) {
         return <>{props.children}</>;
