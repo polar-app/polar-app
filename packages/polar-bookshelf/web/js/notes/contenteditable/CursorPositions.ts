@@ -215,23 +215,51 @@ export namespace CursorPositions {
             return 0;
         }
 
-        const {node, offset} = positionInTextNode;
 
-        // NOTE: this is O(N) but N is almost always insanely small.
-        for (let idx = 0; idx < lookup.length; ++idx) {
+        const getIdxForNode = (positionInTextNode: ICursorPosition) => {
+            const {node, offset} = positionInTextNode;
 
-            const curr = lookup[idx];
-            const next = lookup[idx + 1];
+            // NOTE: this is O(N) but N is almost always insanely small.
+            for (let idx = 0; idx < lookup.length; ++idx) {
 
-            if (node === curr.node) {
+                const curr = lookup[idx];
+                const next = lookup[idx + 1];
 
-                if (offset === curr.offset || next && next.node !== curr.node) {
-                    return idx;
+                if (node === curr.node) {
+
+                    if (offset === curr.offset || next && next.node !== curr.node) {
+                        return idx;
+                    }
+
                 }
-
             }
 
+            return undefined;
         }
+
+        const position = getIdxForNode(positionInTextNode);
+
+        if (position !== undefined) {
+            return position;
+        }
+
+        // Try the next sibling
+        // This is because we might have the cursor in an empty text node (a workaround for focusing contentEditable=false
+        const sibling = positionInTextNode.node.nextSibling;
+        if (sibling) {
+            const siblingPositionInTextNode = toTextNode(sibling, 0);
+
+            if (! siblingPositionInTextNode) {
+                return 0;
+            }
+
+            const siblingPosition = getIdxForNode(siblingPositionInTextNode);
+
+            if (siblingPosition !== undefined) {
+                return siblingPosition;
+            }
+        }
+
 
         return lookup.length;
     }
