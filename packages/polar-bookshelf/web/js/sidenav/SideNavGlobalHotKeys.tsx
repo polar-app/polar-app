@@ -4,7 +4,7 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
-import {usePrefsFeatureToggle} from "../features/PrefsFeatureToggles";
+import {useNotesIntegrationEnabled} from "../notes/NoteUtils";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
@@ -44,7 +44,7 @@ const globalKeyMap = keyMapWithGroup({
 export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const {tabs} = useSideNavStore(['tabs']);
-    const notesEnabled = usePrefsFeatureToggle('notes-enabled');
+    const notesEnabled = useNotesIntegrationEnabled();
     const {pathname} = useLocation();
     const history = useHistory();
 

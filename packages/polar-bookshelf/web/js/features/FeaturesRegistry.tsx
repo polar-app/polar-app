@@ -2,7 +2,7 @@ import React from 'react';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
-export type FeatureName = 'design-m0' | 'notes-enabled' | 'note-stack' | 'answers';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers';
 
 interface IFeature {
 
@@ -21,10 +21,6 @@ const REGISTRY: ReadonlyArray<IFeature> = [
     {
         feature: 'design-m0',
         description: "Design milestone 0",
-    },
-    {
-        feature: 'notes-enabled',
-        description: "Enable the new notes system",
     },
     {
         feature: 'note-stack',
