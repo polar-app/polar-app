@@ -6,6 +6,7 @@ import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from "../../../../w
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
+import {usePrefsFeatureToggle} from "../../../../web/js/features/PrefsFeatureToggles";
 import UserPrefCallback2 = UserPrefs.UserPrefCallback2;
 
 export const [UserPrefContextProvider, useUserPrefContextSnapshot] = createCachedSnapshotSubscriberContext<IUserPref>();
@@ -27,28 +28,6 @@ export function usePrefsContext(): IPersistentPrefs {
     const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
     return persistentPrefs;
-}
-
-/**
- * Return true/false based on a feature toggle name.
- */
-export function usePrefsFeatureToggle(featureName: string): boolean {
-    const prefs = usePrefsContext();
-    return prefs.isMarked(featureName);
-}
-
-/**
- * Return a feature toggler function so that we can change the value of a feature toggle.
- */
-export function usePrefsFeatureToggler() {
-
-    const prefs = usePrefsContext();
-
-    return React.useCallback(async (featureName, state: boolean = true) => {
-        prefs.mark(featureName, state);
-        await prefs.commit();
-    }, [prefs]);
-
 }
 
 interface IFeatureToggleProps {

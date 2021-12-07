@@ -8,7 +8,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {AppSites} from "../apps/repository/auth_handler/AppSites";
 import {useNoteStack} from "./stacks/StackProvider";
-import {usePrefsFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {usePrefsFeatureToggle} from "../features/PrefsFeatureToggles";
 
 
 export const useNoteWikiLinkIdentifierCreator = () => {

@@ -1,6 +1,6 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
 import React from 'react';
-import {usePrefsFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {usePrefsFeatureToggler} from "../../features/PrefsFeatureToggles";
 
 export const EnableFeatureToggle = () => {
 

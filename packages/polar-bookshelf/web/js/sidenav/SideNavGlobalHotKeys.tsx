@@ -4,7 +4,7 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
-import {usePrefsFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {usePrefsFeatureToggle} from "../features/PrefsFeatureToggles";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
