@@ -1,5 +1,6 @@
 import React from 'react';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 export type FeatureName = 'design-m0' | 'notes-enabled' | 'note-stack' | 'answers';
 
@@ -43,7 +44,7 @@ export function useFeaturesRegistry() {
     return REGISTRY;
 }
 
-export function useFeatureEnabledFromRegistry(featureName: FeatureName) {
+function useFeatureEnabledFromRegistry(featureName: FeatureName) {
 
     return React.useMemo(() => {
         return arrayStream(REGISTRY)
@@ -53,7 +54,17 @@ export function useFeatureEnabledFromRegistry(featureName: FeatureName) {
 
 }
 
-export function useFeatureDisabledFromRegistry(featureName: FeatureName) {
-    const enabled = useFeatureEnabledFromRegistry(featureName);
-    return ! enabled;
+export function useFeatureEnabled(featureName: FeatureName) {
+
+    const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(featureName);
+
+    const prefs = usePrefsContext();
+
+    if (prefs.defined(featureName)) {
+        // use whatever is defined in prefs either enabled or disabled as this takes priority.
+        return prefs.isMarked(featureName);
+    }
+
+    return featureEnabledFromRegistry;
+
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import {FeatureName, useFeatureEnabledFromRegistry} from './FeaturesRegistry';
+import {FeatureName, useFeatureEnabled} from './FeaturesRegistry';
+import {deepMemo} from "../react/ReactUtils";
 
 interface IProps {
     readonly feature: FeatureName;
@@ -7,9 +8,9 @@ interface IProps {
     readonly disabled?: JSX.Element;
 }
 
-export const Feature = React.memo((props: IProps) => {
+export const Feature = deepMemo((props: IProps) => {
 
-    const featureEnabled = useFeatureEnabledFromRegistry(props.feature);
+    const featureEnabled = useFeatureEnabled(props.feature);
 
     if (featureEnabled) {
 
