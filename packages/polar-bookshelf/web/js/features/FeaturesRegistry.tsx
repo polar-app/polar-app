@@ -43,7 +43,7 @@ export function useFeaturesRegistry() {
     return REGISTRY;
 }
 
-export function useFeatureEnabled(feature: FeatureName) {
+export function useFeatureEnabledFromRegistry(feature: FeatureName) {
 
     return React.useMemo(() => {
         return arrayStream(REGISTRY)
@@ -53,7 +53,7 @@ export function useFeatureEnabled(feature: FeatureName) {
 
 }
 
-export function useFeatureDisabled(feature: FeatureName) {
-    const enabled = useFeatureEnabled(feature);
+export function useFeatureDisabledFromRegistry(feature: FeatureName) {
+    const enabled = useFeatureEnabledFromRegistry(feature);
     return ! enabled;
 }

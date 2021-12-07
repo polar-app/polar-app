@@ -1,5 +1,5 @@
 import React from 'react';
-import {FeatureName, useFeatureEnabled} from './FeaturesRegistry';
+import {FeatureName, useFeatureEnabledFromRegistry} from './FeaturesRegistry';
 
 interface IProps {
     readonly feature: FeatureName;
@@ -9,7 +9,7 @@ interface IProps {
 
 export const Feature = React.memo((props: IProps) => {
 
-    const featureEnabled = useFeatureEnabled(props.feature);
+    const featureEnabled = useFeatureEnabledFromRegistry(props.feature);
 
     if (featureEnabled) {
 
