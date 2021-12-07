@@ -6,7 +6,7 @@ ARG USER_ID
 ARG GROUP_ID
 
 # ! Install pnpm & only-allow to force it's usage
-RUN npm install -g pnpm only-allow
+RUN npm install -g pnpm only-allow jscpd @jscpd/leveldb-store
 
 # ? Install Chromium for Karma
 RUN apt update 
