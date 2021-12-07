@@ -30,3 +30,6 @@ module-packages-output.json
 
 # ignore MacOS specific metadata folder.
 .DS_Store
+
+# ignore jscpd's leveldb output
+.jscpd
