@@ -1,10 +1,11 @@
 import * as React from "react";
 import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureName} from "./FeaturesRegistry";
 
 /**
  * Return true/false based on a feature toggle name.
  */
-export function usePrefsFeatureToggle(featureName: string): boolean {
+export function usePrefsFeatureToggle(featureName: FeatureName): boolean {
     const prefs = usePrefsContext();
     return prefs.isMarked(featureName);
 }

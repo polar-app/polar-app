@@ -1,9 +1,11 @@
+import React from 'react';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-export type FeatureName = 'design-m0';
+export type FeatureName = 'design-m0' | 'notes-enabled' | 'note-stack' | 'answers';
 
 interface IFeature {
 
-    readonly name: FeatureName;
+    readonly feature: FeatureName;
 
     readonly description: string;
 
@@ -14,24 +16,44 @@ interface IFeature {
 
 }
 
-const FEATURES: ReadonlyArray<IFeature> = [
+const REGISTRY: ReadonlyArray<IFeature> = [
     {
-        name: 'design-m0',
+        feature: 'design-m0',
         description: "Design milestone 0",
+    },
+    {
+        feature: 'notes-enabled',
+        description: "Enable the new notes system",
+    },
+    {
+        feature: 'note-stack',
+        description: "Enable the new notes stack which allows the user to view pages visually as a horizontal stack.",
+    },
+    {
+        feature: 'answers',
+        description: "Enable the answers AI system to ask questions directly from your document repository.",
     }
+
 ]
 
 /**
  * Get all features form the feature registry
  */
 export function useFeaturesRegistry() {
-    return FEATURES;
+    return REGISTRY;
 }
 
 export function useFeatureEnabled(feature: FeatureName) {
-    return false;
+
+    return React.useMemo(() => {
+        return arrayStream(REGISTRY)
+                .filter(current => current.feature === feature)
+                .first()?.enabledByDefault
+    }, [feature])
+
 }
 
 export function useFeatureDisabled(feature: FeatureName) {
-    return false;
+    const enabled = useFeatureEnabled(feature);
+    return ! enabled;
 }
