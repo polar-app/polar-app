@@ -1,12 +1,14 @@
 import React from 'react';
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 export type FeatureName = 'design-m0' | 'note-stack' | 'answers';
 
-interface IFeature {
+/**
+ * A set of features, any of which can trigger the feature.
+ */
+export type FeatureNameSet = FeatureName | ReadonlyArray<FeatureName>;
 
-    readonly feature: FeatureName;
+interface IFeature {
 
     readonly description: string;
 
@@ -17,48 +19,67 @@ interface IFeature {
 
 }
 
-const REGISTRY: ReadonlyArray<IFeature> = [
-    {
-        feature: 'design-m0',
+export type FeatureRegistry = Readonly<Record<FeatureName, IFeature>>;
+
+const DEFAULT_REGISTRY: FeatureRegistry = {
+
+    "design-m0": {
         description: "Design milestone 0",
     },
-    {
-        feature: 'note-stack',
+    "note-stack": {
         description: "Enable the new notes stack which allows the user to view pages visually as a horizontal stack.",
     },
-    {
-        feature: 'answers',
+    "answers": {
         description: "Enable the answers AI system to ask questions directly from your document repository.",
     }
 
-]
+};
+
+/**
+ * Context for the registry so that we can change this during tests.
+ */
+const RegistryContext = React.createContext<FeatureRegistry>(DEFAULT_REGISTRY);
 
 /**
  * Get all features form the feature registry
  */
-export function useFeaturesRegistry() {
-    return REGISTRY;
+export function useFeaturesRegistry(): FeatureRegistry {
+    return React.useContext(RegistryContext);
 }
 
-function useFeatureEnabledFromRegistry(featureName: FeatureName) {
+export function _featureEnabledFromRegistry(feature: FeatureNameSet, registry: FeatureRegistry): boolean {
+
+    // const foo = Object.keys(registry);
+
+    // const foo = mapStream<IFeature>(registry);
+
+    // return mapStream(registry)
+    //     .filter(current => feature.includes(current.key))
+    //     .first()?.enabledByDefault || false;
+
+}
+
+function useFeatureEnabledFromRegistry(feature: FeatureNameSet): boolean {
+
+    const registry = useFeaturesRegistry();
 
     return React.useMemo(() => {
-        return arrayStream(REGISTRY)
-                .filter(current => current.feature === featureName)
-                .first()?.enabledByDefault
-    }, [featureName])
+
+        return _featureEnabledFromRegistry(feature, registry)
+
+    }, [feature, registry])
 
 }
 
-export function useFeatureEnabled(featureName: FeatureName) {
+export function useFeatureEnabled(feature: FeatureName): boolean {
 
-    const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(featureName);
+    const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(feature);
 
     const prefs = usePrefsContext();
 
-    if (prefs.defined(featureName)) {
+    if (prefs.defined(feature)) {
         // use whatever is defined in prefs either enabled or disabled as this takes priority.
-        return prefs.isMarked(featureName);
+        return prefs.isMarked(feature);
     }
 
     return featureEnabledFromRegistry;
