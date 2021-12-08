@@ -405,7 +405,7 @@ export const RegisterForBetaButton = () => {
             setPending(false);
         }
 
-    }, [setPending, analytics]);
+    }, [setPending, analytics, dialogManager]);
 
     return (
         <>
