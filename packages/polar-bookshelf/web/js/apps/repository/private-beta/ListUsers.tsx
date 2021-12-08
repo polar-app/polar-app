@@ -54,10 +54,28 @@ export const ListUsers: React.FC = (ref) => {
                 type Response = {
                     readonly list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
                 }
-                const response = await JSONRPC.exec<{}, Response>('private-beta/users', {});
+                type ErrorResponse = {
+                    error: string,
+                }
+                const response = await JSONRPC.exec<{}, Response | ErrorResponse>('private-beta/users', {});
+                if ('error' in response) {
+                    console.error(response);
+                    dialogManager.snackbar({
+                        type: "error",
+                        message: response.error,
+                    });
+                    return;
+                }
                 setUsers(response.list);
-            } catch (e) {
-                console.error(e);
+            } catch (e: any) {
+                console.error(JSON.stringify(e, null, 2));
+                if (e.error?.error) {
+                    dialogManager.snackbar({
+                        type: "error",
+                        message: "Failed to fetch list of waiting users: " + e.error.error,
+                    });
+                    return;
+                }
                 dialogManager.snackbar({
                     type: "error",
                     message: "Failed to fetch list of waiting users",
@@ -166,9 +184,10 @@ export const ListUsers: React.FC = (ref) => {
                                     <ButtonGroup variant="contained" color="primary"
                                                  aria-label="contained primary button group">
                                         {isBeingAcceptedNow(waitingUser.email) &&
-                                        <Button><CircularProgress size={14}/> &nbsp; Accepting...</Button>}
+                                            <Button><CircularProgress size={14}/> &nbsp; Accepting...</Button>}
                                         {!isBeingAcceptedNow(waitingUser.email) &&
-                                        <Button onClick={() => acceptUser(waitingUser.email).then()}>Accept</Button>}
+                                            <Button
+                                                onClick={() => acceptUser(waitingUser.email).then()}>Accept</Button>}
                                     </ButtonGroup>
                                 </TableCell>
                             </TableRow>
