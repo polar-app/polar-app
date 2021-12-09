@@ -90,7 +90,7 @@ type UseFeaturesRegistry<F extends string> = () => FeatureRegistry<F>;
 /**
  * Gives us access to a toggler that can turn on or off a specific feature.
  */
-type UseFeatureToggler<F> = () => (feature: F, enabled: boolean) => void;
+type UseFeatureToggler<F> = () => (feature: F, enabled: boolean) => Promise<void>;
 
 type FeatureRegistryTuple<F extends string> = readonly [
     React.FC<FeatureProps<F>>,

@@ -6,8 +6,6 @@ import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from "../../../../w
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
-import {usePrefsFeatureToggle} from "../../../../web/js/features/PrefsFeatureToggles";
-import {FeatureName} from "../../../../web/js/features/FeaturesRegistry";
 import UserPrefCallback2 = UserPrefs.UserPrefCallback2;
 
 export const [UserPrefContextProvider, useUserPrefContextSnapshot] = createCachedSnapshotSubscriberContext<IUserPref>();
