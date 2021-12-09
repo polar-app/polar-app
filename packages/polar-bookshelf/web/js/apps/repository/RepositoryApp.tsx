@@ -77,6 +77,7 @@ import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
+import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 
 interface IProps {
     readonly app: App;
@@ -141,6 +142,7 @@ const SHARED_ROUTES = [
     {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
     {path: RoutePathNames.STATISTICS, component: (StatsScreen)},
     {path: RoutePathNames.SETTINGS, component: (SettingsScreen)},
+    {path: RoutePathNames.FEATURES, component: (FeaturesScreen)},
     {path: RoutePathNames.LOGS, component: (LogsScreen)},
     {path: RoutePathNames.DEVICE_INFO, component: (DeviceScreen)},
     {path: RoutePathNames.FEATURE_REQUESTS, component: (FeatureRequestsScreen)},

@@ -4,6 +4,10 @@ import {createStyles, List, makeStyles} from "@material-ui/core";
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 import {useFeaturesRegistry} from "../../../../../web/js/features/FeaturesRegistry";
 import {FeatureListItem} from "./FeatureListItem";
+import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -25,6 +29,7 @@ const Main = () => {
 
     return (
         <Box pt={1} className={classes.root}>
+
             <List>
 
                 {Object.entries(featuresRegistry).map(entry => {
@@ -43,7 +48,42 @@ const Main = () => {
 
             </List>
 
+            <Divider/>
+
+            <Box pt={1} pb={1} display="flex" justifyContent="flex-end">
+                <ResetButton/>
+            </Box>
+
         </Box>
+    );
+}
+
+const ResetButton = () => {
+
+    const log = useLogger();
+
+    const featuresRegistry = useFeaturesRegistry()
+
+    const prefs = usePrefsContext();
+
+    const onClick = React.useCallback(() => {
+
+        const keys = Object.keys(featuresRegistry);
+
+        keys.forEach(key => prefs.remove(key));
+
+        const doCommit = async () => {
+            await prefs.commit();
+            console.log("Prefs written");
+        };
+
+        doCommit()
+            .catch(err => log.error("Could not write prefs: ", err));
+
+    }, [log, prefs]);
+
+    return (
+        <Button onClick={onClick}>Reset to default</Button>
     );
 }
 

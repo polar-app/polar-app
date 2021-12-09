@@ -7,13 +7,16 @@ type TestFeatureName = 'feature-a' | 'feature-b' | 'feature-c';
 
 const DEFAULT_REGISTRY: FeatureRegistry<TestFeatureName>= {
     "feature-a": {
+        title: "Feature A",
         description: "",
         enabled: true
     },
     "feature-b": {
+        title: "Feature B",
         description: ""
     },
     "feature-c": {
+        title: "Feature C",
         description: ""
     },
 };

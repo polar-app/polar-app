@@ -46,9 +46,9 @@ export const FeatureListItem =  React.memo(function FeatureListItem(props: IProp
     return (
         <>
             <ListItem alignItems="flex-start">
-                <ListItemIcon>
-                    {/*{props.icon}*/}
-                </ListItemIcon>
+                {/*<ListItemIcon>*/}
+                {/*    /!*{props.icon}*!/*/}
+                {/*</ListItemIcon>*/}
                 <ListItemText primary={props.title} secondary={props.description}/>
                 <ListItemIcon>
                     <Box pl={1}>

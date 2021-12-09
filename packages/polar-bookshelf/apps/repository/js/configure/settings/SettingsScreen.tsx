@@ -6,8 +6,8 @@ import {SettingSelect} from "./SettingSelect";
 import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
-import {ExportDataListItem} from "../../premium/ExportDataListItem";
-import {createStyles, makeStyles, List} from "@material-ui/core";
+import {ExportDataListItem} from "./ExportDataListItem";
+import {createStyles, List, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
@@ -17,8 +17,10 @@ import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
-import { DeviceRouters } from '../../../../../web/js/ui/DeviceRouter';
-import { ListItemLinkButton } from './ListItemLinkButton';
+import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
+import {ListItemLinkButton} from './ListItemLinkButton';
+import {useHistory} from "react-router-dom";
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -47,6 +49,25 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+
+export const FeaturesListItem = React.memo(function FeaturesListItem() {
+
+    const history = useHistory();
+
+    const handleClick = React.useCallback(() => {
+        history.push("/features")
+    }, [history]);
+
+    return (
+        <ListItem button onClick={handleClick}>
+            <ListItemIcon>
+                <PlaylistAddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Features" />
+        </ListItem>
+    );
+
+});
 const Main = () => {
 
     const classes = useStyles();
@@ -106,6 +127,7 @@ const Main = () => {
                     </>
                 </DeviceRouters.Desktop>
                 <ExportDataListItem/>
+                <FeaturesListItem/>
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
             </List>
