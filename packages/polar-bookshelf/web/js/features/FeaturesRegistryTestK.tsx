@@ -1,6 +1,6 @@
 import React from "react";
 import {createFeatureRegistry, FeatureRegistry} from "./FeaturesRegistry";
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import {assert} from 'chai';
 
 type TestFeatureName = 'feature-a' | 'feature-b' | 'feature-c';

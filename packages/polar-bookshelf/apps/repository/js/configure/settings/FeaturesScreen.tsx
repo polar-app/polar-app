@@ -80,7 +80,7 @@ const ResetButton = () => {
         doCommit()
             .catch(err => log.error("Could not write prefs: ", err));
 
-    }, [log, prefs]);
+    }, [log, featuresRegistry, prefs]);
 
     return (
         <Button onClick={onClick}>Reset to default</Button>
