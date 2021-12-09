@@ -1,21 +1,11 @@
 import React from 'react';
 import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {mapStream} from "polar-shared/src/util/ArrayStreams";
+import {deepMemo} from "../react/ReactUtils";
 
 export type FeatureName = 'design-m0' | 'note-stack' | 'answers';
 
 export type FeatureNameArray<F> = ReadonlyArray<F>;
-
-export interface IFeature {
-
-    readonly description: string;
-
-    /**
-     * This feature is enabled by default for everyone.
-     */
-    readonly enabledByDefault?: true;
-
-}
 
 export type FeatureRegistry<F extends string> = Readonly<{[key in F]: IFeature}>
 
@@ -33,53 +23,112 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 
 };
 
-/**
- * Context for the registry so that we can change this during tests.
- */
-export const RegistryContext = React.createContext<FeatureRegistry<FeatureName>>(DEFAULT_REGISTRY);
 
-/**
- * Get all features form the feature registry
- */
-export function useFeaturesRegistry(): FeatureRegistry<FeatureName> {
-    return React.useContext(RegistryContext);
+export interface IFeature {
+
+    readonly description: string;
+
+    /**
+     * This feature is enabled by default for everyone.
+     */
+    readonly enabled?: boolean;
+
 }
 
-export function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registry: Readonly<{[key: string]: IFeature}>): boolean {
+function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registry: Readonly<{[key: string]: IFeature}>): boolean {
 
     // TODO: the types of this aren't really perfect.
 
     return mapStream(registry)
         .filter(current => features.includes(current.key))
-        .first()?.value.enabledByDefault || false;
+        .first()?.value.enabled || false;
 
 }
 
-function useFeatureEnabledFromRegistry(features: FeatureNameArray<FeatureName>): boolean {
 
-    const registry = useFeaturesRegistry();
-
-    return React.useMemo(() => {
-
-        return _featureEnabledFromRegistry(features, registry)
-
-    }, [features, registry])
-
+interface FeatureProps<F extends string> {
+    readonly features: FeatureNameArray<F>;
+    readonly enabled?: JSX.Element;
+    readonly disabled?: JSX.Element;
 }
 
-export function useFeatureEnabled(features: FeatureNameArray<FeatureName>): boolean {
+const [Feature, useFeatureEnabled] = createFeatureRegistry(DEFAULT_REGISTRY);
 
-    const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(features);
+type UseFeatureEnabled<F> = (features: FeatureNameArray<F>) => boolean;
 
-    const prefs = usePrefsContext();
+type FeatureRegistryTuple<F extends string> = readonly [
+    React.FC<FeatureProps<F>>,
+    UseFeatureEnabled<F>
+]
 
-    for(const feature of features) {
-        if (prefs.defined(feature)) {
-            // use whatever is defined in prefs either enabled or disabled as this takes priority.
-            return prefs.isMarked(feature);
-        }
+export function createFeatureRegistry<F extends string>(registry: FeatureRegistry<F>): FeatureRegistryTuple<F> {
+
+    /**
+     *
+     * Context for the registry so that we can change this during tests.
+     */
+    const RegistryContext = React.createContext<FeatureRegistry<F>>(registry);
+
+    /**
+     * Get all features form the feature registry
+     */
+    function useFeaturesRegistry(): FeatureRegistry<F> {
+        return React.useContext(RegistryContext);
     }
 
-    return featureEnabledFromRegistry;
+    function useFeatureEnabledFromRegistry(features: FeatureNameArray<F>): boolean {
+
+        const registry = useFeaturesRegistry();
+
+        return React.useMemo(() => {
+
+            return _featureEnabledFromRegistry(features, registry)
+
+        }, [features, registry])
+
+    }
+
+    function useFeatureEnabled(features: FeatureNameArray<F>): boolean {
+
+        const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(features);
+
+        const prefs = usePrefsContext();
+
+        for(const feature of features) {
+            if (prefs.defined(feature)) {
+                // use whatever is defined in prefs either enabled or disabled as this takes priority.
+                return prefs.isMarked(feature);
+            }
+        }
+
+        return featureEnabledFromRegistry;
+
+    }
+
+    const Feature = deepMemo((props: FeatureProps<F>) => {
+
+        const featureEnabled = useFeatureEnabled(props.features);
+
+        if (featureEnabled) {
+
+            if (props.enabled) {
+                return props.enabled;
+            }
+
+        } else {
+
+            if (props.disabled) {
+                return props.disabled;
+            }
+
+        }
+
+        return null;
+
+    });
+
+
+    return [Feature, useFeatureEnabled];
 
 }
+
