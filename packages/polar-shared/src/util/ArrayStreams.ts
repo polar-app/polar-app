@@ -371,16 +371,15 @@ export function arrayStream<T>(values: ReadonlyArray<T>): ArrayStream<T> {
  * named you just have to guess which is which and it makes he code harder to
  * read.
  */
-export function mapStream<V, M extends Readonly<Record<string, V>>>(map: M): ArrayStream<{readonly key: keyof M, readonly value: V}> {
+export function mapStream<V>(map: Readonly<{[key: string]: V}>): ArrayStream<{readonly key: string, readonly value: V}> {
 
-    const result = arrayStream(Object.entries(map))
+    return arrayStream(Object.entries(map))
         .map((current) => {
-            const key = current[0] as keyof M;
-            const value = current[1] as V;
+            const key = current[0];
+            const value = current[1];
             return {key, value}
         });
 
-    return result;
 }
 
 
