@@ -6,15 +6,15 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {useBlocksStore} from "./store/BlocksStore";
 
 interface IProps {
-    readonly id: BlockIDStr;
+    readonly target: BlockIDStr;
 }
 
 export const BlockTitle = observer((props: IProps) => {
 
-    const {id} = props;
+    const {target} = props;
 
     const blocksStore = useBlocksStore();
-    const block = blocksStore.getBlock(id);
+    const block = blocksStore.getBlockByTarget(target);
 
     const title = React.useMemo(() : string => {
 

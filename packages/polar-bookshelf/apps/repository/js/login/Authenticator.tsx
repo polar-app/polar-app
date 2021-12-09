@@ -19,6 +19,8 @@ import {AuthLegalDisclaimer} from "./AuthLegalDisclaimer";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
+import {IRPCError} from "polar-shared/src/util/IRPCError";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -117,6 +119,7 @@ const BackendProgress = (props: BackendProgressProps) => {
     return <BackendProgressInactive/>
 
 }
+
 interface IAlert {
     readonly type: 'error' | 'success';
     readonly message: string;
@@ -349,6 +352,7 @@ export const RegisterForBetaButton = () => {
     const classes = useStyles();
 
     const analytics = useAnalytics();
+    const dialogManager = useDialogManager();
 
     const handleClick = React.useCallback(() => {
         const email = emailRef.current.trim();
@@ -358,7 +362,7 @@ export const RegisterForBetaButton = () => {
             tag: codeRef.current || "initial_signup",
         };
 
-        if(EmailAddressParser.parse(email).length < 1){
+        if (EmailAddressParser.parse(email).length < 1) {
             setAlert({
                 type: 'error',
                 message: 'Unable to register email: The email address is improperly formatted.'
@@ -372,14 +376,26 @@ export const RegisterForBetaButton = () => {
 
             async function doAsync() {
 
-                await JSONRPC.exec<unknown, unknown>('private-beta/register', request);
+                interface IRegisterForPrivateBetaErrorFailed extends IRPCError<'failed'> {
+                    readonly message: string;
+                }
+
+                type RegisterResponse = {} | IRegisterForPrivateBetaErrorFailed;
+
+                const register = await JSONRPC.exec<unknown, RegisterResponse>('private-beta/register', request);
+                if ('message' in register) {
+                    dialogManager.snackbar({
+                        type: "error",
+                        message: register.message,
+                    });
+                    return;
+                }
                 setIsRegistered(true);
 
                 // @TODO also store the Referral code, once we start capturing it during signup
                 analytics.event2("private_beta_joined", {});
 
                 console.log("Registered now!");
-
             }
 
             doAsync()
@@ -389,7 +405,7 @@ export const RegisterForBetaButton = () => {
             setPending(false);
         }
 
-    }, [setPending, analytics]);
+    }, [setPending, analytics, dialogManager]);
 
     return (
         <>
@@ -403,7 +419,7 @@ export const RegisterForBetaButton = () => {
 
             {alert && (
                 <Alert severity={alert.type}
-                        className={classes.alert}>
+                       className={classes.alert}>
                     {alert.message}
                 </Alert>
             )}
@@ -431,7 +447,8 @@ export const RegisterForBetaButton = () => {
                                InputProps={{
                                    startAdornment: (
                                        <VpnKeyIcon style={{margin: '8px'}}/>
-                                   )}}
+                                   )
+                               }}
                                variant="outlined"/>
 
                     <Button variant="contained"
@@ -480,7 +497,7 @@ export const LogoAndTextSideBySide = () => {
                         <PolarSVGIcon width={100} height={100}/>
                     </Box>
                     <Box m={1}>
-                        <Typography variant="h2" component="div" style={{ fontWeight: 400 }}>
+                        <Typography variant="h2" component="div" style={{fontWeight: 400}}>
                             POLAR
                         </Typography>
                     </Box>
@@ -535,12 +552,12 @@ const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
                 </>
 
-                 {props.alternative}
+                {props.alternative}
 
                 <Box m={2} flexGrow={1}>
                     <Divider/>
                 </Box>
-                    <AuthLegalDisclaimer/>
+                <AuthLegalDisclaimer/>
             </div>
         </>
     );

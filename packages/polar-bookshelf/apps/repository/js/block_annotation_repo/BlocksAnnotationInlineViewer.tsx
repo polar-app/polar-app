@@ -4,7 +4,7 @@ import React from "react";
 import {BlockItems} from "../../../../web/js/notes/BlockItems";
 import {Block} from "../../../../web/js/notes/Block";
 import {BlocksTreeProvider} from "../../../../web/js/notes/BlocksTree";
-import {NoteProviders} from "../../../../web/js/notes/NoteScreen";
+import {NoteProviders} from "../../../../web/js/notes/NoteProviders";
 import {useBlocksAnnotationRepoStore} from "./BlocksAnnotationRepoStore";
 
 export const BlocksAnnotationInlineViewer = observer(function AnnotationInlineViewer() {
