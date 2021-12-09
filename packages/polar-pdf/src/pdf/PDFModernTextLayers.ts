@@ -1,16 +1,11 @@
 /**
  * Enable or disable modern text layers.
  */
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import {Logger} from "polar-shared/src/logger/Logger";
-
-const log = Logger.create();
-
 export class PDFModernTextLayers {
 
     public static configure() {
 
-        const enabled = LocalStorageFeatureToggles.get('modern-text-layers', true);
+        const enabled = true;
 
         if (enabled) {
             this.enable();
