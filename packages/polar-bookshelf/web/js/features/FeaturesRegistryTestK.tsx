@@ -23,7 +23,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<TestFeatureName>= {
 
 const [TestFeature] = createFeatureRegistry(DEFAULT_REGISTRY);
 
-describe("FeaturesRegistry", function() {
+xdescribe("FeaturesRegistry", function() {
 
     let enabled: boolean | undefined = undefined;
 
