@@ -25,10 +25,11 @@ interface IProps {
  * issues).
  */
 export function usePrefsContext(): IPersistentPrefs {
-    const snapshot = useUserPrefContextSnapshot();
-    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
-    return persistentPrefs;
+    const snapshot = useUserPrefContextSnapshot();
+
+    return React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
+
 }
 
 interface IFeatureToggleProps {

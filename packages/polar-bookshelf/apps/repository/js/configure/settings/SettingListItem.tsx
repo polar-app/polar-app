@@ -74,8 +74,8 @@ export const SettingListItem =  React.memo(function SettingListItem(props: IProp
                 <ListItemIcon>
                     <Box pl={1}>
                         <SwitchButton size="small"
-                        initialValue={value}
-                        onChange={value => onChange(value)} />
+                                      checked={value}
+                                      onChange={value => onChange(value)} />
                     </Box>
                 </ListItemIcon>
             </ListItem>

@@ -53,7 +53,7 @@ export const FeatureListItem =  React.memo(function FeatureListItem(props: IProp
                 <ListItemIcon>
                     <Box pl={1}>
                         <SwitchButton size="small"
-                                      initialValue={value}
+                                      checked={value}
                                       onChange={value => onChange(value)} />
                     </Box>
                 </ListItemIcon>

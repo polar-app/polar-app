@@ -4,7 +4,7 @@ import Switch from "@material-ui/core/Switch";
 
 interface IProps {
     readonly id?: string;
-    readonly initialValue?: boolean;
+    readonly checked?: boolean;
     readonly onChange: (value: boolean) => void;
     readonly color?: 'default' | 'primary' | 'secondary';
     readonly size?: 'small' | 'medium';
@@ -12,13 +12,11 @@ interface IProps {
 
 export const SwitchButton = (props: IProps) => {
 
-    const [checked, setChecked] = useState(props.initialValue);
+    const {checked} = props;
 
     const handleChecked = () => {
 
         const newChecked = ! checked;
-
-        setChecked(newChecked);
         props.onChange(newChecked);
 
     };
