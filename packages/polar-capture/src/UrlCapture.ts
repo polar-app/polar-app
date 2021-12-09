@@ -2,7 +2,7 @@ import { JSDOM } from "jsdom";
 import { ReadabilityCapture } from "polar-web-capture/src/capture/ReadabilityCapture";
 import { CapturedContentEPUBGenerator } from "polar-web-capture/src/captured/CapturedContentEPUBGenerator";
 import fetch, { Response } from 'node-fetch';
-import { FileUpload } from './fileUpload';
+import { FileUpload } from './FileUpload';
 import { Readable } from 'stream';
 import { File } from '@google-cloud/storage';
 
