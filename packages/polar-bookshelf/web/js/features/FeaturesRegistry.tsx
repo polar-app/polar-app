@@ -3,7 +3,6 @@ import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/Pre
 import {mapStream} from "polar-shared/src/util/ArrayStreams";
 import {deepMemo} from "../react/ReactUtils";
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features';
 
 export type FeatureNameArray<F> = ReadonlyArray<F>;
 
@@ -29,10 +28,19 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "answers": {
         title: "AI Answers",
         description: "Enable the answers AI system to ask questions directly from your document repository.",
+    },
+    "dev": {
+        title: "Development",
+        description: "Enable various tools for developers.",
     }
 
 };
 
+// TODO: we might want to rework this and make FeatureName be keyof
+// FeatureRegistry I think.  That would be easier to maintain but requires
+// another refactor of the code.
+
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev';
 
 export interface IFeature {
 

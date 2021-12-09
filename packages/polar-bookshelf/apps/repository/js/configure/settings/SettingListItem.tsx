@@ -1,9 +1,8 @@
 import * as React from "react";
-import {useContext} from 'react';
+import {useContext} from "react";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import {ListItem, ListItemText, ListItemIcon, Box} from "@material-ui/core";
+import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
@@ -48,7 +47,6 @@ export const SettingListItem =  React.memo(function SettingListItem(props: IProp
 
     const onChange = React.useCallback((value: boolean) => {
         console.log("Setting " + name);
-        LocalStorageFeatureToggles.set(name, value);
         prefs.mark(name, value);
 
         if (name === 'dark-mode') {
