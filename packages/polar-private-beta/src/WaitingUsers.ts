@@ -8,6 +8,10 @@ export namespace WaitingUsers {
         readonly list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
     }
 
+    export interface ErrorResponse {
+        error: string,
+    }
+
     /**
      * If the provided user can list the waiting users list
      * @param idUser
@@ -23,9 +27,9 @@ export namespace WaitingUsers {
         return allowed.includes(idUser.user.email);
     }
 
-    export async function getList(idUser: IDUser): Promise<Response> {
+    export async function getList(idUser: IDUser): Promise<Response | ErrorResponse> {
         if (!isAuthorized(idUser)) {
-            throw new Error('Not authorized');
+            return {error: 'Not authorized'}
         }
 
         const firestore = FirestoreAdmin.getInstance();
