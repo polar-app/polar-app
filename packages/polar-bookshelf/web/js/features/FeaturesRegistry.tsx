@@ -12,12 +12,15 @@ export type FeatureRegistry<F extends string> = Readonly<{[key in F]: IFeature}>
 const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 
     "design-m0": {
-        description: "Design milestone 0",
+        title: "Design Milestone 0",
+        description: "Design milestone 0 which combines multiple feature tags to show this design milestone as an atomic unit.",
     },
     "note-stack": {
+        title: "Notes Stack",
         description: "Enable the new notes stack which allows the user to view pages visually as a horizontal stack.",
     },
     "answers": {
+        title: "AI Answers",
         description: "Enable the answers AI system to ask questions directly from your document repository.",
     }
 
@@ -25,6 +28,8 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 
 
 export interface IFeature {
+
+    readonly title: string;
 
     readonly description: string;
 
@@ -53,7 +58,7 @@ interface FeatureProps<F extends string> {
     readonly disabled?: JSX.Element;
 }
 
-const [Feature, useFeatureEnabled, useFeaturesRegistry] = createFeatureRegistry(DEFAULT_REGISTRY);
+export const [Feature, useFeatureEnabled, useFeaturesRegistry] = createFeatureRegistry(DEFAULT_REGISTRY);
 
 type UseFeatureEnabled<F> = (features: FeatureNameArray<F>) => boolean;
 

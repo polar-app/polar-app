@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
-import {SettingToggle} from './SettingToggle';
+import {SettingListItem} from './SettingListItem';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
 import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
-import {ExportDataButton} from "../../premium/ExportDataButton";
+import {ExportDataListItem} from "../../premium/ExportDataListItem";
 import {createStyles, makeStyles, List} from "@material-ui/core";
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
@@ -54,36 +54,36 @@ const Main = () => {
     return (
         <Box pt={1} className={classes.root}>
             <List>
-                <SettingToggle title="Dark Mode"
-                                description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
-                                name="dark-mode"
-                                defaultValue={true}
-                                icon={<BrightnessMediumIcon />}/>
+                <SettingListItem title="Dark Mode"
+                                 description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
+                                 name="dark-mode"
+                                 defaultValue={true}
+                                 icon={<BrightnessMediumIcon />}/>
                 <SettingSelect title="PDF Dark Mode Handling"
                                 description="Enable custom dark mode handling for PDFs.  This allows to change how the PDF colors are displayed."
                                 name="dark-mode-pdf"
                                 icon={<ImportContactsIcon />}
                                 options={PREF_PDF_DARK_MODE_OPTIONS}/>
-                <SettingToggle
+                <SettingListItem
                     title="Automatically resume reading position"
                     description="This feature restores the document reading position using pagemarks when reopening a document."
                     name="settings-auto-resume"
                     icon={<FilterCenterFocusIcon />}
                     defaultValue={true}/>
-                <SettingToggle title="Fixed-width EPUBs"
-                                description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
-                                name="fixed-width-epub"
-                                icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}/>
+                <SettingListItem title="Fixed-width EPUBs"
+                                 description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
+                                 name="fixed-width-epub"
+                                 icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}/>
                 {/*<SettingEntry title="Enable groups"*/}
                 {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                 {/*              name="groups"*/}
                 {/*              prefs={prefs}*/}
                 {/*              preview={true}/>*/}
-                <SettingToggle title="Automatic pagemarks"
-                                description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
-                                name={KnownPrefs.AUTO_PAGEMARKS}
-                                icon={<BookmarkIcon />}
-                                preview={true}/>
+                <SettingListItem title="Automatic pagemarks"
+                                 description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
+                                 name={KnownPrefs.AUTO_PAGEMARKS}
+                                 icon={<BookmarkIcon />}
+                                 preview={true}/>
                 {/*<DeviceRouters.Desktop>*/}
                 {/*    <SettingEntry*/}
                 {/*        title="Table and phone reading"*/}
@@ -93,11 +93,11 @@ const Main = () => {
                 {/*        preview={true}/>*/}
                 {/*</DeviceRouters.Desktop>*/}
 
-                <SettingToggle title="Development"
-                                description="Enables general development features for software engineers working on Polar."
-                                icon={<DeveloperModeIcon />}
-                                name="dev"
-                                preview={true}/>
+                <SettingListItem title="Development"
+                                 description="Enables general development features for software engineers working on Polar."
+                                 icon={<DeveloperModeIcon />}
+                                 name="dev"
+                                 preview={true}/>
                 <ViewDeviceInfoButton/>
                 <DeviceRouters.Desktop>
                     <>
@@ -105,7 +105,7 @@ const Main = () => {
                         <ManageSubscriptionButton/>
                     </>
                 </DeviceRouters.Desktop>
-                <ExportDataButton/>
+                <ExportDataListItem/>
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
             </List>
