@@ -13,7 +13,8 @@ const DEFAULT_REGISTRY: FeatureRegistry<TestFeatureName>= {
         description: ""
     },
     "feature-c": {
-        description: ""
+        description: "",
+        enabled: true
     },
 };
 
@@ -26,10 +27,43 @@ const FeatureEnabled = () => {
     </div>
 
 }
+
+const FeatureDisabled = () => {
+
+    return <div>
+        DISABLED
+    </div>
+
+}
+
 export const FeatureStory = () => {
 
     return (
-        <TestFeature features={['feature-a']} enabled={<FeatureEnabled/>}/>
+        <div>
+
+            <h2>
+                Feature with one channel which is enabled.
+            </h2>
+            <TestFeature features={['feature-a']}
+                         enabled={<FeatureEnabled/>}
+                         disabled={<FeatureDisabled/>}/>
+
+
+            <h2>
+                Feature with one channel which is disabled.
+            </h2>
+            <TestFeature features={['feature-b']}
+                         enabled={<FeatureEnabled/>}
+                         disabled={<FeatureDisabled/>}/>
+
+            <h2>
+                Feature with two channels but only one is enabled.
+            </h2>
+            <TestFeature features={['feature-c', 'feature-b']}f
+                         enabled={<FeatureEnabled/>}
+                         disabled={<FeatureDisabled/>}/>
+
+        </div>
     )
 
 }

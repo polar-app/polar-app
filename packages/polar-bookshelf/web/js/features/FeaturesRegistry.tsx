@@ -41,6 +41,7 @@ function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registr
 
     return mapStream(registry)
         .filter(current => features.includes(current.key))
+        .filter(current => current.value.enabled === true)
         .first()?.value.enabled || false;
 
 }
