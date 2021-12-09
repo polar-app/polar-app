@@ -80,6 +80,7 @@ import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesR
 import {NotesContainer} from '../../notes/NotesContainer';
 import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
+import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 
 interface IProps {
     readonly app: App;
@@ -144,6 +145,7 @@ const SHARED_ROUTES = [
     {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
     {path: RoutePathNames.STATISTICS, component: (StatsScreen)},
     {path: RoutePathNames.SETTINGS, component: (SettingsScreen)},
+    {path: RoutePathNames.FEATURES, component: (FeaturesScreen)},
     {path: RoutePathNames.LOGS, component: (LogsScreen)},
     {path: RoutePathNames.DEVICE_INFO, component: (DeviceScreen)},
     {path: RoutePathNames.FEATURE_REQUESTS, component: (FeatureRequestsScreen)},
@@ -375,7 +377,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 </PersistentRoute>
 
 
-                                                
+
                                                 <Route path={RoutePathNames.NOTE(":id")}
                                                        component={SingleNoteScreen}/>
 

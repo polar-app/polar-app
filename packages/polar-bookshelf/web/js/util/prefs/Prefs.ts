@@ -65,6 +65,11 @@ export abstract class Prefs {
     }
 
     /**
+     * Remove a pref by key.
+     */
+    public abstract remove(key: string): void;
+
+    /**
      * Get a current pref value.
      */
     public abstract get(key: string): Optional<string>;
@@ -191,6 +196,7 @@ export class InterceptedPersistentPrefsFactory {
             toDict: persistentPrefs.toDict,
             toPrefDict: persistentPrefs.toPrefDict,
             defined: persistentPrefs.defined,
+            remove: persistentPrefs.remove,
             __intercepted: true,
             commit
         };
@@ -299,6 +305,10 @@ export class DictionaryPrefs extends Prefs {
         return Optional.of(this.delegate[key]).getOrUndefined();
     }
 
+    public remove(key: string) {
+        delete this.delegate[key];
+    }
+
     public prefs(): ReadonlyArray<Pref> {
         return Object.values(this.delegate);
     }
@@ -374,6 +384,10 @@ export class CompositePrefs implements IPersistentPrefs {
 
     public fetch(key: string): Pref | undefined {
         return this.delegate.fetch(key);
+    }
+
+    public remove(key: string) {
+        return this.delegate.remove(key);
     }
 
     public prefs(): ReadonlyArray<Pref> {

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
-export const ExportDataButton = React.memo(function ExportDataButton() {
+export const ExportDataListItem = React.memo(function ExportDataButton() {
 
     const dialogManager = useDialogManager()
 
@@ -43,6 +43,6 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
             <GetAppIcon />
             </ListItemIcon>
             <ListItemText primary="Export Data" />
-        </ListItem> 
+        </ListItem>
     );
 });

@@ -20,4 +20,8 @@ export namespace Predicates {
         return (value: V) => a(value) || b(value);
     }
 
+    export function any<V extends string | number>(value: V, accepts: ReadonlyArray<V>) {
+        return accepts.includes(value);
+    }
+
 }

@@ -8,8 +8,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTextContentUtils} from "./NoteUtils";
 import {AppSites} from "../apps/repository/auth_handler/AppSites";
 import {useNoteStack} from "./stacks/StackProvider";
-import {useFeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
-
+import {useFeatureEnabled} from "../features/FeaturesRegistry";
 
 export const useNoteWikiLinkIdentifierCreator = () => {
     const blocksStore = useBlocksStore();
@@ -108,7 +107,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
     const noteLinkLoader = useNoteLinkLoader();
     const noteWikiLinkCreator = useNoteWikiLinkIdentifierCreator();
     const noteStack = useNoteStack();
-    const noteStackEnabled = useFeatureToggle('note-stack');
+    const noteStackEnabled = useFeatureEnabled('note-stack');
 
     return React.useCallback((event: ILinkNavigationEvent): boolean => {
 
