@@ -21,6 +21,7 @@ import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {ListItemLinkButton} from './ListItemLinkButton';
 import {useHistory} from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import { Feature } from '../../../../../web/js/features/FeaturesRegistry';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -127,7 +128,9 @@ const Main = () => {
                     </>
                 </DeviceRouters.Desktop>
                 <ExportDataListItem/>
-                <FeaturesListItem/>
+
+                <Feature features={['features']} enabled={<FeaturesListItem/>}/>
+
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
             </List>

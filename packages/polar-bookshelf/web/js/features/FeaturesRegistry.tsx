@@ -3,13 +3,18 @@ import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/Pre
 import {mapStream} from "polar-shared/src/util/ArrayStreams";
 import {deepMemo} from "../react/ReactUtils";
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features';
 
 export type FeatureNameArray<F> = ReadonlyArray<F>;
 
 export type FeatureRegistry<F extends string> = Readonly<{[key in F]: IFeature}>
 
 const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
+
+    "features": {
+        title: "Feature Toggles",
+        description: "Enables the ability to enable/disable new and experimental features that we're actively working on but that are not yet ready for production.",
+    },
 
     "design-m0": {
         title: "Design Milestone 0",
