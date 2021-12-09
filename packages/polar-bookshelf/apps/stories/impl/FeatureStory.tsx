@@ -47,7 +47,7 @@ export const FeatureStory = () => {
             <h2>
                 Feature with one channel which is enabled.
             </h2>
-            <TestFeature features={['feature-a']}
+            <TestFeature feature='feature-a'
                          enabled={<FeatureEnabled/>}
                          disabled={<FeatureDisabled/>}/>
 
@@ -55,14 +55,14 @@ export const FeatureStory = () => {
             <h2>
                 Feature with one channel which is disabled.
             </h2>
-            <TestFeature features={['feature-b']}
+            <TestFeature feature='feature-b'
                          enabled={<FeatureEnabled/>}
                          disabled={<FeatureDisabled/>}/>
 
             <h2>
                 Feature with two channels but only one is enabled.
             </h2>
-            <TestFeature features={['feature-c', 'feature-b']}
+            <TestFeature feature={['feature-c', 'feature-b']}
                          enabled={<FeatureEnabled/>}
                          disabled={<FeatureDisabled/>}/>
 

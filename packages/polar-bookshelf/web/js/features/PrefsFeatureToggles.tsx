@@ -4,6 +4,7 @@ import {FeatureName} from "./FeaturesRegistry";
 
 /**
  * Return true/false based on a feature toggle name.
+ * @deprecated
  */
 export function usePrefsFeatureToggle(featureName: FeatureName): boolean {
     const prefs = usePrefsContext();
@@ -12,6 +13,8 @@ export function usePrefsFeatureToggle(featureName: FeatureName): boolean {
 
 /**
  * Return a feature toggler function so that we can change the value of a feature toggle.
+ *
+ * @deprecated
  */
 export function usePrefsFeatureToggler() {
 

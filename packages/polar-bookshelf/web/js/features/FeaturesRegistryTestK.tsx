@@ -43,7 +43,7 @@ xdescribe("FeaturesRegistry", function() {
 
         const Test = () => {
             return (
-                <TestFeature features={['feature-a']}
+                <TestFeature feature={['feature-a']}
                              enabled={<FeatureEnabled/>}/>
             );
         }

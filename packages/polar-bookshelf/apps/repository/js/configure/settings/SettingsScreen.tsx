@@ -129,7 +129,7 @@ const Main = () => {
                 </DeviceRouters.Desktop>
                 <ExportDataListItem/>
 
-                <Feature features={['features']} enabled={<FeaturesListItem/>}/>
+                <Feature feature='features' enabled={<FeaturesListItem/>}/>
 
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>

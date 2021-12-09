@@ -7,6 +7,8 @@ export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features';
 
 export type FeatureNameArray<F> = ReadonlyArray<F>;
 
+export type FeatureNameArrayLike<F> = F | ReadonlyArray<F>;
+
 export type FeatureRegistry<F extends string> = Readonly<{[key in F]: IFeature}>
 
 const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
@@ -58,24 +60,46 @@ function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registr
 
 
 interface FeatureProps<F extends string> {
-    readonly features: FeatureNameArray<F>;
+    readonly feature: FeatureNameArrayLike<F>;
     readonly enabled?: JSX.Element;
     readonly disabled?: JSX.Element;
 }
 
 export const [Feature, useFeatureEnabled, useFeaturesRegistry] = createFeatureRegistry(DEFAULT_REGISTRY);
 
-type UseFeatureEnabled<F> = (features: FeatureNameArray<F>) => boolean;
+/**
+ * Return true if a feature is enabled.
+ */
+type UseFeatureEnabled<F> = (features: FeatureNameArrayLike<F>) => boolean;
 
+/**
+ * Gives us access to the whole registry.
+ */
 type UseFeaturesRegistry<F extends string> = () => FeatureRegistry<F>;
+
+/**
+ * Gives us access to a toggler that can turn on or off a specific feature.
+ */
+type UseFeatureToggler<F> = () => (feature: F, enabled: boolean) => void;
 
 type FeatureRegistryTuple<F extends string> = readonly [
     React.FC<FeatureProps<F>>,
     UseFeatureEnabled<F>,
-    UseFeaturesRegistry<F>
+    UseFeaturesRegistry<F>,
+    UseFeatureToggler<F>
 ]
 
 export function createFeatureRegistry<F extends string>(registry: FeatureRegistry<F>): FeatureRegistryTuple<F> {
+
+    function toFeaturesArray(feature: FeatureNameArrayLike<F>): ReadonlyArray<F> {
+
+        if (typeof feature === 'string') {
+            return [feature];
+        }
+
+        return feature;
+
+    }
 
     /**
      *
@@ -102,7 +126,9 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     }
 
-    function useFeatureEnabled(features: FeatureNameArray<F>): boolean {
+    function useFeatureEnabled(feature: FeatureNameArrayLike<F>): boolean {
+
+        const features = toFeaturesArray(feature);
 
         const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(features);
 
@@ -121,7 +147,9 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     const Feature = deepMemo((props: FeatureProps<F>) => {
 
-        const featureEnabled = useFeatureEnabled(props.features);
+        const features = toFeaturesArray(props.feature)
+
+        const featureEnabled = useFeatureEnabled(features);
 
         if (featureEnabled) {
 
@@ -141,8 +169,18 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     });
 
+    function useFeatureToggler() {
 
-    return [Feature, useFeatureEnabled, useFeaturesRegistry];
+        const prefs = usePrefsContext();
+
+        return React.useCallback(async (featureName: F, enabled: boolean = true) => {
+            prefs.mark(featureName, enabled);
+            await prefs.commit();
+        }, [prefs]);
+
+    }
+
+    return [Feature, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler];
 
 }
 
