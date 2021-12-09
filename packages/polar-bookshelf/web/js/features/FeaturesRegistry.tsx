@@ -59,13 +59,23 @@ function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registr
 }
 
 
+export const [Feature, FeatureEnabled, FeatureDisabled, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler] = createFeatureRegistry(DEFAULT_REGISTRY);
+
 interface FeatureProps<F extends string> {
     readonly feature: FeatureNameArrayLike<F>;
     readonly enabled?: JSX.Element;
     readonly disabled?: JSX.Element;
 }
 
-export const [Feature, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler] = createFeatureRegistry(DEFAULT_REGISTRY);
+interface FeatureEnabledProps<F extends string> {
+    readonly feature: FeatureNameArrayLike<F>;
+    readonly children: JSX.Element;
+}
+
+interface FeatureDisabledProps<F extends string> {
+    readonly feature: FeatureNameArrayLike<F>;
+    readonly children: JSX.Element;
+}
 
 /**
  * Return true if a feature is enabled.
@@ -84,6 +94,8 @@ type UseFeatureToggler<F> = () => (feature: F, enabled: boolean) => void;
 
 type FeatureRegistryTuple<F extends string> = readonly [
     React.FC<FeatureProps<F>>,
+    React.FC<FeatureEnabledProps<F>>,
+    React.FC<FeatureDisabledProps<F>>,
     UseFeatureEnabled<F>,
     UseFeaturesRegistry<F>,
     UseFeatureToggler<F>
@@ -169,6 +181,18 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     });
 
+    const FeatureEnabled = deepMemo((props: FeatureEnabledProps<F>) => {
+        return (
+            <Feature feature={props.feature} enabled={props.children}/>
+        )
+    });
+
+    const FeatureDisabled = deepMemo((props: FeatureDisabledProps<F>) => {
+        return (
+            <Feature feature={props.feature} disabled={props.children}/>
+        )
+    });
+
     function useFeatureToggler() {
 
         const prefs = usePrefsContext();
@@ -180,7 +204,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     }
 
-    return [Feature, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler];
+    return [Feature, FeatureEnabled, FeatureDisabled, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler];
 
 }
 
