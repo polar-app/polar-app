@@ -53,13 +53,16 @@ interface FeatureProps<F extends string> {
     readonly disabled?: JSX.Element;
 }
 
-const [Feature, useFeatureEnabled] = createFeatureRegistry(DEFAULT_REGISTRY);
+const [Feature, useFeatureEnabled, useFeaturesRegistry] = createFeatureRegistry(DEFAULT_REGISTRY);
 
 type UseFeatureEnabled<F> = (features: FeatureNameArray<F>) => boolean;
 
+type UseFeaturesRegistry<F extends string> = () => FeatureRegistry<F>;
+
 type FeatureRegistryTuple<F extends string> = readonly [
     React.FC<FeatureProps<F>>,
-    UseFeatureEnabled<F>
+    UseFeatureEnabled<F>,
+    UseFeaturesRegistry<F>
 ]
 
 export function createFeatureRegistry<F extends string>(registry: FeatureRegistry<F>): FeatureRegistryTuple<F> {
@@ -129,7 +132,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
     });
 
 
-    return [Feature, useFeatureEnabled];
+    return [Feature, useFeatureEnabled, useFeaturesRegistry];
 
 }
 

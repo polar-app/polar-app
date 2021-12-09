@@ -59,7 +59,7 @@ export const FeatureStory = () => {
             <h2>
                 Feature with two channels but only one is enabled.
             </h2>
-            <TestFeature features={['feature-c', 'feature-b']}f
+            <TestFeature features={['feature-c', 'feature-b']}
                          enabled={<FeatureEnabled/>}
                          disabled={<FeatureDisabled/>}/>
 
