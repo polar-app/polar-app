@@ -32,42 +32,6 @@ export function usePrefsContext(): IPersistentPrefs {
 
 }
 
-interface IFeatureToggleProps {
-    readonly featureName: FeatureName;
-}
-
-/**
- * Only render the child component if a feature toggle is ENABLED.
- * @deprecated
- */
-export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
-
-    const toggled = usePrefsFeatureToggle(props.featureName);
-
-    if (toggled) {
-        return <>{props.children}</>;
-    }
-
-    return null;
-
-});
-
-/**
- * Only render the child component if a feature toggle is DISABLED.
- * @deprecated
- */
-export const FeatureToggleDisabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
-
-    const toggled = usePrefsFeatureToggle(props.featureName);
-
-    if (!toggled) {
-        return <>{props.children}</>;
-    }
-
-    return null;
-
-});
-
 export const PrefsContext2 = React.memo((props: IProps) => {
 
     const {firestore, uid} = useFirestore();

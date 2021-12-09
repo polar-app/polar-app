@@ -99,7 +99,7 @@ type FeatureRegistryTuple<F extends string> = readonly [
     UseFeatureEnabled<F>,
     UseFeaturesRegistry<F>,
     UseFeatureToggler<F>
-]
+];
 
 export function createFeatureRegistry<F extends string>(registry: FeatureRegistry<F>): FeatureRegistryTuple<F> {
 
