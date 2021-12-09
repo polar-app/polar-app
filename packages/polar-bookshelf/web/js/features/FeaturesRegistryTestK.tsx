@@ -23,18 +23,18 @@ const DEFAULT_REGISTRY: FeatureRegistry<TestFeatureName>= {
 
 const [TestFeature] = createFeatureRegistry(DEFAULT_REGISTRY);
 
-xdescribe("FeaturesRegistry", function() {
+describe("FeaturesRegistry", function() {
 
     let enabled: boolean | undefined = undefined;
 
     it("Feature enabled", async () => {
 
-        const FeatureEnabled = () => {
-            //
-            // React.useEffect(() => {
-            //     // enabledRef.current = true;
-            //     enabled = true;
-            // }, []);
+        const Enabled = () => {
+
+            React.useEffect(() => {
+                // enabledRef.current = true;
+                enabled = true;
+            }, []);
 
             return <div>
                 ENABLED
@@ -44,7 +44,7 @@ xdescribe("FeaturesRegistry", function() {
         const Test = () => {
             return (
                 <TestFeature feature={['feature-a']}
-                             enabled={<FeatureEnabled/>}/>
+                             enabled={<Enabled/>}/>
             );
         }
 
@@ -52,7 +52,7 @@ xdescribe("FeaturesRegistry", function() {
 
         await waitFor(() => screen.getByText("ENABLED"))
 
-        // assert.isTrue(enabled);
+        assert.isTrue(enabled);
 
     });
 
