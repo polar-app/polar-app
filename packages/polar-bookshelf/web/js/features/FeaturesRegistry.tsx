@@ -65,7 +65,7 @@ interface FeatureProps<F extends string> {
     readonly disabled?: JSX.Element;
 }
 
-export const [Feature, useFeatureEnabled, useFeaturesRegistry] = createFeatureRegistry(DEFAULT_REGISTRY);
+export const [Feature, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler] = createFeatureRegistry(DEFAULT_REGISTRY);
 
 /**
  * Return true if a feature is enabled.

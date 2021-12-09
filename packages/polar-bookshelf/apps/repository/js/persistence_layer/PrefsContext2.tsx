@@ -38,6 +38,7 @@ interface IFeatureToggleProps {
 
 /**
  * Only render the child component if a feature toggle is ENABLED.
+ * @deprecated
  */
 export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
@@ -53,6 +54,7 @@ export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((p
 
 /**
  * Only render the child component if a feature toggle is DISABLED.
+ * @deprecated
  */
 export const FeatureToggleDisabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
 
