@@ -296,7 +296,7 @@ namespace UserTagsMigrationHelpers {
 
         const nonExistent = tags.filter(({ label }) => ! blocksStore.getBlockByName(label));
 
-        const nonExistentBlockContents = nonExistent.map(({ label }) => 
+        const nonExistentBlockContents = nonExistent.map(({ label }) =>
             new NameContent({ type: 'name', data: label, links: [] }).toJSON());
 
         const nonExistentBlockStructures: ReadonlyArray<IBlockContentStructure<INameContent>> =
@@ -356,7 +356,7 @@ function useTagsMigrationExecutor() {
             const tags = [...blockTags, ...UserTagsMigrationHelpers.userTagsToNotesTags(blocksStore, userTags)];
 
             const uniqueTags = arrayStream(tags).unique(({ id }) => id).collect();
-            
+
             // Delete the old tags
             userTags.forEach(({ id }) => userTagsDB.delete(id));
 
@@ -397,7 +397,7 @@ function useTagsMigrationExecutor() {
                 failed: ISODateTimeStrings.create(),
             }).catch(console.error);
         });
-        
+
     }, [blocksStore, userTagsDB, firestore, user, setError, startedRef]);
 
     return { migrationExecutor, error };
@@ -439,7 +439,7 @@ export const MigrationToBlockAnnotationsRenderer: React.FC<IProps> = React.memo(
      */
     React.useEffect(() => {
 
-        if (docMetaSnapshot && 
+        if (docMetaSnapshot &&
             (docMetaMigrationStatus === 'started' || docMetaMigrationStatus === 'notstarted')) {
             migrationExecutor(docMetaSnapshot);
         }
@@ -462,7 +462,7 @@ export const MigrationToBlockAnnotationsRenderer: React.FC<IProps> = React.memo(
         if (tagsMigrationStatus === 'started' || ! progressData) {
             return undefined;
         }
-        
+
         return Percentages.calculate(progressData.current, progressData.total);
 
     }, [progressData, tagsMigrationStatus]);
@@ -508,10 +508,8 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
     const docMetaMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(docMetaMigrationSnapshot), [docMetaMigrationSnapshot]);
     const tagsMigrationStatus = React.useMemo(() => getMigrationStatusFromSnapshot(tagsMigrationSnapshot), [tagsMigrationSnapshot]);
 
-    const [skipped, setSkipped] = React.useState<boolean>(false);
     const [started, setStarted] = React.useState<boolean>(false);
 
-    const handleSkip = React.useCallback(() => setSkipped(true), [setSkipped]);
     const handleStart = React.useCallback(() => setStarted(true), [setStarted]);
 
     const isDone = docMetaMigrationStatus === 'completed' && tagsMigrationStatus === 'completed';
@@ -520,7 +518,7 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
         return <LinearProgress />;
     }
 
-    if (skipped || isDone) {
+    if (isDone) {
         return <NotesIntegrationContext.Provider value={isDone} children={props.children} />
     }
 
@@ -533,7 +531,7 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
             </Alert>
         );
     }
-    
+
     /**
      * Here we start the migration in the following two cases
      * 1. The user has explicity started the migration.
@@ -551,9 +549,7 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
     return (
         <AdaptiveDialog>
             <MigrationToBlockAnnotationsDialog
-                onSkip={handleSkip}
                 onStart={handleStart}
-                skippable
             />
         </AdaptiveDialog>
     );
