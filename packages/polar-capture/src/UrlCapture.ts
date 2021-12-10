@@ -5,19 +5,34 @@ import fetch, { Response } from 'node-fetch';
 import { FileUpload } from './FileUpload';
 import { Readable } from 'stream';
 import { File } from '@google-cloud/storage';
+import { PDFMetadata } from "polar-pdf/src/pdf/PDFMetadata";
+import { EPUBMetadata } from "polar-epub/src/EPUBMetadata";
+import { IParsedDocMeta } from 'polar-shared/src/util/IParsedDocMeta';
+
+interface WrittenTmpFile {
+    readonly file: File;
+    readonly type: "pdf" | "epub";
+}
 
 export namespace UrlCapture {
+
     export const MAX_CONTENT_LENGTH = 104857600; // 100 MiB
 
-    export async function fetchUrl(url: string): Promise<File> {
+    export async function fetchUrl(url: string): Promise<WrittenTmpFile> {
         const response = await fetch(url);
 
         validateResponse(response);
 
         if (response.headers.get('content-type') === "application/pdf") {
-            return await writeTmpPdf(response);
+            return {
+                file: await writeTmpPdf(response),
+                type: "pdf"
+            };
         } else {
-            return await writeTmpEpub(response);
+            return  {
+                file: await writeTmpEpub(response),
+                type: "epub"
+            }
         }
     }
 
@@ -109,5 +124,22 @@ export namespace UrlCapture {
         const epubCapture = ReadabilityCapture.extractCapturedEPUB(doc, url);
 
         return await CapturedContentEPUBGenerator.generate(epubCapture);
+    }
+
+    export async function parseMetadata(tmpFile: WrittenTmpFile): Promise<IParsedDocMeta> {
+        await tmpFile.file.makePublic();
+
+        const docUrl = tmpFile.file.publicUrl();
+
+        switch (tmpFile.type) {
+            case 'epub':
+                // TODO: Fix epub metadata not properly reading URL the cause \
+                // node-stream-zip package needs more investigation
+                return EPUBMetadata.getMetadata(docUrl);
+            case 'pdf':
+                return PDFMetadata.getMetadata(docUrl);
+            default:
+                throw new Error("Can't parse metadata of known types.");
+        }
     }
 }
