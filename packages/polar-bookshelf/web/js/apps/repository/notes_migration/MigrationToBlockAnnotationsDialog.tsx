@@ -10,8 +10,6 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 interface IProps {
     readonly progress?: number;
     readonly onStart?: () => void;
-    readonly onSkip?: () => void;
-    readonly skippable?: boolean;
     readonly started?: boolean;
 }
 
@@ -45,8 +43,6 @@ export const MigrationToBlockAnnotationsDialog = (props: IProps) => {
     const {
         progress,
         onStart = NULL_FUNCTION,
-        onSkip = NULL_FUNCTION,
-        skippable = false,
         started,
     } = props;
     const classes = useStyles();
@@ -99,13 +95,6 @@ export const MigrationToBlockAnnotationsDialog = (props: IProps) => {
                                 Level up now
                             </Button>
 
-                            {skippable && (
-                                <Button variant="text"
-                                        fullWidth
-                                        onClick={onSkip}>
-                                    Skip
-                                </Button>
-                            )}
                         </div>
 
                         <Typography variant="subtitle1" className={classes.textSection}>
