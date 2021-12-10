@@ -31,12 +31,10 @@ export function useIntercom() {
     if (booted.current) {
         intercomClient.update({
             ...intercomData,
-            // hide_default_launcher: true,
         });
     } else {
         intercomClient.boot({
             ...intercomData,
-            // hide_default_launcher: true,
         });
     }
 

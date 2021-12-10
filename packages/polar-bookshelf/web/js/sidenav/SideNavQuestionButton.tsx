@@ -40,7 +40,6 @@ export namespace MenuItems {
             if (intercomData && intercomClient) {
                 intercomClient.update({
                     ...intercomData,
-                    // hide_default_launcher: false,
                 });
                 intercomClient.showMessages();
             }
