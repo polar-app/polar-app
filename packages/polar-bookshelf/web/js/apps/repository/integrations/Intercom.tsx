@@ -31,12 +31,12 @@ export function useIntercom() {
     if (booted.current) {
         intercomClient.update({
             ...intercomData,
-            // hide_default_launcher: false,
+            // hide_default_launcher: true,
         });
     } else {
         intercomClient.boot({
             ...intercomData,
-            // hide_default_launcher:false,
+            // hide_default_launcher: true,
         });
     }
 
@@ -81,9 +81,9 @@ export const Intercom = () => {
 
     // Comment if you want to see Intercom locally
     // if (document.location.href.startsWith('https://')) {
-        return (
-            <IntercomInner/>
-        )
+    return (
+        <IntercomInner/>
+    )
     // }
 
     return null;
