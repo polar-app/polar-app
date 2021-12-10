@@ -359,11 +359,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 </DeviceRouters.Desktop>
 
                                                 <DeviceRouters.NotDesktop>
-                                                    <PersistentRoute path={RoutePathNames.NOTES}
-                                                                     exact
-                                                                     strategy="display">
+                                                    <Route path={RoutePathNames.NOTES} exact>
                                                         <NotesRepoScreen2/>
-                                                    </PersistentRoute>
+                                                    </Route>
                                                 </DeviceRouters.NotDesktop>
 
                                                 <PersistentRoute path={RoutePathNames.DAILY}
