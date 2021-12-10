@@ -1,4 +1,4 @@
-import {arrayStream} from "./ArrayStreams";
+import {arrayStream, mapStream} from "./ArrayStreams";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('ArrayStreams', function() {
@@ -73,6 +73,37 @@ describe('ArrayStreams', function() {
                     "name": "mouse"
                 }
             ]);
+
+    });
+
+    describe("mapStream", () => {
+
+        it("basic", () => {
+
+            interface Address {
+                readonly street: string;
+                readonly state: string;
+            }
+
+            type FriendName = 'alice' | 'bob';
+
+            const friends: Readonly<Record<FriendName, Address>> = {
+                alice: {
+                    street: '123 Fake Street',
+                    state: 'Colorado'
+                },
+                bob: {
+                    street: '123 Fake Street',
+                    state: 'California'
+                }
+
+            }
+
+            const entries = Object.entries(friends);
+
+            const stream = mapStream(friends);
+
+        });
 
     });
 

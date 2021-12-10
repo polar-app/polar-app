@@ -23,68 +23,12 @@ interface IProps {
  * issues).
  */
 export function usePrefsContext(): IPersistentPrefs {
+
     const snapshot = useUserPrefContextSnapshot();
-    const persistentPrefs = React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
-    return persistentPrefs;
-}
-
-/**
- * Return true/false based on a feature toggle name.
- *
- * @param featureName
- */
-export function useFeatureToggle(featureName: string): boolean {
-    const prefs = usePrefsContext();
-    return prefs.isMarked(featureName);
-}
-
-/**
- * Return a feature toggler function so that we can change the value of a feature toggle.
- */
-export function useFeatureToggler() {
-    const prefs = usePrefsContext();
-
-    return React.useCallback(async (featureName, state: boolean = true) => {
-        prefs.mark(featureName, state);
-        await prefs.commit();
-    }, [prefs]);
+    return React.useMemo(() => SnapshotPersistentPrefs.toPersistentPrefs(snapshot?.value), [snapshot]);
 
 }
-
-interface IFeatureToggleProps {
-    readonly featureName: string;
-}
-
-/**
- * Only render the child component if a feature toggle is ENABLED.
- */
-export const FeatureToggleEnabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
-
-    const toggled = useFeatureToggle(props.featureName);
-
-    if (toggled) {
-        return <>{props.children}</>;
-    }
-
-    return null;
-
-});
-
-/**
- * Only render the child component if a feature toggle is DISABLED.
- */
-export const FeatureToggleDisabled: React.FC<IFeatureToggleProps> = React.memo((props) => {
-
-    const toggled = useFeatureToggle(props.featureName);
-
-    if (!toggled) {
-        return <>{props.children}</>;
-    }
-
-    return null;
-
-});
 
 export const PrefsContext2 = React.memo((props: IProps) => {
 

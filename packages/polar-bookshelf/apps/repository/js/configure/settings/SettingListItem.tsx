@@ -1,9 +1,8 @@
 import * as React from "react";
-import {useContext} from 'react';
+import {useContext} from "react";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
-import {ListItem, ListItemText, ListItemIcon, Box} from "@material-ui/core";
+import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
@@ -28,7 +27,7 @@ interface IProps {
     readonly className?: string | undefined;
 }
 
-export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
+export const SettingListItem =  React.memo(function SettingListItem(props: IProps){
 
     const log = useLogger();
     const {setTheme} = useContext(MUIThemeTypeContext);
@@ -37,7 +36,7 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
     const {name, defaultValue} = props;
 
     const value = prefs.isMarked(name, defaultValue);
-    
+
     const handleDarkModeToggle = React.useCallback((enabled: boolean) => {
 
         const theme = enabled ? 'dark' : 'light';
@@ -45,10 +44,9 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
         setTimeout(() => setTheme(theme), 1);
 
     }, [setTheme]);
-    
+
     const onChange = React.useCallback((value: boolean) => {
         console.log("Setting " + name);
-        LocalStorageFeatureToggles.set(name, value);
         prefs.mark(name, value);
 
         if (name === 'dark-mode') {
@@ -74,8 +72,8 @@ export const SettingToggle =  React.memo(function SettingToggle(props: IProps){
                 <ListItemIcon>
                     <Box pl={1}>
                         <SwitchButton size="small"
-                        initialValue={value}
-                        onChange={value => onChange(value)} />
+                                      checked={value}
+                                      onChange={value => onChange(value)} />
                     </Box>
                 </ListItemIcon>
             </ListItem>

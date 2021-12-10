@@ -66,7 +66,7 @@ import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
 import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
-import {NotesScreen} from "../../notes/NoteScreen";
+import {NoteProviders} from "../../notes/NoteProviders";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
@@ -77,6 +77,10 @@ import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
+import {NotesContainer} from '../../notes/NotesContainer';
+import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
+import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
+import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 
 interface IProps {
     readonly app: App;
@@ -141,6 +145,7 @@ const SHARED_ROUTES = [
     {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
     {path: RoutePathNames.STATISTICS, component: (StatsScreen)},
     {path: RoutePathNames.SETTINGS, component: (SettingsScreen)},
+    {path: RoutePathNames.FEATURES, component: (FeaturesScreen)},
     {path: RoutePathNames.LOGS, component: (LogsScreen)},
     {path: RoutePathNames.DEVICE_INFO, component: (DeviceScreen)},
     {path: RoutePathNames.FEATURE_REQUESTS, component: (FeatureRequestsScreen)},
@@ -364,11 +369,17 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 <PersistentRoute path={RoutePathNames.DAILY}
                                                                  strategy="display"
                                                                  exact>
-                                                    <NotesScreen/>
+                                                    <NotesContainer>
+                                                        <NoteProviders>
+                                                            <DailyNotesScreen/>
+                                                        </NoteProviders>
+                                                    </NotesContainer>
                                                 </PersistentRoute>
 
-                                                <Route path={`${RoutePathNames.NOTES}/:id`}
-                                                       component={NotesScreen}/>
+
+
+                                                <Route path={RoutePathNames.NOTE(":id")}
+                                                       component={SingleNoteScreen}/>
 
 
                                             </WithNotesIntegration>

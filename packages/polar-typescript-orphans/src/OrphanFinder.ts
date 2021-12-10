@@ -291,7 +291,7 @@ export namespace OrphanFinder {
 
         }
 
-        reporter.verbose(createImportRankingsReport());
+        reporter.info(createImportRankingsReport());
 
         function createSourceReferenceTypeReport(sourceType: SourceType) {
 
@@ -363,7 +363,7 @@ export namespace OrphanFinder {
             return grid.format();
         }
 
-        reporter.verbose(computeOrphanedTestsReport());
+        reporter.info(computeOrphanedTestsReport());
 
         async function generateOrphansReport() {
 
@@ -394,11 +394,15 @@ export namespace OrphanFinder {
 
             reporter.verbose(`Removed ${delta} orphans due to being recently updated: `);
 
-            orphans.forEach(current => reporter.info(current.path))
+            const grid = TextGrid.createFromHeaders('path');
+            grid.title("Orphans report")
+            orphans.forEach(current => grid.row(current.path))
+            return grid.format();
+
 
         }
 
-        await generateOrphansReport();
+        reporter.info(await generateOrphansReport());
 
     }
 
