@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from './DocAnnotation';
 import Paper from "@material-ui/core/Paper";
-import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
 import {useAnnotationSidebarStore} from '../../../apps/doc/src/AnnotationSidebarStore';
 import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
@@ -9,60 +8,7 @@ import {AnnotationHeader} from './AnnotationSidebarHeader';
 import isEqual from "react-fast-compare";
 import {memoForwardRef} from "../react/ReactUtils";
 import {FeedbackPadding} from "../../../apps/repository/js/ui/FeedbackPadding";
-
-const LoadRepositoryExplainer = () => (
-    <div className="p-2 text-center">
-
-        <h2 className="text-muted mb-3">
-            Click below for your personal repository
-        </h2>
-
-        <a href="https://app.getpolarized.io">
-
-            <img alt="Annotation Sidebar"
-                 className="img-shadow img-fluid shadow"
-                 src="https://getpolarized.io/assets/screenshots/2019-11-document-view.png"/>
-        </a>
-
-        <div className="mt-3 mb-3">
-             <a href="https://app.getpolarized.io">
-                 <Button size="large"
-                         variant="contained"
-                         color="primary">
-                     Load My Doc Repository
-                 </Button>
-             </a>
-         </div>
-
-    </div>
-);
-
-export const NoAnnotations = memoForwardRef(() => {
-    return (
-        <div className="p-2"
-             style={{
-                 display: 'flex',
-                 flexDirection: 'column',
-                 flexGrow: 1
-             }}>
-
-            <div style={{flexGrow: 1}}>
-
-                <h2 className="text-center text-muted text-xxl">
-                    No annotation
-                </h2>
-
-                <p className="text-muted"
-                   style={{fontSize: '16px'}}>
-
-                    Create new annotations by highlighting text in the document
-                </p>
-
-            </div>
-
-        </div>
-    );
-});
+import {NoAnnotations} from "./NoAnnotations";
 
 interface AnnotationSidebarItemProps {
     readonly annotation: IDocAnnotationRef;

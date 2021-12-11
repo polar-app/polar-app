@@ -4,9 +4,9 @@ import {NoteProviders} from "../notes/NoteProviders";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
-import {NoAnnotations} from "./AnnotationSidebar2";
 import {useHighlightBlockIDs} from "../notes/HighlightBlocksHooks";
 import {HighlightBlock} from "../notes/HighlightBlock";
+import {NoAnnotations} from "./NoAnnotations";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
