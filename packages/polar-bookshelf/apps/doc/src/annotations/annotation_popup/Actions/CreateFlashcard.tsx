@@ -7,7 +7,6 @@ import {Refs} from "polar-shared/src/metadata/Refs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput";
-import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
 import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,6 +15,9 @@ import {
     GlobalKeyboardShortcuts,
     keyMapWithGroup
 } from "../../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {IDocMetaAnnotationProps} from "../IDocMetaAnnotationProps";
+import {IBlockAnnotationProps} from "../IBlockAnnotationProps";
+import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 type BasicFrontBackForm = {
     front: string;

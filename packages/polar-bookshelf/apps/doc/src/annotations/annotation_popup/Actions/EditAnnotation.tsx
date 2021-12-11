@@ -3,8 +3,8 @@ import {getTextHighlightText, useAnnotationPopup} from "../AnnotationPopupContex
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
-import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
+import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 type EditAnnotationForm = {
     body: string;
