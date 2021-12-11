@@ -31,7 +31,6 @@ import {NameContent} from "../../../notes/content/NameContent";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
-import {NotesIntegrationContext} from "../../../notes/NoteUtils";
 
 export const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
 const TAGS_MIGRATION_NAME = 'block-usertagsdb';
@@ -519,7 +518,12 @@ export const MigrationToBlockAnnotations: React.FC = React.memo((props) => {
     }
 
     if (isDone) {
-        return <NotesIntegrationContext.Provider value={isDone} children={props.children} />
+        return (
+            <>
+                {props.children}
+            </>
+        );
+
     }
 
     const error = docMetaMigrationSnapshotError || tagsMigrationSnapshotError;

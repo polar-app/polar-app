@@ -31,7 +31,6 @@ import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
-import {WithNotesIntegration} from '../notes/NoteUtils';
 import ChatIcon from '@material-ui/icons/Chat';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
@@ -365,17 +364,12 @@ export const SideNav = React.memo(function SideNav() {
                             <HomeButton/>
                             <AnnotationsButton/>
 
-                            <WithNotesIntegration>
-                                <NotesButton/>
-                            </WithNotesIntegration>
+                            <NotesButton/>
 
                             <DeviceRouter desktop={<StatsButton/>}/>
 
-
-                            <WithNotesIntegration>
-                                <SideNavDivider/>
-                                <DailyNotesButton/>
-                            </WithNotesIntegration>
+                            <SideNavDivider/>
+                            <DailyNotesButton/>
 
                             {tabs.length > 0 && (
                                 <SideNavDivider/>

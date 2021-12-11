@@ -73,7 +73,6 @@ import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
-import {WithNotesIntegration} from "../../notes/NoteUtils";
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
@@ -348,39 +347,32 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                                    component={EnableFeatureToggle}/>
 
-                                            <WithNotesIntegration>
-
-                                                <DeviceRouters.Desktop>
-                                                    <PersistentRoute path={RoutePathNames.NOTES}
-                                                                     exact
-                                                                     strategy="display">
-                                                        <NotesRepoScreen/>
-                                                    </PersistentRoute>
-                                                </DeviceRouters.Desktop>
-
-                                                <DeviceRouters.NotDesktop>
-                                                    <Route path={RoutePathNames.NOTES} exact>
-                                                        <NotesRepoScreen2/>
-                                                    </Route>
-                                                </DeviceRouters.NotDesktop>
-
-                                                <PersistentRoute path={RoutePathNames.DAILY}
-                                                                 strategy="display"
-                                                                 exact>
-                                                    <NotesContainer>
-                                                        <NoteProviders>
-                                                            <DailyNotesScreen/>
-                                                        </NoteProviders>
-                                                    </NotesContainer>
+                                            <DeviceRouters.Desktop>
+                                                <PersistentRoute path={RoutePathNames.NOTES}
+                                                                 exact
+                                                                 strategy="display">
+                                                    <NotesRepoScreen/>
                                                 </PersistentRoute>
+                                            </DeviceRouters.Desktop>
 
+                                            <DeviceRouters.NotDesktop>
+                                                <Route path={RoutePathNames.NOTES} exact>
+                                                    <NotesRepoScreen2/>
+                                                </Route>
+                                            </DeviceRouters.NotDesktop>
 
+                                            <PersistentRoute path={RoutePathNames.DAILY}
+                                                             strategy="display"
+                                                             exact>
+                                                <NotesContainer>
+                                                    <NoteProviders>
+                                                        <DailyNotesScreen/>
+                                                    </NoteProviders>
+                                                </NotesContainer>
+                                            </PersistentRoute>
 
-                                                <Route path={RoutePathNames.NOTE(":id")}
-                                                       component={SingleNoteScreen}/>
-
-
-                                            </WithNotesIntegration>
+                                            <Route path={RoutePathNames.NOTE(":id")}
+                                                   component={SingleNoteScreen}/>
 
                                             <Route path="/hello-ssr"
                                                    component={HelloServerSideRender}/>
