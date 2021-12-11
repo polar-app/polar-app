@@ -150,8 +150,7 @@ export const AnnotationPopupRenderer: React.FC = () => {
 };
 
 export const AnnotationPopup: React.FC = () => {
-    const {docMeta, docScale}
-        = useDocViewerStore(["docMeta", "docScale"]);
+    const {docMeta, docScale} = useDocViewerStore(["docMeta", "docScale"]);
     if (!docMeta || !docScale) {
         return null;
     }
