@@ -26,7 +26,6 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {TagSidebarEventForwarder, TagSidebarEventForwarderContext} from "../store/TagSidebarEventForwarder";
 import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
 import {BatchMutators} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
@@ -41,12 +40,16 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
-import {BlockContentUtils, IHasLinksBlockTarget, useBlockTagEditorDialog, useNotesIntegrationEnabled, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
+import {
+    BlockContentUtils,
+    IHasLinksBlockTarget,
+    useBlockTagEditorDialog,
+    useUpdateBlockTags
+} from "../../../../web/js/notes/NoteUtils";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
 
@@ -242,7 +245,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     const {updateTab} = useSideNavCallbacks();
     const blockTagEditorDialog = useBlockTagEditorDialog();
     const blocksStore = useBlocksStore();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
     const updateBlockTags = useUpdateBlockTags();
 
     function firstSelected() {
@@ -398,12 +400,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         };
 
         async function doHandle() {
-
-            if (notesIntegrationEnabled) {
-                repoDocInfos.forEach(persistToBlocksStore);
-            } else {
-                await withBatch(repoDocInfos.map(toAsyncTransaction));
-            }
+            repoDocInfos.forEach(persistToBlocksStore);
         }
 
         doHandle()
@@ -436,11 +433,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         };
 
         async function doHandle() {
-            if (notesIntegrationEnabled) {
-                repoDocInfos.forEach(persistToBlocksStore);
-            } else {
-                await withBatch(repoDocInfos.map(toAsyncTransaction));
-            }
+            repoDocInfos.forEach(persistToBlocksStore);
         }
 
         doHandle()
@@ -477,15 +470,11 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         async function doHandle() {
 
-            if (notesIntegrationEnabled) {
-                const fingerprint =  docInfo.fingerprint;
+            const fingerprint =  docInfo.fingerprint;
 
-                const updater = (content: IDocumentContent) => content.docInfo = docInfo;
+            const updater = (content: IDocumentContent) => content.docInfo = docInfo;
 
-                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
-            } else {
-                await withBatch([repoDocInfo].map(toAsyncTransaction));
-            }
+            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
         }
 
         doHandle()
@@ -553,21 +542,15 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
-        if (notesIntegrationEnabled) {
-            const toTarget = (repoDocInfo: RepoDocInfo): IHasLinksBlockTarget | null => {
-                const block = getBlockForDocument(blocksStore, repoDocInfo.fingerprint);
+        const toTarget = (repoDocInfo: RepoDocInfo): IHasLinksBlockTarget | null => {
+            const block = getBlockForDocument(blocksStore, repoDocInfo.fingerprint);
 
-                return block ? { id: block.id, content: block.content } : null;
-            };
+            return block ? { id: block.id, content: block.content } : null;
+        };
 
-            const targets = arrayStream(repoDocInfos).map(toTarget).filterPresent().collect();
+        const targets = arrayStream(repoDocInfos).map(toTarget).filterPresent().collect();
 
-            updateBlockTags(targets, [tag], 'add');
-        } else {
-
-            doTagged(repoDocInfos, [tag], 'add');
-
-        }
+        updateBlockTags(targets, [tag], 'add');
     }
 
     function doOpen(repoDocInfo: RepoDocInfo): void {
@@ -594,13 +577,9 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         async function doHandle() {
             mutator.refresh();
 
-            if (notesIntegrationEnabled) {
-                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
-                    content.docInfo.title = title;
-                });
-            } else {
-                await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
-            }
+            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
+                content.docInfo.title = title;
+            });
 
             updateTab(repoDocInfo.fingerprint, { title });
         }
@@ -775,30 +754,14 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
-        if (notesIntegrationEnabled) {
-            const selectedDocs = selectedProvider();
-            const blockIDs = arrayStream(selectedDocs)
-                .map(doc => blocksStore.indexByDocumentID[doc.fingerprint])
-                .filterPresent()
-                .collect();
+        const selectedDocs = selectedProvider();
+        const blockIDs = arrayStream(selectedDocs)
+            .map(doc => blocksStore.indexByDocumentID[doc.fingerprint])
+            .filterPresent()
+            .collect();
 
-            blockTagEditorDialog(blockIDs)
-        } else {
-            const {relatedTagsManager} = repoDocMetaManager;
-            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+        blockTagEditorDialog(blockIDs)
 
-            const opts: TaggedCallbacksOpts<RepoDocInfo> = {
-                targets: selectedProvider,
-                tagsProvider: () => tagsProvider(),
-                dialogs,
-                doTagged,
-                relatedOptionsCalculator
-            };
-
-            const callback = TaggedCallbacks.create(opts);
-
-            callback();
-        }
     }
 
     // I don't know of a better way to return / organize the callbacks here
