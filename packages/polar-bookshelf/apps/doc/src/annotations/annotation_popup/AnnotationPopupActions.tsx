@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
-import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
@@ -17,6 +16,7 @@ import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {IDocMetaAnnotationProps} from "./IDocMetaAnnotationProps";
 import {IBlockAnnotationProps} from "./IBlockAnnotationProps";
 import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
+import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { className = "", style = {}, annotation } = props;
