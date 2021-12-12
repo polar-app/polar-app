@@ -26,7 +26,7 @@
         "karma:dev": "karma start --browsers Chrome --singleRun false",
         "mocha": "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
         "tsc": "tsc --project ./tsconfig.json",
-        "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;",
+        "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc-watch; fi;",
         "eslint-fix": "eslint -c ../../.eslintrc.json . --fix",
         "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
         "tsc-watch": "tsc --project ./tsconfig.json --watch",
