@@ -144,15 +144,6 @@ export function createIntercomClient(): IIntercomClient | undefined {
             window.Intercom('showMessages');
         }
 
-        // Listen for when the Intercom main window is hidden
-        window.Intercom('onHide', () => {
-            console.log("Intercom was hidden");
-            // Now hide the FAB icon as well
-            window.Intercom('update', {
-                hide_default_launcher: true,
-            })
-        });
-
         return {boot, update, showMessages};
     }
 
@@ -172,15 +163,12 @@ export function toIntercomData(user: IAnalyticsUser | undefined): IntercomData {
     // eslint-disable-next-line camelcase
     const created_at = Math.floor(ISODateTimeStrings.parse(user.created).getTime() / 1000);
 
-    const data: IIntercomDataForAuthenticatedUser = {
+    return {
         app_id,
         user_id: user.uid,
         name: user.displayName || "",
         email: user.email,
         created_at: `${created_at}`,
         hide_default_launcher: true,
-    };
-
-    return data;
-
+    } as IIntercomDataForAuthenticatedUser;
 }

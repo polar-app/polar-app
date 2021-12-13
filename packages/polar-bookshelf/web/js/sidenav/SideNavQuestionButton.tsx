@@ -6,7 +6,7 @@ import Divider from "@material-ui/core/Divider";
 import {Analytics} from "../analytics/Analytics";
 import {useActiveKeyboardShortcutsCallbacks} from "../hotkeys/ActiveKeyboardShortcutsStore";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
-import {FADiscordIcon} from "../mui/MUIFontAwesome";
+import {FADiscordIcon, FALikeIntercomIcon} from "../mui/MUIFontAwesome";
 import {Nav} from "../ui/util/Nav";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {SideNavQuestionMenuItem} from "./SideNavQuestionMenuItem";
@@ -38,16 +38,13 @@ export namespace MenuItems {
 
         function onClick() {
             if (intercomData && intercomClient) {
-                intercomClient.update({
-                    ...intercomData,
-                    hide_default_launcher: false,
-                });
+                intercomClient.update(intercomData);
                 intercomClient.showMessages();
             }
         }
 
         return (
-            <SideNavQuestionMenuItem icon={FADiscordIcon}
+            <SideNavQuestionMenuItem icon={FALikeIntercomIcon}
                                      ref={ref}
                                      text="Chat Now"
                                      secondary="Ask us anything, or share your feedback"
