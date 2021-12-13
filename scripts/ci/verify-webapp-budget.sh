@@ -1,3 +1,5 @@
+#!/bin/bash
+
 verify_file_size() {
 
     path="${1}"

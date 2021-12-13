@@ -1,3 +1,5 @@
+#!/bin/bash
+
 npm config set always-auth true
 source packages/polar-bookshelf-secrets/credentials.sh
 rm -f ~/.npmrc && cat .npmrc > ~/.npmrc

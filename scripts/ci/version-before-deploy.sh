@@ -1,3 +1,5 @@
+#!/bin/bash
+
 git fetch
 TEMP_VERSION='\"0.0.0\"'
 CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)

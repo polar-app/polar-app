@@ -1,3 +1,5 @@
+#!/bin/bash
+
 FORK_POINT=$(git merge-base origin/master $CIRCLE_BRANCH)
 git reset --hard
 git checkout $FORK_POINT

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 (cd packages/polar-shared && pnpm run compile)
 (cd packages/polar-npm && pnpm run compile)
 DUPLICATES=$(pnpm -r exec -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
