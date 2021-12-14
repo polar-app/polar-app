@@ -285,7 +285,6 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
         const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
@@ -307,10 +306,7 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            {notesIntegrationEnabled
-                                ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
-                                : <FolderSidebar2 header={<StartReviewHeader/>} />
-                            }
+                            <BlocksFolderSidebar header={<StartReviewHeader/>} />
                         </SideCar>
 
                         <DeviceRouter phone={
