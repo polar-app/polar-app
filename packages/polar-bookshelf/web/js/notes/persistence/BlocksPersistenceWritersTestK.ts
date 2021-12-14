@@ -13,7 +13,8 @@ import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTes
 import {BlockIDs} from "../store/BlockIDs";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
-import {FirestoreRecords} from "polar-firestore-like/src/FirestoreRecords";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = BlockIDs.createRandom();
@@ -98,35 +99,100 @@ describe("BlocksPersistenceWriters", () => {
         const name = 'Boulder, Colorado';
         const id = BlockIDs.create(name, uid);
 
-        const mutation: IBlocksStoreMutation = {
-            "id": id,
-            "type": "added",
-            "added": {
-                "id": id,
-                "nspace": uid,
-                "uid": uid,
-                "created": "2012-03-02T11:38:50.321Z",
-                "updated": "2012-03-02T11:38:50.321Z",
-                "root": id,
-                "parent": undefined,
-                "parents": [
-                ],
-                "content": {
-                    "type": "name",
-                    "data": name,
-                    "links": [],
-                },
-                "items": {
-                },
-                "mutation": 0
-            }
-        };
+        const before = ISODateTimeStrings.create();
+        assert.equal(before, '2012-03-02T11:38:49.321Z')
 
         await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
-            mutation
+            {
+                "id": id,
+                "type": "added",
+                "added": {
+                    "id": id,
+                    "nspace": uid,
+                    "uid": uid,
+                    "created": before,
+                    "updated": before,
+                    "root": id,
+                    "parent": undefined,
+                    "parents": [
+                    ],
+                    "content": {
+                        "type": "name",
+                        "data": name,
+                        "links": [],
+                    },
+                    "items": {
+                    },
+                    "mutation": 0
+                }
+            }
         ]);
 
-        assertJSON(FirestoreRecords.convert(mutation.added), await FirestoreBlocks.get(mutation.id));
+        assertJSON(Dictionaries.onlyPresentProperties(await FirestoreBlocks.get(id)), {
+            "content": {
+                "data": "Boulder, Colorado",
+                "links": [],
+                "type": "name"
+            },
+            "created": before,
+            "id": "12hrrAcxxRYSpNHRQ2wk",
+            "items": {},
+            "mutation": 0,
+            "nspace": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "parents": [],
+            "root": "12hrrAcxxRYSpNHRQ2wk",
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": before
+        });
+
+        TestingTime.forward('1h');
+
+        const after = ISODateTimeStrings.create();
+
+        assert.equal(after, '2012-03-02T12:38:49.321Z')
+
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
+            {
+                "id": id,
+                "type": "added",
+                "added": {
+                    "id": id,
+                    "nspace": uid,
+                    "uid": uid,
+                    "created": after,
+                    "updated": after,
+                    "root": id,
+                    "parent": undefined,
+                    "parents": [
+                    ],
+                    "content": {
+                        "type": "name",
+                        "data": name,
+                        "links": [],
+                    },
+                    "items": {
+                    },
+                    "mutation": 0
+                }
+            }
+        ]);
+
+        assertJSON(Dictionaries.onlyPresentProperties(await FirestoreBlocks.get(id)), {
+            "content": {
+                "data": "Boulder, Colorado",
+                "links": [],
+                "type": "name"
+            },
+            "created": after,
+            "id": "12hrrAcxxRYSpNHRQ2wk",
+            "items": {},
+            "mutation": 0,
+            "nspace": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "parents": [],
+            "root": "12hrrAcxxRYSpNHRQ2wk",
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": after
+        });
 
     });
 
