@@ -1,8 +1,8 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDs} from "./BlockIDs";
 
 export namespace BlocksStoreTests {
 
@@ -28,7 +28,7 @@ export namespace BlocksStoreTests {
         const created = ISODateTimeStrings.create();
 
         return {
-            id: opts.id || Hashcodes.createRandomID(),
+            id: opts.id || BlockIDs.createRandom(),
             nspace: opts.nspace || nspace,
             uid: opts.uid || uid,
             created,

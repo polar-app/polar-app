@@ -455,7 +455,19 @@ export namespace BlockTextContentUtils {
                     }
                 });
         }
-    };
+    }
+
+    export function computeNameFromContent(content: INamedContent) {
+
+        switch (content.type) {
+            case 'date':
+            case 'name':
+                return content.data;
+            case 'document':
+                return DocInfos.bestTitle(content.docInfo);
+        }
+
+    }
 
     /**
      * Get the markdown text of an editable text block
@@ -540,7 +552,7 @@ export const useCreateBacklinkFromSelection = () => {
             range.setStartAfter(wikiLinkAnchor);
 
             const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
-            
+
             const markdown = MarkdownContentConverter.toMarkdown(html);
 
             blocksStore.createLinkToBlock(id, target, markdown);
