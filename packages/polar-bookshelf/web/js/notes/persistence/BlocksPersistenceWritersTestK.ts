@@ -13,6 +13,7 @@ import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTes
 import {BlockIDs} from "../store/BlockIDs";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
+import {FirestoreRecords} from "polar-firestore-like/src/FirestoreRecords";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = BlockIDs.createRandom();
@@ -90,14 +91,12 @@ describe("BlocksPersistenceWriters", () => {
 
     });
 
-    xit("new root named block", async () => {
+    it("new root named block", async () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
         const name = 'Boulder, Colorado';
         const id = BlockIDs.create(name, uid);
-
-        // TODO: this works but undefined vs null for Firestore.
 
         const mutation: IBlocksStoreMutation = {
             "id": id,
@@ -127,7 +126,7 @@ describe("BlocksPersistenceWriters", () => {
             mutation
         ]);
 
-        assertJSON(mutation.added, await FirestoreBlocks.get(mutation.id));
+        assertJSON(FirestoreRecords.convert(mutation.added), await FirestoreBlocks.get(mutation.id));
 
     });
 
