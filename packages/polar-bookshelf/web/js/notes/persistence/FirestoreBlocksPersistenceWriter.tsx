@@ -6,9 +6,9 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from "firebase";
-import {FileTombstones} from "./BlocksPersistenceWriters";
 import {DocumentDataUpdater} from "./DocumentDataUpdater";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
+import {FileTombstones} from "./FileTombstones";
 
 export namespace FirestoreBlocksPersistenceWriter {
 
