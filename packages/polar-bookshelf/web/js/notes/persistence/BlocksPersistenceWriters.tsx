@@ -16,7 +16,8 @@ import {IBlocksStoreMutation} from '../store/IBlocksStoreMutation';
 
 const IS_NODE = typeof window === 'undefined';
 
-export namespace FileTombstone {
+export namespace FileTombstones {
+
     const STORAGE_BUCKET = getConfig().storageBucket;
 
     export function getFileNameFromBlock(block: IBlock) {
@@ -45,7 +46,7 @@ export namespace FileTombstone {
                                      batch: IWriteBatch<unknown>,
                                      block: IBlock) {
 
-        const addedFileName = FileTombstone.getFileNameFromBlock(block);
+        const addedFileName = FileTombstones.getFileNameFromBlock(block);
 
         if (addedFileName) {
             const identifier = Hashcodes.create(addedFileName);
@@ -59,7 +60,7 @@ export namespace FileTombstone {
                                        batch: IWriteBatch<unknown>,
                                        block: IBlock) {
 
-        const deletedFileName = FileTombstone.getFileNameFromBlock(block);
+        const deletedFileName = FileTombstones.getFileNameFromBlock(block);
 
         if (deletedFileName) {
             const identifier = Hashcodes.create(deletedFileName);

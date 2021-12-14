@@ -6,7 +6,7 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from "firebase";
-import {FileTombstone} from "./BlocksPersistenceWriters";
+import {FileTombstones} from "./BlocksPersistenceWriters";
 import {DocumentDataUpdater} from "./DocumentDataUpdater";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 
@@ -61,12 +61,12 @@ export namespace FirestoreBlocksPersistenceWriter {
                         mergeFields: [...mergeFields]
                     });
 
-                    FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
+                    FileTombstones.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "delete-block":
                     batch.delete(doc)
-                    FileTombstone.handleBlockRemoved(tombstoneCollection, batch, firestoreMutation.value);
+                    FileTombstones.handleBlockRemoved(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "update-path-number":
