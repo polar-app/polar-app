@@ -49,7 +49,6 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
-import {useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 
 const Main = React.memo(function Main() {
 
@@ -349,11 +348,10 @@ const useDocumentBlockMigrator = () => {
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
     const annotationBlockManager = useAnnotationBlockManager();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     React.useEffect(() => {
 
-        if (migratedRef.current || ! docMeta || ! user || ! notesIntegrationEnabled) {
+        if (migratedRef.current || ! docMeta || ! user) {
             return;
         }
 
@@ -408,7 +406,6 @@ const useDocumentBlockMigrator = () => {
         firestore,
         migratedRef,
         annotationBlockManager,
-        notesIntegrationEnabled,
     ]);
 };
 
