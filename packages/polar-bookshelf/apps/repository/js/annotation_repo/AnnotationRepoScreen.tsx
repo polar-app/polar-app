@@ -2,8 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
-import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
@@ -14,12 +12,10 @@ import {Box, createStyles, IconButton, makeStyles, SwipeableDrawer} from '@mater
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotationRepoTable';
-import {AnnotationRepoTable} from './AnnotationRepoTable';
 import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnotationInlineViewer';
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
-import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
 import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
@@ -28,7 +24,6 @@ interface IToolbarProps {
 }
 
 const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
         <RepositoryToolbar>
@@ -45,11 +40,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     alignItems: 'center',
                     justifyContent: 'flex-end'
                 }}>
-                    {
-                        notesIntegrationEnabled
-                            ? <BlocksAnnotationRepoFilterBar />
-                            : <AnnotationRepoFilterBar />
-                    }
+                    <BlocksAnnotationRepoFilterBar />
                     {handleRightDrawerToggle && (
                         <DeviceRouter phone={(
                             <IconButton onClick={handleRightDrawerToggle}>
@@ -174,7 +165,6 @@ namespace Tablet {
 namespace Desktop {
 
     const Right = React.memo(function Right() {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <div style={{
@@ -205,10 +195,7 @@ namespace Desktop {
                                 flexDirection: 'column',
                                 minHeight: 0
                             }}>
-                                {notesIntegrationEnabled
-                                    ? <BlocksAnnotationRepoTable />
-                                    : <AnnotationRepoTable />
-                                }
+                                <BlocksAnnotationRepoTable />
                             </div>,
                         width: 450
                     },
@@ -224,10 +211,7 @@ namespace Desktop {
                                               flexGrow: 1,
                                               display: 'flex'
                                           }}>
-                                {notesIntegrationEnabled
-                                    ? <BlocksAnnotationInlineViewer />
-                                    : <AnnotationInlineViewer />
-                                }
+                                <BlocksAnnotationInlineViewer />
                             </MUIElevation>
 
                     }
