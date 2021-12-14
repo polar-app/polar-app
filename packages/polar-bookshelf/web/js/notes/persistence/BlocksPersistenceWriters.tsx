@@ -211,7 +211,7 @@ export namespace FirestoreBlocksPersistenceWriter {
 
             switch (firestoreMutation.type) {
 
-                case "set-doc":
+                case "set-block":
                     const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
                     batch.set(doc, firestoreBlock);
                     FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
@@ -226,17 +226,21 @@ export namespace FirestoreBlocksPersistenceWriter {
                     Asserts.assertNumber(firestoreMutation.value);
                     batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
+
                 case "update-path-string":
                     Asserts.assertString(firestoreMutation.value);
                     batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
+
                 case "update-path-object":
                     Asserts.assertObject(firestoreMutation.value);
                     batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
+
                 case "update-path-string-array":
                     batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
+
                 case "update-delete-field-value":
                     batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firebase.firestore.FieldValue.delete())
                     break;

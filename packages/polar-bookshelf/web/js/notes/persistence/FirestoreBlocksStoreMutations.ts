@@ -17,9 +17,9 @@ export namespace FirestoreBlocksStoreMutations {
     import MutationTarget = BlocksStoreMutations.MutationTarget;
     import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
-    export interface IFirestoreMutationSetDoc {
+    export interface IFirestoreMutationSetBlock {
         readonly id: BlockIDStr;
-        readonly type: 'set-doc';
+        readonly type: 'set-block';
         readonly value: IBlock;
     }
 
@@ -71,7 +71,7 @@ export namespace FirestoreBlocksStoreMutations {
     }
 
     export type IFirestoreMutation =
-        IFirestoreMutationSetDoc |
+        IFirestoreMutationSetBlock |
         IFirestoreMutationDeleteBlock |
         IFirestoreMutationUpdatePathNumber |
         IFirestoreMutationUpdatePathString |
@@ -94,7 +94,7 @@ export namespace FirestoreBlocksStoreMutations {
                     return [
                         {
                             id: mutation.id,
-                            type: 'set-doc',
+                            type: 'set-block',
                             value: mutation.added
                         }
                     ];
@@ -224,9 +224,7 @@ export namespace FirestoreBlocksStoreMutations {
 
                     const baseMutations = createBaseMutations();
 
-                    const result = [...baseMutations, ...firestoreMutations];
-
-                    return result;
+                    return [...baseMutations, ...firestoreMutations];
 
             }
 
