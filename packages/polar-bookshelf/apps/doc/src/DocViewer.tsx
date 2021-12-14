@@ -388,7 +388,7 @@ const useDocumentBlockMigrator = () => {
                 blocksStore.insertFromBlockContentStructure([
                     docContentStructure,
                     ...tagContentsStructure,
-                ]);
+                ], { isUndoable: false });
 
                 dialogs.snackbar({
                     message: "Migrating your annotations to the new format. This may take some time!",
