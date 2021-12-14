@@ -213,7 +213,19 @@ export namespace FirestoreBlocksPersistenceWriter {
 
                 case "set-block":
                     const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
-                    batch.set(doc, firestoreBlock);
+
+                    // DESIGN NOTE:
+                    //
+                    // We have to merge here so that we don't overwrite an existing block with the same ID.
+                    // Otherwise, the entire batch will overwrite the existing block data which is not
+                    // what we want.
+
+                    const mergeFields: ReadonlyArray<keyof IBlock> = [];
+
+                    batch.set(doc, firestoreBlock, {
+                        merge: true,
+                        mergeFields: [...mergeFields]
+                    });
                     FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
