@@ -4,7 +4,6 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
-import {useNotesIntegrationEnabled} from "../notes/NoteUtils";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
@@ -44,24 +43,19 @@ const globalKeyMap = keyMapWithGroup({
 export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const {tabs} = useSideNavStore(['tabs']);
-    const notesEnabled = useNotesIntegrationEnabled();
     const {pathname} = useLocation();
     const history = useHistory();
 
     const pages = React.useMemo(() => {
-        const pages = [
+        return [
             { path: RoutePathNames.HOME, exact: true }, // Doc Repo
             { path: RoutePathNames.ANNOTATIONS, exact: false }, // Annotation repo
+            { path: RoutePathNames.NOTES, exact: false }, // Notes repo
             { path: RoutePathNames.STATISTICS, exact: false }, // Statistics
             ...tabs.map(tab => ({ path: tab.url, exact: false })), // Open tabs
             { path: RoutePathNames.SETTINGS, exact: false }, // Settings
         ];
-
-        if (notesEnabled) {
-            pages.splice(2, 0, { path: RoutePathNames.NOTES, exact: false });
-        }
-        return pages;
-    }, [tabs, notesEnabled]);
+    }, [tabs]);
 
     const doNav = React.useCallback((delta: number) => {
         const currentPage = pages.find(({ exact, path }) => exact ? path === pathname : pathname.startsWith(path));
