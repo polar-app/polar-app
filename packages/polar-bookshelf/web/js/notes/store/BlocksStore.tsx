@@ -544,28 +544,11 @@ export class BlocksStore implements IBlocksStore {
             }
 
             if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
-
-                const name = canonicalizeBlockName(existingBlock);
-
-                const conflictingBlockByNameID = this._indexByName[name];
-
-                if (conflictingBlockByNameID) {
-
-                    const conflictingBlockByName = this.getBlock(conflictingBlockByNameID);
-
-                    if (conflictingBlockByNameID !== block.id) {
-                        console.warn(`Existing block ${conflictingBlockByNameID} conflicts with ID ${block.id} of new block: `)
-                    }
-
-                    delete this._indexByName[name];
-
-                }
-
+                delete this._indexByName[canonicalizeBlockName(existingBlock)];
             }
 
             if (BlockPredicates.isNamedBlock(block)) {
-                const name = canonicalizeBlockName(block);
-                this._indexByName[name] = block.id;
+                this._indexByName[canonicalizeBlockName(block)] = block.id;
             }
 
             if (BlockPredicates.isDocumentBlock(block)) {
