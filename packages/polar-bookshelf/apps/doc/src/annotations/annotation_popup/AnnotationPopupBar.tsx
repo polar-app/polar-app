@@ -14,13 +14,11 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
@@ -50,7 +48,6 @@ export const AnnotationPopupBar: React.FC = () => {
     const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
     const copyAnnotation = useCopyAnnotation();
     const theme = useTheme();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const annotationPopupClasses = useAnnotationPopupStyles();
 
@@ -88,11 +85,9 @@ export const AnnotationPopupBar: React.FC = () => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                {! notesIntegrationEnabled && (
-                    <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
-                        <LocalOfferIcon />
-                    </ActionButton>
-                )}
+                {/*<ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>*/}
+                {/*    <LocalOfferIcon />*/}
+                {/*</ActionButton>*/}
                 <Divider orientation="vertical" flexItem />
                 <StandardIconButton
                     tooltip="Copy"
