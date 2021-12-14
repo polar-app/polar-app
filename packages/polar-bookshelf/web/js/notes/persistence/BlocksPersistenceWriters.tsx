@@ -217,7 +217,7 @@ export namespace FirestoreBlocksPersistenceWriter {
                     FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
-                case "delete-doc":
+                case "delete-block":
                     batch.delete(doc)
                     FileTombstone.handleBlockRemoved(tombstoneCollection, batch, firestoreMutation.value);
                     break;

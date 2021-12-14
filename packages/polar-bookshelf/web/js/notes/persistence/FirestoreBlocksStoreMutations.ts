@@ -23,9 +23,9 @@ export namespace FirestoreBlocksStoreMutations {
         readonly value: IBlock;
     }
 
-    export interface IFirestoreMutationDeleteDoc {
+    export interface IFirestoreMutationDeleteBlock {
         readonly id: BlockIDStr;
-        readonly type: 'delete-doc';
+        readonly type: 'delete-block';
         readonly value: IBlock;
     }
     export interface IFirestoreMutationUpdatePath {
@@ -72,7 +72,7 @@ export namespace FirestoreBlocksStoreMutations {
 
     export type IFirestoreMutation =
         IFirestoreMutationSetDoc |
-        IFirestoreMutationDeleteDoc |
+        IFirestoreMutationDeleteBlock |
         IFirestoreMutationUpdatePathNumber |
         IFirestoreMutationUpdatePathString |
         IFirestoreMutationUpdatePathObject |
@@ -104,7 +104,7 @@ export namespace FirestoreBlocksStoreMutations {
                     return [
                         {
                             id: mutation.id,
-                            type: 'delete-doc',
+                            type: 'delete-block',
                             value: mutation.removed,
                         }
                     ];

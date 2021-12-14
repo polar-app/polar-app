@@ -525,6 +525,8 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
+        console.log("FIXME within doPut");
+
         for (const blockData of blocks) {
 
             const existingBlock = this.getBlock(blockData.id);
@@ -537,13 +539,37 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
+            function canonicalizeBlockName(block: Block<NamedContent>) {
+                return BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
+            }
+
             if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
-                const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
-                delete this._indexByName[name];
+
+                const name = canonicalizeBlockName(existingBlock);
+
+                const conflictingBlockByNameID = this._indexByName[name];
+
+                if (conflictingBlockByNameID) {
+
+                    const conflictingBlockByName = this.getBlock(conflictingBlockByNameID);
+
+                    console.log(`FIXME has existing: ${conflictingBlockByNameID}: ${name} block ID: ${block.id} vs existing ID: ${existingBlock.id}`);
+                    console.log("FIXME: existingBlock: ", JSON.stringify(existingBlock, null, '  '));
+                    console.log("FIXME: block: ", JSON.stringify(block, null, '  '));
+                    console.log("FIXME: conflictingBlockByName: ", JSON.stringify(conflictingBlockByName, null, '  '));
+
+                    if (conflictingBlockByNameID !== block.id) {
+                        console.warn(`Existing block ${conflictingBlockByNameID} conflicts with ID ${block.id} of new block: `)
+                    }
+
+                    delete this._indexByName[name];
+
+                }
+
             }
 
             if (BlockPredicates.isNamedBlock(block)) {
-                const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
+                const name = canonicalizeBlockName(block);
                 this._indexByName[name] = block.id;
             }
 
@@ -1353,7 +1379,6 @@ export class BlocksStore implements IBlocksStore {
         if (existingBlock) {
             return existingBlock.id;
         }
-
 
         const createNewBlock = (): IBlock => {
 
@@ -2358,29 +2383,29 @@ export class BlocksStore implements IBlocksStore {
 
     @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
 
-        // console.log("Handling BlocksStore snapshot: ", snapshot);
-
-        for (const docChange of snapshot.docChanges) {
-
-            switch(docChange.type) {
-
-                case "added":
-                    this.doPut([docChange.data]);
-                    break;
-
-                case "modified":
-                    this.doPut([docChange.data]);
-                    break;
-
-                case "removed":
-                    this.doDelete([docChange.data.id]);
-                    break;
-
-            }
-
-        }
-
-        this._hasSnapshot = true;
+        // console.log("FIXME: Handling BlocksStore snapshot: ", snapshot);
+        //
+        // for (const docChange of snapshot.docChanges) {
+        //
+        //     switch(docChange.type) {
+        //
+        //         case "added":
+        //             this.doPut([docChange.data]);
+        //             break;
+        //
+        //         case "modified":
+        //             this.doPut([docChange.data]);
+        //             break;
+        //
+        //         case "removed":
+        //             this.doDelete([docChange.data.id]);
+        //             break;
+        //
+        //     }
+        //
+        // }
+        //
+        // this._hasSnapshot = true;
 
     }
 
