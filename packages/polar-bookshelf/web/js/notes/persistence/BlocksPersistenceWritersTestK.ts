@@ -90,6 +90,46 @@ describe("BlocksPersistenceWriters", () => {
 
     });
 
+    it("new root named block", async () => {
+
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const name = 'Boulder, Colorado';
+        const id = BlockIDs.create(name, uid);
+
+        const mutation: IBlocksStoreMutation = {
+            "id": id,
+            "type": "added",
+            "added": {
+                "id": id,
+                "nspace": uid,
+                "uid": uid,
+                "created": "2012-03-02T11:38:50.321Z",
+                "updated": "2012-03-02T11:38:50.321Z",
+                "root": id,
+                "parent": undefined,
+                "parents": [
+                ],
+                "content": {
+                    "type": "name",
+                    "data": name,
+                    "links": [],
+                },
+                "items": {
+                },
+                "mutation": 0
+            }
+        };
+
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
+            mutation
+        ]);
+
+        assertJSON(mutation.added, await FirestoreBlocks.get(mutation.id));
+
+    });
+
+
     it("double create of named block", () => {
 
         // this can happen if two sessions, of the same user, are offline and

@@ -55,13 +55,13 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
-import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
+import {sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
 import {BlockIDs} from "./BlockIDs";
-import computeNameFromContent = BlockTextContentUtils.computeNameFromContent;
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -1388,7 +1388,7 @@ export class BlocksStore implements IBlocksStore {
      */
     @action private doCreateNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
-        const name = computeNameFromContent(opts.content);
+        const name = BlockTextContentUtils.computeNameFromContent(opts.content);
         const nspace = this.computeNamespace(opts?.nspace, opts?.ref);
         const newBlockID = opts.newBlockID || BlockIDs.create(name, nspace);
 
@@ -1427,7 +1427,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
-        const name = computeNameFromContent(opts.content);
+        const name = BlockTextContentUtils.computeNameFromContent(opts.content);
         const nspace = this.computeNamespace(opts.nspace, opts.ref);
         const newBlockID = opts.newBlockID || BlockIDs.create(name, nspace);
 

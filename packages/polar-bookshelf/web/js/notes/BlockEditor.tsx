@@ -19,9 +19,9 @@ import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnot
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {BlockContent, useBlocksStore} from "./store/BlocksStore";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;

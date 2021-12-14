@@ -6,24 +6,14 @@ import {
     IBlockContentMap,
     IBlockContentStructure,
     IBlockLink,
-    INamedContent,
-    ITextContent
+    INamedContent
 } from "polar-blocks/src/blocks/IBlock";
 import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
-import {BlockPredicates, EditableContent} from "./store/BlockPredicates";
-import {DocInfos} from "polar-shared/src/metadata/DocInfos";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockPredicates} from "./store/BlockPredicates";
 import {Block} from "./store/Block";
-import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
-import {DocIDStr, MarkdownStr} from "polar-shared/src/util/Strings";
-import {MarkdownContent} from "./content/MarkdownContent";
+import {DocIDStr} from "polar-shared/src/util/Strings";
 import {NameContent} from "./content/NameContent";
-import {DateContent} from "./content/DateContent";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
-import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
@@ -42,6 +32,7 @@ import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonical
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
 import {BlockIDs} from "./store/BlockIDs";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export const NotesIntegrationContext = React.createContext<boolean>(false);
 
@@ -402,93 +393,6 @@ export namespace BlockContentUtils {
         }
 
         updateContent(blocksStore, id, 'document', updater);
-    }
-}
-
-export namespace BlockTextContentUtils {
-
-    /**
-     * Update the markdown content of a flashcard given the field.
-     *
-     * @param content FlashcardAnnotationContent instance
-     * @param field The flashcard field to be updated
-     * @param markdown The new markdown content
-     */
-    export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(
-        content: FlashcardAnnotationContent<T>,
-        field: keyof T['fields'],
-        markdown: MarkdownStr,
-    ): FlashcardAnnotationContent {
-        const flashcardContent = content.toJSON();
-
-        return new FlashcardAnnotationContent({
-            ...flashcardContent,
-            value: BlockFlashcards.updateField(flashcardContent.value, field, markdown),
-        });
-    }
-
-    /**
-     * Update the markdown content of an editable text block.
-     *
-     * @param content An instance of the block's content instance
-     * @param markdown The new markdown content
-     */
-    export function updateTextContentMarkdown(
-        content: Exclude<EditableContent, FlashcardAnnotationContent>,
-        markdown: MarkdownStr
-    ): EditableContent {
-
-        switch(content.type) {
-            case "markdown":
-                return new MarkdownContent({ ...content.toJSON(), data: markdown });
-            case "date":
-                return new DateContent({ ...content.toJSON(), data: markdown });
-            case "name":
-                return new NameContent({ ...content.toJSON(), data: markdown });
-            case AnnotationContentType.TEXT_HIGHLIGHT:
-                const textHighlightContent = content.toJSON();
-                return new TextHighlightAnnotationContent({
-                    ...textHighlightContent,
-                    value: {
-                        ...textHighlightContent.value,
-                        revisedText: markdown,
-                    }
-                });
-        }
-    }
-
-    export function computeNameFromContent(content: INamedContent) {
-
-        switch (content.type) {
-            case 'date':
-            case 'name':
-                return content.data;
-            case 'document':
-                return DocInfos.bestTitle(content.docInfo);
-        }
-
-    }
-
-    /**
-     * Get the markdown text of an editable text block
-     *
-     * @param content An editable text content instance @see TextContent
-     */
-    export function getTextContentMarkdown(content: ITextContent): string {
-        switch (content.type) {
-            case 'date':
-            case 'name':
-            case 'markdown':
-                return content.data;
-            case 'document':
-                return DocInfos.bestTitle(content.docInfo);
-            case AnnotationContentType.TEXT_HIGHLIGHT:
-                return BlockTextHighlights.toText(content.value);
-            case AnnotationContentType.FLASHCARD:
-                return content.value.type === FlashcardType.CLOZE
-                    ? content.value.fields.text
-                    : content.value.fields.front;
-        }
     }
 }
 

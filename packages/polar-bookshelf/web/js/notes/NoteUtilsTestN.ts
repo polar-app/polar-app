@@ -6,8 +6,8 @@ import {FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./cont
 import {DateContent} from "./content/DateContent";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 
 describe('BlockTextContentUtils', () => {
@@ -61,28 +61,28 @@ describe('BlockTextContentUtils', () => {
         it('Should update the markdown content of date blocks properly', () => {
 
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(date, '2020-12-23');
-            
+
             assert.deepEqual(newContent, new DateContent({ ...date.toJSON(), data: '2020-12-23' }));
         });
 
         it('Should update the markdown content of name blocks properly', () => {
 
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(name, 'Cat');
-            
+
             assert.deepEqual(newContent, new NameContent({ ...name.toJSON(), data: 'Cat' }));
         });
 
         it('Should update the markdown content of markdown blocks properly', () => {
 
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(markdown, 'Link [[name]]');
-            
+
             assert.deepEqual(newContent, new MarkdownContent({ ...markdown.toJSON(), data: 'Link [[name]]' }));
         });
 
         it('Should update the content of text highlight blocks properly', () => {
 
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(textHighlight, 'Text');
-            
+
             const JSONContent = textHighlight.toJSON();
             assert.deepEqual(newContent, new TextHighlightAnnotationContent({
                 ...JSONContent,
@@ -94,7 +94,7 @@ describe('BlockTextContentUtils', () => {
         });
     });
 
-    
+
     describe('updateClozeFlashcardContentMarkdown', () => {
         it('Should update the content of cloze flashcard blocks properly', () => {
 

@@ -1,10 +1,9 @@
 import {HTMLStr} from "polar-shared/src/util/Strings";
-import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
+import {IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export namespace BlockContentStructureHTMLConverter {
 
