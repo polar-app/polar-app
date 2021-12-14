@@ -43,18 +43,6 @@ import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonical
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
 
-export const NotesIntegrationContext = React.createContext<boolean>(false);
-
-export const useNotesIntegrationEnabled = () => {
-    return React.useContext(NotesIntegrationContext);
-};
-
-export const WithNotesIntegration: React.FC = (props) => {
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
-
-    return notesIntegrationEnabled ? <>{props.children}</> : null;
-};
-
 export const useDocumentBlockFromDocInfoCreator = () => {
 
     const blocksStore = useBlocksStore();
