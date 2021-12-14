@@ -56,13 +56,42 @@ export namespace FirestoreBlocksPersistenceWriter {
                     // what we want.
 
                     const mergeFields: ReadonlyArray<keyof IBlock> = [
+                        'id',
+                        'nspace',
                         'uid',
-                        'nspace'
+                        'root',
+                        'parent',
+                        'parents',
+                        'created',
+                        'updated',
+                        'content',
+                        'mutation',
                     ];
 
                     batch.set(doc, firestoreBlock, {
-                        // mergeFields: [...mergeFields]
+                        mergeFields: [...mergeFields]
                     });
+
+                    if (Object.keys(firestoreBlock.items).length > 0) {
+
+                        // TODO: I don't think this is actually ever DONE in practice
+                        // but that we had it setup for tests but that the test data
+                        // is invalid.
+
+                        batch.set(doc, firestoreBlock, {
+                            mergeFields: ['items']
+                        });
+
+                    } else {
+
+                        // this is a bit of a hack and what we're doing here is
+                        // creating the 'items' as an empty array when it DOES
+                        // not exist, OR, if it DOES exist, then we update it by
+                        // adding items from the empty union which is a noop.
+                        batch.update(doc, 'items.0', '');
+                        batch.update(doc, 'items.0', firebase.firestore.FieldValue.delete());
+
+                    }
 
                     FileTombstones.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
