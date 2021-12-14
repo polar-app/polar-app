@@ -56,13 +56,14 @@ export const WithNotesIntegration: React.FC = (props) => {
 };
 
 export const useDocumentBlockFromDocInfoCreator = () => {
+
     const blocksStore = useBlocksStore();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return React.useCallback((docInfo: IDocInfo) => {
+
         const documentBlockExists = !! blocksStore.indexByDocumentID[docInfo.fingerprint];
 
-        if (notesIntegrationEnabled && ! documentBlockExists) {
+        if (! documentBlockExists) {
             const cleanDocInfo = Dictionaries.onlyDefinedProperties(docInfo);
             const namedBlocks = blocksStore.namedBlocks.map(block => block.toJSON());
 
@@ -75,7 +76,9 @@ export const useDocumentBlockFromDocInfoCreator = () => {
             ], { isUndoable: false });
 
         }
-    }, [blocksStore, notesIntegrationEnabled]);
+
+    }, [blocksStore]);
+
 };
 
 const sortByTypeComparator = (a: Readonly<IBlock<INamedContent>>, b: Readonly<IBlock<INamedContent>>) => {
@@ -540,7 +543,7 @@ export const useCreateBacklinkFromSelection = () => {
             range.setStartAfter(wikiLinkAnchor);
 
             const html = BlockContentCanonicalizer.canonicalizeElement(blockElement).innerHTML;
-            
+
             const markdown = MarkdownContentConverter.toMarkdown(html);
 
             blocksStore.createLinkToBlock(id, target, markdown);
