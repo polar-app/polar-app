@@ -141,7 +141,6 @@ namespace Tablet {
 
 
     export const Main = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -155,13 +154,13 @@ namespace Tablet {
                         flexGrow: 1,
                         minHeight: 0,
                     },
-                    component: notesIntegrationEnabled ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
+                    component: <BlocksAnnotationRepoTable />,
                     width: 400
                 },
                 {
                     id: 'dock-panel-right',
                     type: 'grow',
-                    component: notesIntegrationEnabled ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
+                    component: <BlocksAnnotationInlineViewer />,
                 }
             ]}>
                 <DockLayout.Main/>
