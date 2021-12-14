@@ -3,7 +3,6 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
-import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
 import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
@@ -13,7 +12,6 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {Box, createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
-import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotationRepoTable';
@@ -104,20 +102,11 @@ namespace Phone {
 
     export const Main: React.FC<IMainProps> = observer(({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
         const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
-        const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
         const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
-
 
         const annotation = React.useMemo(() => {
-            if (notesIntegrationEnabled) {
-                return blocksAnnotationRepoStore.activeBlock;
-            } else {
-                return selected.length > 0
-                    ? view.filter(current => current.id === selected[0])[0]
-                    : undefined;
-            }
-        }, [blocksAnnotationRepoStore.activeBlock, selected, view, notesIntegrationEnabled]);
+            return blocksAnnotationRepoStore.activeBlock;
+        }, [blocksAnnotationRepoStore.activeBlock]);
 
         const classes = useStyles();
 
@@ -130,22 +119,18 @@ namespace Phone {
 
         return (
             <>
-                {notesIntegrationEnabled
-                    ? <BlocksAnnotationRepoTable />
-                    : <AnnotationListView />
-                }
+                <BlocksAnnotationRepoTable />
+
                 <SwipeableDrawer
                     anchor="right"
                     open={isAnnotationViewerOpen}
                     onClose={handleDrawerStateChange(false)}
                     onOpen={handleDrawerStateChange(true)}
                     className={classes.drawer}
-                    classes={{ root: classes.drawer, paper: classes.drawer }}
-                >
-                    {notesIntegrationEnabled
-                        ? <BlocksAnnotationInlineViewer />
-                        : <AnnotationInlineViewer />
-                    }
+                    classes={{ root: classes.drawer, paper: classes.drawer }}>
+
+                    <BlocksAnnotationInlineViewer />
+
                 </SwipeableDrawer>
             </>
         );
