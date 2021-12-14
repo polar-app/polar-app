@@ -18,7 +18,8 @@ import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = BlockIDs.createRandom();
 
-describe("BlocksPersistence", () => {
+describe("BlocksPersistenceWriters", () => {
+
     let uid: UserIDStr;
     let docInfoIndex: RepoDocInfoDataObjectIndex;
 
