@@ -16,7 +16,7 @@
     "eslint": "eslint -c ../../../.eslintrc.json . --no-error-on-unmatched-pattern",
     "tsc": "tsc --project ./tsconfig.json",
     "karma": "echo no karma",
-    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc-watch; fi;",
     "eslint-fix": "eslint -c ../../../.eslintrc.json . --fix",
     "eslint-ci": "eslint -c ../../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
     "tsc-watch": "tsc --project ./tsconfig.json --watch",

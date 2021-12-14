@@ -27,6 +27,7 @@ import {faLink} from "@fortawesome/free-solid-svg-icons/faLink";
 
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
+import {IntercomIcon} from "../apps/repository/integrations/Intercom";
 
 library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faGoogle, faDiscord, faStickyNote, faFilePdf);
 
@@ -40,7 +41,7 @@ interface FASvgIconProps extends SvgIconProps {
 const FASvgIcon = deepMemo(function FASvgIcon(props: FASvgIconProps) {
     return (
         <SvgIcon {...props}>
-            <FontAwesomeIcon icon={props.icon} />
+            <FontAwesomeIcon icon={props.icon}/>
         </SvgIcon>
     );
 });
@@ -73,3 +74,11 @@ export const FAStrikethroughIcon = createIcon(faStrikethrough);
 export const FASubscriptIcon = createIcon(faSubscript);
 export const FASuperscriptIcon = createIcon(faSuperscript);
 export const FALinkIcon = createIcon(faLink);
+
+/**
+ * Since all other icons here are "standard" Font-Awesome icons that come with some basic styling (font-size, etc)
+ * emulate the same  sizing here for the custom Intercom icon, which is NOT a FA icon. Instead, it's a custom SVG
+ */
+export const FALikeIntercomIcon: React.FC = () => {
+    return <div style={{width: '1em', height: '1em', fontSize: '1.5rem'}}><IntercomIcon/></div>;
+}
