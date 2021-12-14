@@ -35,13 +35,13 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {DocMetaBlockContents} from "polar-migration-block-annotations/src/DocMetaBlockContents";
 import {useBlocksUserTagsDB} from "../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {ContentEditables} from "./ContentEditables";
 import {DOMBlocks} from "./contenteditable/DOMBlocks";
 import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
+import {BlockIDs} from "./store/BlockIDs";
 
 export const NotesIntegrationContext = React.createContext<boolean>(false);
 
@@ -214,7 +214,7 @@ export const useUpdateBlockTags = () => {
 
             const toContentStructure = ({ label }: Tag): IBlockContentStructure<INameContent> => {
                 return {
-                    id: Hashcodes.createRandomID(),
+                    id: BlockIDs.createRandom(),
                     content: new NameContent({ type: 'name', data: label, links: [] }).toJSON(),
                     children: [],
                 };

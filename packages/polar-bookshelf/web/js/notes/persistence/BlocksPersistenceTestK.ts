@@ -5,7 +5,6 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
 import {BlocksStoreTests} from "../store/BlocksStoreTests";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
@@ -13,10 +12,11 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
+import {BlockIDs} from "../store/BlockIDs";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
-const ID = Hashcodes.createRandomID();
+const ID = BlockIDs.createRandom();
 
 describe("BlocksPersistence", () => {
     let uid: UserIDStr;

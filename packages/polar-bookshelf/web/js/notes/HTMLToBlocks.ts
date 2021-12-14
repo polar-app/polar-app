@@ -6,7 +6,7 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {BlockContent} from "./store/BlocksStore";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockIDs} from "./store/BlockIDs";
 
 export type BlockContentStructure<T = BlockContent> = {
     content: T;
@@ -60,7 +60,7 @@ export namespace HTMLToBlocks {
             b: IBlockContentMergableStructure<IMarkdownContent>
         ): IBlockContentMergableStructure<IMarkdownContent> => {
             return {
-                id: Hashcodes.createRandomID(),
+                id: BlockIDs.createRandom(),
                 content: mergeMarkdownContent(a.content, b.content),
                 children: [...a.children, ...b.children],
                 mergable: true,
@@ -90,7 +90,7 @@ export namespace HTMLToBlocks {
             const trimmed = current.replace(/\s\s+/g, ' ');
             if (trimmed.length > 0) {
                 blocks.push({
-                    id: Hashcodes.createRandomID(),
+                    id: BlockIDs.createRandom(),
                     content: createMarkdownContent(trimmed),
                     children: [],
                     mergable,
@@ -132,14 +132,14 @@ export namespace HTMLToBlocks {
                         if (src.startsWith('data:image')) {
                             flush(false);
                             blocks.push({
-                                id: Hashcodes.createRandomID(),
+                                id: BlockIDs.createRandom(),
                                 content: await createImageContent(src),
                                 children: [],
                                 mergable: false,
                             });
                         } else if (/^https?/.test(src)) {
                             blocks.push({
-                                id: Hashcodes.createRandomID(),
+                                id: BlockIDs.createRandom(),
                                 content: createMarkdownContent(`${current}![](${src})`),
                                 children: [],
                                 mergable: true,
@@ -153,7 +153,7 @@ export namespace HTMLToBlocks {
                         if (! anchor.href.toLowerCase().startsWith("javascript")) {
                             flush(true);
                             blocks.push({
-                                id: Hashcodes.createRandomID(),
+                                id: BlockIDs.createRandom(),
                                 content: createMarkdownContent(`[${elem.textContent || anchor}](${anchor.href})`),
                                 children: [],
                                 mergable: true,
@@ -163,7 +163,7 @@ export namespace HTMLToBlocks {
                     case 'PRE':
                         flush(true);
                         blocks.push({
-                            id: Hashcodes.createRandomID(),
+                            id: BlockIDs.createRandom(),
                             content: createMarkdownContent(`\n\`\`\`\n${elem.textContent || ''}\n\`\`\`\n`),
                             children: [],
                             mergable: true,
@@ -191,7 +191,7 @@ export namespace HTMLToBlocks {
                         if (current.length) {
                             const trimmed = current.replace(/\s\s+/g, ' ');
                             newBlock = {
-                                id: Hashcodes.createRandomID(),
+                                id: BlockIDs.createRandom(),
                                 content: createMarkdownContent(trimmed),
                                 children: [],
                                 mergable: false,
@@ -238,7 +238,7 @@ export namespace HTMLToBlocks {
                     result.unshift(sibling.curr);
                 }
             }
-            
+
             return result;
         }
         const trim = (block: IBlockContentStructure) => {

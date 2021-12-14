@@ -1,17 +1,16 @@
 import React from "react";
 import {RoutePathNames} from "../../apps/repository/RoutePathNames";
-import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
+import {IBlockContentStructure, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {BlockContentStructureHTMLConverter} from "../BlockContentStructureHTMLConverter";
 import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {getNoteAnchorFromHref} from "../NoteLinksHooks";
 import {Block} from "../store/Block";
 import {useBlocksStore} from "../store/BlocksStore";
 import {IBlocksStore} from "../store/IBlocksStore";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockIDs} from "../store/BlockIDs";
 
 namespace CopyUtils {
     type ICopyData = {
@@ -68,7 +67,7 @@ namespace CopyUtils {
             const wikiLinks = getWikiLinks(block, div);
 
             return [{
-                id: Hashcodes.createRandomID(),
+                id: BlockIDs.createRandom(),
                 content: {
                     type: 'markdown',
                     links: wikiLinks,

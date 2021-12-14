@@ -7,7 +7,6 @@ import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase/app';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {getConfig} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
 import {URLStr, UserIDStr} from 'polar-shared/src/util/Strings';
 import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
@@ -25,6 +24,7 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import {UUIDs} from 'polar-shared/src/metadata/UUIDs';
 import {Testing} from "polar-shared/src/util/Testing";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 const IS_NODE = typeof window === 'undefined';
