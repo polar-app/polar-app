@@ -223,9 +223,9 @@ export namespace FirestoreBlocksPersistenceWriter {
                     const mergeFields: ReadonlyArray<keyof IBlock> = [];
 
                     batch.set(doc, firestoreBlock, {
-                        merge: true,
                         mergeFields: [...mergeFields]
                     });
+
                     FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
