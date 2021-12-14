@@ -16,4 +16,11 @@ export namespace BlockIDs {
         return Hashcodes.createID({name, nspace}, LEN);
     }
 
+    /**
+     * Create a block ID for a non-named block that's just a child.
+     */
+    export function createRandom() {
+        return Hashcodes.createRandomID({len: LEN});
+    }
+
 }
