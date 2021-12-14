@@ -26,7 +26,7 @@ export namespace FirestoreBlocksPersistenceWriter {
             return;
         }
 
-        // console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
+        // console.log("Writing firestoreMutations to firestore: ", JSON.stringify(firestoreMutations, null, '  '));
 
         const collection = firestore.collection('block');
         const tombstoneCollection = firestore.collection('cloud_storage_tombstone');
@@ -55,10 +55,13 @@ export namespace FirestoreBlocksPersistenceWriter {
                     // Otherwise, the entire batch will overwrite the existing block data which is not
                     // what we want.
 
-                    const mergeFields: ReadonlyArray<keyof IBlock> = [];
+                    const mergeFields: ReadonlyArray<keyof IBlock> = [
+                        'uid',
+                        'nspace'
+                    ];
 
                     batch.set(doc, firestoreBlock, {
-                        mergeFields: [...mergeFields]
+                        // mergeFields: [...mergeFields]
                     });
 
                     FileTombstones.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
