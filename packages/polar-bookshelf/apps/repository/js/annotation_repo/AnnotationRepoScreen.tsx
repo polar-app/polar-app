@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
 import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
@@ -243,7 +242,6 @@ namespace Desktop {
 
 
     export const Main = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -258,9 +256,7 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        notesIntegrationEnabled
-                            ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
-                            : <FolderSidebar2 header={<StartReviewHeader/>} />
+                        <BlocksFolderSidebar header={<StartReviewHeader/>} />
                     ),
                     width: 300
                 },
