@@ -338,41 +338,41 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <AccountPageMobile/>
                                         </PersistentRoute>
 
+                                        <DeviceRouters.Desktop>
+                                            <PersistentRoute path={RoutePathNames.NOTES}
+                                                             exact
+                                                             strategy="display">
+                                                <NotesRepoScreen/>
+                                            </PersistentRoute>
+                                        </DeviceRouters.Desktop>
+
+                                        <PersistentRoute path={RoutePathNames.DAILY}
+                                                         strategy="display"
+                                                         exact>
+                                            <NotesContainer>
+                                                <NoteProviders>
+                                                    <DailyNotesScreen/>
+                                                </NoteProviders>
+                                            </NotesContainer>
+                                        </PersistentRoute>
+
                                         <DocumentRoutes persistenceLayerProvider={app.persistenceLayerProvider}
                                                         repoDocMetaManager={props.repoDocMetaManager}
                                                         repoDocMetaLoader={props.repoDocMetaLoader}
                                                         persistenceLayerManager={props.persistenceLayerManager}/>
 
+                                        <Route path={RoutePathNames.NOTE(":id")}
+                                               component={SingleNoteScreen}/>
+
                                         <Switch location={ReactRouters.createLocationWithPathOnly()}>
                                             <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                                    component={EnableFeatureToggle}/>
 
-                                            <DeviceRouters.Desktop>
-                                                <PersistentRoute path={RoutePathNames.NOTES}
-                                                                 exact
-                                                                 strategy="display">
-                                                    <NotesRepoScreen/>
-                                                </PersistentRoute>
-                                            </DeviceRouters.Desktop>
-
-                                            <DeviceRouters.NotDesktop>
-                                                <Route path={RoutePathNames.NOTES} exact>
+                                            <Route path={RoutePathNames.NOTES} exact>
+                                                <DeviceRouters.NotDesktop>
                                                     <NotesRepoScreen2/>
-                                                </Route>
-                                            </DeviceRouters.NotDesktop>
-
-                                            <PersistentRoute path={RoutePathNames.DAILY}
-                                                             strategy="display"
-                                                             exact>
-                                                <NotesContainer>
-                                                    <NoteProviders>
-                                                        <DailyNotesScreen/>
-                                                    </NoteProviders>
-                                                </NotesContainer>
-                                            </PersistentRoute>
-
-                                            <Route path={RoutePathNames.NOTE(":id")}
-                                                   component={SingleNoteScreen}/>
+                                                </DeviceRouters.NotDesktop>
+                                            </Route>
 
                                             <Route path="/hello-ssr"
                                                    component={HelloServerSideRender}/>

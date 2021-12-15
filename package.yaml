@@ -23,7 +23,7 @@ scripts:
     "find-package-versions": "pnpm m exec jq -r .dependencies package.json  |grep -Eo '^  [^]+' | sort"
     "find-package-versions-conflicting": "pnpm run find-package-versions | uniq | grep -Eo '^[^:]+' | uniq -c | sort | grep -Ev '^[ ]+1 '"
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)"
-    "update-modules": "pnpm run compile --filter polar-create-module && pnpm m exec node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
+    "update-modules": "pnpm run compile --filter polar-create-module && pnpm m --config.use-beta-cli=true exec node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
     "purge-node-modules": "pnpm m exec -- rm -rf node_modules"
 
 devDependencies:
