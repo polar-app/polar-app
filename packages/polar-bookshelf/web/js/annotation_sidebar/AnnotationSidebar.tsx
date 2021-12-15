@@ -4,16 +4,16 @@ import {NoteProviders} from "../notes/NoteProviders";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {AppBar, Box, createStyles, Divider, Fab, IconButton, makeStyles, Toolbar, Typography, useScrollTrigger, Zoom} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import {AnnotationSidebar2, NoAnnotations} from "./AnnotationSidebar2";
-import {BlockTextContentUtils, useNotesIntegrationEnabled} from "../notes/NoteUtils";
 import {useHighlightBlockIDs} from "../notes/HighlightBlocksHooks";
 import {HighlightBlock} from "../notes/HighlightBlock";
-import {observer} from "mobx-react-lite";
+import {NoAnnotations} from "./NoAnnotations";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import {observer} from "mobx-react-lite";
+import {useStateRef} from "../hooks/ReactHooks";
 import {BlockPredicates} from "../notes/store/BlockPredicates";
 import clsx from "clsx";
-import {useStateRef} from "../hooks/ReactHooks";
+import {BlockTextContentUtils} from "../notes/NoteUtils";
 import {DeviceRouters} from "../ui/DeviceRouter";
 
 const AnnotationSidebarToolbar: React.FC = () => {
@@ -172,6 +172,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = Rea
                             <Divider className={classes.titleDivider} />
                         </>
                     </DeviceRouters.Handheld>
+
                     <Box className={classes.inner}>
                         {
                             annotationBlockIDs.length
@@ -193,14 +194,9 @@ interface IAnnotationSidebarProps {
 export const AnnotationSidebar: React.FC<IAnnotationSidebarProps> = (props) => {
     const { onClose } = props;
     const { docMeta } = useDocViewerStore(['docMeta']);
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
-    }
-
-    if (! notesIntegrationEnabled) {
-        return <AnnotationSidebar2 />
     }
 
     return <AnnotationSidebarRenderer onClose={onClose} docFingerprint={docMeta.docInfo.fingerprint} />

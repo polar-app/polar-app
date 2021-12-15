@@ -33,8 +33,6 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TaggedCallbacks} from "../../repository/js/annotation_repo/TaggedCallbacks";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
-import {LocalRelatedTagsStore} from "../../../web/js/tags/related/LocalRelatedTagsStore";
-import {IRelatedTagsData, RelatedTagsManager} from "../../../web/js/tags/related/RelatedTagsManager";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import isEqual from 'react-fast-compare';
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
@@ -45,10 +43,9 @@ import {Analytics} from "../../../web/js/analytics/Analytics";
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
 import {ActiveHighlightData} from "./annotations/annotation_popup/AnnotationPopupHooks";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
-import {useBlockTagEditorDialog, useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
+import {useBlockTagEditorDialog} from "../../../web/js/notes/NoteUtils";
 import {getBlockForDocument} from "../../../web/js/notes/HighlightBlocksHooks";
 import {DocumentContent} from "../../../web/js/notes/content/DocumentContent";
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
@@ -346,7 +343,6 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
     const blocksStore = useBlocksStore();
     const blockTagEditorDialog = useBlockTagEditorDialog();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     // HACK: this is a hack until we find a better way memoize our variables.
     // I really hate this aspect of hook.
@@ -877,25 +873,18 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             mutator(docMeta);
 
-            if (notesIntegrationEnabled) {
-                const documentBlock = getBlockForDocument(blocksStore, docMeta.docInfo.fingerprint);
+            const documentBlock = getBlockForDocument(blocksStore, docMeta.docInfo.fingerprint);
 
-                if (! documentBlock) {
-                    return;
-                }
-
-                const content = new DocumentContent({
-                    ...documentBlock.content.toJSON(),
-                    docInfo: docMeta.docInfo,
-                });
-
-                blocksStore.setBlockContent(documentBlock.id, content);
-
-            } else {
-
-                writeUpdatedDocMetas([docMeta])
-                    .catch(err => log.error(err));
+            if (! documentBlock) {
+                return;
             }
+
+            const content = new DocumentContent({
+                ...documentBlock.content.toJSON(),
+                docInfo: docMeta.docInfo,
+            });
+
+            blocksStore.setBlockContent(documentBlock.id, content);
 
         }
 
@@ -938,65 +927,12 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 return;
             }
 
-            if (notesIntegrationEnabled) {
-                const blockID = blocksStore.indexByDocumentID[docMeta.docInfo.fingerprint];
+            const blockID = blocksStore.indexByDocumentID[docMeta.docInfo.fingerprint];
 
-                if (blockID) {
-                    blockTagEditorDialog([blockID]);
-                }
-
-            } else {
-
-                function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
-
-                    if (! docMeta) {
-                        return [];
-                    }
-
-                    return [
-                        {
-                            docMeta,
-                            tags: docMeta.docInfo.tags
-                        }
-                    ];
-
-                }
-
-                function createRelatedTagsManager() {
-
-                    function createNullRelatedTagsData(): IRelatedTagsData {
-                        console.warn("Using null related tags data");
-                        return {
-                            docTagsIndex: {},
-                            tagDocsIndex: {},
-                            tagsIndex: {}
-                        };
-                    }
-
-                    const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
-
-                    return new RelatedTagsManager(data);
-
-                }
-
-                const relatedTagsManager = createRelatedTagsManager();
-                const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
-
-                const tagsProvider = () => relatedTagsManager.tags();
-
-                const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
-                    targets,
-                    tagsProvider,
-                    dialogs,
-                    doTagged: doDocTagged,
-                    relatedOptionsCalculator
-                };
-
-                const callback = TaggedCallbacks.create(opts);
-
-                callback();
-
+            if (blockID) {
+                blockTagEditorDialog([blockID]);
             }
+
         }
 
         function toggleDocFlagged() {
@@ -1086,19 +1022,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             toggleAreaHighlightMode,
             setAreaHighlightMode
         };
-    }, [
-        log,
-        docMetaContext,
-        persistenceLayerContext,
-        annotationSidebarCallbacks,
-        dialogs,
-        annotationMutationCallbacksFactory,
-        setStore,
-        storeProvider,
-        blocksStore,
-        blockTagEditorDialog,
-        notesIntegrationEnabled,
-    ]);
+    }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks, annotationMutationCallbacksFactory, setStore, storeProvider, blocksStore, blockTagEditorDialog]);
 
 }
 

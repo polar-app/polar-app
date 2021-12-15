@@ -2,10 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {FolderSidebar2} from "../folders/FolderSidebar2";
-import {AnnotationListView} from "./AnnotationListView";
-import {AnnotationRepoFilterBar} from "./AnnotationRepoFilterBar";
-import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
@@ -13,16 +9,13 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {SidenavTriggerIconButton} from "../../../../web/js/sidenav/SidenavTriggerIconButton";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {Box, createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
-import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {BlocksAnnotationRepoTable} from '../block_annotation_repo/BlocksAnnotationRepoTable';
-import {AnnotationRepoTable} from './AnnotationRepoTable';
 import {BlocksAnnotationInlineViewer} from '../block_annotation_repo/BlocksAnnotationInlineViewer';
 import {BlocksAnnotationRepoFilterBar} from '../block_annotation_repo/BlocksAnnotationRepoFilterBar';
 import {observer} from 'mobx-react-lite';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
-import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 import {BlocksFolderSidebar} from '../folders/BlocksFolderSidebar';
 import {RepositoryToolbar} from '../../../../web/js/apps/repository/RepositoryToolbar';
 
@@ -31,7 +24,6 @@ interface IToolbarProps {
 }
 
 const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     return (
         <RepositoryToolbar>
@@ -48,11 +40,7 @@ const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRig
                     alignItems: 'center',
                     justifyContent: 'flex-end'
                 }}>
-                    {
-                        notesIntegrationEnabled
-                            ? <BlocksAnnotationRepoFilterBar />
-                            : <AnnotationRepoFilterBar />
-                    }
+                    <BlocksAnnotationRepoFilterBar />
                     {handleRightDrawerToggle && (
                         <DeviceRouter phone={(
                             <IconButton onClick={handleRightDrawerToggle}>
@@ -104,20 +92,11 @@ namespace Phone {
 
     export const Main: React.FC<IMainProps> = observer(({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
         const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
-        const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
         const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
-
 
         const annotation = React.useMemo(() => {
-            if (notesIntegrationEnabled) {
-                return blocksAnnotationRepoStore.activeBlock;
-            } else {
-                return selected.length > 0
-                    ? view.filter(current => current.id === selected[0])[0]
-                    : undefined;
-            }
-        }, [blocksAnnotationRepoStore.activeBlock, selected, view, notesIntegrationEnabled]);
+            return blocksAnnotationRepoStore.activeBlock;
+        }, [blocksAnnotationRepoStore.activeBlock]);
 
         const classes = useStyles();
 
@@ -130,22 +109,18 @@ namespace Phone {
 
         return (
             <>
-                {notesIntegrationEnabled
-                    ? <BlocksAnnotationRepoTable />
-                    : <AnnotationListView />
-                }
+                <BlocksAnnotationRepoTable />
+
                 <SwipeableDrawer
                     anchor="right"
                     open={isAnnotationViewerOpen}
                     onClose={handleDrawerStateChange(false)}
                     onOpen={handleDrawerStateChange(true)}
                     className={classes.drawer}
-                    classes={{ root: classes.drawer, paper: classes.drawer }}
-                >
-                    {notesIntegrationEnabled
-                        ? <BlocksAnnotationInlineViewer />
-                        : <AnnotationInlineViewer />
-                    }
+                    classes={{ root: classes.drawer, paper: classes.drawer }}>
+
+                    <BlocksAnnotationInlineViewer />
+
                 </SwipeableDrawer>
             </>
         );
@@ -157,7 +132,6 @@ namespace Tablet {
 
 
     export const Main = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -171,13 +145,13 @@ namespace Tablet {
                         flexGrow: 1,
                         minHeight: 0,
                     },
-                    component: notesIntegrationEnabled ? <BlocksAnnotationRepoTable /> : <AnnotationRepoTable />,
+                    component: <BlocksAnnotationRepoTable />,
                     width: 400
                 },
                 {
                     id: 'dock-panel-right',
                     type: 'grow',
-                    component: notesIntegrationEnabled ? <BlocksAnnotationInlineViewer /> : <AnnotationInlineViewer />,
+                    component: <BlocksAnnotationInlineViewer />,
                 }
             ]}>
                 <DockLayout.Main/>
@@ -191,7 +165,6 @@ namespace Tablet {
 namespace Desktop {
 
     const Right = React.memo(function Right() {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <div style={{
@@ -222,10 +195,7 @@ namespace Desktop {
                                 flexDirection: 'column',
                                 minHeight: 0
                             }}>
-                                {notesIntegrationEnabled
-                                    ? <BlocksAnnotationRepoTable />
-                                    : <AnnotationRepoTable />
-                                }
+                                <BlocksAnnotationRepoTable />
                             </div>,
                         width: 450
                     },
@@ -241,10 +211,7 @@ namespace Desktop {
                                               flexGrow: 1,
                                               display: 'flex'
                                           }}>
-                                {notesIntegrationEnabled
-                                    ? <BlocksAnnotationInlineViewer />
-                                    : <AnnotationInlineViewer />
-                                }
+                                <BlocksAnnotationInlineViewer />
                             </MUIElevation>
 
                     }
@@ -258,7 +225,6 @@ namespace Desktop {
 
 
     export const Main = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
         return (
             <DockLayout.Root dockPanels={[
@@ -273,9 +239,7 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        notesIntegrationEnabled
-                            ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
-                            : <FolderSidebar2 header={<StartReviewHeader/>} />
+                        <BlocksFolderSidebar header={<StartReviewHeader/>} />
                     ),
                     width: 300
                 },
@@ -300,7 +264,6 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
-        const notesIntegrationEnabled = useNotesIntegrationEnabled();
         const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
@@ -322,10 +285,7 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            {notesIntegrationEnabled
-                                ? <BlocksFolderSidebar header={<StartReviewHeader/>} />
-                                : <FolderSidebar2 header={<StartReviewHeader/>} />
-                            }
+                            <BlocksFolderSidebar header={<StartReviewHeader/>} />
                         </SideCar>
 
                         <DeviceRouter phone={

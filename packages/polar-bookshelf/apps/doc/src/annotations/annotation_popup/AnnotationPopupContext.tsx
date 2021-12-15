@@ -16,10 +16,6 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ActiveHighlightData} from "./AnnotationPopupHooks";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
-import {
-    ITextHighlightCreate,
-    useAnnotationMutationsContext
-} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {ACTIONS, DEFAULT_STATE, IBlockAnnotation, IDocMetaAnnotation, reducer} from "./AnnotationPopupReducer";
 import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
@@ -36,7 +32,6 @@ import {autorun} from "mobx";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
-import {useNotesIntegrationEnabled} from "../../../../../web/js/notes/NoteUtils";
 import {InputEscapeListener} from "../../../../../web/js/mui/complete_listeners/InputEscapeListener";
 
 export enum AnnotationPopupActionEnum {
@@ -188,7 +183,6 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {docMeta, ...restProps} = props;
     const [state, dispatch] = React.useReducer(reducer, DEFAULT_STATE);
     const {annotation, selectionEvent, activeAction} = state;
-    const annotationMutations = useAnnotationMutationsContext();
     const {activeHighlight, textHighlightColor} = useDocViewerStore(["activeHighlight", "textHighlightColor"]);
     const {setActiveHighlight} = useDocViewerCallbacks();
     const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
@@ -198,7 +192,6 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {fileType} = useDocViewerContext();
     const {create: createAnnotation} = useAnnotationBlockManager();
     const {getBlock} = useAnnotationBlockManager();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
         if (event) {
@@ -220,56 +213,32 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             });
 
             if (createdTextHighlight) {
-                const {pageMeta, textHighlight} = createdTextHighlight;
+                const {textHighlight} = createdTextHighlight;
 
-                if (notesIntegrationEnabled) {
-                    const content = BlockContentAnnotationTree.toTextHighlightAnnotation(
-                        docMeta,
-                        pageNum,
-                        textHighlight,
-                    );
+                const content = BlockContentAnnotationTree.toTextHighlightAnnotation(
+                    docMeta,
+                    pageNum,
+                    textHighlight,
+                );
 
-                    const id = createAnnotation(fingerprint, new TextHighlightAnnotationContent({
-                        type: content.type,
-                        docID: content.docID,
-                        links: [],
-                        pageNum: content.pageNum,
-                        value: content.value,
-                    }));
+                const id = createAnnotation(fingerprint, new TextHighlightAnnotationContent({
+                    type: content.type,
+                    docID: content.docID,
+                    links: [],
+                    pageNum: content.pageNum,
+                    value: content.value,
+                }));
 
-                    if (id) {
-                        setActiveHighlight({
-                            highlightID: id,
-                            type: 'block',
-                            pageNum
-                        });
-                    }
-                } else {
-                    const mutation: ITextHighlightCreate = {
-                        type: 'create',
-                        docMeta, pageMeta, textHighlight
-                    };
-
-                    annotationMutations.onTextHighlight(mutation);
+                if (id) {
                     setActiveHighlight({
-                        highlightID: textHighlight.guid,
-                        type: 'docMeta',
+                        highlightID: id,
+                        type: 'block',
                         pageNum
                     });
                 }
             }
         }
-    }, [
-        docMeta,
-        setActiveHighlight,
-        fileType,
-        selectionEvent,
-        createTextHighlightRef,
-        docViewerElementsRef,
-        createAnnotation,
-        annotationMutations,
-        notesIntegrationEnabled,
-    ]);
+    }, [docMeta, setActiveHighlight, fileType, selectionEvent, createTextHighlightRef, docViewerElementsRef, createAnnotation]);
 
     React.useEffect(() => {
 

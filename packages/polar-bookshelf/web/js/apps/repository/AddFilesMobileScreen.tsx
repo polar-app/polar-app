@@ -1,40 +1,18 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core';
-import addFile from "polar-assets/src/assets/illustrations/AddFile.svg";
+import {Box, createStyles, makeStyles, Theme} from '@material-ui/core';
 import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
 import {useHistory} from 'react-router-dom';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
+import {MUIActionCard} from '../../mui/MUIActionCard';
+import {useCreateNoteDialog} from '../../notes/NotesToolbar';
 
-const useStyles = makeStyles<Theme>((theme) =>
+const useStyles = makeStyles<Theme>(() =>
     createStyles({
-        root:{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            justifyContent: 'center',
-            padding: '0 1em '
-        },
-        container:{
-            display: 'flex',
-            flexDirection: 'row',
-            border: 'solid 1px rgba(255, 255, 255, 0.15)',
-            borderRadius: '8px',
-            boxSizing: 'border-box',
-            margin: '1em 0',
-        },
-        image:{
-            height: '100%'
-        },
-        textfield:{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '0 1em'
-        },
-        input:{
+        input: {
             display: 'none'
-        }
+        },
     })
 );
 
@@ -46,8 +24,9 @@ const useStyles = makeStyles<Theme>((theme) =>
 export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
     const classes = useStyles();
     const addFileImporter = useAddFileImporter();
-    const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);
     const history = useHistory();
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const handleCreateNoteTrigger = useCreateNoteDialog();
 
     const handleUpload = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const uploads = Uploads.fromFiles(event.target.files);
@@ -57,24 +36,45 @@ export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
         history.push('/');
     }, [addFileImporter, history]);
 
+    const handleUploadTrigger = React.useCallback(() => {
+        const elem = fileInputRef.current;
+
+        if (! elem) {
+            return;
+        }
+
+        elem.click();
+    }, [fileInputRef]);
+
     return(
         <AdaptivePageLayout noBack title="Add">
 
-            <div className={classes.root}>
-                <label htmlFor={id} className={classes.container}>
-                    <img src={addFile} className={classes.image} alt={'Add Files..'} />
-                    <div className={classes.textfield}>
-                        <h2>Add files</h2>
-                        <span>PDF and EPUB supported</span>
-                    </div>
-                </label>
-                <input  className={classes.input}
-                        accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
-                        id={id}
-                        multiple
-                        onChange={handleUpload}
-                        type="file"/>
-            </div>
+            <Box display="flex"
+                 flexDirection="column"
+                 alignItems="center"
+                 justifyContent="center"
+                 gridRowGap="2rem"
+                 style={{ height: '100%' }}>
+
+                <input className={classes.input}
+                       accept="application/pdf, application/epub+zip, .pdf, .epub, .PDF, .EPUB"
+                       ref={fileInputRef}
+                       id="file-input"
+                       onChange={handleUpload}
+                       multiple
+                       type="file"/>
+
+                 <MUIActionCard title="Add Documents"
+                                description="PDF and EPUB supported"
+                                actionButtonTitle="Add"
+                                onAction={handleUploadTrigger} />
+
+                 <MUIActionCard title="Create a note"
+                                description="Capture all your thoughts"
+                                actionButtonTitle="Create"
+                                onAction={handleCreateNoteTrigger} />
+            </Box>
+
         </AdaptivePageLayout>
     );
 });

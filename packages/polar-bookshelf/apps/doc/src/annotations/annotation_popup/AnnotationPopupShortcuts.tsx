@@ -12,8 +12,9 @@ import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/PersistentRoute";
 import {useCopyAnnotation} from "./AnnotationPopupBar";
 import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
-import {IBlockAnnotationProps, IDocMetaAnnotationProps} from "./AnnotationPopupActions";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
+import {IDocMetaAnnotationProps} from "./IDocMetaAnnotationProps";
+import {IBlockAnnotationProps} from "./IBlockAnnotationProps";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 

@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
-import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
@@ -13,25 +12,11 @@ import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
 import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
-import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
-import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
-import {Block} from "../../../../../web/js/notes/store/Block";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
-
-export type IDocMetaAnnotationProps = {
-    annotation: IDocAnnotation,
-};
-
-export type IBlockAnnotationProps = {
-    annotation: Block<TextHighlightAnnotationContent>,
-};
-
-export type IAnnotationPopupActionProps = {
-    className?: string,
-    style?: React.CSSProperties,
-    annotation: IDocMetaAnnotation | IBlockAnnotation,
-};
+import {IDocMetaAnnotationProps} from "./IDocMetaAnnotationProps";
+import {IBlockAnnotationProps} from "./IBlockAnnotationProps";
+import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
+import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { className = "", style = {}, annotation } = props;
