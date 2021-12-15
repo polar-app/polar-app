@@ -266,7 +266,7 @@ export async function UpdatePackageJson(
             "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;";
         pkg.scripts.tsc = "tsc --project ./tsconfig.json";
         pkg.scripts.watch =
-            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tscwatch; fi;";
+            "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc-watch; fi;";
         pkg.scripts["tsc-watch"] = "tsc --project ./tsconfig.json --watch";
 
         if (config.Mocha) {
