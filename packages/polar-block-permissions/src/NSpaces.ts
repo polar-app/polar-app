@@ -18,7 +18,7 @@ export namespace NSpaces {
                                  uid: UserIDStr,
                                  init: INSpaceInit): Promise<INSpace> {
 
-        // FIXME: make sure the user doesn't already have a namespace with this name/slug
+        // TODO: make sure the user doesn't already have a namespace with this name/slug
 
         const id = Hashcodes.createRandomID();
         const slug = Slugs.calculateIntl(init.name);

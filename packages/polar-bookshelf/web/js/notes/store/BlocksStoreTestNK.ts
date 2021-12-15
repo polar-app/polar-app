@@ -27,7 +27,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
-import {BlockIDs} from "./BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 import assertPresent = Asserts.assertPresent;
 

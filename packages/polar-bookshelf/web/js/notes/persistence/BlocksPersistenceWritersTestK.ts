@@ -10,7 +10,7 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
-import {BlockIDs} from "../store/BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";

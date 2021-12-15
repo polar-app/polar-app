@@ -10,7 +10,7 @@ import {getNoteAnchorFromHref} from "../NoteLinksHooks";
 import {Block} from "../store/Block";
 import {useBlocksStore} from "../store/BlocksStore";
 import {IBlocksStore} from "../store/IBlocksStore";
-import {BlockIDs} from "../store/BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 namespace CopyUtils {
     type ICopyData = {

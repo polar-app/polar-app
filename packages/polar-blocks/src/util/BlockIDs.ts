@@ -1,6 +1,5 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockNameStr} from "./BlocksStore";
-import {BlockIDStr, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, NamespaceIDStr, UIDStr} from "../blocks/IBlock";
 
 /**
  * The length of hashcodes that we should use.
@@ -12,7 +11,7 @@ export namespace BlockIDs {
     /**
      * New block ID factory
      */
-    export function create(name: BlockNameStr, nspace: NamespaceIDStr | UIDStr): BlockIDStr {
+    export function create(name: string, nspace: NamespaceIDStr | UIDStr): BlockIDStr {
         return Hashcodes.createID({name: name.toLowerCase(), nspace}, LEN);
     }
 

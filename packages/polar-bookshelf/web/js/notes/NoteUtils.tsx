@@ -31,7 +31,7 @@ import {DOMBlocks} from "./contenteditable/DOMBlocks";
 import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
-import {BlockIDs} from "./store/BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export const useDocumentBlockFromDocInfoCreator = () => {

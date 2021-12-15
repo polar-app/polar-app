@@ -6,7 +6,7 @@ import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {BlockContent} from "./store/BlocksStore";
-import {BlockIDs} from "./store/BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 export type BlockContentStructure<T = BlockContent> = {
     content: T;

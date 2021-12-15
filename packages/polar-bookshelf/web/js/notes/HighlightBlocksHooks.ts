@@ -23,7 +23,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
-import {BlockIDs} from "./store/BlockIDs";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
