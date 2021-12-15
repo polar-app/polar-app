@@ -12,13 +12,13 @@ import {StandardIconButton} from "../../../../repository/js/doc_repo/buttons/Sta
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
-import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
