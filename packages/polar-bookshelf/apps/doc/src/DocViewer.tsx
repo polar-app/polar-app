@@ -198,7 +198,7 @@ namespace Device {
                     onClose={() => setOpen(false)}
                     onOpen={() => setOpen(true)}>
 
-                    <AnnotationSidebar />
+                    <AnnotationSidebar onClose={() => setOpen(false)} />
 
                 </SwipeableDrawer>
 
