@@ -3,10 +3,12 @@ import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
 import {Refs} from "polar-shared/src/metadata/Refs";
-import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
 import {MarkdownContent} from "../../../../../../web/js/notes/content/MarkdownContent";
+import {IDocMetaAnnotationProps} from "../IDocMetaAnnotationProps";
+import {IBlockAnnotationProps} from "../IBlockAnnotationProps";
+import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 type CreateCommentForm = {
     body: string;

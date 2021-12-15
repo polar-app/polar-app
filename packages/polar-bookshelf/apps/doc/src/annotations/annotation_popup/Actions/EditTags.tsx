@@ -1,7 +1,8 @@
 import React from "react";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
-import {IAnnotationPopupActionProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
+import {IDocMetaAnnotationProps} from "../IDocMetaAnnotationProps";
+import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 export const EditTags: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
     const {clear} = useAnnotationPopup();
