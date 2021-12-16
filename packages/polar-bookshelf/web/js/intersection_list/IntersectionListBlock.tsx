@@ -103,7 +103,7 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
 }
 
 
-export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
+export const IntersectionListBlock = typedMemo(function IntersectionListBlock<V extends ListValue>(props: IProps<V>) {
 
     // TODO we have to detect if the parent of the intersection list is hidden and then disable
     // the inner view changing...
@@ -135,7 +135,7 @@ export interface LazyBlockComponentProps<V extends ListValue> extends IProps<V> 
  * Used so that we're doing the rendering here and we can memoize it so that a re-render due to inView changing
  * won't re-render the component itself due to props not changing.
  */
-export const LazyBlockComponent = typedMemo(function<V extends ListValue>(props: LazyBlockComponentProps<V>) {
+export const LazyBlockComponent = typedMemo(function LazyBlockComponent<V extends ListValue>(props: LazyBlockComponentProps<V>) {
 
     const {BlockComponent, HiddenBlockComponent} = props;
 
