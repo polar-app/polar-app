@@ -201,6 +201,9 @@ jobs:
       - store_test_results:
           path: /home/circleci/project/packages
 
+      - store_artifacts:
+          path: /home/circleci/project/packages/polar-bookshelf/karma-result.json
+
   # @ Run tests
   mocha:
     parameters:

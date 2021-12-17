@@ -70,7 +70,8 @@ module.exports = (config) => {
             'karma-mocha',
             'karma-spec-reporter',
             'karma-junit-reporter',
-            'karma-summary-reporter'
+            'karma-summary-reporter',
+            'karma-structured-json-reporter',
         ],
 
         files: [
@@ -94,7 +95,11 @@ module.exports = (config) => {
         },
         singleRun: true,
 
-        reporters: ['junit', 'spec', 'summary'],
+        reporters: ['junit', 'spec', 'summary', 'json-result'],
+        jsonResultReporter: {
+            outputFile: "karma-result.json",
+            isSynchronous: true,
+        },
 
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
