@@ -6,8 +6,9 @@ import { FileUpload } from './FileUpload';
 import { Readable } from 'stream';
 import { File } from '@google-cloud/storage';
 import { PDFMetadata } from "polar-pdf/src/pdf/PDFMetadata";
-import { EPUBMetadata } from "polar-epub/src/EPUBMetadata";
+import { EPUBMetadataUsingNode } from "polar-epub/src/EPUBMetadataUsingNode";
 import { IParsedDocMeta } from 'polar-shared/src/util/IParsedDocMeta';
+import { existsSync, mkdirSync, unlinkSync } from 'fs';
 
 interface WrittenTmpFile {
     readonly file: File;
@@ -126,20 +127,42 @@ export namespace UrlCapture {
         return await CapturedContentEPUBGenerator.generate(epubCapture);
     }
 
-    export async function parseMetadata(tmpFile: WrittenTmpFile): Promise<IParsedDocMeta> {
-        await tmpFile.file.makePublic();
+    function tmpDirPath() {
+        const path = __dirname + "/../tmp/";
 
-        const docUrl = tmpFile.file.publicUrl();
+        if (!existsSync(path)) {
+            mkdirSync(path);
+        }
+        
+        return path;
+    }
 
-        switch (tmpFile.type) {
+    function removeBucketPath(filePath: string) {
+        return filePath.split('/')[1];
+    }
+
+    export async function parseMetadata(tmp: WrittenTmpFile): Promise<IParsedDocMeta> {
+
+        switch (tmp.type) {
             case 'epub':
-                // TODO: Fix epub metadata not properly reading URL the cause \
-                // node-stream-zip package needs more investigation
-                return EPUBMetadata.getMetadata(docUrl);
+                // - Get tmp capture epub file in a tmp directory
+                // - Unzip to extract metadata (EPUBMetadataUsingNode)
+                // - Remove the epub file once the data has been extracted
+                const destination = tmpDirPath() + `${removeBucketPath(tmp.file.name)}`;
+
+                await tmp.file.download({ destination });
+
+                const metadata = EPUBMetadataUsingNode.getMetadata(destination);
+
+                unlinkSync(destination);
+
+                return metadata;
             case 'pdf':
+                await tmp.file.makePublic();
+                const docUrl = tmp.file.publicUrl();
                 return PDFMetadata.getMetadata(docUrl);
             default:
-                throw new Error("Can't parse metadata of known types.");
+                throw new Error("Can't parse metadata of unknown types.");
         }
     }
 }
