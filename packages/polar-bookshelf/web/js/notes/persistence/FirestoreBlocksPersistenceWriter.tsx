@@ -5,7 +5,7 @@ import {FirestoreBlocksStoreMutations} from "./FirestoreBlocksStoreMutations";
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import {DocumentDataUpdater} from "./DocumentDataUpdater";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {FileTombstones} from "./FileTombstones";
