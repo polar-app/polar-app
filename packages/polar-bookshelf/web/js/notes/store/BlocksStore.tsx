@@ -60,7 +60,6 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {IBlockPredicates} from "./IBlockPredicates";
 import {BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 
 export const ENABLE_UNDO_TRACING = false;

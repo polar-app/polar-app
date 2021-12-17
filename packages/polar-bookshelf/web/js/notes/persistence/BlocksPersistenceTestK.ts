@@ -4,7 +4,7 @@ import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
-import {BlocksStoreTests} from "../store/BlocksStoreTests";
+import {BlocksStoreTests} from "../store/BlocksStoreTests/BlocksStoreTests";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";

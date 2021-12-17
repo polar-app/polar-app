@@ -1,12 +1,9 @@
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {BlocksStore} from "./BlocksStore";
-import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {UndoQueues2} from "../../undo/UndoQueues2";
-import {assertBlockType, JSDOMParser} from "./BlocksStoreTestNK";
+import {JSDOMParser} from "./BlocksStoreTests/BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
-import {BlocksStoreTests} from "./BlocksStoreTests";
+import {BlocksStoreTests} from "./BlocksStoreTests/BlocksStoreTests";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
@@ -18,25 +15,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {JSDOM} from "jsdom";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-
-function createStore() {
-    const blocks = MockBlocks.create();
-    const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
-    store.doPut(blocks);
-    return store;
-}
-
-const root = createBasicBlock({
-    id: '100',
-    root: '100',
-    parent: undefined,
-    parents: [],
-    content: {
-        type: 'name',
-        data: "United States",
-        links: [],
-    }
-})
+import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTests/BlocksStoreTestUtils";
 
 describe("BlocksStoreUndoQueues", () => {
 
@@ -89,7 +68,7 @@ describe("BlocksStoreUndoQueues", () => {
                 }
             };
 
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             blocksStore.doPut([mutation0.after]);
 
@@ -306,7 +285,7 @@ describe("BlocksStoreUndoQueues", () => {
     describe("getSideEffectIdentifiers", () => {
 
         it('should return the id of the parent document block when given a descendant of that block', () => {
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const sideEffectIdentifiers = BlocksStoreUndoQueues.getAffectedDocumentBlocksIdentifiers(blocksStore, ['2024', '2023flashcard']);
 
@@ -314,7 +293,7 @@ describe("BlocksStoreUndoQueues", () => {
         });
 
         it('should ignore root types other than "document"', () => {
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const sideEffectIdentifiers = BlocksStoreUndoQueues.getAffectedDocumentBlocksIdentifiers(blocksStore, ['111', '118']);
 
@@ -336,7 +315,7 @@ describe("BlocksStoreUndoQueues", () => {
         });
 
         it('should update the timestamp of the given blocks', () => {
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
             const id = '2020document';
 
             const block = blocksStore.getBlockForMutation(id);
@@ -363,7 +342,7 @@ describe("BlocksStoreUndoQueues", () => {
         });
 
         it('should ignore timestamp updates that are within a timeframe of less than 1 minute', () => {
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
             const id = '2020document';
 
             const block = blocksStore.getBlockForMutation(id);
@@ -393,7 +372,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         xit('should update the counters of docInfo when a child gets added', () => {
             // Set up
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
             const documentBlockID = '2020document';
 
             const content = new TextHighlightAnnotationContent({
@@ -423,7 +402,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             const oldOwnerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
             Asserts.assertPresent(oldOwnerDocumentBlock);
-            assertBlockType('document', oldOwnerDocumentBlock);
+            BlockAsserts.assertBlockType('document', oldOwnerDocumentBlock);
             const oldDocInfo = oldOwnerDocumentBlock.content.toJSON().docInfo;
 
 
@@ -434,7 +413,7 @@ describe("BlocksStoreUndoQueues", () => {
             // Assert
             const ownerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
             Asserts.assertPresent(ownerDocumentBlock);
-            assertBlockType('document', ownerDocumentBlock);
+            BlockAsserts.assertBlockType('document', ownerDocumentBlock);
 
             const newDocInfo = ownerDocumentBlock.content.toJSON().docInfo;
 
@@ -444,7 +423,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         xit('should update the counters of docInfo when a child gets removed (it should also ignore mutations of type "modified")', () => {
             // Set up
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
             const documentBlockID = '2020document';
             const randomBlock = blocksStore.getBlock('102');
             Asserts.assertPresent(randomBlock);
@@ -482,7 +461,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             const oldOwnerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
             Asserts.assertPresent(oldOwnerDocumentBlock);
-            assertBlockType('document', oldOwnerDocumentBlock);
+            BlockAsserts.assertBlockType('document', oldOwnerDocumentBlock);
             const oldDocInfo = oldOwnerDocumentBlock.content.toJSON().docInfo;
 
 
@@ -493,7 +472,7 @@ describe("BlocksStoreUndoQueues", () => {
             // Assert
             const ownerDocumentBlock = blocksStore.getBlockForMutation(documentBlockID);
             Asserts.assertPresent(ownerDocumentBlock);
-            assertBlockType('document', ownerDocumentBlock);
+            BlockAsserts.assertBlockType('document', ownerDocumentBlock);
 
             const newDocInfo = ownerDocumentBlock.content.toJSON().docInfo;
 
@@ -506,7 +485,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it('single root and children', () => {
 
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['102']);
 
@@ -525,7 +504,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it('first child off root with no children', () => {
 
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['103']);
 
@@ -538,7 +517,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it('child off root with few children', () => {
 
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['105']);
 
@@ -554,7 +533,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it('child with parent but parent is not root', () => {
 
-            const blocksStore = createStore();
+            const blocksStore = BlocksStoreTestUtils.createStore();
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['106']);
 
