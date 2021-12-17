@@ -202,7 +202,7 @@ jobs:
           path: /home/circleci/project/packages
 
       - store_artifacts:
-          path: /home/circleci/project/packages/polar-bookshelf/karma-result.json
+          path: /home/circleci/project/packages/*/karma-result.json
 
   # @ Run tests
   mocha:
