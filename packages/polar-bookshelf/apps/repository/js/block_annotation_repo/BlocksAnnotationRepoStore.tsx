@@ -77,10 +77,11 @@ export class BlocksAnnotationRepoStore {
         const blocks = this._blocksStore
             .idsToBlocks(this.annotationBlocks.map(({ id }) => id))
             .map(block => block.toJSON() as IBlock<IBlockContent>)
-            .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock);
+            .filter((block): block is IBlock<IRepoAnnotationContent> =>
+                    BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block));
 
         return BlocksAnnotationRepoFilters
-            .execute(blocks, this._filter)
+            .execute(this._blocksStore.tagsIndex, blocks, this._filter)
             .map(({ id }) => ({ id }));
     }
 
@@ -122,12 +123,17 @@ export class BlocksAnnotationRepoStore {
         return this._blocksStore
             .idsToBlocks(ids)
             .map(block => block.toJSON() as IBlock<IBlockContent>)
-            .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock);
+            .filter((block): block is IBlock<IRepoAnnotationContent> =>
+                    BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block));
     }
 
-    static isRepoAnnotationBlock(block: IBlock): block is IBlock<IRepoAnnotationContent> {
-        return IBlockPredicates.isAnnotationBlock(block)
-               || IBlockPredicates.isMarkdownBlock(block);
+    static isRepoAnnotationBlock(blocksStore: IBlocksStore, block: IBlock): block is IBlock<IRepoAnnotationContent> {
+        const rootBlock = blocksStore.getBlock(block.root);
+
+        return rootBlock !== undefined
+               && IBlockPredicates.isDocumentBlock(rootBlock)
+               && (IBlockPredicates.isAnnotationBlock(block) || IBlockPredicates.isMarkdownBlock(block))
+               && block.parents.length <= 2;
     }
 }
 

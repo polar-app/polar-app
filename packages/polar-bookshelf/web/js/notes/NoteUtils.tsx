@@ -42,6 +42,7 @@ import {DOMBlocks} from "./contenteditable/DOMBlocks";
 import {BlockContentCanonicalizer} from "./contenteditable/BlockContentCanonicalizer";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockAction";
+import {ReverseIndex} from "./store/ReverseIndex";
 
 export const useDocumentBlockFromDocInfoCreator = () => {
 
@@ -473,23 +474,14 @@ export namespace BlockTextContentUtils {
 
 export namespace BlockLinksMatcher {
 
-    export function filter<T extends IBlock>(list: ReadonlyArray<T>,
+    export function filter<T extends IBlock>(tagIndex: ReverseIndex,
+                                             list: ReadonlyArray<T>,
                                              filterLinks: ReadonlyArray<IBlockLink>): ReadonlyArray<T> {
 
-        const filterLinksMap = arrayStream(filterLinks).toMap(({ id }) => id);
+        const blockIDsSet = new Set(filterLinks.flatMap(({ id }) => tagIndex.get(id)));
 
         function predicate(item: IBlock): boolean {
-
-            const itemLinks = item.content.links;
-
-            for (const itemLink of itemLinks) {
-                if (filterLinksMap[itemLink.id]) {
-                    return true;
-                }
-            }
-
-            return false;
-
+            return blockIDsSet.has(item.id);
         }
 
         return list.filter(predicate);

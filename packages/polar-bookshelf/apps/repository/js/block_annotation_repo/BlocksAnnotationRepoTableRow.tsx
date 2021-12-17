@@ -180,7 +180,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
 
     const contextMenuHandlers = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
 
-    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
+    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(blocksStore, block)) {
         return null;
     }
 
