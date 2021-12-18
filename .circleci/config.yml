@@ -202,7 +202,7 @@ jobs:
       # Generate a combined-karma-result.json file from all karma-result.json files in packages
       - run:
           name: combine-karma-coverage
-          command: npx ts-node-script ./scripts/combine-karma-summaries.ts
+          command: npm install -g ts-node && npx ts-node-script ./scripts/combine-karma-summaries.ts
 
       - store_test_results:
           path: /home/circleci/project/packages
