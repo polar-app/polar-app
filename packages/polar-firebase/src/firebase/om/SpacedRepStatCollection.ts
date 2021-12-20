@@ -33,24 +33,6 @@ export namespace SpacedRepStatCollection {
     }
 
     /**
-     * Get the most recent stats for for the given mode.
-     */
-    export async function list<SM = unknown>(firestore: IFirestore<SM>,
-                                             uid: UserIDStr,
-                                             mode: RepetitionMode,
-                                             type: StatType): Promise<ReadonlyArray<SpacedRepStatRecord>> {
-
-        const clauses: ReadonlyArray<Clause> = [
-            ['uid', '==', uid],
-            ['mode', '==', mode],
-            ['type', '==', type]
-        ];
-
-        return await Collections.list(firestore, COLLECTION_NAME, clauses);
-
-    }
-
-    /**
      * Return true if this user has stats.
      */
     export async function hasStats<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<boolean> {
