@@ -117,6 +117,9 @@ function convertQuerySnapshotToTypedDocumentChanges<D, SM = unknown>(snapshot: I
 
 }
 
+// TODO: we need to include the metadata from the server including whether it
+// came from the cache or not.
+
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
