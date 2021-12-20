@@ -9,17 +9,13 @@ import {
     Task
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Duration, TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
 import {ITaskRep} from "./ITaskRep";
 import {ICalculatedTaskReps} from "./ICalculatedTaskReps";
 
-/**
- * @deprecated
- */
-export namespace TasksCalculator {
+export namespace TasksCalculator2 {
 
     /**
      * The amount of time to wait to process the card again when it has lapsed.
@@ -40,18 +36,9 @@ export namespace TasksCalculator {
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    export async function calculate<A>(opts: CalculateOpts<A>): Promise<ICalculatedTaskReps<A>> {
+    export function calculate<A>(opts: CalculateOpts<A>): ICalculatedTaskReps<A> {
 
-        const resolvedTaskReps: ITaskRep<A>[] = [];
-
-        const jobs = opts.potential.map((current) => async () => {
-            const taskRep = await opts.resolver(current);
-            resolvedTaskReps.push(taskRep);
-        });
-
-        const asyncWorkQueue = new AsyncWorkQueue(jobs);
-
-        await asyncWorkQueue.execute();
+        const resolvedTaskReps = opts.potential.map(current => opts.resolver(current));
 
         const prioritizedTaskReps =
             resolvedTaskReps.filter(current => current.age >= 0)  // they have to be expired and ready to evaluate.
@@ -267,16 +254,12 @@ export namespace TasksCalculator {
 /**
  * Return a WorkRep if we were able to find it or undefined.
  */
-export interface OptionalTaskRepResolver<A> {
-    (task: Task<A>): Promise<ITaskRep<A> | undefined>;
-}
+export type OptionalTaskRepResolver<A> = (task: Task<A>) => ITaskRep<A> | undefined;
 
 /**
  * Return a WorkRep or a default rep if we're unable to find it.
  */
-export interface TaskRepResolver<A> {
-    (task: Task<A>): Promise<ITaskRep<A>>;
-}
+export type TaskRepResolver<A> = (task: Task<A>) => ITaskRep<A>;
 
 /**
  * If we don't have an explicit state, then we need to compute a new one...
@@ -284,15 +267,15 @@ export interface TaskRepResolver<A> {
  */
 export function createDefaultTaskRepResolver<A>(delegate: OptionalTaskRepResolver<A>): TaskRepResolver<A> {
 
-    return async (task: Task<A>): Promise<ITaskRep<A>> => {
+    return (task: Task<A>): ITaskRep<A> => {
 
-        const result = await delegate(task);
+        const result = delegate(task);
 
         if (result) {
             return result;
         }
 
-        return TasksCalculator.createInitialLearningState(task);
+        return TasksCalculator2.createInitialLearningState(task);
 
     };
 
