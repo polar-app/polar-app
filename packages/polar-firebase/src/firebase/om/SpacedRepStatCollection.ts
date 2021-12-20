@@ -35,9 +35,10 @@ export namespace SpacedRepStatCollection {
     /**
      * Get the most recent stats for for the given mode.
      */
-    export async function list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr,
-                             mode: RepetitionMode,
-                             type: StatType): Promise<ReadonlyArray<SpacedRepStatRecord>> {
+    export async function list<SM = unknown>(firestore: IFirestore<SM>,
+                                             uid: UserIDStr,
+                                             mode: RepetitionMode,
+                                             type: StatType): Promise<ReadonlyArray<SpacedRepStatRecord>> {
 
         const clauses: ReadonlyArray<Clause> = [
             ['uid', '==', uid],
@@ -100,6 +101,10 @@ export interface ISpacedRepStatRecord {
      * The time this stat was recorded.
      */
     readonly created: ISODateTimeString;
+
+    readonly mode: RepetitionMode;
+
+    readonly type: 'queue' | 'completed';
 
 }
 
