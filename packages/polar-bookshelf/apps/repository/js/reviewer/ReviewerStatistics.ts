@@ -5,6 +5,9 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 
 export class ReviewerStatistics {
 
+    /**
+     * @deprecated
+     */
     public static async statistics(mode: RepetitionMode, type: StatType) {
 
         const uid = await FirebaseBrowser.currentUserID();
