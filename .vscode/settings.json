@@ -133,6 +133,7 @@
   "files.exclude": {
     ".pytest_cache": true,
     ".pnpm-store": true,
-    ".idea": true
+    ".idea": true,
+    ".jscpd": true
   }
 }

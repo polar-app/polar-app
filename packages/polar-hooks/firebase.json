@@ -9,6 +9,14 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/features",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/settings",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/annotations",
         "destination": "/apps/repository/index.html"
       },

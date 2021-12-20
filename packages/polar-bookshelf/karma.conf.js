@@ -7,6 +7,22 @@ const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
 
+function parseArgs() {
+
+    const result = {};
+
+    for(const arg of process.argv) {
+        if (arg.startsWith("--grep=")) {
+            result.grep = arg.split("=")[1];
+        }
+    }
+
+    return result;
+
+}
+
+const {grep} = parseArgs();
+
 module.exports = (config) => {
     config.set({
         client: {
@@ -18,7 +34,16 @@ module.exports = (config) => {
                 './{,!(node_modules)/**}/*TestNK.js'
             ],
             mocha: {
-                timeout: 60000
+
+                timeout: 60000,
+
+                // this works to to filter mocha but I have no way to get this value from the command line.
+                // https://www.npmjs.com/package/karma-mocha
+                //
+                // karma doesn't have a native way to filter results so we have
+                // to pass --grep and handle it here.
+                grep
+
             }
         },
         browsers: ['ChromeHeadless'],

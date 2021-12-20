@@ -36,7 +36,8 @@
     - [`annotation-commentCreated` Annotation Comment Created](#annotation-commentcreated-annotation-comment-created)
     - [`annotation-colorChanged` Annotation Color Changed](#annotation-colorchanged-annotation-color-changed)
     - [`annotation-manualFlashcardCreated` Annotation Manual Flashcard Created](#annotation-manualflashcardcreated-annotation-manual-flashcard-created)
-
+  - [Notes](#notes)
+    - [`notes-backlinkCreated` Notes Backlink Created](#notes-backlinkcreated-notes-backlink-created)
 
 <br />
 
@@ -193,3 +194,9 @@
           "BASIC_FRONT_BACK_OR_REVERSE",
 }
 ```
+
+## Notes
+
+### `notes-backlinkCreated` Notes backlink created
+
+*No extra data*

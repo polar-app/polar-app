@@ -31,10 +31,9 @@ import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
-import {WithNotesIntegration} from '../notes/NoteUtils';
-import ChatIcon from '@material-ui/icons/Chat';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
+import {IntercomIcon} from "../apps/repository/integrations/Intercom";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -229,18 +228,20 @@ const IntercomButton = React.memo(function IntercomButton() {
         if (intercomData && intercomClient) {
             intercomClient.update({
                 ...intercomData,
-                hide_default_launcher: false,
             });
             intercomClient.showMessages();
         }
     }
+
 
     return (
         <ActiveTabButton title={'Chat with us'}
                          path={RoutePathNames.SUPPORT}
                          noContextMenu={true}
                          onClick={onClick}>
-            <ChatIcon className={classes.secondaryIcon}/>
+            <div className={classes.secondaryIcon}>
+                <IntercomIcon/>
+            </div>
         </ActiveTabButton>
     )
 });
@@ -365,17 +366,12 @@ export const SideNav = React.memo(function SideNav() {
                             <HomeButton/>
                             <AnnotationsButton/>
 
-                            <WithNotesIntegration>
-                                <NotesButton/>
-                            </WithNotesIntegration>
+                            <NotesButton/>
 
                             <DeviceRouter desktop={<StatsButton/>}/>
 
-
-                            <WithNotesIntegration>
-                                <SideNavDivider/>
-                                <DailyNotesButton/>
-                            </WithNotesIntegration>
+                            <SideNavDivider/>
+                            <DailyNotesButton/>
 
                             {tabs.length > 0 && (
                                 <SideNavDivider/>

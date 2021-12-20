@@ -357,9 +357,31 @@ export class ArrayStream<T> {
 
 }
 
+/**
+ * Take an array and convert it to an ArrayStream
+ */
 export function arrayStream<T>(values: ReadonlyArray<T>): ArrayStream<T> {
     return new ArrayStream<T>(values);
 }
+
+/**
+ * Similar to arrayStream but we convert an array stream of objects with key and
+ * value properties.  This can syntactic sugar on top of Object.entries which
+ * returns a tuple but they can be harder to work with because since they aren't
+ * named you just have to guess which is which and it makes he code harder to
+ * read.
+ */
+export function mapStream<V>(map: Readonly<{[key: string]: V}>): ArrayStream<{readonly key: string, readonly value: V}> {
+
+    return arrayStream(Object.entries(map))
+        .map((current) => {
+            const key = current[0];
+            const value = current[1];
+            return {key, value}
+        });
+
+}
+
 
 export namespace ArrayStreams {
 

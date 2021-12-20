@@ -168,4 +168,4 @@ async function doAsync() {
 
 }
 
-doAsync().catch(err => console.error(err));
+doAsync().catch(err => console.error("Could not compute orphan report: ", err));

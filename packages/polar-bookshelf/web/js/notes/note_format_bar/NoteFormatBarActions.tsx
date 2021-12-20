@@ -36,7 +36,7 @@ export const useExecCommandExecutor = (command: IContentEditableTextStyle) => {
 
         document.execCommand(command, false, value);
 
-        if (! elem) {
+        if (range.collapsed) {
             return;
         }
 

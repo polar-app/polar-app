@@ -8,9 +8,7 @@ export const MigrationToBlockAnnotationsMainStory = () => {
         <AdaptiveDialog>
             <MigrationToBlockAnnotationsDialog
                 progress={65}
-                onSkip={NULL_FUNCTION}
                 onStart={NULL_FUNCTION}
-                skippable
             />
         </AdaptiveDialog>
     );

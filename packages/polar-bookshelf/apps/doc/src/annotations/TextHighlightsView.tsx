@@ -7,7 +7,6 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlockIDs} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {PageAnnotations} from "./PageAnnotations";
-import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {observer} from "mobx-react-lite";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
@@ -49,7 +48,7 @@ export const BlockTextHighlightRenderer: React.FC<IBlockTextHighlightRendererPro
         }
 
         const { value, pageNum, docID } = block.content.toJSON();
-        
+
         return {
             annotation: { ...value, id },
             fingerprint: docID,
@@ -106,15 +105,10 @@ export const DocMetaTextHighlightsView: React.FC<ITextHighlightsViewRendererProp
 
 export const TextHighlightsView = React.memo(() => {
     const {docMeta} = useDocViewerStore(['docMeta']);
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     if (! docMeta) {
         return null;
     }
 
-    if (notesIntegrationEnabled) {
-        return <BlockTextHighlightsViewRenderer docMeta={docMeta} />
-    }
-
-    return <DocMetaTextHighlightsView docMeta={docMeta} />;
+    return <BlockTextHighlightsViewRenderer docMeta={docMeta} />
 });

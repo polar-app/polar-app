@@ -17,7 +17,6 @@ import {
     useTheme
 } from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
-import {FeatureToggleEnabled} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {
     IAnswerExecutorError,
@@ -39,6 +38,7 @@ import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {useDocInfo, useDocLoaderFromDocID} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {IAnswerDigestRecordPDF} from "polar-answers-api/src/IAnswerDigestRecordPDF";
+import { FeatureEnabled } from '../features/FeaturesRegistry';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -554,7 +554,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
     };
 
     return (
-        <FeatureToggleEnabled featureName='answers'>
+        <FeatureEnabled feature='answers'>
             <>
                 {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
 
@@ -562,9 +562,7 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
                     keyMap={globalKeyMap}
                     handlerMap={globalKeyHandlers}/>
             </>
-        </FeatureToggleEnabled>
+        </FeatureEnabled>
     );
 
 });
-
-

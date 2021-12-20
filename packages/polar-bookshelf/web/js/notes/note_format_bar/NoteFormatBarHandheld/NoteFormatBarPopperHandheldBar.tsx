@@ -3,23 +3,27 @@ import {Box, Paper, Divider, createStyles, makeStyles} from "@material-ui/core";
 import {NoteFormatBarButton} from "../NoteFormatBarButton";
 import {BacklinkIconButton} from "../../../mui/icon_buttons/BacklinkIconButton";
 import {FABoldIcon, FAItalicIcon, FAStrikethroughIcon} from "../../../mui/MUIFontAwesome";
-import {useExecCommandExecutor} from "../NoteFormatBarActions";
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import clsx from "clsx";
-import {useUndoQueue} from "../../../undo/UndoQueueProvider2";
 import {useNoteFormatBarPopperHandheldStyles} from "./NoteFormatBarPopperHandheld";
-import {useCreateBacklinkFromSelection} from "../../NoteUtils";
-import {useBlocksStore} from "../../store/BlocksStore";
 
 interface INoteFormatBarPopperHandheldBarProps {
     readonly onToggleExpand: () => void;
     readonly expanded: boolean;
     readonly className?: string;
     readonly style?: React.CSSProperties;
+
+    readonly onBold: () => void;
+    readonly onItalic: () => void;
+    readonly onStrikeThrough: () => void;
+    readonly onUndo: () => void;
+    readonly onRedo: () => void;
+    readonly onBacklink: () => void;
+    readonly onHideKeyboard: () => void;
 }
 
 export const useStyles = makeStyles((theme) =>
@@ -44,28 +48,23 @@ export const useStyles = makeStyles((theme) =>
 );
 
 export const NoteFormatBarPopperHandheldBar: React.FC<INoteFormatBarPopperHandheldBarProps> = (props) => {
-    const { onToggleExpand, expanded, className, style } = props;
+    const {
+        onToggleExpand,
+        expanded,
+        className,
+        style,
+
+        onHideKeyboard,
+        onBacklink,
+        onRedo,
+        onUndo,
+        onStrikeThrough,
+        onItalic,
+        onBold,
+    } = props;
 
     const sharedClasses = useNoteFormatBarPopperHandheldStyles();
-    const createBacklinkinkFromSelection = useCreateBacklinkFromSelection();
     const classes = useStyles();
-    const undoQueue = useUndoQueue();
-    const blocksStore = useBlocksStore();
-
-    const handleBold = useExecCommandExecutor('bold');
-    const handleItalic = useExecCommandExecutor('italic');
-    const handleStrikeThrough = useExecCommandExecutor('strikeThrough');
-    const handleUndo = React.useCallback(() => undoQueue.undo(), [undoQueue]);
-    const handleRedo = React.useCallback(() => undoQueue.redo(), [undoQueue]);
-    const handleBacklink = React.useCallback(() => {
-        const id = blocksStore.active?.id;
-
-        if (id) {
-            createBacklinkinkFromSelection(id);
-        }
-    }, [blocksStore, createBacklinkinkFromSelection]);
-
-    const handleHideKeyboard = React.useCallback(() => null, []);
 
     return (
         <Paper className={clsx(sharedClasses.paperRoot, className)} style={style}>
@@ -77,33 +76,33 @@ export const NoteFormatBarPopperHandheldBar: React.FC<INoteFormatBarPopperHandhe
 
                 <NoteFormatBarButton icon={<KeyboardHideIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleHideKeyboard} />
+                                     onClick={onHideKeyboard} />
 
                 <Divider orientation="vertical" flexItem className={classes.divider} />
 
                 <NoteFormatBarButton icon={<BacklinkIconButton className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleBacklink} />
+                                     onClick={onBacklink} />
 
                 <NoteFormatBarButton icon={<FABoldIcon className={clsx(classes.icon, classes.faIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleBold} />
+                                     onClick={onBold} />
 
                 <NoteFormatBarButton icon={<FAItalicIcon className={clsx(classes.icon, classes.faIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleItalic} />
+                                     onClick={onItalic} />
 
                 <NoteFormatBarButton icon={<FAStrikethroughIcon className={clsx(classes.icon, classes.faIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleStrikeThrough} />
+                                     onClick={onStrikeThrough} />
 
                 <NoteFormatBarButton icon={<UndoIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleUndo} />
+                                     onClick={onUndo} />
 
                 <NoteFormatBarButton icon={<RedoIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={handleRedo} />
+                                     onClick={onRedo} />
 
                 <Divider orientation="vertical" flexItem className={classes.divider} />
 
