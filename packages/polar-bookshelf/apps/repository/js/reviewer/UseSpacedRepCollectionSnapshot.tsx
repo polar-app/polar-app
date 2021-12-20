@@ -1,4 +1,4 @@
 import {createFirestoreSnapshotForUserCollection} from "../../../../web/js/stores/FirestoreSnapshotStore";
-import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
+import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 
-const [SpacedRepCollectionSnapshotProvider] = createFirestoreSnapshotForUserCollection(SpacedRepStatCollection.COLLECTION_NAME);
+const [SpacedRepCollectionSnapshotProvider, useSpacedRepCollectionSnapshot] = createFirestoreSnapshotForUserCollection(SpacedRepCollection.COLLECTION_NAME);
