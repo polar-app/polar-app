@@ -39,6 +39,9 @@ export interface TasksBuilder<A, B> {
 
 export class ReviewerTasks {
 
+    /**
+     * @deprecated
+     */
     public static async createTasks<A, B>(data: ReadonlyArray<A>,
                                           mode: RepetitionMode,
                                           tasksBuilder: TasksBuilder<A, B>,
