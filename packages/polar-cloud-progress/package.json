@@ -21,7 +21,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/file-saver": "=2.0.3"
+    "@types/file-saver": "=2.0.3",
+    "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "polar-shared": "0.0.0",

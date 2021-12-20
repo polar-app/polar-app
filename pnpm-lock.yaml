@@ -139,6 +139,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -146,6 +147,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
@@ -155,6 +157,7 @@ importers:
       '@google-cloud/firestore': '=4.15.1'
       firebase-admin: '=10.0.0'
       firebase-tools: '=9.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-shared: 0.0.0
@@ -166,6 +169,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       firebase-tools: 9.16.0
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-answers:
     specifiers:
@@ -176,6 +180,7 @@ importers:
       chai: 4.2.0
       firebase-functions: '=3.16.0'
       gpt-3-encoder: ^1.1.3
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-answers-api: 0.0.0
       polar-blocks: 0.0.0
@@ -206,6 +211,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
       polar-test-cache: link:../polar-test-cache
@@ -215,6 +221,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
     dependencies:
@@ -223,6 +230,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-assets:
@@ -236,30 +244,36 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
     devDependencies:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
   packages/polar-backend-datastore:
     specifiers:
       '@material-ui/styles': '=4.11.4'
+      karma-structured-json-reporter: '=1.0.1'
       polar-bookshelf: 0.0.0
       polar-shared: 0.0.0
     dependencies:
       '@material-ui/styles': 4.11.4
       polar-bookshelf: link:../polar-bookshelf
       polar-shared: link:../polar-shared
+    devDependencies:
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-backend-shared:
     specifiers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared-webserver: 0.0.0
       tsconfig: '=7.0.0'
@@ -270,11 +284,13 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-background-uploader:
     specifiers:
       '@types/mocha': '=9.0.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -282,6 +298,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -290,6 +307,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
       polar-firebase: 0.0.0
@@ -308,6 +326,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-firebase-admin: link:../polar-firebase-admin
       polar-firebase-browser: link:../polar-firebase-browser
@@ -317,6 +336,7 @@ importers:
   packages/polar-blocks:
     specifiers:
       '@types/mocha': '=9.0.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -324,6 +344,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -405,6 +426,7 @@ importers:
       js-sha3: 0.8.0
       jsdom: '=16.7.0'
       jszip: '=3.7.1'
+      karma-structured-json-reporter: '=1.0.1'
       lodash: '=4.17.15'
       material-ui-dropzone: '=3.3.0'
       mobx: '=6.3.2'
@@ -635,6 +657,7 @@ importers:
       dtsmake: 0.0.10
       install: 0.12.2
       jsdom: 16.7.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
       react-contenteditable: 3.3.5_react@17.0.2
@@ -651,6 +674,7 @@ importers:
     specifiers:
       '@types/mocha': '=9.0.0'
       '@types/ua-parser-js': 0.7.33
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
       ua-parser-js: 0.7.21
@@ -659,6 +683,7 @@ importers:
       ua-parser-js: 0.7.21
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -669,6 +694,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -684,6 +710,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -704,6 +731,7 @@ importers:
       esbuild: '=0.12.25'
       firebase: '=8.10.0'
       firebase-admin: '=10.0.0'
+      karma-structured-json-reporter: '=1.0.1'
       node-fetch: '=2.6.1'
       polar-accounts: 0.0.0
       polar-admin: 0.0.0
@@ -743,11 +771,13 @@ importers:
       aws-cdk: 1.121.0
       esbuild: 0.12.25
       firebase-admin: 10.0.0
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-cloud-progress:
     specifiers:
       '@types/file-saver': '=2.0.3'
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-firestore-like: 0.0.0
@@ -760,6 +790,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/file-saver': 2.0.3
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-content-capture:
     specifiers:
@@ -769,6 +800,7 @@ importers:
       chai: 4.2.0
       jsdom: '=16.7.0'
       jszip: '=3.7.1'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -782,6 +814,7 @@ importers:
       '@types/mocha': 9.0.0
       chai: 4.2.0
       jsdom: 16.7.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
       wait-for-expect: 3.0.1
@@ -789,10 +822,13 @@ importers:
   packages/polar-create-module:
     specifiers:
       cli-select: '=1.1.2'
+      karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
     dependencies:
       cli-select: 1.1.2
       polar-shared: link:../polar-shared
+    devDependencies:
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-desktop-app:
     specifiers:
@@ -801,6 +837,7 @@ importers:
       electron-builder: '=22.10.5'
       electron-notarize: 1.0.0
       electron-updater: '=4.3.8'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       null-loader: '=4.0.1'
       polar-electron-framework: 0.0.0
@@ -815,6 +852,7 @@ importers:
       electron-builder: 22.10.5
       electron-notarize: 1.0.0
       electron-updater: 4.3.8
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       null-loader: 4.0.1_webpack@5.61.0
       source-map-support: 0.5.19
@@ -828,6 +866,7 @@ importers:
       chai: 4.2.0
       firebase-admin: '=10.0.0'
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -847,6 +886,7 @@ importers:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -860,6 +900,7 @@ importers:
       chai: 4.2.0
       jsdom: '=16.7.0'
       jsdom-global: 3.0.2
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -875,15 +916,19 @@ importers:
       chai: 4.2.0
       jsdom: 16.7.0
       jsdom-global: 3.0.2_jsdom@16.7.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-electron-framework:
     specifiers:
       electron: '=12.0.2'
+      karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
     dependencies:
       electron: 12.0.2
       polar-shared: link:../polar-shared
+    devDependencies:
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-epub:
     specifiers:
@@ -891,6 +936,7 @@ importers:
       epubjs: '=0.3.89-polar.23'
       fast-xml-parser: '=3.19.0'
       jsdom: '=16.7.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       node-stream-zip: '=1.14.0'
       polar-shared: 0.0.0
@@ -903,6 +949,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -911,6 +958,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       jszip: '=3.7.1'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -920,12 +968,14 @@ importers:
     devDependencies:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
   packages/polar-exporters:
     specifiers:
       '@types/mocha': '=9.0.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -933,6 +983,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -940,16 +991,19 @@ importers:
     specifiers:
       '@types/file-saver': '=2.0.3'
       file-saver: '=2.0.2'
+      karma-structured-json-reporter: '=1.0.1'
     dependencies:
       file-saver: 2.0.2
     devDependencies:
       '@types/file-saver': 2.0.3
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-firebase:
     specifiers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-accounts: 0.0.0
       polar-answers-api: 0.0.0
@@ -969,6 +1023,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -981,6 +1036,7 @@ importers:
       chai: 4.2.0
       firebase-admin: '=10.0.0'
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firestore-like: 0.0.0
@@ -998,6 +1054,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1007,6 +1064,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       firebase: '=8.10.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase-test: 0.0.0
       polar-firestore-like: 0.0.0
@@ -1023,6 +1081,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1031,6 +1090,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
       polar-firestore-like: 0.0.0
@@ -1046,6 +1106,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1054,6 +1115,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -1069,6 +1131,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1079,6 +1142,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       firebase: '=8.10.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1090,6 +1154,7 @@ importers:
       '@types/mocha': 9.0.0
       chai: 4.2.0
       firebase: 8.10.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1099,6 +1164,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1109,6 +1175,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1123,6 +1190,7 @@ importers:
       '@types/node': '=14.17.9'
       chai: 4.2.0
       jsdom: '=16.7.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1135,6 +1203,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1305,6 +1374,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/sanitize-html': '=2.5.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
       sanitize-html: '=2.5.3'
@@ -1315,6 +1385,7 @@ importers:
       '@types/mocha': 9.0.0
       '@types/sanitize-html': 2.5.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1326,6 +1397,7 @@ importers:
       blueimp-load-image: '=5.14.0'
       chai: 4.2.0
       exif-js: '=2.3.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
     devDependencies:
@@ -1335,6 +1407,7 @@ importers:
       blueimp-load-image: 5.14.0
       chai: 4.2.0
       exif-js: 2.3.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1343,6 +1416,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       node-nlp: '=4.22.1'
     dependencies:
@@ -1351,6 +1425,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-markdown:
@@ -1361,6 +1436,7 @@ importers:
       '@types/showdown': '=1.9.4'
       chai: 4.2.0
       gray-matter: '=4.0.3'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1376,6 +1452,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-markdown-parser:
@@ -1385,6 +1462,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/turndown': '=5.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       marked: '=1.2.5'
       mocha: '=9.1.1'
       turndown: '=7.0.0'
@@ -1399,6 +1477,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-migration-block-annotations:
@@ -1407,6 +1486,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -1426,24 +1506,28 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-npm:
     specifiers:
       '@types/node': '=14.17.9'
       '@types/pdfjs-dist': 2.1.71-polar.2
+      karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
     dependencies:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/node': 14.17.9
       '@types/pdfjs-dist': 2.1.71-polar.2
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-openai:
     specifiers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1453,6 +1537,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1464,6 +1549,7 @@ importers:
       '@types/node': '=14.17.9'
       chai: 4.2.0
       jsdom: '=16.7.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1477,6 +1563,7 @@ importers:
       '@types/mocha': 9.0.0
       chai: 4.2.0
       jsdom: 16.7.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-pagemarks-auto:
@@ -1485,6 +1572,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1496,6 +1584,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-pdf:
@@ -1507,6 +1596,7 @@ importers:
       canvas: '=2.8.0'
       chai: 4.2.0
       jsdom: '=16.7.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       pdfjs-dist: '=2.8.250-polar.3'
       polar-shared: 0.0.0
@@ -1523,6 +1613,7 @@ importers:
       '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-private-beta:
@@ -1532,6 +1623,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       firebase-functions: '=3.16.0'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -1557,6 +1649,7 @@ importers:
       '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1566,6 +1659,7 @@ importers:
       '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1576,6 +1670,7 @@ importers:
       '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1593,15 +1688,19 @@ importers:
 
   packages/polar-react-svg-icons:
     specifiers:
+      karma-structured-json-reporter: '=1.0.1'
       polar-react: 0.0.0
     dependencies:
       polar-react: link:../polar-react
+    devDependencies:
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-readability:
     specifiers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1612,6 +1711,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
@@ -1624,6 +1724,7 @@ importers:
       '@types/semver': '=7.3.8'
       '@types/showdown': '=1.9.4'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-markdown: 0.0.0
       polar-shared: 0.0.0
@@ -1641,6 +1742,7 @@ importers:
       '@types/mocha': 9.0.0
       '@types/semver': 7.3.8
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-rpc:
@@ -1649,6 +1751,7 @@ importers:
       '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
@@ -1663,6 +1766,7 @@ importers:
       '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1670,6 +1774,7 @@ importers:
     specifiers:
       '@types/mocha': '=9.0.0'
       '@types/xmldom': '=0.1.31'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-search-api: 0.0.0
       polar-shared: 0.0.0
@@ -1682,6 +1787,7 @@ importers:
       xmldom: 0.1.31
     devDependencies:
       '@types/mocha': 9.0.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1690,6 +1796,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1699,6 +1806,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1707,6 +1815,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-search: 0.0.0
       polar-search-api: 0.0.0
@@ -1720,6 +1829,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1730,6 +1840,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
     dependencies:
@@ -1739,6 +1850,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1750,6 +1862,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
     dependencies:
@@ -1760,6 +1873,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1780,6 +1894,7 @@ importers:
       core-js: 3.16.0
       deep-equal: '=1.0.1'
       js-sha3: 0.8.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       node-fetch: '=2.6.1'
       polar-test: 0.0.0
@@ -1808,6 +1923,7 @@ importers:
       '@types/stopword': 0.3.0
       '@types/twitter-text': 2.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
       wait-for-expect: 3.0.1
@@ -1819,6 +1935,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       express: '=4.17.1'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1830,6 +1947,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1839,6 +1957,7 @@ importers:
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       idb-keyval: '=5.0.4'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firestore-like: 0.0.0
       polar-shared: 0.0.0
@@ -1851,6 +1970,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1860,6 +1980,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-spaced-repetition-api: 0.0.0
@@ -1872,6 +1993,7 @@ importers:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1880,6 +2002,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1889,6 +2012,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1897,12 +2021,14 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
     devDependencies:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1912,6 +2038,7 @@ importers:
       '@types/node': '=14.17.9'
       chai: 4.2.0
       diff: 4.0.2
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
     dependencies:
       '@types/node': 14.17.9
@@ -1920,10 +2047,12 @@ importers:
       mocha: 9.1.1
     devDependencies:
       '@types/diff': 4.0.2
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-test-cache:
     specifiers:
       '@types/diff': 4.0.2
+      karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
@@ -1931,6 +2060,7 @@ importers:
       polar-test: link:../polar-test
     devDependencies:
       '@types/diff': 4.0.2
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-text-highlighter:
     specifiers:
@@ -1942,6 +2072,7 @@ importers:
       chai: 4.2.0
       jsdom: '=16.7.0'
       jsdom-global: 3.0.2
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1957,6 +2088,7 @@ importers:
       chai: 4.2.0
       jsdom: 16.7.0
       jsdom-global: 3.0.2_jsdom@16.7.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-thumbnail:
@@ -1965,6 +2097,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/puppeteer': '=5.4.4'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-pdf: 0.0.0
       polar-shared: 0.0.0
@@ -1979,6 +2112,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -1987,6 +2121,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1996,6 +2131,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -2008,6 +2144,7 @@ importers:
       '@types/react': '=17.0.2'
       '@types/react-dom': '=17.0.2'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -2025,6 +2162,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -2034,6 +2172,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/whatwg-url': '=6.4.0'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-test: 0.0.0
       whatwg-url: '=8.7.0'
@@ -2044,11 +2183,13 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
   packages/polar-web-capture:
     specifiers:
+      karma-structured-json-reporter: '=1.0.1'
       polar-bookshelf: 0.0.0
       polar-epub-generator: 0.0.0
       polar-html: 0.0.0
@@ -2062,6 +2203,8 @@ importers:
       polar-page-metadata-parser: link:../polar-page-metadata-parser
       polar-shared: link:../polar-shared
       readability: 0.2.0-polar.2
+    devDependencies:
+      karma-structured-json-reporter: 1.0.1
 
   packages/polar-web-extension:
     specifiers:
@@ -2076,6 +2219,7 @@ importers:
       '@types/react-dom': '=17.0.2'
       chai: 4.2.0
       jszip: '=3.7.1'
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       pdfjs-dist: '=2.8.250-polar.3'
       polar-assets: 0.0.0
@@ -2125,6 +2269,7 @@ importers:
       '@types/react': 17.0.2
       '@types/react-dom': 17.0.2
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-firebase-test: link:../polar-firebase-test
@@ -2138,6 +2283,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
     dependencies:
@@ -2149,6 +2295,7 @@ importers:
       '@types/chrome': 0.0.114
       '@types/mocha': 9.0.0
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
   packages/polar-webapp-dist:
@@ -2160,6 +2307,7 @@ importers:
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       chai: 4.2.0
+      karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -2172,6 +2320,7 @@ importers:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       chai: 4.2.0
+      karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
 
@@ -14326,6 +14475,10 @@ packages:
     dependencies:
       colors: 1.4.0
       karma: 6.3.8
+    dev: true
+
+  /karma-structured-json-reporter/1.0.1:
+    resolution: {integrity: sha1-HWQJ6mXAFos0XK9309K9n0ztFdU=}
     dev: true
 
   /karma-summary-reporter/3.0.0_karma@6.3.8:
