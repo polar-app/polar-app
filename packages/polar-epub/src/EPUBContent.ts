@@ -187,13 +187,18 @@ export namespace EPUBContent {
 
         let itemRefIndex = 0;
 
-        for (const ref of spine.itemref) {
-            itemRefEvenIndex += 2;
+        if (Array.isArray(spine.itemref)) {
+            for (const ref of spine.itemref) {
+                itemRefEvenIndex += 2;
 
-            if(ref['@_idref'] === idRef) {
-                itemRefIndex = itemRefEvenIndex;
-                break;
+                if(ref['@_idref'] === idRef) {
+                    itemRefIndex = itemRefEvenIndex;
+                    break;
+                }
             }
+        } else {
+            // handles URL capture single page epub generated...
+            itemRefEvenIndex = 2;
         }
 
         return `/${rootSpineIndex}/${itemRefIndex}[${idRef}]!`;
