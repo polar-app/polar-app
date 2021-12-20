@@ -83,7 +83,7 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     const Context = React.createContext<ValueStore<V>>(null!);
 
-    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = profiled(React.memo(function ValueStoreProvider(props) {
+    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = React.memo(profiled(function ValueStoreProvider(props) {
 
         const store = React.useMemo(() => new ValueStore(props.initialStore), [props.initialStore]);
 

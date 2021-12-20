@@ -94,7 +94,7 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     });
 
-    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = profiled(React.memo(function SnapshotStoreProvider(props) {
+    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = React.memo(profiled(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
                 <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
-import {createSnapshotStore, SnapshotSubscriber} from "./SnapshotStore";
+import {createSnapshotStore, SnapshotStoreProvider, SnapshotSubscriber, UseSnapshotStore} from "./SnapshotStore";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -120,6 +120,11 @@ function convertQuerySnapshotToTypedDocumentChanges<D, SM = unknown>(snapshot: I
 // TODO: we need to include the metadata from the server including whether it
 // came from the cache or not.
 
+export type FirestoreSnapshotStoreTuple<S> = readonly [
+    SnapshotStoreProvider<S>,
+    UseSnapshotStore<S>
+];
+
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
@@ -128,7 +133,7 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
 
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
 
-    const FirestoreSnapshotProvider = profiled(React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
+    const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
         const {firestore, uid} = useFirestore();
 
@@ -143,8 +148,8 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
             return (onNext, onError) => {
 
                 return firestore.collection(collectionName)
-                    .where('uid', '==', uid)
-                    .onSnapshot(next => onNext(next), err => onError(err));
+                                .where('uid', '==', uid)
+                                .onSnapshot(next => onNext(next), err => onError(err));
 
             }
 
