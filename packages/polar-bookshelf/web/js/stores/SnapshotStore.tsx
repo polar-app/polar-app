@@ -61,23 +61,24 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     // TODO: investigate react suspense for the fallback
 
-    const [ValueStoreProvider, useValue, valueSetter] = createValueStore<ISnapshot<S> | undefined>();
+    const [ValueStoreProvider, useValue, useValueSetter] = createValueStore<ISnapshot<S> | undefined>();
 
     const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
 
         const value = useValue();
+        const valueSetter = useValueSetter()
 
         const handleNext = React.useCallback((snapshot: S) => {
 
             valueSetter({right: snapshot});
 
-        }, []);
+        }, [valueSetter]);
 
         const handleError = React.useCallback((err: ErrorType) => {
 
             valueSetter({left: err});
 
-        }, []);
+        }, [valueSetter]);
 
         React.useEffect(() => {
             return props.subscriber(handleNext, handleError);
