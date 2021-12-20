@@ -2,8 +2,6 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Rects} from 'polar-shared/src/util/Rects';
 import {Rect} from 'polar-shared/src/util/Rect';
 
-const $ = require('jquery');
-
 export class Elements {
 
     /**
@@ -153,38 +151,6 @@ export class Elements {
         }
 
         return Elements.untilRoot(element.parentElement, selector);
-
-    }
-
-    public static calculateVisibilityForDiv(div: HTMLElement): number {
-
-        if (div == null) {
-            throw Error("Not given a div");
-        }
-
-        const windowHeight = $(window).height();
-        const docScroll = $(document).scrollTop();
-        const divPosition = $(div).offset().top;
-        const divHeight = $(div).height();
-
-        const hiddenBefore = docScroll - divPosition;
-        const hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
-
-        if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
-            return 0;
-        } else {
-            let result = 100;
-
-            if (hiddenBefore > 0) {
-                result -= (hiddenBefore * 100) / divHeight;
-            }
-
-            if (hiddenAfter > 0) {
-                result -= (hiddenAfter * 100) / divHeight;
-            }
-
-            return result;
-        }
 
     }
 

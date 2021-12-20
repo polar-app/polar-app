@@ -8,7 +8,6 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Divider from "@material-ui/core/Divider";
 import FlagIcon from "@material-ui/icons/Flag";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -26,10 +25,10 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 import LaunchIcon from '@material-ui/icons/Launch';
-import {FeatureToggleEnabled} from '../persistence_layer/PrefsContext2';
 import AddIcon from '@material-ui/icons/Add';
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {FeatureEnabled} from '../../../../web/js/features/FeaturesRegistry';
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
@@ -269,14 +268,14 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
                 </MenuItem>}
 
             {isSingle &&
-                <FeatureToggleEnabled featureName='answers'>
+                <FeatureEnabled feature='answers'>
                     <MenuItem onClick={indexForAIHandler}>
                         <ListItemIcon>
                             <AddIcon fontSize="small"/>
                         </ListItemIcon>
                         <ListItemText primary="Index for AI"/>
                     </MenuItem>
-                </FeatureToggleEnabled>}
+                </FeatureEnabled>}
 
             <MenuItem onClick={callbacks.onTagged}>
                 <ListItemIcon>
@@ -318,13 +317,15 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
                     <ListItemText primary="Copy Original URL"/>
                 </MenuItem>}
 
-            {isSingle && LocalStorageFeatureToggles.get('dev') &&
-                <MenuItem onClick={callbacks.onCopyDocumentID}>
-                    <ListItemIcon>
-                        <FileCopyIcon fontSize="small"/>
-                    </ListItemIcon>
-                    <ListItemText primary="Copy Document ID"/>
-                </MenuItem>}
+            {isSingle &&
+                <FeatureEnabled feature="dev">
+                    <MenuItem onClick={callbacks.onCopyDocumentID}>
+                        <ListItemIcon>
+                            <FileCopyIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Copy Document ID"/>
+                    </MenuItem>
+                </FeatureEnabled>}
 
             <Divider/>
 

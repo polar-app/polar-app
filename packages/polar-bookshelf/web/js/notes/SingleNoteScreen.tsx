@@ -1,4 +1,4 @@
-import {Box, LinearProgress, Typography} from "@material-ui/core";
+import {Box, Typography} from "@material-ui/core";
 import {RouteComponentProps} from "react-router-dom";
 import React from "react";
 import {useBlocksStore} from "./store/BlocksStore";
@@ -14,7 +14,6 @@ import {BlockTargetStr} from "./NoteLinkLoader";
 import {NoteStack} from "./stacks/NoteStack";
 import {NotesContainer} from "./NotesContainer";
 import {NoteProviders} from "./NoteProviders";
-import {observer} from "mobx-react-lite";
 import {autorun} from "mobx";
 
 interface INoteRootParams {
@@ -23,14 +22,9 @@ interface INoteRootParams {
 
 interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}
 
-export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = observer((props) => {
+export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
     const { match: { params } } = props;
     const target = React.useMemo(() => decodeURIComponent(params.id), [params.id]);
-    const blocksStore = useBlocksStore();
-
-    if (! blocksStore.hasSnapshot) {
-        return <LinearProgress />;
-    }
 
     return (
         <NotesContainer>
@@ -43,7 +37,7 @@ export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = observer((prop
             </NoteProviders>
         </NotesContainer>
     );
-});
+};
 
 interface INoteRendererProps {
     readonly target: BlockTargetStr;

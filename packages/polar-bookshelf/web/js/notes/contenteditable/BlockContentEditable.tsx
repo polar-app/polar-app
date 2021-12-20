@@ -14,8 +14,8 @@ import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
 import {BlockPredicates} from '../store/BlockPredicates';
 import {DOMBlocks} from './DOMBlocks';
-import {BlockActionsProvider} from './BlockActions';
 import {useScrollIntoViewUsingLocation} from "../../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
+import {useBlockAction} from './BlockAction';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -32,12 +32,6 @@ interface IProps extends BlockEditorGenericProps {
     readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 
     readonly spellCheck?: boolean;
-}
-
-const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
-
-export function useBlockContentEditableElement() {
-    return React.useContext(NoteContentEditableElementContext);
 }
 
 /**
@@ -237,35 +231,30 @@ export const BlockContentEditable = (props: IProps) => {
 
     }, [props, scrollIntoViewRef]);
 
+    useBlockAction({ id: props.id, ref: divRef });
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
     return (
-        <NoteContentEditableElementContext.Provider value={divRef}>
-
-            <div onKeyDown={props.onKeyDown}
-                 onKeyUp={handleKeyUp}>
-                <BlockActionsProvider id={props.id}>
-                    <div ref={handleRef}
-                         onPaste={handlePaste}
-                         onClick={props.onClick}
-                         onMouseDown={props.onMouseDown}
-                         contentEditable={true}
-                         data-content-editable-type={"block"}
-                         spellCheck={props.spellCheck}
-                         data-id={props.id}
-                         className={props.className}
-                         id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
-                         style={{
-                             outline: 'none',
-                             whiteSpace: 'pre-wrap',
-                             wordBreak: 'break-word',
-                             ...props.style
-                         }}
-                         dangerouslySetInnerHTML={{__html: content}} />
-                </BlockActionsProvider>
-            </div>
-
-        </NoteContentEditableElementContext.Provider>
+        <div onKeyDown={props.onKeyDown}
+             onKeyUp={handleKeyUp}>
+            <div ref={handleRef}
+                 onPaste={handlePaste}
+                 onClick={props.onClick}
+                 onMouseDown={props.onMouseDown}
+                 contentEditable={true}
+                 data-content-editable-type={"block"}
+                 spellCheck={props.spellCheck}
+                 data-id={props.id}
+                 className={props.className}
+                 id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+                 style={{
+                     outline: 'none',
+                     whiteSpace: 'pre-wrap',
+                     wordBreak: 'break-word',
+                     ...props.style
+                 }}
+                 dangerouslySetInnerHTML={{__html: content}} />
+        </div>
     );
 
 };

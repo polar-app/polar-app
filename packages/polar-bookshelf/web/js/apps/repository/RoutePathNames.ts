@@ -13,6 +13,7 @@ const NOTE = (id: string) => `/notes/${id}`;
 const ANKI_SYNC = "/sync";
 
 const SETTINGS = ("/settings");
+const FEATURES = ("/features");
 const STATISTICS = ("/stats");
 
 const WHATS_NEW = ("/whats-new");
@@ -39,6 +40,7 @@ export const RoutePathNames = {
     ADD_MOBILE,
     ANKI_SYNC,
     SETTINGS,
+    FEATURES,
     STATISTICS,
     ACCOUNT_MOBILE,
     ACCOUNT,

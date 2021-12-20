@@ -285,15 +285,6 @@ module.exports = {
         }),
         new NodePolyfillPlugin(),
 
-        // TODO: this is needed for a localized build and it does not support en
-        // TODO: this won't be needed once we get rid of summernote .... it
-        // should be the only thing depending on jquery moving forward.
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            "window.$": "jquery",
-            "window.jQuery": "jquery"
-        }),
         // isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
         // NOTE: uncomment the following line to add the webpack bundle analyzer

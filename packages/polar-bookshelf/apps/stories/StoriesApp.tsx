@@ -44,6 +44,8 @@ import {MigrationToBlockAnnotationsMainStory} from "./impl/MigrationToBlockAnnot
 import {MUIAnchorButtonStory} from '../../web/js/mui/MUIAnchorButtonStory';
 import {MUIAnchorStory} from '../../web/js/mui/MUIAnchorStory';
 import {SettingsScreenStory} from "./impl/SettingsScreenStory";
+import {FeatureStory} from "./impl/FeatureStory";
+import {NotesMobileFormatBarStory} from './impl/NotesMobileFormatBarStory';
 
 interface IStory {
     readonly name: string;
@@ -67,7 +69,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
-
+    {
+        name: "Notes Mobile Format Bar",
+        component: <NotesMobileFormatBarStory />
+    },
     {
         name: "MigrationToBlockAnnotationsMain",
         component: <MigrationToBlockAnnotationsMainStory/>
@@ -226,6 +231,10 @@ const stories = createStoryIndex([
     {
         name: 'AdaptivePageLayout',
         component: <AdaptivePageLayoutStory />,
+    },
+    {
+        name: 'Feature',
+        component: <FeatureStory />,
     },
 
 ]);

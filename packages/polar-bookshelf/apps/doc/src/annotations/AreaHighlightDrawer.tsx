@@ -11,7 +11,6 @@ import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
-import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -32,7 +31,6 @@ export const AreaHighlightCreator: React.FC = () => {
     const classes = useAreaHighlightCreatorStyles();
     const {fileType} = useDocViewerContext();
     const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
@@ -42,34 +40,23 @@ export const AreaHighlightCreator: React.FC = () => {
     }, [areaHighlightMode, docViewerElements, classes]);
 
     const createAreaHighlight: IUsePDFRectangleDrawerCallback = React.useCallback(({ rect, pageNum }) => {
-        if (notesIntegrationEnabled) {
-            if (! docMeta || ! docScale) {
-                return;
-            }
-
-            const docViewerElement = docViewerElements.getDocViewerElement();
-            createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
-                rect,
-                pageNum,
-                fileType,
-                docScale,
-                docViewerElement,
-            }).catch(console.error);
-
-        } else {
-            onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
+        if (! docMeta || ! docScale) {
+            return;
         }
+
+        const docViewerElement = docViewerElements.getDocViewerElement();
+        createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
+            rect,
+            pageNum,
+            fileType,
+            docScale,
+            docViewerElement,
+        }).catch(console.error);
+
+
         setAreaHighlightMode(false);
-    }, [
-        onAreaHighlightCreated,
-        setAreaHighlightMode,
-        createBlockAreaHighlight,
-        docScale,
-        docMeta,
-        docViewerElements,
-        fileType,
-        notesIntegrationEnabled,
-    ])
+
+    }, [setAreaHighlightMode, createBlockAreaHighlight, docScale, docMeta, docViewerElements, fileType])
 
     usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
 

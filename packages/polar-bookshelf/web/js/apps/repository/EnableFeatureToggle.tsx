@@ -1,6 +1,6 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
 import React from 'react';
-import {useFeatureToggler} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureName, useFeatureToggler} from "../../features/FeaturesRegistry";
 
 export const EnableFeatureToggle = () => {
 
@@ -17,10 +17,7 @@ export const EnableFeatureToggle = () => {
 
             console.log("Enabling feature toggle: " + feature);
 
-            // note that we MAY need to shutdown Firestore due to that Safari
-            // bug but it might be fixed by now.
-
-            featureToggler(feature, ! state || state !== 'off')
+            featureToggler(feature as FeatureName, ! state || state !== 'off')
                 .then(() => document.location.href = '/')
                 .catch(err => console.error(err));
 

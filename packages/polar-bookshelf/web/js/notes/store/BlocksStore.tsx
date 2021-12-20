@@ -59,6 +59,7 @@ import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
+import {Analytics} from "../../analytics/Analytics";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -1529,6 +1530,7 @@ export class BlocksStore implements IBlocksStore {
                                      rawTargetName: BlockNameStr,
                                      content: MarkdownStr): BlockIDStr {
 
+
         const targetName = rawTargetName.replace(/^#/, '');
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
@@ -1578,6 +1580,8 @@ export class BlocksStore implements IBlocksStore {
             if (cursorPos) {
                 this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
             }
+
+            Analytics.event2('notes-backlinkCreated');
 
             return targetBlockID;
         };
