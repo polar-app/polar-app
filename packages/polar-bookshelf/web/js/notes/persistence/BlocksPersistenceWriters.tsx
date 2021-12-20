@@ -159,12 +159,10 @@ export namespace DocumentDataUpdater {
 
             switch (type) {
                 case 'modified':
+                case 'added':
                     batch.update(docInfoDoc, 'value', docInfo);
                     batch.update(docMetaDoc, 'value.docInfo', docInfo);
                     batch.update(docMetaDoc, 'value.value', docMetaValue);
-                    break;
-                case 'added':
-                    // I think we ignore this for now. because this is done through a migration
                     break;
                 case 'removed':
                     // Deleting a document block doesn't necessarily mean that we want to also delete
