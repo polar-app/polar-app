@@ -76,7 +76,7 @@ describe("SnapshotStore", function() {
 
     });
 
-    it("Test with successful snapshots", async () => {
+    it("Test with successful snapshots and then error", async () => {
 
         const TestInner = () => {
 
@@ -87,6 +87,11 @@ describe("SnapshotStore", function() {
                     {testStore.right && (
                         <div>Name: {testStore.right.name}</div>
                     )}
+
+                    {testStore.left && (
+                        <div>Error detected</div>
+                    )}
+
                 </>
             );
 
@@ -131,46 +136,11 @@ describe("SnapshotStore", function() {
 
         await waitFor(() => screen.getByText("Name: Bob"))
 
-    });
+        onErrorRef.current(new Error("Fake error"));
 
-    it("Test the SnapshotStore with multiple successful snapshots", async () => {
-        //
-        // const TestInner = () => {
-        //
-        //     const testStore = useTestStore();
-        //     const testStoreSetter = useTestStoreSetter();
-        //
-        //     const handleClick = React.useCallback(() => {
-        //         testStoreSetter({name: 'Bob'});
-        //     }, [testStoreSetter])
-        //
-        //     return (
-        //         <div>
-        //             <div>Name: {testStore.name}</div>
-        //             <Button onClick={handleClick}>Change Name</Button>
-        //         </div>
-        //     );
-        //
-        // }
-        //
-        // const Test = () => {
-        //
-        //     return (
-        //         <TestStoreProvider initialStore={{name: 'Alice'}}>
-        //             <TestInner/>
-        //         </TestStoreProvider>
-        //     );
-        //
-        // };
-        //
-        // render(<Test/>)
-        //
-        // await waitFor(() => screen.getByText("Name: Alice"))
-        //
-        // fireEvent.click(screen.getByText('Change Name'))
-        //
-        // await waitFor(() => screen.getByText("Name: Bob"))
+        await waitFor(() => screen.getByText("Error detected"))
 
     });
+
 
 })
