@@ -1,6 +1,6 @@
 import React from 'react'
-import {render} from '@testing-library/react'
-import {createSnapshotStore} from "./SnapshotStore";
+import {render, screen, waitFor} from '@testing-library/react'
+import {createSnapshotStore, OnNextCallback, SnapshotSubscriber} from "./SnapshotStore";
 import {assert} from 'chai';
 
 interface IValue {
@@ -65,7 +65,7 @@ describe("SnapshotStore", function() {
 
         };
 
-        const {unmount} = render(<Test/>)
+        const {unmount} = render(<Test/>);
 
         assert.isTrue(fallbackRendered.current)
         assert.isTrue(subscribed.current)
@@ -74,14 +74,64 @@ describe("SnapshotStore", function() {
         assert.isTrue(unsubscribed.current)
         assert.isFalse(testInnerRendered.current);
 
-        // await waitFor(() => screen.getByText("Name: Alice"))
-        //
-        // fireEvent.click(screen.getByText('Change Name'))
-        //
-        // await waitFor(() => screen.getByText("Name: Bob"))
-
     });
 
+    it("Test with successful snapshots", async () => {
+
+        const TestInner = () => {
+
+            const testStore = useTestStore();
+
+            return (
+                <>
+                    {testStore.right && (
+                        <div>Name: {testStore.right.name}</div>
+                    )}
+                </>
+            );
+
+        }
+
+        const onNextRef: IRef<OnNextCallback<IValue>> = {current: null!};
+        const onErrorRef: IRef<OnNextCallback<IValue>> = {current: null!};
+
+        const subscriber: SnapshotSubscriber<IValue> = (onNext, onError) => {
+
+            onNextRef.current = onNext;
+            onErrorRef.current = onError;
+
+            return () => {
+                onNextRef.current = null!;
+                onErrorRef.current = null!;
+            };
+
+        }
+
+        const Fallback = () => {
+            return null;
+        }
+
+        const Test = () => {
+
+            return (
+                <TestStoreProvider subscriber={subscriber} fallback={<Fallback/>}>
+                    <TestInner/>
+                </TestStoreProvider>
+            );
+
+        };
+
+        render(<Test/>);
+
+        onNextRef.current({name: 'Alice'});
+
+        await waitFor(() => screen.getByText("Name: Alice"))
+
+        onNextRef.current({name: 'Bob'});
+
+        await waitFor(() => screen.getByText("Name: Bob"))
+
+    });
 
     it("Test the SnapshotStore with multiple successful snapshots", async () => {
         //

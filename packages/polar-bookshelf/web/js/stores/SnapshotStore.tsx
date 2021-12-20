@@ -6,6 +6,7 @@ import {profiled} from "../profiler/ProfiledComponents";
 
 export interface ISnapshotLeft {
     readonly left: ErrorType;
+    readonly right?: never;
 }
 
 /**
@@ -14,6 +15,7 @@ export interface ISnapshotLeft {
  * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
  */
 export interface ISnapshotRight<S> {
+    readonly left?: never;
     readonly right: S;
 }
 
