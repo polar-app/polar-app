@@ -6,7 +6,6 @@ import {useReviewerStoreProvider} from './ReviewerStore';
 import {ReviewerRunner} from './ReviewerRunner';
 import {useHistory} from 'react-router-dom';
 import {ReviewerDialog} from './ReviewerDialog';
-import {CalculatedTaskReps} from 'polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator';
 import {DocAnnotationReviewerTasks, IDocAnnotationTaskAction} from './DocAnnotationReviewerTasks';
 import {BlockReviewerTasks, IBlockTaskAction} from './BlockReviewerTasks';
 import {DocFileResolvers} from "../../../../web/js/datastore/DocFileResolvers";
@@ -15,6 +14,7 @@ import {usePersistenceLayerContext} from '../persistence_layer/PersistenceLayerA
 import {IImage} from 'polar-shared/src/metadata/IImage';
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
 import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnotationRepoStore';
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 
 
 /**
@@ -33,7 +33,7 @@ export interface IDocAnnotationReviewerScreenProps {
 export const DocAnnotationReviewerScreen: React.FC<IDocAnnotationReviewerScreenProps> = deepMemo(function ReviewerScreen(props) {
     const { annotations, mode, onClose, limit } = props;
 
-    const dataProvider = React.useCallback(async (): Promise<CalculatedTaskReps<IDocAnnotationTaskAction>> => {
+    const dataProvider = React.useCallback(async (): Promise<ICalculatedTaskReps<IDocAnnotationTaskAction>> => {
         return DocAnnotationReviewerTasks.createTasks(annotations, mode, limit);
     }, [annotations, mode, limit]);
 
@@ -82,7 +82,7 @@ export const BlockReviewerScreen: React.FC<IBlockReviewerScreenProps> = deepMemo
         return Images.toImg(resolver, image);
     }, [persistenceLayerProvider]);
 
-    const dataProvider = React.useCallback(async (): Promise<CalculatedTaskReps<IBlockTaskAction>> => {
+    const dataProvider = React.useCallback(async (): Promise<ICalculatedTaskReps<IBlockTaskAction>> => {
         const blocks = blocksAnnotationRepoStore.idsToRepoAnnotationBlocks(blockIDs);
         return BlockReviewerTasks.createTasks(blocks, mode, imageResolver, limit);
     }, [blockIDs, mode, limit, imageResolver, blocksAnnotationRepoStore]);

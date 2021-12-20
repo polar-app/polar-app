@@ -4,24 +4,17 @@ import {
     LapsedState,
     LearningState,
     Rating,
-    ReviewState, StageCounts, StageCountsCalculator,
+    ReviewState,
+    StageCountsCalculator,
     Task
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {Duration, DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {Duration, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
-
-export interface CalculatedTaskReps<A> {
-
-    /**
-     * The task reps that need to be completed.
-     */
-    readonly taskReps: ReadonlyArray<TaskRep<A>>;
-
-    readonly stageCounts: StageCounts;
-}
+import {ITaskRep} from "./ITaskRep";
+import {ICalculatedTaskReps} from "./ICalculatedTaskReps";
 
 export class TasksCalculator {
 
@@ -44,9 +37,9 @@ export class TasksCalculator {
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    public static async calculate<A>(opts: CalculateOpts<A>): Promise<CalculatedTaskReps<A>> {
+    public static async calculate<A>(opts: CalculateOpts<A>): Promise<ICalculatedTaskReps<A>> {
 
-        const resolvedTaskReps: TaskRep<A>[] = [];
+        const resolvedTaskReps: ITaskRep<A>[] = [];
 
         const jobs = opts.potential.map((current) => async () => {
             const taskRep = await opts.resolver(current);
@@ -85,7 +78,7 @@ export class TasksCalculator {
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
-    public static computeNextSpacedRep<A>(taskRep: TaskRep<A>, rating: Rating): ISpacedRep {
+    public static computeNextSpacedRep<A>(taskRep: ITaskRep<A>, rating: Rating): ISpacedRep {
 
         const computeLearning = (): ISpacedRep => {
 
@@ -251,7 +244,7 @@ export class TasksCalculator {
 
     }
 
-    public static createInitialLearningState<A>(task: Task<A>): TaskRep<A> {
+    public static createInitialLearningState<A>(task: Task<A>): ITaskRep<A> {
 
         const spacedRep = this.createInitialSpacedRep(task);
 
@@ -273,14 +266,14 @@ export class TasksCalculator {
  * Return a WorkRep if we were able to find it or undefined.
  */
 export interface OptionalTaskRepResolver<A> {
-    (task: Task<A>): Promise<TaskRep<A> | undefined>;
+    (task: Task<A>): Promise<ITaskRep<A> | undefined>;
 }
 
 /**
  * Return a WorkRep or a default rep if we're unable to find it.
  */
 export interface TaskRepResolver<A> {
-    (task: Task<A>): Promise<TaskRep<A>>;
+    (task: Task<A>): Promise<ITaskRep<A>>;
 }
 
 /**
@@ -289,7 +282,7 @@ export interface TaskRepResolver<A> {
  */
 export function createDefaultTaskRepResolver<A>(delegate: OptionalTaskRepResolver<A>): TaskRepResolver<A> {
 
-    return async (task: Task<A>): Promise<TaskRep<A>> => {
+    return async (task: Task<A>): Promise<ITaskRep<A>> => {
 
         const result = await delegate(task);
 
@@ -316,15 +309,6 @@ export interface CalculateOpts<A> {
      * The limit of the number of tasks to return.
      */
     readonly limit: number;
-
-}
-
-export interface TaskRep<A> extends ISpacedRep, Task<A> {
-
-    /**
-     * The age of the work so we can sort the priority queue.
-     */
-    readonly age: DurationMS;
 
 }
 

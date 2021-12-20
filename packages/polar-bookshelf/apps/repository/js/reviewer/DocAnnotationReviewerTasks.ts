@@ -8,9 +8,9 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT, ReviewerTasks, TasksBuilder} from "./ReviewerTasks";
-import {CalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RepetitionMode, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 
 export type IDocAnnotationReadingTaskAction = IReadingTaskAction<IDocAnnotation>;
 export type IDocAnnotationFlashcardTaskAction = IFlashcardTaskAction<IDocAnnotation>;
@@ -23,7 +23,7 @@ export type IDocAnnotationTaskAction = IDocAnnotationReadingTaskAction | IDocAnn
 export class DocAnnotationReviewerTasks {
 
     public static async createReadingTasks(data: ReadonlyArray<IDocAnnotation>,
-                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<CalculatedTaskReps<IDocAnnotationReadingTaskAction>> {
+                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<ICalculatedTaskReps<IDocAnnotationReadingTaskAction>> {
 
         const mode = 'reading';
 
@@ -72,7 +72,7 @@ export class DocAnnotationReviewerTasks {
     }
 
     public static async createFlashcardTasks(data: ReadonlyArray<IDocAnnotation>,
-                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<CalculatedTaskReps<IDocAnnotationFlashcardTaskAction>> {
+                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<ICalculatedTaskReps<IDocAnnotationFlashcardTaskAction>> {
 
         const mode = 'flashcard';
 
@@ -118,7 +118,7 @@ export class DocAnnotationReviewerTasks {
 
     public static async createTasks(data: ReadonlyArray<IDocAnnotation>,
                                     mode: RepetitionMode,
-                                    limit?: number): Promise<CalculatedTaskReps<IDocAnnotationTaskAction>> {
+                                    limit?: number): Promise<ICalculatedTaskReps<IDocAnnotationTaskAction>> {
         switch (mode) {
             case 'flashcard':
                 return this.createFlashcardTasks(data, limit);

@@ -1,15 +1,16 @@
 import * as React from 'react';
-import {TaskRep, TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {ColorButton} from '../ColorButton';
 import {RatingCallback} from "../RatingCallback";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ITaskAction} from '../ReviewerTasks';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 
 interface IProps<T extends ITaskAction> {
 
-    readonly taskRep: TaskRep<T>;
+    readonly taskRep: ITaskRep<T>;
     readonly rating: Rating;
     readonly color: string;
     readonly onRating: RatingCallback<T>;

@@ -26,6 +26,9 @@ export namespace SpacedRepCollection {
         return await Collections.get(firestore, COLLECTION_NAME, id);
     }
 
+    /**
+     * @deprecated
+     */
     export async function list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
         Preconditions.assertPresent(uid, 'uid');
         const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];

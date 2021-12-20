@@ -1,5 +1,4 @@
 import {
-    CalculatedTaskReps,
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     TasksCalculator
@@ -13,6 +12,7 @@ import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepS
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {IReadingTaskAction} from "./cards/ReadingTaskAction";
 import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 
 export const DEFAULT_READING_TASKS_LIMIT = 10;
 export const DEFAULT_FLASHCARD_TASKS_LIMIT = 10;
@@ -42,7 +42,7 @@ export class ReviewerTasks {
     public static async createTasks<A, B>(data: ReadonlyArray<A>,
                                           mode: RepetitionMode,
                                           tasksBuilder: TasksBuilder<A, B>,
-                                          limit: number = 10): Promise<CalculatedTaskReps<B>> {
+                                          limit: number = 10): Promise<ICalculatedTaskReps<B>> {
 
         Preconditions.assertPresent(mode, 'mode');
 

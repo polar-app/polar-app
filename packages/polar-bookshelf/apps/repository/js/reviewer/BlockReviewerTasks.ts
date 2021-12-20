@@ -1,19 +1,23 @@
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {Img} from "polar-shared/src/metadata/Img";
-import {AnnotationContentType, IAnnotationHighlightContent, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {
+    AnnotationContentType,
+    IAnnotationHighlightContent,
+    IFlashcardAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IImage} from "polar-shared/src/metadata/IImage";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {Strings} from "polar-shared/src/util/Strings";
 import {RepetitionMode, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {CalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates";
 import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IReadingTaskAction} from "./cards/ReadingTaskAction";
 import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT, ReviewerTasks, TasksBuilder} from "./ReviewerTasks";
 import {IRepoAnnotationContent} from "../block_annotation_repo/BlocksAnnotationRepoStore";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 
 
 export type IBlockReadingTaskAction = IReadingTaskAction<IBlock<IAnnotationHighlightContent>>;
@@ -27,7 +31,7 @@ export class BlockReviewerTasks {
 
     public static async createReadingTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
                                            imageResolver: IImageResolver,
-                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<CalculatedTaskReps<IBlockReadingTaskAction>> {
+                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<ICalculatedTaskReps<IBlockReadingTaskAction>> {
 
         const mode = 'reading';
 
@@ -82,7 +86,7 @@ export class BlockReviewerTasks {
     }
 
     public static async createFlashcardTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
-                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<CalculatedTaskReps<IBlockFlashcardTaskAction>> {
+                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<ICalculatedTaskReps<IBlockFlashcardTaskAction>> {
 
         const mode = 'flashcard';
 
@@ -126,7 +130,7 @@ export class BlockReviewerTasks {
     public static async createTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
                                     mode: RepetitionMode,
                                     imageResolver: IImageResolver,
-                                    limit?: number): Promise<CalculatedTaskReps<IBlockTaskAction>> {
+                                    limit?: number): Promise<ICalculatedTaskReps<IBlockTaskAction>> {
         switch (mode) {
             case 'flashcard':
                 return this.createFlashcardTasks(data, limit);
