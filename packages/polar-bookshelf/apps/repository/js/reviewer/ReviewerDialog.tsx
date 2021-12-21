@@ -7,9 +7,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Toolbar from "@material-ui/core/Toolbar";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
+import FlashOnIcon from '@material-ui/icons/FlashOn';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -47,11 +47,12 @@ export const ReviewerDialog = React.memo(function ReviewerDialog(props: IProps) 
                         color="inherit">
                     <Toolbar>
 
-                        <PolarSVGIcon width={64} height={64}/>
+                        <FlashOnIcon/>
 
-                        <Typography variant="h6" className={classes.title}>
+                        <Typography className={classes.title}>
                             Review
                         </Typography>
+
                         <IconButton edge="start"
                                     color="inherit"
                                     onClick={props.onClose}
