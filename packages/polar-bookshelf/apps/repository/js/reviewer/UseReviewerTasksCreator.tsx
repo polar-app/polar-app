@@ -8,7 +8,7 @@ import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     TasksCalculator
-} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator2";
+} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 
 export function useReviewerTasksCreator() {
 

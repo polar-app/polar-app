@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator2";
+import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {Flashcards} from "../../../web/js/metadata/Flashcards";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
