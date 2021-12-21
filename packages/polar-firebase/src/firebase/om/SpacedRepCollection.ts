@@ -3,7 +3,7 @@ import {ISpacedRep, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2P
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import Clause = Collections.Clause;
+
 
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
@@ -24,16 +24,6 @@ export namespace SpacedRepCollection {
         Preconditions.assertPresent(id, 'id');
 
         return await Collections.get(firestore, COLLECTION_NAME, id);
-    }
-
-    /**
-     * @deprecated
-     */
-    export async function list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
-        Preconditions.assertPresent(uid, 'uid');
-        const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];
-
-        return await Collections.list(firestore, COLLECTION_NAME, clauses);
     }
 
     export function convertFromTaskRep(uid: UserIDStr, taskRep: TaskRep<any>): SpacedRep {
