@@ -27,7 +27,8 @@
   },
   "devDependencies": {
     "@types/node": "=14.17.9",
-    "@types/pdfjs-dist": "2.1.71-polar.2"
+    "@types/pdfjs-dist": "2.1.71-polar.2",
+    "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "polar-shared": "0.0.0"

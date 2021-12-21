@@ -28,7 +28,8 @@
     "polar-firebase-admin": "0.0.0",
     "polar-firebase-browser": "0.0.0",
     "polar-firebase-test": "0.0.0",
-    "polar-test": "0.0.0"
+    "polar-test": "0.0.0",
+    "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "polar-blocks": "0.0.0",
