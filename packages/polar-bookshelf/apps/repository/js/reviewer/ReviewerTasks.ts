@@ -32,6 +32,7 @@ export class ReviewerTasks {
 
     /**
      * Return true if the user is actively using the flashcard/IR reviewer system.
+     * @deprecated
      */
     public static async isReviewer(): Promise<boolean> {
 

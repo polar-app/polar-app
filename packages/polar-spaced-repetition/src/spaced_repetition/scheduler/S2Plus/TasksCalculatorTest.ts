@@ -3,8 +3,8 @@ import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     TaskRepResolver,
-    TasksCalculator
-} from "./TasksCalculator";
+    TasksCalculator2
+} from "./TasksCalculator2";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
@@ -15,11 +15,11 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 type TestTaskAction = string;
 
-async function doTest(potential: ReadonlyArray<Task<TestTaskAction>>, workMap: PendingTaskRepMap = {}) {
+function doTest(potential: ReadonlyArray<Task<TestTaskAction>>, workMap: PendingTaskRepMap = {}) {
 
     const resolver = createMockWorkRepResolver(workMap);
 
-    return await TasksCalculator.calculate({
+    return TasksCalculator2.calculate({
         potential,
         resolver,
         limit: 10
@@ -57,7 +57,7 @@ class Tester {
 
         console.log("==== Doing step " + this.step + " at " + ISODateTimeStrings.create());
 
-        const calculatedTaskReps = await doTest(this.potential, this.pendingTaskRepMap);
+        const calculatedTaskReps = doTest(this.potential, this.pendingTaskRepMap);
         const {taskReps} = calculatedTaskReps;
 
         console.log("tasks: " + Dictionaries.toJSON(taskReps));
@@ -68,7 +68,7 @@ class Tester {
                 return undefined;
             }
 
-            const next = TasksCalculator.computeNextSpacedRep(taskReps[0], rating);
+            const next = TasksCalculator2.computeNextSpacedRep(taskReps[0], rating);
 
             console.log("next: " + Dictionaries.toJSON(next));
 
@@ -125,7 +125,7 @@ describe("TasksCalculator", () => {
 
         ];
 
-        const tasks = await doTest(potential);
+        const tasks = doTest(potential);
 
         assertJSON(tasks, {
             "stageCounts": {
@@ -151,7 +151,7 @@ describe("TasksCalculator", () => {
             }
         ];
 
-        const tasks = await doTest(potential);
+        const tasks = doTest(potential);
 
         assertJSON(tasks, {
             "stageCounts": {
@@ -640,12 +640,12 @@ export interface PendingTaskRepMap {
 
 function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): TaskRepResolver<TestTaskAction> {
 
-    const optionalTaskRepResolver: OptionalTaskRepResolver<TestTaskAction> = async (task: Task<TestTaskAction>) => {
+    const optionalTaskRepResolver: OptionalTaskRepResolver<TestTaskAction> = (task: Task<TestTaskAction>) => {
 
         const pendingWorkRep = Optional.of(pendingTaskRepMap[task.id]).getOrUndefined();
 
         if (pendingWorkRep) {
-            const age = TasksCalculator.computeAge(pendingWorkRep.spacedRep);
+            const age = TasksCalculator2.computeAge(pendingWorkRep.spacedRep);
             return {...pendingWorkRep.action, ...pendingWorkRep.spacedRep, age};
         }
 
