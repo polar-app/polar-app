@@ -41,7 +41,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
-import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
+import {AddMobileScreen} from "./AddMobileScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -330,8 +330,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <SwitchScreen/>
                                         </PersistentRoute>
 
-                                        <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
-                                            <AddFilesMobileScreen/>
+                                        <PersistentRoute strategy="display" path={RoutePathNames.ADD}>
+                                            <AddMobileScreen/>
                                         </PersistentRoute>
 
                                         <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>

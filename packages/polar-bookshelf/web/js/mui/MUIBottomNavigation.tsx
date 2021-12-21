@@ -62,7 +62,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
         {
             id: 'add',
             label: 'Add',
-            href: RoutePathNames.ADD_MOBILE,
+            href: RoutePathNames.ADD,
             icon: <AddIcon/>
         },
         {

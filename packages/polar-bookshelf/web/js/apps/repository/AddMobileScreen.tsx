@@ -4,9 +4,9 @@ import {Uploads} from './upload/Uploads';
 import {AddFileHooks} from "./upload/AddFileHooks";
 import {useHistory} from 'react-router-dom';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
-import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import {MUIActionCard} from '../../mui/MUIActionCard';
 import {useCreateNoteDialog} from '../../notes/NotesToolbar';
+import useAddFileImporter = AddFileHooks.useAddFileImporter;
 
 const useStyles = makeStyles<Theme>(() =>
     createStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles<Theme>(() =>
  * A new screen that opens only for mobile when adding new files, notes, folders..
  */
 
-export const AddFilesMobileScreen = React.memo(function AddFilesMobileScreen(){
+export const AddMobileScreen = React.memo(function AddMobileScreen(){
     const classes = useStyles();
     const addFileImporter = useAddFileImporter();
     const history = useHistory();
