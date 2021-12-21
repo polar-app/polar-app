@@ -14,11 +14,11 @@ export const ReviewMobileScreen = React.memo(function ReviewMobileScreen(){
     const history = useHistory()
 
     const handleFlashcards = React.useCallback(() => {
-        history.push({pathname: '/annotations', hash: '#review-flashcards'})
+        history.push({pathname: '/review', hash: '#review-flashcards'})
     }, [history])
 
     const handleReading = React.useCallback(() => {
-        history.push({pathname: '/annotations', hash: '#review-reading'})
+        history.push({pathname: '/review', hash: '#review-reading'})
     }, [history])
 
     return(

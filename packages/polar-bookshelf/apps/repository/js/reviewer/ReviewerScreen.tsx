@@ -14,6 +14,7 @@ import {useBlocksAnnotationRepoStore} from '../block_annotation_repo/BlocksAnnot
 import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 import {useBlockReviewerTasksCreator} from "./UseBlockReviewerTasksCreator";
 import {IBlockTaskAction} from "./IBlockTaskAction";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export interface IBlockReviewerScreenProps {
     readonly blockIDs: ReadonlyArray<BlockIDStr>;
@@ -60,13 +61,17 @@ export const BlockReviewerScreen: React.FC<IBlockReviewerScreenProps> = deepMemo
 
         // TODO: probably better to restore the URL to where we came from?
 
-        history.replace({ pathname: "/annotations", hash: "" });
+        if (Devices.isDesktop()) {
+            history.replace({ pathname: "/annotations", hash: "" });
+        } else {
+            history.replace({ pathname: "/review", hash: "" });
+        }
 
     }, [history, store, onClose]);
 
     return (
         <ReviewerDialog onClose={handleClose}>
-            <ReviewerRunner store={store} />
+            <ReviewerRunner store={store} onClose={handleClose}/>
         </ReviewerDialog>
     );
 });
