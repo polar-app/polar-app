@@ -5,7 +5,6 @@ import {NoteFormatBarPopperHandheld} from "./NoteFormatBarHandheld/NoteFormatBar
 import {GlobalKeyboardShortcuts, HandlerMap, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useExecCommandExecutor} from "./NoteFormatBarActions";
 
-
 const annotationBarKeyMap = keyMapWithGroup({
     group: "Notes formatting",
     keyMap: {

@@ -12,6 +12,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
+import {IBlockPredicates} from "../store/IBlockPredicates";
 
 export namespace DocumentDataUpdater {
 
@@ -34,13 +35,14 @@ export namespace DocumentDataUpdater {
 
         const block = getBlock();
 
-        if (block.content.type !== 'document') {
+        if (! IBlockPredicates.isDocumentBlock(block)) {
             return null;
         }
 
+
         return {
             type: mutation.type,
-            block: block as IBlock<IDocumentContent>,
+            block,
         };
     }
 
@@ -73,7 +75,7 @@ export namespace DocumentDataUpdater {
 
             const repoDocInfo = repoDocInfoDataObjectIndex.get(fingerprint);
 
-            if (!repoDocInfo) {
+            if (! repoDocInfo) {
                 // This technically should never happen.
                 return console.log(`DocMeta record was not found for doc ID: ${fingerprint}. skipping update...`);
             }
@@ -83,13 +85,11 @@ export namespace DocumentDataUpdater {
             const docMetaValue = DocMetas.serialize({...docMeta, docInfo});
 
             switch (type) {
+                case 'added':
                 case 'modified':
                     batch.update(docInfoDoc, 'value', docInfo);
                     batch.update(docMetaDoc, 'value.docInfo', docInfo);
                     batch.update(docMetaDoc, 'value.value', docMetaValue);
-                    break;
-                case 'added':
-                    // I think we ignore this for now. because this is done through a migration
                     break;
                 case 'removed':
                     // Deleting a document block doesn't necessarily mean that we want to also delete

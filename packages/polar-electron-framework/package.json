@@ -27,5 +27,7 @@
     "electron": "=12.0.2",
     "polar-shared": "0.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "karma-structured-json-reporter": "=1.0.1"
+  }
 }

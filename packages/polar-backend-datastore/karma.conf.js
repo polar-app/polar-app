@@ -44,7 +44,8 @@ module.exports = (config) => {
             'karma-webpack',
             'karma-mocha',
             'karma-spec-reporter',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-structured-json-reporter',
         ],
         files: [
             { pattern: 'src/**/*.ts', watched: false },
@@ -57,7 +58,11 @@ module.exports = (config) => {
             'src/**/*.ts': ['webpack'],
         },
         singleRun: true,
-        reporters: ['junit', 'spec'],
+        reporters: ['junit', 'spec', 'json-result'],
+        jsonResultReporter: {
+            outputFile: "karma-result.json",
+            isSynchronous: true,
+        },
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
         webpack: {

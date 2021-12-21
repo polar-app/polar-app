@@ -195,7 +195,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>
-                        <Box mt={1}>
+                        <Box mt={1} style={{fontSize: '14px'}}>
                             <HighlightPreview block={block} />
 
                             <DateTimeTableCell
