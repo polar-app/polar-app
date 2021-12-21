@@ -6,8 +6,8 @@ import green from "@material-ui/core/colors/green";
 import grey from '@material-ui/core/colors/grey';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {LearningRatingGlobalHotKeys} from "./LearningRatingGlobalHotKeys";
-import {ITaskAction} from '../ReviewerTasks';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 const BUTTONS: ReadonlyArray<IRatingOption> = [
     {

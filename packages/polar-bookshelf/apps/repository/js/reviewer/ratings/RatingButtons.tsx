@@ -3,8 +3,8 @@ import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {LearningRatingButtons} from "./LearningRatingButtons";
 import {ReviewRatingButtons} from "./ReviewRatingButtons";
-import {ITaskAction} from '../ReviewerTasks';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 export interface IProps {
 

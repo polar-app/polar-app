@@ -5,8 +5,8 @@ import {ColorButton} from '../ColorButton';
 import {RatingCallback} from "../RatingCallback";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {ITaskAction} from '../ReviewerTasks';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 interface IProps<T extends ITaskAction> {
 

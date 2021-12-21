@@ -6,9 +6,9 @@ import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController"
 import {useFirestore} from "../FirestoreProvider";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
-import {ITaskAction} from "./ReviewerTasks";
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
+import {ITaskAction} from "./ITaskAction";
 
 
 interface IReviewerStoreInitOpts<T> extends Reviewers.IReviewer<T> {

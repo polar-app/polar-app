@@ -2,7 +2,7 @@ import React from 'react';
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IRepoAnnotationContent} from "../block_annotation_repo/BlocksAnnotationRepoStore";
 import {RepetitionMode, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT, TasksBuilder} from "./ReviewerTasks";
+import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT} from "./ReviewerTasks";
 import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 import {
     AnnotationContentType,
@@ -20,6 +20,7 @@ import {useReviewerTasksCreator} from "./UseReviewerTasksCreator";
 import {IImageResolver} from "./IImageResolver";
 import {IBlockReadingTaskAction} from "./IBlockReadingTaskAction";
 import {IBlockFlashcardTaskAction} from "./IBlockFlashcardTaskAction";
+import {ITasksBuilder} from "./ITasksBuilder";
 
 export function useBlockReviewerTasksCreator() {
 
@@ -31,7 +32,7 @@ export function useBlockReviewerTasksCreator() {
 
         const mode = 'reading';
 
-        const taskBuilder: TasksBuilder<IBlock<IRepoAnnotationContent>, IBlockReadingTaskAction> = (blocks) => {
+        const taskBuilder: ITasksBuilder<IBlock<IRepoAnnotationContent>, IBlockReadingTaskAction> = (blocks) => {
 
             const toTask = (block: IBlock<IAnnotationHighlightContent>): Task<IBlockReadingTaskAction> => {
 
@@ -86,7 +87,7 @@ export function useBlockReviewerTasksCreator() {
 
         const mode = 'flashcard';
 
-        const taskBuilder: TasksBuilder<IBlock<IRepoAnnotationContent>, IBlockFlashcardTaskAction> = (repoDocAnnotations) => {
+        const taskBuilder: ITasksBuilder<IBlock<IRepoAnnotationContent>, IBlockFlashcardTaskAction> = (repoDocAnnotations) => {
 
             const toTasks = (block: IBlock<IFlashcardAnnotationContent>): ReadonlyArray<Task<IBlockFlashcardTaskAction>> => {
 

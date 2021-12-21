@@ -8,8 +8,8 @@ import {CardPaper} from "./CardPaper";
 import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
-import {ITaskAction} from '../ReviewerTasks';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 namespace card {
 

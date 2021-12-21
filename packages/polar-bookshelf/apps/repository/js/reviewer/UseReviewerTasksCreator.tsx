@@ -1,6 +1,5 @@
 import React from 'react';
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {TasksBuilder} from "./ReviewerTasks";
 import {useSpacedRepCollectionSnapshot} from "./UseSpacedRepCollectionSnapshot";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
@@ -9,6 +8,7 @@ import {
     OptionalTaskRepResolver,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {ITasksBuilder} from "./ITasksBuilder";
 
 export function useReviewerTasksCreator() {
 
@@ -16,7 +16,7 @@ export function useReviewerTasksCreator() {
 
     return React.useCallback(<A, B>(data: ReadonlyArray<A>,
                                     mode: RepetitionMode,
-                                    tasksBuilder: TasksBuilder<A, B>,
+                                    tasksBuilder: ITasksBuilder<A, B>,
                                     limit: number = 10) => {
 
         Preconditions.assertPresent(mode, 'mode');

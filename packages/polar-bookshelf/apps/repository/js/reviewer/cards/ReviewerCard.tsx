@@ -4,8 +4,9 @@ import {ReadingCard} from "./ReadingCard";
 import {IFlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardCard} from "./FlashcardCard";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {ITaskAction, TaskActionPredicates} from "../ReviewerTasks";
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {TaskActionPredicates} from "../TaskActionPredicates";
+import {ITaskAction} from "../ITaskAction";
 
 interface IDoReadingCardProps {
     readonly taskRep: ITaskRep<IReadingTaskAction>;

@@ -17,8 +17,8 @@ import {ReviewerStore, ReviewerStoreContext, useReviewerStore} from "../../repos
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {observer} from "mobx-react-lite";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
-import {ITaskAction} from "../../repository/js/reviewer/ReviewerTasks";
 import {ReviewerDialog} from "../../repository/js/reviewer/ReviewerDialog";
+import {ITaskAction} from "../../repository/js/reviewer/ITaskAction";
 
 //
 // const createFlashcardTaskReps = async () => {
