@@ -524,6 +524,18 @@ export class BlocksStore implements IBlocksStore {
         return this._reverse.get(id);
     }
 
+    private getChildren(block: Readonly<Block>, levels?: number): ReadonlyArray<Block> {
+        if (levels === 0) {
+            return [];
+        }
+
+        const newLevels = levels ? levels - 1 : undefined;
+        const directChildren = this.idsToBlocks(block.itemsAsArray);
+        const nestedChildren = directChildren.flatMap(child => this.getChildren(child, newLevels));
+
+        return [...directChildren, ...nestedChildren];
+    }
+
     private processInheritedTags(before: Readonly<Block> | undefined, after: Readonly<Block>): void {
         /**
          * Changes to annotation blocks
@@ -549,21 +561,12 @@ export class BlocksStore implements IBlocksStore {
         }
 
 
-
-        // Get the first 2 levels of children
-        const getDocumentBlockAnnotationIDs = (block: Block<DocumentContent>) => {
-            const directChildren = this.idsToBlocks(block.itemsAsArray);
-            const level2ChildrenIDs = directChildren.flatMap((block) => block.itemsAsArray);
-
-            return [...directChildren.map(({ id }) => id), ...level2ChildrenIDs];
-        };
-
         /**
          * Changes to document blocks
          */
         if (before && BlockPredicates.isDocumentBlock(before)) {
             if (before.content.hasTagsMutated(after.content)) {
-                const annotations = getDocumentBlockAnnotationIDs(before);
+                const annotations = this.getChildren(before, 2).map(({ id }) => id);
 
                 for (const tagLink of before.content.tagLinks) {
                     for (const annotationID of annotations) {
@@ -575,7 +578,7 @@ export class BlocksStore implements IBlocksStore {
 
         if (BlockPredicates.isDocumentBlock(after)) {
             if (! before || before.content.hasTagsMutated(after.content)) {
-                const annotations = getDocumentBlockAnnotationIDs(after);
+                const annotations = this.getChildren(after, 2).map(({ id }) => id);
 
                 for (const tagLink of after.content.tagLinks) {
                     for (const annotationID of annotations) {

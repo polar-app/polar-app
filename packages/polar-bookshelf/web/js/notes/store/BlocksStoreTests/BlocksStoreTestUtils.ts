@@ -4,13 +4,15 @@ import {BlockContent, BlockContentMap, BlocksStore} from "../BlocksStore";
 import {MarkdownContent} from "../../content/MarkdownContent";
 import {NameContent} from "../../content/NameContent";
 import {assert} from "chai";
-import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
 import {MockBlocks} from "../../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../../undo/UndoQueues2";
-import {DocumentContent} from "../../content/DocumentContent";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
+import {IBlockTextHighlight} from "polar-blocks/src/annotations/IBlockTextHighlight";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {AnnotationContentType, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 export namespace BlockAsserts {
     export function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
@@ -107,10 +109,12 @@ export namespace BlocksStoreTestUtils {
         return store;
     }
 
-    export function createDocumentContent(data: Partial<IDocInfo>) {
-        return new DocumentContent({
+    export function createDocumentContent(data?: Partial<IDocInfo>,
+                                          links: ReadonlyArray<IBlockLink> = []): IDocumentContent {
+
+        return {
             type: 'document',
-            links: [],
+            links,
             docInfo: {
                 flagged: false,
                 nrPages: 10,
@@ -122,6 +126,25 @@ export namespace BlocksStoreTestUtils {
                 pagemarkType: PagemarkType.SINGLE_COLUMN,
                 ...data,
             },
-        });
+        };
+
+    }
+
+    export function createTextHighlightContent(data?: Partial<IBlockTextHighlight>,
+                                               links: ReadonlyArray<IBlockLink> = []): ITextHighlightAnnotationContent {
+        
+        return {
+            type: AnnotationContentType.TEXT_HIGHLIGHT,
+            links,
+            pageNum: 55,
+            docID: `${Math.random()}`,
+            value: {
+                text: 'test',
+                color: 'red',
+                rects: {},
+                ...data,
+            },
+        };
+
     }
 }

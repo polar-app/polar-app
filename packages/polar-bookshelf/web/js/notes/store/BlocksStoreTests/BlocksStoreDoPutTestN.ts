@@ -4,6 +4,9 @@ import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {Block} from "../Block";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IBlockLink} from "polar-blocks/src/blocks/IBlock";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 
 describe('BlocksStore', () => {
 
@@ -129,6 +132,171 @@ describe('BlocksStore', () => {
             // assert
             assert.exists(store.indexByName[updatedBlock.content.data]);
             assert.notExists(store.indexByName[nameBlock.content.data]);
+        });
+
+        it('Should update the indexByDocumentID properly when a document block gets added', () => {
+            // set up
+            const fingerprint = Hashcodes.createRandomID();
+            const store = BlocksStoreTestUtils.createStore();
+            const documentBlock = BlocksStoreTests.createBasicBlock({
+                content: BlocksStoreTestUtils.createDocumentContent({ fingerprint })
+            });
+
+            // act
+            store.doPut([documentBlock]);
+
+            // assert
+            assert.exists(store.indexByDocumentID[fingerprint]);
+        });
+
+        it('Should update the tags & reverse backlink indices properly when a block with tags gets added', () => {
+            // set up
+            const store = BlocksStoreTestUtils.createStore();
+            const tags: ReadonlyArray<IBlockLink> = [{ id: 'ref', text: '#taggerino' }]; 
+            const block = BlocksStoreTests.createBasicBlock({
+                content: { type: 'markdown', data: 'hello', links: tags },
+            });
+
+            // act
+            store.doPut([block]);
+
+            // assert
+            assert.deepEqual(store.reverse.get('ref'), [block.id]);
+            assert.deepEqual(store.tagsIndex.get('ref'), [block.id]);
+        });
+
+        it('Should update the tags & reverse backlink indices properly when a block with tags get updated', () => {
+            // set up
+            const store = BlocksStoreTestUtils.createStore();
+            const tags: ReadonlyArray<IBlockLink> = [
+                { id: 'ref', text: '#taggerino' },
+                { id: 'ref1', text: '#taggerino1' },
+            ];
+                
+            const block = BlocksStoreTests.createBasicBlock({
+                content: { type: 'markdown', data: 'hello', links: tags },
+            });
+            store.doPut([block]);
+
+            // act
+            const newTags: ReadonlyArray<IBlockLink> = [{ id: 'ref', text: '#taggerino' }]; 
+            const updatedBlock = BlocksStoreTests.createBasicBlock({
+                id: block.id,
+                content: { type: 'markdown', data: 'hello', links: newTags },
+                mutation: block.mutation + 1,
+            });
+            store.doPut([updatedBlock]);
+
+            // assert
+            assert.deepEqual(store.reverse.get('ref'), [block.id]);
+            assert.deepEqual(store.tagsIndex.get('ref'), [block.id]);
+            assert.deepEqual(store.reverse.get('ref1'), []);
+            assert.deepEqual(store.tagsIndex.get('ref1'), []);
+        });
+
+        it('Should process annotation blocks & inherit the tags of their ownning document block when updating the tags index', () => {
+            // set up
+            const store = BlocksStoreTestUtils.createStore();
+            const documentTags: ReadonlyArray<IBlockLink> = [
+                { id: 'ref', text: '#taggerino' },
+            ];
+            const documentBlock = BlocksStoreTests.createBasicBlock({
+                content: BlocksStoreTestUtils.createDocumentContent({}, documentTags),
+            });
+            const annotationBlock = BlocksStoreTests.createBasicBlock({
+                root: documentBlock.id,
+                parent: documentBlock.id,
+                parents: [documentBlock.id],
+                content: BlocksStoreTestUtils.createTextHighlightContent(),
+            });
+            store.doPut([documentBlock]);
+
+            // act
+            store.doPut([annotationBlock]);
+
+
+            // assert
+            assert.sameMembers(
+                [...store.tagsIndex.get('ref')],
+                [documentBlock.id, annotationBlock.id]);
+        });
+
+        it('Should process document blocks & apply the doucment\'s tags to its first 2 levels of children when updating the tags index (add)', () => {
+            // set up
+            const store = BlocksStoreTestUtils.createStore();
+            const documentTags: ReadonlyArray<IBlockLink> = [
+                { id: 'ref', text: '#taggerino' },
+            ];
+
+            const annotationID = Hashcodes.createRandomID();
+            const documentBlock = BlocksStoreTests.createBasicBlock({
+                content: BlocksStoreTestUtils.createDocumentContent({}, documentTags),
+                items: PositionalArrays.create([annotationID]),
+            });
+            const annotationBlock = BlocksStoreTests.createBasicBlock({
+                id: annotationID,
+                root: documentBlock.id,
+                parent: documentBlock.id,
+                parents: [documentBlock.id],
+                content: BlocksStoreTestUtils.createTextHighlightContent(),
+            });
+            store.doPut([annotationBlock]);
+
+            // act
+            store.doPut([documentBlock]);
+
+
+            // assert
+            assert.sameMembers(
+                [...store.tagsIndex.get('ref')],
+                [documentBlock.id, annotationBlock.id]);
+        });
+
+        it('Should process document blocks & apply the doucment\'s tags to its first 2 levels of children when updating the tags index (update) fuck', () => {
+            // set up
+            const store = BlocksStoreTestUtils.createStore();
+            const documentTags: ReadonlyArray<IBlockLink> = [
+                { id: 'ref', text: '#taggerino' },
+            ];
+
+            const annotationID = Hashcodes.createRandomID();
+            const documentBlock = BlocksStoreTests.createBasicBlock({
+                id: 'wtf',
+                content: BlocksStoreTestUtils.createDocumentContent({}, documentTags),
+                items: PositionalArrays.create([annotationID]),
+            });
+            const annotationBlock = BlocksStoreTests.createBasicBlock({
+                id: annotationID,
+                root: documentBlock.id,
+                parent: documentBlock.id,
+                parents: [documentBlock.id],
+                content: BlocksStoreTestUtils.createTextHighlightContent(),
+            });
+            store.doPut([documentBlock]);
+            store.doPut([annotationBlock]);
+
+            // act
+            const newDocumentTags: ReadonlyArray<IBlockLink> = [
+                { id: 'ref1', text: '#taggerino1' },
+            ];
+            const updatedDocumentBlock = BlocksStoreTests.createBasicBlock({
+                id: documentBlock.id,
+                content: BlocksStoreTestUtils.createDocumentContent({}, newDocumentTags),
+                items: PositionalArrays.create([annotationID]),
+                mutation: documentBlock.mutation + 1,
+            });
+            store.doPut([updatedDocumentBlock]);
+
+
+
+            // assert
+            assert.sameMembers(
+                [...store.tagsIndex.get('ref')],
+                []);
+
+            assert.sameMembers(
+                [...store.tagsIndex.get('ref1')],
+                [documentBlock.id, annotationBlock.id]);
         });
     });
 });
