@@ -7,6 +7,7 @@ import {
     IRegisterForPrivateBetaResponse
 } from "polar-private-beta-api/src/IRegisterForPrivateBetaResponse";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 
 /**
  * Main function for adding users to our private beta.  Takes a user and a tag
@@ -44,9 +45,19 @@ export namespace RegisterForPrivateBeta {
             tags,
             email: request.email,
             challenge
-        })
+        });
 
-        // TODO: send them an email thanking them...
+        const message = {
+            to: request.email,
+            from: 'founders@getpolarized.io',
+            subject: `Polar | Early access list`,
+            html: `<p>Hi!</p>
+                   <p>Thanks for signing up for early access to Polar. We’re consistently letting in new users and your turn is coming up soon!</p>
+                   <p>Cheers</p>
+                   <p>The Polar team</p>
+                   <p style="font-size: smaller; color: #c6c6c6;">Polar - Read. Learn. Never Forget.</p>`
+        };
+        await Sendgrid.send(message);
 
         return {};
 
