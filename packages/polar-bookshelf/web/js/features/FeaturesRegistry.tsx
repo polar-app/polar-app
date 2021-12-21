@@ -32,10 +32,6 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "dev": {
         title: "Development",
         description: "Enable various tools for developers.",
-    },
-    "proper-virtualized-font-size": {
-        title: "Proper Virtualized Font Size",
-        description: "We use virtualization to scroll complex tables and we have to use a proper font-size and I picked 14px.  This enables that setting so that we use the proper size in the annotation repo.",
     }
 
 };
@@ -44,7 +40,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'proper-virtualized-font-size';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev';
 
 export interface IFeature {
 
