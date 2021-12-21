@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Box} from '@material-ui/core';
 import {AdaptivePageLayout} from "../../../../apps/repository/js/page_layout/AdaptivePageLayout";
 import {MUIActionCard} from '../../mui/MUIActionCard';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useHistory} from "react-router-dom";
 
 
 /**
@@ -10,6 +10,16 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
  * folders..
  */
 export const ReviewMobileScreen = React.memo(function ReviewMobileScreen(){
+
+    const history = useHistory()
+
+    const handleFlashcards = React.useCallback(() => {
+        history.push({pathname: '/annotations', hash: '#review-flashcards'})
+    }, [history])
+
+    const handleReading = React.useCallback(() => {
+        history.push({pathname: '/annotations', hash: '#review-reading'})
+    }, [history])
 
     return(
         <AdaptivePageLayout noBack title="Flashcards">
@@ -24,12 +34,12 @@ export const ReviewMobileScreen = React.memo(function ReviewMobileScreen(){
                  <MUIActionCard title="Flashcards"
                                 description="Review all manual and automatic flashcards."
                                 actionButtonTitle="Start Review"
-                                onAction={NULL_FUNCTION} />
+                                onAction={handleFlashcards} />
 
                  <MUIActionCard title="Reading"
                                 description="Review other annotations created from your reading."
                                 actionButtonTitle="Start Review"
-                                onAction={NULL_FUNCTION} />
+                                onAction={handleReading} />
             </Box>
 
         </AdaptivePageLayout>
