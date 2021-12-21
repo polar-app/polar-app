@@ -20,7 +20,7 @@ export interface StandardButtonProps extends ButtonProps {
     readonly style?: React.CSSProperties;
 }
 
-export const StandardIconButton = React.memo(React.forwardRef(function StandardIconButton(props: StandardButtonProps) {
+export const StandardIconButton = React.memo(React.forwardRef((props: StandardButtonProps, ref) => {
     const classes = useStyles();
 
     return (
