@@ -11,6 +11,8 @@ import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
+import {useFeatureEnabled} from "../features/FeaturesRegistry";
+import FlashOnIcon from '@material-ui/icons/FlashOn';
 
 type IUseStylesProps = {
     readonly show: boolean;
@@ -42,9 +44,12 @@ interface IBottomNavLocation {
     readonly label: string;
     readonly href: string;
     readonly icon: React.ReactNode;
+    readonly disabled?: boolean;
 }
 
 const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
+
+    const mobileFlashcardsEnabled = useFeatureEnabled('mobile-flashcards');
 
     return React.useMemo(() => ([
         {
@@ -66,12 +71,20 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             icon: <AddIcon/>
         },
         {
+            id: 'review',
+            label: 'Flashcards',
+            href: RoutePathNames.REVIEW,
+            icon: <FlashOnIcon/>,
+            disabled: ! mobileFlashcardsEnabled
+        },
+        {
             id: 'switch',
             label: 'Switch',
             href: RoutePathNames.SWITCH,
             icon: <CarouselIcon/>
         },
-    ]), []);
+    ]), [mobileFlashcardsEnabled]);
+
 };
 
 export const MUIBottomNavigation = ()  => {
@@ -136,7 +149,8 @@ export const MUIBottomNavigation = ()  => {
                               ref={bottomNavRef}
                               className={classes.root}>
 
-                {bottomNavLocations.map(current => (
+                {bottomNavLocations.filter(current => ! current.disabled)
+                                   .map(current => (
                     <BottomNavigationAction key={current.id}
                                             disableRipple={true}
                                             disableTouchRipple={true}

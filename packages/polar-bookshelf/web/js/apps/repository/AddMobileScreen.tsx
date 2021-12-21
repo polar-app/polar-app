@@ -17,10 +17,9 @@ const useStyles = makeStyles<Theme>(() =>
 );
 
 /**
- * @author Hadi, 21-September-2021
- * A new screen that opens only for mobile when adding new files, notes, folders..
+ * A new screen that opens only for mobile when adding new files, notes,
+ * folders..
  */
-
 export const AddMobileScreen = React.memo(function AddMobileScreen(){
     const classes = useStyles();
     const addFileImporter = useAddFileImporter();

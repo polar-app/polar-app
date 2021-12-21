@@ -80,6 +80,7 @@ import {NotesContainer} from '../../notes/NotesContainer';
 import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
+import {ReviewMobileScreen} from './ReviewMobileScreen';
 
 interface IProps {
     readonly app: App;
@@ -332,6 +333,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <PersistentRoute strategy="display" path={RoutePathNames.ADD}>
                                             <AddMobileScreen/>
+                                        </PersistentRoute>
+
+                                        <PersistentRoute strategy="display" path={RoutePathNames.REVIEW}>
+                                            <ReviewMobileScreen/>
                                         </PersistentRoute>
 
                                         <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>
