@@ -36,6 +36,8 @@ export namespace Reviewers {
 
     export async function create<T>(opts: IReviewerCreateOpts<T>): Promise<IReviewer<T>> {
 
+        console.log("Creating reviewer...");
+
         const {data, mode, firestore} = opts;
         const onClose = opts.onClose || NULL_FUNCTION;
 
@@ -63,6 +65,8 @@ export namespace Reviewers {
 
         };
 
+        // TODO: don't call this here ... but instead do this on init() so that this function
+        // doesn't need to be async.
         await doWriteQueueStageCounts();
 
         console.log("Found N tasks: " + taskReps.length);

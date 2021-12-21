@@ -58,9 +58,11 @@ export const BlockReviewerScreen: React.FC<IBlockReviewerScreenProps> = deepMemo
             onClose();
         }
 
-        history.replace({ pathname: "/annotations", hash: "" });
-    }, [history, store, onClose]);
+        // TODO: probably better to restore the URL to where we came from?
 
+        history.replace({ pathname: "/annotations", hash: "" });
+
+    }, [history, store, onClose]);
 
     return (
         <ReviewerDialog onClose={handleClose}>

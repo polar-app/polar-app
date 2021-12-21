@@ -123,14 +123,20 @@ interface IReviewerStoreProviderOpts {
     readonly onClose?: () => void;
 }
 
-export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore<ITaskAction> | undefined => {
-    const { dataProvider, mode, onClose } = opts;
+export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore | undefined => {
+
+    const dataProvider = opts.dataProvider;
+    const mode = opts.mode;
+    const onClose = opts.onClose;
+
     const firestoreContext = useFirestore();
-    const dialogManagerRef = useRefWithUpdates(useDialogManager())
-    const [store, setStore] = React.useState<ReviewerStore<ITaskAction>>();
+    const dialogManagerRef = useRefWithUpdates(useDialogManager());
+    const [store, setStore] = React.useState<ReviewerStore>();
 
     React.useEffect(() => {
+
         const createStore = async () => {
+
             const { taskReps, doRating, doSuspended, doFinished } = await Reviewers.create({
                 firestore: firestoreContext!,
                 onClose,
@@ -145,13 +151,19 @@ export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): Revi
                 doRating,
                 dialogManager: dialogManagerRef.current,
             });
+
         };
 
-        createStore()
-            .then(setStore)
-            .catch(console.error);
-    }, [dataProvider, mode, onClose, firestoreContext, dialogManagerRef]);
+        if (! store) {
 
+            createStore()
+                .then(setStore)
+                .catch(console.error);
+
+        }
+
+    }, [dataProvider, mode, onClose, firestoreContext, dialogManagerRef, store]);
 
     return store;
+
 };
