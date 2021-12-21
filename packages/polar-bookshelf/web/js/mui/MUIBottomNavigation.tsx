@@ -87,6 +87,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
 
 };
 
+
 export const MUIBottomNavigation = ()  => {
 
     const {isOpen: isSidenavOpen} = useSideNavStore(['isOpen']);
