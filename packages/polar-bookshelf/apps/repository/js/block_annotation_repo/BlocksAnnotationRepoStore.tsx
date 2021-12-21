@@ -27,6 +27,11 @@ export type IRepoAnnotationTextContent = ITextHighlightAnnotationContent
                                          | IFlashcardAnnotationContent
                                          | IMarkdownContent;
 
+/**
+ * The indicates the depth of children to be displayed in the annotation repo for each highlight block
+ */
+export const ANNOTATION_REPO_CHILDREN_DEPTH = 2;
+
 export class BlocksAnnotationRepoStore {
     private readonly _blocksStore: IBlocksStore;
 
@@ -133,7 +138,7 @@ export class BlocksAnnotationRepoStore {
         return rootBlock !== undefined
                && IBlockPredicates.isDocumentBlock(rootBlock)
                && (IBlockPredicates.isAnnotationBlock(block) || IBlockPredicates.isMarkdownBlock(block))
-               && block.parents.length <= 2;
+               && block.parents.length <= ANNOTATION_REPO_CHILDREN_DEPTH;
     }
 }
 

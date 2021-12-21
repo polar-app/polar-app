@@ -60,7 +60,7 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -566,7 +566,8 @@ export class BlocksStore implements IBlocksStore {
          */
         if (before && BlockPredicates.isDocumentBlock(before)) {
             if (before.content.hasTagsMutated(after.content)) {
-                const annotations = this.getChildren(before, 2).map(({ id }) => id);
+                const annotations = this.getChildren(before, ANNOTATION_REPO_CHILDREN_DEPTH)
+                    .map(({ id }) => id);
 
                 for (const tagLink of before.content.tagLinks) {
                     for (const annotationID of annotations) {
@@ -578,7 +579,8 @@ export class BlocksStore implements IBlocksStore {
 
         if (BlockPredicates.isDocumentBlock(after)) {
             if (! before || before.content.hasTagsMutated(after.content)) {
-                const annotations = this.getChildren(after, 2).map(({ id }) => id);
+                const annotations = this.getChildren(after, ANNOTATION_REPO_CHILDREN_DEPTH)
+                    .map(({ id }) => id);
 
                 for (const tagLink of after.content.tagLinks) {
                     for (const annotationID of annotations) {
