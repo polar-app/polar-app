@@ -18,6 +18,7 @@ import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers
 import {observer} from "mobx-react-lite";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {ITaskAction} from "../../repository/js/reviewer/ReviewerTasks";
+import {ReviewerDialog} from "../../repository/js/reviewer/ReviewerDialog";
 
 //
 // const createFlashcardTaskReps = async () => {
@@ -145,15 +146,19 @@ export const ReviewerStory = () => {
             <BrowserRouter key="browser-router">
                 <Switch location={ReactRouters.createLocationWithPathAndHash()}>
                     <ReviewerStoreContext.Provider value={store}>
-                        {open && (
-                            <ReviewerRunner store={store} />)}
 
-                        <Button variant="contained"
-                                color="primary"
-                                size="large"
-                                onClick={() => setOpen(true)}>
-                            Start Review
-                        </Button>
+                        {open && (
+                            <ReviewerDialog onClose={() => setOpen(false)}>
+                                <ReviewerRunner store={store} />
+                            </ReviewerDialog>)}
+
+                        {! open && (
+                            <Button variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    onClick={() => setOpen(true)}>
+                                Start Review
+                            </Button>)}
 
                         <ReviewerStats/>
 
