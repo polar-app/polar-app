@@ -3,8 +3,8 @@ import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     TaskRepResolver,
-    TasksCalculator2
-} from "./TasksCalculator2";
+    TasksCalculator
+} from "./TasksCalculator";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assertJSON} from "polar-test/src/test/Assertions";
@@ -19,7 +19,7 @@ function doTest(potential: ReadonlyArray<Task<TestTaskAction>>, workMap: Pending
 
     const resolver = createMockWorkRepResolver(workMap);
 
-    return TasksCalculator2.calculate({
+    return TasksCalculator.calculate({
         potential,
         resolver,
         limit: 10
@@ -68,7 +68,7 @@ class Tester {
                 return undefined;
             }
 
-            const next = TasksCalculator2.computeNextSpacedRep(taskReps[0], rating);
+            const next = TasksCalculator.computeNextSpacedRep(taskReps[0], rating);
 
             console.log("next: " + Dictionaries.toJSON(next));
 
@@ -645,7 +645,7 @@ function createMockWorkRepResolver(pendingTaskRepMap: PendingTaskRepMap = {}): T
         const pendingWorkRep = Optional.of(pendingTaskRepMap[task.id]).getOrUndefined();
 
         if (pendingWorkRep) {
-            const age = TasksCalculator2.computeAge(pendingWorkRep.spacedRep);
+            const age = TasksCalculator.computeAge(pendingWorkRep.spacedRep);
             return {...pendingWorkRep.action, ...pendingWorkRep.spacedRep, age};
         }
 

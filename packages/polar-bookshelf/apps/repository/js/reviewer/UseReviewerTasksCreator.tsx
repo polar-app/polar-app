@@ -7,7 +7,7 @@ import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
-    TasksCalculator2
+    TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator2";
 
 export function useReviewerTasksCreator() {
@@ -38,7 +38,7 @@ export function useReviewerTasksCreator() {
                 return undefined;
             }
 
-            const age = TasksCalculator2.computeAge(spacedRep);
+            const age = TasksCalculator.computeAge(spacedRep);
 
             return {
                 ...task, ...spacedRep, age
@@ -53,7 +53,7 @@ export function useReviewerTasksCreator() {
             throw spacedRepsSnapshot.left;
         }
 
-        return TasksCalculator2.calculate({
+        return TasksCalculator.calculate({
             potential,
             resolver,
             limit

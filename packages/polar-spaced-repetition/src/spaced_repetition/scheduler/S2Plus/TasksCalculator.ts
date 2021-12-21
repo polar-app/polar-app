@@ -15,7 +15,7 @@ import {S2Plus} from "./S2Plus";
 import {ITaskRep} from "./ITaskRep";
 import {ICalculatedTaskReps} from "./ICalculatedTaskReps";
 
-export namespace TasksCalculator2 {
+export namespace TasksCalculator {
 
     /**
      * The amount of time to wait to process the card again when it has lapsed.
@@ -275,7 +275,7 @@ export function createDefaultTaskRepResolver<A>(delegate: OptionalTaskRepResolve
             return result;
         }
 
-        return TasksCalculator2.createInitialLearningState(task);
+        return TasksCalculator.createInitialLearningState(task);
 
     };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TasksCalculator2} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator2";
+import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator2";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {ColorButton} from '../ColorButton';
 import {RatingCallback} from "../RatingCallback";
@@ -24,7 +24,7 @@ export const RatingButton = deepMemo(function RatingButton<T extends ITaskAction
     // TODO: this isn't returning the right time so we're not really getting exponential
     // backoff.  To fix this just dump the taskRep as JSON and debug from there.  It
     // must not be returning the right value due to the TaskRep data.
-    const spacedRep = TasksCalculator2.computeNextSpacedRep(taskRep, rating);
+    const spacedRep = TasksCalculator.computeNextSpacedRep(taskRep, rating);
     const duration = TimeDurations.format(spacedRep.state.interval);
 
     return (
