@@ -1,7 +1,4 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {IReadingTaskAction} from "./cards/ReadingTaskAction";
 import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
 
@@ -29,24 +26,5 @@ export interface TasksBuilder<A, B> {
 }
 
 export class ReviewerTasks {
-
-    /**
-     * Return true if the user is actively using the flashcard/IR reviewer system.
-     * @deprecated
-     */
-    public static async isReviewer(): Promise<boolean> {
-
-        const uid = await FirebaseBrowser.currentUserID();
-        const firestore = await FirestoreBrowserClient.getInstance();
-
-
-        if (!uid) {
-            // they aren't logged into Firebase so clearly not...
-            return false;
-        }
-
-        return await SpacedRepStatCollection.hasStats(firestore, uid);
-
-    }
 
 }
