@@ -6,6 +6,7 @@ import {IBlockPredicates} from '../../../../web/js/notes/store/IBlockPredicates'
 import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
 import {BlockLinksMatcher} from '../../../../web/js/notes/NoteUtils';
 import {Tag} from "polar-shared/src/tags/Tags";
+import {ReverseIndex} from "../../../../web/js/notes/store/ReverseIndex";
 import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 
@@ -38,11 +39,12 @@ export namespace BlocksAnnotationRepoFilters {
 
     }
 
-    export function execute(blockAnnotations: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
+    export function execute(tagIndex: ReverseIndex,
+                            blockAnnotations: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
                             filter: Filter): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
 
         blockAnnotations = doFilterByText(blockAnnotations, filter);
-        blockAnnotations = doFilterByTags(blockAnnotations, filter);
+        blockAnnotations = doFilterByTags(tagIndex, blockAnnotations, filter);
         blockAnnotations = doFilterByColor(blockAnnotations, filter);
         blockAnnotations = doFilterByAnnotationTypes(blockAnnotations, filter);
 
@@ -112,7 +114,8 @@ export namespace BlocksAnnotationRepoFilters {
 
     }
 
-    function doFilterByTags(blockAnnotations: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
+    function doFilterByTags(tagIndex: ReverseIndex,
+                            blockAnnotations: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
                             filter: Filter): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
 
         if (! filter.tags || filter.tags.length === 0) {
@@ -121,7 +124,7 @@ export namespace BlocksAnnotationRepoFilters {
 
         const links: ReadonlyArray<IBlockLink> = filter.tags.map(({ id, label }) => ({ id, text: label }));
 
-        return BlockLinksMatcher.filter(blockAnnotations, links);
+        return BlockLinksMatcher.filter(tagIndex, blockAnnotations, links);
     }
 
 }

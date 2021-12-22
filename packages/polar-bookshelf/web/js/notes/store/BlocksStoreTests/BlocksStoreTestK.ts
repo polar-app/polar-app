@@ -1,14 +1,14 @@
 import {assert} from "chai";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
-import {CursorPositions} from "../contenteditable/CursorPositions";
-import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {Block} from "./Block";
-import {BlockPredicates} from "./BlockPredicates";
-import {BlocksStore} from "./BlocksStore";
-import {createStore} from "./BlocksStoreTestNK";
-import {IBlocksStore} from "./IBlocksStore";
-import {BlockTextContentUtils} from "../BlockTextContentUtils";
+import {CursorPositions} from "../../contenteditable/CursorPositions";
+import {DOMBlocks} from "../../contenteditable/DOMBlocks";
+import {BlockTextContentUtils} from "../../BlockTextContentUtils";
+import {Block} from "../Block";
+import {BlockPredicates} from "../BlockPredicates";
+import {BlocksStore} from "../BlocksStore";
+import {IBlocksStore} from "../IBlocksStore";
+import {BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
 
 
 namespace HTMLBlockUtils {
@@ -56,7 +56,7 @@ describe('BlocksStore (Karma)', () => {
     let store: BlocksStore;
 
     beforeEach(() => {
-        store = createStore();
+        store = BlocksStoreTestUtils.createStore();
         const selection = window.getSelection();
         selection?.addRange(new Range());
     });
@@ -67,7 +67,7 @@ describe('BlocksStore (Karma)', () => {
             let store: BlocksStore;
 
             beforeEach(() => {
-                store = createStore();
+                store = BlocksStoreTestUtils.createStore();
             });
 
             it("Should set the previous block as active properly (with all blocks expanded)", () => {
@@ -121,7 +121,7 @@ describe('BlocksStore (Karma)', () => {
             let store: BlocksStore;
 
             beforeEach(() => {
-                store = createStore();
+                store = BlocksStoreTestUtils.createStore();
             });
 
             it("Should set the next block as active properly (with all blocks expanded)", () => {

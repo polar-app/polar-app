@@ -60,6 +60,7 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
+import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -525,6 +526,73 @@ export class BlocksStore implements IBlocksStore {
         return this._reverse.get(id);
     }
 
+    private getChildren(block: Readonly<Block>, levels?: number): ReadonlyArray<Block> {
+        if (levels === 0) {
+            return [];
+        }
+
+        const newLevels = levels ? levels - 1 : undefined;
+        const directChildren = this.idsToBlocks(block.itemsAsArray);
+        const nestedChildren = directChildren.flatMap(child => this.getChildren(child, newLevels));
+
+        return [...directChildren, ...nestedChildren];
+    }
+
+    private processInheritedTags(before: Readonly<Block> | undefined, after: Readonly<Block>): void {
+        /**
+         * Changes to annotation blocks
+         */
+        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, before)) {
+            const documentBlock = this.getBlock(before.root);
+
+            if (documentBlock) {
+                for (const tagLink of documentBlock.content.tagLinks) {
+                    this._tagsIndex.remove(tagLink.id, before.id);
+                }
+            }
+        }
+
+        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, after)) {
+            const documentBlock = this.getBlock(after.root);
+
+            if (documentBlock) {
+                for (const tagLink of documentBlock.content.tagLinks) {
+                    this._tagsIndex.add(tagLink.id, after.id);
+                }
+            }
+        }
+
+
+        /**
+         * Changes to document blocks
+         */
+        if (before && BlockPredicates.isDocumentBlock(before)) {
+            if (before.content.hasTagsMutated(after.content)) {
+                const annotations = this.getChildren(before, ANNOTATION_REPO_CHILDREN_DEPTH)
+                    .map(({ id }) => id);
+
+                for (const tagLink of before.content.tagLinks) {
+                    for (const annotationID of annotations) {
+                        this._tagsIndex.remove(tagLink.id, annotationID);
+                    }
+                }
+            }
+        }
+
+        if (BlockPredicates.isDocumentBlock(after)) {
+            if (! before || before.content.hasTagsMutated(after.content)) {
+                const annotations = this.getChildren(after, ANNOTATION_REPO_CHILDREN_DEPTH)
+                    .map(({ id }) => id);
+
+                for (const tagLink of after.content.tagLinks) {
+                    for (const annotationID of annotations) {
+                        this._tagsIndex.add(tagLink.id, annotationID);
+                    }
+                }
+            }
+        }
+    }
+
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
@@ -566,6 +634,7 @@ export class BlocksStore implements IBlocksStore {
                 for (const tagLink of existingBlock.content.tagLinks) {
                     this._tagsIndex.remove(tagLink.id, block.id);
                 }
+
             }
 
             for (const link of block.content.links) {
@@ -575,6 +644,8 @@ export class BlocksStore implements IBlocksStore {
             for (const tagLink of block.content.tagLinks) {
                 this._tagsIndex.add(tagLink.id, block.id);
             }
+
+            this.processInheritedTags(existingBlock, block);
 
             /**
              * Update tags indices
@@ -1950,7 +2021,7 @@ export class BlocksStore implements IBlocksStore {
 
             console.log("doIndent: " + id);
 
-            const block = this._index[id];
+            const block = this.getBlockForMutation(id);
 
             if (! block) {
                 return {error: 'no-block'};
@@ -1960,7 +2031,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent'};
             }
 
-            const parentBlock = this._index[block.parent];
+            const parentBlock = this.getBlockForMutation(block.parent);
 
             if (! parentBlock) {
                 console.warn("No parent block for id: " + block.parent);
@@ -1980,7 +2051,7 @@ export class BlocksStore implements IBlocksStore {
 
                 const newParentID = parentItems[siblingIndex - 1];
 
-                const newParentBlock = this._index[newParentID];
+                const newParentBlock = this.getBlockForMutation(newParentID)!;
 
                 // *** remove myself from my parent
 
@@ -2000,9 +2071,9 @@ export class BlocksStore implements IBlocksStore {
                 });
 
                 const nestedChildrenIDs = this.computeLinearTree(block.id);
-                this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
-
                 this.doPut([block, newParentBlock, parentBlock]);
+
+                this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
 
                 this.expand(newParentID);
 
@@ -2099,7 +2170,7 @@ export class BlocksStore implements IBlocksStore {
 
             console.log("doUnIndent: " + id);
 
-            const block = this._index[id];
+            const block = this.getBlockForMutation(id);
 
             if (! block) {
                 return {error: 'no-block'};
@@ -2109,7 +2180,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent'};
             }
 
-            const parentBlock = this._index[block.parent];
+            const parentBlock = this.getBlockForMutation(block.parent);
 
             if (! parentBlock) {
                 return {error: 'no-parent-block'};
@@ -2123,7 +2194,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block-parent'};
             }
 
-            const newParentBlock = this._index[parentBlock.parent];
+            const newParentBlock = this.getBlockForMutation(parentBlock.parent);
 
             if (! newParentBlock) {
                 return {error: 'no-parent-block-parent-block'};
