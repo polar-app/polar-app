@@ -26,7 +26,7 @@ export namespace BlocksStoreTests {
         const nspace = '234'
         const uid = '1234'
         const created = ISODateTimeStrings.create();
-        const id = opts.id || Hashcodes.createRandomID();
+        const id = opts.id || BlockIDs.createRandom();
 
         return {
             id: opts.id || BlockIDs.createRandom(),

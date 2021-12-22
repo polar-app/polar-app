@@ -3,9 +3,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {JSDOMParser} from "./BlocksStoreTests/BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
-import {BlocksStoreTests} from "./BlocksStoreTests";
 import {BlocksStoreTests} from "./BlocksStoreTests/BlocksStoreTests";
-import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {assert} from "chai";
@@ -14,10 +12,12 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {JSDOM} from "jsdom";
+import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTests/BlocksStoreTestUtils";
+import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
+import {BlocksStore} from "./BlocksStore";
+import {UndoQueues2} from "../../undo/UndoQueues2";
 import {IBlocksStoreMutation} from "./IBlocksStoreMutation";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTests/BlocksStoreTestUtils";
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -329,6 +329,7 @@ describe("BlocksStoreUndoQueues", () => {
             const dom = new JSDOM('<html><body></body></html>');
 
             global.document = dom.window.document;
+
         });
 
         afterEach(() => {

@@ -18,27 +18,19 @@ import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks} from "../../HTMLToBlocks";
 import {BlockIDStr, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {WriteController, WriteFileProgress} from "../../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../../datastore/FirebaseCloudStorage";
-import {HTMLToBlocks} from "../HTMLToBlocks";
-import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
-import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
-import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
-import {BlockTextContentUtils} from "../../NoteUtils";
 import {DateContent} from "../../content/DateContent";
-import {DateContent} from "../content/DateContent";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
-import {BlockTextContentUtils} from "../BlockTextContentUtils";
-import assertPresent = Asserts.assertPresent;
+import {BlockTextContentUtils} from "../../BlockTextContentUtils";
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
-
+import assertPresent = Asserts.assertPresent;
 
 /**
  * Run the action but also undo and redo it and verify the result.  This way
