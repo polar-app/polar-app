@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
@@ -41,7 +41,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
-import {AddFilesMobileScreen} from "./AddFilesMobileScreen";
+import {AddMobileScreen} from "./AddMobileScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -70,7 +70,7 @@ import {NoteProviders} from "../../notes/NoteProviders";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
-import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
+import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
@@ -80,6 +80,9 @@ import {NotesContainer} from '../../notes/NotesContainer';
 import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
+import {ReviewMobileScreen} from './ReviewMobileScreen';
+import {SpacedRepCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
+import {SpacedRepStatCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
 
 interface IProps {
     readonly app: App;
@@ -207,7 +210,13 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                  repoDocMetaLoader={repoDocMetaLoader}
                                                  persistenceLayerManager={persistenceLayerManager}>
                                 <DocRepoStore2>
-                                    {children}
+                                    <SpacedRepCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                                        <SpacedRepStatCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                                            <>
+                                                {children}
+                                            </>
+                                        </SpacedRepStatCollectionSnapshotProvider>
+                                    </SpacedRepCollectionSnapshotProvider>
                                 </DocRepoStore2>
                             </PersistenceLayerApp>
                         </BlocksStoreProvider>
@@ -330,8 +339,12 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <SwitchScreen/>
                                         </PersistentRoute>
 
-                                        <PersistentRoute strategy="display" path={RoutePathNames.ADD_MOBILE}>
-                                            <AddFilesMobileScreen/>
+                                        <PersistentRoute strategy="display" path={RoutePathNames.ADD}>
+                                            <AddMobileScreen/>
+                                        </PersistentRoute>
+
+                                        <PersistentRoute strategy="display" path={RoutePathNames.REVIEW}>
+                                            <ReviewMobileScreen/>
                                         </PersistentRoute>
 
                                         <PersistentRoute strategy="display" path={RoutePathNames.ACCOUNT_MOBILE}>

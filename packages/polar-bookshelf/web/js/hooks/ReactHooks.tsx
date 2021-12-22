@@ -54,6 +54,16 @@ export function useStateTraced<V>(value: V) {
 
 }
 
+export function useTraced<V>(value: V, id: string) {
+
+    return React.useMemo(() => {
+        console.log("traced: id value changed: " + id);
+        return value;
+    }, [id, value]);
+
+}
+
+
 /**
  * Create a ref for the value and always update it so that inner functions can see the most recent value.
  */

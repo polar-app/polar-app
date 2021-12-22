@@ -7,10 +7,10 @@ import {ReviewerStore, ReviewerStoreContext} from './ReviewerStore';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {observer} from 'mobx-react-lite';
 import {MUILoading} from "../../../../web/js/mui/MUILoading";
-import {ITaskAction} from './ReviewerTasks';
 
 interface IReviewerRunnerProps {
-    store: ReviewerStore<ITaskAction> | undefined;
+    readonly store: ReviewerStore | undefined;
+    readonly onClose?: () => void;
 }
 
 export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: IReviewerRunnerProps) {
@@ -24,7 +24,7 @@ export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: I
     if (! store.currentTaskRep) {
 
         // no more task reps... we're finished.
-        return <ReviewFinished/>;
+        return <ReviewFinished onClose={props.onClose}/>;
 
     }
 

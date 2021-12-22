@@ -6,6 +6,7 @@ import {profiled} from "../profiler/ProfiledComponents";
 
 export interface ISnapshotLeft {
     readonly left: ErrorType;
+    readonly right?: never;
 }
 
 /**
@@ -14,6 +15,7 @@ export interface ISnapshotLeft {
  * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
  */
 export interface ISnapshotRight<S> {
+    readonly left?: never;
     readonly right: S;
 }
 
@@ -61,23 +63,24 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     // TODO: investigate react suspense for the fallback
 
-    const [ValueStoreProvider, useValue, valueSetter] = createValueStore<ISnapshot<S> | undefined>();
+    const [ValueStoreProvider, useValue, useValueSetter] = createValueStore<ISnapshot<S> | undefined>();
 
     const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
 
         const value = useValue();
+        const valueSetter = useValueSetter()
 
         const handleNext = React.useCallback((snapshot: S) => {
 
             valueSetter({right: snapshot});
 
-        }, []);
+        }, [valueSetter]);
 
         const handleError = React.useCallback((err: ErrorType) => {
 
             valueSetter({left: err});
 
-        }, []);
+        }, [valueSetter]);
 
         React.useEffect(() => {
             return props.subscriber(handleNext, handleError);
@@ -91,7 +94,7 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
     });
 
-    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = profiled(React.memo(function SnapshotStoreProvider(props) {
+    const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = React.memo(profiled(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
                 <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>

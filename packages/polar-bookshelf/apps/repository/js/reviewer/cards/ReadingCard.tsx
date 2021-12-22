@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../ratings/RatingButtons";
 import {CardPaper} from "./CardPaper";
 import {IReadingTaskAction} from './ReadingTaskAction';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 
 export interface IProps {
-    readonly taskRep: TaskRep<IReadingTaskAction<unknown>>;
+    readonly taskRep: ITaskRep<IReadingTaskAction<unknown>>;
 }
 export const ReadingCard = (props: IProps) => {
 

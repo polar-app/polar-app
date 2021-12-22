@@ -421,6 +421,7 @@ importers:
       firebase: '=8.10.0'
       firebaseui: '=4.8.0'
       framer-motion: '=3.3.0'
+      global-jsdom: '=8.4.0'
       install: '=0.12.2'
       js-cookie: '=2.2.1'
       js-sha3: 0.8.0
@@ -547,6 +548,7 @@ importers:
       firebase: 8.10.0
       firebaseui: 4.8.0_firebase@8.10.0
       framer-motion: 3.3.0_react-dom@17.0.2+react@17.0.2
+      global-jsdom: 8.4.0_jsdom@16.7.0
       js-cookie: 2.2.1
       js-sha3: 0.8.0
       jszip: 3.7.1
@@ -12621,6 +12623,15 @@ packages:
     dependencies:
       ini: 2.0.0
     dev: true
+
+  /global-jsdom/8.4.0_jsdom@16.7.0:
+    resolution: {integrity: sha512-0wBpSA/uTbPwMUldVKvPkJmQ30PZacTY8LzXSnTYlptZl6c5OFAVXSb24o1vdvjUNAmIksj+BAJb/c/KSPlLCQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      jsdom: '>=10.0.0 || <20'
+    dependencies:
+      jsdom: 16.7.0
+    dev: false
 
   /global-tunnel-ng/2.7.1:
     resolution: {integrity: sha512-4s+DyciWBV0eK148wqXxcmVAbFVPqtc3sEtUE/GTQfuU80rySLcMhUmHKSHI7/LDj8q0gDYI1lIhRRB7ieRAqg==}

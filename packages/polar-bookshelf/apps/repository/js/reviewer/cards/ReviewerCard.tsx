@@ -3,12 +3,13 @@ import {IReadingTaskAction} from "./ReadingTaskAction";
 import {ReadingCard} from "./ReadingCard";
 import {IFlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardCard} from "./FlashcardCard";
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {ITaskAction, TaskActionPredicates} from "../ReviewerTasks";
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {TaskActionPredicates} from "../TaskActionPredicates";
+import {ITaskAction} from "../ITaskAction";
 
 interface IDoReadingCardProps {
-    readonly taskRep: TaskRep<IReadingTaskAction>;
+    readonly taskRep: ITaskRep<IReadingTaskAction>;
 }
 
 const DoReadingCard = deepMemo(function DoReadingCard(props: IDoReadingCardProps) {
@@ -19,7 +20,7 @@ const DoReadingCard = deepMemo(function DoReadingCard(props: IDoReadingCardProps
 });
 
 interface IDoFlashcardCardProps {
-    readonly taskRep: TaskRep<IFlashcardTaskAction>;
+    readonly taskRep: ITaskRep<IFlashcardTaskAction>;
 }
 
 const DoFlashcardCard: React.FC<IDoFlashcardCardProps> = deepMemo(function DoFlashcardCard(props) {
@@ -36,7 +37,7 @@ const DoFlashcardCard: React.FC<IDoFlashcardCardProps> = deepMemo(function DoFla
 
 
 interface IReviewerCardProps {
-    readonly taskRep: TaskRep<ITaskAction>;
+    readonly taskRep: ITaskRep<ITaskAction>;
 }
 
 export const ReviewerCard: React.FC<IReviewerCardProps> = (props) => {

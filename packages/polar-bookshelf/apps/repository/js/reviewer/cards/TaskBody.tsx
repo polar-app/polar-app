@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import Divider from '@material-ui/core/Divider';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 
 export class TaskBody extends React.Component<IProps, IState> {
 
@@ -64,7 +64,7 @@ export class TaskBody extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly taskRep: TaskRep<any>;
+    readonly taskRep: ITaskRep<any>;
 }
 
 export interface IState {
