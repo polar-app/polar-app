@@ -8,7 +8,7 @@ const useStyles = makeStyles({
         textTransform: "none",
         marginTop: "10px",
         marginBottom: "10px",
-        width: "200px",
+        width: "210px",
         backgroundColor: "#6754D6",
     },
 });

@@ -21,12 +21,11 @@ import {
     useBlocksAnnotationRepoStore
 } from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
-import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
-import {useFeatureEnabled} from "../../../../web/js/features/FeaturesRegistry";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 const MAX_IMG_HEIGHT = 300;
 
@@ -162,7 +161,6 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
     const blocksStore = useBlocksStore();
     const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
     const block = blocksStore.getBlock(blockID)?.toJSON();
-    const properVirtualizedFontSize = useFeatureEnabled('proper-virtualized-font-size');
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -197,7 +195,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>
-                        <Box mt={1} style={{fontSize: properVirtualizedFontSize ? '14px' : undefined}}>
+                        <Box mt={1} style={{fontSize: '14px'}}>
                             <HighlightPreview block={block} />
 
                             <DateTimeTableCell

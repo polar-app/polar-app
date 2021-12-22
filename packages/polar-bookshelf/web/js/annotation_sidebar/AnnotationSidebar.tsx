@@ -2,7 +2,19 @@ import React from "react";
 import {useBlocksStore} from "../notes/store/BlocksStore";
 import {NoteProviders} from "../notes/NoteProviders";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
-import {AppBar, Box, createStyles, Divider, Fab, IconButton, makeStyles, Toolbar, Typography, useScrollTrigger, Zoom} from "@material-ui/core";
+import {
+    AppBar,
+    Box,
+    createStyles,
+    Divider,
+    Fab,
+    IconButton,
+    makeStyles,
+    Toolbar,
+    Typography,
+    useScrollTrigger,
+    Zoom
+} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {useHighlightBlockIDs} from "../notes/HighlightBlocksHooks";
 import {HighlightBlock} from "../notes/HighlightBlock";
@@ -13,8 +25,8 @@ import {observer} from "mobx-react-lite";
 import {useStateRef} from "../hooks/ReactHooks";
 import {BlockPredicates} from "../notes/store/BlockPredicates";
 import clsx from "clsx";
-import {BlockTextContentUtils} from "../notes/NoteUtils";
 import {DeviceRouters} from "../ui/DeviceRouter";
+import {BlockTextContentUtils} from "../notes/BlockTextContentUtils";
 
 const AnnotationSidebarToolbar: React.FC = () => {
     return (
