@@ -66,19 +66,21 @@ export namespace DocumentDataUpdater {
                 .map(({label}) => ({label, id: label}))
                 .toMap(({label}) => label);
 
-            const docInfo: IDocInfo = {
-                ...block.content.docInfo,
-                tags,
-                lastUpdated: ISODateTimeStrings.create(),
-                uuid: UUIDs.create(),
-            };
-
             const repoDocInfo = repoDocInfoDataObjectIndex.get(fingerprint);
 
             if (! repoDocInfo) {
                 // This technically should never happen.
                 return console.log(`DocMeta record was not found for doc ID: ${fingerprint}. skipping update...`);
             }
+
+            const docInfo: IDocInfo = {
+                ...block.content.docInfo,
+                title: repoDocInfo.title, // Don't override the title since we don't have renaming implemented yet
+                tags,
+                lastUpdated: ISODateTimeStrings.create(),
+                uuid: UUIDs.create(),
+            };
+
 
             const docMeta = repoDocInfo.docMeta;
 
