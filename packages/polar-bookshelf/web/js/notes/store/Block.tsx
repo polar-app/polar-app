@@ -14,6 +14,7 @@ import PositionalArrayKey = PositionalArrays.PositionalArrayKey;
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
 const NON_EDITABLE_BLOCK_TYPES: BlockType[] = [
+    'name',
     'date',
     'image',
     'document',
