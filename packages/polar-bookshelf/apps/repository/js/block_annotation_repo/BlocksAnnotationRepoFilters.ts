@@ -4,8 +4,9 @@ import {IBlock, IBlockLink} from 'polar-blocks/src/blocks/IBlock';
 import {IRepoAnnotationContent, IRepoAnnotationTextContent} from './BlocksAnnotationRepoStore';
 import {IBlockPredicates} from '../../../../web/js/notes/store/IBlockPredicates';
 import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
-import {BlockLinksMatcher, BlockTextContentUtils} from '../../../../web/js/notes/NoteUtils';
+import {BlockLinksMatcher} from '../../../../web/js/notes/NoteUtils';
 import {Tag} from "polar-shared/src/tags/Tags";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 
 /**

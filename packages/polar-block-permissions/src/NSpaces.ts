@@ -1,9 +1,9 @@
 import {IFirestore, IFirestoreLib, UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {NSpaceCollection} from "polar-firebase/src/firebase/om/NSpaceCollection";
 import {Slugs} from "polar-shared/src/util/Slugs";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {BlockPermissions} from "./BlockPermissions";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 export namespace NSpaces {
 
@@ -18,9 +18,9 @@ export namespace NSpaces {
                                  uid: UserIDStr,
                                  init: INSpaceInit): Promise<INSpace> {
 
-        // FIXME: make sure the user doesn't already have a namespace with this name/slug
+        // TODO: make sure the user doesn't already have a namespace with this name/slug
 
-        const id = Hashcodes.createRandomID();
+        const id = BlockIDs.createRandom();
         const slug = Slugs.calculateIntl(init.name);
         const nspace: INSpace = {
             id, slug, ...init
