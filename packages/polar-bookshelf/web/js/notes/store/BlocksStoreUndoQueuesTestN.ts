@@ -4,7 +4,6 @@ import {JSDOMParser} from "./BlocksStoreTests/BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests/BlocksStoreTests";
-import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {assert} from "chai";
@@ -14,8 +13,8 @@ import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "..
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {JSDOM} from "jsdom";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTests/BlocksStoreTestUtils";
+import {IBlocksStoreMutation} from "./IBlocksStoreMutation";
 
 describe("BlocksStoreUndoQueues", () => {
 

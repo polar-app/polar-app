@@ -3,7 +3,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
 import {CursorPositions} from "../../contenteditable/CursorPositions";
 import {DOMBlocks} from "../../contenteditable/DOMBlocks";
-import {BlockTextContentUtils} from "../../NoteUtils";
+import {BlockTextContentUtils} from "../../BlockTextContentUtils";
 import {Block} from "../Block";
 import {BlockPredicates} from "../BlockPredicates";
 import {BlocksStore} from "../BlocksStore";

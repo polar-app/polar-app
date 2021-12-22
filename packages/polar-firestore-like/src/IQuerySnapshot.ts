@@ -1,9 +1,10 @@
-import { IQueryDocumentSnapshot } from "./IQueryDocumentSnapshot";
+import {IQueryDocumentSnapshot} from "./IQueryDocumentSnapshot";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
-import { IDocumentChange } from "./IDocumentChange";
+import {IDocumentChange} from "./IDocumentChange";
+import {TDocumentData} from "./TDocumentData";
 
-export interface IQuerySnapshot<SM> {
+export interface IQuerySnapshot<SM, D = TDocumentData> {
 
     readonly empty: boolean;
 
@@ -11,7 +12,7 @@ export interface IQuerySnapshot<SM> {
 
     readonly metadata: ISnapshotMetadata;
 
-    readonly docs: ReadonlyArray<IQueryDocumentSnapshot<SM>>;
+    readonly docs: ReadonlyArray<IQueryDocumentSnapshot<SM, D>>;
 
     /**
      * Returns an array of the documents changes since the last snapshot. If this
@@ -25,6 +26,6 @@ export interface IQuerySnapshot<SM> {
 
 }
 
-export interface IQuerySnapshotClient extends IQuerySnapshot<ISnapshotMetadata> {
+export interface IQuerySnapshotClient<D = TDocumentData> extends IQuerySnapshot<ISnapshotMetadata, D> {
 
 }

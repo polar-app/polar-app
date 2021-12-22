@@ -1,12 +1,12 @@
-import {Theme, createStyles, makeStyles} from "@material-ui/core";
+import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {observer} from "mobx-react-lite";
 import React from "react";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {BlockTextContentUtils} from "../NoteUtils";
 import {NoteRenderer} from "../SingleNoteScreen";
 import {BlockPredicates} from "../store/BlockPredicates";
 import {useBlocksStore} from "../store/BlocksStore";
 import {NoteStackProvider} from "./StackProvider";
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
 export const STACK_ITEM_WIDTH = 600;
 export const STACK_ITEM_BANNER_WIDTH = 50;
@@ -96,7 +96,7 @@ export const NoteStackItemWrapper: React.FC<INoteStackItemWrapperProps> = observ
                     <div className={classes.bannerText}>
                         {noteTitle}
                     </div>
-                </div> 
+                </div>
             )}
             {children}
         </div>

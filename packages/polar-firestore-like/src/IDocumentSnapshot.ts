@@ -1,7 +1,7 @@
-import { TDocumentData } from "./TDocumentData";
+import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
-export interface IDocumentSnapshot<M> {
+export interface IDocumentSnapshot<M, D = TDocumentData> {
 
     /**
      * Property of the `DocumentSnapshot` that signals whether or not the data
@@ -17,7 +17,7 @@ export interface IDocumentSnapshot<M> {
     /**
      * Read the data from this snapshot.
      */
-    readonly data: () => TDocumentData | undefined;
+    readonly data: () => D | undefined;
 
     readonly metadata: M;
 
@@ -25,6 +25,6 @@ export interface IDocumentSnapshot<M> {
 
 }
 
-export interface IDocumentSnapshotClient extends IDocumentSnapshot<ISnapshotMetadata> {
+export interface IDocumentSnapshotClient<D = TDocumentData> extends IDocumentSnapshot<ISnapshotMetadata, D> {
 
 }

@@ -1,37 +1,38 @@
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {Img} from "polar-shared/src/metadata/Img";
-import {AnnotationContentType, IAnnotationHighlightContent, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import React from 'react';
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
-import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
-import {IImage} from "polar-shared/src/metadata/IImage";
-import {Reducers} from "polar-shared/src/util/Reducers";
-import {Strings} from "polar-shared/src/util/Strings";
+import {IRepoAnnotationContent} from "../block_annotation_repo/BlocksAnnotationRepoStore";
 import {RepetitionMode, Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {CalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT} from "./ReviewerTasks";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
+import {
+    AnnotationContentType,
+    IAnnotationHighlightContent,
+    IFlashcardAnnotationContent
+} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {Strings} from "polar-shared/src/util/Strings";
 import {IFlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
-import {IReadingTaskAction} from "./cards/ReadingTaskAction";
-import {DEFAULT_FLASHCARD_TASKS_LIMIT, DEFAULT_READING_TASKS_LIMIT, ReviewerTasks, TasksBuilder} from "./ReviewerTasks";
-import {IRepoAnnotationContent} from "../block_annotation_repo/BlocksAnnotationRepoStore";
+import {Reducers} from "polar-shared/src/util/Reducers";
+import {useReviewerTasksCreator} from "./UseReviewerTasksCreator";
+import {IImageResolver} from "./IImageResolver";
+import {IBlockReadingTaskAction} from "./IBlockReadingTaskAction";
+import {IBlockFlashcardTaskAction} from "./IBlockFlashcardTaskAction";
+import {ITasksBuilder} from "./ITasksBuilder";
 
+export function useBlockReviewerTasksCreator() {
 
-export type IBlockReadingTaskAction = IReadingTaskAction<IBlock<IAnnotationHighlightContent>>;
-export type IBlockFlashcardTaskAction = IFlashcardTaskAction<IBlock<IFlashcardAnnotationContent>>;
+    const reviewerTasksCreator = useReviewerTasksCreator();
 
-export type IBlockTaskAction = IBlockReadingTaskAction | IBlockFlashcardTaskAction;
-
-export type IImageResolver = (image: IImage) => Img | undefined;
-
-export class BlockReviewerTasks {
-
-    public static async createReadingTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
-                                           imageResolver: IImageResolver,
-                                           limit: number = DEFAULT_READING_TASKS_LIMIT): Promise<CalculatedTaskReps<IBlockReadingTaskAction>> {
+    const createReadingTasks = React.useCallback((data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
+                                                         imageResolver: IImageResolver,
+                                                         limit: number = DEFAULT_READING_TASKS_LIMIT): ICalculatedTaskReps<IBlockReadingTaskAction> => {
 
         const mode = 'reading';
 
-        const taskBuilder: TasksBuilder<IBlock<IRepoAnnotationContent>, IBlockReadingTaskAction> = (blocks) => {
+        const taskBuilder: ITasksBuilder<IBlock<IRepoAnnotationContent>, IBlockReadingTaskAction> = (blocks) => {
 
             const toTask = (block: IBlock<IAnnotationHighlightContent>): Task<IBlockReadingTaskAction> => {
 
@@ -77,16 +78,16 @@ export class BlockReviewerTasks {
 
         };
 
-        return ReviewerTasks.createTasks(data, mode, taskBuilder, limit);
+        return reviewerTasksCreator(data, mode, taskBuilder, limit);
 
-    }
+    }, [reviewerTasksCreator]);
 
-    public static async createFlashcardTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
-                                             limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): Promise<CalculatedTaskReps<IBlockFlashcardTaskAction>> {
+    const createFlashcardTasks = React.useCallback((data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
+                                                    limit: number = DEFAULT_FLASHCARD_TASKS_LIMIT): ICalculatedTaskReps<IBlockFlashcardTaskAction> => {
 
         const mode = 'flashcard';
 
-        const taskBuilder: TasksBuilder<IBlock<IRepoAnnotationContent>, IBlockFlashcardTaskAction> = (repoDocAnnotations) => {
+        const taskBuilder: ITasksBuilder<IBlock<IRepoAnnotationContent>, IBlockFlashcardTaskAction> = (repoDocAnnotations) => {
 
             const toTasks = (block: IBlock<IFlashcardAnnotationContent>): ReadonlyArray<Task<IBlockFlashcardTaskAction>> => {
 
@@ -119,23 +120,26 @@ export class BlockReviewerTasks {
 
         };
 
-        return ReviewerTasks.createTasks(data, mode, taskBuilder, limit);
+        return reviewerTasksCreator(data, mode, taskBuilder, limit);
 
-    }
+    }, [reviewerTasksCreator]);
 
-    public static async createTasks(data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
-                                    mode: RepetitionMode,
-                                    imageResolver: IImageResolver,
-                                    limit?: number): Promise<CalculatedTaskReps<IBlockTaskAction>> {
+    return React.useCallback((data: ReadonlyArray<IBlock<IRepoAnnotationContent>>,
+                              mode: RepetitionMode,
+                              imageResolver: IImageResolver,
+                              limit?: number) => {
+
         switch (mode) {
-            case 'flashcard':
-                return this.createFlashcardTasks(data, limit);
             case 'reading':
-                return this.createReadingTasks(data, imageResolver, limit);
+                return createReadingTasks(data, imageResolver, limit);
+            case 'flashcard':
+                return createFlashcardTasks(data, limit);
             default:
                 const _: never = mode;
                 throw new Error('Unhandled docAnnotation repetition mode');
         }
-    }
+
+    }, [createFlashcardTasks, createReadingTasks]);
+
 }
 

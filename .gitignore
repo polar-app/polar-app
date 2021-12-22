@@ -33,3 +33,6 @@ module-packages-output.json
 
 # ignore jscpd's leveldb output
 .jscpd
+
+# Ignore the result of `npx ts-node-script ./scripts/combine-karma-summaries.ts`
+combined-karma-result.json

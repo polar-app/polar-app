@@ -5,9 +5,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Paths} from "polar-shared/src/util/Paths";
 import React from "react";
 import {NameContent} from "../../../../web/js/notes/content/NameContent";
-import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {useBlocksUserTagsDB} from "../persistence_layer/BlocksUserTagsDataLoader";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 export const useCreateBlockUserTag = () => {
     const blocksStore = useBlocksStore();
@@ -34,7 +34,7 @@ export const useCreateBlockUserTag = () => {
             };
 
             blocksStore.insertFromBlockContentStructure([newTagBlockContentStructure], { isUndoable: false });
-            
+
             return {
                 id: newTagBlockContentStructure.id,
                 label,
@@ -97,7 +97,7 @@ export const useDeleteBlockUserTags = () => {
         };
 
         deleteFromDocumentBlocks();
-        
+
         if (ids.length > 0) {
             blocksStore.deleteBlocks(ids);
         }

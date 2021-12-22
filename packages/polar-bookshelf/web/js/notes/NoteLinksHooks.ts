@@ -5,10 +5,10 @@ import {BlockPredicates} from "./store/BlockPredicates";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {useBlocksStore} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {AppSites} from "../apps/repository/auth_handler/AppSites";
 import {useNoteStack} from "./stacks/StackProvider";
 import {useFeatureEnabled} from "../features/FeaturesRegistry";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export const useNoteWikiLinkIdentifierCreator = () => {
     const blocksStore = useBlocksStore();

@@ -1,39 +1,52 @@
-import {IDStr, UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
+import {CollectionNameStr, IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ISpacedRep, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Collections} from "polar-firestore-like/src/Collections";
-
-import Clause = Collections.Clause;
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import Clause = Collections.Clause;
+
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
  * state of the card so that next time we want to access it we can just fetch it
  * directly.
  */
-export class SpacedRepCollection {
+export namespace SpacedRepCollection {
 
-    private static COLLECTION: CollectionNameStr = "spaced_rep";
+    export const COLLECTION_NAME: CollectionNameStr = "spaced_rep";
 
-    public static async set<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, spacedRep: SpacedRep) {
+    export async function set<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, spacedRep: SpacedRep) {
         Preconditions.assertPresent(id, 'id');
 
-        await Collections.set(firestore, this.COLLECTION, id, spacedRep);
+        await Collections.set(firestore, COLLECTION_NAME, id, spacedRep);
     }
 
-    public static async get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<SpacedRep | undefined> {
+    export async function get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<SpacedRep | undefined> {
         Preconditions.assertPresent(id, 'id');
 
-        return await Collections.get(firestore, this.COLLECTION, id);
+        return await Collections.get(firestore, COLLECTION_NAME, id);
     }
 
-    public static async list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
+    export async function list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
         Preconditions.assertPresent(uid, 'uid');
         const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];
 
-        return await Collections.list(firestore, this.COLLECTION, clauses);
+        return await Collections.list(firestore, COLLECTION_NAME, clauses);
     }
 
-    public static convertFromTaskRep(uid: UserIDStr, taskRep: TaskRep<any>): SpacedRep {
+    /**
+     * Remove all spaced repetition records.
+     */
+    export async function purge<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr) {
+
+        const records = await list(firestore, uid);
+
+        for (const record of records) {
+            await Collections.doDelete(firestore, COLLECTION_NAME, record.id);
+        }
+
+    }
+
+    export function convertFromTaskRep(uid: UserIDStr, taskRep: TaskRep<any>): SpacedRep {
 
         return {
             uid,

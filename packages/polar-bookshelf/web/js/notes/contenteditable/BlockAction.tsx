@@ -4,13 +4,13 @@ import {createActionsProvider, useActionMenuStore} from "../../mui/action_menu/A
 import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import INodeOffset = ContentEditables.INodeOffset;
 import {DOMBlocks} from "./DOMBlocks";
 import {useBlocksUserTagsDB} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
 import {BlockPredicates} from '../store/BlockPredicates';
-import {BlockTextContentUtils} from '../NoteUtils';
 import {TAG_IDENTIFIER} from '../content/HasLinks';
 import {useBlocksStore} from '../store/BlocksStore';
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
+import INodeOffset = ContentEditables.INodeOffset;
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -114,7 +114,7 @@ function useActionExecutor() {
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
 
-                const a = DOMBlocks.createWikiLinkAnchorElement(type, target); 
+                const a = DOMBlocks.createWikiLinkAnchorElement(type, target);
 
 
                 coveringRange.insertNode(a);
@@ -128,7 +128,7 @@ function useActionExecutor() {
 
             if (type === 'tag' && targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
                 blocksUserTagsDB.register({
-                    id: targetID, 
+                    id: targetID,
                     label: BlockTextContentUtils.getTextContentMarkdown(targetBlock.content)
                 });
                 blocksUserTagsDB.commit().catch(console.error);
@@ -160,7 +160,7 @@ function useContentEditableMarkdownReader() {
         if (! blockElement) {
             throw new Error('Block was not found');
         }
-        
+
         const converter = MarkdownContentConverter;
         const div = blockElement.cloneNode(true) as HTMLElement;
         const html = div.innerHTML;
@@ -209,10 +209,10 @@ export namespace BlockActionUtils {
             left: bcr.left,
         };
     }
-    
+
 
     type IActionInput = {
-        
+
         actionInput: HTMLElement,
 
         computeActionInputText: () => string,
@@ -262,7 +262,7 @@ export namespace BlockActionUtils {
 
         wrapRange.insertNode(actionInput);
 
-        
+
         range.setStart(actionInput.firstChild!, wrapStart.length);
         range.setEnd(actionInput.firstChild!, wrapStart.length);
 
@@ -390,7 +390,7 @@ export namespace BlockActionUtils {
      */
     export function triggerAction(opts: ITriggerActionOpts) {
         const { elem, action, onCancel, onComplete, onActionInputChange } = opts;
-       
+
         const actionInput = createActivePrompt(elem, action);
 
         if (! actionInput) {
@@ -402,7 +402,7 @@ export namespace BlockActionUtils {
         const initialMarkdown = getInitialMarkdownContent(elem);
 
         onActionInputChange(promptText);
-    
+
         const doCompleteOrCancel = () => {
             const text = actionInput.computeActionInputText();
 
