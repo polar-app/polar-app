@@ -577,9 +577,12 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         async function doHandle() {
             mutator.refresh();
 
+            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
+            /*
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
                 content.docInfo.title = title;
             });
+             */
 
             updateTab(repoDocInfo.fingerprint, { title });
         }

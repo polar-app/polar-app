@@ -14,7 +14,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {observer} from "mobx-react-lite";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {useNoteLinkLoader} from "../../../../web/js/notes/NoteLinkLoader";
-import {BlockTextContentUtils, namedBlocksComparator} from "../../../../web/js/notes/NoteUtils";
+import {namedBlocksComparator} from "../../../../web/js/notes/NoteUtils";
 import {NotesRepoTableRow} from "./NotesRepoTableRow";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {NotesRepoTableToolbar} from "./NotesRepoTableToolbar";
@@ -26,6 +26,7 @@ import {NotesRepoContextMenu} from "./NotesRepoContextMenu";
 import {Comparators} from "polar-shared/src/util/Comparators";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {profiled} from "../../../../web/js/profiler/ProfiledComponents";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 import Comparator = Comparators.Comparator;
 
 const VisibleComponent = observer(function VisibleComponent(props: VisibleComponentProps<INotesRepoRow>) {

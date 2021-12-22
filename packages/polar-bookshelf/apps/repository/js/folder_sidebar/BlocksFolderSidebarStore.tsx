@@ -13,7 +13,8 @@ import {IBlockPredicates} from "../../../../web/js/notes/store/IBlockPredicates"
 import {useDocRepoCallbacks} from "../doc_repo/DocRepoStore2";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
-import {BlockTextContentUtils, useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
+import {useUpdateBlockTags} from "../../../../web/js/notes/NoteUtils";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 type IMemberPredicate = (block: IBlock) => boolean;
 
@@ -111,7 +112,7 @@ class BlocksFolderSidebarStore {
                       event: React.MouseEvent,
                       type: SelectRowType): void {
 
-        
+
         const folderRoot = this.foldersRoot ? [this.foldersRoot.value] : [];
 
         const selected = SelectionEvents2.selectRow(node,
@@ -201,7 +202,7 @@ export const DocRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) 
         if (! target) {
             return;
         }
-        
+
 
         onDropped(target);
     }, [store, onDropped]);
@@ -215,7 +216,7 @@ export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ child
     const annotationRepoStore = useBlocksAnnotationRepoStore();
     const updateBlockTags = useUpdateBlockTags();
 
-    const onSelectedTagsChange = React.useCallback((tags: ReadonlyArray<Tag>) => 
+    const onSelectedTagsChange = React.useCallback((tags: ReadonlyArray<Tag>) =>
         annotationRepoStore.setFilter({ tags }), [annotationRepoStore]);
 
     const blocksStore = useBlocksStore();

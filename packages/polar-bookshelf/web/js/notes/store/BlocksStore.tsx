@@ -6,7 +6,6 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -42,6 +41,7 @@ import {
     IBlockLink,
     INamedContent,
     INewChildPosition,
+    NamespaceIDLikeStr,
     NamespaceIDStr,
     NewChildPos,
     UIDStr
@@ -55,11 +55,13 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap, AnnotationHighlightContent} from "../content/AnnotationContent";
-import {BlockTextContentUtils, sortNamedBlocks} from "../NoteUtils";
+import {sortNamedBlocks} from "../NoteUtils";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -537,14 +539,16 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
+            function canonicalizeBlockName(block: Block<NamedContent>) {
+                return BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
+            }
+
             if (existingBlock && BlockPredicates.isNamedBlock(existingBlock)) {
-                const name = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content).toLowerCase();
-                delete this._indexByName[name];
+                delete this._indexByName[canonicalizeBlockName(existingBlock)];
             }
 
             if (BlockPredicates.isNamedBlock(block)) {
-                const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
-                this._indexByName[name] = block.id;
+                this._indexByName[canonicalizeBlockName(block)] = block.id;
             }
 
             if (BlockPredicates.isDocumentBlock(block)) {
@@ -1335,6 +1339,22 @@ export class BlocksStore implements IBlocksStore {
         return result;
     }
 
+    private computeNamespace(nspace: NamespaceIDStr | undefined, ref: BlockIDStr | undefined): NamespaceIDLikeStr {
+
+        if (ref) {
+
+            const refBlock = this.getBlock(ref);
+
+            if (! refBlock) {
+                throw new Error("Reference block doesn't exist");
+            }
+
+        }
+
+        return nspace || this.uid;
+
+    }
+
     /**
      * Create a new named block but only when a block with this name does not exist.
      *
@@ -1342,11 +1362,11 @@ export class BlocksStore implements IBlocksStore {
      * should be stored.
      *
      */
-    @action public doCreateNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
+    @action private doCreateNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
-        // NOTE that the ID always has to be random. We can't make it a hash
-        // based on the name as the name can change.
-        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
+        const name = BlockTextContentUtils.computeNameFromContent(opts.content);
+        const nspace = this.computeNamespace(opts?.nspace, opts?.ref);
+        const newBlockID = opts.newBlockID || BlockIDs.create(name, nspace);
 
         const existingBlock = this.getBlockByName(BlockTextContentUtils.getTextContentMarkdown(opts.content));
 
@@ -1354,32 +1374,9 @@ export class BlocksStore implements IBlocksStore {
             return existingBlock.id;
         }
 
-
         const createNewBlock = (): IBlock => {
 
-            const computeNamespace = (): NamespaceIDStr => {
-
-                if (opts?.ref) {
-
-                    const refBlock = this.getBlock(opts.ref);
-
-                    if (! refBlock) {
-                        throw new Error("Reference block doesn't exist");
-                    }
-
-                }
-
-                if (opts?.nspace) {
-                    return opts.nspace;
-                }
-
-                return this.uid;
-
-            }
-
-
             const now = ISODateTimeStrings.create();
-            const nspace = computeNamespace();
 
             return {
                 id: newBlockID,
@@ -1406,10 +1403,12 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
-        const newBlockID = Hashcodes.createRandomID();
+        const name = BlockTextContentUtils.computeNameFromContent(opts.content);
+        const nspace = this.computeNamespace(opts.nspace, opts.ref);
+        const newBlockID = opts.newBlockID || BlockIDs.create(name, nspace);
 
         const redo = (): BlockIDStr => {
-            return this.doCreateNewNamedBlock({...opts, newBlockID});
+            return this.doCreateNewNamedBlock({...opts, newBlockID, nspace});
         };
 
         return this.doUndoPush('createNewNamedBlock', [newBlockID], redo);
@@ -1497,7 +1496,7 @@ export class BlocksStore implements IBlocksStore {
             const parent = block.parent ? this.getBlockForMutation(block.parent) : null;
 
             if (! parent) {
-                return console.error('The highlight block to be updated does not have a parrent');
+                return console.error('The highlight block to be updated does not have a parent');
             }
 
             const items = this
@@ -1535,7 +1534,7 @@ export class BlocksStore implements IBlocksStore {
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
-        const targetID = targetBlock?.id || Hashcodes.createRandomID();
+        const targetID = targetBlock?.id || BlockIDs.createRandom();
 
         const redo = () => {
 
@@ -1594,7 +1593,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
-        const newBlockID = Hashcodes.createRandomID();
+        const newBlockID = BlockIDs.createRandom();
         const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
     }
@@ -1663,7 +1662,7 @@ export class BlocksStore implements IBlocksStore {
         // - second
 
         // create the newBlock ID here so that it can be reliably used in undo/redo operations.
-        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
+        const newBlockID = opts.newBlockID || BlockIDs.createRandom();
         // ... we also have to keep track of the active note ... right?
 
         /**
@@ -2185,7 +2184,7 @@ export class BlocksStore implements IBlocksStore {
 
         const construct = (block: Block): IBlockContentStructure => {
             return {
-                id: useNewIDs ? Hashcodes.createRandomID() : block.id,
+                id: useNewIDs ? BlockIDs.createRandom() : block.id,
                 content: block.content.toJSON(),
                 children: this.idsToBlocks(block.itemsAsArray).map(construct)
             };
@@ -2357,8 +2356,6 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
-
-        // console.log("Handling BlocksStore snapshot: ", snapshot);
 
         for (const docChange of snapshot.docChanges) {
 

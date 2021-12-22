@@ -229,6 +229,47 @@ export namespace Dictionaries {
     }
 
     /**
+     * Like onlyDefinedProperties but we also handle null values.
+     */
+    export function onlyPresentProperties(dict: any): any {
+
+        if (dict === undefined || dict === null) {
+            // nothing to do here.
+            return dict;
+        }
+
+        if (typeof dict !== 'object') {
+            // if we're not a dictionary we're done
+            return dict;
+        }
+
+        const result: any = {};
+
+        if (Array.isArray(dict)) {
+            return dict.map(current => onlyDefinedProperties(current));
+        } else {
+
+            for (const key of Object.keys(dict).sort()) {
+                const value = dict[key];
+
+                if (value === undefined) {
+                    continue;
+                }
+
+                if (value === null) {
+                    continue;
+                }
+
+                result[key] = onlyDefinedProperties(value);
+            }
+
+            return result;
+
+        }
+
+    }
+
+    /**
      * Create a deep copy of the given dictionary.
      *
      * @param dict

@@ -3,13 +3,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {Block} from "./store/Block";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {TextContent} from "./store/BlockPredicates";
 import {Breadcrumbs, fade} from "@material-ui/core";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {createNoteLink} from "./NoteLinkLoader";
 import {useHistory} from "react-router-dom";
 import {useLinkNavigationClickHandler} from "./NoteLinksHooks";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -52,7 +52,7 @@ export const NoteBreadcrumbLink = React.memo(function NoteBreadcrumbLink(props: 
         }
 
         const noteLink = createNoteLink(block.id);
-        history.push(noteLink); 
+        history.push(noteLink);
     }, [history, block.id, linkNavigationClickHandler]);
 
     return (
