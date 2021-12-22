@@ -1,15 +1,14 @@
 import * as React from 'react';
 import {CheckedSVGIcon} from "../../../../web/js/ui/svg_icons/CheckedSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
-import {useHistory} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
-const ReviewLayout = (props: any) => {
+interface ReviewLayoutProps {
+    readonly onClose?: () => void;
+    readonly children: JSX.Element;
+}
 
-    const history = useHistory();
-
-    const onContinue = React.useCallback(() => 
-        history.replace({ pathname: '/annotations', hash: "" }), [history]);
+const ReviewLayout = (props: ReviewLayoutProps) => {
 
     return (
 
@@ -31,7 +30,7 @@ const ReviewLayout = (props: any) => {
                 <Button variant="contained"
                         color="primary"
                         size="large"
-                        onClick={onContinue}>
+                        onClick={props.onClose}>
                     CONTINUE
                 </Button>
 
@@ -41,26 +40,6 @@ const ReviewLayout = (props: any) => {
 
     );
 };
-
-export const CloudSyncRequired = () => (
-
-    <ReviewLayout>
-        <div className="text-center p-5">
-
-            <h2>Cloud sync required (please login)</h2>
-
-            <div className="p-3">
-                <i className="fas fa-cloud-upload-alt text-danger" style={{fontSize: '125px'}}/>
-            </div>
-
-            <h3 className="text-muted">
-                Cloud sync is required to review annotations.  Please login to review flashcards and reading.
-            </h3>
-
-        </div>
-    </ReviewLayout>
-
-);
 
 export const NoTasks = () => (
     <ReviewLayout>
@@ -80,8 +59,13 @@ export const NoTasks = () => (
     </ReviewLayout>
 );
 
-export const ReviewFinished = () => (
-    <ReviewLayout>
+interface ReviewFinishedProps {
+    readonly onClose?: () => void;
+}
+
+export const ReviewFinished = (props: ReviewFinishedProps) => (
+
+    <ReviewLayout onClose={props.onClose}>
 
         <div className="text-center m-2"
              style={{flexGrow: 1}}>
@@ -101,4 +85,6 @@ export const ReviewFinished = () => (
         </div>
 
     </ReviewLayout>
+
 );
+

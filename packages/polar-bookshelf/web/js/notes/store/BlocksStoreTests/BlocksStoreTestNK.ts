@@ -21,14 +21,21 @@ import {BlockIDStr, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {WriteController, WriteFileProgress} from "../../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../../datastore/FirebaseCloudStorage";
+import {HTMLToBlocks} from "../HTMLToBlocks";
+import {BlockIDStr, IBlock, IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
+import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {BlockTextContentUtils} from "../../NoteUtils";
 import {DateContent} from "../../content/DateContent";
+import {DateContent} from "../content/DateContent";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
 import assertPresent = Asserts.assertPresent;
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
 
@@ -2691,7 +2698,7 @@ describe('BlocksStore', function() {
 
     describe("insertFromBlockContentStructure", () => {
         it("should insert a block structure properly", () => {
-            const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
+            const blockIDs = Array.from({ length: 12 }).map(() => BlockIDs.createRandom());
             const blockStructure: ReadonlyArray<IBlockContentStructure> = [
                 {id: blockIDs[0], content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {

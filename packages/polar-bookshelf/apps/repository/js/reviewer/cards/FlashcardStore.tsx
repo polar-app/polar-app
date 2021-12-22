@@ -43,6 +43,8 @@ function useCallbacksFactory(storeProvider: Provider<IFlashcardStore>,
 
 }
 
+// TODO: migrate this to mobx but this could actually just use
+// stores/ValueStore.tsx since it's a simple object with one field and a setSide method.
 export const [FlashcardStoreProvider, useFlashcardStore, useFlashcardCallbacks] =
     createObservableStore<IFlashcardStore, Mutator, IFlashcardCallbacks>({
         initialValue: initialStore,

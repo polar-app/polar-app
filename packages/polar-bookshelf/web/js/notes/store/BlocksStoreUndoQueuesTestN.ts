@@ -3,6 +3,7 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import {JSDOMParser} from "./BlocksStoreTests/BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
+import {BlocksStoreTests} from "./BlocksStoreTests";
 import {BlocksStoreTests} from "./BlocksStoreTests/BlocksStoreTests";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
@@ -13,9 +14,29 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {JSDOM} from "jsdom";
+import {IBlocksStoreMutation} from "./IBlocksStoreMutation";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTests/BlocksStoreTestUtils";
+
+function createStore() {
+    const blocks = MockBlocks.create();
+    const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
+    store.doPut(blocks);
+    return store;
+}
+
+const root = createBasicBlock({
+    id: '100',
+    root: '100',
+    parent: undefined,
+    parents: [],
+    content: {
+        type: 'name',
+        data: "United States",
+        links: [],
+    }
+})
 
 describe("BlocksStoreUndoQueues", () => {
 

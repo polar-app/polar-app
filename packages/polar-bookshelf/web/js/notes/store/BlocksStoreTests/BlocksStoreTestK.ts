@@ -1,14 +1,14 @@
 import {assert} from "chai";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {Asserts} from "polar-shared/src/Asserts";
-import {CursorPositions} from "../../contenteditable/CursorPositions";
-import {DOMBlocks} from "../../contenteditable/DOMBlocks";
-import {BlockTextContentUtils} from "../../NoteUtils";
-import {Block} from "../Block";
-import {BlockPredicates} from "../BlockPredicates";
-import {BlocksStore} from "../BlocksStore";
-import {IBlocksStore} from "../IBlocksStore";
-import {BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
+import {CursorPositions} from "../contenteditable/CursorPositions";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {Block} from "./Block";
+import {BlockPredicates} from "./BlockPredicates";
+import {BlocksStore} from "./BlocksStore";
+import {createStore} from "./BlocksStoreTestNK";
+import {IBlocksStore} from "./IBlocksStore";
+import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
 
 namespace HTMLBlockUtils {

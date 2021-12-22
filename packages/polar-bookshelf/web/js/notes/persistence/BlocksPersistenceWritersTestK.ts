@@ -1,24 +1,27 @@
 import {assert} from "chai";
 import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
-import {BlocksStoreTests} from "../store/BlocksStoreTests/BlocksStoreTests";
+import {BlocksStoreTests} from "../store/BlocksStoreTests";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {RepoDocInfoDataObjectIndex} from "../../../../apps/repository/js/RepoDocMetaManager";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
+import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
+import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
-const ID = Hashcodes.createRandomID();
+const ID = BlockIDs.createRandom();
 
-describe("BlocksPersistence", () => {
+describe("BlocksPersistenceWriters", () => {
+
     let uid: UserIDStr;
     let docInfoIndex: RepoDocInfoDataObjectIndex;
 
@@ -87,6 +90,120 @@ describe("BlocksPersistence", () => {
         ]);
 
         assertJSON(mutation.added, await FirestoreBlocks.get(mutation.id));
+
+    });
+
+    it("new root named block", async () => {
+
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const name = 'Boulder, Colorado';
+        const id = BlockIDs.create(name, uid);
+
+        const before = ISODateTimeStrings.create();
+        assert.equal(before, '2012-03-02T11:38:49.321Z')
+
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
+            {
+                "id": id,
+                "type": "added",
+                "added": {
+                    "id": id,
+                    "nspace": uid,
+                    "uid": uid,
+                    "created": before,
+                    "updated": before,
+                    "root": id,
+                    "parent": undefined,
+                    "parents": [
+                    ],
+                    "content": {
+                        "type": "name",
+                        "data": name,
+                        "links": [],
+                    },
+                    "items": {
+                    },
+                    "mutation": 0
+                }
+            }
+        ]);
+
+        assertJSON(Dictionaries.onlyPresentProperties(await FirestoreBlocks.get(id)), {
+            "content": {
+                "data": "Boulder, Colorado",
+                "links": [],
+                "type": "name"
+            },
+            "created": before,
+            "id": "12hrrAcxxRYSpNHRQ2wk",
+            "items": {},
+            "mutation": 0,
+            "nspace": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "parents": [],
+            "root": "12hrrAcxxRYSpNHRQ2wk",
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": before
+        });
+
+        TestingTime.forward('1h');
+
+        const after = ISODateTimeStrings.create();
+
+        assert.equal(after, '2012-03-02T12:38:49.321Z')
+
+        await FirestoreBlocksPersistenceWriter.doExec(uid, firestore, docInfoIndex, [
+            {
+                "id": id,
+                "type": "added",
+                "added": {
+                    "id": id,
+                    "nspace": uid,
+                    "uid": uid,
+                    "created": after,
+                    "updated": after,
+                    "root": id,
+                    "parent": undefined,
+                    "parents": [
+                    ],
+                    "content": {
+                        "type": "name",
+                        "data": name,
+                        "links": [],
+                    },
+                    "items": {
+                    },
+                    "mutation": 0
+                }
+            }
+        ]);
+
+        assertJSON(Dictionaries.onlyPresentProperties(await FirestoreBlocks.get(id)), {
+            "content": {
+                "data": "Boulder, Colorado",
+                "links": [],
+                "type": "name"
+            },
+            "created": after,
+            "id": "12hrrAcxxRYSpNHRQ2wk",
+            "items": {},
+            "mutation": 0,
+            "nspace": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "parents": [],
+            "root": "12hrrAcxxRYSpNHRQ2wk",
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": after
+        });
+
+    });
+
+
+    it("double create of named block", () => {
+
+        // this can happen if two sessions, of the same user, are offline and
+        // then they reconnect.
+
+        // TODO
 
     });
 

@@ -5,9 +5,13 @@ import {IMarkdownContent} from "./content/IMarkdownContent";
 import {INameContent} from "./content/INameContent";
 import {IImageContent} from "./content/IImageContent";
 import {IDateContent} from "./content/IDateContent";
-import PositionalArray = PositionalArrays.PositionalArray;
-import {IAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "./content/IAnnotationContent";
+import {
+    IAnnotationContent,
+    IFlashcardAnnotationContent,
+    ITextHighlightAnnotationContent
+} from "./content/IAnnotationContent";
 import {IDocumentContent} from "./content/IDocumentContent";
+import PositionalArray = PositionalArrays.PositionalArray;
 
 export type BlockIDStr = IDStr;
 
@@ -32,7 +36,7 @@ export type IBlockContent = IMarkdownContent
                             | INameContent
                             | IImageContent
                             | IDateContent
-                            
+
                             | IDocumentContent
                             | IAnnotationContent;
 
@@ -83,11 +87,16 @@ export type IBlockContentMap = {
     [K in IBlockContent as K['type']]: K;
 };
 
+/**
+ * Namespace IDs can be a regular Namespace ID or a UID
+ */
+export type NamespaceIDLikeStr = NamespaceIDStr | UIDStr;
+
 export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly id: BlockIDStr;
 
-    readonly nspace: NamespaceIDStr | UIDStr;
+    readonly nspace: NamespaceIDLikeStr;
 
     readonly uid: UIDStr;
 

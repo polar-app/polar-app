@@ -11,9 +11,9 @@ export const AuthRequired = React.memo(function AuthRequired(props: IProps) {
     const userInfoContext = useUserInfoContext();
 
     if (! userInfoContext) {
+
         // we do not yet have userInfo so we can't make any decisions regarding
         // authentication
-        // console.warn("No userInfoContext");
 
         return (
             <div className='AuthRequiredNoUserInfoContext'>
@@ -34,9 +34,7 @@ export const AuthRequired = React.memo(function AuthRequired(props: IProps) {
         authHandler.authenticate(document.location.href);
 
         return (
-            <div className='AuthRequiredNoUserInfo'>
-
-            </div>
+            <div className='AuthRequiredNoUserInfo'/>
         );
 
     }
