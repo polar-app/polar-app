@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
@@ -70,7 +70,7 @@ import {NoteProviders} from "../../notes/NoteProviders";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
-import {MigrationToBlockAnnotations} from "../../apps/repository/notes_migration/MigrationToBlockAnnotations"
+import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
@@ -81,6 +81,8 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
+import {SpacedRepCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
+import {SpacedRepStatCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
 
 interface IProps {
     readonly app: App;
@@ -208,7 +210,13 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                  repoDocMetaLoader={repoDocMetaLoader}
                                                  persistenceLayerManager={persistenceLayerManager}>
                                 <DocRepoStore2>
-                                    {children}
+                                    <SpacedRepCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                                        <SpacedRepStatCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                                            <>
+                                                {children}
+                                            </>
+                                        </SpacedRepStatCollectionSnapshotProvider>
+                                    </SpacedRepCollectionSnapshotProvider>
                                 </DocRepoStore2>
                             </PersistenceLayerApp>
                         </BlocksStoreProvider>
