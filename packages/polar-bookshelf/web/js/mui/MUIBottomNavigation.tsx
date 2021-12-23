@@ -73,8 +73,8 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             label: '',
             href: RoutePathNames.ADD,
             icon: (
-                <IconButton>
-                    <AddIcon fontSize="large"/>
+                <IconButton style={{backgroundColor: theme.palette.text.secondary, padding: 0}}>
+                    <AddIcon style={{color: theme.palette.background.paper}} fontSize="large"/>
                 </IconButton>
             ),
             showLabel: true
@@ -94,7 +94,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             icon: <CarouselIcon/>,
             showLabel: true
         },
-    ]), [mobileFlashcardsEnabled]);
+    ]), [mobileFlashcardsEnabled, theme.palette.background.paper, theme.palette.text.secondary]);
 
 };
 
