@@ -11,13 +11,15 @@ import {IBlocksStore} from "./IBlocksStore";
 import {BlockPredicates} from "./BlockPredicates";
 import {DocumentContent} from "../content/DocumentContent";
 import moment from "moment";
+import {
+    IBlocksStoreMutation,
+    IBlocksStoreMutationAdded,
+    IBlocksStoreMutationModified,
+    IBlocksStoreMutationRemoved
+} from "./IBlocksStoreMutation";
 
 export namespace BlocksStoreUndoQueues {
 
-    import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-    import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationModified;
-    import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
-    import IBlocksStoreMutationRemoved = BlocksStoreMutations.IBlocksStoreMutationRemoved;
     import computeMutationTargets = BlocksStoreMutations.computeMutationTargets;
     import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
     import computeItemPositionPatches = BlocksStoreMutations.computeItemPositionPatches;
@@ -262,7 +264,7 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        const handleModified = (mutation: IBlocksStoreMutationUpdated) => {
+        const handleModified = (mutation: IBlocksStoreMutationModified) => {
 
             // updated means we need to restore it to the older version.
 
@@ -734,7 +736,7 @@ export namespace BlocksStoreUndoQueues {
          * @see computeDeltas for more info
          */
         const update = (block: Block<DocumentContent>) => {
-         
+
             /*
             const getUpdatedDocumentContent = (): IDocumentContent | null => {
                 const deltaRecord = deltaMap.get(block.id);
@@ -809,9 +811,9 @@ export namespace BlocksStoreUndoQueues {
         const removed = SetArrays.difference(beforeBlockIDs, afterBlockIDs)
                                  .map(id => beforeBlockIndex[id]);
 
-        const computeUpdated = (): ReadonlyArray<IBlocksStoreMutationUpdated> => {
+        const computeUpdated = (): ReadonlyArray<IBlocksStoreMutationModified> => {
 
-            const toUpdated = (beforeBlock: IBlock): IBlocksStoreMutationUpdated | undefined => {
+            const toUpdated = (beforeBlock: IBlock): IBlocksStoreMutationModified | undefined => {
 
                 const afterBlock = afterBlockIndex[beforeBlock.id];
                 if (afterBlock) {

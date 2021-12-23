@@ -4,58 +4,41 @@ import {
     LapsedState,
     LearningState,
     Rating,
-    ReviewState, StageCounts, StageCountsCalculator,
+    ReviewState,
+    StageCountsCalculator,
     Task
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {Duration, DurationMS, TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {AsyncWorkQueue} from "polar-shared/src/util/AsyncWorkQueue";
+import {Duration, TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Learning} from "./Learning";
 import {S2Plus} from "./S2Plus";
+import {ITaskRep} from "./ITaskRep";
+import {ICalculatedTaskReps} from "./ICalculatedTaskReps";
 
-export interface CalculatedTaskReps<A> {
-
-    /**
-     * The task reps that need to be completed.
-     */
-    readonly taskReps: ReadonlyArray<TaskRep<A>>;
-
-    readonly stageCounts: StageCounts;
-}
-
-export class TasksCalculator {
+export namespace TasksCalculator {
 
     /**
      * The amount of time to wait to process the card again when it has lapsed.
      */
-    public static LAPSE_INIT_INTERVAL: Duration = '1d';
+    export const LAPSE_INIT_INTERVAL: Duration = '1d';
 
     /**
      * The factor we use to restore the new interval against the review interval once we're ready to continue working
      * add it back to the review stage.
      */
-    public static LAPSE_REVIEW_NEW_INTERVAL_FACTOR = 0.0;
+    export const LAPSE_REVIEW_NEW_INTERVAL_FACTOR = 0.0;
 
     /**
      * The minimum amount of time to wait when we added it back as a review card.
      */
-    public static LAPSE_REVIEW_NEW_INTERVAL_MIN: Duration = '4d';
+    export const LAPSE_REVIEW_NEW_INTERVAL_MIN: Duration = '4d';
 
     /**
      * Take potential work and use data from the backend to prioritize it for the user.
      */
-    public static async calculate<A>(opts: CalculateOpts<A>): Promise<CalculatedTaskReps<A>> {
+    export function calculate<A>(opts: CalculateOpts<A>): ICalculatedTaskReps<A> {
 
-        const resolvedTaskReps: TaskRep<A>[] = [];
-
-        const jobs = opts.potential.map((current) => async () => {
-            const taskRep = await opts.resolver(current);
-            resolvedTaskReps.push(taskRep);
-        });
-
-        const asyncWorkQueue = new AsyncWorkQueue(jobs);
-
-        await asyncWorkQueue.execute();
+        const resolvedTaskReps = opts.potential.map(current => opts.resolver(current));
 
         const prioritizedTaskReps =
             resolvedTaskReps.filter(current => current.age >= 0)  // they have to be expired and ready to evaluate.
@@ -72,26 +55,26 @@ export class TasksCalculator {
 
     }
 
-    private static computeAgeFromReviewedAt(reviewedAt: ISODateTimeString, duration: Duration) {
+    function computeAgeFromReviewedAt(reviewedAt: ISODateTimeString, duration: Duration) {
         const dueAt = ISODateTimeStrings.parse(reviewedAt).getTime() + TimeDurations.toMillis(duration);
         return Date.now() - dueAt;
     }
 
-    public static computeAge(current: ISpacedRep) {
-        return this.computeAgeFromReviewedAt(current.state.reviewedAt, current.state.interval);
+    export function computeAge(current: ISpacedRep) {
+        return computeAgeFromReviewedAt(current.state.reviewedAt, current.state.interval);
     }
 
 
     /**
      * Compute the next space repetition intervals/state from the current and the given answer.
      */
-    public static computeNextSpacedRep<A>(taskRep: TaskRep<A>, rating: Rating): ISpacedRep {
+    export function computeNextSpacedRep<A>(taskRep: ITaskRep<A>, rating: Rating): ISpacedRep {
 
         const computeLearning = (): ISpacedRep => {
 
             if (rating === 'again') {
                 // 'again' should revert back to the beginning of all the intervals
-                return this.createInitialSpacedRep(taskRep, ISODateTimeStrings.create());
+                return createInitialSpacedRep(taskRep, ISODateTimeStrings.create());
             }
 
             const learningState = <LearningState> taskRep.state;
@@ -145,7 +128,7 @@ export class TasksCalculator {
 
                 const state: LapsedState = {
                     reviewedAt: ISODateTimeStrings.create(),
-                    interval: this.LAPSE_INIT_INTERVAL,
+                    interval: LAPSE_INIT_INTERVAL,
                     reviewState
                 };
 
@@ -192,8 +175,8 @@ export class TasksCalculator {
             // LAPSE_REVIEW_NEW_INTERVAL_FACTOR and  LAPSE_REVIEW_NEW_INTERVAL_MIN
             const schedule = S2Plus.calculateFromRating(reviewState, rating);
 
-            const computedInterval = TimeDurations.toMillis(schedule.interval) * this.LAPSE_REVIEW_NEW_INTERVAL_FACTOR;
-            const minInterval = TimeDurations.toMillis(this.LAPSE_REVIEW_NEW_INTERVAL_MIN);
+            const computedInterval = TimeDurations.toMillis(schedule.interval) * LAPSE_REVIEW_NEW_INTERVAL_FACTOR;
+            const minInterval = TimeDurations.toMillis(LAPSE_REVIEW_NEW_INTERVAL_MIN);
 
             const interval = Math.max(computedInterval, minInterval);
 
@@ -232,9 +215,8 @@ export class TasksCalculator {
 
     }
 
-
-    public static createInitialSpacedRep<A>(task: Task<A>,
-                                            reviewedAt: ISODateTimeString = task.created): ISpacedRep {
+    export function createInitialSpacedRep<A>(task: Task<A>,
+                                              reviewedAt: ISODateTimeString = task.created): ISpacedRep {
 
         const intervals = [...Learning.intervals(task.mode)];
         const interval = intervals.shift()!;
@@ -251,9 +233,9 @@ export class TasksCalculator {
 
     }
 
-    public static createInitialLearningState<A>(task: Task<A>): TaskRep<A> {
+    export function createInitialLearningState<A>(task: Task<A>): ITaskRep<A> {
 
-        const spacedRep = this.createInitialSpacedRep(task);
+        const spacedRep = createInitialSpacedRep(task);
 
         const intervalMS = TimeDurations.toMillis(spacedRep.state.interval);
         const created = ISODateTimeStrings.parse(task.created);
@@ -272,16 +254,12 @@ export class TasksCalculator {
 /**
  * Return a WorkRep if we were able to find it or undefined.
  */
-export interface OptionalTaskRepResolver<A> {
-    (task: Task<A>): Promise<TaskRep<A> | undefined>;
-}
+export type OptionalTaskRepResolver<A> = (task: Task<A>) => ITaskRep<A> | undefined;
 
 /**
  * Return a WorkRep or a default rep if we're unable to find it.
  */
-export interface TaskRepResolver<A> {
-    (task: Task<A>): Promise<TaskRep<A>>;
-}
+export type TaskRepResolver<A> = (task: Task<A>) => ITaskRep<A>;
 
 /**
  * If we don't have an explicit state, then we need to compute a new one...
@@ -289,9 +267,9 @@ export interface TaskRepResolver<A> {
  */
 export function createDefaultTaskRepResolver<A>(delegate: OptionalTaskRepResolver<A>): TaskRepResolver<A> {
 
-    return async (task: Task<A>): Promise<TaskRep<A>> => {
+    return (task: Task<A>): ITaskRep<A> => {
 
-        const result = await delegate(task);
+        const result = delegate(task);
 
         if (result) {
             return result;
@@ -316,15 +294,6 @@ export interface CalculateOpts<A> {
      * The limit of the number of tasks to return.
      */
     readonly limit: number;
-
-}
-
-export interface TaskRep<A> extends ISpacedRep, Task<A> {
-
-    /**
-     * The age of the work so we can sort the priority queue.
-     */
-    readonly age: DurationMS;
 
 }
 

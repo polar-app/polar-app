@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {IRatingOption, RatingButtonSet} from "./RatingButtonSet";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {ReviewRatingGlobalHotKeys} from "./ReviewRatingGlobalHotKeys";
-import {ITaskAction} from '../ReviewerTasks';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 const BUTTONS: ReadonlyArray<IRatingOption> = [
     {
@@ -30,7 +30,7 @@ const BUTTONS: ReadonlyArray<IRatingOption> = [
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<ITaskAction>;
+    readonly taskRep: ITaskRep<ITaskAction>;
     readonly stage: Stage;
 
 }

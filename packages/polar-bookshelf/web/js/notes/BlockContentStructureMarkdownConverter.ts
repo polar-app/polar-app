@@ -3,8 +3,8 @@ import {IBlockContent, IBlockContentStructure} from "polar-blocks/src/blocks/IBl
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {IBlockContentStructurePredicates} from "./store/IBlockContentStructurePredicates";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 const INDENT_SPACE_COUNT = 4;
 

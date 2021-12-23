@@ -8,34 +8,6 @@ export namespace BlocksStoreMutations {
     import PositionalArrayKey = PositionalArrays.PositionalArrayKey;
     import PositionalArray = PositionalArrays.PositionalArray;
 
-    export type BlockUpdateMutationType = 'added' | 'removed' | 'modified';
-
-    export interface IBlocksStoreMutationAdded {
-        readonly id: BlockIDStr;
-        readonly type: 'added';
-
-        readonly added: IBlock;
-
-    }
-
-    export interface IBlocksStoreMutationRemoved {
-
-        readonly id: BlockIDStr;
-        readonly type: 'removed';
-
-        readonly removed: IBlock;
-
-    }
-    export interface IBlocksStoreMutationModified {
-        readonly id: BlockIDStr;
-        readonly type: 'modified';
-        readonly before: IBlock;
-        readonly after: IBlock;
-    }
-
-    export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationModified;
-
-
     /**
      *
      * The mutation types:

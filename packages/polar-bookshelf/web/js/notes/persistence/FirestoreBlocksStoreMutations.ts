@@ -1,7 +1,7 @@
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => void;
 
@@ -17,15 +17,15 @@ export namespace FirestoreBlocksStoreMutations {
     import MutationTarget = BlocksStoreMutations.MutationTarget;
     import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
-    export interface IFirestoreMutationSetDoc {
+    export interface IFirestoreMutationSetBlock {
         readonly id: BlockIDStr;
-        readonly type: 'set-doc';
+        readonly type: 'set-block';
         readonly value: IBlock;
     }
 
-    export interface IFirestoreMutationDeleteDoc {
+    export interface IFirestoreMutationDeleteBlock {
         readonly id: BlockIDStr;
-        readonly type: 'delete-doc';
+        readonly type: 'delete-block';
         readonly value: IBlock;
     }
     export interface IFirestoreMutationUpdatePath {
@@ -71,8 +71,8 @@ export namespace FirestoreBlocksStoreMutations {
     }
 
     export type IFirestoreMutation =
-        IFirestoreMutationSetDoc |
-        IFirestoreMutationDeleteDoc |
+        IFirestoreMutationSetBlock |
+        IFirestoreMutationDeleteBlock |
         IFirestoreMutationUpdatePathNumber |
         IFirestoreMutationUpdatePathString |
         IFirestoreMutationUpdatePathObject |
@@ -94,7 +94,7 @@ export namespace FirestoreBlocksStoreMutations {
                     return [
                         {
                             id: mutation.id,
-                            type: 'set-doc',
+                            type: 'set-block',
                             value: mutation.added
                         }
                     ];
@@ -104,7 +104,7 @@ export namespace FirestoreBlocksStoreMutations {
                     return [
                         {
                             id: mutation.id,
-                            type: 'delete-doc',
+                            type: 'delete-block',
                             value: mutation.removed,
                         }
                     ];
@@ -224,9 +224,7 @@ export namespace FirestoreBlocksStoreMutations {
 
                     const baseMutations = createBaseMutations();
 
-                    const result = [...baseMutations, ...firestoreMutations];
-
-                    return result;
+                    return [...baseMutations, ...firestoreMutations];
 
             }
 

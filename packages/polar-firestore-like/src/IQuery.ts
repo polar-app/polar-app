@@ -6,6 +6,7 @@ import {TWhereFilterOp} from "./ICollectionReference";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {TDocumentData} from "./TDocumentData";
 
 export type TOrderByDirection = 'desc' | 'asc';
 
@@ -37,14 +38,14 @@ export interface IQuery<SM> {
     onSnapshot(options: ISnapshotListenOptions,
                observer: IQuerySnapshotObserver<SM>): SnapshotUnsubscriber;
 
-    onSnapshot(onNext: (snapshot: IQuerySnapshot<SM>) => void,
-               onError?: (error: IFirestoreError) => void,
-               onCompletion?: () => void): SnapshotUnsubscriber;
+    onSnapshot<D = TDocumentData>(onNext: (snapshot: IQuerySnapshot<SM, D>) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): SnapshotUnsubscriber;
 
-    onSnapshot(options: ISnapshotListenOptions,
-               onNext: (snapshot: IQuerySnapshot<SM>) => void,
-               onError?: (error: IFirestoreError) => void,
-               onCompletion?: () => void): SnapshotUnsubscriber;
+    onSnapshot<D = TDocumentData>(options: ISnapshotListenOptions,
+                                  onNext: (snapshot: IQuerySnapshot<SM, D>) => void,
+                                  onError?: (error: IFirestoreError) => void,
+                                  onCompletion?: () => void): SnapshotUnsubscriber;
 
     /**
      * Limit the number of results returned.

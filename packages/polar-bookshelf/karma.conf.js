@@ -2,6 +2,8 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const os = require("os");
+const fs = require("fs");
+const path = require("path");
 const workers = os.cpus().length - 1;
 const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
@@ -11,7 +13,7 @@ function parseArgs() {
 
     const result = {};
 
-    for(const arg of process.argv) {
+    for (const arg of process.argv) {
         if (arg.startsWith("--grep=")) {
             result.grep = arg.split("=")[1];
         }
@@ -19,6 +21,31 @@ function parseArgs() {
 
     return result;
 
+}
+
+function getFiles() {
+    const fs = require('fs');
+    const path = require("path");
+
+    function isDirectory(path) {
+        return fs.existsSync(path);
+    }
+
+    const filesConfig = [];
+    if (isDirectory(path.resolve(__dirname, 'src'))) {
+        filesConfig.push({pattern: './src/**/*.ts', watched: false});
+    }
+    if (isDirectory(path.resolve(__dirname, 'apps'))) {
+        filesConfig.push({pattern: './apps/**/*TestK.ts', watched: false});
+        filesConfig.push({pattern: './apps/**/*TestNK.ts', watched: false});
+        filesConfig.push({pattern: './apps/**/*TestK.tsx', watched: false});
+    }
+    if (isDirectory(path.resolve(__dirname, 'web'))) {
+        filesConfig.push({pattern: './web/**/*TestK.ts', watched: false});
+        filesConfig.push({pattern: './web/**/*TestNK.ts', watched: false});
+        filesConfig.push({pattern: './web/**/*TestK.tsx', watched: false});
+    }
+    return filesConfig;
 }
 
 const {grep} = parseArgs();
@@ -70,21 +97,13 @@ module.exports = (config) => {
             'karma-mocha',
             'karma-spec-reporter',
             'karma-junit-reporter',
-            'karma-summary-reporter'
+            'karma-summary-reporter',
+            'karma-structured-json-reporter',
         ],
 
-        files: [
-
-            {pattern: './apps/**/*TestK.ts', watched: false},
-            {pattern: './apps/**/*TestNK.ts', watched: false},
-            {pattern: './apps/**/*TestK.tsx', watched: false},
-
-            {pattern: './web/**/*TestK.ts', watched: false},
-            {pattern: './web/**/*TestNK.ts', watched: false},
-            {pattern: './web/**/*TestK.tsx', watched: false}
-
-        ],
+        files: getFiles(),
         exclude: [
+            // Exclude TS declaration files
             './**/*.d.ts'
         ],
 
@@ -94,7 +113,11 @@ module.exports = (config) => {
         },
         singleRun: true,
 
-        reporters: ['junit', 'spec', 'summary'],
+        reporters: ['junit', 'spec', 'summary', 'json-result'],
+        jsonResultReporter: {
+            outputFile: "karma-result.json",
+            isSynchronous: true,
+        },
 
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
@@ -155,14 +178,11 @@ module.exports = (config) => {
                                     // from 20s to about 10s
                                     transpileOnly: isDev,
                                     experimentalWatchApi: true,
-
                                     // IMPORTANT! use happyPackMode mode to speed-up
                                     // compilation and reduce errors reported to webpack
                                     happyPackMode: true
-
                                 }
                             }
-
                         ]
 
                     },
@@ -229,9 +249,7 @@ module.exports = (config) => {
                         test: /\/electron\/index.js$/,
                         use: 'null-loader'
                     }
-
                 ]
-
             },
             // plugins: [
             //     // ...webpackConfig.plugins,
@@ -250,7 +268,6 @@ module.exports = (config) => {
                     electron: false
                 }
             },
-
         },
     });
 }

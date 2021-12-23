@@ -8,6 +8,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {BlockContentAnnotationTree} from "./BlockContentAnnotationTree";
+import {DocInfos} from "polar-shared/src/metadata/DocInfos";
 
 
 /**
@@ -169,10 +170,22 @@ export namespace DocMetaBlockContents {
     export function getDocumentBlockContent(linkTracker: BlockTagLinkTracker,
                                             docInfo: IDocInfo): IDocumentContent {
 
+        const links = tagsToBlockLinks(linkTracker, Object.values(docInfo.tags || {}));
+
+        const name = DocInfos.bestTitle(docInfo)
+        let title = name;
+
+        for (let i = 1; linkTracker.get(`#${title}`); i += 1) {
+            title = `${name} (${i})`
+        }
+
         return {
-            docInfo,
+            docInfo: {
+                ...docInfo,
+                title,
+            },
             type: 'document',
-            links: tagsToBlockLinks(linkTracker, Object.values(docInfo.tags || {})),
+            links,
         };
     }
 

@@ -9,8 +9,8 @@ import {ISnapshotMetadata} from "./ISnapshotMetadata";
 import {TUpdateData} from "./TUpdateData";
 import {ISetOptions} from "./ISetOptions";
 
-export interface IDocumentSnapshotObserver<SM> {
-    readonly next?: (snapshot: IDocumentSnapshot<SM>) => void;
+export interface IDocumentSnapshotObserver<SM, D = TDocumentData> {
+    readonly next?: (snapshot: IDocumentSnapshot<SM, D>) => void;
     readonly error?: (error: IFirestoreError) => void;
     readonly complete?: () => void;
 }
@@ -45,7 +45,7 @@ export interface IPrecondition {
  * the referenced location may or may not exist. A `DocumentReference` can
  * also be used to create a `CollectionReference` to a subcollection.
  */
-export interface IDocumentReference<SM> {
+export interface IDocumentReference<SM, D = TDocumentData> {
 
     /**
      * The Collection this `DocumentReference` belongs to.
@@ -55,7 +55,7 @@ export interface IDocumentReference<SM> {
     readonly id: string;
 
     create(data: TDocumentData): Promise<void>;
-    get(options?: IGetOptions): Promise<IDocumentSnapshot<SM>>;
+    get(options?: IGetOptions): Promise<IDocumentSnapshot<SM, D>>;
 
 
     // TODO we should return WriteResult not void.
@@ -68,12 +68,12 @@ export interface IDocumentReference<SM> {
     onSnapshot(observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
     onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
 
-    onSnapshot(onNext: (snapshot: IDocumentSnapshot<SM>) => void,
+    onSnapshot(onNext: (snapshot: IDocumentSnapshot<SM, D>) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
 
     onSnapshot(options: ISnapshotListenOptions,
-               onNext: (snapshot: IDocumentSnapshot<SM>) => void,
+               onNext: (snapshot: IDocumentSnapshot<SM, D>) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
 

@@ -25,5 +25,7 @@
   },
   "author": "Polar",
   "license": "ISC",
-  "devDependencies": {}
+  "devDependencies": {
+    "karma-structured-json-reporter": "=1.0.1"
+  }
 }

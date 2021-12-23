@@ -782,6 +782,95 @@ Something like
 allow write if block.nspace == get(/databases/$(database)/documents/block_permission/$(resource.data.groupID));
 ``` 
 
+## IDs, Renaming Blocks, and Deterministic IDs for blocks.
+
+Initially, when we implemented the block/note system I used random hashcodes to
+compute the ID for blocks.
+
+The advantage of this is that it worked really well for potentially renaming
+blocks in the future.
+
+We found a bug though where, if the user was offline, they could create day
+pages (or named notes but this was rare) and they would be under the same 'name'
+but with different IDs. We would when get two blocks with the same name but
+different IDs. At this point the store would "drop" one and we'd see data loss
+and a corrupted block graph.
+
+The solution is to create IDs that are generated on hash(name, nspace) ID.  The
+reason, the nspace ID is needed is to avoid conflicting with other users who
+could create a block with the same name.
+
+This conflict avoidance is needed for namespace sharing and security so that two
+users don't work with the same blocks IDs and overwrite each others data or access
+something to which they don't have permissions.
+
+### Renames
+
+The major downside of this is that renames become a bit harder.
+
+The way renames need to happen now is that a user will have to write out all the
+blocks under a page so that they have a new root, parent, and parents structures.
+
+This is an O(N) write but doesn't really cause a problem with write amplification 
+because N is small. Probably < 250 and the block data is small. We could fix this 
+by using Firestore transactions to modify just the fields we want.  
+
+### block_rename collection
+
+To handle a rename operation, we will need to write a block_rename collection which includes:
+
+id: the ID of the block being renmaed
+name: string
+nspace: string
+new_id: the new ID for 
+new_name: 
+renamed: the timestamp that the rename operation happened so that only this only applies to
+         blocks created before that point (not after)
+
+## New Firestore Mutations
+
+Firestore doesn't support the mutations we need so unfortunately there's an issue here where the
+last writer will win and overwrite the created and updated fields.  
+
+It's smart enough to NOT modify the items fields and properly merges them but update/created 
+are kind of a pain and I don't have an elegant way to handle this yet.
+
+### Original Data Loss Explanation
+
+Here's my original explanation of the data loss issue.
+
+> Both client A and client B are offline.
+>
+> At time t0: Client A creates a date note of 2021-12-13 and it’s created with random ID 0x12345
+>
+> At time t0: Client B creates a date note of 2021-12-13 (which has the same identical name as client A created) but has a different random ID 0x67890
+>
+> At time t1: Client A comes online and writes all its data. At this point Client A has won and his data is persistent.
+>
+> At time t2: Client B comes online and writes all its data but not it writes a SECOND named note with the same “name” but 0x67890.
+>
+> The client now has two date blocks named 2021-12-13, one with ID 0x12345 written by Client A and one with ID 0x67890 written by client B.
+>
+> The client now will ignore / merge one of the blocks (probably randomly) and it will “obscure” the other one as it’s never seen by name as one will either overwrite the other in the in-memory index OR it will be ignored when a new one comes in with a different block ID.
+>
+> The only way we can really fix this is by having both clients, while offline, compute the SAME ID based on the name and nspace ID.  The problem comes when renaming blocks.
+>
+> Our rename scheme assumes that the ID never changes once the block ID is computed.
+>
+> We don’t have this implemented but we can make the following changes to our rename algorithm to fix this:
+>
+> when a named block is renamed, we compute a NEW ID for that block and write change the ‘root’ property for all blocks that belong to this item.  The new ID is computed deterministically from the name and nspace ID of the block.
+>
+> We write a ‘block_rename’ table that includes; the previous name, the new name, previous ID, new ID.
+>
+> This way new blocks can use the old name in the future, if we don’t do this, when someone were to create a NEW name from something that was previously renamed, the ID would collide.
+>
+> We have to update all operations to write a block first and not touch ‘items’, all item operations have to be append ops.
+>
+> We will also have to keep track of the rename creation time.
+>
+> Additionally, I do not think we can do rename operations while offline and I’ll have to think about this issue.
+
 ### Limitations:
 
 - All permission change operations have to be done via a cloud function due to needing to mutate data structures 

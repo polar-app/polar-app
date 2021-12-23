@@ -27,5 +27,7 @@
     "polar-epub-generator": "0.0.0",
     "jsdom": "=16.7.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "karma-structured-json-reporter": "=1.0.1"
+  }
 }
