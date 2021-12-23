@@ -11,6 +11,7 @@ import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 import {ITaskAction} from "../ITaskAction";
 import {TaskFooter} from "./TaskFooter";
+import Box from "@material-ui/core/Box";
 
 namespace card {
 
@@ -127,12 +128,14 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
 
             case 'front':
                 return (
-                    <Button color="primary"
-                            variant="contained"
-                            size="large"
-                            onClick={handleShowAnswer}>
-                        Show Answer
-                    </Button>
+                    <Box textAlign="center">
+                        <Button color="primary"
+                                variant="contained"
+                                size="large"
+                                onClick={handleShowAnswer}>
+                            Show Answer
+                        </Button>
+                    </Box>
                 );
 
             case 'back':
@@ -155,9 +158,7 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
 
             <TaskFooter>
 
-                <div className="mt-2 mb-2">
-                    <Buttons/>
-                </div>
+                <Buttons/>
 
             </TaskFooter>
 
