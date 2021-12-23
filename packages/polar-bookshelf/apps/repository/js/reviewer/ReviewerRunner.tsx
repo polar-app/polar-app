@@ -44,7 +44,7 @@ export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: I
 
             {props.store?.currentTaskRep?.stage && (
                 <Box mb={1} textAlign="center" style={{fontSize: '14px'}}>
-                    <b>stage:</b> {props.store?.currentTaskRep?.stage}
+                    <b>stage:</b> {props.store.currentTaskRep.stage}
                 </Box>
             )}
 

@@ -10,6 +10,7 @@ import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 import {ITaskAction} from "../ITaskAction";
+import {TaskFooter} from "./TaskFooter";
 
 namespace card {
 
@@ -152,13 +153,13 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
                 <Main/>
             </TaskBody.Main>
 
-            <TaskBody.Footer taskRep={taskRep}>
+            <TaskFooter>
 
                 <div className="mt-2 mb-2">
                     <Buttons/>
                 </div>
 
-            </TaskBody.Footer>
+            </TaskFooter>
 
         </TaskBody>
     );
