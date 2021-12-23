@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../ratings/RatingButtons";
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -9,7 +8,8 @@ import {CardPaper} from "./CardPaper";
 import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
-import {ITaskAction} from '../ReviewerTasks';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
 
 namespace card {
 
@@ -71,7 +71,7 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<ITaskAction>;
+    readonly taskRep: ITaskRep<ITaskAction>;
 
     readonly front: React.ReactElement;
 

@@ -3,7 +3,7 @@ import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/Fi
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
-import {BlocksStoreTests} from "../store/BlocksStoreTests";
+import {BlocksStoreTests} from "../store/BlocksStoreTests/BlocksStoreTests";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";

@@ -32,6 +32,14 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "dev": {
         title: "Development",
         description: "Enable various tools for developers.",
+    },
+    "mobile-flashcards": {
+        title: "Mobile Flashcards",
+        description: "Enable Flashcards on Mobile",
+    },
+    "spaced-rep-purge": {
+        title: "Spaced Repetition Purge",
+        description: "Enable the ability for users to purge their spaced repetition data.",
     }
 
 };
@@ -40,7 +48,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'mobile-flashcards' | 'spaced-rep-purge';
 
 export interface IFeature {
 

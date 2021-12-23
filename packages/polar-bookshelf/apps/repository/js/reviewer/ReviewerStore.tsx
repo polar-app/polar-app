@@ -1,13 +1,14 @@
 import {action, makeObservable, observable} from "mobx";
 import React from "react";
-import {CalculatedTaskReps, TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Rating, RepetitionMode, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Reviewers} from "./Reviewers";
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
 import {useFirestore} from "../FirestoreProvider";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
-import {ITaskAction} from "./ReviewerTasks";
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
+import {ITaskAction} from "./ITaskAction";
 
 
 interface IReviewerStoreInitOpts<T> extends Reviewers.IReviewer<T> {
@@ -15,8 +16,8 @@ interface IReviewerStoreInitOpts<T> extends Reviewers.IReviewer<T> {
 }
 
 export class ReviewerStore<T = ITaskAction> {
-    @observable currentTaskRep: TaskRep<T> | undefined = undefined;
-    @observable pending: ReadonlyArray<TaskRep<T>>;
+    @observable currentTaskRep: ITaskRep<T> | undefined = undefined;
+    @observable pending: ReadonlyArray<ITaskRep<T>>;
     @observable finished: number;
     @observable total: number;
 
@@ -73,7 +74,7 @@ export class ReviewerStore<T = ITaskAction> {
         this.handleAsyncCallback(async () => this.doSuspended(currentTaskRep));
     }
 
-    @action onRating(taskRep: TaskRep<T>, rating: Rating) {
+    @action onRating(taskRep: ITaskRep<T>, rating: Rating) {
         this.handleAsyncCallback(async () => this.doRating(taskRep, rating));
         this.next(rating);
     }
@@ -118,18 +119,24 @@ export const useReviewerStore = (): ReviewerStore<ITaskAction> => {
 
 interface IReviewerStoreProviderOpts {
     readonly mode: RepetitionMode;
-    readonly dataProvider: () => Promise<CalculatedTaskReps<ITaskAction>>;
+    readonly dataProvider: () => Promise<ICalculatedTaskReps<ITaskAction>>;
     readonly onClose?: () => void;
 }
 
-export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore<ITaskAction> | undefined => {
-    const { dataProvider, mode, onClose } = opts;
+export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): ReviewerStore | undefined => {
+
+    const dataProvider = opts.dataProvider;
+    const mode = opts.mode;
+    const onClose = opts.onClose;
+
     const firestoreContext = useFirestore();
-    const dialogManagerRef = useRefWithUpdates(useDialogManager())
-    const [store, setStore] = React.useState<ReviewerStore<ITaskAction>>();
+    const dialogManagerRef = useRefWithUpdates(useDialogManager());
+    const [store, setStore] = React.useState<ReviewerStore>();
 
     React.useEffect(() => {
+
         const createStore = async () => {
+
             const { taskReps, doRating, doSuspended, doFinished } = await Reviewers.create({
                 firestore: firestoreContext!,
                 onClose,
@@ -144,13 +151,19 @@ export const useReviewerStoreProvider = (opts: IReviewerStoreProviderOpts): Revi
                 doRating,
                 dialogManager: dialogManagerRef.current,
             });
+
         };
 
-        createStore()
-            .then(setStore)
-            .catch(console.error);
-    }, [dataProvider, mode, onClose, firestoreContext, dialogManagerRef]);
+        if (! store) {
 
+            createStore()
+                .then(setStore)
+                .catch(console.error);
+
+        }
+
+    }, [dataProvider, mode, onClose, firestoreContext, dialogManagerRef, store]);
 
     return store;
+
 };

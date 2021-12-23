@@ -1,13 +1,14 @@
 import React from 'react';
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
-import {createSnapshotStore, SnapshotSubscriber} from "./SnapshotStore";
+import {createSnapshotStore, ISnapshot, SnapshotSubscriber} from "./SnapshotStore";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {profiled} from "../profiler/ProfiledComponents";
+import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 
-type QuerySnapshotSubscriber<SM = unknown> = SnapshotSubscriber<IQuerySnapshot<SM>>;
+type QuerySnapshotSubscriber<SM = unknown, D = TDocumentData> = SnapshotSubscriber<IQuerySnapshot<SM, D>>;
 
 interface FirestoreSnapshotProps {
     readonly fallback: JSX.Element;
@@ -105,31 +106,43 @@ function createDocumentChangeIndex<D>(): IDocumentChangeIndex<D> {
 
 }
 
-function convertQuerySnapshotToTypedDocumentChanges<D, SM = unknown>(snapshot: IQuerySnapshot<SM>): ReadonlyArray<ITypedDocumentChange<D>> {
+// function convertQuerySnapshotToTypedDocumentChanges<D, SM = unknown>(snapshot: IQuerySnapshot<SM>): ReadonlyArray<ITypedDocumentChange<D>> {
+//
+//     return snapshot.docChanges().map((current): ITypedDocumentChange<D> => {
+//         return {
+//             id: current.id,
+//             type: current.type,
+//             doc: current.doc.data() as D
+//         }
+//     })
+//
+// }
 
-    return snapshot.docChanges().map((current): ITypedDocumentChange<D> => {
-        return {
-            id: current.id,
-            type: current.type,
-            doc: current.doc.data() as D
-        }
-    })
+// TODO: we need to include the metadata from the server including whether it
+// came from the cache or not.
 
-}
+export type FirestoreSnapshotStoreProvider = React.FC<FirestoreSnapshotProps>;
+
+export type UseFirestoreSnapshotStore<D = TDocumentData> = () => ISnapshot<IQuerySnapshot<ISnapshotMetadata, D>>;
+
+export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
+    FirestoreSnapshotStoreProvider,
+    UseFirestoreSnapshotStore<D>
+];
 
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
  */
-export function createFirestoreSnapshotForUserCollection(collectionName: string) {
+export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(collectionName: string): FirestoreSnapshotStoreTuple<D> {
 
-    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore();
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>();
 
-    const FirestoreSnapshotProvider = profiled(React.memo(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
+    const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
         const {firestore, uid} = useFirestore();
 
-        const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata>>(() => {
+        const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
 
             if (uid === null || uid === undefined) {
                 return () => {
@@ -140,8 +153,8 @@ export function createFirestoreSnapshotForUserCollection(collectionName: string)
             return (onNext, onError) => {
 
                 return firestore.collection(collectionName)
-                    .where('uid', '==', uid)
-                    .onSnapshot(next => onNext(next), err => onError(err));
+                                .where('uid', '==', uid)
+                                .onSnapshot<D>(next => onNext(next), err => onError(err));
 
             }
 
