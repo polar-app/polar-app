@@ -34,7 +34,7 @@ export const TaskFooter = (props: IProps) => {
     return (
         <AppBar position="fixed" color="inherit" className={classes.appBar}>
             <Toolbar>
-                <Box flexGrow={1}>
+                <Box flexGrow={1} p={2}>
                      {props.children}
                 </Box>
             </Toolbar>
