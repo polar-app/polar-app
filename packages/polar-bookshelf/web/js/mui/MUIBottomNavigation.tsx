@@ -1,4 +1,4 @@
-import {BottomNavigationAction} from '@material-ui/core';
+import {BottomNavigationAction, IconButton} from '@material-ui/core';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
@@ -41,47 +41,58 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
 
 interface IBottomNavLocation {
     readonly id: string;
-    readonly label: string;
+    readonly label?: string;
     readonly href: string;
     readonly icon: React.ReactNode;
     readonly disabled?: boolean;
+    readonly showLabel: boolean;
 }
 
 const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
 
     const mobileFlashcardsEnabled = useFeatureEnabled('mobile-flashcards');
+    const theme = useTheme();
 
     return React.useMemo(() => ([
         {
             id: 'home',
             label: 'Docs',
             href: '/',
-            icon: <HomeIcon/>
+            icon: <HomeIcon/>,
+            showLabel: true
         },
         {
             id: 'notes',
             label: 'Notes',
             href: RoutePathNames.NOTES,
-            icon: <NotesIcon/>
+            icon: <NotesIcon/>,
+            showLabel: true
         },
         {
             id: 'add',
-            label: 'Add',
+            label: '',
             href: RoutePathNames.ADD,
-            icon: <AddIcon/>
+            icon: (
+                <IconButton>
+                    <AddIcon fontSize="large"/>
+                </IconButton>
+            ),
+            showLabel: true
         },
         {
             id: 'review',
             label: 'Flashcards',
             href: RoutePathNames.REVIEW,
             icon: <FlashOnIcon/>,
-            disabled: ! mobileFlashcardsEnabled
+            disabled: ! mobileFlashcardsEnabled,
+            showLabel: true
         },
         {
             id: 'switch',
             label: 'Switch',
             href: RoutePathNames.SWITCH,
-            icon: <CarouselIcon/>
+            icon: <CarouselIcon/>,
+            showLabel: true
         },
     ]), [mobileFlashcardsEnabled]);
 
@@ -158,6 +169,7 @@ export const MUIBottomNavigation = ()  => {
                                             label={current.label}
                                             value={current.href}
                                             icon={current.icon}
+                                            showLabel={current.showLabel}
                                             style={{
                                                 // this is necessary for a workaround for MUI where items would shine
                                                 // through the currently active action.
