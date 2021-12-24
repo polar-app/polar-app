@@ -40,7 +40,7 @@ export namespace ReadabilityCapture {
         };
     }
 
-    function extractCapturedEPUB(doc: Document, url: string) {
+    export function extractCapturedEPUB(doc: Document, url: string) {
         const { readable, metadata } = parseCapture(doc, url);
 
         const sanitized = HTMLSanitizer.sanitizePortableDocument(readable.content);

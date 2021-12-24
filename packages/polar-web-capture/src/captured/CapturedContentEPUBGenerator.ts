@@ -7,7 +7,7 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {ExtensionContentCapture} from "../capture/ExtensionContentCapture";
-
+import { JSDOM } from "jsdom";
 export namespace CapturedContentEPUBGenerator {
 
     import ICapturedEPUB = ExtensionContentCapture.ICapturedEPUB;
@@ -132,8 +132,15 @@ export namespace CapturedContentEPUBGenerator {
 
         const readableContent = convertToHumanReadableContent(capture);
 
-        const parser = new DOMParser();
-        const contentDoc = parser.parseFromString(readableContent, "text/html");
+        function getDocument(): Document {
+            if (typeof window === 'undefined') {
+                return new JSDOM(readableContent).window.document;
+            } else {
+                return new DOMParser().parseFromString(readableContent, "text/html");
+            }
+        }
+
+        const contentDoc = getDocument();
 
         const imgs = Array.from(contentDoc.querySelectorAll('img'));
 

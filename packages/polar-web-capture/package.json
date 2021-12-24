@@ -24,7 +24,8 @@
     "polar-page-metadata-parser": "0.0.0",
     "polar-bookshelf": "0.0.0",
     "polar-html": "0.0.0",
-    "polar-epub-generator": "0.0.0"
+    "polar-epub-generator": "0.0.0",
+    "jsdom": "=16.7.0"
   },
   "devDependencies": {
     "karma-structured-json-reporter": "=1.0.1"
