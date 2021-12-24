@@ -6,7 +6,7 @@ import {useNoteFormatBarPopperHandheldStyles} from "../../../web/js/notes/note_f
 import {NoteFormatBarPopperHandheldExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarHandheld/NoteFormatBarPopperHandheldExtension";
 import {Box, createStyles, makeStyles, TextField} from "@material-ui/core";
 
-const useStyles = makeStyles(() => 
+const useStyles = makeStyles(() =>
     createStyles({
         '@global': {
             'html, body': {
@@ -23,7 +23,7 @@ export const NotesMobileFormatBarStory: React.FC = () => {
 
     useStyles();
 
-    const handleToggleExpand = React.useCallback(() => 
+    const handleToggleExpand = React.useCallback(() =>
         setExpanded(expanded => ! expanded), []);
 
     const handleWidthChange = React.useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +40,8 @@ export const NotesMobileFormatBarStory: React.FC = () => {
 
                 <NoteFormatBarPopperHandheldBar onBold={NULL_FUNCTION}
                                                 onItalic={NULL_FUNCTION}
-                                                onRedo={NULL_FUNCTION}
-                                                onUndo={NULL_FUNCTION}
+                                                onIndent={NULL_FUNCTION}
+                                                onUnindent={NULL_FUNCTION}
                                                 onBacklink={NULL_FUNCTION}
                                                 onHideKeyboard={NULL_FUNCTION}
                                                 onStrikeThrough={NULL_FUNCTION}
@@ -49,9 +49,9 @@ export const NotesMobileFormatBarStory: React.FC = () => {
                                                 onToggleExpand={handleToggleExpand} />
 
                 <NoteFormatBarPopperHandheldExtension className={classes.extension}
-                                                      onUnindent={NULL_FUNCTION}
                                                       onEditTags={NULL_FUNCTION}
-                                                      onIndent={NULL_FUNCTION} />
+                                                      onUndo={NULL_FUNCTION}
+                                                      onRedo={NULL_FUNCTION} />
             </Box>
         </Box>
     );
