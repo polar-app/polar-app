@@ -14,7 +14,7 @@ export class JSONRPC {
         'test',
         'private-beta/register',
         'private-beta/accept-users',
-        'private-beta/users',
+        'private-beta/users'
     ];
 
     public static async exec<R, V>(path: string, request: R): Promise<V> {

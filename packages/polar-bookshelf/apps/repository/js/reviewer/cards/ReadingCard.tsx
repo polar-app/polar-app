@@ -5,6 +5,7 @@ import {RatingButtons} from "../ratings/RatingButtons";
 import {CardPaper} from "./CardPaper";
 import {IReadingTaskAction} from './ReadingTaskAction';
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {TaskFooter} from "./TaskFooter";
 
 export interface IProps {
     readonly taskRep: ITaskRep<IReadingTaskAction<unknown>>;
@@ -30,12 +31,12 @@ export const ReadingCard = (props: IProps) => {
 
             </TaskBody.Main>
 
-            <TaskBody.Footer taskRep={taskRep}>
+            <TaskFooter>
 
                 <RatingButtons taskRep={taskRep}
                                stage={taskRep.stage}/>
 
-            </TaskBody.Footer>
+            </TaskFooter>
 
         </TaskBody>
     );

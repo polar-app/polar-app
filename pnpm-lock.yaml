@@ -716,6 +716,32 @@ importers:
       mocha: 9.1.1
       polar-test: link:../polar-test
 
+  packages/polar-capture:
+    specifiers:
+      '@google-cloud/storage': '=5.8.5'
+      '@types/node-fetch': 2.5.7
+      jsdom: '=16.7.0'
+      node-fetch: '=2.6.1'
+      polar-epub: 0.0.0
+      polar-epub-generator: 0.0.0
+      polar-firebase-admin: 0.0.0
+      polar-hooks: 0.0.0
+      polar-pdf: 0.0.0
+      polar-shared: 0.0.0
+      polar-web-capture: 0.0.0
+    dependencies:
+      '@google-cloud/storage': 5.8.5
+      '@types/node-fetch': 2.5.7
+      jsdom: 16.7.0
+      node-fetch: 2.6.1
+      polar-epub: link:../polar-epub
+      polar-epub-generator: link:../polar-epub-generator
+      polar-firebase-admin: link:../polar-firebase-admin
+      polar-hooks: link:../polar-hooks
+      polar-pdf: link:../polar-pdf
+      polar-shared: link:../polar-shared
+      polar-web-capture: link:../polar-web-capture
+
   packages/polar-cdk:
     specifiers:
       '@aws-cdk/assert': '=1.121.0'
@@ -2191,6 +2217,7 @@ importers:
 
   packages/polar-web-capture:
     specifiers:
+      jsdom: '=16.7.0'
       karma-structured-json-reporter: '=1.0.1'
       polar-bookshelf: 0.0.0
       polar-epub-generator: 0.0.0
@@ -2199,6 +2226,7 @@ importers:
       polar-shared: 0.0.0
       readability: 0.2.0-polar.2
     dependencies:
+      jsdom: 16.7.0
       polar-bookshelf: link:../polar-bookshelf
       polar-epub-generator: link:../polar-epub-generator
       polar-html: link:../polar-html

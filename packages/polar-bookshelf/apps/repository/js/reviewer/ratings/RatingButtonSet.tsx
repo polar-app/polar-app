@@ -1,10 +1,29 @@
 import * as React from 'react';
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {RatingButton} from './RatingButton';
 import {useReviewerStore} from "../ReviewerStore";
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 import {ITaskAction} from "../ITaskAction";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+
+        "& > *": {
+            marginLeft: theme.spacing(2)
+        },
+
+        "& > *:first-child": {
+            marginLeft: 0
+        }
+    },
+
+}));
+
 
 export interface IProps {
     readonly taskRep: ITaskRep<ITaskAction>;
@@ -21,12 +40,14 @@ export const RatingButtonSet = function(props: IProps) {
     const {options, taskRep} = props;
     const store = useReviewerStore();
 
+    const classes = useStyles();
+
     const handleRating = React.useCallback((taskRep: ITaskRep<ITaskAction>, rating: Rating) => {
         store.onRating(taskRep, rating);
     }, [store]);
 
     return (
-        <MUIButtonBar>
+        <div className={classes.root}>
 
             {options.map(option => (
                 <RatingButton key={option.rating}
@@ -36,7 +57,7 @@ export const RatingButtonSet = function(props: IProps) {
                               onRating={() => handleRating(taskRep, option.rating)}/>
                 ))}
 
-        </MUIButtonBar>
+        </div>
     );
 
 }
