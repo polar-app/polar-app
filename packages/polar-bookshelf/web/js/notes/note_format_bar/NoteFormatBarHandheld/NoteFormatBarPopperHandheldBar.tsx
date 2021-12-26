@@ -96,13 +96,13 @@ export const NoteFormatBarPopperHandheldBar: React.FC<INoteFormatBarPopperHandhe
                                      className={classes.iconWrapper}
                                      onClick={onStrikeThrough} />
 
-                <NoteFormatBarButton icon={<FormatIndentIncreaseIcon className={clsx(classes.icon, classes.muiIcon)} />}
-                                     className={classes.iconWrapper}
-                                     onClick={onIndent}/>
-
                 <NoteFormatBarButton icon={<FormatIndentDecreaseIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
                                      onClick={onUnindent}/>
+
+                <NoteFormatBarButton icon={<FormatIndentIncreaseIcon className={clsx(classes.icon, classes.muiIcon)} />}
+                                     className={classes.iconWrapper}
+                                     onClick={onIndent}/>
 
                 <Divider orientation="vertical" flexItem className={classes.divider} />
 
