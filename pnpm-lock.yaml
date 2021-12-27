@@ -244,20 +244,14 @@ importers:
 
   packages/polar-backend-shared:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared-webserver: 0.0.0
-      tsconfig: '=7.0.0'
     dependencies:
       polar-shared-webserver: link:../polar-shared-webserver
-      tsconfig: 7.0.0
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
@@ -7010,14 +7004,6 @@ packages:
   /@types/stopword/0.3.0:
     resolution: {integrity: sha512-BPQgYJBb+Y7UC3pvU8J0OgF3VMG0kdLHWr10WmYlDUo+EW1ljX6OfTGziiFM3pG5+8a1zdyWtRPXiVldd9DrPA==}
     dev: true
-
-  /@types/strip-bom/3.0.0:
-    resolution: {integrity: sha1-FKjsOVbC6B7bdSB5CuzyHCkK69I=}
-    dev: false
-
-  /@types/strip-json-comments/0.0.30:
-    resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
-    dev: false
 
   /@types/stripe/6.32.13:
     resolution: {integrity: sha512-qMcM3ecF/4a0dtfMN2rm1w5TjSDzUqIIADI7BwXpkSUdXfekc4JjL2s7oAp9htB44nPsTYw5mxCCz9j1zTAXwA==}
@@ -17647,6 +17633,7 @@ packages:
   /strip-bom/3.0.0:
     resolution: {integrity: sha1-IzTBjpx1n3vdVv3vfprj1YjmjtM=}
     engines: {node: '>=4'}
+    dev: true
 
   /strip-comments/1.0.2:
     resolution: {integrity: sha512-kL97alc47hoyIQSV165tTt9rG5dn4w1dNnBhOQ3bOU1Nc1hel09jnXANaHJ7vzHLd4Ju8kseDGzlev96pghLFw==}
@@ -17679,6 +17666,7 @@ packages:
   /strip-json-comments/2.0.1:
     resolution: {integrity: sha1-PFMZQukIwml8DsNEhYwobHygpgo=}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /strip-json-comments/3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
@@ -18134,15 +18122,6 @@ packages:
       minimist: 1.2.5
       strip-bom: 3.0.0
     dev: true
-
-  /tsconfig/7.0.0:
-    resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
-    dependencies:
-      '@types/strip-bom': 3.0.0
-      '@types/strip-json-comments': 0.0.30
-      strip-bom: 3.0.0
-      strip-json-comments: 2.0.1
-    dev: false
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
