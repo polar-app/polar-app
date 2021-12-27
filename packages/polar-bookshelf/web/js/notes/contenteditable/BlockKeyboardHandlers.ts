@@ -9,6 +9,11 @@ import {DOMBlocks} from "./DOMBlocks";
 import {CursorPositions} from "./CursorPositions";
 import {useKeyboardShortcutHandlers} from "../../keyboard_shortcuts/KeyboardShortcuts";
 
+interface ICancellableEvent {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+}
+
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10;
 
 const hasEditorSelection = (): boolean => {
@@ -27,7 +32,7 @@ const hasEditorSelection = (): boolean => {
 
 };
 
-const abortEvent = (event: React.KeyboardEvent | KeyboardEvent): void => {
+export const abortEvent = (event: ICancellableEvent): void => {
     event.stopPropagation();
     event.preventDefault();
 };
