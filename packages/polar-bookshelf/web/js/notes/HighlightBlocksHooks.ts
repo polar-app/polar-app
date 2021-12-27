@@ -23,7 +23,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {DocIDStr} from "polar-shared/src/util/Strings";
 import {BlockFlashcards} from "polar-blocks/src/annotations/BlockFlashcards";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -101,7 +101,7 @@ export const useBlockItems = (opts: IUseBlockItemsOpts): ReadonlyArray<BlockIDSt
 
     React.useEffect(() => {
         const getBlockItems = () => {
-            const block = blocksStore.getBlock(id);   
+            const block = blocksStore.getBlock(id);
 
             return block ? block.itemsAsArray : [];
         };
@@ -177,7 +177,7 @@ export const useAnnotationBlockManager = () => {
                 .idsToBlocks(block.itemsAsArray)
                 .filter(BlockPredicates.isAnnotationHighlightBlock);
 
-            const position = BlockHighlights.calculateHighlightBlockPosition(annotations, { id: Hashcodes.createRandomID(), content }, docMeta);
+            const position = BlockHighlights.calculateHighlightBlockPosition(annotations, { id: BlockIDs.createRandom(), content }, docMeta);
 
             if (position === 'unshift') {
                 return blocksStore.createNewBlock(block.id, { content: content, unshift: true });

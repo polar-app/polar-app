@@ -1,14 +1,52 @@
-
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const webpack = require("webpack");
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const os = require("os");
 const workers = os.cpus().length - 1;
 const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
-const path = require("path");
-const fs = require("fs");
+
+function parseArgs() {
+
+    const result = {};
+
+    for (const arg of process.argv) {
+        if (arg.startsWith("--grep=")) {
+            result.grep = arg.split("=")[1];
+        }
+    }
+
+    return result;
+
+}
+
+function getFiles() {
+    const fs = require('fs');
+    const path = require("path");
+
+    function isDirectory(path) {
+        return fs.existsSync(path);
+    }
+
+    const filesConfig = [];
+    if (isDirectory(path.resolve(__dirname, 'src'))) {
+        filesConfig.push({pattern: './src/**/*.ts', watched: false});
+    }
+    if (isDirectory(path.resolve(__dirname, 'apps'))) {
+        filesConfig.push({pattern: './apps/**/*TestK.ts', watched: false});
+        filesConfig.push({pattern: './apps/**/*TestNK.ts', watched: false});
+        filesConfig.push({pattern: './apps/**/*TestK.tsx', watched: false});
+    }
+    if (isDirectory(path.resolve(__dirname, 'web'))) {
+        filesConfig.push({pattern: './web/**/*TestK.ts', watched: false});
+        filesConfig.push({pattern: './web/**/*TestNK.ts', watched: false});
+        filesConfig.push({pattern: './web/**/*TestK.tsx', watched: false});
+    }
+    return filesConfig;
+}
+
+const {grep} = parseArgs();
+
 module.exports = (config) => {
     config.set({
         client: {
@@ -20,11 +58,20 @@ module.exports = (config) => {
                 './{,!(node_modules)/**}/*TestNK.js'
             ],
             mocha: {
-                timeout : 60000
+
+                timeout: 60000,
+
+                // this works to to filter mocha but I have no way to get this value from the command line.
+                // https://www.npmjs.com/package/karma-mocha
+                //
+                // karma doesn't have a native way to filter results so we have
+                // to pass --grep and handle it here.
+                grep
+
             }
         },
-        // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
+
         customHeaders: [
             {
                 match: '.*',
@@ -37,29 +84,50 @@ module.exports = (config) => {
                 value: 'require-corp',
             }
         ],
+
         // make sure to include webpack as a framework
         frameworks: ['mocha', 'webpack'],
+
         plugins: [
             'karma-chrome-launcher',
             'karma-webpack',
             'karma-mocha',
             'karma-spec-reporter',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-summary-reporter',
+            'karma-structured-json-reporter',
         ],
-        files: [
-            { pattern: 'src/**/*.ts', watched: false },
-        ],
+
+        files: getFiles(),
         exclude: [
-          'src/**/*.d.ts'
+            // Exclude TS declaration files
+            './**/*.d.ts'
         ],
         preprocessors: {
             // add webpack as preprocessor
-            'src/**/*.ts': ['webpack'],
+            '**/*': ['webpack'],
         },
         singleRun: true,
-        reporters: ['junit', 'spec'],
+
+        reporters: ['junit', 'spec', 'summary'],
+
+        reporters: ['junit', 'spec', 'summary', 'json-result'],
+        jsonResultReporter: {
+            outputFile: "karma-result.json",
+            isSynchronous: true,
+        },
         captureTimeout: 120000,
         browserNoActivityTimeout: 120000,
+        summaryReporter: {
+            // 'failed', 'skipped' or 'all'
+            show: 'all',
+            // Limit the spec label to this length
+            specLength: 60,
+            // Show an 'all' column as a summary
+            overviewColumn: true,
+            // Show a list of test clients, 'always', 'never' or 'ifneeded'
+            browserList: 'always'
+        },
         webpack: {
             plugins: [
                 new NodePolyfillPlugin(),
@@ -113,6 +181,21 @@ module.exports = (config) => {
                                 }
                             }
                         ]
+
+                    },
+                    {
+                        test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+                        exclude: [],
+                        use: [
+                            {
+                                loader: 'file-loader',
+                                options: {
+                                    name: '[name]-[contenthash].[ext]',
+                                    outputPath: 'assets',
+                                    publicPath: '/assets'
+                                }
+                            },
+                        ],
                     },
                     {
                         // make SVGs use data URLs.
@@ -142,7 +225,7 @@ module.exports = (config) => {
                     },
                     {
                         test: /\.scss$/,
-                        use: ['style-loader', 'css-loader', 'sass-loader'],
+                        use: ['style-loader', 'css-loader', 'sass-loader', 'sass'],
                     },
                     {
                         test: /fonts\.googleapis\.com\/css/,

@@ -2,12 +2,12 @@ import React from "react";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import {IBlockOverflowMenuActionProps} from "../BlockOverflowMenuPopper";
 import {MUIMenuItem} from "../../../mui/menu/MUIMenuItem";
-import {BlockTextContentUtils} from "../../NoteUtils";
 import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {IBlockPredicates} from "../../store/IBlockPredicates";
 import {useBlocksStore} from "../../store/BlocksStore";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {useBlockOverflowMenuStore} from "../BlockOverflowMenu";
+import {BlockTextContentUtils} from "../../BlockTextContentUtils";
 
 export const CreateFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) => {
     const { id } = props;

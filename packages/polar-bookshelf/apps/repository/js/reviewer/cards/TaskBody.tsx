@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import Divider from '@material-ui/core/Divider';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 
 export class TaskBody extends React.Component<IProps, IState> {
 
@@ -39,32 +38,10 @@ export class TaskBody extends React.Component<IProps, IState> {
 
     };
 
-    public static Footer = class extends React.Component<IProps, IState> {
-
-        public render() {
-
-            return <div>
-
-                <Divider/>
-
-                <div className="mt-1 pl-1 pr-1">
-                    <b>stage: </b> {this.props.taskRep.stage}
-                </div>
-
-                <div className="text-center p-1">
-                    {this.props.children}
-                </div>
-
-            </div>;
-
-        }
-
-    };
-
 }
 
 export interface IProps {
-    readonly taskRep: TaskRep<any>;
+    readonly taskRep: ITaskRep<any>;
 }
 
 export interface IState {

@@ -50,10 +50,12 @@ export type UseValueStore<V> = () => V;
 
 export type ValueStoreSetter<V> = (value: V) => void;
 
+export type UseValueStoreSetter<V> = () => ValueStoreSetter<V>;
+
 export type ValueStoreTuple<V> = readonly [
     ValueStoreProvider<V>,
     UseValueStore<V>,
-    ValueStoreSetter<V>
+    UseValueStoreSetter<V>
 ];
 
 /**
@@ -81,7 +83,7 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     const Context = React.createContext<ValueStore<V>>(null!);
 
-    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = profiled(React.memo(function ValueStoreProvider(props) {
+    const ValueStoreProvider: React.FC<ValueStoreProviderProps<V>> = React.memo(profiled(function ValueStoreProvider(props) {
 
         const store = React.useMemo(() => new ValueStore(props.initialStore), [props.initialStore]);
 
@@ -110,11 +112,17 @@ export function createValueStore<V>(): ValueStoreTuple<V> {
 
     }
 
-    const ValueSetter = (value: V) => {
-        const valueStore = React.useContext(Context);
-        valueStore.setValue(value);
+    const UseValueSetter = () => {
+
+        const valueStore = React.useContext(Context);;
+
+        return React.useCallback((value: V) => {
+
+            valueStore.setValue(value);
+
+        }, [valueStore]);
     }
 
-    return [ValueStoreProvider, useValueStore, ValueSetter];
+    return [ValueStoreProvider, useValueStore, UseValueSetter];
 
 }

@@ -1,10 +1,15 @@
 import React from "react";
 import {useAIFlashcardVerifiedAction} from "../../../../../repository/js/ui/AIFlashcardVerifiedAction";
-import {useAutoFlashcardBlockCreator, useAutoFlashcardCreator} from "../../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {
+    useAutoFlashcardBlockCreator,
+    useAutoFlashcardCreator
+} from "../../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
-import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {IDocMetaAnnotationProps} from "../IDocMetaAnnotationProps";
+import {IBlockAnnotationProps} from "../IBlockAnnotationProps";
+import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
     const {clear, setAiFlashcardStatus} = useAnnotationPopup();

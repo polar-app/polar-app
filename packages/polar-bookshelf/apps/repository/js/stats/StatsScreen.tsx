@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {FixedNav} from '../FixedNav';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
-import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
-import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 import {Helmet} from "react-helmet";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -199,24 +197,7 @@ export interface IState {
 
 export const StatsScreen = React.memo(function StatsScreen() {
 
-    const [state, setState] = React.useState<IState>({isReviewer: false});
-
-    useComponentDidMount(() => {
-
-        // TODO: we shouldn't use this I think as it's not supported well on modern react...
-
-        // TODO: migrate this to the new DataProvider system as there is a race here
-        // and this code isn't very pretty
-
-        const doAsync = async () => {
-            const isReviewer = await ReviewerTasks.isReviewer();
-            setState({isReviewer});
-        }
-
-        doAsync()
-            .catch(err => log.error(err));
-
-    })
+    const [state, setState] = React.useState<IState>({isReviewer: true});
 
     return (
 

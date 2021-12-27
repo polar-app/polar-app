@@ -1,7 +1,6 @@
 import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
 import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
-import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -56,7 +55,6 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
                         <CssBaseline/>
                         <GlobalCss/>
                         <GlobalCSSBootstrap/>
-                        <GlobalCssSummernote/>
                         <GlobalCssMobile/>
 
                         <UndoQueueProvider2>

@@ -12,14 +12,11 @@ import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
 import {useDocViewerStore} from "../DocViewerStore";
-import {useAreaHighlightHooks} from "./AreaHighlightHooks";
-import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {useNotesIntegrationEnabled} from "../../../../web/js/notes/NoteUtils";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -32,13 +29,11 @@ interface IProps {
 export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(props: IProps) {
 
     const {areaHighlight, fingerprint, pageNum, container, id} = props;
-    const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
-    const {onAreaHighlightUpdated} = useAreaHighlightHooks();
+    const {docScale} = useDocViewerStore(['docScale']);
     const docViewerElementsContext = useDocViewerElementsContext();
     const {update: updateBlockAreaHighlight} = useBlockAreaHighlight();
     const {fileType} = useDocViewerContext();
     const docViewerElements = useDocViewerElementsContext();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
@@ -99,7 +94,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
         // get the most recent area highlight as since this is using state
         // we can have a stale highlight.
 
-        if (notesIntegrationEnabled && docScale) {
+        if (docScale) {
             const docViewerElement = docViewerElements.getDocViewerElement();
 
             updateBlockAreaHighlight(id, {
@@ -110,26 +105,11 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
                 docViewerElement,
             }).catch(err => console.error(err))
 
-        } else {
-            const pageMeta = IDocMetas.getPageMeta(docMeta!, pageNum);
-            const areaHighlight = (pageMeta.areaHighlights || {})[id];
-
-            onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
         }
 
         return undefined;
 
-    }, [
-        docScale,
-        docViewerElements,
-        updateBlockAreaHighlight,
-        id,
-        pageNum,
-        fileType,
-        docMeta,
-        onAreaHighlightUpdated,
-        notesIntegrationEnabled,
-    ]);
+    }, [docScale, docViewerElements, updateBlockAreaHighlight, id, pageNum, fileType]);
 
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 

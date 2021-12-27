@@ -26,7 +26,8 @@ const FEATURE_REQUESTS = ("/feature-requests");
 const SUPPORT = ("/support");
 const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
-const ADD_MOBILE = '/add';
+const ADD = '/add';
+const REVIEW = '/review';
 const ACCOUNT = "#account";
 const ACCOUNT_MOBILE = "/account";
 const SWITCH = "/switch";
@@ -37,7 +38,8 @@ export const RoutePathNames = {
     DAILY,
     NOTES,
     NOTE,
-    ADD_MOBILE,
+    ADD,
+    REVIEW,
     ANKI_SYNC,
     SETTINGS,
     FEATURES,

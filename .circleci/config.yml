@@ -178,8 +178,17 @@ jobs:
           name: karma
           no_output_timeout: 120m
           command: pnpm run karma-all
+
+      # Generate a combined-karma-result.json file from all karma-result.json files in packages
+      - run:
+          name: combine-karma-coverage
+          command: npm install --prefix=$HOME/.local -g ts-node && npx ts-node-script ./scripts/combine-karma-summaries.ts
+
       - store_test_results:
           path: /home/circleci/project/packages
+
+      - store_artifacts:
+          path: /home/circleci/project/combined-karma-result.json
 
   # @ Run tests
   mocha:
@@ -593,7 +602,7 @@ workflows:
 
   IOS-Android:
     when:
-      equal: [master, << pipeline.git.branch >>]
+      equal: [ master, << pipeline.git.branch >> ]
     jobs:
       - Approve-Android-Internal:
           type: approval

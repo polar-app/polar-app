@@ -26,6 +26,7 @@ export const StartReviewDropdown = memoForwardRef((props: IProps) => (
                  }
              }}
              caret>
+
         <MUIRouterLink
             to={{pathname: '/annotations', hash: '#review-flashcards'}}>
             <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>}/>

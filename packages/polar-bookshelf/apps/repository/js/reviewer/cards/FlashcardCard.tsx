@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../ratings/RatingButtons";
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -9,7 +8,10 @@ import {CardPaper} from "./CardPaper";
 import {FlashcardStoreProvider, useFlashcardCallbacks, useFlashcardStore} from './FlashcardStore';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {FlashcardGlobalHotKeys} from './FlashcardGlobalHotKeys';
-import {ITaskAction} from '../ReviewerTasks';
+import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
+import {ITaskAction} from "../ITaskAction";
+import {TaskFooter} from "./TaskFooter";
+import Box from "@material-ui/core/Box";
 
 namespace card {
 
@@ -71,7 +73,7 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
-    readonly taskRep: TaskRep<ITaskAction>;
+    readonly taskRep: ITaskRep<ITaskAction>;
 
     readonly front: React.ReactElement;
 
@@ -126,12 +128,14 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
 
             case 'front':
                 return (
-                    <Button color="primary"
-                            variant="contained"
-                            size="large"
-                            onClick={handleShowAnswer}>
-                        Show Answer
-                    </Button>
+                    <Box textAlign="center">
+                        <Button color="primary"
+                                variant="contained"
+                                size="large"
+                                onClick={handleShowAnswer}>
+                            Show Answer
+                        </Button>
+                    </Box>
                 );
 
             case 'back':
@@ -152,13 +156,11 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
                 <Main/>
             </TaskBody.Main>
 
-            <TaskBody.Footer taskRep={taskRep}>
+            <TaskFooter>
 
-                <div className="mt-2 mb-2">
-                    <Buttons/>
-                </div>
+                <Buttons/>
 
-            </TaskBody.Footer>
+            </TaskFooter>
 
         </TaskBody>
     );

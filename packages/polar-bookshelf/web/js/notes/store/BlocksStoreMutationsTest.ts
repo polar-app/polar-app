@@ -1,6 +1,6 @@
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {BlocksStoreTests} from "./BlocksStoreTests";
+import {BlocksStoreTests} from "./BlocksStoreTests/BlocksStoreTests";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";

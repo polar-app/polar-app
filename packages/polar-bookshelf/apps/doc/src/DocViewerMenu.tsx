@@ -7,12 +7,10 @@ import {IMouseEvent, MenuComponentProps} from "../../repository/js/doc_repo/MUIC
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
 import {IPoint} from "polar-shared/src/util/Point";
-import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {IAnnotationMeta, IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
@@ -39,7 +37,6 @@ import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightBlocksHooks"
 import {useDocViewerContext} from "./renderers/DocRenderer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 import {DOMBlocks} from "../../../web/js/notes/contenteditable/DOMBlocks";
-import {useNotesIntegrationEnabled} from "../../../web/js/notes/NoteUtils";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -352,8 +349,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const {docDescriptor} = useDocViewerStore(['docDescriptor']);
     const {onPagemark} = useDocViewerCallbacks();
-    const {onAreaHighlightCreated} = useAreaHighlightHooks();
-    const annotationMutationsContext = useAnnotationMutationsContext();
     const annotationMetaToRefResolver = useAnnotationMetaToRefResolver();
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const dialogManager = useDialogManager();
@@ -362,7 +357,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
     const {fileType} = useDocViewerContext();
     const blocksStore = useBlocksStore();
-    const notesIntegrationEnabled = useNotesIntegrationEnabled();
 
     const origin = props.origin!;
 
@@ -447,37 +441,20 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             height: 150,
         };
 
-        if (notesIntegrationEnabled) {
-            if (! docMeta || ! docScale) {
-                return;
-            }
-
-            const docViewerElement = docViewerElements.getDocViewerElement();
-            createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
-                rect,
-                pageNum,
-                fileType,
-                docScale,
-                docViewerElement,
-            }).catch(console.error);
-
-        } else {
-            onAreaHighlightCreated({
-                pageNum,
-                rectWithinPageElement: rect
-            });
+        if (! docMeta || ! docScale) {
+            return;
         }
 
-    }, [
-        onAreaHighlightCreated,
-        origin,
-        docViewerElements,
-        docMeta,
-        docScale,
-        fileType,
-        createBlockAreaHighlight,
-        notesIntegrationEnabled,
-    ]);
+        const docViewerElement = docViewerElements.getDocViewerElement();
+        createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
+            rect,
+            pageNum,
+            fileType,
+            docScale,
+            docViewerElement,
+        }).catch(console.error);
+
+    }, [origin, docViewerElements, docMeta, docScale, fileType, createBlockAreaHighlight]);
 
     const onDeletePagemark = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 
@@ -496,13 +473,8 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     }
 
     const onDelete = React.useCallback((annotations: ReadonlyArray<IAnnotationMeta>) => {
-        if (notesIntegrationEnabled) {
-            blocksStore.deleteBlocks(annotations.map(({ id }) => id));
-        } else {
-            const selected = annotations.map(annotationMetaToRefResolver);
-            annotationMutationsContext.onDeleted({selected});
-        }
-    }, [blocksStore, annotationMetaToRefResolver, annotationMutationsContext, notesIntegrationEnabled]);
+        blocksStore.deleteBlocks(annotations.map(({ id }) => id));
+    }, [blocksStore]);
 
     const onCopy = () => {
         Clipboards.writeText(origin.selectionToText());
@@ -588,7 +560,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
         // TODO make sure the right doc panel is exposed
 
-        const targetPrefix = notesIntegrationEnabled ? DOMBlocks.BLOCK_ID_PREFIX : 'annotation-';
+        const targetPrefix = DOMBlocks.BLOCK_ID_PREFIX;
 
         const ptr = AnnotationPtrs.create({
             target: targetPrefix + highlight.id,
@@ -600,7 +572,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         console.log("Jumping to annotation on document: " + docDescriptor.fingerprint, docDescriptor);
         jumpToAnnotationHandler(ptr)
 
-    }, [docDescriptor, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights, notesIntegrationEnabled]);
+    }, [docDescriptor, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights]);
 
     const isPDF = origin.fileType === 'pdf';
 

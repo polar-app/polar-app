@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
@@ -12,14 +11,14 @@ import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {MockDocMetas} from "polar-shared/src/metadata/MockDocMetas";
 import {StoryHolder} from "../StoryHolder";
-import {IDocAnnotationFlashcardTaskAction} from '../../repository/js/reviewer/DocAnnotationReviewerTasks';
 import {ReviewerRunner} from "../../repository/js/reviewer/ReviewerRunner";
 import {Reviewers} from "../../repository/js/reviewer/Reviewers";
 import {ReviewerStore, ReviewerStoreContext, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {observer} from "mobx-react-lite";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
-import {ITaskAction} from "../../repository/js/reviewer/ReviewerTasks";
+import {ReviewerDialog} from "../../repository/js/reviewer/ReviewerDialog";
+import {ITaskAction} from "../../repository/js/reviewer/ITaskAction";
 
 //
 // const createFlashcardTaskReps = async () => {
@@ -37,7 +36,7 @@ import {ITaskAction} from "../../repository/js/reviewer/ReviewerTasks";
 // };
 
 
-const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<IDocAnnotationFlashcardTaskAction>> => {
+const createFlashcardTaskReps = () => {
 
     const docMeta = MockDocMetas.createMockDocMeta();
     const pageMeta = Object.values(docMeta.pageMetas)[0];
@@ -62,7 +61,7 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<IDocAnnotationFlashcar
         return flashcardTaskActions[0];
     };
 
-    const tasks: ReadonlyArray<Task<IDocAnnotationFlashcardTaskAction>> = [
+    const tasks = [
         {
             id: "10102",
             action: createClozeAction('The capital of California is {{c1::Sacramento}}.'),
@@ -94,7 +93,7 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<IDocAnnotationFlashcar
 
     ];
 
-    return tasks.map(task => TasksCalculator.createInitialLearningState(task));
+    return tasks.map(task => TasksCalculator.createInitialLearningState(task as any));
 
 };
 
@@ -133,7 +132,7 @@ export const ReviewerStory = () => {
 
     const store = React.useMemo(() => {
         return new ReviewerStore<ITaskAction>({
-            taskReps,
+            taskReps: taskReps as any,
             doSuspended,
             doFinished,
             doRating,
@@ -147,15 +146,19 @@ export const ReviewerStory = () => {
             <BrowserRouter key="browser-router">
                 <Switch location={ReactRouters.createLocationWithPathAndHash()}>
                     <ReviewerStoreContext.Provider value={store}>
-                        {open && (
-                            <ReviewerRunner store={store} />)}
 
-                        <Button variant="contained"
-                                color="primary"
-                                size="large"
-                                onClick={() => setOpen(true)}>
-                            Start Review
-                        </Button>
+                        {open && (
+                            <ReviewerDialog onClose={() => setOpen(false)}>
+                                <ReviewerRunner store={store} />
+                            </ReviewerDialog>)}
+
+                        {! open && (
+                            <Button variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    onClick={() => setOpen(true)}>
+                                Start Review
+                            </Button>)}
 
                         <ReviewerStats/>
 

@@ -21,11 +21,11 @@ import {
     useBlocksAnnotationRepoStore
 } from "./BlocksAnnotationRepoStore";
 import {observer} from "mobx-react-lite";
-import {BlockTextContentUtils} from "../../../../web/js/notes/NoteUtils";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {useBlocksAnnotationRepoTableContextMenu} from "./BlocksAnnotationRepoTable";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
+import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
 
 const MAX_IMG_HEIGHT = 300;
 
@@ -180,7 +180,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
 
     const contextMenuHandlers = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
 
-    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
+    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(blocksStore, block)) {
         return null;
     }
 
@@ -195,7 +195,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>
-                        <Box mt={1}>
+                        <Box mt={1} style={{fontSize: '14px'}}>
                             <HighlightPreview block={block} />
 
                             <DateTimeTableCell

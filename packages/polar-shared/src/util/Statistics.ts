@@ -30,24 +30,7 @@ export class Statistics {
 
         const keys = [...multimap.keys()].sort();
 
-        const reduced = keys.map(key => dataPointsReducer(key, multimap.get(key)));
-
-        // with the reduced data, we need to add ZERO values for days we don't have any values.
-
-        // if (emptyDatapointFactory) {
-        //
-        //     const result = [
-        //         ...reduced,
-        //         emptyDatapointFactory(ISODateTimeStrings.create())
-        //     ]
-        //
-        //     return result;
-        //
-        // } else {
-        //     return reduced;
-        // }
-
-        return reduced;
+        return keys.map(key => dataPointsReducer(key, multimap.get(key)));
 
     }
 

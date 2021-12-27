@@ -9,11 +9,11 @@ import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {useAnnotationBlockManager} from "../../HighlightBlocksHooks";
 import {IBlockClozeFlashcard, IBlockFrontBackFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {ISODateString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {BlockTextContentUtils} from "../../NoteUtils";
 import {BlockPredicates} from "../../store/BlockPredicates";
 import {BlockTagsSection} from "./BlockHighlightContentWrapper";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockTextContentUtils} from "../../BlockTextContentUtils";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;

@@ -9,19 +9,14 @@ import {reaction} from "mobx";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ContentEditables} from "./ContentEditables";
-import {NameContent} from "./content/NameContent";
-import {debounce} from "throttle-debounce";
-import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
-import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {useLinkNavigationClickHandler} from "./NoteLinksHooks";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {DOMBlocks} from "./contenteditable/DOMBlocks";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {BlockContent, useBlocksStore} from "./store/BlocksStore";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -43,27 +38,6 @@ export interface BlockEditorGenericProps {
 
 export const useBlockContentUpdater = () => {
     const blocksStore = useBlocksStore();
-    const dialogs = useDialogManager();
-
-    const handleRename = React.useMemo(() => {
-        const doRename = (id: BlockIDStr, content: NameContent, data: MarkdownStr) => {
-            const exists = blocksStore.getBlockByName(data);
-
-            if (! exists || content.data.toLowerCase() === data.toLowerCase()) {
-                blocksStore.renameBlock(id, data);
-            } else {
-                dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
-
-                // Reset to old name
-                const blockElem = DOMBlocks.getBlockElement(id);
-                if (blockElem) {
-                    blockElem.innerHTML = MarkdownContentConverter.toHTML(content.data);
-                }
-            }
-        };
-
-        return debounce(1500, doRename);
-    }, [blocksStore, dialogs]);
 
     return React.useCallback((id: BlockIDStr, data: MarkdownStr) => {
         const block = blocksStore.getBlock(id);
@@ -74,13 +48,11 @@ export const useBlockContentUpdater = () => {
 
         const content = block.content;
 
-        if (content.type === 'name') {
-            handleRename(id, content, data);
-        } else if (! block.readonly && content.type !== AnnotationContentType.FLASHCARD) {
+        if (! block.readonly && content.type !== AnnotationContentType.FLASHCARD) {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksStore.setBlockContent(block.id, newContent);
         }
-    }, [handleRename, blocksStore]);
+    }, [blocksStore]);
 };
 
 interface INoteEditorInnerProps extends IProps {
