@@ -20,8 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "polar-bookshelf": "0.0.0",
-    "polar-shared": "0.0.0",
-    "@material-ui/styles": "=4.11.4"
+    "polar-shared": "0.0.0"
   },
   "devDependencies": {
     "karma-structured-json-reporter": "=1.0.1"
