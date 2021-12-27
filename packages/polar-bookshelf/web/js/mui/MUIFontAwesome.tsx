@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import {SvgIcon, SvgIconProps} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckSquare} from "@fortawesome/free-solid-svg-icons/faCheckSquare";
@@ -40,7 +41,7 @@ interface FASvgIconProps extends SvgIconProps {
 
 const FASvgIcon = deepMemo(function FASvgIcon(props: FASvgIconProps) {
     return (
-        <SvgIcon {...props}>
+        <SvgIcon {...props} className={clsx(props.className, 'fa-icon')}>
             <FontAwesomeIcon icon={props.icon}/>
         </SvgIcon>
     );

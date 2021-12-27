@@ -14,8 +14,18 @@ const useStyles = makeStyles<Theme, IUseStylesOpts>((theme) =>
                 : darken(theme.palette.background.default, 0.15);
 
             return {
-                fontSize: '1rem',
-                background: active ? activeColor : 'inherit',
+                color: theme.palette.text.secondary,
+                background: active ? activeColor : 'transparent',
+                fontSize: 'inherit',
+                '& .MuiSvgIcon-root': {
+                    fontSize: 'inherit',
+
+                    // The following is to deal with FA icons bullshit
+                    // since for some unknown reason they're slightly bigger than MUI icons
+                    '&.fa-icon': {
+                        padding: '0.2em',
+                    },
+                },
             };
         },
     })
@@ -45,8 +55,7 @@ export const NoteFormatBarButton: React.FC<INoteFormatBarButton> = (props) => {
     }, [onClick, abortEvent]);
 
     return (
-        <IconButton size="small"
-                    style={style}
+        <IconButton style={style}
                     className={clsx(classes.button, className)}
                     onMouseDown={abortEvent}
                     onMouseUp={abortEvent}
