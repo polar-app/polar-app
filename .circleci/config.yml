@@ -327,7 +327,7 @@ jobs:
             git tag -a "$VERSION" -m "automated tag version $VERSION"
             LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
             echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
-            LOG=$(git log --pretty=format:"• %b\\n" --merges $LATEST_VERSION...$CURRENT_VERSION | sort | uniq | tr '\r\n' ' ') || LOG="• fix: Minor Fixes for Release"
+            LOG=$(git log --pretty=format:"• %b\\n" --merges $LATEST_VERSION...$CURRENT_VERSION | sed "/^• $/d" | sort | uniq | tr '\r\n' ' ') || LOG="• fix: Minor Fixes for Release"
             ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
             TEMP_DATE=$(date +"%a %b %d %Y")
             echo "export DATE=\"$TEMP_DATE\"" >> $BASH_ENV
