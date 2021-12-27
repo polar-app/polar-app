@@ -6,10 +6,7 @@ import {
     StageCountsCalculator,
     TaskRep
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {
-    CalculatedTaskReps,
-    TasksCalculator
-} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -17,6 +14,7 @@ import {SpacedRepStat, SpacedRepStatCollection} from "polar-firebase/src/firebas
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {IFirestoreContext} from "../FirestoreProvider";
+import {ICalculatedTaskReps} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ICalculatedTaskReps";
 
 const log = Logger.create();
 
@@ -31,12 +29,14 @@ export namespace Reviewers {
 
     export interface IReviewerCreateOpts<T> {
         readonly firestore: IFirestoreContext;
-        readonly data: CalculatedTaskReps<T>;
+        readonly data: ICalculatedTaskReps<T>;
         readonly mode: RepetitionMode;
         readonly onClose?: Callback;
     }
 
     export async function create<T>(opts: IReviewerCreateOpts<T>): Promise<IReviewer<T>> {
+
+        console.log("Creating reviewer...");
 
         const {data, mode, firestore} = opts;
         const onClose = opts.onClose || NULL_FUNCTION;
@@ -65,6 +65,8 @@ export namespace Reviewers {
 
         };
 
+        // TODO: don't call this here ... but instead do this on init() so that this function
+        // doesn't need to be async.
         await doWriteQueueStageCounts();
 
         console.log("Found N tasks: " + taskReps.length);

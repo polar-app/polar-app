@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {SettingListItem} from './SettingListItem';
-import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
+import {ViewDeviceListItem} from './ViewDeviceListItem';
 import {SettingSelect} from "./SettingSelect";
 import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import Box from '@material-ui/core/Box';
@@ -21,7 +21,8 @@ import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {ListItemLinkButton} from './ListItemLinkButton';
 import {useHistory} from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import { Feature } from '../../../../../web/js/features/FeaturesRegistry';
+import {Feature} from '../../../../../web/js/features/FeaturesRegistry';
+import {SpacedRepetitionPurgeListItem} from "./SpacedRepetitionPurgeListItem";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -120,7 +121,7 @@ const Main = () => {
                                  icon={<DeveloperModeIcon />}
                                  name="dev"
                                  preview={true}/>
-                <ViewDeviceInfoButton/>
+                <ViewDeviceListItem/>
                 <DeviceRouters.Desktop>
                     <>
                         <CancelSubscriptionButton/>
@@ -133,6 +134,9 @@ const Main = () => {
 
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
+
+                <Feature feature='spaced-rep-purge' enabled={<SpacedRepetitionPurgeListItem/>}/>
+
             </List>
         </Box>
     );

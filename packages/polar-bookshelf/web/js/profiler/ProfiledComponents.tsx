@@ -29,7 +29,7 @@ export function profiled<P = {}>(Component: React.FunctionComponent<P>): React.F
         return React.memo((props) => {
 
             const handleRender: ProfilerOnRenderCallback = React.useCallback((id, phase) => {
-                console.log(`id: ${id}, phase: ${phase}`);
+                // console.log(`profiled: id: ${id}, phase: ${phase}`);
                 RENDERS.push({id, phase});
             }, []);
 

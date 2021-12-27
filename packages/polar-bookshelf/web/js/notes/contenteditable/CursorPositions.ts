@@ -244,7 +244,7 @@ export namespace CursorPositions {
         }
 
         // Try the next sibling
-        // This is because we might have the cursor in an empty text node (a workaround for focusing contentEditable=false
+        // This is because we might have the cursor in an empty text node (a workaround for focusing contentEditable=false)
         const sibling = positionInTextNode.node.nextSibling;
         if (sibling) {
             const siblingPositionInTextNode = toTextNode(sibling, 0);

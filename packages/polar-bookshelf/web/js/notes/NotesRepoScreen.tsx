@@ -9,13 +9,13 @@ import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {RoutePathNames} from "../apps/repository/RoutePathNames";
-import {BlockTextContentUtils} from "./NoteUtils";
 import {Block} from "./store/Block";
 import {NotesToolbar} from "./NotesToolbar";
 import {Devices} from "polar-shared/src/util/Devices";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {DocAnnotationMoment} from "../annotation_sidebar/DocAnnotationMoment";
 import {observer} from "mobx-react-lite";
+import {BlockTextContentUtils} from "./BlockTextContentUtils";
 
 const DateCellRenderer: GridColDef['renderCell'] = ({ value }) => {
     return <DocAnnotationMoment created={value as string} />;

@@ -21,7 +21,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "firebase-tools": "=9.16.0"
+    "firebase-tools": "=9.16.0",
+    "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.15.1",

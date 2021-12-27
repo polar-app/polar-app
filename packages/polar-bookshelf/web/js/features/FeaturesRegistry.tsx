@@ -33,9 +33,13 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Development",
         description: "Enable various tools for developers.",
     },
-    "proper-virtualized-font-size": {
-        title: "Proper Virtualized Font Size",
-        description: "We use virtualization to scroll complex tables and we have to use a proper font-size and I picked 14px.  This enables that setting so that we use the proper size in the annotation repo.",
+    "mobile-flashcards": {
+        title: "Mobile Flashcards",
+        description: "Enable Flashcards on Mobile",
+    },
+    "spaced-rep-purge": {
+        title: "Spaced Repetition Purge",
+        description: "Enable the ability for users to purge their spaced repetition data.",
     }
 
 };
@@ -44,7 +48,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'proper-virtualized-font-size';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'mobile-flashcards' | 'spaced-rep-purge';
 
 export interface IFeature {
 

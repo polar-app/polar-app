@@ -26,7 +26,8 @@
     "@types/chrome": "0.0.114",
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
-    "mocha": "=9.1.1"
+    "mocha": "=9.1.1",
+    "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "@types/karma": "=5.0.1",

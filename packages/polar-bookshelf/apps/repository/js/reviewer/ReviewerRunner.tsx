@@ -7,10 +7,11 @@ import {ReviewerStore, ReviewerStoreContext} from './ReviewerStore';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {observer} from 'mobx-react-lite';
 import {MUILoading} from "../../../../web/js/mui/MUILoading";
-import {ITaskAction} from './ReviewerTasks';
+import Box from "@material-ui/core/Box";
 
 interface IReviewerRunnerProps {
-    store: ReviewerStore<ITaskAction> | undefined;
+    readonly store: ReviewerStore | undefined;
+    readonly onClose?: () => void;
 }
 
 export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: IReviewerRunnerProps) {
@@ -24,7 +25,7 @@ export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: I
     if (! store.currentTaskRep) {
 
         // no more task reps... we're finished.
-        return <ReviewFinished/>;
+        return <ReviewFinished onClose={props.onClose}/>;
 
     }
 
@@ -32,13 +33,20 @@ export const ReviewerRunner = deepMemo(observer(function ReviewerRunner(props: I
 
     return (
         <ReviewerStoreContext.Provider value={store}>
-            <div className="mb-1">
+
+            <Box mt={2} mb={1}>
 
                 <LinearProgress variant="determinate"
                                 color="primary"
                                 value={perc}/>
 
-            </div>
+            </Box>
+
+            {props.store?.currentTaskRep?.stage && (
+                <Box mb={1} textAlign="center" style={{fontSize: '14px'}}>
+                    <b>stage:</b> {props.store.currentTaskRep.stage}
+                </Box>
+            )}
 
             <ReviewerCard key={store.currentTaskRep.id}
                           taskRep={store.currentTaskRep}/>

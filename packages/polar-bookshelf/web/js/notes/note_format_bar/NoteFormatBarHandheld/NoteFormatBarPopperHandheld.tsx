@@ -47,7 +47,7 @@ export const NoteFormatBarPopperHandheld: React.FC = () => {
     const [expanded, setExpanded] = React.useState(false);
     const classes = useNoteFormatBarPopperHandheldStyles();
 
-    const handleToggleExpand = React.useCallback(() => 
+    const handleToggleExpand = React.useCallback(() =>
         setExpanded(expanded => ! expanded), []);
 
     const abortEvent = React.useCallback((event: React.MouseEvent) => {
@@ -109,25 +109,24 @@ export const NoteFormatBarPopperHandheld: React.FC = () => {
     const handleEditTags = React.useCallback(() =>
         withBlockID(id => tagEditorDialog([id])), [tagEditorDialog, withBlockID]);
 
-
     return (
         <div className={clsx(classes.container, { open: expanded })} onMouseDown={abortEvent}>
             <NoteFormatBarPopperHandheldBar onToggleExpand={handleToggleExpand}
                                             className={classes.bar}
                                             expanded={expanded}
-
+                                            onIndent={handleIndent}
+                                            onUnindent={handleUnindent}
                                             onBold={handleBold}
                                             onItalic={handleItalic}
-                                            onRedo={handleRedo}
-                                            onUndo={handleUndo}
                                             onBacklink={handleBacklink}
                                             onHideKeyboard={handleHideKeyboard}
                                             onStrikeThrough={handleStrikeThrough} />
 
             <NoteFormatBarPopperHandheldExtension className={classes.extension}
-                                                  onUnindent={handleUnindent}
+                                                  onRedo={handleRedo}
+                                                  onUndo={handleUndo}
                                                   onEditTags={handleEditTags}
-                                                  onIndent={handleIndent} />
+                                                  />
         </div>
     );
 };

@@ -1,15 +1,15 @@
 import React from "react";
-import {Box, Paper, Divider, createStyles, makeStyles} from "@material-ui/core";
+import {Box, createStyles, Divider, makeStyles, Paper} from "@material-ui/core";
 import {NoteFormatBarButton} from "../NoteFormatBarButton";
 import {BacklinkIconButton} from "../../../mui/icon_buttons/BacklinkIconButton";
 import {FABoldIcon, FAItalicIcon, FAStrikethroughIcon} from "../../../mui/MUIFontAwesome";
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
 import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import clsx from "clsx";
 import {useNoteFormatBarPopperHandheldStyles} from "./NoteFormatBarPopperHandheld";
+import FormatIndentDecreaseIcon from "@material-ui/icons/FormatIndentDecrease";
+import FormatIndentIncreaseIcon from "@material-ui/icons/FormatIndentIncrease";
 
 interface INoteFormatBarPopperHandheldBarProps {
     readonly onToggleExpand: () => void;
@@ -20,8 +20,8 @@ interface INoteFormatBarPopperHandheldBarProps {
     readonly onBold: () => void;
     readonly onItalic: () => void;
     readonly onStrikeThrough: () => void;
-    readonly onUndo: () => void;
-    readonly onRedo: () => void;
+    readonly onIndent: () => void;
+    readonly onUnindent: () => void;
     readonly onBacklink: () => void;
     readonly onHideKeyboard: () => void;
 }
@@ -56,8 +56,8 @@ export const NoteFormatBarPopperHandheldBar: React.FC<INoteFormatBarPopperHandhe
 
         onHideKeyboard,
         onBacklink,
-        onRedo,
-        onUndo,
+        onIndent,
+        onUnindent,
         onStrikeThrough,
         onItalic,
         onBold,
@@ -96,13 +96,13 @@ export const NoteFormatBarPopperHandheldBar: React.FC<INoteFormatBarPopperHandhe
                                      className={classes.iconWrapper}
                                      onClick={onStrikeThrough} />
 
-                <NoteFormatBarButton icon={<UndoIcon className={clsx(classes.icon, classes.muiIcon)} />}
+                <NoteFormatBarButton icon={<FormatIndentDecreaseIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={onUndo} />
+                                     onClick={onUnindent}/>
 
-                <NoteFormatBarButton icon={<RedoIcon className={clsx(classes.icon, classes.muiIcon)} />}
+                <NoteFormatBarButton icon={<FormatIndentIncreaseIcon className={clsx(classes.icon, classes.muiIcon)} />}
                                      className={classes.iconWrapper}
-                                     onClick={onRedo} />
+                                     onClick={onIndent}/>
 
                 <Divider orientation="vertical" flexItem className={classes.divider} />
 
