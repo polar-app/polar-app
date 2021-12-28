@@ -58,7 +58,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
+            - pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
 
   # & output debug info
   debug_installed:
@@ -101,7 +101,7 @@ commands:
       - save_cache:
           paths:
             - ~/.pnpm-store
-          key: pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
+          key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
 
   # & Persist Workspace
   persist_workspace:
@@ -602,7 +602,7 @@ workflows:
 
   IOS-Android:
     when:
-      equal: [ master, << pipeline.git.branch >> ]
+      equal: [master, << pipeline.git.branch >>]
     jobs:
       - Approve-Android-Internal:
           type: approval

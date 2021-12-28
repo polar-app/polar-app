@@ -1,9 +1,9 @@
 import React from "react";
 import clsx from "clsx";
-import {NoteFormatBarPopperHandheldBar} from "../../../web/js/notes/note_format_bar/NoteFormatBarHandheld/NoteFormatBarPopperHandheldBar";
+import {NoteFormatBarPopperMobileBar} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobileBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useNoteFormatBarPopperHandheldStyles} from "../../../web/js/notes/note_format_bar/NoteFormatBarHandheld/NoteFormatBarPopperHandheld";
-import {NoteFormatBarPopperHandheldExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarHandheld/NoteFormatBarPopperHandheldExtension";
+import {useNoteFormatBarPopperMobileStyles} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobile";
+import {NoteFormatBarPopperMobileExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobileExtension";
 import {Box, createStyles, makeStyles, TextField} from "@material-ui/core";
 
 const useStyles = makeStyles(() =>
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() =>
 
 export const NotesMobileFormatBarStory: React.FC = () => {
     const [expanded, setExpanded] = React.useState(false);
-    const classes = useNoteFormatBarPopperHandheldStyles();
+    const classes = useNoteFormatBarPopperMobileStyles();
     const [width, setWidth] = React.useState<string>("100%");
 
     useStyles();
@@ -38,20 +38,20 @@ export const NotesMobileFormatBarStory: React.FC = () => {
             </Box>
             <Box className={clsx(classes.container, { open: expanded })} style={{ width }}>
 
-                <NoteFormatBarPopperHandheldBar onBold={NULL_FUNCTION}
-                                                onItalic={NULL_FUNCTION}
-                                                onIndent={NULL_FUNCTION}
-                                                onUnindent={NULL_FUNCTION}
-                                                onBacklink={NULL_FUNCTION}
-                                                onHideKeyboard={NULL_FUNCTION}
-                                                onStrikeThrough={NULL_FUNCTION}
-                                                expanded={expanded}
-                                                onToggleExpand={handleToggleExpand} />
+                <NoteFormatBarPopperMobileBar onBold={NULL_FUNCTION}
+                                              onItalic={NULL_FUNCTION}
+                                              onIndent={NULL_FUNCTION}
+                                              onUnindent={NULL_FUNCTION}
+                                              onBacklink={NULL_FUNCTION}
+                                              onHideKeyboard={NULL_FUNCTION}
+                                              onStrikeThrough={NULL_FUNCTION}
+                                              expanded={expanded}
+                                              onToggleExpand={handleToggleExpand} />
 
-                <NoteFormatBarPopperHandheldExtension className={classes.extension}
-                                                      onEditTags={NULL_FUNCTION}
-                                                      onUndo={NULL_FUNCTION}
-                                                      onRedo={NULL_FUNCTION} />
+                <NoteFormatBarPopperMobileExtension className={classes.extension}
+                                                    onEditTags={NULL_FUNCTION}
+                                                    onUndo={NULL_FUNCTION}
+                                                    onRedo={NULL_FUNCTION} />
             </Box>
         </Box>
     );
