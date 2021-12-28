@@ -1,13 +1,13 @@
 import React from "react";
 import {Box, createStyles, makeStyles, Paper} from "@material-ui/core";
 import clsx from "clsx";
+import UndoIcon from '@material-ui/icons/Undo';
+import RedoIcon from '@material-ui/icons/Redo';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import {useNoteFormatBarPopperHandheldStyles} from "./NoteFormatBarPopperHandheld";
+import {useNoteFormatBarPopperMobileStyles} from "./NoteFormatBarPopperMobile";
 import {NoteFormatBarExtensionButton} from "../NoteFormatBarButton";
-import UndoIcon from "@material-ui/icons/Undo";
-import RedoIcon from "@material-ui/icons/Redo";
 
-interface INoteFormatBarPopperExtensionHandheldProps {
+interface INoteFormatBarPopperExtensionMobileProps {
     readonly className?: string;
     readonly style?: React.CSSProperties;
 
@@ -28,23 +28,22 @@ export const useStyles = makeStyles((theme) =>
     })
 );
 
-export const NoteFormatBarPopperHandheldExtension: React.FC<INoteFormatBarPopperExtensionHandheldProps> = (props) => {
-    const { className, style, onEditTags, onUndo, onRedo } = props;
-    const sharedClasses = useNoteFormatBarPopperHandheldStyles();
+export const NoteFormatBarPopperMobileExtension: React.FC<INoteFormatBarPopperExtensionMobileProps> = (props) => {
+    const { className, style, onUndo, onRedo, onEditTags } = props;
+    const sharedClasses = useNoteFormatBarPopperMobileStyles();
     const classes = useStyles();
 
     return (
         <Paper className={clsx(sharedClasses.paperRoot, className)} style={style}>
             <Box py={3.75} px={2} className={classes.root}>
-
                 <NoteFormatBarExtensionButton icon={<UndoIcon className={classes.icon} />}
                                               onClick={onUndo}>
-                    Undo
+                    Indent left
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<RedoIcon className={classes.icon} />}
                                               onClick={onRedo}>
-                    Redo
+                    Indent right
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<LocalOfferIcon className={classes.icon} />}
