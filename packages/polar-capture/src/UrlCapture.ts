@@ -8,7 +8,8 @@ import { File } from '@google-cloud/storage';
 import { PDFMetadata } from "polar-pdf/src/pdf/PDFMetadata";
 import { EPUBMetadataUsingNode } from "polar-epub/src/EPUBMetadataUsingNode";
 import { IParsedDocMeta } from 'polar-shared/src/util/IParsedDocMeta';
-import { existsSync, mkdirSync, unlinkSync } from 'fs';
+import { unlinkSync } from 'fs';
+import { FilePaths } from "polar-shared/src/util/FilePaths"
 
 interface WrittenTmpFile {
     readonly file: File;
@@ -127,16 +128,6 @@ export namespace UrlCapture {
         return await CapturedContentEPUBGenerator.generate(epubCapture);
     }
 
-    function tmpDirPath() {
-        const path = __dirname + "/../tmp/";
-
-        if (!existsSync(path)) {
-            mkdirSync(path);
-        }
-        
-        return path;
-    }
-
     function removeBucketPath(filePath: string) {
         return filePath.split('/')[1];
     }
@@ -148,7 +139,7 @@ export namespace UrlCapture {
                 // - Get tmp capture epub file in a tmp directory
                 // - Unzip to extract metadata (EPUBMetadataUsingNode)
                 // - Remove the epub file once the data has been extracted
-                const destination = tmpDirPath() + `${removeBucketPath(tmp.file.name)}`;
+                const destination = FilePaths.createTempName(removeBucketPath(tmp.file.name));
 
                 await tmp.file.download({ destination });
 
