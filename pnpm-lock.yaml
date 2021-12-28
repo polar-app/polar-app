@@ -655,7 +655,6 @@ importers:
   packages/polar-content-capture:
     specifiers:
       '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       jsdom: '=16.7.0'
@@ -664,20 +663,17 @@ importers:
       mocha: '=9.1.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
-      wait-for-expect: 3.0.1
     dependencies:
       jszip: 3.7.1
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
       chai: 4.2.0
       jsdom: 16.7.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
-      wait-for-expect: 3.0.1
 
   packages/polar-create-module:
     specifiers:
