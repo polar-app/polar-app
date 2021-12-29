@@ -736,7 +736,6 @@ importers:
       '@types/jsdom': '=16.2.13'
       '@types/jsdom-global': 3.0.2
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
       chai: 4.2.0
       jsdom: '=16.7.0'
       jsdom-global: 3.0.2
@@ -745,7 +744,6 @@ importers:
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
-      '@types/node': 14.17.9
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
@@ -780,7 +778,6 @@ importers:
       mocha: '=9.1.1'
       node-stream-zip: '=1.14.0'
       polar-shared: 0.0.0
-      polar-test: 0.0.0
     dependencies:
       epubjs: 0.3.89-polar.23
       fast-xml-parser: 3.19.0
@@ -791,7 +788,6 @@ importers:
       '@types/mocha': 9.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-epub-generator:
     specifiers:
