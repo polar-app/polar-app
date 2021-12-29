@@ -873,9 +873,7 @@ importers:
 
   packages/polar-firebase-browser:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       firebase: '=8.10.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
@@ -883,7 +881,6 @@ importers:
       polar-firestore-like: 0.0.0
       polar-shared: 0.0.0
       polar-snapshot-cache: 0.0.0
-      polar-test: 0.0.0
     dependencies:
       firebase: 8.10.0
       polar-firebase-test: link:../polar-firebase-test
@@ -891,12 +888,9 @@ importers:
       polar-shared: link:../polar-shared
       polar-snapshot-cache: link:../polar-snapshot-cache
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-firebase-test:
     specifiers:
