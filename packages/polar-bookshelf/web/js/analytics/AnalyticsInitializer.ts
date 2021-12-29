@@ -4,6 +4,7 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import firebase from 'firebase/app'
+import {UserTraits as UserTraitsV2} from 'polar-firebase-users/src/UserTraits';
 
 export namespace AnalyticsInitializer {
 
@@ -70,18 +71,18 @@ export namespace AnalyticsInitializer {
 
             };
 
-            const doUserTags = () => {
-                // if (user.metadata.tags) {
-                //     Analytics.traits({
-                //         user_tags: user.metadata.tags
-                //     });
-                // }
+            const doUserReferralCode = async () => {
+                const referral_code = await UserTraitsV2.read(user.uid, 'referral_code');
+                if (referral_code) {
+                    Analytics.traits({
+                        referral_code,
+                    });
+                }
             }
 
             doUserEmailDomain();
             doUserCreated();
-            doUserTags();
-
+            doUserReferralCode();
         };
 
         const user = await FirebaseBrowser.currentUserAsync();

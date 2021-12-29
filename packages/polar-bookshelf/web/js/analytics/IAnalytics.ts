@@ -12,7 +12,6 @@ export interface IAnalyticsUser {
     readonly displayName: string | undefined;
     readonly photoURL: URLStr | undefined;
     readonly created: string;
-    readonly tags?: ReadonlyArray<string>;
 }
 
 export interface IAnalytics {

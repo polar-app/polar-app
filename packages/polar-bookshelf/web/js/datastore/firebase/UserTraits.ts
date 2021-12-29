@@ -4,6 +4,10 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
+
+/**
+ * @deprecated Replace with packages/polar-firebase-users/src/UserTraits.ts since this logic doesn't belong to polar-bookshelf and that other one works on both the server and the browser
+ */
 export namespace UserTraits {
 
     const COLLECTION = 'user_trait';

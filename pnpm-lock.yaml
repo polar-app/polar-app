@@ -452,6 +452,7 @@ importers:
       polar-firebase: 0.0.0
       polar-firebase-browser: 0.0.0
       polar-firebase-test: 0.0.0
+      polar-firebase-users: 0.0.0
       polar-firestore-like: 0.0.0
       polar-google-fonts: 0.0.0
       polar-html: 0.0.0
@@ -575,6 +576,7 @@ importers:
       polar-firebase: link:../polar-firebase
       polar-firebase-browser: link:../polar-firebase-browser
       polar-firebase-test: link:../polar-firebase-test
+      polar-firebase-users: link:../polar-firebase-users
       polar-firestore-like: link:../polar-firestore-like
       polar-google-fonts: link:../polar-google-fonts
       polar-html: link:../polar-html

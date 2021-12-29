@@ -22,4 +22,13 @@ export namespace UserTraits {
 
         await Promise.all(promises);
     }
+
+    export const read = async (uid: string, traitName: string): Promise<string | undefined> => {
+        const key = Hashcodes.createID({uid, name: traitName});
+        const doc = await FirestoreAdmin.getInstance()
+            .collection('user_traits')
+            .doc(key)
+            .get();
+        return doc.data()?.value;
+    }
 }
