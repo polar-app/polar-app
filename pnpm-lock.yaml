@@ -1121,24 +1121,16 @@ importers:
   packages/polar-images:
     specifiers:
       '@types/blueimp-load-image': '=5.14.2'
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       blueimp-load-image: '=5.14.0'
-      chai: 4.2.0
-      exif-js: '=2.3.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
-      polar-test: 0.0.0
     devDependencies:
       '@types/blueimp-load-image': 5.14.2
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       blueimp-load-image: 5.14.0
-      chai: 4.2.0
-      exif-js: 2.3.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-lang-classifier:
     specifiers:
@@ -10204,10 +10196,6 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       pify: 2.3.0
-    dev: true
-
-  /exif-js/2.3.0:
-    resolution: {integrity: sha1-nRCBm/Vx+HOBPnZAJBJVq5zhqBQ=}
     dev: true
 
   /exit-on-epipe/1.0.1:
