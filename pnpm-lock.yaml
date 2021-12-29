@@ -1199,10 +1199,7 @@ importers:
 
   packages/polar-migration-block-annotations:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
-      firebase-functions: '=3.16.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
@@ -1212,7 +1209,6 @@ importers:
       polar-rpc: 0.0.0
       polar-shared: 0.0.0
     dependencies:
-      firebase-functions: 3.16.0
       polar-blocks: link:../polar-blocks
       polar-firebase-admin: link:../polar-firebase-admin
       polar-firestore-like: link:../polar-firestore-like
@@ -1220,9 +1216,7 @@ importers:
       polar-rpc: link:../polar-rpc
       polar-shared: link:../polar-shared
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
