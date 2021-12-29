@@ -922,9 +922,7 @@ importers:
   packages/polar-firestore-like:
     specifiers:
       '@google-cloud/firestore': '=4.15.1'
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       firebase: '=8.10.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
@@ -934,9 +932,7 @@ importers:
       polar-shared: link:../polar-shared
     devDependencies:
       '@google-cloud/firestore': 4.15.1
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       firebase: 8.10.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
