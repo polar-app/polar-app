@@ -712,35 +712,23 @@ importers:
   packages/polar-doc-preview-loader:
     specifiers:
       '@google-cloud/tasks': '=1.9.0'
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
-      chai: 4.2.0
-      firebase-admin: '=10.0.0'
-      firebase-functions: '=3.16.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-shared: 0.0.0
-      polar-test: 0.0.0
       polar-webapp-links: 0.0.0
     dependencies:
       '@google-cloud/tasks': 1.9.0
-      firebase-admin: 10.0.0
-      firebase-functions: 3.16.0_firebase-admin@10.0.0
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
       polar-shared: link:../polar-shared
       polar-webapp-links: link:../polar-webapp-links
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      '@types/node': 14.17.9
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-dom-text-search:
     specifiers:
