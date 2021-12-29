@@ -984,24 +984,7 @@ importers:
       mocha: 9.1.1
 
   packages/polar-hooks:
-    specifiers:
-      '@google-cloud/storage': '=5.8.5'
-      '@sentry/node': 6.15.0
-      '@types/escape-html': 0.0.20
-      escape-html: '=1.0.3'
-      firebase-functions: '=3.16.0'
-      polar-backend-shared: 0.0.0
-      polar-firebase: 0.0.0
-      polar-webapp-dist: 0.0.0
-    dependencies:
-      '@google-cloud/storage': 5.8.5
-      '@sentry/node': 6.15.0
-      '@types/escape-html': 0.0.20
-      escape-html: 1.0.3
-      firebase-functions: 3.16.0
-      polar-backend-shared: link:../polar-backend-shared
-      polar-firebase: link:../polar-firebase
-      polar-webapp-dist: link:../polar-webapp-dist
+    specifiers: {}
 
   packages/polar-hooks/functions:
     specifiers:
@@ -6303,10 +6286,6 @@ packages:
   /@types/diff/4.0.2:
     resolution: {integrity: sha512-mIenTfsIe586/yzsyfql69KRnA75S8SVXQbTLpDejRrjH0QSJcpu3AUOi/Vjnt9IOsXKxPhJfGpQUNMueIU1fQ==}
     dev: true
-
-  /@types/escape-html/0.0.20:
-    resolution: {integrity: sha512-6dhZJLbA7aOwkYB2GDGdIqJ20wmHnkDzaxV9PJXe7O02I2dSFTERzRB6JrX6cWKaS+VqhhY7cQUMCbO5kloFUw==}
-    dev: false
 
   /@types/eslint-scope/3.7.1:
     resolution: {integrity: sha512-SCFeogqiptms4Fg29WpOTk5nHIzfpKCemSN63ksBQYKTcXoJEmJagV+DhVmbapZzY4/5YaOV1nZwrsU79fFm1g==}
