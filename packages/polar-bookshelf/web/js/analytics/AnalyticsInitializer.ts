@@ -70,8 +70,17 @@ export namespace AnalyticsInitializer {
 
             };
 
+            const doUserTags = () => {
+                // if (user.metadata.tags) {
+                //     Analytics.traits({
+                //         user_tags: user.metadata.tags
+                //     });
+                // }
+            }
+
             doUserEmailDomain();
             doUserCreated();
+            doUserTags();
 
         };
 

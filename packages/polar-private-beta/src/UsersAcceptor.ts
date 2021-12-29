@@ -5,6 +5,7 @@ import {IDUser} from "polar-rpc/src/IDUser";
 import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
+import {UserTraits} from "polar-firebase-users/src/UserTraits";
 
 export namespace UsersAcceptor {
 
@@ -67,11 +68,22 @@ export namespace UsersAcceptor {
         })
 
         for (const email of request.emails) {
-            const user = await FirebaseUserCreator.create(email, Hashcodes.createRandomID());
+            const waitingUserRequest = waitingUsers.find(waitingUser => waitingUser.email === email)!;
+            const user = await FirebaseUserCreator.create(waitingUserRequest.email, Hashcodes.createRandomID());
 
-            await sendWelcomeEmail(email);
+            await sendWelcomeEmail(waitingUserRequest.email);
 
-            await PrivateBetaReqCollection.deleteByEmail(firestore, email);
+            await PrivateBetaReqCollection.deleteByEmail(firestore, waitingUserRequest.email);
+
+            await UserTraits.store(user.uid, [
+                {
+                    name: 'referral_code',
+                    // Store the first available tag as a trait called "referral_code"
+                    // since our current logic is only allowing a single tag per user anyway
+                    // @TODO Maybe this "tags" concept needs rethinking? Maybe extract the referral code field to its own top level field?
+                    value: waitingUserRequest.tags.find(() => true),
+                }
+            ]);
 
             accepted.push(user);
         }
