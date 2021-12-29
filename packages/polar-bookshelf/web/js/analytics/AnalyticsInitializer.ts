@@ -4,7 +4,7 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import firebase from 'firebase/app'
-import {UserTraits as UserTraitsV2} from 'polar-firebase-users/src/UserTraits';
+import {UserTraits} from "../datastore/firebase/UserTraits";
 
 export namespace AnalyticsInitializer {
 
@@ -72,7 +72,7 @@ export namespace AnalyticsInitializer {
             };
 
             const doUserReferralCode = async () => {
-                const referral_code = await UserTraitsV2.read(user.uid, 'referral_code');
+                const referral_code = await UserTraits.read('referral_code');
                 if (referral_code) {
                     Analytics.traits({
                         referral_code,

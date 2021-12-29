@@ -19,24 +19,24 @@ export namespace UserTraits {
 
     }
 
-    export type UserTraitMap = {[key: string]: string};
+    export type UserTraitMap = { [key: string]: string };
 
     export async function write(traits: UserTraitMap) {
 
-        const uid  = await getUserID();
+        const uid = await getUserID();
 
-        if (! uid) {
+        if (!uid) {
             return;
         }
 
         const userTraits: ReadonlyArray<IUserTrait> = Object.entries(traits)
-                                                            .map(current => {
-            return {
-                uid,
-                name: current[0],
-                value: current[1]
-            };
-        })
+            .map(current => {
+                return {
+                    uid,
+                    name: current[0],
+                    value: current[1]
+                };
+            })
 
         const promises = userTraits.map(async (current) => {
 
@@ -50,6 +50,28 @@ export namespace UserTraits {
 
         await Promise.all(promises);
 
+    }
+
+    export async function read(traitName: string) {
+        const uid = await getUserID();
+
+        if (!uid) {
+            return;
+        }
+
+        const key = Hashcodes.createID({uid, name: traitName});
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        debugger;
+
+        const ref = Collections.createRef(firestore, COLLECTION, key);
+        const doc = await ref.get();
+        const id = doc.id;
+        const data = doc.data();
+
+        debugger;
+
+        return data?.value;
     }
 
 }
