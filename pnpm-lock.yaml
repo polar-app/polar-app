@@ -1223,14 +1223,12 @@ importers:
   packages/polar-npm:
     specifiers:
       '@types/node': '=14.17.9'
-      '@types/pdfjs-dist': 2.1.71-polar.2
       karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
     dependencies:
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/node': 14.17.9
-      '@types/pdfjs-dist': 2.1.71-polar.2
       karma-structured-json-reporter: 1.0.1
 
   packages/polar-openai:
@@ -6438,10 +6436,6 @@ packages:
 
   /@types/parse5/6.0.2:
     resolution: {integrity: sha512-+hQX+WyJAOne7Fh3zF5CxPemILIbuhNcqHHodzK9caYOLnC8pD5efmPleRnw0z++LfKUC/sVNMwk0Gap+B0baA==}
-
-  /@types/pdfjs-dist/2.1.71-polar.2:
-    resolution: {integrity: sha512-mJoaTeg0DVodS2Qog9kQbWykY++ZtiJ7ibrPZy5wDA0CpiQCIOCm7Gnd0kgeYS1zYPnQmGDDLwYnxkl7mRdSgQ==}
-    dev: true
 
   /@types/plist/3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
