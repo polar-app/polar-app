@@ -27,11 +27,9 @@
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
-    "@types/node": "=14.17.9",
     "@types/showdown": "=1.9.4",
     "gray-matter": "=4.0.3",
     "polar-shared": "0.0.0",
-    "polar-test": "0.0.0",
     "showdown": "=1.9.1"
   },
   "files": [

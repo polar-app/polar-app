@@ -1153,21 +1153,17 @@ importers:
     specifiers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
       '@types/showdown': '=1.9.4'
       chai: 4.2.0
       gray-matter: '=4.0.3'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
-      polar-test: 0.0.0
       showdown: '=1.9.1'
     dependencies:
-      '@types/node': 14.17.9
       '@types/showdown': 1.9.4
       gray-matter: 4.0.3
       polar-shared: link:../polar-shared
-      polar-test: link:../polar-test
       showdown: 1.9.1
     devDependencies:
       '@types/chai': 4.2.11
