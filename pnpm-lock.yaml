@@ -1285,7 +1285,6 @@ importers:
       '@types/chai': 4.2.11
       '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
       canvas: '=2.8.0'
       chai: 4.2.0
       jsdom: '=16.7.0'
@@ -1295,7 +1294,6 @@ importers:
       polar-shared: 0.0.0
       polar-test: 0.0.0
     dependencies:
-      '@types/node': 14.17.9
       canvas: 2.8.0
       jsdom: 16.7.0_canvas@2.8.0
       pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8

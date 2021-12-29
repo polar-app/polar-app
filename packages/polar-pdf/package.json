@@ -29,7 +29,6 @@
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
-    "@types/node": "=14.17.9",
     "canvas": "=2.8.0",
     "jsdom": "=16.7.0",
     "pdfjs-dist": "=2.8.250-polar.3",
