@@ -62,15 +62,11 @@ export namespace UserTraits {
         const key = Hashcodes.createID({uid, name: traitName});
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        debugger;
-
         const ref = Collections.createRef(firestore, COLLECTION, key);
-        const doc = await ref.get();
-        const id = doc.id;
+        const doc = await ref.get({
+            source: "server",
+        });
         const data = doc.data();
-
-        debugger;
-
         return data?.value;
     }
 

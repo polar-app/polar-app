@@ -7,11 +7,13 @@ export namespace UserTraits {
         value: any,
     }
 
+    const COLLECTION = 'user_trait';
+
     export const store = async (uid: string, traits: SingleTrait[]) => {
         const promises = traits.map(async (current) => {
             const key = Hashcodes.createID({uid, name: current.name});
             await FirestoreAdmin.getInstance()
-                .collection('user_traits')
+                .collection(COLLECTION)
                 .doc(key)
                 .set({
                     uid,
@@ -26,7 +28,7 @@ export namespace UserTraits {
     export const read = async (uid: string, traitName: string): Promise<string | undefined> => {
         const key = Hashcodes.createID({uid, name: traitName});
         const doc = await FirestoreAdmin.getInstance()
-            .collection('user_traits')
+            .collection(COLLECTION)
             .doc(key)
             .get();
         return doc.data()?.value;
