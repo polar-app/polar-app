@@ -35,7 +35,7 @@ export namespace AnalyticsInitializer {
 
     async function initAccount() {
 
-        const doUserTraits = (user: firebase.User) => {
+        const doUserTraits = async (user: firebase.User) => {
 
             const doUserEmailDomain = () => {
 
@@ -82,7 +82,7 @@ export namespace AnalyticsInitializer {
 
             doUserEmailDomain();
             doUserCreated();
-            doUserReferralCode();
+            await doUserReferralCode();
         };
 
         const user = await FirebaseBrowser.currentUserAsync();
@@ -97,7 +97,7 @@ export namespace AnalyticsInitializer {
                 created: user.metadata.creationTime!
             });
 
-            doUserTraits(user);
+            await doUserTraits(user);
 
         }
 
