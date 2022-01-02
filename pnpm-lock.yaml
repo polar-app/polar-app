@@ -1594,9 +1594,7 @@ importers:
 
   packages/polar-spaced-repetition:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
       chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
@@ -1607,9 +1605,7 @@ importers:
       polar-shared: link:../polar-shared
       polar-spaced-repetition-api: link:../polar-spaced-repetition-api
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      '@types/node': 14.17.9
       chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
