@@ -1681,28 +1681,20 @@ importers:
 
   packages/polar-thumbnail:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       '@types/puppeteer': '=5.4.4'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
-      polar-pdf: 0.0.0
       polar-shared: 0.0.0
-      polar-test: 0.0.0
       puppeteer: '=11.0.0'
     dependencies:
       '@types/puppeteer': 5.4.4
-      polar-pdf: link:../polar-pdf
       polar-shared: link:../polar-shared
       puppeteer: 11.0.0
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-typescript-orphans:
     specifiers:
