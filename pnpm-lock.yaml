@@ -1367,9 +1367,7 @@ importers:
 
   packages/polar-readability:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
@@ -1378,9 +1376,7 @@ importers:
     dependencies:
       readability: 0.2.0-polar.2
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-shared: link:../polar-shared
