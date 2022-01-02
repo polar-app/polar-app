@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@google-cloud/functions-framework": "=1.7.1",
-    "@sentry/serverless": "=5.27.2"
+    "@sentry/serverless": "=5.27.2",
+    "@types/aws-lambda": "=8.10.64"
   }
 }
