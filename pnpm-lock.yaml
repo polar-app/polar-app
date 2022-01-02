@@ -1782,6 +1782,7 @@ importers:
       jszip: '=3.7.1'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
+      pdfjs-dist: '=2.8.250-polar.3'
       polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
       polar-firebase-browser: 0.0.0
@@ -1817,6 +1818,7 @@ importers:
       chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
+      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-test: link:../polar-test
 
   packages/polar-web-extension-api:
@@ -13732,7 +13734,6 @@ packages:
       worker-loader: ^3.0.7
     dependencies:
       worker-loader: 3.0.8_webpack@5.61.0
-    dev: false
 
   /pend/1.2.0:
     resolution: {integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=}

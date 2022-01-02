@@ -46,6 +46,7 @@
     "polar-firebase-browser": "0.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
+    "pdfjs-dist": "=2.8.250-polar.3",
     "karma-structured-json-reporter": "=1.0.1"
   },
   "files": [
