@@ -1613,22 +1613,16 @@ importers:
 
   packages/polar-spaced-repetition-api:
     specifiers:
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
-      polar-test: 0.0.0
     dependencies:
       polar-shared: link:../polar-shared
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-suffix-tree:
     specifiers:
