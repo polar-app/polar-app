@@ -1657,7 +1657,6 @@ importers:
 
   packages/polar-test-cache:
     specifiers:
-      '@types/diff': 4.0.2
       karma-structured-json-reporter: '=1.0.1'
       polar-shared: 0.0.0
       polar-test: 0.0.0
@@ -1665,7 +1664,6 @@ importers:
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
-      '@types/diff': 4.0.2
       karma-structured-json-reporter: 1.0.1
 
   packages/polar-text-highlighter:
