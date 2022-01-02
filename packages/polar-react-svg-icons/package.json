@@ -29,9 +29,6 @@
   "devDependencies": {
     "karma-structured-json-reporter": "=1.0.1"
   },
-  "dependencies": {
-    "polar-react": "0.0.0"
-  },
   "files": [
     "**/*.js",
     "**/*.d.ts",

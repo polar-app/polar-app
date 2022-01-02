@@ -1362,9 +1362,6 @@ importers:
   packages/polar-react-svg-icons:
     specifiers:
       karma-structured-json-reporter: '=1.0.1'
-      polar-react: 0.0.0
-    dependencies:
-      polar-react: link:../polar-react
     devDependencies:
       karma-structured-json-reporter: 1.0.1
 
