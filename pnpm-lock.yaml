@@ -1413,28 +1413,16 @@ importers:
 
   packages/polar-rpc:
     specifiers:
-      '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
-      polar-firebase: 0.0.0
-      polar-firebase-admin: 0.0.0
       polar-shared: 0.0.0
-      polar-test: 0.0.0
     dependencies:
-      polar-firebase: link:../polar-firebase
-      polar-firebase-admin: link:../polar-firebase-admin
       polar-shared: link:../polar-shared
     devDependencies:
-      '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-search:
     specifiers:
