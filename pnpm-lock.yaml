@@ -1772,30 +1772,20 @@ importers:
 
   packages/polar-web-extension:
     specifiers:
-      '@fortawesome/fontawesome-free': 5.13.0
       '@material-ui/core': '=4.11.3'
       '@material-ui/icons': '=4.11.2'
       '@types/chai': 4.2.11
-      '@types/chrome': 0.0.114
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
       '@types/react': '=17.0.2'
       '@types/react-dom': '=17.0.2'
       chai: 4.2.0
       jszip: '=3.7.1'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
-      pdfjs-dist: '=2.8.250-polar.3'
-      polar-assets: 0.0.0
       polar-backend-datastore: 0.0.0
       polar-bookshelf: 0.0.0
-      polar-content-capture: 0.0.0
-      polar-epub-generator: 0.0.0
       polar-firebase-browser: 0.0.0
-      polar-firebase-test: 0.0.0
-      polar-html: 0.0.0
       polar-page-metadata-parser: 0.0.0
-      polar-react: 0.0.0
       polar-shared: 0.0.0
       polar-test: 0.0.0
       polar-web-capture: 0.0.0
@@ -1805,19 +1795,13 @@ importers:
       react-router-dom: '=5.2.0'
       readability: 0.2.0-polar.2
     dependencies:
-      '@fortawesome/fontawesome-free': 5.13.0
       '@material-ui/core': 4.11.3_0607d8bab5983684f0a746a30ac1a448
       '@material-ui/icons': 4.11.2_8f76ac0a517dc414459d6962f6e4d50b
       jszip: 3.7.1
-      polar-assets: link:../polar-assets
       polar-backend-datastore: link:../polar-backend-datastore
       polar-bookshelf: link:../polar-bookshelf
-      polar-content-capture: link:../polar-content-capture
-      polar-epub-generator: link:../polar-epub-generator
       polar-firebase-browser: link:../polar-firebase-browser
-      polar-html: link:../polar-html
       polar-page-metadata-parser: link:../polar-page-metadata-parser
-      polar-react: link:../polar-react
       polar-shared: link:../polar-shared
       polar-web-capture: link:../polar-web-capture
       polar-web-extension-api: link:../polar-web-extension-api
@@ -1827,16 +1811,12 @@ importers:
       readability: 0.2.0-polar.2
     devDependencies:
       '@types/chai': 4.2.11
-      '@types/chrome': 0.0.114
       '@types/mocha': 9.0.0
-      '@types/node': 14.17.9
       '@types/react': 17.0.2
       '@types/react-dom': 17.0.2
       chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
-      polar-firebase-test: link:../polar-firebase-test
       polar-test: link:../polar-test
 
   packages/polar-web-extension-api:
@@ -4356,11 +4336,6 @@ packages:
     resolution: {integrity: sha512-a/7BiSgobHAgBWeN7N0w+lAhInrGxksn13uK7231n2m8EDPE3BMCl9NZLTGrj9ZXfCmC6LM0QLqXidIizVQ6yg==}
     engines: {node: '>=6'}
     requiresBuild: true
-    dev: false
-
-  /@fortawesome/fontawesome-free/5.13.0:
-    resolution: {integrity: sha512-xKOeQEl5O47GPZYIMToj6uuA2syyFlq9EMSl2ui0uytjY9xbe8XS0pexNWmxrdcCyNGyDmLyYw5FtKsalBUeOg==}
-    engines: {node: '>=6'}
     dev: false
 
   /@fortawesome/fontawesome-svg-core/1.2.35:
@@ -13795,6 +13770,7 @@ packages:
       worker-loader: ^3.0.7
     dependencies:
       worker-loader: 3.0.8_webpack@5.61.0
+    dev: false
 
   /pend/1.2.0:
     resolution: {integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=}
