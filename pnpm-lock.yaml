@@ -1492,24 +1492,16 @@ importers:
     specifiers:
       '@google-cloud/functions-framework': '=1.7.1'
       '@sentry/serverless': '=5.27.2'
-      '@types/aws-lambda': '=8.10.64'
-      '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
-      chai: 4.2.0
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
-      polar-test: 0.0.0
     dependencies:
       '@google-cloud/functions-framework': 1.7.1
       '@sentry/serverless': 5.27.2
-      '@types/aws-lambda': 8.10.64
     devDependencies:
-      '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
-      chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
-      polar-test: link:../polar-test
 
   packages/polar-shared:
     specifiers:
@@ -6079,10 +6071,6 @@ packages:
   /@types/aria-query/4.2.2:
     resolution: {integrity: sha512-HnYpAE1Y6kRyKM/XkEuiRQhTHvkzMBurTHnpFLYLBGPIylZNPs9jJcuOOYWxPLJCSEtmZT0Y8rHDokKN7rRTig==}
     dev: true
-
-  /@types/aws-lambda/8.10.64:
-    resolution: {integrity: sha512-LRKk2UQCSi7BsO5TlfSI8cTNpOGz+MH6+RXEWtuZmxJficQgxwEYJDiKVirzgyiHce0L0F4CqCVvKTwblAeOUw==}
-    dev: false
 
   /@types/blueimp-load-image/5.14.2:
     resolution: {integrity: sha512-H3jcOj1AY9kIAWdwTIT1mqnJQDBqNXSc9vSI2HOaqHLrclxwraLB/3dWDrVytm7Lsj+YBm1LW1K4/meTWM1BFA==}
