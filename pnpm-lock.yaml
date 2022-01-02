@@ -1668,30 +1668,14 @@ importers:
 
   packages/polar-text-highlighter:
     specifiers:
-      '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
-      '@types/jsdom-global': 3.0.2
       '@types/mocha': '=9.0.0'
-      '@types/node': '=14.17.9'
-      chai: 4.2.0
-      jsdom: '=16.7.0'
-      jsdom-global: 3.0.2
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
-      polar-test: 0.0.0
     dependencies:
-      '@types/node': 14.17.9
       polar-shared: link:../polar-shared
-      polar-test: link:../polar-test
     devDependencies:
-      '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
-      '@types/jsdom-global': 3.0.2
       '@types/mocha': 9.0.0
-      chai: 4.2.0
-      jsdom: 16.7.0
-      jsdom-global: 3.0.2_jsdom@16.7.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
