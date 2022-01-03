@@ -1,9 +1,11 @@
-import * as Database from 'better-sqlite3'
 import {join} from 'path'
 import {initDatabase, insertCard} from './sql'
 import {createWriteStream, mkdirSync, writeFileSync} from 'fs'
-import * as rimraf from 'rimraf'
 import * as archiver from 'archiver'
+import {DeckConfig} from "./DeckConfig";
+import {Card} from "./Card";
+import Database from "better-sqlite3";
+import rimraf from "rimraf";
 
 export class APKG {
   private db: Database.Database
@@ -32,8 +34,10 @@ export class APKG {
   }
   async save(destination: string) {
     const directory = join(__dirname, this.config.name)
-    const archive = archiver('zip')
+    const archive = archiver.create('zip');
+
     const mediaObj = this.mediaFiles.reduce((obj, file, idx) => {
+      // @ts-ignore
       obj[idx] = file
       return obj
     }, {})

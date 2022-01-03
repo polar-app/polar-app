@@ -1,8 +1,9 @@
-const { APKG } = require("anki-apkg");
+import {APKG} from 'polar-anki-apkg/src/index'
 
-describe("Flashcard export", async () => {
-    it("generates flashcard", () => {
+describe("Flashcard export", () => {
+    it("generates flashcard", async () => {
         const apkg = new APKG({
+            id: Date.now(),
             name: 'VocabularyBuilder',
             card: {
                 fields: ['word', 'meaning', 'usage'],
@@ -19,6 +20,6 @@ describe("Flashcard export", async () => {
     apkg.addCard({
         content: ['sample word', 'sample meaning', 'sample usage']
     })
-    apkg.save(__dirname)
+    await apkg.save(__dirname);
     })
 });
