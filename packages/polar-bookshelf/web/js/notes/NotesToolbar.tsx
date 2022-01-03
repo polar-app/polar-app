@@ -1,7 +1,7 @@
 import {AppBar, Box, Button, createStyles, makeStyles, Toolbar} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {SearchForNote, SearchForNoteHandheld} from "./toolbar/SearchForNote";
+import {SearchForNote} from "./toolbar/SearchForNote";
 import {useBlocksStore} from './store/BlocksStore';
 import {useDialogManager} from '../mui/dialogs/MUIDialogControllers';
 import {MUIMenu} from '../mui/menu/MUIMenu';
@@ -133,7 +133,7 @@ const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
                         </StandardIconButton>
                     </div>
                     <div style={{marginLeft: 'auto'}}>
-                        <SearchForNoteHandheld />
+                        {/*<SearchForNoteHandheld />*/}
                         <MUIMenu button={{ icon: <MoreVertIcon/>, size: 'small' }}>
                             <div>
                                 <MUIMenuItem text="Create Note"
