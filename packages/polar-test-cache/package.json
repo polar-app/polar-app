@@ -21,7 +21,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/diff": "4.0.2",
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {

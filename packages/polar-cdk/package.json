@@ -19,12 +19,8 @@
     "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "=1.121.0",
-    "@google-cloud/firestore": "=4.15.1",
     "@types/node": "=14.17.9",
     "aws-cdk": "=1.121.0",
-    "esbuild": "=0.12.25",
-    "firebase-admin": "=10.0.0",
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
@@ -33,7 +29,6 @@
     "@aws-cdk/aws-elasticsearch": "=1.121.0",
     "@aws-cdk/core": "=1.121.0",
     "@types/node-fetch": "2.5.7",
-    "firebase": "=8.10.0",
     "node-fetch": "=2.6.1",
     "polar-accounts": "0.0.0",
     "polar-admin": "0.0.0",
@@ -45,8 +40,6 @@
     "polar-firebase-admin": "0.0.0",
     "polar-answers": "0.0.0",
     "source-map-support": "=0.5.19",
-    "@elastic/elasticsearch": "=7.13.0",
-    "@google-cloud/storage": "=5.8.5",
     "@aws-cdk/aws-logs": "=1.132.0"
   }
 }

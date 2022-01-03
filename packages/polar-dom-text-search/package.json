@@ -31,7 +31,6 @@
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
-    "@types/node": "=14.17.9",
     "polar-shared": "0.0.0",
     "polar-test": "0.0.0"
   },
