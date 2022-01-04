@@ -1,23 +1,13 @@
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {Block} from "../../../../../web/js/notes/store/Block";
 import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
 
-
-export type IDocMetaAnnotation = {
-    type: 'docMeta';
-    annotation: IDocAnnotation;
-};
-
-export type IBlockAnnotation = {
-    type: 'block',
-    annotation: Block<TextHighlightAnnotationContent>
-};
+export type IBlockAnnotation = Block<TextHighlightAnnotationContent>;
 
 type IAnnotationPopupState = {
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    annotation?: IBlockAnnotation;
     selectionEvent?: ActiveSelectionEvent;
     type?: "selection" | "annotation";
     annotationId?: string;
@@ -47,7 +37,7 @@ export const DEFAULT_STATE: IAnnotationPopupState = {
 type ISelectionCreatedAction  = Action<typeof ACTIONS.SELECTION_CREATED, ActiveSelectionEvent>;
 type ISelectionDestroyed      = Action<typeof ACTIONS.SELECTION_DESTROYED, undefined>
 type IActionToggledAction     = Action<typeof ACTIONS.ACTION_TOGGLED, AnnotationPopupActionEnum | undefined>;
-type IAnnotationSetAction     = Action<typeof ACTIONS.ANNOTATION_SET, IBlockAnnotation | IDocMetaAnnotation | undefined>;
+type IAnnotationSetAction     = Action<typeof ACTIONS.ANNOTATION_SET, IBlockAnnotation | undefined>;
 type IUpdateAIFlashcardStatus = Action<typeof ACTIONS.UPDATE_AI_FLASHCARD_STATUS, IAutoFlashcardHandlerState>;
 type IResetAction             = Action<typeof ACTIONS.RESET, undefined>;
 
@@ -82,9 +72,7 @@ export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, act
         }
     case ACTIONS.ANNOTATION_SET:
         const id = action.payload
-                ? (action.payload.type === "docMeta"
-                    ? action.payload.annotation.guid
-                    : action.payload.annotation.id)
+                ? action.payload.id
                 : undefined;
         if (state.pendingAction) {
             return {
