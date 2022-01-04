@@ -10,6 +10,7 @@ import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightBlocksHooks";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -22,6 +23,10 @@ const useAreaHighlightCreatorStyles = makeStyles(() =>
 );
 
 export const AreaHighlightCreator: React.FC = () => {
+    return <DeviceRouter desktop={<PDFRectangleDrawer />} />;
+};
+
+const PDFRectangleDrawer: React.FC = () => {
     const {areaHighlightMode} = useDocViewerStore(["areaHighlightMode"]);
     const {setAreaHighlightMode} = useDocViewerCallbacks();
     const docViewerElements = useDocViewerElementsContext();
