@@ -1,5 +1,3 @@
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import React from "react";
 import {
     ActiveSelectionEvent,
@@ -7,17 +5,14 @@ import {
     ActiveSelections
 } from "../../../../../web/js/ui/popup/ActiveSelections";
 import {Elements} from "../../../../../web/js/util/Elements";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {IDocScale, useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {IDocViewerElements, useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
-import {DocAnnotations, ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {ActiveHighlightData} from "./AnnotationPopupHooks";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
-import {ACTIONS, DEFAULT_STATE, IBlockAnnotation, IDocMetaAnnotation, reducer} from "./AnnotationPopupReducer";
+import {ACTIONS, DEFAULT_STATE, IBlockAnnotation, reducer} from "./AnnotationPopupReducer";
 import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
@@ -29,7 +24,6 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
 import {autorun} from "mobx";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {BlockContentAnnotationTree} from "polar-migration-block-annotations/src/BlockContentAnnotationTree";
 import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
 import {InputEscapeListener} from "../../../../../web/js/mui/complete_listeners/InputEscapeListener";
@@ -53,24 +47,13 @@ type IAnnotationPopupProviderProps = {
 
 type IAnnotationPopupContext = {
     onCreateAnnotation: (color: ColorStr) => void;
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    annotation?: IBlockAnnotation;
     selectionEvent?: ActiveSelectionEvent;
     setAiFlashcardStatus: (status: IAutoFlashcardHandlerState) => void;
     aiFlashcardStatus: IAutoFlashcardHandlerState,
     activeAction?: AnnotationPopupActionEnum;
     toggleAction: (action: AnnotationPopupActionEnum) => () => void;
     clear: () => void;
-};
-
-const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): IDocAnnotation | undefined => {
-    const { highlightID, pageNum } = activeHighlight;
-    const highlights = docMeta.pageMetas[pageNum].textHighlights;
-    const textHighlight: ITextHighlight | undefined = Object.values(highlights)
-        .find(highlight => highlight.guid === highlightID);
-    if (textHighlight) {
-        return DocAnnotations.createFromTextHighlight(docMeta, textHighlight, docMeta.pageMetas[pageNum]);
-    }
-    return undefined;
 };
 
 export function computeTargets(fileType: FileType, docViewerElementProvider: () => HTMLElement): ReadonlyArray<HTMLElement> {
@@ -177,8 +160,6 @@ export const activeSelectionEventToTextHighlight = (
     };
 };
 
-const escapeMap = { ESCAPE: ['Escape'] };
-
 export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = (props) => {
     const {docMeta, ...restProps} = props;
     const [state, dispatch] = React.useReducer(reducer, DEFAULT_STATE);
@@ -232,8 +213,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 if (id) {
                     setActiveHighlight({
                         highlightID: id,
-                        type: 'block',
-                        pageNum
+                        pageNum,
                     });
                 }
             }
@@ -243,8 +223,8 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     React.useEffect(() => {
 
         if (activeHighlight) {
-            if (activeHighlight.type === 'docMeta') {
-                const annotation = toAnnotation(docMeta, activeHighlight);
+            return autorun(() => {
+                const annotation = getBlock(activeHighlight.highlightID, AnnotationContentType.TEXT_HIGHLIGHT);
                 if (! annotation) {
                     setActiveHighlightRef.current(undefined);
                     return;
@@ -253,25 +233,10 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                 setTimeout(() => {
                     dispatch({
                         type: ACTIONS.ANNOTATION_SET,
-                        payload: { type: 'docMeta', annotation }
+                        payload: annotation,
                     });
                 }, 50);
-            } else {
-                return autorun(() => {
-                    const annotation = getBlock(activeHighlight.highlightID, AnnotationContentType.TEXT_HIGHLIGHT);
-                    if (! annotation) {
-                        setActiveHighlightRef.current(undefined);
-                        return;
-                    }
-
-                    setTimeout(() => {
-                        dispatch({
-                            type: ACTIONS.ANNOTATION_SET,
-                            payload: { type: 'block', annotation },
-                        });
-                    }, 50);
-                });
-            }
+            });
         } else {
             dispatch({
                 type: ACTIONS.ANNOTATION_SET,
@@ -352,23 +317,3 @@ export const useAnnotationPopup = () => {
     }
     return context;
 }
-
-
-export const getAnnotationData = (data: IDocMetaAnnotation | IBlockAnnotation) => {
-    if (data.type === 'docMeta') {
-        return {
-            annotation: data.annotation.original as ITextHighlight,
-            pageNum: data.annotation.pageNum,
-        };
-    } else {
-        return {
-            annotation: data.annotation.content.value,
-            pageNum: data.annotation.content.pageNum,
-        };
-    }
-};
-
-export const getTextHighlightText = (annotation: IDocMetaAnnotation | IBlockAnnotation): string =>
-    annotation.type === 'docMeta'
-        ? (ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation.annotation.original).text || '')
-        : BlockTextHighlights.toText(annotation.annotation.content.value);

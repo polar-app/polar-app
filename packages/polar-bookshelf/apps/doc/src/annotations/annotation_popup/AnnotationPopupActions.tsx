@@ -2,7 +2,6 @@ import React from "react";
 import clsx from "clsx";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {EditAnnotation} from "./Actions/EditAnnotation";
@@ -13,8 +12,6 @@ import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
 import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
-import {IDocMetaAnnotationProps} from "./IDocMetaAnnotationProps";
-import {IBlockAnnotationProps} from "./IBlockAnnotationProps";
 import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 
@@ -22,54 +19,25 @@ const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { className = "", style = {}, annotation } = props;
     const { clear } = useAnnotationPopup();
 
-    const DocMetaAnnotation: React.FC<IDocMetaAnnotationProps> = ({ annotation }) => {
-        const annotationMutations = useAnnotationMutationsContext();
-        const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
+    const blocksStore = useBlocksStore();
+    const handleChange = React.useCallback((color: ColorStr) => {
+        const annotationJSON = annotation.content.toJSON();
 
-        const handleChange = React.useCallback((color: ColorStr) => {
-            handleColor({ color });
-            clear();
-        }, [handleColor]);
+        blocksStore.setBlockContent(annotation.id, {
+            ...annotationJSON,
+            value: { ...annotationJSON.value, color }
+        });
+        clear();
+    }, [blocksStore, annotation, clear]);
 
-        return (
-            <ColorMenu
-                selected={annotation.color}
-                onChange={handleChange}
-                hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
-                withHints
-            />
-        );
-    };
-
-    const BlockAnnotation: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
-
-        const blocksStore = useBlocksStore();
-        const handleChange = React.useCallback((color: ColorStr) => {
-            const annotationJSON = annotation.content.toJSON();
-
-            blocksStore.setBlockContent(annotation.id, {
-                ...annotationJSON,
-                value: { ...annotationJSON.value, color }
-            });
-            clear();
-        }, [blocksStore, annotation]);
-
-        return (
+    return (
+        <div className={className} style={{ ...style, width: "auto" }}>
             <ColorMenu
                 selected={annotation.content.value.color}
                 onChange={handleChange}
                 hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
                 withHints
             />
-        );
-    };
-
-    return (
-        <div className={className} style={{ ...style, width: "auto" }}>
-            {annotation.type === 'docMeta'
-                ? <DocMetaAnnotation annotation={annotation.annotation} />
-                : <BlockAnnotation annotation={annotation.annotation} />
-            }
         </div>
     );
 };

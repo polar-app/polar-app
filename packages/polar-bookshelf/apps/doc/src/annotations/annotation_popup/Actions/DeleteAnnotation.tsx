@@ -1,40 +1,18 @@
 import React from "react";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
-import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
-import {IDocMetaAnnotationProps} from "../IDocMetaAnnotationProps";
-import {IBlockAnnotationProps} from "../IBlockAnnotationProps";
 import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 
 
 export const DeleteAnnotation: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
     const { clear } = useAnnotationPopup();
+    const { remove } = useAnnotationBlockManager();
 
-    const DocMetaDelete: React.FC<IDocMetaAnnotationProps> = ({ annotation }) => {
-        const annotationMutations = useAnnotationMutationsContext();
-        const handleDelete = annotationMutations.createDeletedCallback({selected: [annotation]});
-        React.useEffect(() => {
-            clear();
-            handleDelete();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+    React.useEffect(() => {
+        clear();
+        remove(annotation.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-        return <div />;
-    };
-
-    const BlockDelete: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
-        const { remove } = useAnnotationBlockManager();
-        React.useEffect(() => {
-            clear();
-            remove(annotation.id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
-
-        return <div />;
-    };
-
-
-    return annotation.type === 'docMeta'
-        ? <DocMetaDelete annotation={annotation.annotation} />
-        : <BlockDelete annotation={annotation.annotation} />;
+    return <div />;
 };
