@@ -11,7 +11,6 @@ import CarouselIcon from '@material-ui/icons/ViewCarousel';
 import {useSideNavStore} from '../sidenav/SideNavStore';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import NotesIcon from '@material-ui/icons/Notes';
-import {useFeatureEnabled} from "../features/FeaturesRegistry";
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 
 type IUseStylesProps = {
@@ -49,8 +48,6 @@ interface IBottomNavLocation {
 
 const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
 
-    const mobileFlashcardsEnabled = useFeatureEnabled('mobile-flashcards');
-
     return React.useMemo(() => ([
         {
             id: 'home',
@@ -71,11 +68,10 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             icon: <AddIcon/>
         },
         {
-            id: 'review',
-            label: 'Flashcards',
+            id: 'study',
+            label: 'Study',
             href: RoutePathNames.REVIEW,
             icon: <FlashOnIcon/>,
-            disabled: ! mobileFlashcardsEnabled
         },
         {
             id: 'switch',
@@ -83,7 +79,7 @@ const useBottomNavLocations = (): ReadonlyArray<IBottomNavLocation> => {
             href: RoutePathNames.SWITCH,
             icon: <CarouselIcon/>
         },
-    ]), [mobileFlashcardsEnabled]);
+    ]), []);
 
 };
 

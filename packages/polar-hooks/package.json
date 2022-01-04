@@ -27,16 +27,5 @@
     "tsc-watch": "tsc --project ./tsconfig.json --watch",
     "test-ci": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;",
     "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
-  },
-  "dependencies": {
-    "@types/escape-html": "0.0.20",
-    "escape-html": "=1.0.3",
-    "polar-backend-shared": "0.0.0",
-    "polar-firebase": "0.0.0",
-    "polar-webapp-dist": "0.0.0",
-    "firebase-functions": "=3.16.0",
-    "@sentry/node": "6.15.0",
-    "@google-cloud/storage": "=5.8.5"
-  },
-  "devDependencies": {}
+  }
 }
