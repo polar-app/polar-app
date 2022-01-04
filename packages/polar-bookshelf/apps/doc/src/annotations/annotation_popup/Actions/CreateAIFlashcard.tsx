@@ -20,7 +20,6 @@ export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = ({ annot
             setAiFlashcardStatus("waiting");
             handler(annotation.id, BlockTextHighlights.toText(annotation.content.value))
                 .then(() => {
-                    dialogs.snackbar({ message: "AI Flashcard created successfully!" });
                     setAiFlashcardStatus("idle");
                 }).catch((e) => {
                     console.error("Could not handle verified action: ", e);

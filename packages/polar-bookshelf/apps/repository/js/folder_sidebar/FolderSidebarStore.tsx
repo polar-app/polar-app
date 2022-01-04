@@ -340,7 +340,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             async function doHandle() {
                 await createTag(newTag);
-                dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
             }
 
             doHandle()
