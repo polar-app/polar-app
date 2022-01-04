@@ -602,6 +602,7 @@ importers:
       '@types/node': '=14.17.9'
       '@types/node-fetch': 2.5.7
       aws-cdk: '=1.121.0'
+      esbuild: '=0.12.25'
       karma-structured-json-reporter: '=1.0.1'
       node-fetch: '=2.6.1'
       polar-accounts: 0.0.0
@@ -635,6 +636,7 @@ importers:
     devDependencies:
       '@types/node': 14.17.9
       aws-cdk: 1.121.0
+      esbuild: 0.12.25
       karma-structured-json-reporter: 1.0.1
 
   packages/polar-cloud-progress:
@@ -9502,6 +9504,12 @@ packages:
       d: 1.0.1
       ext: 1.6.0
     dev: false
+
+  /esbuild/0.12.25:
+    resolution: {integrity: sha512-woie0PosbRSoN8gQytrdCzUbS2ByKgO8nD1xCZkEup3D9q92miCze4PqEI9TZDYAuwn6CruEnQpJxgTRWdooAg==}
+    hasBin: true
+    requiresBuild: true
+    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
