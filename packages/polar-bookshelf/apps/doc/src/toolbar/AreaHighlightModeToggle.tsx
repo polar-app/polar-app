@@ -71,7 +71,7 @@ export const AreaHighlightModeToggle: React.FC = () => {
                 rect,
             }).catch(console.error);
         }
-    }, [toggleAreaHighlightMode, docMeta, docScale, pageNum, docViewerElements, areaHighlightMode]);
+    }, [toggleAreaHighlightMode, docMeta, docScale, pageNum, docViewerElements, areaHighlightMode, createBlockAreaHighlight, fileType]);
 
     if (fileType === "epub") {
         return null;
