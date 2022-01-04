@@ -279,7 +279,7 @@ jobs:
           no_output_timeout: 120m
           command: |
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            /home/circleci/project/scripts/ci/deploy-firebase.sh
+            /home/circleci/project/scripts/ci/deploy-to-firebase.sh
       - slack/notify:
           custom: |
             {
