@@ -4,7 +4,6 @@ import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ControlledAnnotationBars} from '../../../../web/js/ui/annotationbar/ControlledAnnotationBars';
 import {Elements} from '../../../../web/js/util/Elements';
 import {createStyles, makeStyles} from '@material-ui/core';
-import {useAreaHighlightHooks} from '../annotations/AreaHighlightHooks';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {useDocViewerCallbacks, useDocViewerStore} from '../DocViewerStore';
 import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext';
@@ -24,7 +23,6 @@ const useAreaHighlightCreatorStyles = makeStyles(() =>
 
 export const AreaHighlightCreator: React.FC = () => {
     const {areaHighlightMode} = useDocViewerStore(["areaHighlightMode"]);
-    const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const {setAreaHighlightMode} = useDocViewerCallbacks();
     const docViewerElements = useDocViewerElementsContext();
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
@@ -90,7 +88,7 @@ const useStyles = makeStyles(() =>
 
 export const rangeConstrain = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
 
-const calculateRectDimensions = (start: IPoint, position: IPoint, pageRect: ClientRect): ILTRect => {
+const calculateRectDimensions = (start: IPoint, position: IPoint, pageRect: DOMRect): ILTRect => {
     const {x, y} = getRelativePosition(position, pageRect);
     const w = rangeConstrain(x - start.x, -start.x, pageRect.width - start.x);
     const h = rangeConstrain(y - start.y, -start.y, pageRect.height - start.y);
@@ -125,6 +123,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         if (!enabled) {
             return;
         }
+
         let start: IPoint | undefined = undefined;
         let pageRect: IRect | undefined;
         let pageElement: HTMLElement | undefined;
@@ -165,7 +164,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 return;
             }
 
-            const rect = calculateRectDimensions(start, endPosition, pageRect as ClientRect);
+            const rect = calculateRectDimensions(start, endPosition, pageRect as DOMRect);
             pageElement.removeChild(rectElem);
             if (rect.width > threshold.x || rect.height > threshold.y) {
                 callbackRef.current({
@@ -190,7 +189,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 return;
             }
             e.preventDefault();
-            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect as ClientRect);
+            const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect as DOMRect);
             updateDOMRect(rectElem, rect);
         };
 
@@ -220,7 +219,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             e.preventDefault();
             const touch = e.touches[e.touches.length - 1];
             lastPosition = { x: touch.clientX, y: touch.clientY };
-            const rect = calculateRectDimensions(start, lastPosition, pageRect as ClientRect);
+            const rect = calculateRectDimensions(start, lastPosition, pageRect as DOMRect);
             updateDOMRect(rectElem, rect);
         };
 

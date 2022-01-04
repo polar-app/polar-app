@@ -27,7 +27,6 @@ export const TextHighlightRenderer = memoForwardRef((props: IProps) => {
         setActiveHighlight({
             highlightID: props.id,
             pageNum: props.pageNum,
-            type: props.type,
         });
     };
 
