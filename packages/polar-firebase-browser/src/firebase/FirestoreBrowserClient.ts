@@ -59,6 +59,7 @@ export namespace FirestoreBrowserClient {
     let instance: firebase.firestore.Firestore | undefined;
 
     async function initDelegate(opts: FirestoreOptions) {
+        console.log("Initializing firestore with: ", opts);
         FirebaseBrowser.init();
         return await createInstance(opts)
     }
@@ -77,10 +78,9 @@ export namespace FirestoreBrowserClient {
             return;
         }
 
-        console.log("Initializing firestore with: ", opts);
-
         instance = await firestoreProvider(opts);
         return instance;
+
     }
 
     export async function getInstance(): Promise<IFirestoreClient> {

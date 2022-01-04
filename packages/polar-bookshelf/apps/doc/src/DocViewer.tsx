@@ -49,6 +49,7 @@ import {PagePrevButton} from "./toolbar/PagePrevButton";
 import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
+import {useStateFromHistoryHash} from "../../../web/js/mui/hooks/useStateFromHistoryHash";
 
 const Main = React.memo(function Main() {
 
@@ -182,7 +183,7 @@ namespace Device {
 
     export const Handheld = React.memo(function Handheld() {
 
-        const [open, setOpen] = React.useState(false);
+        const [open, setOpen] = useStateFromHistoryHash('annotation-sidebar');
         const classes = useHandheldStyles();
 
         return (
