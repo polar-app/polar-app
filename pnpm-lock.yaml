@@ -1038,6 +1038,7 @@ importers:
       polar-shared-webserver: 0.0.0
       polar-test: 0.0.0
       polar-url: 0.0.0
+      polar-webapp-dist: 0.0.0
       polar-webapp-links: 0.0.0
       prompts: '=2.4.1'
       react: '=17.0.2'
@@ -1084,6 +1085,7 @@ importers:
       polar-shared: link:../../polar-shared
       polar-shared-webserver: link:../../polar-shared-webserver
       polar-url: link:../../polar-url
+      polar-webapp-dist: link:../../polar-webapp-dist
       polar-webapp-links: link:../../polar-webapp-links
       prompts: 2.4.1
       react: 17.0.2

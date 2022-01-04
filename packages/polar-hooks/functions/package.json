@@ -62,6 +62,7 @@
     "polar-shared-webserver": "0.0.0",
     "polar-firebase-users": "0.0.0",
     "polar-url": "0.0.0",
+    "polar-webapp-dist": "0.0.0",
     "polar-webapp-links": "0.0.0",
     "polar-sendgrid": "0.0.0",
     "prompts": "=2.4.1",
