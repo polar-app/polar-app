@@ -38,17 +38,17 @@ export const NoteFormatBarPopperPhoneExtension: React.FC<INoteFormatBarPopperExt
             <Box py={3.75} px={2} className={classes.root}>
                 <NoteFormatBarExtensionButton icon={<UndoIcon className={classes.icon} />}
                                               onClick={onUndo}>
-                    Indent left
+                    Undo
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<RedoIcon className={classes.icon} />}
                                               onClick={onRedo}>
-                    Indent right
+                    Redo
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<LocalOfferIcon className={classes.icon} />}
                                               onClick={onEditTags}>
-                    Add tags
+                    Add Tags
                 </NoteFormatBarExtensionButton>
             </Box>
         </Paper>
