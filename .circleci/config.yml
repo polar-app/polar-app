@@ -58,7 +58,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
+            - pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
 
   # & output debug info
   debug_installed:
@@ -101,7 +101,7 @@ commands:
       - save_cache:
           paths:
             - ~/.pnpm-store
-          key: pnpm-packages-v1-{{ .Branch }}-{{ checksum "pnpm-lock.yaml" }}
+          key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
 
   # & Persist Workspace
   persist_workspace:
@@ -119,22 +119,7 @@ commands:
       - run:
           name: Diff Eslint
           no_output_timeout: 30m
-          command: |
-            FORK_POINT=$(git merge-base origin/master $CIRCLE_BRANCH)
-            git reset --hard
-            git checkout $FORK_POINT
-            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' ./.eslintrc.json
-            pnpm run eslint-ci-all >> forkpoint-output.txt || true
-            git reset --hard
-            git checkout $CIRCLE_BRANCH
-            sed -i 's#"functional/prefer-readonly-type": "off"#"functional/prefer-readonly-type": "error"#g' ./.eslintrc.json
-            pnpm run eslint-ci-all >> branch-output.txt || true
-            sed -i '/Error - /!d' forkpoint-output.txt
-            sed -i '/Error - /!d' branch-output.txt
-            OUTPUT=$(comm -13 <(sort ./forkpoint-output.txt) <(sort ./branch-output.txt))
-            RED='\033[0;31m'
-            NC='\033[0m'
-            if [ ! -z "$OUTPUT" ]; then echo -e "\n ${RED} Please Fix the Following Errors: \n ${NC} $OUTPUT" && exit 1; fi;
+          command: /home/circleci/project/scripts/ci/eslint-diff.sh
 
   # & Check for duplicate packages
   check_duplicates:
@@ -142,12 +127,7 @@ commands:
     steps:
       - run:
           name: Check if duplicate packages with different versions exist
-          command: |
-            (cd packages/polar-shared && pnpm run compile)
-            (cd packages/polar-npm && pnpm run compile)
-            DUPLICATES=$(pnpm -r exec -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
-            echo -e "\n\n $DUPLICATES \n\n"
-            pnpm -r exec -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+          command: /home/circleci/project/scripts/ci/duplicate-packages.sh
 
 # ~ Workflow Building Blocks
 jobs:
@@ -249,7 +229,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-
       - run:
           name: cdk deploy
           command: |
@@ -269,33 +248,7 @@ jobs:
           command: pnpm run build
       - run:
           name: Verify webapp budget
-          command: |
-
-            verify_file_size() {
-
-              path="${1}"
-              min="${2}"
-              max="${3}"
-
-              filesize=$(stat -c%s "$path")
-
-              if [ $filesize < $min ]; then
-                echo "File too small: ${path}. This is a GOOD thing but it means you need to update CI to adjust the budgets."
-                return 1
-              fi
-
-              if [ $filesize < $max ]; then
-                echo "File too large: ${path}"
-                return 1
-              fi
-
-            }
-
-            cd /home/circleci/project/packages/polar-bookshelf
-            cat dist/public/repository-bundle.js | gzip -9 -c > dist/public/repository-bundle.js.gz
-
-            verify_file_size dist/public/repository-bundle.js 6000000 7000000
-            verify_file_size dist/public/repository-bundle.js.gz 1000000 1800000
+          command: /home/circleci/project/scripts/ci/verify-webapp-budget.sh
 
       - persist_to_workspace:
           root: /home/circleci/
@@ -316,43 +269,17 @@ jobs:
           at: ~/
       - run:
           name: Automatic Versioning
-          command: |
-            git fetch
-            TEMP_VERSION='\"0.0.0\"'
-            CURRENT_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            VERSION=$(semver $CURRENT_VERSION -i)
-            NEW_VERSION="\\\""$VERSION"\\\""
-            git merge-base $CURRENT_VERSION HEAD --is-ancestor || (echo "YOU CANNOT RELEASE AN OUTDATED BRANCH" && exit 1)
-            pnpm -r --no-bail exec -- sed -i "s/$TEMP_VERSION/$NEW_VERSION/g" package.json || true
-            git tag -a "$VERSION" -m "automated tag version $VERSION"
-            LATEST_VERSION=$(git tag | tr - \~ | sort -V | tr \~ - | tail -n1)
-            echo -e "Current Latest Version is $LATEST_VERSION" && echo -e "Pushing New Tag"
-            LOG=$(git log --pretty=format:"• %b\\n" --merges $LATEST_VERSION...$CURRENT_VERSION | sort | uniq | tr '\r\n' ' ') || LOG="• fix: Minor Fixes for Release"
-            ~/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${LATEST_VERSION}
-            TEMP_DATE=$(date +"%a %b %d %Y")
-            echo "export DATE=\"$TEMP_DATE\"" >> $BASH_ENV
-            echo "export TAG=\"$LATEST_VERSION\"" >> $BASH_ENV
-            echo "export CHANGELOG=\"$LOG\"" >> $BASH_ENV
+          command: /home/circleci/project/scripts/ci/version-before-deploy.sh
       - run:
           name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
-          command: |
-            npm config set always-auth true
-            source packages/polar-bookshelf-secrets/credentials.sh
-            rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
-            pnpm run publish-all
-            (cd packages/polar-webapp-dist && pnpm run dist)
+          command: /home/circleci/project/scripts/ci/publish-npm-packages.sh
       - run:
           name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            (cd /home/circleci/project/packages/polar-hooks && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
-            mv /home/circleci/project/packages/polar-hooks/ /home/circleci/
-            rm -rf /home/circleci/project
-            cd /home/circleci/polar-hooks
-            rm -rf node_modules && rm -rf functions/node_modules && pnpm install && (cd functions && pnpm install)
-            time firebase deploy --only functions
+            /home/circleci/project/scripts/ci/deploy-to-firebase.sh
       - slack/notify:
           custom: |
             {
@@ -675,7 +602,7 @@ workflows:
 
   IOS-Android:
     when:
-      equal: [ master, << pipeline.git.branch >> ]
+      equal: [master, << pipeline.git.branch >>]
     jobs:
       - Approve-Android-Internal:
           type: approval

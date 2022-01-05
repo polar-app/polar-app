@@ -1,9 +1,10 @@
 import React from "react";
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {NoteFormatBarPopperDesktop} from "./NoteFormatBarPopperDesktop";
-import {NoteFormatBarPopperHandheld} from "./NoteFormatBarHandheld/NoteFormatBarPopperHandheld";
+import {NoteFormatBarPopperMobile} from "./NoteFormatBarMobile/NoteFormatBarPopperMobile";
 import {GlobalKeyboardShortcuts, HandlerMap, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
-import {useExecCommandExecutor} from "./NoteFormatBarActions";
+import {useNoteFormatBarActions} from "./NoteFormatBarActions";
+import {NoteFormatBarPopperTablet} from "./NoteFormatBarPopperTablet";
 
 const annotationBarKeyMap = keyMapWithGroup({
     group: "Notes formatting",
@@ -32,10 +33,13 @@ const annotationBarKeyMap = keyMapWithGroup({
 });
 
 export const NoteFormatBarPopper: React.FC = () => {
-    const handleBoldRef = React.useRef(useExecCommandExecutor('bold'));
-    const handleItalicRef = React.useRef(useExecCommandExecutor('italic'));
-    const handleUnderlineRef = React.useRef(useExecCommandExecutor('underline'));
-    const handleStrikeThroughRef = React.useRef(useExecCommandExecutor('strikeThrough'));
+
+    const { handleBold, handleItalic, handleUnderline, handleStrikeThrough } = useNoteFormatBarActions();
+
+    const handleBoldRef = React.useRef(handleBold);
+    const handleItalicRef = React.useRef(handleItalic);
+    const handleUnderlineRef = React.useRef(handleUnderline);
+    const handleStrikeThroughRef = React.useRef(handleStrikeThrough);
     
 
     const handlers = React.useMemo<HandlerMap>(() => ({
@@ -49,7 +53,8 @@ export const NoteFormatBarPopper: React.FC = () => {
         <>
             <DeviceRouter
                 desktop={<NoteFormatBarPopperDesktop />}
-                handheld={<NoteFormatBarPopperHandheld />}
+                phone={<NoteFormatBarPopperMobile />}
+                tablet={<NoteFormatBarPopperTablet />}
             />
 
             <GlobalKeyboardShortcuts keyMap={annotationBarKeyMap}

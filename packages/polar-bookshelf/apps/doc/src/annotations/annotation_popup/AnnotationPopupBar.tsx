@@ -15,7 +15,6 @@ import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
-import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
@@ -26,14 +25,7 @@ export const useCopyAnnotation = () => {
 
     return React.useCallback(() => {
         if (annotation) {
-            if (annotation.type === 'docMeta') {
-                const annotationOriginal = annotation.annotation.original;
-                if (AnnotationTypes.isTextHighlight(annotationOriginal, annotation.annotation.annotationType)) {
-                    Clipboards.writeText(annotation.annotation.text || "");
-                }
-            } else {
-                Clipboards.writeText(BlockTextHighlights.toText(annotation.annotation.content.value));
-            }
+            Clipboards.writeText(BlockTextHighlights.toText(annotation.content.value));
         } else if (selectionEvent) {
             const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
                 noRectTexts: fileType === "epub",
@@ -120,9 +112,7 @@ const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
             return undefined;
         }
 
-        return annotation.type === 'docMeta'
-            ? annotation.annotation.color
-            : annotation.annotation.content.value.color;
+        return annotation.content.value.color;
     }, [annotation]);
 
     return (

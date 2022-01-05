@@ -50,7 +50,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
         };
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useContextMenuHook(handleClose);
+        useContextMenuHook('contextmenu', handleClose);
 
         function handleContextMenu(event: React.MouseEvent) {
             // needed so that you can't bring up a native context menu on a context

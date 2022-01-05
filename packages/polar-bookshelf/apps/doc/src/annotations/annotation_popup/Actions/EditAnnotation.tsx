@@ -1,10 +1,9 @@
 import React from "react";
-import {getTextHighlightText, useAnnotationPopup} from "../AnnotationPopupContext";
-import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
 import {useBlocksStore} from "../../../../../../web/js/notes/store/BlocksStore";
 import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 
 type EditAnnotationForm = {
     body: string;
@@ -13,12 +12,10 @@ type EditAnnotationForm = {
 export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { className = "", style = {}, annotation } = props;
     const { clear } = useAnnotationPopup();
-    const annotationMutations = useAnnotationMutationsContext();
-    const dialogs = useDialogManager();
     const blocksStore = useBlocksStore();
 
     const inputs = React.useMemo<InputOptions<EditAnnotationForm>>(() => {
-        const text = getTextHighlightText(annotation);
+        const text = BlockTextHighlights.toText(annotation.content.value);
 
         return {
             body: {
@@ -29,22 +26,14 @@ export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => 
     }, [annotation]);
 
     const onSubmit = React.useCallback(({ body }: EditAnnotationForm) => {
-        if (annotation.type === 'docMeta') {
-            annotationMutations.onTextHighlight({
-                selected: [annotation.annotation],
-                type: "update",
-                body,
-            });
-        } else {
-            const contentJSON = annotation.annotation.content.toJSON();
-            blocksStore.setBlockContent(annotation.annotation.id, {
-                ...contentJSON,
-                value: { ...contentJSON.value, revisedText: body }
-            })
-        }
-        dialogs.snackbar({ message: "Highlight updated successfully." });
+        const contentJSON = annotation.content.toJSON();
+        blocksStore.setBlockContent(annotation.id, {
+            ...contentJSON,
+            value: { ...contentJSON.value, revisedText: body }
+        })
+
         clear();
-    }, [annotationMutations, dialogs, clear, annotation, blocksStore]);
+    }, [clear, annotation, blocksStore]);
 
     return (
         <SimpleInputForm

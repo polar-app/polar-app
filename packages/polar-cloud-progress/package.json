@@ -21,15 +21,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/file-saver": "=2.0.3",
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
     "polar-shared": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-firebase-admin": "0.0.0",
-    "polar-firestore-like": "0.0.0",
-    "firebase-functions": "=3.16.0"
+    "polar-firestore-like": "0.0.0"
   },
   "files": [
     "**/*.js",

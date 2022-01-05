@@ -14,24 +14,20 @@ import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {rangeConstrain} from "../AreaHighlightDrawer";
 import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
-import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
-import {getAnnotationData} from "./AnnotationPopupContext";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IBlockAnnotation} from "./AnnotationPopupReducer";
 
 export type ActiveHighlightData = {
     highlightID: string,
-    type: (IDocMetaAnnotation | IBlockAnnotation)['type'],
     pageNum: number,
 };
 
 namespace AnnotationPositionCalculator {
     export function getAnnotationEPUBPosition(
-        annotation: IDocMetaAnnotation | IBlockAnnotation,
+        annotation: IBlockAnnotation,
         domTextIndex: DOMTextIndex,
         docViewerElements: IDocViewerElements,
     ): ILTRect | undefined {
-        const {annotation: annotationObject} = getAnnotationData(annotation);
-        const textHighlight = annotationObject as ITextHighlight;
+        const textHighlight = annotation.content.value;
         const epubDocument = docViewerElements
             .getDocViewerElement()
             .querySelector("iframe")
@@ -128,12 +124,12 @@ namespace AnnotationPositionCalculator {
     }
 
     export function getAnnotationPDFPosition(
-        annotation: IDocMetaAnnotation | IBlockAnnotation,
+        annotation: IBlockAnnotation,
         docViewerElements: IDocViewerElements,
         docScale: IDocScale
     ): ILTRect | undefined {
-        const {pageNum, annotation: annotationObject} = getAnnotationData(annotation);
-        const rects = Object.values((annotationObject as ITextHighlight).rects);
+        const { value: textHighlight, pageNum } = annotation.content;
+        const rects = Object.values((textHighlight).rects);
         const pageElem = docViewerElements.getPageElementForPage(pageNum);
         const docViewerElem = docViewerElements.getDocViewerElement();
         const viewerElem = docViewerElem
@@ -164,7 +160,7 @@ namespace AnnotationPositionCalculator {
 
 type IUsePopupBarPositionOpts = {
     selectionEvent?: ActiveSelectionEvent;
-    annotation?: IDocMetaAnnotation | IBlockAnnotation;
+    annotation?: IBlockAnnotation;
 };
 export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | undefined => {
     const {selectionEvent, annotation} = opts;
