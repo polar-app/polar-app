@@ -1,6 +1,5 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
-import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
@@ -24,25 +23,10 @@ export namespace UsersAcceptor {
         const allowedEmails = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
-            'kevin@getpolarized.io',
+            'burton@getpolarized.io',
             'jonathan.graeupner@gmail.com',
         ];
         return allowedEmails.includes(idUser.user.email as string);
-    }
-
-    async function sendWelcomeEmail(email: string) {
-        const message = {
-            to: email,
-            from: 'founders@getpolarized.io',
-            subject: `Your journey with Polar is ready to begin! 🙌`,
-            html: `<p>Welcome to Polar! 🎉🎉 You now have access to Polar and can log in using this email address</p>
-                   <p><b><a href="https://getpolarized.io">Click here to get started</a></b></p>
-                   <p>Quick note: we would love to hear from you! We are rapidly releasing multiple new features these days. If you have any feedback, send us a message! It helps us improve the tool faster 🙏</p>
-                   <p>Cheers</p>
-                   <p>The Polar team</p>
-                   <p style="font-size: smaller; color: #c6c6c6;">Polar - Read. Learn. Never Forget.</p>`
-        };
-        await Sendgrid.send(message);
     }
 
     export const exec = async (idUser: IDUser, request: IUsersAcceptorRequest): Promise<IUsersAcceptorResponse> => {
@@ -67,13 +51,21 @@ export namespace UsersAcceptor {
         })
 
         for (const email of request.emails) {
-            const user = await FirebaseUserCreator.create(email, Hashcodes.createRandomID());
 
-            await sendWelcomeEmail(email);
+            const waitingUserRequest = waitingUsers.find(waitingUser => waitingUser.email === email)!;
+
+            // TODO: I think this is not the best algorithm for finding the
+            // referral tag if there are multiple.  We should probably pick the
+            // earliest used or some other intelligent algorithm
+            const referral_code = waitingUserRequest.tags.find(() => true);
+
+            const user = await FirebaseUserCreator.create(email, Hashcodes.createRandomID(), referral_code);
 
             await PrivateBetaReqCollection.deleteByEmail(firestore, email);
 
+
             accepted.push(user);
+
         }
 
         return {

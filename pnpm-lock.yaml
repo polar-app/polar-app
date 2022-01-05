@@ -163,6 +163,21 @@ importers:
     devDependencies:
       karma-structured-json-reporter: 1.0.1
 
+  packages/polar-amplitude-backend:
+    specifiers:
+      '@amplitude/identify': '=1.9.1'
+      '@amplitude/node': '=1.9.1'
+      '@types/mocha': '=9.0.0'
+      mocha: '=9.1.1'
+      polar-shared: 0.0.0
+    dependencies:
+      '@amplitude/identify': 1.9.1
+      '@amplitude/node': 1.9.1
+      polar-shared: link:../polar-shared
+    devDependencies:
+      '@types/mocha': 9.0.0
+      mocha: 9.1.1
+
   packages/polar-answers:
     specifiers:
       '@types/chai': 4.2.11
@@ -909,13 +924,17 @@ importers:
       '@types/mocha': '=9.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
+      polar-amplitude-backend: 0.0.0
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-firestore-like: 0.0.0
+      polar-sendgrid: 0.0.0
     dependencies:
+      polar-amplitude-backend: link:../polar-amplitude-backend
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
       polar-firestore-like: link:../polar-firestore-like
+      polar-sendgrid: link:../polar-sendgrid
     devDependencies:
       '@types/mocha': 9.0.0
       karma-structured-json-reporter: 1.0.1
@@ -990,7 +1009,6 @@ importers:
 
   packages/polar-hooks/functions:
     specifiers:
-      '@amplitude/node': '=1.8.0'
       '@google-cloud/storage': '=5.8.5'
       '@sentry/node': 6.15.0
       '@types/archiver': '=5.1.1'
@@ -1017,6 +1035,7 @@ importers:
       mocha: '=9.1.1'
       node-fetch: '=2.6.1'
       polar-accounts: 0.0.0
+      polar-amplitude-backend: 0.0.0
       polar-answers: 0.0.0
       polar-answers-api: 0.0.0
       polar-backend-api: 0.0.0
@@ -1046,7 +1065,6 @@ importers:
       stripe: '=8.119.0'
       yargs: '=15.3.1'
     dependencies:
-      '@amplitude/node': 1.8.0
       '@google-cloud/storage': 5.8.5
       '@sentry/node': 6.15.0
       '@types/body-parser': 1.19.1
@@ -1065,6 +1083,7 @@ importers:
       mailgun.js: 3.3.0
       node-fetch: 2.6.1
       polar-accounts: link:../../polar-accounts
+      polar-amplitude-backend: link:../../polar-amplitude-backend
       polar-answers: link:../../polar-answers
       polar-answers-api: link:../../polar-answers-api
       polar-backend-api: link:../../polar-backend-api
@@ -1879,8 +1898,8 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@amplitude/node/1.8.0:
-    resolution: {integrity: sha512-11m5Ws/6hKTYjI0ObBIRgxdAcb7npTKUb9Ifba5d9dPmmPagu22+wvtzlbUiNQlPWQFI1ogq0qP2NOamEuZWkA==}
+  /@amplitude/node/1.9.1:
+    resolution: {integrity: sha512-aXAy1P8ydMN2+/p6QMJYvk5OO1T5Ju1llIQnYN9xOtC47a34uXv7iOevPAOpRZOYosy+XkwGFITXU60KBYsEaQ==}
     engines: {node: '>=10'}
     dependencies:
       '@amplitude/identify': 1.9.1
