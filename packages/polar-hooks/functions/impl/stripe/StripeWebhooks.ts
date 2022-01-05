@@ -2,14 +2,14 @@ import {StripePlanIDs} from "./StripePlanIDs";
 import {StripeCustomers} from "./StripeCustomers";
 import {Accounts} from "./Accounts";
 import {StripeMode, StripeUtils} from "./StripeUtils";
-import {Billing } from "polar-accounts/src/Billing";
-import { Subscriptions } from "./Subscriptions";
+import {Billing} from "polar-accounts/src/Billing";
+import {Subscriptions} from "./Subscriptions";
 import {AccountNotifications} from "./AccountNotifications";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SentryReporters} from "../reporters/SentryReporter";
-import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
-import { Plans } from "polar-accounts/src/Plans";
+import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
+import {Plans} from "polar-accounts/src/Plans";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const auth = Lazy.create(() => firebase().auth());
