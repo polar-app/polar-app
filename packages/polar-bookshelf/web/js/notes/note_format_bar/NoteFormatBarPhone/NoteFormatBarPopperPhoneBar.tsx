@@ -8,10 +8,10 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import FormatIndentIncreaseIcon from '@material-ui/icons/FormatIndentIncrease';
 import clsx from "clsx";
-import {useNoteFormatBarPopperMobileStyles} from "./NoteFormatBarPopperMobile";
+import {useNoteFormatBarPopperPhoneStyles} from "./NoteFormatBarPopperPhone";
 import {NoteFormatBarActionIcon} from "../NoteFormatBarActionIcon";
 
-interface INoteFormatBarPopperMobileBarProps {
+interface INoteFormatBarPopperPhoneBarProps {
     readonly onToggleExpand: () => void;
     readonly expanded: boolean;
     readonly className?: string;
@@ -38,7 +38,7 @@ export const useStyles = makeStyles((theme) =>
     })
 );
 
-export const NoteFormatBarPopperMobileBar: React.FC<INoteFormatBarPopperMobileBarProps> = (props) => {
+export const NoteFormatBarPopperPhoneBar: React.FC<INoteFormatBarPopperPhoneBarProps> = (props) => {
     const {
         onToggleExpand,
         expanded,
@@ -54,7 +54,7 @@ export const NoteFormatBarPopperMobileBar: React.FC<INoteFormatBarPopperMobileBa
         onBold,
     } = props;
 
-    const sharedClasses = useNoteFormatBarPopperMobileStyles();
+    const sharedClasses = useNoteFormatBarPopperPhoneStyles();
     const classes = useStyles();
 
     return (

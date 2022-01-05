@@ -36,7 +36,6 @@ import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {RepoDocInfos} from "../RepoDocInfos";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
@@ -444,36 +443,19 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onUpdated(repoDocInfo: RepoDocInfo, docInfo: IDocInfo): void {
 
-        const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
-
-            function prepare() {
-
-                const docMeta = repoDocInfo.docMeta;
-                docMeta.docInfo = docInfo;
-                const newRepoDocInfo = RepoDocInfos.convert(docMeta,
-                                                            repoDocInfo.fromCache,
-                                                            repoDocInfo.hasPendingWrites);
-
-                repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, newRepoDocInfo);
-
-            }
-
-            function commit() {
-                repoDocInfo.docMeta.docInfo = docInfo;
-
-                return repoDocMetaManager.writeDocInfo(docInfo, repoDocInfo.docMeta);
-            }
-
-            return {prepare, commit};
-
-        }
-
         async function doHandle() {
 
             const fingerprint =  docInfo.fingerprint;
 
-            const updater = (content: IDocumentContent) => content.docInfo = docInfo;
+            const updater = (content: IDocumentContent) => {
+                const title = content.docInfo.title;
+                content.docInfo = docInfo
+                content.docInfo.title = title; // Preserve the old title in notes
+            };
 
+            // TODO: Ideally we wanna do the 2 following operations in one batch
+            // but we can't do it until we get block renaming implemented properly
+            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, docInfo.title || "");
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
         }
 
@@ -578,11 +560,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             mutator.refresh();
 
             await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
-            /*
-            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
-                content.docInfo.title = title;
-            });
-             */
 
             updateTab(repoDocInfo.fingerprint, { title });
         }
