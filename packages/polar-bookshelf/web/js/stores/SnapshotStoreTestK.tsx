@@ -11,7 +11,7 @@ interface IRef<V> {
     current: V;
 }
 
-const [TestStoreProvider, useTestStore] = createSnapshotStore<IValue>();
+const [TestStoreProvider, useTestStore] = createSnapshotStore<IValue>('test');
 
 describe("SnapshotStore", function() {
 
