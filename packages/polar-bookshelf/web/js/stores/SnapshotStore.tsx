@@ -96,7 +96,7 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
         if (! latencyLogged.current) {
             const latency = Math.abs(Date.now() - snapshotCreated.current);
-            console.warn(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
+            console.log(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
             latencyLogged.current = true;
         }
 
