@@ -1,15 +1,15 @@
 import React from "react";
 import {createStyles, lighten, makeStyles} from "@material-ui/core";
-import {NoteFormatBarPopperMobileBar} from "./NoteFormatBarPopperMobileBar";
-import {NoteFormatBarPopperMobileExtension} from "./NoteFormatBarPopperMobileExtension";
+import {NoteFormatBarPopperPhoneBar} from "./NoteFormatBarPopperPhoneBar";
+import {NoteFormatBarPopperPhoneExtension} from "./NoteFormatBarPopperPhoneExtension";
 import clsx from "clsx";
 import {useNoteFormatBarActions} from "../NoteFormatBarActions";
 import {abortEvent} from "../../contenteditable/BlockKeyboardHandlers";
 
-const NOTE_FORMAT_BAR_POPPER_MOBILE_EXTENSION_HEIGHT = 200;
-const NOTE_FORMAT_BAR_POPPER_MOBILE_BAR_HEIGHT = 42;
+const NOTE_FORMAT_BAR_POPPER_PHONE_EXTENSION_HEIGHT = 200;
+const NOTE_FORMAT_BAR_POPPER_PHONE_BAR_HEIGHT = 42;
 
-export const useNoteFormatBarPopperMobileStyles = makeStyles((theme) =>
+export const useNoteFormatBarPopperPhoneStyles = makeStyles((theme) =>
     createStyles({
         paperRoot: {
             borderRadius: 0,
@@ -18,12 +18,12 @@ export const useNoteFormatBarPopperMobileStyles = makeStyles((theme) =>
         container: {
             width: '100%',
             overflow: 'hidden',
-            height: NOTE_FORMAT_BAR_POPPER_MOBILE_BAR_HEIGHT,
+            height: NOTE_FORMAT_BAR_POPPER_PHONE_BAR_HEIGHT,
             willChange: 'height',
             transition: 'height 190ms ease-in-out',
             '&.open': {
-                height: NOTE_FORMAT_BAR_POPPER_MOBILE_BAR_HEIGHT
-                        + NOTE_FORMAT_BAR_POPPER_MOBILE_EXTENSION_HEIGHT,
+                height: NOTE_FORMAT_BAR_POPPER_PHONE_BAR_HEIGHT
+                        + NOTE_FORMAT_BAR_POPPER_PHONE_EXTENSION_HEIGHT,
             },
             fontSize: '1.55rem',
         },
@@ -34,15 +34,15 @@ export const useNoteFormatBarPopperMobileStyles = makeStyles((theme) =>
             justifyContent: 'center',
         },
         extension: {
-            height: NOTE_FORMAT_BAR_POPPER_MOBILE_EXTENSION_HEIGHT,
+            height: NOTE_FORMAT_BAR_POPPER_PHONE_EXTENSION_HEIGHT,
             overflowY: 'auto',
         },
     })
 );
 
-export const NoteFormatBarPopperMobile: React.FC = () => {
+export const NoteFormatBarPopperPhone: React.FC = () => {
     const [expanded, setExpanded] = React.useState(false);
-    const classes = useNoteFormatBarPopperMobileStyles();
+    const classes = useNoteFormatBarPopperPhoneStyles();
 
     const handleToggleExpand = React.useCallback(() => 
         setExpanded(expanded => ! expanded), []);
@@ -65,7 +65,7 @@ export const NoteFormatBarPopperMobile: React.FC = () => {
 
     return (
         <div className={clsx(classes.container, { open: expanded })} onMouseDown={abortEvent}>
-            <NoteFormatBarPopperMobileBar onToggleExpand={handleToggleExpand}
+            <NoteFormatBarPopperPhoneBar onToggleExpand={handleToggleExpand}
                                           className={classes.bar}
                                           expanded={expanded}
 
@@ -77,7 +77,7 @@ export const NoteFormatBarPopperMobile: React.FC = () => {
                                           onHideKeyboard={handleHideKeyboard}
                                           onStrikeThrough={handleStrikeThrough} />
 
-            <NoteFormatBarPopperMobileExtension className={classes.extension}
+            <NoteFormatBarPopperPhoneExtension className={classes.extension}
                                                 onUndo={handleUndo}
                                                 onRedo={handleRedo}
                                                 onEditTags={handleEditTags} />
