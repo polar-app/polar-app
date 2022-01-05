@@ -1,9 +1,9 @@
 import React from "react";
 import clsx from "clsx";
-import {NoteFormatBarPopperMobileBar} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobileBar";
+import {NoteFormatBarPopperPhoneBar} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useNoteFormatBarPopperMobileStyles} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobile";
-import {NoteFormatBarPopperMobileExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarMobile/NoteFormatBarPopperMobileExtension";
+import {useNoteFormatBarPopperPhoneStyles} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhone";
+import {NoteFormatBarPopperPhoneExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneExtension";
 import {Box, createStyles, makeStyles, TextField} from "@material-ui/core";
 
 const useStyles = makeStyles(() =>
@@ -16,9 +16,9 @@ const useStyles = makeStyles(() =>
     })
 );
 
-export const NotesMobileFormatBarStory: React.FC = () => {
+export const NotesPhoneFormatBarStory: React.FC = () => {
     const [expanded, setExpanded] = React.useState(false);
-    const classes = useNoteFormatBarPopperMobileStyles();
+    const classes = useNoteFormatBarPopperPhoneStyles();
     const [width, setWidth] = React.useState<string>("100%");
 
     useStyles();
@@ -38,7 +38,7 @@ export const NotesMobileFormatBarStory: React.FC = () => {
             </Box>
             <Box className={clsx(classes.container, { open: expanded })} style={{ width }}>
 
-                <NoteFormatBarPopperMobileBar onBold={NULL_FUNCTION}
+                <NoteFormatBarPopperPhoneBar onBold={NULL_FUNCTION}
                                               onItalic={NULL_FUNCTION}
                                               onIndent={NULL_FUNCTION}
                                               onUnindent={NULL_FUNCTION}
@@ -48,7 +48,7 @@ export const NotesMobileFormatBarStory: React.FC = () => {
                                               expanded={expanded}
                                               onToggleExpand={handleToggleExpand} />
 
-                <NoteFormatBarPopperMobileExtension className={classes.extension}
+                <NoteFormatBarPopperPhoneExtension className={classes.extension}
                                                     onEditTags={NULL_FUNCTION}
                                                     onUndo={NULL_FUNCTION}
                                                     onRedo={NULL_FUNCTION} />
