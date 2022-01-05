@@ -75,7 +75,7 @@ export namespace DocumentDataUpdater {
 
             const docInfo: IDocInfo = {
                 ...block.content.docInfo,
-                title: repoDocInfo.title, // Don't override the title since we don't have renaming implemented yet
+                title: repoDocInfo.title, // TODO: Don't override the title since we don't have renaming implemented yet
                 tags,
                 lastUpdated: ISODateTimeStrings.create(),
                 uuid: UUIDs.create(),
