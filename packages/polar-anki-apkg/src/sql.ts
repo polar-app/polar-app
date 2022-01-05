@@ -5,87 +5,10 @@ import {Database} from 'better-sqlite3'
 import {DeckConfig} from "./DeckConfig";
 import {Card} from "./Card";
 
-export function initDatabase(database: Database, config: DeckConfig) {
-  const current = config.id
-  const deckId = current
-  const modelId = deckId + 1
-  const fields = config.card.fields.map((field, ord) => ({
-    size: 20,
-    name: field,
-    media: [],
-    rtl: false,
-    ord,
-    font: 'Arial',
-    sticky: false
-  }))
+import { FlashcardType } from "polar-shared/src/metadata/FlashcardType";
 
-  let conf = {
-    nextPos: 1,
-    estTimes: true,
-    activeDecks: [1],
-    sortType: 'noteFld',
-    timeLim: 0,
-    sortBackwards: false,
-    addToCur: true,
-    curDeck: 1,
-    newBury: true,
-    newSpread: 0,
-    dueCounts: true,
-    curModel: modelId,
-    collapseTime: 1200
-  }
-  let models = {
-    [modelId]: {
-      vers: [],
-      name: config.name,
-      tags: [],
-      did: deckId,
-      usn: -1,
-      req: [[0, 'all', [0]]],
-      flds: fields,
-      sortf: 0,
-      latexPre:
-        '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
-      tmpls: [
-        {
-          afmt: config.card.template.answer,
-          name: config.name,
-          qfmt: config.card.template.question,
-          did: null,
-          ord: 0,
-          bafmt: '',
-          bqfmt: ''
-        }
-      ],
-      latexPost: '\\end{document}',
-      type: 0,
-      id: modelId,
-      css:
-        config.card.styleText ||
-        '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
-      mod: +new Date()
-    }
-  }
-  let decks = {
-    [deckId]: {
-      mid: modelId, // model id
-      name: config.name,
-      extendRev: 50,
-      usn: -1,
-      collapsed: false,
-      newToday: [1362, 0],
-      timeToday: [1362, 0],
-      dyn: 0,
-      extendNew: 10,
-      conf: 1,
-      revToday: [1362, 0],
-      lrnToday: [1362, 0],
-      id: deckId, // deck id
-      mod: +new Date(), // last modification time
-      desc: ''
-    }
-  }
-  let decksConfig = {}
+export function initDatabase(database: Database) {
+
   let sql = `
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS col (
@@ -104,21 +27,7 @@ CREATE TABLE IF NOT EXISTS col (
 	tags	text NOT NULL,
 	PRIMARY KEY(id)
 );
-INSERT INTO col VALUES (
-  1,
-  1401912000,
-  ${current},
-  ${current},
-  11,
-  0,
-  0,
-  0,
-  '${JSON.stringify(conf)}',
-  '${JSON.stringify(models)}',
-  '${JSON.stringify(decks)}',
-  '${JSON.stringify(decksConfig)}',
-  '{}'
-);
+
 CREATE TABLE IF NOT EXISTS cards (
 	id	integer,
 	nid	integer NOT NULL,
@@ -199,11 +108,135 @@ COMMIT;
   database.exec(sql)
 }
 
-export function insertCard(database: Database, deck: DeckConfig, card: Card) {
-  const createTime = card.timestamp || +new Date()
+export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'name'>) {
+  const basicModel = deck.id + 1;
+  const clozeModel = deck.id + 2;
+
+  const conf = {
+    nextPos: 1,
+    estTimes: true,
+    activeDecks: [1],
+    sortType: 'noteFld',
+    timeLim: 0,
+    sortBackwards: false,
+    addToCur: true,
+    curDeck: 1,
+    newBury: true,
+    newSpread: 0,
+    dueCounts: true,
+    curModel: basicModel,
+    collapseTime: 1200
+  }
+  const models = {
+    [basicModel]: {
+      vers: [],
+      name: 'polar-basic-flashcard',
+      tags: [],
+      did: deck.id,
+      usn: -1,
+      req: [[0, 'all', [0]]],
+      flds: generateFields(['front', 'back']),
+      sortf: 0,
+      latexPre:
+        '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
+      tmpls: [
+        {
+          afmt: "{{ back }}",
+          name: deck.name,
+          qfmt: "{{ front }}",
+          did: null,
+          ord: 0,
+          bafmt: '',
+          bqfmt: ''
+        }
+      ],
+      latexPost: '\\end{document}',
+      type: 0,
+      id: basicModel,
+      css:
+        '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
+      mod: Date.now()
+    },
+    [clozeModel]: {
+      vers: [],
+      name: 'polar-cloze',
+      tags: [],
+      did: deck.id,
+      usn: -1,
+      req: [[0, 'all', [0]]],
+      flds: generateFields(['text']),
+      sortf: 0,
+      latexPre:
+        '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
+      tmpls: [
+        {
+          afmt: "{{ extra }}",
+          name: deck.name,
+          qfmt: "{{ text }}",
+          did: null,
+          ord: 0,
+          bafmt: '',
+          bqfmt: ''
+        }
+      ],
+      latexPost: '\\end{document}',
+      type: 0,
+      id: basicModel,
+      css:
+        '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
+      mod: Date.now()
+    }
+
+  }
+  const decks = {
+    [deck.id]: {
+      name: deck.name,
+      extendRev: 50,
+      usn: -1,
+      collapsed: false,
+      newToday: [1362, 0],
+      timeToday: [1362, 0],
+      dyn: 0,
+      extendNew: 10,
+      conf: 1,
+      revToday: [1362, 0],
+      lrnToday: [1362, 0],
+      id: deck.id, // deck id
+      mod: Date.now(), // last modification time
+      desc: ''
+    }
+  };
+
+  const decksConfig = {};
+  const sql = `
+    INSERT INTO col VALUES (
+      1,
+      1401912000,
+      ${deck.id},
+      ${deck.id},
+      11,
+      0,
+      0,
+      0,
+      '${JSON.stringify(conf)}',
+      '${JSON.stringify(models)}',
+      '${JSON.stringify(decks)}',
+      '${JSON.stringify(decksConfig)}',
+      '{}'
+    );
+  `;
+  database.exec(sql);
+
+  return {
+    [FlashcardType.BASIC_FRONT_BACK]: basicModel,
+    [FlashcardType.CLOZE]: clozeModel 
+  };
+}
+
+export function insertCard(database: Database, deck: Pick<DeckConfig, 'id' | 'name'>, modelId: number, card: Card) {
+  const createTime = card.timestamp || Date.now()
   const cardId = createTime
   const noteId = cardId + 1
-  const modelId = deck.id + 1
   const fieldsContent = card.content.join('\u001F')
   const sortField = card.content[0]
   const SQL_CARD = `INSERT INTO cards (id,nid,did,ord,mod,usn,type,queue,due,ivl,factor,reps,lapses,left,odue,odid,flags,data) VALUES (?,  ?,  ?,  0,  ?,  -1,  0,  0,  86400,0,0,0,0,0,0,0,0,'')`
@@ -221,4 +254,17 @@ export function insertCard(database: Database, deck: DeckConfig, card: Card) {
       sortField,
       parseInt(sha1(sortField).substr(0, 8), 16)
     )
+}
+
+
+function generateFields(fields: Array<string>) {
+  return fields.map((field, ord) => ({
+    size: 20,
+    name: field,
+    media: [],
+    rtl: false,
+    ord,
+    font: 'Arial',
+    sticky: false
+  }));
 }
