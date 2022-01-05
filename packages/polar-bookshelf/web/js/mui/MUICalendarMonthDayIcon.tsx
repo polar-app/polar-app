@@ -8,7 +8,7 @@ interface IProps {
     style?: React.CSSProperties;
 }
 
-const useMonthDay = () => {
+export const useMonthDay = () => {
     const [day, setDay] = React.useState<number>(new Date().getDate());
 
     React.useEffect(() => {

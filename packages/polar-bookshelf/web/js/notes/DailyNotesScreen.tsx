@@ -17,6 +17,7 @@ import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {observer} from "mobx-react-lite";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import moment from "moment";
+import {useMonthDay} from "../mui/MUICalendarMonthDayIcon";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -34,6 +35,7 @@ export const DailyNotesScreen: React.FC = observer(() => {
     const [threshold, setThreshold, thresholdRef] = useStateRef(0);
     const [dailyNoteIDs, setDailyNoteIDs] = useStateRef<ReadonlyArray<BlockIDStr>>([]);
     const blocksStore = useBlocksStore();
+    const monthDay = useMonthDay();
 
     React.useEffect(() => {
         const dateBlocks = blocksStore
@@ -62,7 +64,7 @@ export const DailyNotesScreen: React.FC = observer(() => {
         };
         const todaysBlockID = getTodaysBlockID();
         focusFirstChild(blocksStore, todaysBlockID);
-    }, [blocksStore]);
+    }, [blocksStore, monthDay]);
 
     const rootRef = React.useRef<HTMLDivElement>(null);
     const visibleNotes = React.useMemo(() => dailyNoteIDs.slice(0, threshold), [dailyNoteIDs, threshold]);
