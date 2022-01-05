@@ -48,7 +48,7 @@ export const NoteFormatBarPopperPhoneExtension: React.FC<INoteFormatBarPopperExt
 
                 <NoteFormatBarExtensionButton icon={<LocalOfferIcon className={classes.icon} />}
                                               onClick={onEditTags}>
-                    Add tags
+                    Add Tags
                 </NoteFormatBarExtensionButton>
             </Box>
         </Paper>
