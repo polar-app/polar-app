@@ -52,7 +52,7 @@ export const NoteFormatBarPopperTablet: React.FC = () => {
 
     return (
         <Paper className={classes.root} onMouseDown={abortEvent}>
-            <Box p={1.5} display="flex" alignItems="center" className={classes.rootInner}>
+            <Box p={1.5} display="flex" alignItems="center" justifyContent="space-around" className={classes.rootInner}>
                 <NoteFormatBarActionIcon icon={BacklinkIconButton}
                                          className={classes.iconWrapper}
                                          onClick={handleBacklink} />
