@@ -58,8 +58,9 @@ export type SnapshotStoreTuple<S> = readonly [
  * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
  *
  * This is not Firestore specific and can support any type of value that can be updated.
+ * @param id The id for this snapshot store used internally for logging.
  */
-export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
+export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     // TODO: investigate react suspense for the fallback
 
@@ -69,6 +70,8 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
 
         const value = useValue();
         const valueSetter = useValueSetter()
+        const snapshotCreated = React.useRef(0);
+        const latencyLogged = React.useRef(false);
 
         const handleNext = React.useCallback((snapshot: S) => {
 
@@ -83,11 +86,18 @@ export function createSnapshotStore<S>(): SnapshotStoreTuple<S> {
         }, [valueSetter]);
 
         React.useEffect(() => {
+            snapshotCreated.current = Date.now();
             return props.subscriber(handleNext, handleError);
         }, [props, handleNext, handleError])
 
         if (value === undefined) {
             return props.fallback;
+        }
+
+        if (! latencyLogged.current) {
+            const latency = Math.abs(Date.now() - snapshotCreated.current);
+            console.log(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
+            latencyLogged.current = true;
         }
 
         return props.children;

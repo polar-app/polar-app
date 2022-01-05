@@ -133,10 +133,12 @@ export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
+ * @param id The ID of this snapshot used for logging / tracing.
+ * @param collectionName The collection to read for the snapshot.
  */
-export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(collectionName: string): FirestoreSnapshotStoreTuple<D> {
+export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
 
-    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>();
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
 
     const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
