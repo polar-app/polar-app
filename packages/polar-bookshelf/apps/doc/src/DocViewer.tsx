@@ -50,6 +50,7 @@ import {PageNextButton} from "./toolbar/PageNextButton";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {IBlock, INamedContent} from "polar-blocks/src/blocks/IBlock";
 import {useStateFromHistoryHash} from "../../../web/js/mui/hooks/useStateFromHistoryHash";
+import {FeatureEnabled} from "../../../web/js/features/FeaturesRegistry";
 
 const Main = React.memo(function Main() {
 
@@ -163,7 +164,11 @@ namespace Device {
                         </div>
 
                         <div style={{ alignItems: 'center', display: 'flex' }}>
-                            <AreaHighlightModeToggle />
+
+                            <FeatureEnabled feature={['handheld-area-highlights']}>
+                                <AreaHighlightModeToggle />
+                            </FeatureEnabled>
+
                             <IconButton onClick={props.toggleRightDrawer}>
                                 <MenuIcon/>
                             </IconButton>
