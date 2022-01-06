@@ -227,14 +227,16 @@ function createEntries(bundle) {
 
         case "repository":
             return {
-                repository: "./apps/repository/js/entry.tsx"
+                repository: "./apps/repository/js/entry.tsx",
+                debug: "./apps/repository/js/debug.ts"
             };
 
         case "both":
         default:
             return {
                 stories: "./apps/stories/index.tsx",
-                repository: "./apps/repository/js/entry.tsx"
+                repository: "./apps/repository/js/entry.tsx",
+                debug: "./apps/repository/js/debug.ts"
             };
     }
 }
