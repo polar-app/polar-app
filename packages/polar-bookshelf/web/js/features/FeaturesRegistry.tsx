@@ -36,7 +36,12 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "spaced-rep-purge": {
         title: "Spaced Repetition Purge",
         description: "Enable the ability for users to purge their spaced repetition data.",
+    },
+    "handheld-area-highlights": {
+        title: "Handheld Area Highlights",
+        description: "Enable area highlights on handheld devices.",
     }
+
 
 };
 
@@ -44,7 +49,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights';
 
 export interface IFeature {
 
