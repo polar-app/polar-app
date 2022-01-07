@@ -252,15 +252,18 @@ async function doTestFirestore() {
 
         const timerKey = 'snapshot:' + collectionName;
 
-        console.time(timerKey);
+        // console.time(timerKey);
+
+        let counter = 0;
 
         const snapshotTimer = (snapshot: firebase.firestore.QuerySnapshot) => {
+            ++counter;
             const after = Date.now();
             const duration = Math.abs(after - before);
 
-            console.log(`Snapshot duration for ${collectionName} with ${snapshot.size} docs: ${duration}ms`);
+            console.log(`Snapshot ${counter} duration for ${collectionName} with ${snapshot.size} docs: ${duration}ms, fromCache: ${snapshot.metadata.fromCache}`);
             latch.resolve(true);
-            console.timeEnd(timerKey);
+            // console.timeEnd(timerKey);
 
         }
 
@@ -275,45 +278,32 @@ async function doTestFirestore() {
     function createSnapshotForCollection(collectionName: string): UnsubscriberAndFirstSnapshotPromise {
         const collection = firestore.collection(collectionName);
         const [latch, onNext] = createSnapshotTimer(collectionName);
-        const unsubscriber = collection.where('uid', '==', user.uid).onSnapshot(onNext);
+        const unsubscriber = collection.where('uid', '==', user.uid).onSnapshot({includeMetadataChanges: true}, onNext);
         return [unsubscriber, latch.get()];
     }
 
     function createSnapshotForBlockCollection(): UnsubscriberAndFirstSnapshotPromise {
         const collection = firestore.collection('block');
         const [latch, onNext] = createSnapshotTimer('block');
-        const unsubscriber = collection.where('nspace', '==', user.uid).onSnapshot(onNext);
+        const unsubscriber = collection.where('nspace', '==', user.uid).onSnapshot({includeMetadataChanges: true}, onNext);
         return [unsubscriber, latch.get()];
     }
 
-    // FIXME: compute the total duration for all the snapshots via some sort of
-    // countdown latch... but I think it's going to be about 2.5s.
-
-    // FIXME: measure each one of these individually
-
-    // FIXME: we're actually running out of memory accessing this much data!
-    // That's sort of the main problem now.
-
-    // FIXME: I think its' memory pressure. .. I think each tab only has a
-    // maximum. if I just open a ton of spaced_rep tables they all open super
-    // fast... unless they elide the snapshot
-
     const unsubscribers = await traceAsync('parallel promise snapshots', async () => {
-
-        // FIXME there is a GIANT performance gap here where smaller tables that
-        // don't have much data add like 10s to the performance
 
         const snapshots = [
             createSnapshotForCollection('user_pref'),
             createSnapshotForCollection('block_expand'),
-            createSnapshotForCollection('block_permission_user'),
-            createSnapshotForCollection('contact'),
             createSnapshotForCollection('profile_owner'),
-            createSnapshotForCollection('spaced_rep'),
-            createSnapshotForCollection('spaced_rep_stat'),
             createSnapshotForBlockCollection(),
             createSnapshotForCollection('doc_meta'),
             createSnapshotForCollection('doc_info'),
+
+            // createSnapshotForCollection('contact'),
+            // createSnapshotForCollection('block_permission_user'),
+            // createSnapshotForCollection('spaced_rep'),
+            // createSnapshotForCollection('spaced_rep_stat'),
+
         ]
 
         const promises = snapshots.map(current => current[1]);
@@ -324,38 +314,24 @@ async function doTestFirestore() {
 
     });
 
-    // const unsubscribers = await traceAsync('serial promise snapshots', async (): Promise<ReadonlyArray<Unsubscriber>> => {
-    //
-    //     await createSnapshotForBlockCollection()[1];
-    //     await createSnapshotForCollection('doc_meta')[1];
-    //     await createSnapshotForCollection('doc_info')[1];
-    //     await createSnapshotForCollection('spaced_rep')[1];
-    //     await createSnapshotForCollection('spaced_rep_stat')[1];
-    //
-    //     return [];
-    //
+    // await traceAsync('unsubscribing promises', async () => {
+    //     unsubscribers.forEach(unsubscriber => unsubscriber());
     // });
-
-    await traceAsync('unsubscribing promises', async () => {
-        unsubscribers.forEach(unsubscriber => unsubscriber());
-    });
-
-    await traceAsync('terminate firestore', async () => {
-        console.log("Terminating firestore...")
-        await firestore.terminate();
-        console.log("Terminating firestore...done")
-    })
+    //
+    // await traceAsync('terminate firestore', async () => {
+    //     console.log("Terminating firestore...")
+    //     await firestore.terminate();
+    //     console.log("Terminating firestore...done")
+    // })
 
 }
 
 function doDebug() {
 
-    // 77,077,641
-
     async function doAsync() {
         markStarting();
-        // await doTestFirestore();
-        await doTestIndexedDB()
+        await doTestFirestore();
+        // await doTestIndexedDB()
         markCompleted();
     }
 

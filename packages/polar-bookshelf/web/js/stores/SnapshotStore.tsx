@@ -94,7 +94,7 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
             return props.fallback;
         }
 
-        if (! latencyLogged.current) {
+        if (! latencyLogged.current && value.right) {
             const latency = Math.abs(Date.now() - snapshotCreated.current);
             console.log(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
             latencyLogged.current = true;

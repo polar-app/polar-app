@@ -152,11 +152,22 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: 
                 };
             }
 
+            let logged = false;
+
             return (onNext, onError) => {
+
+                const snapshotHandler = (snapshot: IQuerySnapshot<ISnapshotMetadata, D>) => {
+
+                    if (! logged) {
+                        console.log(`Snapshot from cache for ${id}: ${snapshot.metadata.fromCache}`);
+                        logged = true;
+                    }
+                    onNext(snapshot);
+                }
 
                 return firestore.collection(collectionName)
                                 .where('uid', '==', uid)
-                                .onSnapshot<D>(next => onNext(next), err => onError(err));
+                                .onSnapshot<D>({includeMetadataChanges: true}, next => snapshotHandler(next), err => onError(err));
 
             }
 
@@ -179,7 +190,6 @@ export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(
     const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
 
     const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
-
 
         const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
 

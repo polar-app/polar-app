@@ -2431,8 +2431,6 @@ export class BlocksStore implements IBlocksStore {
 
     @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
 
-        console.log("FIXME: got blocks persistence snapshot... ");
-
         for (const docChange of snapshot.docChanges) {
 
             switch(docChange.type) {
