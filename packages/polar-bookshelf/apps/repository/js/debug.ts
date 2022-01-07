@@ -242,14 +242,26 @@ async function doTestFirestore() {
     // FIXME: we're actually running out of memory accessing this much data!
     // That's sort of the main problem now.
 
-    const unsubscribers = await traceAsync('promise snapshots', async () => {
+    // FIXME: I think its' memory pressure. .. I think each tab only has a
+    // maximum. if I just open a ton of spaced_rep tables they all open super
+    // fast... unless they elide the snapshot
+
+    const unsubscribers = await traceAsync('parallel promise snapshots', async () => {
+
+        // FIXME there is a GIANT performance gap here where smaller tables that
+        // don't have much data add like 10s to the performance
 
         const snapshots = [
+            createSnapshotForCollection('user_pref'),
+            createSnapshotForCollection('block_expand'),
+            createSnapshotForCollection('block_permission_user'),
+            createSnapshotForCollection('contact'),
+            createSnapshotForCollection('profile_owner'),
+            createSnapshotForCollection('spaced_rep'),
+            createSnapshotForCollection('spaced_rep_stat'),
             createSnapshotForBlockCollection(),
             createSnapshotForCollection('doc_meta'),
             createSnapshotForCollection('doc_info'),
-            createSnapshotForCollection('spaced_rep'),
-            createSnapshotForCollection('spaced_rep_stat'),
         ]
 
         const promises = snapshots.map(current => current[1]);
@@ -259,6 +271,18 @@ async function doTestFirestore() {
         return snapshots.map(current => current[0]);
 
     });
+
+    // const unsubscribers = await traceAsync('serial promise snapshots', async (): Promise<ReadonlyArray<Unsubscriber>> => {
+    //
+    //     await createSnapshotForBlockCollection()[1];
+    //     await createSnapshotForCollection('doc_meta')[1];
+    //     await createSnapshotForCollection('doc_info')[1];
+    //     await createSnapshotForCollection('spaced_rep')[1];
+    //     await createSnapshotForCollection('spaced_rep_stat')[1];
+    //
+    //     return [];
+    //
+    // });
 
     await traceAsync('unsubscribing promises', async () => {
         unsubscribers.forEach(unsubscriber => unsubscriber());

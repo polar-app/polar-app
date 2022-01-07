@@ -25,6 +25,7 @@ export const UserTagsDataLoader: React.FC = React.memo(function UserTagsDataLoad
 });
 
 export function useUserTagsDB() {
+
     const userTagsDB = React.useContext(UserTagsContext);
 
     if (!userTagsDB) {
@@ -32,4 +33,5 @@ export function useUserTagsDB() {
     }
 
     return userTagsDB;
+
 }

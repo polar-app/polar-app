@@ -24,7 +24,9 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIRepositoryRoot} from "../../mui/MUIRepositoryRoot";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
-import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
+import {
+    AnnotationRepoSidebarTagStore
+} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
 import {AnnotationRepoStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
 import {AnnotationRepoScreen} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
@@ -65,7 +67,9 @@ import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
-import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {
+    BlocksAnnotationRepoStoreProvider
+} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NoteProviders} from "../../notes/NoteProviders";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
@@ -81,8 +85,12 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {SpacedRepCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
-import {SpacedRepStatCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+import {
+    SpacedRepCollectionSnapshotProvider
+} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
+import {
+    SpacedRepStatCollectionSnapshotProvider
+} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
 
 interface IProps {
     readonly app: App;
@@ -201,28 +209,28 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     const DataProviders: React.FC = React.useCallback(({children}) => (
         <PrefsContext2>
-            <UserTagsDataLoader>
-                <BlocksUserTagsDataLoader>
-                    <BlockStoreDefaultContextProvider>
-                        <BlocksStoreProvider>
-                            <PersistenceLayerApp tagsType="documents"
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}
-                                                 persistenceLayerManager={persistenceLayerManager}>
-                                <DocRepoStore2>
-                                    <SpacedRepCollectionSnapshotProvider fallback={<LinearProgress/>}>
-                                        <SpacedRepStatCollectionSnapshotProvider fallback={<LinearProgress/>}>
-                                            <>
-                                                {children}
-                                            </>
-                                        </SpacedRepStatCollectionSnapshotProvider>
-                                    </SpacedRepCollectionSnapshotProvider>
-                                </DocRepoStore2>
-                            </PersistenceLayerApp>
-                        </BlocksStoreProvider>
-                    </BlockStoreDefaultContextProvider>
-                </BlocksUserTagsDataLoader>
-            </UserTagsDataLoader>
+            <SpacedRepCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                <SpacedRepStatCollectionSnapshotProvider fallback={<LinearProgress/>}>
+                    <UserTagsDataLoader>
+                        <BlocksUserTagsDataLoader>
+                            <BlockStoreDefaultContextProvider>
+                                <BlocksStoreProvider>
+                                    <PersistenceLayerApp tagsType="documents"
+                                                         repoDocMetaManager={repoDocMetaManager}
+                                                         repoDocMetaLoader={repoDocMetaLoader}
+                                                         persistenceLayerManager={persistenceLayerManager}>
+                                        <DocRepoStore2>
+                                                    <>
+                                                        {children}
+                                                    </>
+                                        </DocRepoStore2>
+                                    </PersistenceLayerApp>
+                                </BlocksStoreProvider>
+                            </BlockStoreDefaultContextProvider>
+                        </BlocksUserTagsDataLoader>
+                    </UserTagsDataLoader>
+                </SpacedRepStatCollectionSnapshotProvider>
+            </SpacedRepCollectionSnapshotProvider>
         </PrefsContext2>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
