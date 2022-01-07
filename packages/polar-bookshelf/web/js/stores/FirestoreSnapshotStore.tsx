@@ -173,3 +173,42 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: 
     return [FirestoreSnapshotProvider, useSnapshotStore];
 
 }
+
+export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
+
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
+
+    const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
+
+
+        const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
+
+            return (onNext, onError) => {
+                onNext({
+                    empty: true,
+                    size: 0,
+                    metadata: {
+                        hasPendingWrites: false,
+                        fromCache: true
+                    },
+                    docs: [],
+                    docChanges: () => []
+                })
+
+                return () => console.log("unsubscribed");
+
+            }
+
+        }, []);
+
+        return (
+            <SnapshotStoreProvider subscriber={subscriber} fallback={props.fallback}>
+                {props.children}
+            </SnapshotStoreProvider>
+        );
+
+    }));
+
+    return [FirestoreSnapshotProvider, useSnapshotStore];
+
+}

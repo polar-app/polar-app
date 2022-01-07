@@ -190,7 +190,7 @@ async function doTestFirestore() {
     const user = await initFirebase();
     const firestore = await initFirestore();
 
-    type SnapshotTimer = () => void;
+    type SnapshotTimer = (snapshot: firebase.firestore.QuerySnapshot) => void;
     type LatchAndSnapshotTimer = readonly [Latch<boolean>, SnapshotTimer];
 
     function createSnapshotTimer(collectionName: string): LatchAndSnapshotTimer {
@@ -198,31 +198,41 @@ async function doTestFirestore() {
         const before = Date.now();
         const latch = new Latch<boolean>();
 
-        const snapshotTimer = () => {
+        const timerKey = 'snapshot:' + collectionName;
+
+        console.time(timerKey);
+
+        const snapshotTimer = (snapshot: firebase.firestore.QuerySnapshot) => {
             const after = Date.now();
             const duration = Math.abs(after - before);
-            console.log(`Snapshot duration for ${collectionName}: ${duration}ms`);
+
+            console.log(`Snapshot duration for ${collectionName} with ${snapshot.size} docs: ${duration}ms`);
             latch.resolve(true);
+            console.timeEnd(timerKey);
+
         }
 
         return [latch, snapshotTimer];
 
     }
 
-    function createSnapshotForCollection(collectionName: string): Promise<boolean> {
+    type Unsubscriber = () => void;
+    type FirstSnapshotPromise = Promise<boolean>;
+    type UnsubscriberAndFirstSnapshotPromise = readonly [Unsubscriber, FirstSnapshotPromise];
+
+    function createSnapshotForCollection(collectionName: string): UnsubscriberAndFirstSnapshotPromise {
         const collection = firestore.collection(collectionName);
         const [latch, onNext] = createSnapshotTimer(collectionName);
-        collection.where('uid', '==', user.uid).onSnapshot(onNext);
-        return latch.get();
+        const unsubscriber = collection.where('uid', '==', user.uid).onSnapshot(onNext);
+        return [unsubscriber, latch.get()];
     }
 
-    function createSnapshotForBlockCollection(): Promise<boolean> {
+    function createSnapshotForBlockCollection(): UnsubscriberAndFirstSnapshotPromise {
         const collection = firestore.collection('block');
         const [latch, onNext] = createSnapshotTimer('block');
-        collection.where('nspace', '==', user.uid).onSnapshot(onNext);
-        return latch.get();
+        const unsubscriber = collection.where('nspace', '==', user.uid).onSnapshot(onNext);
+        return [unsubscriber, latch.get()];
     }
-
 
     // FIXME: compute the total duration for all the snapshots via some sort of
     // countdown latch... but I think it's going to be about 2.5s.
@@ -232,20 +242,97 @@ async function doTestFirestore() {
     // FIXME: we're actually running out of memory accessing this much data!
     // That's sort of the main problem now.
 
-    await Tracer.async(async () => {
+    const unsubscribers = await traceAsync('promise snapshots', async () => {
 
-        await createSnapshotForBlockCollection();
-        await createSnapshotForCollection('doc_meta');
-        await createSnapshotForCollection('doc_info');
-        await createSnapshotForCollection('spaced_rep');
-        await createSnapshotForCollection('spaced_rep_stat');
+        const snapshots = [
+            createSnapshotForBlockCollection(),
+            createSnapshotForCollection('doc_meta'),
+            createSnapshotForCollection('doc_info'),
+            createSnapshotForCollection('spaced_rep'),
+            createSnapshotForCollection('spaced_rep_stat'),
+        ]
 
-    }, 'all snapshots');
+        const promises = snapshots.map(current => current[1]);
 
+        await Promise.all(promises);
+
+        return snapshots.map(current => current[0]);
+
+    });
+
+    await traceAsync('unsubscribing promises', async () => {
+        unsubscribers.forEach(unsubscriber => unsubscriber());
+    });
+
+    await traceAsync('terminate firestore', async () => {
+        console.log("Terminating firestore...")
+        await firestore.terminate();
+        console.log("Terminating firestore...done")
+    })
 
 }
 
+function doDebug() {
 
-doTestFirestore().catch(err => console.error(err));
+    async function doAsync() {
+        markStarting();
+        await doTestFirestore();
+        markCompleted();
+    }
 
-// doTestIndexedDB().catch(err => console.error(err));
+    doAsync().catch(err => console.error(err));
+    //
+    // // doTestIndexedDB().catch(err => console.error(err));
+
+}
+
+function resetBody() {
+    document.body.innerText = '';
+}
+
+function createButton() {
+
+    const button = document.createElement('button');
+    button.onclick = () => doDebug();
+    button.appendChild(document.createTextNode('Click to Debug'));
+    button.setAttribute('style', 'font-size: 18px; margin: 10px;')
+
+    document.body.appendChild(button);
+
+}
+
+function markStarting() {
+
+    const div = document.createElement('div');
+    div.setAttribute('style', 'font-size: 18px; color: white; margin: 10px;')
+    div.appendChild(document.createTextNode('Benchmark starting...'))
+
+    document.body.appendChild(div);
+
+}
+
+function markCompleted() {
+
+    const div = document.createElement('div');
+    div.setAttribute('style', 'font-size: 18px; color: green; margin: 10px;')
+    div.appendChild(document.createTextNode('Benchmark Complete!'))
+
+    document.body.appendChild(div);
+
+}
+
+function setupPageForDebug() {
+
+    resetBody();
+    createButton();
+
+}
+
+setupPageForDebug();
+
+async function traceAsync<T>(timeKey: string, closure: () => Promise<T>) {
+    console.time(timeKey);
+    const result = await closure();
+    console.timeEnd(timeKey);
+    return result;
+}
