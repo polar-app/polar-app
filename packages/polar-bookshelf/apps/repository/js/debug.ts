@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import {Latch} from "polar-shared/src/util/Latch";
 import {Tracer} from "polar-shared/src/util/Tracer";
+import {Bytes} from "polar-shared/src/util/Bytes";
 
 require('firebase/auth');
 
@@ -28,7 +29,24 @@ async function doTestIndexedDB() {
         const objectStore = transaction.objectStore('remoteDocuments');
 
         let nrKeys = 0;
+        let dataLen = 0;
         const before = Date.now();
+
+        type CollectionName = string;
+        type DocId = string;
+        type DocKey = readonly [CollectionName, DocId];
+
+        const collectionUsage: {[collection: string]: number} = {};
+
+        function updateCollectionUsage(collectionName: string, nrBytes: number) {
+
+            if (! collectionUsage[collectionName]) {
+                collectionUsage[collectionName] = 0;
+            }
+
+            collectionUsage[collectionName] = collectionUsage[collectionName] + nrBytes;
+
+        }
 
         objectStore.openCursor().onsuccess = (event => {
 
@@ -38,18 +56,52 @@ async function doTestIndexedDB() {
             if(cursor) {
                 cursor.continue();
 
+                const key: DocKey = (cursor as any).key;
+                const collectionName = key[0];
                 const value = (cursor as any).value;
                 const document = value.document;
 
                 if (document) {
                     nrKeys += Object.keys(document).length;
+
+                    const json = JSON.stringify(document);
+                    const nrBytes = json.length;
+
+                    const hasDataURL = json.indexOf("data:") !== -1;
+
+                    updateCollectionUsage(collectionName, nrBytes);
+
+                    console.log(`Doc with key ${key} has N bytes: ` + Bytes.format(nrBytes));
+
+                    if (hasDataURL) {
+                        console.warn("FIXME: has data URL:" + hasDataURL);
+                    }
+
+                    if (collectionName === 'block' && nrBytes > 10000) {
+                        console.warn("FIXME: large block: ", json);
+                    }
+
+                    dataLen += nrBytes;
                 }
+
 
             } else {
                 const after = Date.now();
                 const duration = after - before;
-                console.log(`Entries all displayed: nrKeys: ${nrKeys}, duration: ${duration}`);
+                console.log(`Entries all displayed: nrKeys: ${nrKeys}, duration: ${duration}, dataLen: ${dataLen}`);
+                console.log("Collection usage: ", collectionUsage);
             }
+
+            // account: 609
+            // block: 65,839,824
+            // block_expand: 130,961
+            // doc_info: 2,629,256
+            // doc_meta: 8,457,378
+            // heartbeat: 15912
+            // migration: 933
+            // profile_owner: 311
+            // user_pref: 833
+            // user_trait: 1624
 
         });
 
@@ -298,9 +350,12 @@ async function doTestFirestore() {
 
 function doDebug() {
 
+    // 77,077,641
+
     async function doAsync() {
         markStarting();
-        await doTestFirestore();
+        // await doTestFirestore();
+        await doTestIndexedDB()
         markCompleted();
     }
 
