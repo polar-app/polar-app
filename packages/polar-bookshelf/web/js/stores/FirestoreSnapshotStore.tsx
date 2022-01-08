@@ -145,15 +145,13 @@ interface FirestoreSnapshotForUserCollectionOpts {
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
- * @param id The ID of this snapshot used for logging / tracing.
  * @param collectionName The collection to read for the snapshot.
  * @param opts The options used to create snapshots.
  */
-export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string,
-                                                                            collectionName: string,
+export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(collectionName: string,
                                                                             opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
 
-    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
 
     const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
@@ -174,7 +172,7 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: 
                 const snapshotHandler = (snapshot: IQuerySnapshot<ISnapshotMetadata, D>) => {
 
                     if (! logged) {
-                        console.log(`Snapshot from cache for ${id}: ${snapshot.metadata.fromCache}`);
+                        console.log(`Snapshot from cache for ${collectionName}: ${snapshot.metadata.fromCache}`);
                         logged = true;
                     }
                     onNext(snapshot);
