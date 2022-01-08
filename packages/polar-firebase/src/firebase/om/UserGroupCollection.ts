@@ -1,5 +1,5 @@
 import {Collections} from "polar-firestore-like/src/Collections";
-import {UserIDStr, GroupIDStr} from "polar-shared/src/util/Strings";
+import {GroupIDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
@@ -15,7 +15,8 @@ export class UserGroupCollection {
 
     }
 
-    public static async onSnapshot<SM = unknown>(firestore: IFirestoreClient, uid: UserIDStr,
+    public static async onSnapshot<SM = unknown>(firestore: IFirestoreClient,
+                                                 uid: UserIDStr,
                                                  handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
 
         return Collections.onDocumentSnapshot<UserGroupRaw>(firestore,

@@ -4,6 +4,7 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
+import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 
 export namespace FirebaseUserCreator {
 
@@ -36,6 +37,8 @@ export namespace FirebaseUserCreator {
         const user = await auth.createUser({email, password});
 
         const firestore = FirestoreAdmin.getInstance();
+
+        await UserPrefCollection.initForUser(firestore, user.uid);
 
         await MigrationCollection.createMigrationForBlockAnnotations(firestore, user.uid);
 
