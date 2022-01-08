@@ -3,29 +3,29 @@
  */
 export namespace Tracer {
 
-    const WARN_THRESHOLD = 125;
+    const WARN_THRESHOLD = 0;
 
     interface Timer {
         stop: () => void;
     }
 
-    function createTimer(id: string): Timer {
+    function createTimer(id: string, threshold: number): Timer {
         const before = Date.now();
 
         return {
             stop: () => {
                 const after = Date.now();
                 const duration = after - before;
-                if (duration > WARN_THRESHOLD) {
+                if (duration > threshold) {
                     console.warn(`Slow task ${id}: `, duration);
                 }
             }
         }
     }
 
-    export function sync<T>(delegate: () => T, id: string): T {
+    export function sync<T>(delegate: () => T, id: string, threshold: number = WARN_THRESHOLD): T {
 
-        const timer = createTimer(id);
+        const timer = createTimer(id, threshold);
         try {
             return delegate();
         } finally {
@@ -44,7 +44,7 @@ export namespace Tracer {
      * The idea about taking a promise directly is to just call the function
      * directly, have it return a promise, then this method hnndles it directly.
      */
-    export async function async<T>(delegate: AsyncDelegate<T>, id: string): Promise<T> {
+    export async function async<T>(delegate: AsyncDelegate<T>, id: string, threshold: number = WARN_THRESHOLD): Promise<T> {
 
         function toPromise(): Promise<T> {
 
@@ -57,7 +57,7 @@ export namespace Tracer {
 
         const delegatePromise = toPromise();
 
-        const timer = createTimer(id);
+        const timer = createTimer(id, threshold);
 
         try {
             return await delegatePromise;

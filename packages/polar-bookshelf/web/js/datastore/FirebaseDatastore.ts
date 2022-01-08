@@ -45,7 +45,6 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
-import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
@@ -192,28 +191,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             console.error("Could not handle snapshot: ", err);
             errorListener(err);
         };
-
-        // Try to get the FIRST snapshot from the cache if possible and then
-        // continue after that working with server snapshots and updated
-        // data
-
-        try {
-
-            // TODO: technically we also, do NOT need to do this as coming from
-            // cache I think is the default, but we should verify.
-
-            const stopwatch = Stopwatches.create();
-            const cachedSnapshot = await query.get({ source: 'cache' });
-
-            // TODO: this takes a LONG time to resolve from cache!  Almost 2s
-
-            console.log("Initial cached snapshot duration: " + stopwatch.stop());
-
-            onNextForSnapshot(cachedSnapshot);
-
-        } catch (e) {
-            // no cached snapshot is available and that's ok.
-        }
 
         const unsubscribe =
             query.onSnapshot({includeMetadataChanges: true}, onNextForSnapshot, onSnapshotError);
