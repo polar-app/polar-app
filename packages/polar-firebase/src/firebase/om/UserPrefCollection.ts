@@ -25,6 +25,16 @@ export namespace UserPrefCollection {
         await ref.set(userPref);
 
     }
+
+    export async function doDelete<SM = unknown>(firestore: IFirestore<SM>,
+                                                 uid: UserIDStr) {
+
+        const ref = firestore.collection(COLLECTION_NAME).doc(uid);
+
+        await ref.delete();
+
+    }
+
 }
 
 export interface IPref {

@@ -52,4 +52,15 @@ export namespace FirebaseUserCreator {
 
     }
 
+    export async function deleteUser(uid: UserIDStr) {
+
+        const auth = FirebaseAdmin.app().auth();
+        const firestore = FirestoreAdmin.getInstance();
+
+        await UserPrefCollection.doDelete(firestore, uid)
+
+        await auth.deleteUser(uid);
+
+    }
+
 }
