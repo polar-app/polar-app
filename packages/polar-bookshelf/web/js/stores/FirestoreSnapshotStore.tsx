@@ -130,15 +130,28 @@ export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
     UseFirestoreSnapshotStore<D>
 ];
 
+
+interface FirestoreSnapshotForUserCollectionOpts {
+
+    /**
+     *  Fire an initial empty snapshot RIGHT at the beginning to work around a
+     *  bug with Firestore where it can't cache empty snapshots, and we have to
+     *  wait for a server snapshot.
+     */
+    readonly initialEmpty?: boolean;
+
+}
+
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
- * @param id The ID of this snapshot used for logging / tracing.
  * @param collectionName The collection to read for the snapshot.
+ * @param opts The options used to create snapshots.
  */
-export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
+export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(collectionName: string,
+                                                                            opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
 
-    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
 
     const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
@@ -152,15 +165,73 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(id: 
                 };
             }
 
+            let logged = false;
+
             return (onNext, onError) => {
+
+                const snapshotHandler = (snapshot: IQuerySnapshot<ISnapshotMetadata, D>) => {
+
+                    if (! logged) {
+                        console.log(`Snapshot from cache for ${collectionName}: ${snapshot.metadata.fromCache}`);
+                        logged = true;
+                    }
+                    onNext(snapshot);
+                }
+
+                if (opts.initialEmpty) {
+                    onNext(createEmptyQuerySnapshot());
+                }
 
                 return firestore.collection(collectionName)
                                 .where('uid', '==', uid)
-                                .onSnapshot<D>(next => onNext(next), err => onError(err));
+                                .onSnapshot<D>({includeMetadataChanges: true}, next => snapshotHandler(next), err => onError(err));
 
             }
 
         }, [firestore, uid]);
+
+        return (
+            <SnapshotStoreProvider subscriber={subscriber} fallback={props.fallback}>
+                {props.children}
+            </SnapshotStoreProvider>
+        );
+
+    }));
+
+    return [FirestoreSnapshotProvider, useSnapshotStore];
+
+}
+
+function createEmptyQuerySnapshot<D>(): IQuerySnapshot<ISnapshotMetadata, D> {
+    return {
+        empty: true,
+        size: 0,
+        metadata: {
+            hasPendingWrites: false,
+            fromCache: true
+        },
+        docs: [],
+        docChanges: () => []
+    }
+}
+
+export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
+
+    const [SnapshotStoreProvider, useSnapshotStore] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
+
+    const FirestoreSnapshotProvider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
+
+        const subscriber = React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
+
+            return (onNext, onError) => {
+
+                onNext(createEmptyQuerySnapshot());
+
+                return () => console.log("unsubscribed");
+
+            }
+
+        }, []);
 
         return (
             <SnapshotStoreProvider subscriber={subscriber} fallback={props.fallback}>

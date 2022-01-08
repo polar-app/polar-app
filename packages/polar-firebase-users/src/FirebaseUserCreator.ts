@@ -4,6 +4,7 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
+import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 
 export namespace FirebaseUserCreator {
 
@@ -37,6 +38,8 @@ export namespace FirebaseUserCreator {
 
         const firestore = FirestoreAdmin.getInstance();
 
+        await UserPrefCollection.initForUser(firestore, user.uid);
+
         await MigrationCollection.createMigrationForBlockAnnotations(firestore, user.uid);
 
         await sendWelcomeEmail(email);
@@ -46,6 +49,17 @@ export namespace FirebaseUserCreator {
         }
 
         return user;
+
+    }
+
+    export async function deleteUser(uid: UserIDStr) {
+
+        const auth = FirebaseAdmin.app().auth();
+        const firestore = FirestoreAdmin.getInstance();
+
+        await UserPrefCollection.doDelete(firestore, uid)
+
+        await auth.deleteUser(uid);
 
     }
 

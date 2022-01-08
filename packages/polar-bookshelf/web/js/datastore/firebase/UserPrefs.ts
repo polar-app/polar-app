@@ -12,7 +12,7 @@ export type UserPrefCallback = (data: IUserPref | undefined) => void;
 
 export namespace UserPrefs {
 
-    const COLLECTION = 'user_pref';
+    export const COLLECTION_NAME = 'user_pref';
 
     async function getUserID(): Promise<UserIDStr> {
 
@@ -31,7 +31,7 @@ export namespace UserPrefs {
         const uid  = await getUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        const userPref: IUserPref | undefined = await Collections.getByID(firestore, COLLECTION, uid);
+        const userPref: IUserPref | undefined = await Collections.getByID(firestore, COLLECTION_NAME, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -47,7 +47,7 @@ export namespace UserPrefs {
         const uid  = await getUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        const ref = Collections.createRef(firestore, COLLECTION, uid);
+        const ref = Collections.createRef(firestore, COLLECTION_NAME, uid);
 
         const userPref: IUserPref = {
             uid,
@@ -63,7 +63,7 @@ export namespace UserPrefs {
                                onSnapshot: UserPrefCallback,
                                onError?: OnErrorCallback): SnapshotUnsubscriber {
 
-        const ref = firestore.collection(COLLECTION).doc(uid);
+        const ref = firestore.collection(COLLECTION_NAME).doc(uid);
 
         const handleSnapshot = (snapshot: ISnapshot<IUserPref> | undefined) => {
             if (snapshot) {
@@ -88,7 +88,7 @@ export namespace UserPrefs {
                                 onSnapshot: UserPrefCallback2,
                                 onError?: OnErrorCallback): SnapshotUnsubscriber {
 
-        const ref = firestore.collection(COLLECTION).doc(uid);
+        const ref = firestore.collection(COLLECTION_NAME).doc(uid);
 
         const handleSnapshot = (snapshot: ISnapshot<IUserPref> | undefined) => {
             if (snapshot) {
