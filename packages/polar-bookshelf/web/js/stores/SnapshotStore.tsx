@@ -44,9 +44,29 @@ export type SnapshotStoreProvider<S> = React.FC<SnapshotStoreProviderProps<S>>;
 
 export type UseSnapshotStore<S> = () => ISnapshot<S>;
 
+export interface SnapshotStoreLoaderProps<S> {
+    readonly subscriber: SnapshotSubscriber<S>;
+}
+
+export type SnapshotStoreLoader<S> = React.FC<SnapshotStoreLoaderProps<S>>;
+
+export interface SnapshotStoreLatchProps {
+    readonly fallback: JSX.Element;
+    readonly children: JSX.Element;
+}
+
+/**
+ * The latch HAS to be called before a component can useSnapshotStore to verify
+ * that the snapshot was loaded at least once otherwise the given fallback is
+ * used.
+ */
+export type SnapshotStoreLatch = React.FC<SnapshotStoreLatchProps>;
+
 export type SnapshotStoreTuple<S> = readonly [
     SnapshotStoreProvider<S>,
-    UseSnapshotStore<S>
+    UseSnapshotStore<S>,
+    SnapshotStoreLoader<S>,
+    SnapshotStoreLatch
 ];
 
 /**
@@ -66,12 +86,9 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     const [ValueStoreProvider, useValue, useValueSetter] = createValueStore<ISnapshot<S> | undefined>();
 
-    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
+    const SnapshotStoreLoader: React.FC<SnapshotStoreLoaderProps<S>> = React.memo(function SnapshotStoreLoader(props) {
 
-        const value = useValue();
         const valueSetter = useValueSetter()
-        const snapshotCreated = React.useRef(0);
-        const latencyLogged = React.useRef(false);
 
         const handleNext = React.useCallback((snapshot: S) => {
 
@@ -86,21 +103,55 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
         }, [valueSetter]);
 
         React.useEffect(() => {
-            snapshotCreated.current = Date.now();
             return props.subscriber(handleNext, handleError);
         }, [props, handleNext, handleError])
+
+        return null;
+
+    });
+
+    const SnapshotStoreLatch: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatch(props) {
+
+        const value = useValue();
+        const snapshotCreated = React.useRef(0);
+        const latencyLogged = React.useRef(false);
+
+        React.useEffect(() => {
+
+            if (value !== undefined && snapshotCreated.current === 0) {
+                snapshotCreated.current = Date.now();
+            }
+
+        }, [props, value])
+
+        React.useEffect(() => {
+
+            if (! latencyLogged.current) {
+                const latency = Math.abs(Date.now() - snapshotCreated.current);
+                console.log(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
+                latencyLogged.current = true;
+            }
+
+        }, [])
 
         if (value === undefined) {
             return props.fallback;
         }
 
-        if (! latencyLogged.current) {
-            const latency = Math.abs(Date.now() - snapshotCreated.current);
-            console.log(`Initial snapshot latency for ${id} has duration: ${latency}ms`);
-            latencyLogged.current = true;
-        }
-
         return props.children;
+
+    });
+
+    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
+
+        return (
+            <>
+                <SnapshotStoreLoader subscriber={props.subscriber}/>
+                <SnapshotStoreLatch fallback={props.fallback}>
+                    {props.children}
+                </SnapshotStoreLatch>
+            </>
+        )
 
     });
 
@@ -126,6 +177,6 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     }
 
-    return [SnapshotStoreProvider, useSnapshotStore]
+    return [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch]
 
 }
