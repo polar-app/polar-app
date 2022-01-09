@@ -69,6 +69,12 @@ export type SnapshotStoreTuple<S> = readonly [
     SnapshotStoreLatch
 ];
 
+const SnapshotLatchContext = React.createContext<boolean>(false);
+
+function useSnapshotLatchContext() {
+    return React.useContext(SnapshotLatchContext);
+}
+
 /**
  * Create a snapshot store of a given type that is initially undefined, then a
  * value is provided for us by the underlying snapshot provider.
@@ -110,7 +116,9 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     });
 
-    const SnapshotStoreLatch: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatch(props) {
+    // TODO: implement a proper latch verification...
+
+    const SnapshotStoreLatchInner: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatch(props) {
 
         const value = useValue();
         const snapshotCreated = React.useRef(0);
@@ -142,6 +150,19 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     });
 
+    const SnapshotStoreLatch: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatch(props) {
+
+        return (
+            <SnapshotLatchContext.Provider value={true}>
+                <SnapshotStoreLatchInner fallback={props.fallback}>
+                    {props.children}
+                </SnapshotStoreLatchInner>
+            </SnapshotLatchContext.Provider>
+        );
+
+    });
+
+
     const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
 
         return (
@@ -168,6 +189,11 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
     const useSnapshotStore = (): ISnapshot<S> => {
 
         const value = useValue();
+        const snapshotLatchUsed = useSnapshotLatchContext();
+
+        if (! snapshotLatchUsed) {
+            throw new Error("SnapshotStoreLatch not used.  This needs to be used at least once along with SnapshotStoreLoader");
+        }
 
         // WARN: this seems dangerous but it is safe because
         // SnapshotStoreProviderInner only triggers renders on children when the
