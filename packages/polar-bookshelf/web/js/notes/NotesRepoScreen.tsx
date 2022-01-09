@@ -167,7 +167,7 @@ export const NotesRepoScreen: React.FC = observer(function NotesRepoScreen() {
     const noteLinkLoader = useNoteLinkLoader();
 
     const rows = React.useMemo(() => (
-        blocksStore.namedBlocks.map(block => block.toJSON())
+        blocksStore.namedBlocks.map(block => block)
             .map(({ id, content, created, updated }) => ({
                 title: BlockTextContentUtils.getTextContentMarkdown(content),
                 created: new Date(created),
