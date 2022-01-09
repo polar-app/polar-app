@@ -58,7 +58,7 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber} fallback={<Fallback/>}>
+                <TestStoreProvider subscriber={subscriber}>
                     <TestInner/>
                 </TestStoreProvider>
             );
@@ -119,7 +119,7 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber} fallback={<Fallback/>}>
+                <TestStoreProvider subscriber={subscriber}>
                     <TestInner/>
                 </TestStoreProvider>
             );

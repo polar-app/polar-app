@@ -30,7 +30,6 @@ export type ISnapshot<S> = ISnapshotRight<S> | ISnapshotLeft;
 
 interface SnapshotStoreProviderProps<S> {
     readonly subscriber: SnapshotSubscriber<S>;
-    readonly fallback: JSX.Element;
     readonly children: JSX.Element;
 }
 
@@ -162,38 +161,23 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     });
 
-
-    const SnapshotStoreProviderInner: React.FC<SnapshotStoreProviderProps<S>> = React.memo(function SnapshotStoreProviderInner(props) {
-
-        return (
-            <>
-                <SnapshotStoreLoader subscriber={props.subscriber}/>
-                <SnapshotStoreLatch fallback={props.fallback}>
-                    {props.children}
-                </SnapshotStoreLatch>
-            </>
-        )
-
-    });
-
     const SnapshotStoreProvider: React.FC<SnapshotStoreProviderProps<S>> = React.memo(profiled(function SnapshotStoreProvider(props) {
         return (
             <ValueStoreProvider initialStore={undefined}>
-                <SnapshotStoreProviderInner fallback={props.fallback} subscriber={props.subscriber}>
-                    {props.children}
-                </SnapshotStoreProviderInner>
+                {props.children}
             </ValueStoreProvider>
         );
     }));
 
     const useSnapshotStore = (): ISnapshot<S> => {
 
-        const value = useValue();
         const snapshotLatchUsed = useSnapshotLatchContext();
 
         if (! snapshotLatchUsed) {
             throw new Error("SnapshotStoreLatch not used.  This needs to be used at least once along with SnapshotStoreLoader");
         }
+
+        const value = useValue();
 
         // WARN: this seems dangerous, but, in practice, it is safe because
         // SnapshotStoreProviderInner only triggers renders on children when the
