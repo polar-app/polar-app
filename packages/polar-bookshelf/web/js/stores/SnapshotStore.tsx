@@ -195,7 +195,7 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
             throw new Error("SnapshotStoreLatch not used.  This needs to be used at least once along with SnapshotStoreLoader");
         }
 
-        // WARN: this seems dangerous but it is safe because
+        // WARN: this seems dangerous, but, in practice, it is safe because
         // SnapshotStoreProviderInner only triggers renders on children when the
         // value is not null.  This way all users will receive ISnapshot
         // properly
