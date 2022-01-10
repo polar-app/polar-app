@@ -1,4 +1,4 @@
-import {computed, makeObservable, observable, toJS} from "mobx"
+import {computed, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
@@ -19,8 +19,6 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
         this._docInfo = opts.docInfo;
         this._mutator = opts.mutator || '';
 
-        makeObservable(this);
-
     }
 
     @computed get type() {
@@ -36,6 +34,7 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
     }
 
     public update(content: IBlockContent) {
+        this.convertToObservable();
         if (content.type === this._type) {
             this._docInfo = content.docInfo;
             this._mutator = content.mutator || '';
@@ -47,6 +46,7 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
     }
 
     public setMutator(mutator: DeviceIDStr) {
+        this.convertToObservable();
         this._mutator = mutator;
     }
 

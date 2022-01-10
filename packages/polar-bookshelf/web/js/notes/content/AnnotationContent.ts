@@ -31,8 +31,6 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
         this._pageNum = opts.pageNum;
         this._value = opts.value;
 
-        // FIXME: makeObservable(this);
-
     }
 
     @computed get type() {
@@ -56,10 +54,14 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
     }
 
     public setMutator(mutator: DeviceIDStr) {
+        this.convertToObservable();
         this._mutator = mutator;
     }
 
     public update(content: IBlockContent) {
+
+        this.convertToObservable();
+
         if (content.type === this._type) {
             this._pageNum = content.pageNum;
             this._docID = content.docID;

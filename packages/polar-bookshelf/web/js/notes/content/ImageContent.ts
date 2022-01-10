@@ -1,4 +1,4 @@
-import {computed, makeObservable, observable, toJS} from "mobx"
+import {computed, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DataURLStr, IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
@@ -18,7 +18,6 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
 
     @observable private _mutator: DeviceIDStr;
 
-
     constructor(opts: IImageContent) {
         super(opts);
 
@@ -29,8 +28,6 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
         this._naturalWidth = opts.naturalWidth;
         this._naturalHeight = opts.naturalHeight;
         this._mutator = opts.mutator || '';
-
-        makeObservable(this)
 
     }
 
@@ -63,6 +60,8 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
     }
 
     public update(content: IBlockContent) {
+        this.convertToObservable();
+
         if (content.type === 'image') {
             this._src = content.src;
             this._width = content.width;
@@ -78,6 +77,7 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
     }
 
     public setMutator(mutator: DeviceIDStr) {
+        this.convertToObservable();
         this._mutator = mutator;
     }
 

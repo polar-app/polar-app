@@ -1,4 +1,4 @@
-import {computed, makeObservable, observable, toJS} from "mobx"
+import {computed, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
@@ -18,8 +18,6 @@ export class NameContent extends HasLinks implements INameContent, IBaseBlockCon
         this._data = opts.data;
         this._mutator = opts.mutator || '';
 
-        makeObservable(this)
-
     }
 
     @computed get type() {
@@ -35,6 +33,7 @@ export class NameContent extends HasLinks implements INameContent, IBaseBlockCon
     }
 
     public update(content: IBlockContent) {
+        this.convertToObservable();
         if (content.type === 'name') {
             this._data = content.data;
             this._mutator = content.mutator || '';
@@ -46,6 +45,7 @@ export class NameContent extends HasLinks implements INameContent, IBaseBlockCon
     }
 
     public setMutator(mutator: DeviceIDStr) {
+        this.convertToObservable();
         this._mutator = mutator;
     }
 

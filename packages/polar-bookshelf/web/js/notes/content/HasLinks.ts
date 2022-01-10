@@ -9,10 +9,10 @@ export const TAG_IDENTIFIER = '#';
 export class HasLinks implements IHasLinksContent {
     @observable private _links: ReadonlyArray<IBlockLink>;
 
+    protected _observable = false;
+
     constructor(props: IHasLinksContent) {
         this._links = props.links || [];
-
-        makeObservable(this);
     }
 
     @computed get links() {
@@ -41,14 +41,19 @@ export class HasLinks implements IHasLinksContent {
     }
 
     public updateLinks(links: ReadonlyArray<IBlockLink>): void {
+        this.convertToObservable();
         this._links = links;
     }
 
     public addLink(link: IBlockLink) {
+        this.convertToObservable();
         this._links = [...this.links, link];
     }
 
     public removeLink(id: BlockIDStr) {
+
+        this.convertToObservable();
+
         const newLinks = [];
         let removed = false;
 
@@ -66,4 +71,9 @@ export class HasLinks implements IHasLinksContent {
         this._links = newLinks;
     }
 
+    protected convertToObservable() {
+        if (! this._observable) {
+            makeObservable(this);
+        }
+    }
 }
