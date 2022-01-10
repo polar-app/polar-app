@@ -29,7 +29,6 @@ export interface ISnapshotRight<S> {
 export type ISnapshot<S> = ISnapshotRight<S> | ISnapshotLeft;
 
 interface SnapshotStoreProviderProps<S> {
-    readonly subscriber: SnapshotSubscriber<S>;
     readonly children: JSX.Element;
 }
 

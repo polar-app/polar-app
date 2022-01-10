@@ -2,6 +2,7 @@ import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import {createSnapshotStore, OnNextCallback, SnapshotSubscriber} from "./SnapshotStore";
 import {assert} from 'chai';
+import {LinearProgress} from "@material-ui/core";
 
 interface IValue {
     readonly name: string;
@@ -11,7 +12,7 @@ interface IRef<V> {
     current: V;
 }
 
-const [TestStoreProvider, useTestStore] = createSnapshotStore<IValue>('test');
+const [TestStoreProvider, useTestStore, TestStoreLoader, TestStoreLatch] = createSnapshotStore<IValue>('test');
 
 describe("SnapshotStore", function() {
 
@@ -58,8 +59,14 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber}>
-                    <TestInner/>
+                <TestStoreProvider>
+                    <>
+                        <TestStoreLoader subscriber={subscriber}/>
+
+                        <TestStoreLatch fallback={<LinearProgress/>}>
+                            <TestInner/>
+                        </TestStoreLatch>
+                    </>
                 </TestStoreProvider>
             );
 
@@ -119,8 +126,16 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber}>
-                    <TestInner/>
+                <TestStoreProvider>
+
+                    <>
+                        <TestStoreLoader subscriber={subscriber}/>
+
+                        <TestStoreLatch fallback={<LinearProgress/>}>
+                            <TestInner/>
+                        </TestStoreLatch>
+                    </>
+
                 </TestStoreProvider>
             );
 

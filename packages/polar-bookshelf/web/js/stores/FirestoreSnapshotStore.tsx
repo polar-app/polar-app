@@ -204,10 +204,8 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
 
-        const subscriber = useSubscriber()
-
         return (
-            <SnapshotStoreProvider subscriber={subscriber}>
+            <SnapshotStoreProvider>
                 {props.children}
             </SnapshotStoreProvider>
         );
@@ -263,10 +261,8 @@ export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(
 
     const Provider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
 
-        const subscriber = useSubscriber();
-
         return (
-            <SnapshotStoreProvider subscriber={subscriber}>
+            <SnapshotStoreProvider>
                 {props.children}
             </SnapshotStoreProvider>
         );
