@@ -2,7 +2,6 @@ import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import {createSnapshotStore, OnNextCallback, SnapshotSubscriber} from "./SnapshotStore";
 import {assert} from 'chai';
-import {LinearProgress} from "@material-ui/core";
 
 interface IValue {
     readonly name: string;
@@ -131,7 +130,7 @@ describe("SnapshotStore", function() {
                     <>
                         <TestStoreLoader subscriber={subscriber}/>
 
-                        <TestStoreLatch fallback={<LinearProgress/>}>
+                        <TestStoreLatch fallback={<Fallback/>}>
                             <TestInner/>
                         </TestStoreLatch>
                     </>
