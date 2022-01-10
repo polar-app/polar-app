@@ -78,7 +78,6 @@ import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnn
 import {ListUsers} from "./private-beta/ListUsers";
 import {ConsoleError} from './ConsoleError';
 import {BlocksUserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/BlocksUserTagsDataLoader";
-import {NotesRepoScreen} from "../../notes/NotesRepoScreen";
 import {NotesRepoScreen2} from "../../../../apps/repository/js/notes_repo/NotesRepoScreen2";
 import {NotesContainer} from '../../notes/NotesContainer';
 import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
@@ -381,7 +380,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <PersistentRoute path={RoutePathNames.NOTES}
                                                              exact
                                                              strategy="display">
-                                                <NotesRepoScreen/>
+                                                <NotesRepoScreen2/>
                                             </PersistentRoute>
                                         </DeviceRouters.Desktop>
 

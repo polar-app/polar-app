@@ -1,11 +1,12 @@
 import {IGenericSnapshotMetadata} from "./IGenericSnapshotMetadata";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IGenericQueryDocumentSnapshot} from "./IGenericQueryDocumentSnapshot";
 
 export interface IGenericCollectionSnapshot<T> {
     readonly empty: boolean;
     readonly metadata: IGenericSnapshotMetadata;
-    readonly docs: ReadonlyArray<T>;
+    readonly docs: ReadonlyArray<IGenericQueryDocumentSnapshot<T>>;
     readonly docChanges: ReadonlyArray<IGenericDocumentChange<T>>;
 }
 
@@ -20,8 +21,18 @@ export function createMockSnapshot<T extends IDRecord>(values: ReadonlyArray<T>)
         return {
             id: value.id,
             type: 'added',
-            data: value
+            data: () => value
         }
+    }
+
+    const convertToDocumentSnapshot = (value: T): IGenericQueryDocumentSnapshot<T> => {
+
+        return {
+            exists: true,
+            id: value.id,
+            data: () => value
+        };
+
     }
 
     return {
@@ -30,7 +41,7 @@ export function createMockSnapshot<T extends IDRecord>(values: ReadonlyArray<T>)
             hasPendingWrites: false,
             fromCache: true
         },
-        docs: values,
+        docs: values.map(current => convertToDocumentSnapshot(current)),
         docChanges: values.map(current => convertToDocChange(current))
     };
 

@@ -6,5 +6,5 @@ export type DocumentChangeType = 'added' |  'modified' | 'removed';
 export interface IGenericDocumentChange<T> {
     readonly id: string;
     readonly type: DocumentChangeType;
-    readonly data: T;
+    readonly data: () => T;
 }

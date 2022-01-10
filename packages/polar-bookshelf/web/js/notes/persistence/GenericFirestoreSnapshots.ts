@@ -6,12 +6,16 @@ import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 import {IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {IGenericQueryDocumentSnapshot} from "./IGenericQueryDocumentSnapshot";
 
 /**
  * tuple of field path, op, and value.
  */
 export type GenericClause = readonly [string, TWhereFilterOp, any];
 
+/**
+ * @deprecated use FirestoreSnapshotStore
+ */
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,
                                                 listener: (snapshot: IGenericCollectionSnapshot<T>) => void) {
@@ -23,17 +27,19 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
     React.useEffect(() => {
 
+        // FIXME: this seems to take a fair amount of time...maybe I could just cast docs and docChanges
+        // which would be faster I think.
+
         const convertSnapshot = (current: IQuerySnapshotClient): IGenericCollectionSnapshot<T> => {
 
             const convertDocChange = (current: IDocumentChangeClient): IGenericDocumentChange<T> => {
 
-                const data: T = current.doc.data() as T;
-
                 return {
                     id: current.doc.id,
                     type: current.type,
-                    data
+                    data: () => current.doc.data() as T
                 }
+
             }
 
             return {
@@ -42,7 +48,7 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
                     hasPendingWrites: current.metadata.hasPendingWrites,
                     fromCache: current.metadata.fromCache
                 },
-                docs: current.docs.map(doc => doc.data() as T),
+                docs: current.docs as any as ReadonlyArray<IGenericQueryDocumentSnapshot<T>>,
                 docChanges: current.docChanges().map(current => convertDocChange(current))
             }
 

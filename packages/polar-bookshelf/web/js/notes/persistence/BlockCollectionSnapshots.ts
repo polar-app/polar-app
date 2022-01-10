@@ -42,7 +42,7 @@ export function useFirestoreBlockCollectionSnapshots(listener: (snapshot: IBlock
         const doc = snapshot.docs[0];
 
         const sharedNamespaces =
-            arrayStream([...doc.nspaces_ro, ...doc.nspaces_rw])
+            arrayStream([...doc.data().nspaces_ro, ...doc.data().nspaces_rw])
                 .unique(key => key)
                 .collect();
 

@@ -4,6 +4,8 @@ import {useInView} from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
 import {typedMemo} from "../hooks/ReactHooks";
 
+const TRACE_INITIAL_ACTIVE = false;
+
 interface IProps<V extends ListValue> {
 
     readonly root: HTMLElement;
@@ -54,6 +56,10 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
     if (observation.inView && ! inView) {
         // only go one way ... then don't deactivate...
         if (! opts.inactive) {
+
+            if (TRACE_INITIAL_ACTIVE) {
+                console.log("IntersectionListBlock: block now active.");
+            }
             setUseInView(true);
         }
     }

@@ -60,7 +60,10 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {
+    ANNOTATION_REPO_CHILDREN_DEPTH,
+    BlocksAnnotationRepoStore
+} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -2428,31 +2431,43 @@ export class BlocksStore implements IBlocksStore {
 
     @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
 
+        console.log("FIXME: handleBlocksPersistenceSnapshot with N changes: " + snapshot.docChanges.length)
+
+        console.time("handleBlocksPersistenceSnapshot");
+
         for (const docChange of snapshot.docChanges) {
+
+            const data = docChange.data();
 
             switch(docChange.type) {
 
                 case "added":
-                    this.doPut([docChange.data]);
+                    this.doPut([data]);
                     break;
 
                 case "modified":
-                    this.doPut([docChange.data]);
+                    this.doPut([data]);
                     break;
 
                 case "removed":
-                    this.doDelete([docChange.data.id]);
+                    this.doDelete([data.id]);
                     break;
 
             }
 
         }
 
+        console.timeEnd("handleBlocksPersistenceSnapshot");
+
         this._hasSnapshot = true;
 
     }
 
     @action public handleBlockExpandSnapshot(snapshot: IBlockExpandCollectionSnapshot) {
+
+        console.log("FIXME: handleBlockExpandSnapshot with N changes: " + snapshot.docChanges.length)
+
+        console.time("handleBlockExpandSnapshot");
 
         for (const docChange of snapshot.docChanges) {
 
@@ -2469,6 +2484,8 @@ export class BlocksStore implements IBlocksStore {
             }
 
         }
+
+        console.timeEnd("handleBlockExpandSnapshot");
 
         this._hasSnapshot = true;
 
