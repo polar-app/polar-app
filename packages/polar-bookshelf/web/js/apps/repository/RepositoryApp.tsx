@@ -406,11 +406,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <Route exact path={RoutePathNames.ENABLE_FEATURE_TOGGLE}
                                                    component={EnableFeatureToggle}/>
 
-                                            <Route path={RoutePathNames.NOTES} exact>
-                                                <DeviceRouters.NotDesktop>
+                                            <DeviceRouters.NotDesktop>
+                                                <Route path={RoutePathNames.NOTES} exact>
                                                     <NotesRepoScreen2/>
-                                                </DeviceRouters.NotDesktop>
-                                            </Route>
+                                                </Route>
+                                            </DeviceRouters.NotDesktop>
 
                                             <Route path="/hello-ssr"
                                                    component={HelloServerSideRender}/>
