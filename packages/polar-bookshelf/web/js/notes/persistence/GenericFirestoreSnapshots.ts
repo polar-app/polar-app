@@ -54,7 +54,19 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
         }
 
-        const convertSnapshotMutateState = (current: IQuerySnapshotClient): void => {
+        const before = Date.now();
+        let loggedInitialSnapshotDuration = false;
+
+        const handleSnapshot = (current: IQuerySnapshotClient): void => {
+
+            if (! loggedInitialSnapshotDuration) {
+
+                const after = Date.now();
+                const duration = Math.abs(after - before);
+                console.log(`Initial snapshot duration for ${collectionName} was: ${duration}ms`);
+                loggedInitialSnapshotDuration = true;
+            }
+
             listener(convertSnapshot(current));
         }
 
@@ -65,8 +77,9 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
         // we have to have an 'in' clause here...
         const collection = firestore.collection(collectionName);
         const [clauseFieldPath, clauseOp, clauseValue] = clause;
+
         const snapshotUnsubscriber = collection.where(clauseFieldPath, clauseOp, clauseValue)
-            .onSnapshot(current => convertSnapshotMutateState(current), err => {
+            .onSnapshot({includeMetadataChanges: true}, current => handleSnapshot(current), err => {
                 console.log("Received snapshot error: ", err);
             })
 

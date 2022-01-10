@@ -1,4 +1,4 @@
-import {computed, makeObservable, observable, toJS} from "mobx";
+import {computed, observable, toJS} from "mobx";
 import {
     AnnotationContentType,
     IAnnotationContent,
@@ -31,7 +31,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
         this._pageNum = opts.pageNum;
         this._value = opts.value;
 
-        makeObservable(this);
+        // FIXME: makeObservable(this);
 
     }
 
