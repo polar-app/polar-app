@@ -6,7 +6,15 @@ import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {BlockIDStr, IBlock, IBlockContent, INewChildPosition, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {
+    BlockIDStr,
+    IBlock,
+    IBlockContent,
+    INewChildPosition,
+    NamespaceIDStr,
+    TMutation,
+    UIDStr
+} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import PositionalArray = PositionalArrays.PositionalArray;
@@ -66,6 +74,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @observable private _mutation: TMutation;
 
+    protected _observable = false;
+
     constructor(opts: IBlock<C | IBlockContent>) {
 
         Object.values(opts.items).map(current => Preconditions.assertString(current, 'current'));
@@ -81,8 +91,6 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._items = {...opts.items};
         this._content = Contents.create(opts.content);
         this._mutation = opts.mutation;
-
-        makeObservable(this);
 
     }
 
@@ -147,6 +155,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setContent(content: C | IBlockContent) {
 
+        this.convertToObservable();
+
         if (this._content.type !== content.type) {
             throw new Error(`Can not change content types from ${this._content.type} to ${content.type}`);
         }
@@ -162,6 +172,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action setParent(id: BlockIDStr | undefined): boolean {
+
+        this.convertToObservable();
 
         if (this._parent !== id) {
             this._parent = id;
@@ -182,6 +194,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setParents(parents: ReadonlyArray<BlockIDStr>): boolean {
 
+        this.convertToObservable();
+
         if (this.hasParentsMutated(parents)) {
             this._parents = [...parents];
             this._updated = ISODateTimeStrings.create();
@@ -199,6 +213,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setItems(items: ReadonlyArray<BlockIDStr>): boolean {
 
+        this.convertToObservable();
+
         items.map(current => Preconditions.assertString(current, 'current'));
 
         if (this.hasItemsMutated(items)) {
@@ -212,6 +228,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action public setItemsUsingPatches(itemPositionPatches: ReadonlyArray<IItemsPositionPatch>): boolean {
+
+        this.convertToObservable();
 
         let mutated: boolean = false;
 
@@ -249,6 +267,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
 
+        this.convertToObservable();
+
         Preconditions.assertString(id, 'id');
 
         try {
@@ -278,6 +298,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action private doRemoveItem(id: BlockIDStr): boolean {
 
+        this.convertToObservable();
+
         Preconditions.assertString(id, 'id');
 
         if (this.hasItem(id)) {
@@ -294,6 +316,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     @action removeItem(id: BlockIDStr): boolean {
         Preconditions.assertString(id, 'id');
 
+        this.convertToObservable();
+
         if (this.doRemoveItem(id)) {
 
             this._updated = ISODateTimeStrings.create();
@@ -306,6 +330,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action private doPutItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
+
+        this.convertToObservable();
 
         Preconditions.assertString(id, 'id');
 
@@ -323,6 +349,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action putItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
+        this.convertToObservable();
+
         Preconditions.assertString(id, 'id');
 
         if (this.doPutItem(key, id)) {
@@ -338,6 +366,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     public hasItem(id: BlockIDStr): boolean {
+
         Preconditions.assertString(id, 'id');
 
         return PositionalArrays.toArray(this._items).includes(id);
@@ -351,6 +380,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action set(block: IBlock) {
+
+        this.convertToObservable();
 
         this._parent = block.parent;
         this._created = block.created;
@@ -401,6 +432,11 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
+    protected convertToObservable() {
+        if (! this._observable) {
+            makeObservable(this);
+        }
+    }
     public toJSON(): IBlock<C> {
 
         return {

@@ -1,4 +1,4 @@
-import {computed, makeObservable, observable, toJS} from "mobx"
+import {computed, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DateContentFormat, IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
@@ -20,8 +20,6 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
         this._format = opts.format;
         this._mutator = opts.mutator || '';
 
-        makeObservable(this);
-
     }
 
     @computed get type() {
@@ -41,6 +39,7 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
     }
 
     public update(content: IBlockContent) {
+        this.convertToObservable();
 
         if (content.type === 'date') {
             this._data = content.data;
@@ -53,6 +52,7 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
     }
 
     public setMutator(mutator: DeviceIDStr) {
+        this.convertToObservable();
         this._mutator = mutator;
     }
 
