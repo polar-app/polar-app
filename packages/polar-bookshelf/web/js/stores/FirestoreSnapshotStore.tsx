@@ -120,8 +120,6 @@ function createDocumentChangeIndex<D>(): IDocumentChangeIndex<D> {
 // TODO: we need to include the metadata from the server including whether it
 // came from the cache or not.
 
-export type FirestoreSnapshotStoreProvider = React.FC<FirestoreSnapshotProps>;
-
 export type UseFirestoreSnapshotStore<D = TDocumentData> = () => ISnapshot<IQuerySnapshot<ISnapshotMetadata, D>>;
 
 interface FirestoreSnapshotLoaderProps {
@@ -134,7 +132,6 @@ export type FirestoreSnapshotStoreLoader = React.FC<FirestoreSnapshotLoaderProps
 export type FirestoreSnapshotStoreLatch = React.FC<SnapshotStoreLatchProps>;
 
 export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
-    FirestoreSnapshotStoreProvider,
     UseFirestoreSnapshotStore<D>,
     FirestoreSnapshotStoreLoader,
     FirestoreSnapshotStoreLatch
@@ -202,18 +199,6 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     }
 
-    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
-
-        const subscriber = useSubscriber()
-
-        return (
-            <SnapshotStoreProvider subscriber={subscriber}>
-                {props.children}
-            </SnapshotStoreProvider>
-        );
-
-    }));
-
     const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
 
         const subscriber = useSubscriber()
@@ -226,7 +211,7 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     }));
 
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [useSnapshotStore, Loader, SnapshotStoreLatch];
 
 }
 
@@ -245,7 +230,7 @@ function createEmptyQuerySnapshot<D>(): IQuerySnapshot<ISnapshotMetadata, D> {
 
 export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
 
-    const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
+    const [, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
 
     function useSubscriber() {
         return React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
@@ -261,18 +246,6 @@ export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(
         }, [])
     }
 
-    const Provider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
-
-        const subscriber = useSubscriber();
-
-        return (
-            <SnapshotStoreProvider subscriber={subscriber}>
-                {props.children}
-            </SnapshotStoreProvider>
-        );
-
-    }));
-
     const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
 
         const subscriber = useSubscriber()
@@ -285,6 +258,6 @@ export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(
 
     }));
 
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [useSnapshotStore, Loader, SnapshotStoreLatch];
 
 }
