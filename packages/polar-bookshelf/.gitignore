@@ -11,3 +11,4 @@ tsconfig.tsbuildinfo
 .terser-webpack-plugin
 cypress/screenshots/*
 cypress/videos/*
+storybook-static
