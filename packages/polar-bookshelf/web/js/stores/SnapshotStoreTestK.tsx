@@ -63,7 +63,7 @@ describe("SnapshotStore", function() {
                     <>
                         <TestStoreLoader subscriber={subscriber}/>
 
-                        <TestStoreLatch fallback={<LinearProgress/>}>
+                        <TestStoreLatch fallback={<Fallback/>}>
                             <TestInner/>
                         </TestStoreLatch>
                     </>
