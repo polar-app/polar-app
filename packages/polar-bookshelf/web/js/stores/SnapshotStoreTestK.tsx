@@ -11,7 +11,7 @@ interface IRef<V> {
     current: V;
 }
 
-const [TestStoreProvider, useTestStore] = createSnapshotStore<IValue>('test');
+const [TestStoreProvider, useTestStore, TestStoreLoader, TestStoreLatch] = createSnapshotStore<IValue>('test');
 
 describe("SnapshotStore", function() {
 
@@ -58,8 +58,14 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber} fallback={<Fallback/>}>
-                    <TestInner/>
+                <TestStoreProvider>
+                    <>
+                        <TestStoreLoader subscriber={subscriber}/>
+
+                        <TestStoreLatch fallback={<Fallback/>}>
+                            <TestInner/>
+                        </TestStoreLatch>
+                    </>
                 </TestStoreProvider>
             );
 
@@ -119,8 +125,16 @@ describe("SnapshotStore", function() {
         const Test = () => {
 
             return (
-                <TestStoreProvider subscriber={subscriber} fallback={<Fallback/>}>
-                    <TestInner/>
+                <TestStoreProvider>
+
+                    <>
+                        <TestStoreLoader subscriber={subscriber}/>
+
+                        <TestStoreLatch fallback={<Fallback/>}>
+                            <TestInner/>
+                        </TestStoreLatch>
+                    </>
+
                 </TestStoreProvider>
             );
 
