@@ -1,5 +1,5 @@
 import {BlockContent, BlockType} from "./BlocksStore";
-import {action, computed, observable, toJS} from "mobx"
+import {action, computed, makeObservable, observable, toJS} from "mobx"
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Contents} from "../content/Contents";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";

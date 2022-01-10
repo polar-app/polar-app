@@ -27,9 +27,6 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
     React.useEffect(() => {
 
-        // FIXME: this seems to take a fair amount of time...maybe I could just cast docs and docChanges
-        // which would be faster I think.
-
         const convertSnapshot = (current: IQuerySnapshotClient): IGenericCollectionSnapshot<T> => {
 
             const convertDocChange = (current: IDocumentChangeClient): IGenericDocumentChange<T> => {
