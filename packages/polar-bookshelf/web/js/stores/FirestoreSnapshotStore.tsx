@@ -7,6 +7,8 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {profiled} from "../profiler/ProfiledComponents";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
+import {GenericClause} from "../notes/persistence/GenericFirestoreSnapshots";
+import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 
 type QuerySnapshotSubscriber<SM = unknown, D = TDocumentData> = SnapshotSubscriber<IQuerySnapshot<SM, D>>;
 
@@ -225,6 +227,82 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
     }));
 
     return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+
+}
+
+export type GenericFirestoreClause = readonly [string, TWhereFilterOp, any];
+
+export function createFirestoreSnapshotForClause<D = TDocumentData>(collectionName: string,
+                                                                    clause: GenericClause,
+                                                                    opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
+
+    const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
+
+    function useSubscriber() {
+
+        const {firestore, uid} = useFirestore();
+
+        return React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
+
+            if (uid === null || uid === undefined) {
+                return () => {
+                    return NULL_FUNCTION;
+                };
+            }
+
+            let logged = false;
+
+            return (onNext, onError) => {
+
+                const snapshotHandler = (snapshot: IQuerySnapshot<ISnapshotMetadata, D>) => {
+
+                    if (! logged) {
+                        console.log(`Snapshot from cache for ${collectionName}: ${snapshot.metadata.fromCache}`);
+                        logged = true;
+                    }
+                    onNext(snapshot);
+                }
+
+                if (opts.initialEmpty) {
+                    onNext(createEmptyQuerySnapshot());
+                }
+
+                const [clauseColumn, clauseComparator, clauseValue] = clause;
+
+                return firestore.collection(collectionName)
+                    .where(clauseColumn, clauseComparator, clauseValue)
+                    .onSnapshot<D>({includeMetadataChanges: true}, next => snapshotHandler(next), err => onError(err));
+
+            }
+
+        }, [firestore, uid]);
+
+    }
+
+    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
+
+        return (
+            <SnapshotStoreProvider>
+                {props.children}
+            </SnapshotStoreProvider>
+        );
+
+    }));
+
+    const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
+
+        const subscriber = useSubscriber()
+
+        return (
+            <SnapshotStoreLoader subscriber={subscriber}>
+                {props.children}
+            </SnapshotStoreLoader>
+        );
+
+    }));
+
+    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+
 
 }
 
