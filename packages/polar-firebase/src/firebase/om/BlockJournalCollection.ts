@@ -3,6 +3,7 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
 
+export type BlockWriteOperation = 'added' | 'modified' | 'removed';
 
 /**
  * There are three paths here.
@@ -15,6 +16,11 @@ import {Collections} from "polar-firestore-like/src/Collections";
 export interface IBlockJournal {
 
     readonly id: string;
+
+    /**
+     * This is mostly just for human readability / debug purposes.
+     */
+    readonly type: BlockWriteOperation;
 
     readonly timestamp: ISODateTimeString;
 

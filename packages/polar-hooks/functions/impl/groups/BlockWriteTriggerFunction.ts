@@ -1,7 +1,11 @@
 import * as functions from 'firebase-functions';
 import {IBlock} from 'polar-blocks/src/blocks/IBlock';
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {BlockJournalCollection, IBlockJournal} from "polar-firebase/src/firebase/om/BlockJournalCollection";
+import {
+    BlockJournalCollection,
+    BlockWriteOperation,
+    IBlockJournal
+} from "polar-firebase/src/firebase/om/BlockJournalCollection";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 /**
@@ -20,14 +24,43 @@ export const BlockWriteTriggerFunction
 
     const timestamp = ISODateTimeStrings.create();
 
-    const blockJournal: IBlockJournal = {
-        id,
-        timestamp,
-        before: dataBefore,
-        after: dataAfter
+    function computeType(): BlockWriteOperation | undefined {
+
+        if (dataBefore === undefined && dataAfter !== undefined) {
+            return 'added'
+        }
+
+        if (dataBefore !== undefined && dataAfter !== undefined) {
+            return 'modified'
+        }
+
+        if (dataBefore !== undefined && dataAfter === undefined) {
+            return 'removed'
+        }
+
+        // should never happen
+        return undefined;
+
     }
 
-    await BlockJournalCollection.set(firestore, blockJournal);
+    const type = computeType();
+
+    if (type) {
+
+        const blockJournal: IBlockJournal = {
+            id,
+            type,
+            timestamp,
+            before: dataBefore,
+            after: dataAfter
+        }
+
+        await BlockJournalCollection.set(firestore, blockJournal);
+
+    } else {
+        console.error("Unable to determine write type: ", dataBefore, dataAfter);
+    }
+
 
 });
 
