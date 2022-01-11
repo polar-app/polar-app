@@ -42,7 +42,7 @@ interface IManifestItem {
     readonly '@_properties'?: string;
 }
 export interface ISpine {
-    readonly itemref: Array<ISpineRef>;
+    readonly itemref: Array<ISpineRef> | ISpineRef;
 }
 
 export interface ISpineRef {
@@ -68,11 +68,22 @@ export class EPUBMetadataUsingNode {
         const id = `${doi}#${date}`;
         const fingerprint = Hashcodes.create(id);
 
-        const nrPages = rootFileAsJSON.package.spine
-            .itemref
-            .filter((ref: ISpineRef) => ref['@_linear'] === 'yes')
-            .length;
+        function itemRefCount(): number {
+            if (Array.isArray(rootFileAsJSON.package.spine.itemref)) {
+                return rootFileAsJSON.package.spine.itemref
+                    .filter((ref: ISpineRef) => ref['@_linear'] === 'yes')
+                    .length;
+            }
 
+
+            // Captures produce a single itemref and 'fast-xml-parser' package interprets
+            // that as an object not an array of ISpineRef despite it being cast to array of ISpineRef
+            // this is a way to get around this problem and get the number of pages for a capture 1
+            return 1;
+        }
+
+        const nrPages = itemRefCount();
+        
         return {
             title: title,
             description,
@@ -100,9 +111,21 @@ export class EPUBMetadataUsingNode {
         const rootFileAsJSON = rootFile.contents;
         const pathToRootFile = path.parse(rootFile.name).dir;
 
+        // Handles EPUB capture special case of generating a single itemref tag
+        // and fast-xml-parser converting that into an object instead of an array
+        function getChapterReferences(): ISpineRef[] {
+            if (Array.isArray(rootFileAsJSON.package.spine.itemref)) {
+                return rootFileAsJSON.package.spine.itemref
+                    .filter((val: ISpineRef) => val['@_linear'] === 'yes');
+            }
+
+            return [
+                rootFileAsJSON.package.spine.itemref
+            ];
+        }
+
         // References to the list of chapters within the epub, in a very simple structure
-        const chapterReferences = rootFileAsJSON.package.spine.itemref
-            .filter((val: ISpineRef) => val['@_linear'] === 'yes');
+        const chapterReferences = getChapterReferences();
 
         // Convert the single structure of chapters to one that makes more sense and is richer
         return chapterReferences.map((item: ISpineRef) => {
