@@ -1,9 +1,11 @@
-import {computed, observable, toJS} from "mobx"
+import {computed, createAtom, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DateContentFormat, IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {HasLinks} from "./HasLinks";
+
+let atomSequence = 0;
 
 export class DateContent extends HasLinks implements IDateContent, IBaseBlockContent {
 
@@ -19,27 +21,32 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
         this._data = opts.data;
         this._format = opts.format;
         this._mutator = opts.mutator || '';
+        this._atom = createAtom(`DateContent#${atomSequence++}`, () => this.convertToObservable())
 
     }
 
     @computed get type() {
+        this._atom.reportObserved();
         return this._type;
     }
 
     @computed get data() {
+        this._atom.reportObserved();
         return this._data;
     }
 
     @computed get format() {
+        this._atom.reportObserved();
         return this._format;
     }
 
     @computed get mutator() {
+        this._atom.reportObserved();
         return this._mutator;
     }
 
     public update(content: IBlockContent) {
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         if (content.type === 'date') {
             this._data = content.data;
@@ -52,11 +59,12 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this.convertToObservable();
+        this._atom.reportObserved();
         this._mutator = mutator;
     }
 
     public toJSON(): IDateContent {
+
         return {
             type: this._type,
             data: this._data,
@@ -64,6 +72,7 @@ export class DateContent extends HasLinks implements IDateContent, IBaseBlockCon
             mutator: this._mutator,
             links: toJS(this.links),
         };
+
     }
 
 }

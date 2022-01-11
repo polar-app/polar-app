@@ -6,25 +6,18 @@ import deepEqual from "deep-equal";
 
 export const TAG_IDENTIFIER = '#';
 
-export class HasLinks implements IHasLinksContent {
+let atomSequence = 0;
 
-    @observable private _id: BlockIDStr;
+export class HasLinks implements IHasLinksContent {
 
     @observable private _links: ReadonlyArray<IBlockLink>;
 
-    private _atom: IAtom;
+    protected _atom: IAtom;
     protected _observable = false;
 
     constructor(props: IHasLinksContent) {
-        this._id = props.id;
         this._links = props.links || [];
-        this._atom = createAtom(`HasLinks#${this._id}`, () => this.convertToObservable())
-    }
-
-    @computed get id() {
-        this._atom.reportObserved();
-
-        return this._id;
+        this._atom = createAtom(`HasLinks#${atomSequence++}`, () => this.convertToObservable())
     }
 
     @computed get links() {
