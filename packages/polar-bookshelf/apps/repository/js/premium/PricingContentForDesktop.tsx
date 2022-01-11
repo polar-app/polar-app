@@ -19,7 +19,6 @@ const useStyles = makeStyles({
   },
 
   header: {
-    fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: "normal",
     // fontSize: "min(28px, 2.5vw)",
@@ -115,7 +114,7 @@ const DesktopTable = () => {
 
   return (
       <Paper className={classes.tableDesktop}>
-        <div style={{ display: 'flex', justifyContent: 'center', height: '14.5em'}}>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
           <div style={{ width: "26%" }}>
             <Box className={classes.header}>Free</Box>
             <Box className={classes.pricing}>

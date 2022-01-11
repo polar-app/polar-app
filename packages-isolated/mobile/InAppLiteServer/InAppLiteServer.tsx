@@ -68,16 +68,13 @@ export class InAppLiteServer extends Component<Props, State> {
 
         return <WebView
             nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
-            ref={(ref) => {
+            ref={(ref: any) => {
                 if (ref) {
                     this.webview = ref;
                 }
             }}
             // Allow any URL to be loaded within the WebView
             originWhitelist={['*']}
-
-            // Always fetch fresh assets
-            cacheEnabled={false}
 
             // Enable JS
             javaScriptEnabled={true}

@@ -5,7 +5,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {Box, Typography, Divider} from '@material-ui/core';
+import {Box, Divider, Typography} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -482,7 +482,7 @@ const OrCreateNewAccountButton = () => {
     return (
         <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/create-account')}>
-                or register for private beta
+                or register for early access
             </Button>
         </div>
     );

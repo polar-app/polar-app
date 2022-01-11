@@ -4,10 +4,10 @@ import clsx from "clsx";
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import {useNoteFormatBarPopperMobileStyles} from "./NoteFormatBarPopperMobile";
+import {useNoteFormatBarPopperPhoneStyles} from "./NoteFormatBarPopperPhone";
 import {NoteFormatBarExtensionButton} from "../NoteFormatBarButton";
 
-interface INoteFormatBarPopperExtensionMobileProps {
+interface INoteFormatBarPopperExtensionPhoneProps {
     readonly className?: string;
     readonly style?: React.CSSProperties;
 
@@ -28,9 +28,9 @@ export const useStyles = makeStyles((theme) =>
     })
 );
 
-export const NoteFormatBarPopperMobileExtension: React.FC<INoteFormatBarPopperExtensionMobileProps> = (props) => {
+export const NoteFormatBarPopperPhoneExtension: React.FC<INoteFormatBarPopperExtensionPhoneProps> = (props) => {
     const { className, style, onUndo, onRedo, onEditTags } = props;
-    const sharedClasses = useNoteFormatBarPopperMobileStyles();
+    const sharedClasses = useNoteFormatBarPopperPhoneStyles();
     const classes = useStyles();
 
     return (
@@ -38,17 +38,17 @@ export const NoteFormatBarPopperMobileExtension: React.FC<INoteFormatBarPopperEx
             <Box py={3.75} px={2} className={classes.root}>
                 <NoteFormatBarExtensionButton icon={<UndoIcon className={classes.icon} />}
                                               onClick={onUndo}>
-                    Indent left
+                    Undo
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<RedoIcon className={classes.icon} />}
                                               onClick={onRedo}>
-                    Indent right
+                    Redo
                 </NoteFormatBarExtensionButton>
 
                 <NoteFormatBarExtensionButton icon={<LocalOfferIcon className={classes.icon} />}
                                               onClick={onEditTags}>
-                    Add tags
+                    Add Tags
                 </NoteFormatBarExtensionButton>
             </Box>
         </Paper>

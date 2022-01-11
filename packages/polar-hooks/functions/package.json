@@ -24,7 +24,6 @@
     "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
   },
   "dependencies": {
-    "@amplitude/node": "=1.8.0",
     "@google-cloud/storage": "=5.8.5",
     "@types/body-parser": "=1.19.1",
     "@types/cors": "=2.8.6",
@@ -43,11 +42,13 @@
     "react": "=17.0.2",
     "react-dom": "=17.0.2",
     "polar-accounts": "0.0.0",
+    "polar-amplitude-backend": "0.0.0",
     "polar-answers": "0.0.0",
     "polar-answers-api": "0.0.0",
     "polar-backend-api": "0.0.0",
     "polar-backend-shared": "0.0.0",
     "polar-block-permissions": "0.0.0",
+    "polar-blocks": "0.0.0",
     "polar-private-beta": "0.0.0",
     "polar-firebase": "0.0.0",
     "polar-firebase-admin": "0.0.0",

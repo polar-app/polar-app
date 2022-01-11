@@ -24,7 +24,9 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIRepositoryRoot} from "../../mui/MUIRepositoryRoot";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
-import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
+import {
+    AnnotationRepoSidebarTagStore
+} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
 import {AnnotationRepoStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
 import {AnnotationRepoScreen} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
@@ -65,7 +67,9 @@ import {AndroidHistoryListener} from "./AndroidHistoryListener";
 import {AccountPageMobile} from './AccountPageMobile';
 import {CDKDemo} from "./CDKDemo";
 import {SwitchScreen} from './SwitchScreen';
-import {BlocksAnnotationRepoStoreProvider} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
+import {
+    BlocksAnnotationRepoStoreProvider
+} from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NoteProviders} from "../../notes/NoteProviders";
 import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
 import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
@@ -81,8 +85,16 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {SpacedRepCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
-import {SpacedRepStatCollectionSnapshotProvider} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+import {
+    SpacedRepCollectionSnapshotProvider,
+    SpaceRepCollectionSnapshotLatch,
+    SpaceRepCollectionSnapshotLoader
+} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
+import {
+    SpacedRepStatCollectionLatch,
+    SpacedRepStatCollectionLoader,
+    SpacedRepStatCollectionSnapshotProvider
+} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
 
 interface IProps {
     readonly app: App;
@@ -210,13 +222,27 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                  repoDocMetaLoader={repoDocMetaLoader}
                                                  persistenceLayerManager={persistenceLayerManager}>
                                 <DocRepoStore2>
-                                    <SpacedRepCollectionSnapshotProvider fallback={<LinearProgress/>}>
-                                        <SpacedRepStatCollectionSnapshotProvider fallback={<LinearProgress/>}>
+
+                                    <SpacedRepCollectionSnapshotProvider>
+                                        <SpacedRepStatCollectionSnapshotProvider>
                                             <>
-                                                {children}
+                                                <SpaceRepCollectionSnapshotLoader/>
+                                                <SpacedRepStatCollectionLoader/>
+
+                                                <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
+                                                    <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
+                                                        <>
+                                                            {children}
+                                                        </>
+                                                    </SpacedRepStatCollectionLatch>
+                                                </SpaceRepCollectionSnapshotLatch>
+
                                             </>
+
                                         </SpacedRepStatCollectionSnapshotProvider>
+
                                     </SpacedRepCollectionSnapshotProvider>
+
                                 </DocRepoStore2>
                             </PersistenceLayerApp>
                         </BlocksStoreProvider>

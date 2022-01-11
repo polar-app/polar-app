@@ -21,8 +21,9 @@ export namespace WaitingUsers {
         const allowed = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
-            'kevin@getpolarized.io',
+            'burton@getpolarized.io',
             'jonathan.graeupner@gmail.com',
+            'jwalkenhorst.social@gmail.com',
         ];
         return allowed.includes(idUser.user.email);
     }

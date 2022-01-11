@@ -1,7 +1,7 @@
 import React from "react";
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {NoteFormatBarPopperDesktop} from "./NoteFormatBarPopperDesktop";
-import {NoteFormatBarPopperMobile} from "./NoteFormatBarMobile/NoteFormatBarPopperMobile";
+import {NoteFormatBarPopperPhone} from "./NoteFormatBarPhone/NoteFormatBarPopperPhone";
 import {GlobalKeyboardShortcuts, HandlerMap, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useNoteFormatBarActions} from "./NoteFormatBarActions";
 import {NoteFormatBarPopperTablet} from "./NoteFormatBarPopperTablet";
@@ -53,7 +53,7 @@ export const NoteFormatBarPopper: React.FC = () => {
         <>
             <DeviceRouter
                 desktop={<NoteFormatBarPopperDesktop />}
-                phone={<NoteFormatBarPopperMobile />}
+                phone={<NoteFormatBarPopperPhone />}
                 tablet={<NoteFormatBarPopperTablet />}
             />
 

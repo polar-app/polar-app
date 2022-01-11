@@ -12,7 +12,6 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
-import {AcceptBatch} from "./AcceptBatch";
 import Subscription = Billing.Subscription;
 
 interface LogoutButtonProps {
@@ -100,19 +99,6 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
         logoutAction();
     }
 
-    /**
-     * Return true if the provided email can accept users into the beta
-     */
-    function canAcceptBeta(email: EmailStr | undefined) {
-        const canAccept: string[] = [
-            'dzhuneyt@getpolarized.io',
-            'jonathan@getpolarized.io',
-            'jonathan.graeupner@gmail.com',
-            'burton@getpolarized.io',
-        ];
-        return email && canAccept.includes(email);
-    }
-
     return (
 
         <div style={{padding: '10px 20px'}} ref={ref}>
@@ -159,8 +145,6 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                     </div>
 
                     <ViewPlansAndPricingButton/>
-
-                    {canAcceptBeta(props.userInfo.email) && <AcceptBatch/>}
                 </div>
 
                 <div className="text-right">
