@@ -1,10 +1,12 @@
-import {computed, observable, toJS} from "mobx"
+import {computed, createAtom, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {HasLinks} from "./HasLinks";
+
+let atomSequence = 0;
 
 export class DocumentContent extends HasLinks implements IDocumentContent, IBaseBlockContent {
 
@@ -19,22 +21,31 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
         this._docInfo = opts.docInfo;
         this._mutator = opts.mutator || '';
 
+        this._atom = createAtom(`DocumentContent#${atomSequence++}`, () => this.convertToObservable())
+
     }
 
     @computed get type() {
+        this._atom.reportObserved();
+
         return this._type;
     }
 
     @computed get docInfo() {
+        this._atom.reportObserved();
+
         return this._docInfo;
     }
 
     @computed get mutator() {
+        this._atom.reportObserved();
+
         return this._mutator;
     }
 
     public update(content: IBlockContent) {
-        this.convertToObservable();
+        this._atom.reportObserved();
+
         if (content.type === this._type) {
             this._docInfo = content.docInfo;
             this._mutator = content.mutator || '';
@@ -46,7 +57,8 @@ export class DocumentContent extends HasLinks implements IDocumentContent, IBase
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this.convertToObservable();
+        this._atom.reportObserved();
+
         this._mutator = mutator;
     }
 

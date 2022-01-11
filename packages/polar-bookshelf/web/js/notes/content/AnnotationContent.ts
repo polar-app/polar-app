@@ -1,4 +1,4 @@
-import {computed, observable, toJS} from "mobx";
+import {computed, createAtom, observable, toJS} from "mobx";
 import {
     AnnotationContentType,
     IAnnotationContent,
@@ -15,10 +15,7 @@ import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {HasLinks} from "./HasLinks";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
-/**
- * Used so that we can track down the ID of each atom...
- */
-let atom: number = 0;
+let atomSequence = 0;
 
 export abstract class AnnotationContentBase<T extends IAnnotationContent> extends HasLinks implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
 
@@ -37,34 +34,42 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
         this._pageNum = opts.pageNum;
         this._value = opts.value;
 
+        this._atom = createAtom(`AnnotationContentBase#${atomSequence++}`, () => this.convertToObservable())
+
     }
 
     @computed get type() {
+        this._atom.reportObserved();
         return this._type;
     }
 
     @computed get mutator() {
+        this._atom.reportObserved();
         return this._mutator;
     }
 
     @computed get docID() {
+        this._atom.reportObserved();
         return this._docID;
     }
 
     @computed get pageNum() {
+        this._atom.reportObserved();
         return this._pageNum;
     }
 
     @computed get value() {
+        this._atom.reportObserved();
         return this._value;
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this.convertToObservable();
+        this._atom.reportObserved();
         this._mutator = mutator;
     }
 
     public update(content: IBlockContent) {
+        this._atom.reportObserved();
 
         if (content.type === this._type) {
             this._pageNum = content.pageNum;
@@ -84,6 +89,8 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
     }
 
     public toJSON(): T {
+        this._atom.reportObserved();
+
         return {
             type: this._type,
             docID: this._docID,

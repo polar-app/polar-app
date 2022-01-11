@@ -1,9 +1,11 @@
-import {computed, observable, toJS} from "mobx"
+import {computed, createAtom, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DataURLStr, IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {HasLinks} from "./HasLinks";
+
+let atomSequence = 0;
 
 export class ImageContent extends HasLinks implements IImageContent, IBaseBlockContent {
 
@@ -29,38 +31,54 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
         this._naturalHeight = opts.naturalHeight;
         this._mutator = opts.mutator || '';
 
+        this._atom = createAtom(`ImageContent#${atomSequence++}`, () => this.convertToObservable())
+
     }
 
     @computed get type() {
+        this._atom.reportObserved();
+
         return this._type;
     }
 
     @computed get src() {
+        this._atom.reportObserved();
+
         return this._src;
     }
 
     @computed get width() {
+        this._atom.reportObserved();
+
         return this._width;
     }
 
     @computed get height() {
+        this._atom.reportObserved();
+
         return this._height;
     }
 
     @computed get naturalWidth() {
+        this._atom.reportObserved();
+
         return this._naturalWidth;
     }
 
     @computed get naturalHeight() {
+        this._atom.reportObserved();
+
         return this._naturalHeight;
     }
 
     @computed get mutator() {
+        this._atom.reportObserved();
+
         return this._mutator;
     }
 
     public update(content: IBlockContent) {
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         if (content.type === 'image') {
             this._src = content.src;
@@ -77,7 +95,8 @@ export class ImageContent extends HasLinks implements IImageContent, IBaseBlockC
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this.convertToObservable();
+        this._atom.reportObserved();
+
         this._mutator = mutator;
     }
 
