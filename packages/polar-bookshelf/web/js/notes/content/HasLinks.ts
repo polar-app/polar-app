@@ -74,6 +74,7 @@ export class HasLinks implements IHasLinksContent {
     protected convertToObservable() {
         if (! this._observable) {
             makeObservable(this);
+            this._observable = true;
         }
     }
 }

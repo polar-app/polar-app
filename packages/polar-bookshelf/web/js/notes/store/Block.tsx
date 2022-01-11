@@ -395,6 +395,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      */
     @action public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
 
+        this.convertToObservable();
+
         const before = this.toJSON();
 
         delegate();
@@ -435,8 +437,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     protected convertToObservable() {
         if (! this._observable) {
             makeObservable(this);
+            this._observable = true;
         }
     }
+
     public toJSON(): IBlock<C> {
 
         return {
