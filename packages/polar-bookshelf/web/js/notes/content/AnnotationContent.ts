@@ -1,4 +1,4 @@
-import {computed, createAtom, observable, toJS} from "mobx";
+import {computed, observable, toJS} from "mobx";
 import {
     AnnotationContentType,
     IAnnotationContent,
@@ -14,8 +14,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {HasLinks} from "./HasLinks";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-
-let atomSequence = 0;
+import {Atoms} from "../Atoms";
 
 export abstract class AnnotationContentBase<T extends IAnnotationContent> extends HasLinks implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
 
@@ -34,42 +33,47 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
         this._pageNum = opts.pageNum;
         this._value = opts.value;
 
-        this._atom = createAtom(`AnnotationContentBase#${atomSequence++}`, () => this.convertToObservable())
+        this._atom = Atoms.create(`AnnotationContentBase`, () => this.convertToObservable())
 
     }
 
     @computed get type() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('type');
         return this._type;
     }
 
     @computed get mutator() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('mutator');
+
         return this._mutator;
     }
 
     @computed get docID() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('docID');
+
         return this._docID;
     }
 
     @computed get pageNum() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('pageNum');
+
         return this._pageNum;
     }
 
     @computed get value() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('value');
+
         return this._value;
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this._atom.reportObserved();
+        this._atom.reportObserved('setMutator');
+
         this._mutator = mutator;
     }
 
     public update(content: IBlockContent) {
-        this._atom.reportObserved();
+        this._atom.reportObserved('update');
 
         if (content.type === this._type) {
             this._pageNum = content.pageNum;
@@ -89,7 +93,6 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
     }
 
     public toJSON(): T {
-        this._atom.reportObserved();
 
         return {
             type: this._type,
@@ -99,6 +102,7 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
             mutator: this._mutator,
             links: toJS(this.links),
         } as T;
+
     }
 }
 

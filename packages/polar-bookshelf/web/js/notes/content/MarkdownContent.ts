@@ -1,11 +1,10 @@
-import {computed, createAtom, observable, toJS} from "mobx"
+import {computed, observable, toJS} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {HasLinks} from "./HasLinks";
-
-let atomSequence = 0;
+import {Atoms} from "../Atoms";
 
 export class MarkdownContent extends HasLinks implements IMarkdownContent, IBaseBlockContent {
 
@@ -20,30 +19,30 @@ export class MarkdownContent extends HasLinks implements IMarkdownContent, IBase
         this._data = opts.data;
         this._mutator = opts.mutator || '';
 
-        this._atom = createAtom(`MarkdownContent#${atomSequence++}`, () => this.convertToObservable())
+        this._atom = Atoms.create(`MarkdownContent`, () => this.convertToObservable())
 
     }
 
     @computed get type() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('type');
 
         return this._type;
     }
 
     @computed get data() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('data');
 
         return this._data;
     }
 
     @computed get mutator() {
-        this._atom.reportObserved();
+        this._atom.reportObserved('mutator');
 
         return this._mutator;
     }
 
     public update(content: IBlockContent) {
-        this._atom.reportObserved();
+        this._atom.reportObserved('updated');
 
         if (content.type === 'markdown') {
             this._data = content.data;
@@ -56,7 +55,7 @@ export class MarkdownContent extends HasLinks implements IMarkdownContent, IBase
     }
 
     public setMutator(mutator: DeviceIDStr) {
-        this._atom.reportObserved();
+        this._atom.reportObserved('setMutator');
 
         this._mutator = mutator;
     }
