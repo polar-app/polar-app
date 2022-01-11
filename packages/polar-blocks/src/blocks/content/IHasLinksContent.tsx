@@ -1,6 +1,9 @@
-import {IBlockLink} from "../IBlock";
+import {BlockIDStr, IBlockLink} from "../IBlock";
 
 export interface IHasLinksContent {
+
+    readonly id: BlockIDStr;
+
     /**
      * The linked wiki references to other notes.
      */

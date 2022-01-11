@@ -1,37 +1,59 @@
 import {IHasLinksContent} from "polar-blocks/src/blocks/content/IHasLinksContent";
 import {BlockIDStr, IBlockLink} from "polar-blocks/src/blocks/IBlock";
-import {computed, makeObservable, observable} from "mobx";
+import {computed, createAtom, IAtom, makeObservable, observable} from "mobx";
 import {Tag} from "polar-shared/src/tags/Tags";
 import deepEqual from "deep-equal";
 
 export const TAG_IDENTIFIER = '#';
 
 export class HasLinks implements IHasLinksContent {
+
+    @observable private _id: BlockIDStr;
+
     @observable private _links: ReadonlyArray<IBlockLink>;
 
+    private _atom: IAtom;
     protected _observable = false;
 
     constructor(props: IHasLinksContent) {
+        this._id = props.id;
         this._links = props.links || [];
+        this._atom = createAtom(`HasLinks#${this._id}`, () => this.convertToObservable())
+    }
+
+    @computed get id() {
+        this._atom.reportObserved();
+
+        return this._id;
     }
 
     @computed get links() {
+        this._atom.reportObserved();
+
         return this._links;
     }
 
     @computed get wikiLinks() {
+        this._atom.reportObserved();
+
         return this._links.filter(({ text }) => ! text.startsWith(TAG_IDENTIFIER));
     }
 
     @computed get tagLinks() {
+        this._atom.reportObserved();
+
         return this._links.filter(({ text }) => text.startsWith(TAG_IDENTIFIER));
     }
 
     public hasTagsMutated(content: HasLinks): boolean {
+        this._atom.reportObserved();
+
         return ! deepEqual(content.tagLinks, this.tagLinks);
     }
 
     public getTags(): Tag[] {
+        this._atom.reportObserved();
+
         const toTag = ({ text, id }: IBlockLink): Tag => {
             const label = text.slice(1);
             return { label, id };
@@ -41,16 +63,21 @@ export class HasLinks implements IHasLinksContent {
     }
 
     public updateLinks(links: ReadonlyArray<IBlockLink>): void {
+        this._atom.reportObserved();
+
         this.convertToObservable();
         this._links = links;
     }
 
     public addLink(link: IBlockLink) {
+        this._atom.reportObserved();
+
         this.convertToObservable();
         this._links = [...this.links, link];
     }
 
     public removeLink(id: BlockIDStr) {
+        this._atom.reportObserved();
 
         this.convertToObservable();
 

@@ -93,7 +93,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._content = Contents.create(opts.content);
         this._mutation = opts.mutation;
 
-        this._atom = createAtom(this._id, () => this.convertToObservable())
+        this._atom = createAtom(`Block#${this._id}`, () => this.convertToObservable())
 
     }
 
