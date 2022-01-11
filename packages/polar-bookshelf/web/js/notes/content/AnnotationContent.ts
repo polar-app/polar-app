@@ -15,7 +15,13 @@ import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {HasLinks} from "./HasLinks";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
+/**
+ * Used so that we can track down the ID of each atom...
+ */
+let atom: number = 0;
+
 export abstract class AnnotationContentBase<T extends IAnnotationContent> extends HasLinks implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
+
     @observable private readonly _type: T['type'];
     @observable private _mutator: DeviceIDStr;
     @observable private _docID: IDStr;
@@ -59,8 +65,6 @@ export abstract class AnnotationContentBase<T extends IAnnotationContent> extend
     }
 
     public update(content: IBlockContent) {
-
-        this.convertToObservable();
 
         if (content.type === this._type) {
             this._pageNum = content.pageNum;

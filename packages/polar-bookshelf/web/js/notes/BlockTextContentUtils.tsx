@@ -21,17 +21,17 @@ export namespace BlockTextContentUtils {
      * @param field The flashcard field to be updated
      * @param markdown The new markdown content
      */
-    export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(
-        content: FlashcardAnnotationContent<T>,
-        field: keyof T['fields'],
-        markdown: MarkdownStr,
-    ): FlashcardAnnotationContent {
+    export function updateFlashcardContentMarkdown<T extends IBlockFlashcard>(content: FlashcardAnnotationContent<T>,
+                                                                              field: keyof T['fields'],
+                                                                              markdown: MarkdownStr): FlashcardAnnotationContent {
+
         const flashcardContent = content.toJSON();
 
         return new FlashcardAnnotationContent({
             ...flashcardContent,
             value: BlockFlashcards.updateField(flashcardContent.value, field, markdown),
         });
+
     }
 
     /**
@@ -40,10 +40,8 @@ export namespace BlockTextContentUtils {
      * @param content An instance of the block's content instance
      * @param markdown The new markdown content
      */
-    export function updateTextContentMarkdown(
-        content: Exclude<EditableContent, FlashcardAnnotationContent>,
-        markdown: MarkdownStr
-    ): EditableContent {
+    export function updateTextContentMarkdown(content: Exclude<EditableContent, FlashcardAnnotationContent>,
+                                              markdown: MarkdownStr): EditableContent {
 
         switch (content.type) {
             case "markdown":
