@@ -1,31 +1,31 @@
 import {action, autorun, createAtom, IAtom, makeObservable, observable} from "mobx";
 
-describe("BlockAutoRun", function ()  {
+describe("BlockAtomAutoRun", function ()  {
     it("basic", () => {
 
         class Cat {
 
-            private atom: IAtom;
 
             private _id: string = '101';
 
             @observable
             public _name: string = 'Alice';
 
+            private _atom: IAtom;
             private _observable: boolean = false;
 
             constructor() {
-                this.atom = createAtom(this._id, () => this.convertToObservable())
+                this._atom = createAtom(this._id, () => this.convertToObservable())
             }
 
             public get name() {
-                this.atom.reportObserved();
+                this._atom.reportObserved();
                 return this._name;
             }
 
             @action
             public setName(name: string) {
-                this.atom.reportObserved();
+                this._atom.reportObserved();
                 this._name = name;
             }
 

@@ -1,5 +1,5 @@
 import {BlockContent, BlockType} from "./BlocksStore";
-import {action, computed, makeObservable, observable, toJS} from "mobx"
+import {action, computed, createAtom, IAtom, makeObservable, observable, toJS} from "mobx"
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Contents} from "../content/Contents";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
@@ -74,6 +74,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @observable private _mutation: TMutation;
 
+    private _atom: IAtom;
     protected _observable = false;
 
     constructor(opts: IBlock<C | IBlockContent>) {
@@ -92,57 +93,72 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._content = Contents.create(opts.content);
         this._mutation = opts.mutation;
 
+        this._atom = createAtom(this._id, () => this.convertToObservable())
+
     }
 
     @computed get id() {
+        this._atom.reportObserved();
         return this._id;
     }
 
     @computed get nspace() {
+        this._atom.reportObserved();
         return this._nspace;
     }
 
     @computed get uid() {
+        this._atom.reportObserved();
         return this._uid;
     }
 
     @computed get root() {
+        this._atom.reportObserved();
         return this._root;
     }
 
     @computed get parent() {
+        this._atom.reportObserved();
         return this._parent;
     }
 
     @computed get parents() {
+        this._atom.reportObserved();
         return this._parents;
     }
 
     @computed get created() {
+        this._atom.reportObserved();
         return this._created;
     }
 
     @computed get updated() {
+        this._atom.reportObserved();
         return this._updated;
     }
 
     @computed get items(): PositionalArray<BlockIDStr> {
+        this._atom.reportObserved();
         return this._items;
     }
 
     @computed get itemsAsArray(): ReadonlyArray<BlockIDStr> {
+        this._atom.reportObserved();
         return PositionalArrays.toArray(this._items);
     }
 
     @computed get content() {
+        this._atom.reportObserved();
         return this._content;
     }
 
     @computed get mutation() {
+        this._atom.reportObserved();
         return this._mutation;
     }
 
     @computed get readonly() {
+        this._atom.reportObserved();
         return NON_EDITABLE_BLOCK_TYPES.indexOf(this._content.type) > -1;
     }
 
@@ -150,12 +166,13 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      * Return true if the given content has been mutated vs the current content.
      */
     public hasContentMutated(content: C | IBlockContent): boolean {
+        this._atom.reportObserved();
         return ! deepEqual(this._content, content);
     }
 
     @action setContent(content: C | IBlockContent) {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         if (this._content.type !== content.type) {
             throw new Error(`Can not change content types from ${this._content.type} to ${content.type}`);
@@ -173,7 +190,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setParent(id: BlockIDStr | undefined): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         if (this._parent !== id) {
             this._parent = id;
@@ -189,12 +206,14 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      * Return true if the given content has been mutated vs the current content.
      */
     public hasParentsMutated(parents: ReadonlyArray<BlockIDStr>): boolean {
+        this._atom.reportObserved();
+
         return ! deepEqual(this._parents, parents);
     }
 
     @action setParents(parents: ReadonlyArray<BlockIDStr>): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         if (this.hasParentsMutated(parents)) {
             this._parents = [...parents];
@@ -207,13 +226,15 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     public hasItemsMutated(items: ReadonlyArray<BlockIDStr>): boolean {
+        this._atom.reportObserved();
+
         return ! deepEqual(PositionalArrays.toArray(this._items), items);
 
     }
 
     @action setItems(items: ReadonlyArray<BlockIDStr>): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         items.map(current => Preconditions.assertString(current, 'current'));
 
@@ -229,7 +250,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action public setItemsUsingPatches(itemPositionPatches: ReadonlyArray<IItemsPositionPatch>): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         let mutated: boolean = false;
 
@@ -267,7 +288,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         Preconditions.assertString(id, 'id');
 
@@ -298,7 +319,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action private doRemoveItem(id: BlockIDStr): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         Preconditions.assertString(id, 'id');
 
@@ -314,9 +335,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action removeItem(id: BlockIDStr): boolean {
-        Preconditions.assertString(id, 'id');
 
-        this.convertToObservable();
+        this._atom.reportObserved();
+
+        Preconditions.assertString(id, 'id');
 
         if (this.doRemoveItem(id)) {
 
@@ -331,7 +353,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action private doPutItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         Preconditions.assertString(id, 'id');
 
@@ -349,7 +371,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action putItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         Preconditions.assertString(id, 'id');
 
@@ -367,12 +389,17 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     public hasItem(id: BlockIDStr): boolean {
 
+        this._atom.reportObserved();
+
         Preconditions.assertString(id, 'id');
 
         return PositionalArrays.toArray(this._items).includes(id);
     }
 
     public hasItemWithKey(key: string, id: BlockIDStr): boolean {
+
+        this._atom.reportObserved();
+
         Preconditions.assertString(key, 'key');
         Preconditions.assertString(id, 'id');
 
@@ -381,7 +408,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action set(block: IBlock) {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         this._parent = block.parent;
         this._created = block.created;
@@ -395,7 +422,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      */
     @action public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
 
-        this.convertToObservable();
+        this._atom.reportObserved();
 
         const before = this.toJSON();
 
