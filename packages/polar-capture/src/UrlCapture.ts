@@ -5,19 +5,36 @@ import fetch, { Response } from 'node-fetch';
 import { FileUpload } from './FileUpload';
 import { Readable } from 'stream';
 import { File } from '@google-cloud/storage';
+import { PDFMetadata } from "polar-pdf/src/pdf/PDFMetadata";
+import { EPUBMetadataUsingNode } from "polar-epub/src/EPUBMetadataUsingNode";
+import { IParsedDocMeta } from 'polar-shared/src/util/IParsedDocMeta';
+import { unlinkSync } from 'fs';
+import { FilePaths } from "polar-shared/src/util/FilePaths"
+
+interface WrittenTmpFile {
+    readonly file: File;
+    readonly type: "pdf" | "epub";
+}
 
 export namespace UrlCapture {
+
     export const MAX_CONTENT_LENGTH = 104857600; // 100 MiB
 
-    export async function fetchUrl(url: string): Promise<File> {
+    export async function fetchUrl(url: string): Promise<WrittenTmpFile> {
         const response = await fetch(url);
 
         validateResponse(response);
 
         if (response.headers.get('content-type') === "application/pdf") {
-            return await writeTmpPdf(response);
+            return {
+                file: await writeTmpPdf(response),
+                type: "pdf"
+            };
         } else {
-            return await writeTmpEpub(response);
+            return  {
+                file: await writeTmpEpub(response),
+                type: "epub"
+            }
         }
     }
 
@@ -109,5 +126,34 @@ export namespace UrlCapture {
         const epubCapture = ReadabilityCapture.extractCapturedEPUB(doc, url);
 
         return await CapturedContentEPUBGenerator.generate(epubCapture);
+    }
+
+    function removeBucketPath(filePath: string) {
+        return filePath.split('/')[1];
+    }
+
+    export async function parseMetadata(tmp: WrittenTmpFile): Promise<IParsedDocMeta> {
+
+        switch (tmp.type) {
+            case 'epub':
+                // - Get tmp capture epub file in a tmp directory
+                // - Unzip to extract metadata (EPUBMetadataUsingNode)
+                // - Remove the epub file once the data has been extracted
+                const destination = FilePaths.createTempName(removeBucketPath(tmp.file.name));
+
+                await tmp.file.download({ destination });
+
+                const metadata = EPUBMetadataUsingNode.getMetadata(destination);
+
+                unlinkSync(destination);
+
+                return metadata;
+            case 'pdf':
+                await tmp.file.makePublic();
+                const docUrl = tmp.file.publicUrl();
+                return PDFMetadata.getMetadata(docUrl);
+            default:
+                throw new Error("Can't parse metadata of unknown types.");
+        }
     }
 }
