@@ -2,14 +2,14 @@
 // https://github.com/ankidroid/Anki-Android/wiki/Database-Structure
 import sha1 from 'sha1'
 import {Database} from 'better-sqlite3'
-import {DeckConfig} from "./DeckConfig";
+import {DeckConfig, DeckModels} from "./DeckConfig";
 import {Card} from "./Card";
 
 import { FlashcardType } from "polar-shared/src/metadata/FlashcardType";
 
 export function initDatabase(database: Database) {
 
-  let sql = `
+  const sql = `
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS col (
 	id	integer,
@@ -108,9 +108,11 @@ COMMIT;
   database.exec(sql)
 }
 
-export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'name'>) {
+export function insertCols(database: Database, deck: DeckConfig): DeckModels {
   const basicModel = deck.id + 1;
   const clozeModel = deck.id + 2;
+  const basicAndReverseModel = deck.id + 3;
+  const basicOptionalReverseModel = deck.id + 4;
 
   const conf = {
     nextPos: 1,
@@ -130,20 +132,20 @@ export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'na
   const models = {
     [basicModel]: {
       vers: [],
-      name: 'polar-basic-flashcard',
+      name: 'polar-basic',
       tags: [],
       did: deck.id,
       usn: -1,
       req: [[0, 'all', [0]]],
-      flds: generateFields(['front', 'back']),
+      flds: generateFields(['Front', 'Back']),
       sortf: 0,
       latexPre:
         '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
       tmpls: [
         {
-          afmt: "{{ back }}",
           name: deck.name,
-          qfmt: "{{ front }}",
+          qfmt: "{{Front}}",
+          afmt: "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}",
           did: null,
           ord: 0,
           bafmt: '',
@@ -158,21 +160,54 @@ export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'na
       mod: Date.now()
     },
     [clozeModel]: {
+      id: clozeModel,
+      type: 1,
       vers: [],
       name: 'polar-cloze',
       tags: [],
       did: deck.id,
       usn: -1,
-      req: [[0, 'all', [0]]],
-      flds: generateFields(['text']),
+      req: [[0, 'any', [0]]],
+      flds: generateFields(['Text']),
       sortf: 0,
       latexPre:
         '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
       tmpls: [
         {
-          afmt: "{{ extra }}",
-          name: deck.name,
-          qfmt: "{{ text }}",
+          afmt: "{{cloze:Text}}",
+          name: "polar-cloze",
+          qfmt: "{{cloze:Text}}",
+          did: null,
+          ord: 0,
+          bafmt: '',
+          bqfmt: ''
+        }
+      ],
+      latexPost: '\\end{document}',
+      css:
+        '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
+      mod: Date.now()
+    },
+    [basicAndReverseModel]:  {
+      id: basicAndReverseModel,
+      vers: [],
+      name: 'polar-basic (and reversed card)',
+      tags: [],
+      did: deck.id,
+      usn: -1,
+      req: [
+        [0, 'all', [0]],
+        [1, 'any', [1]]
+      ],
+      flds: generateFields(['Front', 'Back']),
+      sortf: 0,
+      latexPre:
+        '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
+      tmpls: [
+        {
+          name: "Card 1",
+          qfmt: "{{Front}}",
+          afmt: "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}",
           did: null,
           ord: 0,
           bafmt: '',
@@ -181,12 +216,51 @@ export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'na
       ],
       latexPost: '\\end{document}',
       type: 0,
-      id: basicModel,
+      css:
+        '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
+      mod: Date.now()
+    },
+    [basicOptionalReverseModel]:  {
+      id: basicOptionalReverseModel,
+      type: 0,
+      vers: [],
+      name: 'polar-basic (optional reversed card)',
+      tags: [],
+      did: deck.id,
+      usn: -1,
+      req: [
+        [0, 'any', [0]],
+        [1, 'all', [1, 2]]
+      ],
+      flds: generateFields(['Front', 'Back', 'Add Reverse']),
+      sortf: 0,
+      latexPre:
+        '\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n',
+      tmpls: [
+        {
+          name: "Card 1",
+          qfmt: "{{Front}}",
+          afmt: "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}",
+          did: null,
+          ord: 0,
+          bafmt: '',
+          bqfmt: ''
+        }, 
+        {
+          name: "Card 2",
+          qfmt: "{{#Add Reverse}}{{Back}}{{/Add Reverse}}",
+          afmt: "{{FrontSide}}\n\n<hr id=answer>\n\n{{Front}}",
+          did: null,
+          ord: 1,
+          bafmt: '',
+          bqfmt: ''
+        }
+      ],
+      latexPost: '\\end{document}',
       css:
         '.card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n',
       mod: Date.now()
     }
-
   }
   const decks = {
     [deck.id]: {
@@ -229,11 +303,13 @@ export function insertCols(database: Database, deck: Pick<DeckConfig, 'id' | 'na
 
   return {
     [FlashcardType.BASIC_FRONT_BACK]: basicModel,
-    [FlashcardType.CLOZE]: clozeModel 
+    [FlashcardType.CLOZE]: clozeModel,
+    [FlashcardType.BASIC_FRONT_BACK_AND_REVERSE]: basicAndReverseModel,
+    [FlashcardType.BASIC_FRONT_BACK_OR_REVERSE]: basicOptionalReverseModel
   };
 }
 
-export function insertCard(database: Database, deck: Pick<DeckConfig, 'id' | 'name'>, modelId: number, card: Card) {
+export function insertCard(database: Database, deck: DeckConfig, modelId: number, card: Card) {
   const createTime = card.timestamp || Date.now()
   const cardId = createTime
   const noteId = cardId + 1
