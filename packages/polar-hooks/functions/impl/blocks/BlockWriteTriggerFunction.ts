@@ -7,6 +7,7 @@ import {
     IBlockJournal
 } from "polar-firebase/src/firebase/om/BlockJournalCollection";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 /**
  * This listens to block modifications, then writes them to a journal.
@@ -55,7 +56,7 @@ export const BlockWriteTriggerFunction
             after: dataAfter
         }
 
-        await BlockJournalCollection.set(firestore, blockJournal);
+        await BlockJournalCollection.set(firestore, Dictionaries.onlyDefinedProperties(blockJournal));
 
     } else {
         console.error("Unable to determine write type: ", dataBefore, dataAfter);

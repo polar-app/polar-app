@@ -39,7 +39,7 @@ import {AnswerIndexerFunction} from "./impl/ai/AnswerIndexerFunction";
 import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUpdateFunction";
 import {MigrationToBlockAnnotationsFunction} from "./impl/migrations/MigrationToBlockAnnotationsFunction";
-import {BlockWriteTriggerFunction} from "./impl/groups/BlockWriteTriggerFunction";
+import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
