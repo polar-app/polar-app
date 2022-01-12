@@ -134,16 +134,6 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     }
 
-    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
-
-        return (
-            <SnapshotStoreProvider>
-                {props.children}
-            </SnapshotStoreProvider>
-        );
-
-    }));
-
     const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
 
         const subscriber = useSubscriber()
@@ -156,7 +146,7 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     }));
 
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [SnapshotStoreProvider, useSnapshotStore, Loader, SnapshotStoreLatch];
 
 }
 
@@ -179,27 +169,7 @@ export function createFirestoreSnapshotWithSubscriber<D = TDocumentData>(collect
 
     const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
 
-    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotStoreProvider(props) {
-
-        return (
-            <SnapshotStoreProvider>
-                {props.children}
-            </SnapshotStoreProvider>
-        );
-
-    }));
-
-    const Loader: FirestoreSnapshotStoreLoaderWithSubscriber<D> = React.memo(profiled(function FirestoreSnapshotStoreLoaderWithSubscriber(props) {
-
-        return (
-            <SnapshotStoreLoader subscriber={props.subscriber}>
-                {props.children}
-            </SnapshotStoreLoader>
-        );
-
-    }));
-
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch];
 
 }
 
