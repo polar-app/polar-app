@@ -2,7 +2,7 @@ import {join} from 'path'
 import {initDatabase, insertCard, insertCols} from './sql'
 import {createWriteStream, mkdirSync, writeFileSync} from 'fs'
 import * as archiver from 'archiver'
-import {DeckConfig} from "./DeckConfig";
+import {DeckConfig, DeckModels} from "./DeckConfig";
 import {Card} from "./Card";
 import Database from "better-sqlite3";
 import rimraf from "rimraf";
@@ -31,7 +31,7 @@ export class APKG {
     this.mediaFiles = [];
   }
 
-  addModels() {
+  addModels(): DeckModels {
     return insertCols(this.db, this.deck);
   }
 
