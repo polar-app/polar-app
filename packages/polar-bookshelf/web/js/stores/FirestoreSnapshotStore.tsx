@@ -91,7 +91,7 @@ interface FirestoreSnapshotForUserCollectionOpts {
  * @param opts The options used to create snapshots.
  */
 export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(collectionName: string,
-                                                                            opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
+                                                                            opts: FirestoreSnapshotForUserCollectionOpts = {}): FirestoreSnapshotStoreTuple<D> {
 
     const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
 

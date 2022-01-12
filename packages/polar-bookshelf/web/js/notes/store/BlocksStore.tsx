@@ -2666,7 +2666,5 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createStoreContext(
 })
 
 export function useBlocksStore(): IBlocksStore {
-    const delegate = useBlocksStoreDelegate();
-    // return new TracingBlocksStore(delegate);
-    return delegate;
+    return useBlocksStoreDelegate();
 }

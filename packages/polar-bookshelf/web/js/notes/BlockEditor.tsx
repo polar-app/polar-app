@@ -40,6 +40,7 @@ export const useBlockContentUpdater = () => {
     const blocksStore = useBlocksStore();
 
     return React.useCallback((id: BlockIDStr, data: MarkdownStr) => {
+
         const block = blocksStore.getBlock(id);
 
         if (! block || ! BlockPredicates.isEditableBlock(block)) {
@@ -52,6 +53,7 @@ export const useBlockContentUpdater = () => {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksStore.setBlockContent(block.id, newContent);
         }
+
     }, [blocksStore]);
 };
 

@@ -9,6 +9,7 @@ import React from 'react';
 import {IBlockPermissionUser} from "polar-firebase/src/firebase/om/IBlockPermissionUser";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Testing} from "polar-shared/src/util/Testing";
+import {createFirestoreSnapshotForUserCollection} from "../../stores/FirestoreSnapshotStore";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -18,6 +19,14 @@ export type IBlockCollectionSnapshot = IGenericCollectionSnapshot<IBlock>;
  * This is just a hook that will be re-called from within the UI...
  */
 export type BlockCollectionSnapshotsHook = () => IBlockCollectionSnapshot;
+
+const [
+    FirestoreBlockPermissionUserCollectionSnapshotProvider,
+    useFirestoreBlockPermissionUserCollectionSnapshot,
+    FirestoreBlockPermissionUserCollectionSnapshotLoader,
+    FirestoreBlockPermissionUserCollectionSnapshotLatch
+] = createFirestoreSnapshotForUserCollection(BlockPermissionUserCollection.COLLECTION, {initialEmpty: true});
+
 
 export function useFirestoreBlockCollectionSnapshots(listener: (snapshot: IBlockCollectionSnapshot) => void) {
 
