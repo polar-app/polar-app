@@ -79,11 +79,12 @@ export class BlocksAnnotationRepoStore {
     }
 
     @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
-        const blocks = this._blocksStore
+
+       const blocks = this._blocksStore
             .idsToBlocks(this.annotationBlocks.map(({ id }) => id))
-            .map(block => block.toJSON() as IBlock<IBlockContent>)
-            .filter((block): block is IBlock<IRepoAnnotationContent> =>
-                    BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block));
+            .filter((block) => BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block))
+            .map(block => block as IBlock<IRepoAnnotationContent>)
+            ;
 
         return BlocksAnnotationRepoFilters
             .execute(this._blocksStore.tagsIndex, blocks, this._filter)
@@ -127,7 +128,7 @@ export class BlocksAnnotationRepoStore {
     public idsToRepoAnnotationBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
         return this._blocksStore
             .idsToBlocks(ids)
-            .map(block => block.toJSON() as IBlock<IBlockContent>)
+            .map(block => block as IBlock<IBlockContent>)
             .filter((block): block is IBlock<IRepoAnnotationContent> =>
                     BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block));
     }

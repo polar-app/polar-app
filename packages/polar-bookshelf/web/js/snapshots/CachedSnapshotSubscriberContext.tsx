@@ -120,7 +120,7 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
         const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
 
             storeContext.current = snapshot;
-            storeContext.subject.next(snapshot);
+            storeContext.subject.next(snapshot!);
 
             const newAccepted = predicate(storeContext.current);
 
