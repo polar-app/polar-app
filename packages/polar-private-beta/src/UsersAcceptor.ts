@@ -26,6 +26,7 @@ export namespace UsersAcceptor {
             'burton@getpolarized.io',
             'jonathan.graeupner@gmail.com',
             'jwalkenhorst.social@gmail.com',
+            'anas@getpolarized.io',
         ];
         return allowedEmails.includes(idUser.user.email as string);
     }
