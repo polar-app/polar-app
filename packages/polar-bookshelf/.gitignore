@@ -12,3 +12,4 @@ tsconfig.tsbuildinfo
 cypress/screenshots/*
 cypress/videos/*
 storybook-static
+!.storybook/*
