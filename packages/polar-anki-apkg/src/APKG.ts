@@ -1,31 +1,29 @@
 import {join} from 'path'
 import {initDatabase, insertCard, insertCols} from './sql'
-import {createWriteStream, mkdirSync, writeFileSync} from 'fs'
+import {createWriteStream, mkdirSync, writeFileSync, rmSync} from 'fs'
 import * as archiver from 'archiver'
 import {DeckConfig, DeckModels} from "./DeckConfig";
 import {Card} from "./Card";
 import Database from "better-sqlite3";
-import rimraf from "rimraf";
 
 export class APKG {
   private db: Database.Database
   private deck: DeckConfig;
-  private dest: string
-  private mediaFiles: Array<string>
+  private dest: string;
+  private mediaFiles: Array<string>;
+
   constructor(name: string) {
     this.dest = join(__dirname, name);
 
-    this.clean();
-
     mkdirSync(this.dest);
-
+    
     this.db = new Database(join(this.dest, 'collection.anki2'));
-
+    
     this.deck = {
       id: Date.now(),
       name
     };
-
+    
     initDatabase(this.db);
 
     this.mediaFiles = [];
@@ -60,11 +58,10 @@ export class APKG {
       createWriteStream(join(destination, `${this.deck.name}.apkg`))
     );
 
-    archive.on('end', this.clean.bind(this));
+    archive.on('end', () => {
+      rmSync(this.dest, { recursive: true, force: true });
+    });
 
     await archive.finalize();
-  }
-  private clean() {
-    rimraf(this.dest, () => {})
   }
 }
