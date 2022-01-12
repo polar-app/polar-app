@@ -1,6 +1,6 @@
 import { join } from 'path'
 import { initDatabase, insertCard, insertCols } from './sql'
-import { createWriteStream, mkdirSync, writeFileSync, rmSync, mkdir, existsSync } from 'fs'
+import { createWriteStream, mkdirSync, writeFileSync, rmSync } from 'fs'
 import * as archiver from 'archiver'
 import { DeckConfig, DeckModels } from "./DeckConfig";
 import { Card } from "./Card";
