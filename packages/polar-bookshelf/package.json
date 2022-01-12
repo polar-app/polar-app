@@ -32,7 +32,9 @@
     "tsc-watch": "tsc --project ./tsconfig.json --watch",
     "test-ci": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;",
     "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome"
+    "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -59,6 +61,11 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@storybook/addon-actions": "^6.4.10",
+    "@storybook/addon-essentials": "^6.4.10",
+    "@storybook/addon-links": "^6.4.10",
+    "@storybook/react": "^6.4.10",
     "@types/amplitude-js": "=7.0.1",
     "@types/chai": "4.2.11",
     "@types/deep-equal": "=1.0.1",
@@ -71,6 +78,7 @@
     "@types/react-router-dom": "=5.1.5",
     "@types/react-window": "=1.8.2",
     "@types/throttle-debounce": "=2.1.0",
+    "babel-loader": "^8.2.3",
     "chai": "4.2.0",
     "cypress": "=9.1.0",
     "dotenv": "=8.6.0",
