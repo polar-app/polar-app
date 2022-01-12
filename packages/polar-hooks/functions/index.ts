@@ -39,6 +39,7 @@ import {AnswerIndexerFunction} from "./impl/ai/AnswerIndexerFunction";
 import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUpdateFunction";
 import {MigrationToBlockAnnotationsFunction} from "./impl/migrations/MigrationToBlockAnnotationsFunction";
+import {BlockWriteTriggerFunction} from "./impl/groups/BlockWriteTriggerFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -65,6 +66,7 @@ exports.groupGet = GroupGetFunction;
 exports.groupInvite = GroupInviteFunction;
 exports.groupMemberDelete = GroupMemberDeleteFunction;
 exports.GroupDocMetaWriteFunction = GroupDocMetaWriteFunction;
+exports.BlockWriteTriggerFunction = BlockWriteTriggerFunction;
 exports.webapp = Webapp;
 exports.groupSitemap = GroupSitemap;
 exports.sitemap = Sitemap;
