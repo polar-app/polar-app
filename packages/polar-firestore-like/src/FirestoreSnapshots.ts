@@ -13,6 +13,9 @@ export type FirestoreSnapshotSubscriber<V> = (onNext: FirestoreOnNextCallback<V>
 
 export type FirestoreSnapshotConverter<T> = (data: TDocumentData) => T;
 
+/**
+ * @deprecated
+ */
 export interface IFirestoreTypedQuerySnapshot<T> {
 
     readonly empty: boolean;
@@ -26,6 +29,7 @@ export interface IFirestoreTypedQuerySnapshot<T> {
 }
 /**
  * Similar to a firestore document snapshot but converted to a specific type.
+ * @deprecated
  */
 export interface IFirestoreTypedDocumentSnapshot<T> {
 

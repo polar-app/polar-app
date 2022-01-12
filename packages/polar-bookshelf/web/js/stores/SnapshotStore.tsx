@@ -81,8 +81,15 @@ function useSnapshotLatchContext() {
  *
  * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
  *
- * This is not Firestore specific and can support any type of value that can be updated.
+ * This is not Firestore specific and can support any type of value that can be
+ * updated.
+ *
+ * One of the important things with this code is that the loaders can be used to
+ * parallel load snapshots and if they're coming from anything async parallel
+ * loading will increase performance.
+ *
  * @param id The id for this snapshot store used internally for logging.
+ *
  */
 export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 

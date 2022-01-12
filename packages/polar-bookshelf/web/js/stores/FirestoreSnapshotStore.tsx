@@ -86,6 +86,7 @@ interface FirestoreSnapshotForUserCollectionOpts {
 /**
  * Perform a query over a given collection which has a 'uid' for all the users
  * data.
+ *
  * @param collectionName The collection to read for the snapshot.
  * @param opts The options used to create snapshots.
  */
@@ -161,13 +162,24 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
 export type GenericFirestoreClause = readonly [string, TWhereFilterOp, any];
 
-export function createFirestoreSnapshotForSubscriber<D = TDocumentData>(collectionName: string,
-                                                                        subscriber: QuerySnapshotSubscriber<ISnapshotMetadata, D>,
-                                                                        opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
+interface FirestoreSnapshotLoaderWithSubscriberProps<D> {
+    readonly subscriber: QuerySnapshotSubscriber<ISnapshotMetadata, D>;
+}
+
+export type FirestoreSnapshotStoreLoaderWithSubscriber<D> = React.FC<FirestoreSnapshotLoaderWithSubscriberProps<D>>;
+
+export type FirestoreSnapshotStoreTupleWithSubscriber<D = TDocumentData> = readonly [
+    FirestoreSnapshotStoreProvider,
+    UseFirestoreSnapshotStore<D>,
+    FirestoreSnapshotStoreLoaderWithSubscriber<D>,
+    FirestoreSnapshotStoreLatch
+];
+
+export function createFirestoreSnapshotWithSubscriber<D = TDocumentData>(collectionName: string): FirestoreSnapshotStoreTupleWithSubscriber<D> {
 
     const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
 
-    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
+    const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotStoreProvider(props) {
 
         return (
             <SnapshotStoreProvider>
@@ -177,10 +189,10 @@ export function createFirestoreSnapshotForSubscriber<D = TDocumentData>(collecti
 
     }));
 
-    const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
+    const Loader: FirestoreSnapshotStoreLoaderWithSubscriber<D> = React.memo(profiled(function FirestoreSnapshotStoreLoaderWithSubscriber(props) {
 
         return (
-            <SnapshotStoreLoader subscriber={subscriber}>
+            <SnapshotStoreLoader subscriber={props.subscriber}>
                 {props.children}
             </SnapshotStoreLoader>
         );
@@ -188,7 +200,6 @@ export function createFirestoreSnapshotForSubscriber<D = TDocumentData>(collecti
     }));
 
     return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
-
 
 }
 
@@ -203,48 +214,4 @@ function createEmptyQuerySnapshot<D>(): IQuerySnapshot<ISnapshotMetadata, D> {
         docs: [],
         docChanges: () => []
     }
-}
-
-export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(id: string, collectionName: string): FirestoreSnapshotStoreTuple<D> {
-
-    const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(id);
-
-    function useSubscriber() {
-        return React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
-
-            return (onNext, onError) => {
-
-                onNext(createEmptyQuerySnapshot());
-
-                return () => console.log("unsubscribed");
-
-            }
-
-        }, [])
-    }
-
-    const Provider = React.memo(profiled(function FirestoreSnapshotProvider(props: FirestoreSnapshotProps) {
-
-        return (
-            <SnapshotStoreProvider>
-                {props.children}
-            </SnapshotStoreProvider>
-        );
-
-    }));
-
-    const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
-
-        const subscriber = useSubscriber()
-
-        return (
-            <SnapshotStoreLoader subscriber={subscriber}>
-                {props.children}
-            </SnapshotStoreLoader>
-        );
-
-    }));
-
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
-
 }
