@@ -7,7 +7,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {profiled} from "../profiler/ProfiledComponents";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
-import {GenericClause} from "../notes/persistence/GenericFirestoreSnapshots";
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 
 type QuerySnapshotSubscriber<SM = unknown, D = TDocumentData> = SnapshotSubscriber<IQuerySnapshot<SM, D>>;
@@ -48,76 +47,6 @@ export interface IDocumentChangeIndex<D> {
     // readonly index: ReadonlyArray<ITypedDocumentChangeWithKey<D>>;
     readonly update: (docChanges: ReadonlyArray<ITypedDocumentChange<D>>) => void;
 }
-
-function createDocumentChangeIndex<D>(): IDocumentChangeIndex<D> {
-
-    // eslint-disable-next-line functional/prefer-readonly-type
-    const docs: ITypedDocument<D>[] = []
-
-    // eslint-disable-next-line functional/prefer-readonly-type
-    const idx: {[id: string]: number} = {};
-
-    // TODO: we CAN maintain these sorted but we're going to have to have a
-    // custom merge function that keeps track of the index as it changes. We're
-    // also going to need the ability to change the comparator at runtime as the
-    // underlying structure of a table changes when the user is sorting it.
-
-    function doAdded(docChange: ITypedDocumentChange<D>) {
-        const ptr = docs.length;
-        docs.push({
-            id: docChange.id,
-            doc: docChange.doc
-        })
-        idx[docChange.id] = ptr;
-    }
-
-    function doModified(docChange: ITypedDocumentChange<D>) {
-        const ptr = idx[docChange.id];
-        docs[ptr] = {
-            id: docChange.id,
-            doc: docChange.doc
-        }
-    }
-
-    function doRemoved(docChange: ITypedDocumentChange<D>) {
-        const ptr = idx[docChange.id];
-        delete idx[docChange.id];
-        docs.splice(ptr, 1);
-    }
-
-    function update(docChanges: ReadonlyArray<ITypedDocumentChange<D>>) {
-        for (const docChange of docChanges) {
-
-            switch (docChange.type) {
-                case "added":
-                    doAdded(docChange);
-                    break;
-
-                case "modified":
-                    doModified(docChange);
-                    break;
-                case "removed":
-                    doRemoved(docChange);
-                    break;
-            }
-        }
-    }
-
-    return {docs, update};
-
-}
-
-// function convertQuerySnapshotToTypedDocumentChanges<D, SM = unknown>(snapshot: IQuerySnapshot<SM>): ReadonlyArray<ITypedDocumentChange<D>> {
-//
-//     return snapshot.docChanges().map((current): ITypedDocumentChange<D> => {
-//         return {
-//             id: current.id,
-//             type: current.type,
-//             doc: current.doc.data() as D
-//         }
-//     })
-//
-// }
 
 // TODO: we need to include the metadata from the server including whether it
 // came from the cache or not.
@@ -232,52 +161,11 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
 export type GenericFirestoreClause = readonly [string, TWhereFilterOp, any];
 
-export function createFirestoreSnapshotForClause<D = TDocumentData>(collectionName: string,
-                                                                    clause: GenericClause,
-                                                                    opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
+export function createFirestoreSnapshotForSubscriber<D = TDocumentData>(collectionName: string,
+                                                                        subscriber: QuerySnapshotSubscriber<ISnapshotMetadata, D>,
+                                                                        opts: FirestoreSnapshotForUserCollectionOpts): FirestoreSnapshotStoreTuple<D> {
 
     const [SnapshotStoreProvider, useSnapshotStore, SnapshotStoreLoader, SnapshotStoreLatch] = createSnapshotStore<IQuerySnapshot<ISnapshotMetadata, D>>(collectionName);
-
-    function useSubscriber() {
-
-        const {firestore, uid} = useFirestore();
-
-        return React.useMemo<QuerySnapshotSubscriber<ISnapshotMetadata, D>>(() => {
-
-            if (uid === null || uid === undefined) {
-                return () => {
-                    return NULL_FUNCTION;
-                };
-            }
-
-            let logged = false;
-
-            return (onNext, onError) => {
-
-                const snapshotHandler = (snapshot: IQuerySnapshot<ISnapshotMetadata, D>) => {
-
-                    if (! logged) {
-                        console.log(`Snapshot from cache for ${collectionName}: ${snapshot.metadata.fromCache}`);
-                        logged = true;
-                    }
-                    onNext(snapshot);
-                }
-
-                if (opts.initialEmpty) {
-                    onNext(createEmptyQuerySnapshot());
-                }
-
-                const [clauseColumn, clauseComparator, clauseValue] = clause;
-
-                return firestore.collection(collectionName)
-                    .where(clauseColumn, clauseComparator, clauseValue)
-                    .onSnapshot<D>({includeMetadataChanges: true}, next => snapshotHandler(next), err => onError(err));
-
-            }
-
-        }, [firestore, uid]);
-
-    }
 
     const Provider: FirestoreSnapshotStoreProvider = React.memo(profiled(function FirestoreSnapshotProvider(props) {
 
@@ -290,8 +178,6 @@ export function createFirestoreSnapshotForClause<D = TDocumentData>(collectionNa
     }));
 
     const Loader: FirestoreSnapshotStoreLoader = React.memo(profiled(function FirestoreSnapshotLoader(props) {
-
-        const subscriber = useSubscriber()
 
         return (
             <SnapshotStoreLoader subscriber={subscriber}>
