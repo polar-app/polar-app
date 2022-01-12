@@ -1,67 +1,65 @@
-import {join} from 'path'
-import {initDatabase, insertCard, insertCols} from './sql'
-import {createWriteStream, mkdirSync, writeFileSync, rmSync} from 'fs'
+import { join } from 'path'
+import { initDatabase, insertCard, insertCols } from './sql'
+import { createWriteStream, mkdirSync, writeFileSync, rmSync, mkdir, existsSync } from 'fs'
 import * as archiver from 'archiver'
-import {DeckConfig, DeckModels} from "./DeckConfig";
-import {Card} from "./Card";
+import { DeckConfig, DeckModels } from "./DeckConfig";
+import { Card } from "./Card";
 import Database from "better-sqlite3";
 
-export class APKG {
-  private db: Database.Database
-  private deck: DeckConfig;
-  private dest: string;
-  private mediaFiles: Array<string>;
+export namespace APKG {
+    export function init(name: string) {
+        const dest: string = join(__dirname, name);
 
-  constructor(name: string) {
-    this.dest = join(__dirname, name);
+        mkdirSync(dest);
 
-    mkdirSync(this.dest);
-    
-    this.db = new Database(join(this.dest, 'collection.anki2'));
-    
-    this.deck = {
-      id: Date.now(),
-      name
-    };
-    
-    initDatabase(this.db);
+        const db: Database.Database = new Database(join(dest, 'collection.anki2'));
 
-    this.mediaFiles = [];
-  }
+        const deck: DeckConfig = {
+            id: Date.now(),
+            name
+        };
 
-  addModels(): DeckModels {
-    return insertCols(this.db, this.deck);
-  }
+        initDatabase(db);
 
-  addCard(modelID:number, card: Card) {
-    insertCard(this.db, this.deck, modelID, card);
-  }
-  addMedia(filename: string, data: Buffer) {
-    const index = this.mediaFiles.length
-    this.mediaFiles.push(filename)
-    writeFileSync(join(this.dest, `${index}`), data)
-  }
-  async save(destination: string) {
-    const archive = archiver.create('zip');
+        const mediaFiles: string[] = [];
 
-    const mediaObj = this.mediaFiles.reduce((obj, file, idx) => {
-      // @ts-ignore
-      obj[idx] = file
-      return obj
-    }, {});
+        function addModels(): DeckModels {
+            return insertCols(db, deck);
+        }
 
-    writeFileSync(join(this.dest, 'media'), JSON.stringify(mediaObj));
-    
-    archive.directory(this.dest, false);
-    
-    archive.pipe(
-      createWriteStream(join(destination, `${this.deck.name}.apkg`))
-    );
+        function addCard(modelID: number, card: Card): void {
+            insertCard(db, deck, modelID, card);
+        }
 
-    archive.on('end', () => {
-      rmSync(this.dest, { recursive: true, force: true });
-    });
+        function addMedia(filename: string, data: Buffer): void {
+            const index = mediaFiles.length
+            mediaFiles.push(filename)
+            writeFileSync(join(dest, `${index}`), data)
+        }
+        async function save(destination: string): Promise<void> {
+            const archive = archiver.create('zip');
 
-    await archive.finalize();
-  }
+            const mediaObj = mediaFiles.reduce((obj, file, idx) => {
+                // @ts-ignore
+                obj[idx] = file
+                return obj
+            }, {});
+
+            writeFileSync(join(dest, 'media'), JSON.stringify(mediaObj));
+
+            archive.directory(dest, false);
+
+            archive.pipe(
+                createWriteStream(join(destination, `${deck.name}.apkg`))
+            );
+
+            archive.on('end', () => {
+                rmSync(dest, { recursive: true, force: true });
+            });
+
+            await archive.finalize();
+        }
+
+        return { addModels, addCard, addMedia, save };
+    }
 }
