@@ -1,48 +1,46 @@
 
-import { APKG } from 'polar-anki-apkg/src/index';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { APKG } from 'polar-anki-apkg/src/APKG';
 export namespace FlashCardExport {
-    export async function init() {
+    export function init(fileName: string) {
 
-        const apkg = new APKG('test');
+        const apkg = APKG.init(fileName);
 
         const models = apkg.addModels();
 
-        function addBasicFlashcard () {
+        function addBasic (front: string, back: string): void {
             apkg.addCard(models.BASIC_FRONT_BACK, {
-                content: ["front example", `<div>back example</div><img src="ankimg.png">`]
+                content: [front, back]
             });
 
-            apkg.addMedia("ankimg.png", readFileSync(join(__dirname, "ankimg.png")));
         }
 
-        function addClozeFlashcard() {
+        function addCloze(text: string): void {
             apkg.addCard(models.CLOZE, {
-                content: ["text {{c1::test}}"]
+                content: [text]
             });
         }
 
-        function addFrontBackAndReverse(){
+        function addFrontBackAndReverse(front: string, back: string): void {
             apkg.addCard(models.BASIC_FRONT_BACK_AND_REVERSE, {
-                content: ["front and reverse", "back and reverse"]
+                content: [front, back]
             });
         }
         
-        function addFrontBackOrReverse(){
+        function addFrontBackOrReverse(front: string, back: string,
+                                       addReverse: string): void {
+
             apkg.addCard(models.BASIC_FRONT_BACK_OR_REVERSE, {
-                content: ["Front optional reverse", "back or reverse", "add reverse"]
+                content: [front, back, addReverse]
             });
         }
 
-        addBasicFlashcard();
-
-        addClozeFlashcard();
-
-        addFrontBackAndReverse();
-
-        addFrontBackOrReverse();
-
-        await apkg.save(__dirname);
+        return {
+            addBasic,
+            addCloze,
+            addFrontBackAndReverse,
+            addFrontBackOrReverse,
+            addMedia: apkg.addMedia,
+            save: apkg.save
+        }
     };
 }
