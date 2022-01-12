@@ -32,5 +32,6 @@ WORKDIR /polar-app
 RUN npm config set always-auth true
 
 # @ Expose the port for polar-bookshelf serving
+EXPOSE 6006
 EXPOSE 8050
 EXPOSE 8051
