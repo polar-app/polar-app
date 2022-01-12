@@ -17,6 +17,7 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {Block} from "./store/Block";
 import {BlockContent, useBlocksStore} from "./store/BlocksStore";
 import {BlockTextContentUtils} from "./BlockTextContentUtils";
+import {debounce} from "throttle-debounce";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -39,7 +40,7 @@ export interface BlockEditorGenericProps {
 export const useBlockContentUpdater = () => {
     const blocksStore = useBlocksStore();
 
-    return React.useCallback((id: BlockIDStr, data: MarkdownStr) => {
+    return React.useMemo(() => debounce(250, (id: BlockIDStr, data: MarkdownStr) => {
         const block = blocksStore.getBlock(id);
 
         if (! block || ! BlockPredicates.isEditableBlock(block)) {
@@ -52,7 +53,7 @@ export const useBlockContentUpdater = () => {
             const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksStore.setBlockContent(block.id, newContent);
         }
-    }, [blocksStore]);
+    }), [blocksStore]);
 };
 
 interface INoteEditorInnerProps extends IProps {
