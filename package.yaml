@@ -18,6 +18,7 @@ scripts:
     "clean": "git clean -Xfd && git clean -fd"
     "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)"
     "serve": "(cd packages/polar-bookshelf && pnpm run webpack-serve)"
+    "storybook": "(cd packages/polar-bookshelf && pnpm run build-storybook && pnpm run storybook)"
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
     "dump-packages": "./scripts/fetch-organize-packages/main.sh"
     "dump-oudated": "pnpm m outdated --prod --no-table --no-optional"
