@@ -357,11 +357,6 @@ export interface QueryDocumentSnapshotLike {
 }
 
 /**
- * A Firebase UID string for a user.
- */
-export type UserIDStr = string;
-
-/**
  * The name of a collection.
  */
 export type CollectionNameStr = string;

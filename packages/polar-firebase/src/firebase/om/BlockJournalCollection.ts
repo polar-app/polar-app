@@ -38,4 +38,6 @@ export namespace BlockJournalCollection {
         return await Collections.set(firestore, COLLECTION, blockJournal.id, blockJournal);
     }
 
+    // export async function read(firestore: IFirestore<unknown>, uid: UserIDStr)
+
 }
