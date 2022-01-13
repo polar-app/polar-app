@@ -18,31 +18,31 @@ export function useUploadProgressTaskbar() {
 
         const message = `Uploading ${upload} of ${nrUploads} file(s)`;
 
-        const updateProgress = await dialogManager.taskbar({
+        const taskbar = await dialogManager.taskbar({
             message,
             ... opts
         });
 
-        updateProgress({value: 'indeterminate'});
+        taskbar.update({value: 'indeterminate'});
 
         return (progress) => {
 
             if (progress === 'terminate') {
-                updateProgress(progress);
+                taskbar.update(progress);
                 return;
             }
 
             if (typeof progress === 'number') {
-                updateProgress({value: progress as Percentage});
+                taskbar.update({value: progress as Percentage});
                 return;
             }
 
             switch (progress.type) {
                 case 'determinate':
-                    updateProgress({value: progress.value});
+                    taskbar.update({value: progress.value});
                     break;
                 case 'indeterminate':
-                    updateProgress({value: 'indeterminate'});
+                    taskbar.update({value: 'indeterminate'});
                     break;
             }
 
@@ -68,19 +68,19 @@ export function useBatchProgressTaskbar() {
 
     return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<BatchProgressCallback> => {
 
-        const updateProgress = await dialogManager.taskbar(opts);
+        const taskbar = await dialogManager.taskbar(opts);
 
-        updateProgress({value: 'indeterminate'});
+        taskbar.update({value: 'indeterminate'});
 
         return (update) => {
 
             if (update === 'terminate') {
-                updateProgress(update);
+                taskbar.update(update);
                 return;
             }
 
             if (typeof update.progress === 'number') {
-                updateProgress({
+                taskbar.update({
                     message: update.message,
                     value: update.progress as Percentage
                 });
@@ -89,13 +89,13 @@ export function useBatchProgressTaskbar() {
 
             switch (update.progress.type) {
                 case 'determinate':
-                    updateProgress({
+                    taskbar.update({
                         message: update.message,
                         value: update.progress.value
                     });
                     break;
                 case 'indeterminate':
-                    updateProgress({
+                    taskbar.update({
                         message: update.message,
                         value: 'indeterminate'
                     });

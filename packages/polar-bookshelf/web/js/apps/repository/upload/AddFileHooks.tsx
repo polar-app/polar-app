@@ -129,7 +129,10 @@ export namespace AddFileHooks {
                 async function doAsync() {
 
                     try {
+                        // first, import all the files...
                         const importedFiles = await handleUploads(uploads);
+
+                        // now, prompt to open them...
                         promptToOpenFiles(importedFiles);
 
                         analytics.event2('add-file-import-succeeded', {count: uploads.length});
