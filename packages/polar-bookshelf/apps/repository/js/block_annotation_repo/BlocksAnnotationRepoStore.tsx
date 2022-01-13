@@ -6,7 +6,7 @@ import {
 } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
-import {BlockContent, useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IBlocksStore} from "../../../../web/js/notes/store/IBlocksStore";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
