@@ -1,7 +1,6 @@
 import {GroupIDStr} from './Groups';
 import * as admin from 'firebase-admin';
 import {IDUser} from '../../util/IDUsers';
-import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {UserIDStr} from "polar-shared/src/util/Strings";
 import {Collections} from "polar-firestore-like/src/Collections";

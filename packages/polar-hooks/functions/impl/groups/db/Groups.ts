@@ -9,7 +9,6 @@ import {IDUser} from '../../util/IDUsers';
 import {GroupAdmins} from './GroupAdmins';
 import {PlainTextStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
