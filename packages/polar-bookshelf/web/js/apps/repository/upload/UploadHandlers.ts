@@ -95,7 +95,7 @@ export function useBatchUploader() {
 
         } finally {
             batchProgressTaskbar.update('terminate');
-            batchProgressTaskbar.clear();
+            batchProgressTaskbar.destroy();
 
             cancelled.current = false;
         }

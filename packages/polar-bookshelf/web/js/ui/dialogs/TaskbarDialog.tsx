@@ -27,7 +27,7 @@ export type TaskbarProgressUpdate = ITaskbarProgress | 'terminate';
 export interface TaskbarProgressCallback {
     // TODO: needs pause / resume functionality...
     update: (progress: TaskbarProgressUpdate) => void;
-    clear: () => void;
+    destroy: () => void;
 }
 
 export interface TaskbarDialogProps {
@@ -115,13 +115,13 @@ export const TaskbarDialog = deepMemo(function TaskbarDialog(props: TaskbarDialo
 
     }, [progressRef, props.completedDuration, props.noAutoTerminate, setProgress]);
 
-    const clearCallback = React.useCallback(() => {
+    const destroyCallback = React.useCallback(() => {
         setOpen(false);
     }, []);
 
     React.useEffect(() => {
-        props.onProgressCallback({update: updateCallback, clear: clearCallback});
-    }, [clearCallback, props, updateCallback]);
+        props.onProgressCallback({update: updateCallback, destroy: destroyCallback});
+    }, [destroyCallback, props, updateCallback]);
 
     const Progress = () => {
 

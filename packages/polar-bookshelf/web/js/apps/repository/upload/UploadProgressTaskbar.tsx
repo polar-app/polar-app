@@ -62,7 +62,7 @@ export interface BatchProgressUpdate {
 
 export interface IBatchProgressUpdater {
     update: (progress: BatchProgressUpdate | 'terminate') => void;
-    clear: () => void;
+    destroy: () => void;
 }
 
 export function useBatchProgressTaskbarFactory() {
@@ -108,7 +108,7 @@ export function useBatchProgressTaskbarFactory() {
 
         return {
             update,
-            clear: () => taskbar.clear()
+            destroy: () => taskbar.destroy()
         };
 
     }, [dialogManager]);
