@@ -1,0 +1,33 @@
+{
+  "name": "polar-anki-apkg",
+  "version": "0.0.0",
+  "description": "Flashcards export to Anki",
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern",
+    "eslint-fix": "eslint -c ../../.eslintrc.json . --fix",
+    "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;",
+    "tsc": "tsc --project ./tsconfig.json",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc-watch; fi;",
+    "tsc-watch": "tsc --project ./tsconfig.json --watch",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha; fi;",
+    "mocha": "mocha -p --retries 1 --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "test-ci": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else pnpm run mocha-ci; fi;",
+    "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
+  },
+  "author": "Polar",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "=14.17.9",
+    "archiver": "=5.3.0",
+    "better-sqlite3": "=7.4.5",
+    "sha1": "=1.1.1",
+    "polar-shared": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "=7.4.2",
+    "@types/rimraf": "=3.0.2",
+    "@types/sha1": "=1.1.3",
+    "@types/archiver": "=5.1.1"
+  }
+}
