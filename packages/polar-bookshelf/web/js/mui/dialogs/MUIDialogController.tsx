@@ -36,7 +36,7 @@ export const NullDialogManager: DialogManager = {
     taskbar: async () => {
         return {
             update: NULL_FUNCTION,
-            clear: NULL_FUNCTION
+            destroy: NULL_FUNCTION
         }
     },
     dialog: nullDialog,
