@@ -1,13 +1,12 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {UserIDStr} from "../Collections";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {
     FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER,
     FirestoreSnapshotSubscriber
 } from "polar-firestore-like/src/FirestoreSnapshots";
-import {IDStr} from "polar-shared/src/util/Strings";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 
 /**
@@ -116,7 +115,7 @@ export namespace MigrationCollection {
     type IWriteData = Omit<IMigrationCompleted, 'id' | 'written'>
                      | Omit<IMigrationStarted, 'id' | 'written'>
                      | Omit<IMigrationFailed, 'id' | 'written'>;
- 
+
 
     export async function write<SM = undefined>(firestore: IFirestore<SM>,
                                                 write: IWriteData) {

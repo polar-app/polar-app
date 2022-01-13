@@ -7,12 +7,12 @@ import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {ProfileOwners} from './ProfileOwners';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import * as admin from 'firebase-admin';
-import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IQuery} from "polar-firestore-like/src/IQuery";
 import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/FirestoreTypedArray";
 import UserRecord = admin.auth.UserRecord;
 
 export class Contacts {
