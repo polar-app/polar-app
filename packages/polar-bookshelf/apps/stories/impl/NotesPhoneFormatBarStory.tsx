@@ -1,9 +1,15 @@
 import React from "react";
 import clsx from "clsx";
-import {NoteFormatBarPopperPhoneBar} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneBar";
+import {
+    NoteFormatBarPopperPhoneBar
+} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useNoteFormatBarPopperPhoneStyles} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhone";
-import {NoteFormatBarPopperPhoneExtension} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneExtension";
+import {
+    useNoteFormatBarPopperPhoneStyles
+} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhone";
+import {
+    NoteFormatBarPopperPhoneExtension
+} from "../../../web/js/notes/note_format_bar/NoteFormatBarPhone/NoteFormatBarPopperPhoneExtension";
 import {Box, createStyles, makeStyles, TextField} from "@material-ui/core";
 
 const useStyles = makeStyles(() =>
@@ -43,7 +49,6 @@ export const NotesPhoneFormatBarStory: React.FC = () => {
                                               onIndent={NULL_FUNCTION}
                                               onUnindent={NULL_FUNCTION}
                                               onBacklink={NULL_FUNCTION}
-                                              onHideKeyboard={NULL_FUNCTION}
                                               onStrikeThrough={NULL_FUNCTION}
                                               expanded={expanded}
                                               onToggleExpand={handleToggleExpand} />

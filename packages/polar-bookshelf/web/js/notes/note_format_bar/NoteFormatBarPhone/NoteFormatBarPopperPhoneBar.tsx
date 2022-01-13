@@ -1,8 +1,7 @@
 import React from "react";
-import {Box, Paper, Divider, createStyles, makeStyles} from "@material-ui/core";
+import {Box, createStyles, Divider, makeStyles, Paper} from "@material-ui/core";
 import {BacklinkIconButton} from "../../../mui/icon_buttons/BacklinkIconButton";
 import {FABoldIcon, FAItalicIcon, FAStrikethroughIcon} from "../../../mui/MUIFontAwesome";
-import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
@@ -23,7 +22,6 @@ interface INoteFormatBarPopperPhoneBarProps {
     readonly onIndent: () => void;
     readonly onUnindent: () => void;
     readonly onBacklink: () => void;
-    readonly onHideKeyboard: () => void;
 }
 
 export const useStyles = makeStyles((theme) =>
@@ -44,8 +42,6 @@ export const NoteFormatBarPopperPhoneBar: React.FC<INoteFormatBarPopperPhoneBarP
         expanded,
         className,
         style,
-
-        onHideKeyboard,
         onBacklink,
         onIndent,
         onUnindent,
@@ -64,12 +60,6 @@ export const NoteFormatBarPopperPhoneBar: React.FC<INoteFormatBarPopperPhoneBarP
                  display="flex"
                  justifyContent="center"
                  alignItems="center">
-
-                <NoteFormatBarActionIcon icon={KeyboardHideIcon}
-                                         className={classes.iconWrapper}
-                                         onClick={onHideKeyboard} />
-
-                <Divider orientation="vertical" flexItem className={classes.divider} />
 
                 <NoteFormatBarActionIcon icon={BacklinkIconButton}
                                          className={classes.iconWrapper}

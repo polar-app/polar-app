@@ -6,7 +6,7 @@ import {
 } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
-import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {BlockContent, useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IBlocksStore} from "../../../../web/js/notes/store/IBlocksStore";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
@@ -62,7 +62,8 @@ export class BlocksAnnotationRepoStore {
         return block;
     }
 
-    @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<ListValue> {
+    @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<IBlock<BlockContent>> {
+
         const documentBlocks = this._blocksStore
             .idsToBlocks(Object.values(this._blocksStore.indexByDocumentID));
 
@@ -72,19 +73,17 @@ export class BlocksAnnotationRepoStore {
         const highlights = documentBlocks.flatMap(getDirectChildren);
         const firstLevelChildren = highlights.flatMap(getDirectChildren);
 
-        const allChildren = [...highlights, ...firstLevelChildren];
+        return [...highlights, ...firstLevelChildren];
 
-        const blockIDs = allChildren.map(({ id }) => ({ id }));
-        return blockIDs;
     }
 
     @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
 
-       const blocks = this._blocksStore
-            .idsToBlocks(this.annotationBlocks.map(({ id }) => id))
-            .filter((block) => BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block))
-            .map(block => block as IBlock<IRepoAnnotationContent>)
-            ;
+       const blocks =
+           this.annotationBlocks
+               .filter((block) => BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block))
+               .map(block => block as IBlock<IRepoAnnotationContent>)
+               ;
 
         return BlocksAnnotationRepoFilters
             .execute(this._blocksStore.tagsIndex, blocks, this._filter)
