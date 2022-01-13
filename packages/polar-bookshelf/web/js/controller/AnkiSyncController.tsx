@@ -34,11 +34,11 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
             let nrTasks = 0;
             let nrFailedTasks = 0;
 
-            const updateProgress = await dialogManager.taskbar({message: "Starting anki sync..."});
+            const taskbar = await dialogManager.taskbar({message: "Starting anki sync..."});
 
             try {
 
-                updateProgress({value: 'indeterminate'});
+                taskbar.update({value: 'indeterminate'});
 
                 const syncProgressListener: SyncProgressListener = syncProgress => {
 
@@ -50,7 +50,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
                         .filter(taskResult => taskResult.failed === true)
                         .map(() => ++nrFailedTasks);
 
-                    updateProgress({
+                    taskbar.update({
                         message: "Sending flashcards to Anki.",
                         value: syncProgress.percentage as Percentage
                     });
@@ -84,7 +84,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
                 const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);
 
-                updateProgress({value: 0});
+                taskbar.update({value: 0});
 
                 await pendingSyncJob.start();
 
@@ -92,7 +92,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
                     const message = `Anki sync complete. Completed ${nrTasks} tasks with ${nrFailedTasks} failures.`;
 
-                    updateProgress({
+                    taskbar.update({
                         message,
                         value: 100
                     });
@@ -105,7 +105,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
                 Analytics.event2('anki-syncCompleted', { noSucceeded: nrTasks - nrFailedTasks, noFailed: nrFailedTasks });
             } finally {
-                updateProgress('terminate');
+                taskbar.update('terminate');
             }
         }
 
