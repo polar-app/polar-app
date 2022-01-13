@@ -1,0 +1,3 @@
+# Don't ignore .js files since our current Cypress tests are written in vanilla JS
+# Tried to configure TypeScript support but didn't work out of the box, so for now this will do
+!**/*.js
