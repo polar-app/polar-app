@@ -6,7 +6,7 @@ import {
 } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
-import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {BlockContent, useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IBlocksStore} from "../../../../web/js/notes/store/IBlocksStore";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
@@ -68,7 +68,7 @@ export class BlocksAnnotationRepoStore {
 
     @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
 
-       const blocks = this.annotationBlocks;
+        const blocks = this.annotationBlocks;
 
         return BlocksAnnotationRepoFilters
             .execute(this._blocksStore.tagsIndex, blocks, this._filter)

@@ -172,7 +172,8 @@ export const DocMetadataEditor = deepMemo(function DocMetadataEditor(props: IPro
             if (value === undefined) {
                 newDocInfo[field.name] = undefined;
             } else {
-                newDocInfo[field.name] = value.trim() === '' ? undefined : value.trim();
+
+                newDocInfo[field.name] = value.trim();
             }
 
         } else {
@@ -188,7 +189,7 @@ export const DocMetadataEditor = deepMemo(function DocMetadataEditor(props: IPro
         const newDocInfo: any = Dictionaries.deepCopy(docInfo);
 
         if (field.optional) {
-            newDocInfo[field.name] = values.length === 0 ? undefined : values;
+            newDocInfo[field.name] = values.length === 0 ? [] : values;
         } else {
             newDocInfo[field.name] = values;
         }

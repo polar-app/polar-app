@@ -7,7 +7,7 @@ private: true
 
 scripts:
     "preinstall": "only-allow pnpm"
-    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -ti --rm --init --ulimit memlock=819200000:819200000 --privileged polar bash"
+    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -p 6006:6006 -ti --rm --init --ulimit memlock=819200000:819200000 --privileged polar bash"
     "eslint-all": "pnpm m run eslint --no-bail"
     "eslint-ci-all": "pnpm m run eslint-ci --no-bail"
     "compile-all": "pnpm m run compile"
@@ -18,6 +18,7 @@ scripts:
     "clean": "git clean -Xfd && git clean -fd"
     "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)"
     "serve": "(cd packages/polar-bookshelf && pnpm run webpack-serve)"
+    "storybook": "(cd packages/polar-bookshelf && pnpm run build-storybook && pnpm run storybook)"
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
     "dump-packages": "./scripts/fetch-organize-packages/main.sh"
     "dump-oudated": "pnpm m outdated --prod --no-table --no-optional"

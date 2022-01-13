@@ -1,5 +1,5 @@
 import {UserIDStr} from "polar-shared/src/util/Strings";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 export namespace UserPrefCollection {
@@ -19,7 +19,14 @@ export namespace UserPrefCollection {
 
         const userPref: IUserPref = {
             uid,
-            value: {}
+            value: {
+                // Enable Fixed-Width ePUBs by default for every user who is init-ed
+                'fixed-width-epub': {
+                    key: 'fixed-width-epub',
+                    value: 'true',
+                    written: ISODateTimeStrings.create(),
+                }
+            }
         };
 
         await ref.set(userPref);

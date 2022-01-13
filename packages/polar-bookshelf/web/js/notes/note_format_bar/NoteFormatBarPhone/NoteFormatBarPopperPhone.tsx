@@ -44,7 +44,7 @@ export const NoteFormatBarPopperPhone: React.FC = () => {
     const [expanded, setExpanded] = React.useState(false);
     const classes = useNoteFormatBarPopperPhoneStyles();
 
-    const handleToggleExpand = React.useCallback(() => 
+    const handleToggleExpand = React.useCallback(() =>
         setExpanded(expanded => ! expanded), []);
 
     const {
@@ -60,7 +60,6 @@ export const NoteFormatBarPopperPhone: React.FC = () => {
 
         handleBacklink,
         handleEditTags,
-        handleHideKeyboard,
     } = useNoteFormatBarActions();
 
     return (
@@ -74,7 +73,6 @@ export const NoteFormatBarPopperPhone: React.FC = () => {
                                           onIndent={handleIndent}
                                           onUnindent={handleUnindent}
                                           onBacklink={handleBacklink}
-                                          onHideKeyboard={handleHideKeyboard}
                                           onStrikeThrough={handleStrikeThrough} />
 
             <NoteFormatBarPopperPhoneExtension className={classes.extension}

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
-import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {deepMemo} from "../../react/ReactUtils";
@@ -25,8 +24,11 @@ export interface ITaskbarProgress {
 
 export type TaskbarProgressUpdate = ITaskbarProgress | 'terminate';
 
-// TODO: needs pause / resume functionality...
-export type TaskbarProgressCallback = (progress: TaskbarProgressUpdate) => void;
+export interface TaskbarProgressCallback {
+    // TODO: needs pause / resume functionality...
+    update: (progress: TaskbarProgressUpdate) => void;
+    destroy: () => void;
+}
 
 export interface TaskbarDialogProps {
 
@@ -86,7 +88,7 @@ export const TaskbarDialog = deepMemo(function TaskbarDialog(props: TaskbarDialo
 
     }, [props]);
 
-    function setProgressCallback(updateProgress: TaskbarProgressUpdate) {
+    const updateCallback = React.useCallback((updateProgress: TaskbarProgressUpdate) => {
 
         function doTerminate() {
             setTimeout(() => setOpen(false), props.completedDuration || 1000);
@@ -111,12 +113,15 @@ export const TaskbarDialog = deepMemo(function TaskbarDialog(props: TaskbarDialo
 
         setProgress(newProgress);
 
+    }, [progressRef, props.completedDuration, props.noAutoTerminate, setProgress]);
 
-    }
+    const destroyCallback = React.useCallback(() => {
+        setOpen(false);
+    }, []);
 
-    useComponentDidMount(() => {
-        props.onProgressCallback(setProgressCallback);
-    });
+    React.useEffect(() => {
+        props.onProgressCallback({update: updateCallback, destroy: destroyCallback});
+    }, [destroyCallback, props, updateCallback]);
 
     const Progress = () => {
 
