@@ -2,6 +2,7 @@ import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {UserIDStr} from "polar-shared/src/util/Strings";
 
 export type BlockWriteOperation = 'added' | 'modified' | 'removed';
 
@@ -38,6 +39,11 @@ export namespace BlockJournalCollection {
         return await Collections.set(firestore, COLLECTION, blockJournal.id, blockJournal);
     }
 
-    // export async function read(firestore: IFirestore<unknown>, uid: UserIDStr)
+    /**
+     * TODO: this only fetches the users personal nspace.
+     */
+    export async function list(firestore: IFirestore<unknown>, uid: UserIDStr) {
+        return await Collections.list(firestore, COLLECTION, [['nspace', '==', uid ]]);
+    }
 
 }
