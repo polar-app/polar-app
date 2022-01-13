@@ -1,22 +1,11 @@
 import {Collections} from "polar-firestore-like/src/Collections";
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
-import {IDStr, URLStr, CollectionNameStr} from "polar-shared/src/util/Strings";
+import {CollectionNameStr, IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {SlugStr} from "polar-shared/src/util/Slugs";
-
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import OrderByClause = Collections.OrderByClause;
 import Clause = Collections.Clause;
-import {DocumentReferenceLike, QueryLike, WhereFilterOpLike} from "../Collections";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
-export interface CollectionReferenceLike {
-    doc(documentPath: string): DocumentReferenceLike;
-    where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
-    limit(size: number): QueryLike;
-}
-
-export interface FirestoreLike {
-    collection(collectionPath: string): CollectionReferenceLike;
-}
 export interface BaseDocPreview extends IDocDetail {
 
     readonly id: IDStr;
