@@ -60,48 +60,55 @@ export interface BatchProgressUpdate {
     readonly progress: WriteFileProgress | number;
 }
 
-export type BatchProgressCallback = (update: BatchProgressUpdate | 'terminate') => void;
+export interface IBatchProgressUpdater {
+    update: (progress: BatchProgressUpdate | 'terminate') => void;
+    clear: () => void;
+}
 
-export function useBatchProgressTaskbar() {
+export function useBatchProgressTaskbarFactory() {
 
     const dialogManager = useDialogManager();
 
-    return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<BatchProgressCallback> => {
+    return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<IBatchProgressUpdater> => {
 
         const taskbar = await dialogManager.taskbar(opts);
 
         taskbar.update({value: 'indeterminate'});
 
-        return (update) => {
+        const update = (progress: BatchProgressUpdate | 'terminate') => {
 
-            if (update === 'terminate') {
-                taskbar.update(update);
+            if(progress === 'terminate') {
+                taskbar.update(progress);
                 return;
             }
-
-            if (typeof update.progress === 'number') {
+            if (typeof progress.progress === 'number') {
                 taskbar.update({
-                    message: update.message,
-                    value: update.progress as Percentage
+                    message: progress.message,
+                    value: progress.progress as Percentage
                 });
                 return;
             }
 
-            switch (update.progress.type) {
+            switch (progress.progress.type) {
                 case 'determinate':
                     taskbar.update({
-                        message: update.message,
-                        value: update.progress.value
+                        message: progress.message,
+                        value: progress.progress.value
                     });
                     break;
                 case 'indeterminate':
                     taskbar.update({
-                        message: update.message,
+                        message: progress.message,
                         value: 'indeterminate'
                     });
                     break;
             }
 
+        }
+
+        return {
+            update,
+            clear: () => taskbar.clear()
         };
 
     }, [dialogManager]);

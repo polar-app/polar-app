@@ -33,7 +33,12 @@ export const NullDialogManager: DialogManager = {
     prompt: nullDialog,
     autocomplete: nullDialog,
     snackbar: nullDialog,
-    taskbar: async () => NULL_FUNCTION,
+    taskbar: async () => {
+        return {
+            update: NULL_FUNCTION,
+            clear: NULL_FUNCTION
+        }
+    },
     dialog: nullDialog,
     select: nullDialog,
 }

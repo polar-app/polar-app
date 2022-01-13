@@ -1,4 +1,4 @@
-import {UpdateProgressCallback, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
+import {UpdateProgressCallback, useBatchProgressTaskbarFactory} from "./UploadProgressTaskbar";
 import {WriteController} from "../../../datastore/Datastore";
 import React from 'react';
 
@@ -11,7 +11,7 @@ export type UploadHandler<V> = (uploadProgress: UpdateProgressCallback, onContro
  */
 export function useBatchUploader() {
 
-    const createBatchProgressTaskbar = useBatchProgressTaskbar();
+    const batchProgressTaskbarFactory = useBatchProgressTaskbarFactory();
     const cancelled = React.useRef(false);
 
     return React.useCallback(async <V>(uploadHandlers: ReadonlyArray<UploadHandler<V>>): Promise<ReadonlyArray<V>> => {
@@ -35,7 +35,7 @@ export function useBatchUploader() {
         }
 
         // TODO: work toward keeping ONE snackbar up the whole time,..
-        const updateProgress = await createBatchProgressTaskbar( {
+        const batchProgressTaskbar = await batchProgressTaskbarFactory( {
             message: `Starting upload of ${uploadHandlers.length} files ... `,
             onCancel,
             noAutoTerminate: true
@@ -48,7 +48,7 @@ export function useBatchUploader() {
                 return;
             }
 
-            updateProgress({progress});
+            batchProgressTaskbar.update({progress});
 
         }
 
@@ -61,7 +61,7 @@ export function useBatchUploader() {
                 try {
 
                     // have to call updateProgress here to reset from the previous iteration
-                    updateProgress({
+                    batchProgressTaskbar.update({
                         message: `Uploading file ${idx + 1} of ${uploadHandlers.length} ...`,
                         progress: 0
                     });
@@ -82,7 +82,7 @@ export function useBatchUploader() {
                     }
 
                 } finally {
-                    updateProgress({progress: 100});
+                    batchProgressTaskbar.update({progress: 100});
                 }
 
                 if (cancelled.current) {
@@ -94,10 +94,12 @@ export function useBatchUploader() {
             return results;
 
         } finally {
-            updateProgress('terminate');
+            batchProgressTaskbar.update('terminate');
+            batchProgressTaskbar.clear();
+
             cancelled.current = false;
         }
 
-    }, [createBatchProgressTaskbar])
+    }, [batchProgressTaskbarFactory])
 
 }
