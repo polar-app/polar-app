@@ -17,15 +17,9 @@ import {BlocksAnnotationRepoTableRow, useFixedHeightBlockAnnotationCalculator} f
 
 
 const VisibleComponent = (props: VisibleComponentProps<ListValue>) => {
-    const { index, value } = props;
+    const { value } = props;
 
-    return (
-        <BlocksAnnotationRepoTableRow key={value.id}
-                                      viewIndex={index}
-                                      rowSelected={true}
-                                      blockID={value.id} />
-    );
-
+    return <BlocksAnnotationRepoTableRow blockID={value.id} />;
 };
 
 const BlockComponent = deepMemo(function BlockComponent(props: BlockComponentProps<ListValue>) {

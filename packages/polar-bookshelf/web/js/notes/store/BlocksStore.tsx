@@ -327,6 +327,8 @@ export class BlocksStore implements IBlocksStore {
 
     @observable _indexByDocumentID: BlocksIndexByDocumentID = {};
 
+    @observable _annotationsIndex: Set<BlockIDStr> = new Set();
+
     /**
      * The reverse index so that we can build references to this node.
      */
@@ -415,6 +417,10 @@ export class BlocksStore implements IBlocksStore {
 
     @computed get tagsIndex() {
         return this._tagsIndex;
+    }
+
+    @computed get annotationsIndex(): ReadonlyArray<BlockIDStr> {
+        return Array.from(this._annotationsIndex);
     }
 
     @computed get expanded() {
@@ -593,6 +599,16 @@ export class BlocksStore implements IBlocksStore {
         }
     }
 
+    private processAnnotations(before: Readonly<Block> | undefined, after: Readonly<Block>) {
+        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, before)) {
+            this._annotationsIndex.delete(before.id);
+        }
+
+        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, after)) {
+            this._annotationsIndex.add(after.id);
+        }
+    }
+
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
@@ -646,6 +662,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             this.processInheritedTags(existingBlock, block);
+            this.processAnnotations(existingBlock, block);
 
             /**
              * Update tags indices

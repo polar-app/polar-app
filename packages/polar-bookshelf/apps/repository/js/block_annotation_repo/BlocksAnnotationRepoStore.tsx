@@ -62,29 +62,13 @@ export class BlocksAnnotationRepoStore {
         return block;
     }
 
-    @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<ListValue> {
-        const documentBlocks = this._blocksStore
-            .idsToBlocks(Object.values(this._blocksStore.indexByDocumentID));
-
-        const getDirectChildren = (block: Block): ReadonlyArray<Block> =>
-            this._blocksStore.idsToBlocks(block.itemsAsArray);
-
-        const highlights = documentBlocks.flatMap(getDirectChildren);
-        const firstLevelChildren = highlights.flatMap(getDirectChildren);
-
-        const allChildren = [...highlights, ...firstLevelChildren];
-
-        const blockIDs = allChildren.map(({ id }) => ({ id }));
-        return blockIDs;
+    @computed get annotationBlocks(): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
+        return this._blocksStore.idsToBlocks(this._blocksStore.annotationsIndex) as ReadonlyArray<IBlock<IRepoAnnotationContent>>;
     }
 
     @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
 
-       const blocks = this._blocksStore
-            .idsToBlocks(this.annotationBlocks.map(({ id }) => id))
-            .filter((block) => BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block))
-            .map(block => block as IBlock<IRepoAnnotationContent>)
-            ;
+       const blocks = this.annotationBlocks;
 
         return BlocksAnnotationRepoFilters
             .execute(this._blocksStore.tagsIndex, blocks, this._filter)
