@@ -42,7 +42,7 @@ export namespace BlockJournalCollection {
     /**
      * TODO: this only fetches the users personal nspace.
      */
-    export async function list(firestore: IFirestore<unknown>, uid: UserIDStr) {
+    export async function list(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<ReadonlyArray<IBlockJournal>> {
         return await Collections.list(firestore, COLLECTION, [['nspace', '==', uid ]]);
     }
 
