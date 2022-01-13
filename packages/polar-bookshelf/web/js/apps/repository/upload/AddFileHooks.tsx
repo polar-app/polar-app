@@ -1,6 +1,5 @@
 import React from 'react';
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
-import {useLogger} from "../../../mui/MUILogger";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
@@ -18,6 +17,7 @@ import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
 import {useDocumentBlockFromDocInfoCreator} from "../../../notes/NoteUtils";
+import {useErrorHandler} from "../../../mui/MUIErrorHandler";
 
 export namespace AddFileHooks {
 
@@ -25,7 +25,7 @@ export namespace AddFileHooks {
 
     export function useAddFileImporter() {
 
-        const log = useLogger();
+        const errorHandler = useErrorHandler();
         const {persistenceLayerProvider} = usePersistenceLayerContext()
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
@@ -136,33 +136,33 @@ export namespace AddFileHooks {
 
                     } catch (e) {
                         analytics.event2('add-file-import-failed', {count: uploads.length});
-                        log.error("Unable to upload files: " + (e as any).message, uploads, e);
+                        errorHandler("Unable to upload files: " + (e as any).message, uploads, e);
                     }
 
                 }
 
                 accountVerifiedAction(() => {
-                    doAsync().catch(err => log.error(err));
+                    doAsync().catch(err => errorHandler(err));
                 });
 
             } else {
                 throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");
             }
 
-        }, [accountVerifiedAction, analytics, handleUploads, log, promptToOpenFiles]);
+        }, [accountVerifiedAction, analytics, errorHandler, handleUploads, promptToOpenFiles]);
 
         // TODO: to many dependencies here and I'm going to need to clean tyhis up.
         return React.useCallback((uploads: ReadonlyArray<IUpload>) => {
 
             if (! uploads || uploads.length === 0) {
-                log.warn("No dataTransfer files");
+                console.warn("No dataTransfer files");
                 return;
             }
 
             doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
-                .catch(err => log.error("Unable to handle upload: ", err));
+                .catch(err => errorHandler("Unable to handle upload: ", err));
 
-        }, [log, doDirectUpload]);
+        }, [errorHandler, doDirectUpload]);
 
     }
 
