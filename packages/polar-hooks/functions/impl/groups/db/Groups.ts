@@ -13,8 +13,10 @@ import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {IUserRecord} from 'polar-rpc/src/IDUser'
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/FirestoreTypedArray";
 import FieldValue = admin.firestore.FieldValue;
 import Clause = Collections.Clause;
+
 
 const HASHCODE_LEN = 20;
 

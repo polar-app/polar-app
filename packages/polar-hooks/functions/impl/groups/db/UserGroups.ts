@@ -5,8 +5,8 @@ import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {UserIDStr} from "polar-shared/src/util/Strings";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/FirestoreTypedArray";
 import FieldValue = admin.firestore.FieldValue;
-
 
 export class UserGroups {
 

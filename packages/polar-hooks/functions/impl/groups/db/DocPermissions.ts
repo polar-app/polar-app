@@ -3,6 +3,7 @@ import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {GroupIDStr} from './Groups';
 import {IDUser} from '../../util/IDUsers';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/FirestoreTypedArray";
 
 export class DocPermissions {
 
