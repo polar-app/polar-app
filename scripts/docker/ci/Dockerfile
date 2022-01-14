@@ -27,3 +27,6 @@ RUN sudo npm install -g pnpm && \
 
 # $ Set npm configurations
 RUN npm config set legacy-peer-deps true
+
+# ? Install Sentry-cli
+RUN curl -sL https://sentry.io/get-cli/ | bash
