@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {LinearProgress} from "@material-ui/core";
 
 export interface IBlockStoreContext {
     readonly uid: UIDStr;
@@ -30,11 +31,11 @@ export const BlockStoreDefaultContextProvider = (props: {children: JSX.Element})
     const userInfoContext = useUserInfoContext();
 
     if (! userInfoContext) {
-        return null;
+        return <LinearProgress/>;
     }
 
     if (! userInfoContext.userInfo) {
-        return null;
+        return <LinearProgress/>;
     }
 
     return (
