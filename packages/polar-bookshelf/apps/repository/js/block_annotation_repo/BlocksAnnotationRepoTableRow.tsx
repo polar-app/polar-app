@@ -16,7 +16,6 @@ import {DateTimeTableCell} from "../DateTimeTableCell";
 import {usePersistenceLayerContext} from "../persistence_layer/PersistenceLayerApp";
 import {calculateTextPreviewHeight} from "../annotation_repo/FixedHeightAnnotationPreview";
 import {
-    BlocksAnnotationRepoStore,
     IRepoAnnotationContent,
     useBlocksAnnotationRepoStore
 } from "./BlocksAnnotationRepoStore";
@@ -150,8 +149,6 @@ export const HighlightPreview: React.FC<IHighlightPreviewProps> = ({ block }) =>
 };
 
 interface IBlocksAnnotationRepoTableRowProps {
-    readonly viewIndex: number;
-    readonly rowSelected: boolean;
     readonly blockID: BlockIDStr;
 }
 
@@ -160,7 +157,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
     const theme = useTheme();
     const blocksStore = useBlocksStore();
     const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
-    const block = blocksStore.getBlock(blockID)?.toJSON();
+    const block = blocksStore.getBlock(blockID) as IBlock<IRepoAnnotationContent> | undefined;
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -180,22 +177,23 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
 
     const contextMenuHandlers = useBlocksAnnotationRepoTableContextMenu({ onContextMenu });
 
-    if (! block || ! BlocksAnnotationRepoStore.isRepoAnnotationBlock(blocksStore, block)) {
+    if (! block) {
         return null;
     }
 
     return (
         <TableRow role="checkbox"
-                  {...contextMenuHandlers}
                   onClick={onClick}
+                  {...contextMenuHandlers}
                   selected={blocksAnnotationRepoStore.isSelected(block.id)}
                   style={{ userSelect: 'none' }}
                   draggable
                   hover>
+
             <TableCell padding="checkbox">
                 <Box my={1}>
                     <HighlightPreviewParent block={block}>
-                        <Box mt={1} style={{fontSize: '14px'}}>
+                        <Box mt={1} fontSize="14px">
                             <HighlightPreview block={block} />
 
                             <DateTimeTableCell
@@ -205,6 +203,7 @@ export const BlocksAnnotationRepoTableRow: React.FC<IBlocksAnnotationRepoTableRo
                     </HighlightPreviewParent>
                 </Box>
             </TableCell>
+
         </TableRow>
     );
 });

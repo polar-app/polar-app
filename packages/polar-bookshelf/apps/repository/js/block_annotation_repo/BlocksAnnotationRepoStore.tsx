@@ -6,7 +6,7 @@ import {
 } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import React from "react";
-import {BlockContent, useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
+import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IBlocksStore} from "../../../../web/js/notes/store/IBlocksStore";
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
@@ -62,28 +62,13 @@ export class BlocksAnnotationRepoStore {
         return block;
     }
 
-    @computed({ equals: comparer.structural }) get annotationBlocks(): ReadonlyArray<IBlock<BlockContent>> {
-
-        const documentBlocks = this._blocksStore
-            .idsToBlocks(Object.values(this._blocksStore.indexByDocumentID));
-
-        const getDirectChildren = (block: Block): ReadonlyArray<Block> =>
-            this._blocksStore.idsToBlocks(block.itemsAsArray);
-
-        const highlights = documentBlocks.flatMap(getDirectChildren);
-        const firstLevelChildren = highlights.flatMap(getDirectChildren);
-
-        return [...highlights, ...firstLevelChildren];
-
+    @computed get annotationBlocks(): ReadonlyArray<IBlock<IRepoAnnotationContent>> {
+        return this._blocksStore.idsToBlocks(this._blocksStore.annotationsIndex) as ReadonlyArray<IBlock<IRepoAnnotationContent>>;
     }
 
     @computed({ equals: comparer.structural }) get view(): ReadonlyArray<ListValue> {
 
-       const blocks =
-           this.annotationBlocks
-               .filter((block) => BlocksAnnotationRepoStore.isRepoAnnotationBlock(this._blocksStore, block))
-               .map(block => block as IBlock<IRepoAnnotationContent>)
-               ;
+        const blocks = this.annotationBlocks;
 
         return BlocksAnnotationRepoFilters
             .execute(this._blocksStore.tagsIndex, blocks, this._filter)
