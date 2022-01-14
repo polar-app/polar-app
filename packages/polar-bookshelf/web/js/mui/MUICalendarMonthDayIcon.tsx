@@ -19,7 +19,7 @@ export const useMonthDay = () => {
         midnight.setMilliseconds(0);
 
         const updateAfterMs = midnight.getTime() - new Date().getTime();
-        
+
         const timeoutID = setTimeout(() => {
             setDay(new Date().getDate());
         }, updateAfterMs);
@@ -57,6 +57,8 @@ export const MUICalendarMonthDayIcon: React.FC<IProps> = (props) => {
             <svg className={classes.root}
                  style={style}
                  focusable="false"
+                 width="100%"
+                 height="100%"
                  viewBox="0 0 24 24"
                  aria-hidden="true">
                 <g>
