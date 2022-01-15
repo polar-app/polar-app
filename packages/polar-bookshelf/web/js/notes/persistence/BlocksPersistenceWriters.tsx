@@ -6,7 +6,6 @@ import {useRepoDocMetaManager} from '../../../../apps/repository/js/persistence_
 import {Testing} from "polar-shared/src/util/Testing";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from '../store/IBlocksStoreMutation';
-import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -59,16 +58,43 @@ function useBuffer<T>(capacity: number): IBuffer<T> {
  */
 function useDebouncer(callback: () => void, interval: number = 500) {
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const timeout = React.useRef<number | undefined>(undefined);
+
     React.useEffect(() => {
 
         return () => {
+
+            if (timeout.current) {
+                // we are about to unmount, so we can't run the timeout because
+                // if we do it will work with data that's no longer available
+                // because React has unmounted.
+                window.clearTimeout(timeout.current);
+            }
+
             // the debouncer must be called when we unmount.
             callback();
         }
 
     }, [callback])
 
-    return React.useMemo(() => Debouncers.create(callback, {interval}), [callback, interval]);
+
+    return React.useCallback(() => {
+
+        if (timeout.current) {
+            // already scheduled
+            return;
+        }
+
+        timeout.current = window.setTimeout(() => {
+
+            callback();
+            // now clear the timeout so we can schedule again
+            timeout.current = undefined;
+
+        }, interval);
+
+    }, [callback, interval]);
 
 }
 
