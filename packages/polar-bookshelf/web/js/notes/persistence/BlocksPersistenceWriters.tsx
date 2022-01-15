@@ -6,6 +6,7 @@ import {useRepoDocMetaManager} from '../../../../apps/repository/js/persistence_
 import {Testing} from "polar-shared/src/util/Testing";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from '../store/IBlocksStoreMutation';
+import {useErrorHandler} from "../../mui/MUIErrorHandler";
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -103,6 +104,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
     const {firestore} = useFirestore();
     const {uid} = useBlocksStoreContext();
     const repoDocMetaManager = useRepoDocMetaManager();
+    const errorHandler = useErrorHandler();
 
     const mutationBuffer = useBuffer<IBlocksStoreMutation>(50);
 
@@ -122,9 +124,9 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             firestore,
             repoDocMetaManager.repoDocInfoIndex,
             snapshot
-        ).catch(err => console.log("Unable to commit mutations: ", err, snapshot));
+        ).catch(err => errorHandler("Unable to commit mutations: ", err, snapshot));
 
-    }, [firestore, mutationBuffer, repoDocMetaManager.repoDocInfoIndex, uid])
+    }, [errorHandler, firestore, mutationBuffer, repoDocMetaManager.repoDocInfoIndex, uid])
 
     const debouncer = useDebouncer(doCommit, 5000);
 
