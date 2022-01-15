@@ -267,7 +267,7 @@ export namespace StripeCustomers {
         const stripe = StripeUtils.getStripe(stripeMode);
 
         const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
-        const {customer, subscription} = customerSubscription;
+        const {subscription} = customerSubscription;
 
         if (!subscription) {
             // we are already done. no subscription.
