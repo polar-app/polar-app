@@ -60,7 +60,10 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {
+    ANNOTATION_REPO_CHILDREN_DEPTH,
+    BlocksAnnotationRepoStore
+} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -1963,7 +1966,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    public cursorOffsetRestore(active: IActiveBlock | undefined) {
+    @action public cursorOffsetRestore(active: IActiveBlock | undefined) {
 
         if (active?.id) {
 
