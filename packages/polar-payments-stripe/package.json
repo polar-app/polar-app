@@ -25,9 +25,13 @@
     "@types/jsdom": "=16.2.13",
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
-    "mocha": "=9.1.1"
+    "mocha": "=9.1.1",
+    "@types/stripe": "=6.32.13"
   },
-  "dependencies": {},
+  "dependencies": {
+    "stripe": "=8.119.0",
+    "polar-shared": "=0.0.0"
+  },
   "files": [
     "**/*.js",
     "**/*.d.ts",
