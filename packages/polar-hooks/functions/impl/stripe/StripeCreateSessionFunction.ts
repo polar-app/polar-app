@@ -1,7 +1,7 @@
 import {Billing} from 'polar-accounts/src/Billing';
-import {StripeMode} from "./StripeUtils";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {StripeCreateSessions} from "./StripeCreateSessions";
+import {StripeCreateSessions} from "polar-payments-stripe/src/StripeCreateSessions";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 export const StripeCreateSessionFunction = ExpressFunctions.createHookAsync('StripeCreateSessionFunction', async (req, res) => {
