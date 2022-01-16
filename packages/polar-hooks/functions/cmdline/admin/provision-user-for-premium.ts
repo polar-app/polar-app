@@ -17,6 +17,9 @@ async function provisionUserForLevel(email: string, plan: V2Plan) {
 
     const interval = 'year';
 
+    // TODO: how do I set this up without a customer and give them a month
+    // coupon for free... or should I use a trial?
+
     const account = await StripeCustomerAccounts.get('live', email);
     await StripeCustomers.changePlan('live', email, plan, interval);
     await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: account.customer.customerID}, plan, interval);

@@ -1,6 +1,7 @@
 import {APIGatewayProxyHandler} from "aws-lambda";
-import {IDUser, IDUsers} from "polar-hooks-functions/impl/util/IDUsers";
+import {IDUser} from "polar-rpc/src/IDUser";
 import {APIGatewayProxyResult} from "aws-lambda/trigger/api-gateway-proxy";
+import {IDUsers} from "polar-firebase-admin/src/IDUsers";
 
 export interface LambdaWrapperOpts {
     /**
