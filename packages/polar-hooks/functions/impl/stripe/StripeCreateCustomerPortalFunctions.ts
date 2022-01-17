@@ -1,5 +1,5 @@
 import {IDUser} from "../util/IDUsers";
-import {StripeCreateCustomerPortalSessions} from "./StripeCreateCustomerPortalSessions";
+import {StripeCreateCustomerPortalSessions} from "polar-payments-stripe/src/StripeCreateCustomerPortalSessions";
 import {
     IStripeCreateCustomerPortalRequest,
     IStripeCreateCustomerPortalResponse

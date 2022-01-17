@@ -2,9 +2,9 @@ import {Billing} from "polar-accounts/src/Billing";
 import {StripeMode, StripeUtils} from "./StripeUtils";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {Lazy} from "../util/Lazy";
 import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Lazy} from "polar-shared/src/util/Lazy";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());

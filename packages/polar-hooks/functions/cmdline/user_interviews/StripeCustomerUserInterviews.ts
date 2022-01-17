@@ -1,4 +1,4 @@
-import {StripeUtils} from "../../impl/stripe/StripeUtils";
+import {StripeUtils} from "polar-payments-stripe/src/StripeUtils";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {UserInterviews} from "./UserInterviews";
 

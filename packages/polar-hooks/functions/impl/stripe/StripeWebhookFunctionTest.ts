@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Accounts} from "./Accounts";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanPlus = Billing.V2PlanPlus;
 
