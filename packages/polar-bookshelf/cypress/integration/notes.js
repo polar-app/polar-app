@@ -46,7 +46,7 @@ describe('Notes', function () {
                 .contains("Alice's Adventures in Wonderland")
                 .dblclick().then(() => {
 
-                cy.get('b').contains('Reading progress').then(() => {
+                cy.contains('Reading progress').then(() => {
                     const timeAfterOpeningNote = performance.now();
                     const timeToOpenSingleNoteFromListing = timeAfterOpeningNote - timeBeforeOpeningNote;
 
