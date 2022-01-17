@@ -1,5 +1,6 @@
 import {BlockIDStr, IBlock} from "./IBlock";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace BlockFSCK {
 
@@ -7,7 +8,8 @@ export namespace BlockFSCK {
         readonly id: BlockIDStr;
         readonly block: IBlock;
         readonly type: 'child-pointer-not-string';
-        readonly child: BlockIDStr;
+        readonly child: any;
+        readonly childKey: string;
     }
 
     export interface IMissingChild {
@@ -29,7 +31,7 @@ export namespace BlockFSCK {
 
         for (const block of blocks) {
 
-            for (const child of Object.values(block.items)) {
+            for (const [childKey, child] of Object.entries(block.items)) {
 
                 if (typeof child !== 'string') {
 
@@ -37,7 +39,8 @@ export namespace BlockFSCK {
                         id: block.id,
                         block,
                         type: 'child-pointer-not-string',
-                        child
+                        child,
+                        childKey
                     });
 
                     continue;
@@ -61,5 +64,59 @@ export namespace BlockFSCK {
 
     }
 
+    export interface IRepairOpts {
+        readonly simulate?: boolean;
+    }
+
+    export async function repair(corruptions: ReadonlyArray<BlockCorruption>, opts: IRepairOpts = {}): Promise<ReadonlyArray<IBlock>> {
+
+        // go through each corruption and try to repair them...
+
+        const repairs: IBlock[] = [];
+
+        for (const corruption of corruptions) {
+
+            async function repairChildPointerNotString(corruption: BlockFSCK.IWrongChildPointerNotString) {
+
+                const brokenChild = corruption.block.items[corruption.childKey];
+
+                if (typeof brokenChild === 'object') {
+
+                    const newChildKey = corruption.childKey + "." + Object.keys(brokenChild)[0];
+                    const newChild = Object.values(brokenChild)[0] as string;
+
+                    Preconditions.assertString(newChildKey, 'newChildKey');
+                    Preconditions.assertString(newChild, 'newChild');
+
+                    const newItems = {...corruption.block.items};
+
+                    delete newItems[corruption.childKey];
+
+                    newItems[newChildKey] = newChild;
+
+                    const newBlock = {...corruption.block, items: newItems};
+
+                    repairs.push(newBlock);
+
+                }
+
+            }
+
+            switch(corruption.type) {
+
+                case "child-pointer-not-string":
+                    await repairChildPointerNotString(corruption)
+                    break;
+
+                default:
+                    throw new Error("Unable to repair corruption type: " + corruption.type)
+
+            }
+
+        }
+
+        return repairs;
+
+    }
 
 }
