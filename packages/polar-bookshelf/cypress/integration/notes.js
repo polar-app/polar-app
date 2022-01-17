@@ -15,7 +15,7 @@ describe('Notes', function () {
         cy.get("input[placeholder='Enter your Code Here']").type('123 456')
 
         cy.get('button[type=button]')
-            .contains("VERIFY CODE", {matchCase: false})
+            .contains("VERIFY CODE", {matchCase: false, timeout: 15000})
             .click();
 
         // this will wait for the app to login now
