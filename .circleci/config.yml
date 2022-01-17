@@ -283,6 +283,7 @@ jobs:
       - run:
           name: Upload Sourcemap to Sentry
           command: |
+            (cd /home/circleci/project/ && pnpm run build)
             sentry-cli releases files "$TAG" upload-sourcemaps /home/circleci/project/packages/polar-bookshelf/dist/public/
       - slack/notify:
           custom: |
