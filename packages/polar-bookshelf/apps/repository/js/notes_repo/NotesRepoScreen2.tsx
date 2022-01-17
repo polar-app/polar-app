@@ -7,13 +7,13 @@ export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
 
     return (
         <TableGridStoreProvider>
-            <>
+            <div className={'notes-listing'}>
                 <NotesRepoTable2/>
 
                 <DeviceRouters.NotDesktop>
                     <MobileDailyNotesFab/>
                 </DeviceRouters.NotDesktop>
-            </>
+            </div>
         </TableGridStoreProvider>
     )
 })

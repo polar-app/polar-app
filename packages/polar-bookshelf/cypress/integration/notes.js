@@ -12,7 +12,7 @@ describe('Notes', function () {
         cy.get('button[type=button]')
             .contains("SIGN IN WITH EMAIL", {matchCase: false})
             .click();
-        cy.get("input[placeholder='Enter your Code Here']").type('123 456')
+        cy.get("input[placeholder='Enter your Code Here']", {timeout: 10000}).type('123 456')
 
         cy.get('button[type=button]')
             .contains("VERIFY CODE", {matchCase: false, timeout: 15000})
@@ -22,7 +22,7 @@ describe('Notes', function () {
         cy.get('#add-content-dropdown', {timeout: 15000});
     }
 
-    it('Can list my notes', () => {
+    it('Can open a single note', () => {
         cy.visit('http://localhost:8050');
 
         login();
@@ -31,20 +31,14 @@ describe('Notes', function () {
         cy.get('#sidenav div[title=Notes]').click();
 
         // Notes listing should have at least one note
-        cy.get('.MuiDataGrid-renderingZone', {timeout: 10000}).children().its('length').should('be.gte', 1)
-    })
+        cy.get('.notes-listing .MuiTableBody-root')
+            .children()
+            .its('length')
+            .should('be.gte', 1)
 
-    it('Can find note by name', () => {
-        cy.visit('http://localhost:8050');
-
-        login();
-
-        // Click on "Notes" in the sidebar
-        cy.get('#sidenav div[title=Notes]', {timeout: 10000}).click();
-
-        cy.get('.SearchForNote input[type=text]')
-            .first()
-            .click()
-            .type('Alice');
+        // Try to open a single note
+        cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
+            .contains("Alice's Adventures in Wonderland")
+            .dblclick();
     })
 });
