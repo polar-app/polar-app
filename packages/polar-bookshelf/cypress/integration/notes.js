@@ -1,3 +1,5 @@
+import {expect} from "chai";
+
 describe('Notes', function () {
 
     beforeEach(() => {
@@ -32,13 +34,27 @@ describe('Notes', function () {
 
         // Notes listing should have at least one note
         cy.get('.notes-listing .MuiTableBody-root')
-            .children()
+            .children({})
             .its('length')
-            .should('be.gte', 1)
+            .should('be.gte', 1).then(() => {
 
-        // Try to open a single note
-        cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
-            .contains("Alice's Adventures in Wonderland")
-            .dblclick();
+            // Capture timestamp before clicking on a single note
+            const timeBeforeOpeningNote = performance.now();
+
+            // Try to open a single note
+            cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
+                .contains("Alice's Adventures in Wonderland")
+                .dblclick().then(() => {
+
+                cy.get('b').contains('Reading progress').then(() => {
+                    const timeAfterOpeningNote = performance.now();
+                    const timeToOpenSingleNoteFromListing = timeAfterOpeningNote - timeBeforeOpeningNote;
+
+                    expect(timeToOpenSingleNoteFromListing, 'Note failed to load in between 200ms-2000ms').to.above(200).below(2000);
+                })
+            })
+        })
+
+
     })
 });
