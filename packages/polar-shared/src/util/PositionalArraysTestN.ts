@@ -20,12 +20,13 @@ describe("PositionalArrays", () => {
             assert.equal(position, '55.34234');
             assert.equal(host, '');
         });
+
     });
 
     describe('padPosition', () => {
         it('should pad the number with zeroes to reach a width of 20 digits', () => {
             const padded = PositionalArrays.padPosition(-1.577);
-            
+
             assert.equal(padded, '-00000000000000001.577');
         });
     });

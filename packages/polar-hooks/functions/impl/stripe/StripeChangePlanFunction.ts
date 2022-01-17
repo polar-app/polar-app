@@ -1,6 +1,6 @@
 import {Billing} from 'polar-accounts/src/Billing';
-import { StripeMode } from './StripeUtils';
-import {StripeChangePlans} from "./StripeChangePlans";
+import {StripeMode} from 'polar-payments-stripe/src/StripeUtils';
+import {StripeChangePlans} from "polar-payments-stripe/src/StripeChangePlans";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 // FIXME: this isn't validating idUser

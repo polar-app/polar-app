@@ -5,6 +5,7 @@ import firebase from 'firebase/app'
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {LinearProgress} from "@material-ui/core";
 
 export interface IFirestoreContext {
     readonly uid: string | undefined;
@@ -45,16 +46,16 @@ export const FirestoreProvider = deepMemo(function FirestoreProvider(props: IPro
 
     const data = useAsyncWithError({promiseFn: doAsync});
 
-    if (data) {
+    if (! data) {
         return (
-            <FirestoreContext.Provider value={data}>
-                {props.children}
-            </FirestoreContext.Provider>
+            <LinearProgress className="no-firestore-provider"/>
         );
     }
 
     return (
-        <div className="no-firestore-provider"/>
+        <FirestoreContext.Provider value={data}>
+            {props.children}
+        </FirestoreContext.Provider>
     );
 
 });

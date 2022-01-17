@@ -8,6 +8,7 @@ import {NameContent} from "../../../../web/js/notes/content/NameContent";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {useBlocksUserTagsDB} from "../persistence_layer/BlocksUserTagsDataLoader";
 import {BlockTextContentUtils} from "../../../../web/js/notes/BlockTextContentUtils";
+import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 
 export const useCreateBlockUserTag = () => {
     const blocksStore = useBlocksStore();
@@ -83,10 +84,15 @@ export const useDeleteBlockUserTags = () => {
             };
         };
 
-        const deleteFromDocumentBlocks = () => {
-            const documentBlockIDs = Object.values(blocksStore.indexByDocumentID);
+        const getAffectedDocumentBlocks = () => {
+            return ids.flatMap((id) => {
+                const taggedBlocks = blocksStore.idsToBlocks(blocksStore.tagsIndex.get(id));
+                return taggedBlocks.filter(BlockPredicates.isDocumentBlock);
+            }).map(({ id }) => id);
+        };
 
-            const contents = arrayStream(documentBlockIDs)
+        const deleteFromBlocks = (ids: ReadonlyArray<BlockIDStr>) => {
+            const contents = arrayStream(ids)
                 .map(getUpdatedBlock)
                 .filterPresent()
                 .collect();
@@ -96,14 +102,16 @@ export const useDeleteBlockUserTags = () => {
             }
         };
 
-        deleteFromDocumentBlocks();
+        const affectedBlockIDs = getAffectedDocumentBlocks();
+        deleteFromBlocks(affectedBlockIDs);
 
         if (ids.length > 0) {
             blocksStore.deleteBlocks(ids);
+
+            ids.forEach(id => blocksUserTagsDB.delete(id));
+            blocksUserTagsDB.commit().catch(console.error);
         }
 
-        ids.forEach(id => blocksUserTagsDB.delete(id));
-        blocksUserTagsDB.commit().catch(console.error);
     }, [blocksStore, blocksUserTagsDB]);
 };
 

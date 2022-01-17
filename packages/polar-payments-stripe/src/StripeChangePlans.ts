@@ -3,7 +3,7 @@ import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {Accounts} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
 import {Billing} from "polar-accounts/src/Billing";
-import { Plans } from "polar-accounts/src/Plans";
+import {Plans} from "polar-accounts/src/Plans";
 
 export namespace StripeChangePlans {
 

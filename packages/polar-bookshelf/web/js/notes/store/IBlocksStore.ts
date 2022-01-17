@@ -53,6 +53,7 @@ export interface IBlocksStore {
     tagsIndex: ReverseIndex;
     indexByName: BlocksIndexByName;
     indexByDocumentID: BlocksIndexByDocumentID;
+    annotationsIndex: ReadonlyArray<BlockIDStr>;
     selected: StringSetMap;
     relatedTagsManager: RelatedTagsManager;
     namedBlockEntries: ReadonlyArray<INamedBlockEntry>;

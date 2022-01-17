@@ -146,7 +146,7 @@ export const LazyBlockComponent = typedMemo(function LazyBlockComponent<V extend
             <BlockComponent innerRef={props.innerRef} values={props.values}>
                  <>
                     {props.inView && props.values.map((current, index) => (
-                        <IntersectionListBlockItem key={indexBase + index}
+                        <IntersectionListBlockItem key={current.id}
                                                    root={props.root}
                                                    value={current}
                                                    index={indexBase + index}

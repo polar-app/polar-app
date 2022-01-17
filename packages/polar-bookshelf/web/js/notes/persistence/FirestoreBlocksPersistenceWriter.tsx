@@ -9,6 +9,7 @@ import firebase from "firebase/app";
 import {DocumentDataUpdater} from "./DocumentDataUpdater";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {FileTombstones} from "./FileTombstones";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace FirestoreBlocksPersistenceWriter {
 
@@ -97,8 +98,13 @@ export namespace FirestoreBlocksPersistenceWriter {
                         // the operations there will be less to test.
 
                         for (const itemKey of itemsKeys) {
+
                             const itemValue = firestoreBlock.items[itemKey];
-                            batch.update(doc, `items.${itemKey}`, itemValue);
+
+                            Preconditions.assertString(itemKey, 'itemKey');
+                            Preconditions.assertString(itemValue, 'itemValue');
+
+                            batch.update(doc, new firebase.firestore.FieldPath( 'items', itemKey), itemValue);
                         }
 
                     } else {

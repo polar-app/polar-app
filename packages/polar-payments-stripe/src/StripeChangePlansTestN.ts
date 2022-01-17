@@ -1,10 +1,10 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {Lazy} from "../util/Lazy";
 import {StripeChangePlans} from "./StripeChangePlans";
 import {Billing} from "polar-accounts/src/Billing";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeUtils} from "./StripeUtils";
 import {Stripe} from "stripe";
+import {Lazy} from "polar-shared/src/util/Lazy";
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 

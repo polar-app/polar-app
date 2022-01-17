@@ -9,6 +9,7 @@ import {
     Divider,
     Fab,
     IconButton,
+    LinearProgress,
     makeStyles,
     Toolbar,
     Typography,
@@ -162,6 +163,15 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = Rea
 
     const annotationBlockIDs = useHighlightBlockIDs({ docID: docFingerprint });
     const [scrollParent, setScrollParent] = React.useState<HTMLDivElement | null>(null);
+
+    if ( ! blocksStore.hasSnapshot) {
+        // TODO: migrate this to use the new latch code so that we wait until we
+        // have the first snapshot rather than keeping a check like this *deep*
+        // within the system.
+        return (
+            <LinearProgress/>
+        );
+    }
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>

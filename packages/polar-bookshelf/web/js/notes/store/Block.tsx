@@ -6,7 +6,15 @@ import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {BlockIDStr, IBlock, IBlockContent, INewChildPosition, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {
+    BlockIDStr,
+    IBlock,
+    IBlockContent,
+    INewChildPosition,
+    NamespaceIDStr,
+    TMutation,
+    UIDStr
+} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import PositionalArray = PositionalArrays.PositionalArray;
@@ -217,6 +225,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
         for(const {type, id, key} of itemPositionPatches) {
 
+            Preconditions.assertString(key, 'key');
+            Preconditions.assertString(id, 'id');
+
             switch (type) {
 
                 case "insert":
@@ -307,6 +318,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action private doPutItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
+        Preconditions.assertString(key, 'key');
         Preconditions.assertString(id, 'id');
 
         if (! this.hasItem(id)) {
@@ -323,6 +335,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action putItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
+        Preconditions.assertString(key, 'key');
         Preconditions.assertString(id, 'id');
 
         if (this.doPutItem(key, id)) {

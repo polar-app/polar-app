@@ -60,7 +60,10 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {
+    ANNOTATION_REPO_CHILDREN_DEPTH,
+    BlocksAnnotationRepoStore
+} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -327,6 +330,8 @@ export class BlocksStore implements IBlocksStore {
 
     @observable _indexByDocumentID: BlocksIndexByDocumentID = {};
 
+    @observable _annotationsIndex: Set<BlockIDStr> = new Set();
+
     /**
      * The reverse index so that we can build references to this node.
      */
@@ -415,6 +420,10 @@ export class BlocksStore implements IBlocksStore {
 
     @computed get tagsIndex() {
         return this._tagsIndex;
+    }
+
+    @computed get annotationsIndex(): ReadonlyArray<BlockIDStr> {
+        return Array.from(this._annotationsIndex);
     }
 
     @computed get expanded() {
@@ -593,6 +602,16 @@ export class BlocksStore implements IBlocksStore {
         }
     }
 
+    private processAnnotations(before: Readonly<Block> | undefined, after: Readonly<Block>) {
+        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, before)) {
+            this._annotationsIndex.delete(before.id);
+        }
+
+        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, after)) {
+            this._annotationsIndex.add(after.id);
+        }
+    }
+
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
@@ -646,6 +665,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             this.processInheritedTags(existingBlock, block);
+            this.processAnnotations(existingBlock, block);
 
             /**
              * Update tags indices
@@ -1946,7 +1966,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    public cursorOffsetRestore(active: IActiveBlock | undefined) {
+    @action public cursorOffsetRestore(active: IActiveBlock | undefined) {
 
         if (active?.id) {
 

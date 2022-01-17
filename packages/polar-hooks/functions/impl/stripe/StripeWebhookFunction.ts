@@ -1,6 +1,6 @@
-import {StripeMode} from "./StripeUtils";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {StripeWebhooks} from "./StripeWebhooks";
+import {StripeWebhooks} from "polar-payments-stripe/src/StripeWebhooks";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 // TODO:

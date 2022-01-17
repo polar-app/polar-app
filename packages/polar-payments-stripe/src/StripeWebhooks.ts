@@ -5,11 +5,10 @@ import {StripeMode, StripeUtils} from "./StripeUtils";
 import {Billing} from "polar-accounts/src/Billing";
 import {Subscriptions} from "./Subscriptions";
 import {AccountNotifications} from "./AccountNotifications";
-import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {SentryReporters} from "../reporters/SentryReporter";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {Plans} from "polar-accounts/src/Plans";
+import {Lazy} from "polar-shared/src/util/Lazy";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const auth = Lazy.create(() => firebase().auth());
@@ -107,9 +106,6 @@ export namespace StripeWebhooks {
         } catch (e: any) {
             const msg = "Could not send notifications: ";
             console.error(msg, e);
-
-            // this is a hack until we have a new/unified logger
-            SentryReporters.reportError(msg, e);
         }
 
     }
@@ -171,9 +167,6 @@ export namespace StripeWebhooks {
         } catch (e: any) {
             const msg = "Could not send notifications: ";
             console.error(msg, e);
-
-            // this is a hack until we have a new/unified logger
-            SentryReporters.reportError(msg, e);
         }
 
     }

@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import {StripeUtils} from "./StripeUtils";
+import {StripeUtils} from "polar-payments-stripe/src/StripeUtils";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 const app = ExpressFunctions.createApp();
