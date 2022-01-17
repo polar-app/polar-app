@@ -46,10 +46,12 @@ describe('Notes', function () {
                 .contains("Alice's Adventures in Wonderland")
                 .dblclick().then(() => {
 
+                // Assert that the note opened successfully
                 cy.contains('Reading progress').then(() => {
                     const timeAfterOpeningNote = performance.now();
                     const timeToOpenSingleNoteFromListing = timeAfterOpeningNote - timeBeforeOpeningNote;
 
+                    // Assert that it opened quick enough... but not quicker than realistically possible
                     expect(timeToOpenSingleNoteFromListing, 'Note failed to load in between 200ms-2000ms').to.above(200).below(2000);
                 })
             })
