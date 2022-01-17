@@ -31,7 +31,7 @@ describe('Notes', function () {
         cy.get('#sidenav div[title=Notes]').click();
 
         // Notes listing should have at least one note
-        cy.get('.MuiDataGrid-renderingZone').children().its('length').should('be.gte', 1)
+        cy.get('.MuiDataGrid-renderingZone', {timeout: 10000}).children().its('length').should('be.gte', 1)
     })
 
     it('Can find note by name', () => {
@@ -40,7 +40,7 @@ describe('Notes', function () {
         login();
 
         // Click on "Notes" in the sidebar
-        cy.get('#sidenav div[title=Notes]').click();
+        cy.get('#sidenav div[title=Notes]', {timeout: 10000}).click();
 
         cy.get('.SearchForNote input[type=text]')
             .first()
