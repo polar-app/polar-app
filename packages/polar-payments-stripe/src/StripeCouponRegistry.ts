@@ -9,7 +9,13 @@ export interface IStripeCouponRegistry {
     /**
      * Give the user one free month, one time.
      */
-    readonly ONE_MONTH_FREE: IStripeCoupon;
+    readonly PLUS_ONE_MONTH_FREE: IStripeCoupon;
+
+    /**
+     * Give the user one free month, one time.
+     */
+    readonly PRO_ONE_MONTH_FREE: IStripeCoupon;
+
 }
 
 
@@ -17,13 +23,20 @@ export namespace StripeCouponRegistry {
 
     const registry: {[mode in StripeMode]: IStripeCouponRegistry} = {
         test: {
-            ONE_MONTH_FREE: {
-                id: '12345',
+            PLUS_ONE_MONTH_FREE: {
+                id: 'WUBFIAnh',
+            },
+            PRO_ONE_MONTH_FREE: {
+                id: "ppX1ONK4"
             }
         },
+        // FIXME these live codes are wrong.
         live: {
-            ONE_MONTH_FREE: {
+            PLUS_ONE_MONTH_FREE: {
                 id: '23456',
+            },
+            PRO_ONE_MONTH_FREE: {
+                id: "ppX1ONK4"
             }
         }
 

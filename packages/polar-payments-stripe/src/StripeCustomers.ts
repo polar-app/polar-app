@@ -106,7 +106,8 @@ export namespace StripeCustomers {
     }
 
     interface CustomerSubscriptionsFilter {
-        readonly status?: "active";
+        // Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, or `unpaid`.
+        readonly status?: ReadonlyArray<`incomplete` | `incomplete_expired` | `trialing` | `active` | `past_due` | `canceled` | `unpaid`>;
     }
 
     export async function getCustomerSubscriptions(stripeMode: StripeMode,
@@ -121,35 +122,45 @@ export namespace StripeCustomers {
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
-        const subscriptions = await stripe.subscriptions.list({customer: customer.id, ...filter});
+        const rawSubscriptions = await stripe.subscriptions.list({customer: customer.id});
+
+        const subscriptions = rawSubscriptions.data.filter(current => {
+
+            if (filter.status) {
+                return filter.status.includes(current.status);
+            }
+
+            return true;
+
+        })
 
         if (subscriptions === undefined) {
             console.log("No subscriptions (subscriptions was undefined)");
             return {customer, subscriptions: []};
         }
 
-        const nrSubscriptions = subscriptions.data.length;
+        const nrSubscriptions = subscriptions.length;
 
         if (nrSubscriptions === 0) {
             console.log("No subscriptions (subscriptions array empty)");
             return {customer, subscriptions: []};
         }
 
-        return {customer, subscriptions: [...subscriptions.data]};
+        return {customer, subscriptions: [...subscriptions]};
 
     }
 
-    export async function getActiveCustomerSubscriptions(stripeMode: StripeMode,
-                                                         customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
+    export async function getActiveOrTrialingCustomerSubscriptions(stripeMode: StripeMode,
+                                                                   customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
 
-        return await getCustomerSubscriptions(stripeMode, customerQuery, {status: 'active'});
+        return await getCustomerSubscriptions(stripeMode, customerQuery, {status: ['active', 'trialing']});
 
     }
 
-    export async function getActiveCustomerSubscription(stripeMode: StripeMode,
-                                                        email: string): Promise<StripeCustomerSubscription> {
+    export async function getActiveOrTrialingCustomerSubscription(stripeMode: StripeMode,
+                                                                  email: string): Promise<StripeCustomerSubscription> {
 
-        const {customer, subscriptions} = await getActiveCustomerSubscriptions(stripeMode, email);
+        const {customer, subscriptions} = await getActiveOrTrialingCustomerSubscriptions(stripeMode, email);
 
         const nrSubscriptions = subscriptions.length;
 
@@ -207,7 +218,7 @@ export namespace StripeCustomers {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
 
         const planID = StripePlanIDs.fromSubscription(stripeMode, plan, interval);
 
@@ -261,7 +272,7 @@ export namespace StripeCustomers {
                                              email: string) {
 
         const stripe = StripeUtils.getStripe(stripeMode);
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -291,11 +302,12 @@ export namespace StripeCustomers {
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
         const {subscription} = customerSubscription;
 
         if (!subscription) {
             // we are already done. no subscription.
+            console.warn("No subscription");
             return;
         }
 
