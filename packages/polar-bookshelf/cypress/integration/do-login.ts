@@ -14,11 +14,7 @@ describe('Verify that we can login', () => {
         cy.visit('http://localhost:8050');
 
         function verifyNoErrors() {
-
-            // wait until we get the login text field...
-
             cy.get('.ConsoleError').should('not.exist');
-
         }
 
         verifyNoErrors();

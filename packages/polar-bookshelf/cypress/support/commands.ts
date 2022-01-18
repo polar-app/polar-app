@@ -31,7 +31,7 @@ Cypress.Commands.add('clearIndexedDB', async () => {
 
     await Promise.all(
         databases.map(
-            ({ name }) =>
+            ({name}) =>
                 new Promise((resolve, reject) => {
                     const request = window.indexedDB.deleteDatabase(name);
 

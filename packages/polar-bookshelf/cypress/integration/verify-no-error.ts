@@ -7,8 +7,6 @@ describe('Verify we do not have any errors', () => {
         cy.clearLocalStorage()
         cy.clearCookies();
         cy.clearIndexedDB();
-        // cy.session().clear()
-
     });
 
     it('Verify there are no errors with the site', () => {
