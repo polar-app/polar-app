@@ -20,8 +20,11 @@ export namespace StripeChangePlans {
         const plan = Plans.toV2(opts.plan);
         const account = await StripeCustomerAccounts.get(opts.stripeMode, opts.email);
 
-        await Accounts.validate(opts.email, opts.uid);
+        await Accounts.verifyPermissions(opts.email, opts.uid);
+
         await StripeCustomers.changePlan(opts.stripeMode, opts.email, plan, opts.interval);
+
+        // now that the stripe configuration is setup, change their plan in the DB
         await Accounts.changePlanViaEmail(opts.email, {type: 'stripe', customerID: account.customer.customerID}, plan, opts.interval);
 
     }
