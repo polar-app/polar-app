@@ -1,5 +1,6 @@
 import {StripeCustomers} from "./StripeCustomers";
 import {Billing} from "polar-accounts/src/Billing";
+import {StripeTrials} from "./StripeTrials";
 import V2PlanPlus = Billing.V2PlanPlus;
 
 describe('StripeReferrals', function() {
@@ -50,7 +51,7 @@ describe('StripeReferrals', function() {
 
             await StripeCustomers.createCustomer('test', email, name);
 
-            const trial_end = Math.floor((Date.now() + (30 * 24 * 60 * 60 * 1000)) / 1000);
+            const trial_end = StripeTrials.computeTrialEnds('30d');
 
             await StripeCustomers.changePlan('test', email, V2PlanPlus, 'month', trial_end);
 
