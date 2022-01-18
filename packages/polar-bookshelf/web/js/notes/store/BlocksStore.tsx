@@ -422,6 +422,10 @@ export class BlocksStore implements IBlocksStore {
         return this._tagsIndex;
     }
 
+    @computed get annotationsIndexSet(): Set<BlockIDStr> {
+        return this._annotationsIndex;
+    }
+
     @computed get annotationsIndex(): ReadonlyArray<BlockIDStr> {
         return Array.from(this._annotationsIndex);
     }
