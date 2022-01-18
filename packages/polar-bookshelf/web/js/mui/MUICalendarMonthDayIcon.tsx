@@ -10,24 +10,46 @@ interface IProps {
 
 export const useMonthDay = () => {
     const [day, setDay] = React.useState<number>(new Date().getDate());
+    const timeoutRef = React.useRef<number | undefined>(undefined);
+
+    const computeDurationForTimeout = React.useCallback(() => {
+
+        const cutoff = new Date();
+        cutoff.setHours(24);
+        cutoff.setMinutes(0);
+        cutoff.setSeconds(0);
+        cutoff.setMilliseconds(0);
+
+        const now = new Date();
+
+        return Math.abs(cutoff.getTime() - now.getTime());
+
+    }, []);
+
+    const scheduleTimeout = React.useCallback(() => {
+
+        const duration = computeDurationForTimeout()
+
+        timeoutRef.current = window.setTimeout(() => {
+            setDay(new Date().getDate());
+
+            //now reschedule in the future.
+            scheduleTimeout();
+
+        }, duration);
+
+    }, [computeDurationForTimeout])
 
     React.useEffect(() => {
-        const midnight = new Date();
-        midnight.setHours(24);
-        midnight.setMinutes(0);
-        midnight.setSeconds(0);
-        midnight.setMilliseconds(0);
 
-        const updateAfterMs = midnight.getTime() - new Date().getTime();
+        scheduleTimeout();
 
-        const timeoutID = setTimeout(() => {
-            setDay(new Date().getDate());
-        }, updateAfterMs);
+        return () => clearTimeout(timeoutRef.current);
 
-        return () => clearTimeout(timeoutID);
-    }, [setDay, day]);
+    }, [setDay, day, computeDurationForTimeout, scheduleTimeout]);
 
     return day;
+
 };
 
 const useStyles = makeStyles((theme) =>
