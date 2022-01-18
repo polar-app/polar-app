@@ -200,6 +200,11 @@ export class TimeDurations {
 
     }
 
+    public static computeExpirationTime(time: number, duration: Duration) {
+        const durationMS = this.toMillis(duration);
+        return (Math.floor(time / durationMS) * durationMS) + durationMS;
+    }
+
 }
 
 /**
