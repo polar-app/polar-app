@@ -11,8 +11,9 @@ interface IProps {
 
 export const useMonthDay = () => {
 
-    const [day] = useTimeInterval('1d');
-    return day;
+    const [time] = useTimeInterval('1d');
+
+    return React.useMemo(() => new Date(time).getDate(), [time]);
 
 };
 

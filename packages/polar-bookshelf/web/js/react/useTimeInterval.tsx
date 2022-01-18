@@ -31,6 +31,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
         const expirationTime = TimeDurations.computeExpirationTime(Date.now(), duration);
         const durationMillis =  Math.abs(expirationTime - Date.now());
+        console.log('debug', expirationTime, new Date(expirationTime));
 
         return [expirationTime, durationMillis];
 
@@ -38,7 +39,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const scheduleTimeout = React.useCallback(() => {
 
-        const [expirationTime, duration] = computeDurationForTimeout()
+        const [expirationTime, duration] = computeDurationForTimeout();
 
         timeoutRef.current = window.setTimeout(() => {
             setTime([expirationTime, Date.now(), duration]);
