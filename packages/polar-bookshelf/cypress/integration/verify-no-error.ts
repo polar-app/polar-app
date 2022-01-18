@@ -11,7 +11,7 @@ describe('Verify we do not have any errors', () => {
 
     it('Verify there are no errors with the site', () => {
 
-        cy.visit('http://localhost:8050').debug();
+        cy.visit('http://localhost:8050');
 
         // wait until we get the login text field...
 
