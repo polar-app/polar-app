@@ -260,9 +260,14 @@ export namespace StripeCustomers {
 
     }
 
+    /**
+     * The ID to the coupon to apply to the account.
+     */
+    export type CouponIDStr = string;
+
     export async function applyCoupon(stripeMode: StripeMode,
                                       email: string,
-                                      coupon: string) {
+                                      coupon: CouponIDStr) {
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
@@ -274,6 +279,15 @@ export namespace StripeCustomers {
             return;
         }
 
+        await stripe.subscriptions.update(subscription.id, {coupon});
+
+    }
+
+    export async function applyCouponToSubscription(stripeMode: StripeMode,
+                                                    subscription: Stripe.Subscription,
+                                                    coupon: CouponIDStr) {
+
+        const stripe = StripeUtils.getStripe(stripeMode);
         await stripe.subscriptions.update(subscription.id, {coupon});
 
     }
