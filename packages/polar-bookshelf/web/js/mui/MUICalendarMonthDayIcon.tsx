@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import {useTimeInterval} from "../react/useTimeInterval";
 
 interface IProps {
     className?: string;
@@ -9,25 +10,10 @@ interface IProps {
 }
 
 export const useMonthDay = () => {
-    const [day, setDay] = React.useState<number>(new Date().getDate());
 
-    React.useEffect(() => {
-        const midnight = new Date();
-        midnight.setHours(24);
-        midnight.setMinutes(0);
-        midnight.setSeconds(0);
-        midnight.setMilliseconds(0);
-
-        const updateAfterMs = midnight.getTime() - new Date().getTime();
-
-        const timeoutID = setTimeout(() => {
-            setDay(new Date().getDate());
-        }, updateAfterMs);
-
-        return () => clearTimeout(timeoutID);
-    }, [setDay, day]);
-
+    const [day] = useTimeInterval('1d');
     return day;
+
 };
 
 const useStyles = makeStyles((theme) =>
