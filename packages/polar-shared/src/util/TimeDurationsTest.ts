@@ -101,4 +101,23 @@ describe('TimeDurations', function() {
 
     });
 
+    describe('computeExpirationTime', () => {
+
+        it('basic', function() {
+
+            const now = 1642524481479;
+
+            const expiration = TimeDurations.computeExpirationTime(now, '1h');
+
+            console.log(new Date(expiration));
+
+            assert.equal(expiration, 1642525200000);
+
+            assert.equal(new Date(now).toUTCString(), 'Tue, 18 Jan 2022 16:48:01 GMT');
+            assert.equal(new Date(expiration).toUTCString(), 'Tue, 18 Jan 2022 17:00:00 GMT');
+
+        });
+
+    });
+
 });
