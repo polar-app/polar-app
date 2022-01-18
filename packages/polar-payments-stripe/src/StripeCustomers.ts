@@ -53,9 +53,22 @@ export namespace StripeCustomers {
     type EmailStr = string;
     type CustomerQuery = EmailStr | CustomerQueryByID;
 
+    export async function createCustomer(stripeMode: StripeMode, email: string, name: string) {
+
+        const stripe = StripeUtils.getStripe(stripeMode);
+
+        return await stripe.customers.create({
+            email,
+            name
+        });
+
+    }
+
     // TODO should be getCustomer
     export async function getCustomerByEmail(stripeMode: StripeMode,
                                              query: CustomerQuery): Promise<Stripe.Customer | undefined> {
+
+        //
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
@@ -183,10 +196,13 @@ export namespace StripeCustomers {
 
     }
 
+    /**
+     * Change the plan for a user and also potentially create their subscription if necessary.
+     */
     export async function changePlan(stripeMode: StripeMode,
                                      email: string,
                                      plan: Billing.V2Plan,
-                                     interval: Billing.Interval) {
+                                     interval: Billing.Interval): Promise<Stripe.Subscription> {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
@@ -222,17 +238,19 @@ export namespace StripeCustomers {
 
             }
 
+            return subscription;
 
         } else {
 
             console.log(`Creating new subscription for plan ID ${planID} AKA ${plan.level} using mode ${stripeMode}`);
 
-            await stripe.subscriptions.create({
+            return await stripe.subscriptions.create({
                 customer: customer.id,
                 items: [{
                     plan: planID
                 }]
             });
+
         }
 
     }
