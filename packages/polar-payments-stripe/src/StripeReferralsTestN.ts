@@ -37,7 +37,7 @@ describe('StripeReferrals', function() {
 
         });
 
-        it("Create new customer with a 30d trial and apply coupon", async function() {
+        xit("Create new customer with a 30d trial and apply coupon", async function() {
 
             await StripeCustomers.createCustomer('test', email, name);
 
