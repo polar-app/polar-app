@@ -9,6 +9,13 @@ describe('Notes', function () {
         cy.clearIndexedDB();
     });
 
+    it('Can open a single note', () => {
+        cy.visit('http://localhost:8050');
+        login();
+        goToNotes();
+        openSingleNote();
+    })
+
     function login() {
         cy.get('input[type=text]').type('testing@getpolarized.io')
         cy.get('button[type=button]')
@@ -24,14 +31,12 @@ describe('Notes', function () {
         cy.get('#add-content-dropdown', {timeout: 15000});
     }
 
-    it('Can open a single note', () => {
-        cy.visit('http://localhost:8050');
-
-        login();
-
+    function goToNotes() {
         // Click on "Notes" in the sidebar
         cy.get('#sidenav div[title=Notes]').click();
+    }
 
+    function openSingleNote() {
         // Notes listing should have at least one note
         cy.get('.notes-listing .MuiTableBody-root')
             .children({})
@@ -56,7 +61,7 @@ describe('Notes', function () {
                 })
             })
         })
+    }
 
 
-    })
 });
