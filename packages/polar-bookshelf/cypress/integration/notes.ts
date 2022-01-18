@@ -6,7 +6,6 @@ describe('Notes', function () {
         cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
         cy.clearLocalStorage()
         cy.clearCookies();
-        // @ts-ignore
         cy.clearIndexedDB();
     });
 
