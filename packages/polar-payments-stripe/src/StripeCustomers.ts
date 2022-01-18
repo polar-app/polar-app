@@ -202,7 +202,8 @@ export namespace StripeCustomers {
     export async function changePlan(stripeMode: StripeMode,
                                      email: string,
                                      plan: Billing.V2Plan,
-                                     interval: Billing.Interval): Promise<Stripe.Subscription> {
+                                     interval: Billing.Interval,
+                                     trial_end?: number): Promise<Stripe.Subscription> {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
@@ -248,7 +249,8 @@ export namespace StripeCustomers {
                 customer: customer.id,
                 items: [{
                     plan: planID
-                }]
+                }],
+                trial_end
             });
 
         }

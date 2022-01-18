@@ -50,7 +50,9 @@ describe('StripeReferrals', function() {
 
             await StripeCustomers.createCustomer('test', email, name);
 
-            await StripeCustomers.changePlan('test', email, V2PlanPlus, 'month');
+            const trial_end = Math.floor((Date.now() + (30 * 24 * 60 * 60 * 1000)) / 1000);
+
+            await StripeCustomers.changePlan('test', email, V2PlanPlus, 'month', trial_end);
 
         });
 
