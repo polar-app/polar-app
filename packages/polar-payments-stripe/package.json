@@ -25,11 +25,10 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "@types/stripe": "=6.32.13",
     "polar-test": "0.0.0"
   },
   "dependencies": {
-    "stripe": "=8.119.0",
+    "stripe": "=8.197.0",
     "polar-shared": "0.0.0",
     "polar-accounts": "0.0.0",
     "polar-firebase-admin": "0.0.0",

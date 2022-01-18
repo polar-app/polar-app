@@ -28,6 +28,7 @@ class BlocksFolderSidebarStore {
     @observable private _tags: ReadonlyArray<Tag> = [];
     @observable private _selected: Set<Tags.TagID> = new Set();
     @observable private _expanded: Set<Tags.TagID> = new Set();
+    @observable private _globalCount: number = 0;
     /* eslint-enable functional/prefer-readonly-type */
 
     constructor(blocksStore: IBlocksStore, memberPredicate: IMemberPredicate) {
@@ -81,7 +82,14 @@ class BlocksFolderSidebarStore {
             type: "folder",
         });
 
-        return TagNodes.decorate(rawFoldersRoot, toTagDescriptorSelected);
+        return TagNodes.decorate({
+            ...rawFoldersRoot,
+            count: this._globalCount,
+            value: {
+                ...rawFoldersRoot.value,
+                count: this._globalCount,
+            },
+        }, toTagDescriptorSelected);
     }
 
     @computed({ equals: comparer.structural }) get tagsView() {
@@ -106,6 +114,10 @@ class BlocksFolderSidebarStore {
 
     @action setTags(tags: ReadonlyArray<Tag>) {
         this._tags = tags;
+    }
+
+    @action setGlobalCount(val: number) {
+        this._globalCount = val;
     }
 
     @action selectRow(node: Tags.TagID,
@@ -184,6 +196,7 @@ type IBlocksFolderSidebarStoreContext = {
 const BlocksFolderSidebarStoreContext = React.createContext<IBlocksFolderSidebarStoreContext | null>(null);
 
 export const DocRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) => {
+    const blocksStore = useBlocksStore();
     const { onTagSelected, onDropped } = useDocRepoCallbacks();
 
     const onSelectedTagsChange = React.useCallback((tags: ReadonlyArray<Tag>) => {
@@ -203,9 +216,16 @@ export const DocRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) 
             return;
         }
 
-
         onDropped(target);
     }, [store, onDropped]);
+
+    React.useEffect(() => {
+        const setGlobalCount = (val: number) => store.setGlobalCount(val);
+        const getGlobalCount = () => Object.keys(blocksStore.indexByDocumentID).length;
+
+        setGlobalCount(getGlobalCount());
+        return reaction(getGlobalCount, setGlobalCount);
+    }, [blocksStore, store]);
 
     const value = React.useMemo(() => ({ store, dropHandler }), [store, dropHandler]);
 
@@ -258,6 +278,14 @@ export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ child
         updateBlockTags(targets, [tag], 'add');
 
     }, [store, annotationRepoStore, blocksStore, updateBlockTags]);
+
+    React.useEffect(() => {
+        const setGlobalCount = (val: number) => store.setGlobalCount(val);
+        const getGlobalCount = () => blocksStore.annotationsIndexSet.size;
+
+        setGlobalCount(getGlobalCount());
+        return reaction(getGlobalCount, setGlobalCount);
+    }, [blocksStore, store]);
 
     const value = React.useMemo(() => ({ store, dropHandler }), [store, dropHandler]);
 

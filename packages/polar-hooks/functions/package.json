@@ -68,7 +68,6 @@
     "polar-webapp-links": "0.0.0",
     "polar-sendgrid": "0.0.0",
     "prompts": "=2.4.1",
-    "stripe": "=8.119.0",
     "yargs": "=15.3.1",
     "@sentry/node": "6.15.0",
     "form-data": "=4.0.0"
@@ -78,7 +77,6 @@
     "@types/chai": "4.2.11",
     "@types/mocha": "=9.0.0",
     "@types/node": "=14.17.9",
-    "@types/stripe": "=6.32.13",
     "@types/react": "=17.0.2",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
