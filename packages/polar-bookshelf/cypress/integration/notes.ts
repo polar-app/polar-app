@@ -34,34 +34,32 @@ describe('Notes', function () {
     function goToNotes() {
         // Click on "Notes" in the sidebar
         cy.get('#sidenav div[title=Notes]').click();
-    }
 
-    function openSingleNote() {
-        // Notes listing should have at least one note
+        // Wait for notes listing data table to have at least one note
         cy.get('.notes-listing .MuiTableBody-root')
             .children({})
             .its('length')
-            .should('be.gte', 1).then(() => {
-
-            // Capture timestamp before clicking on a single note
-            const timeBeforeOpeningNote = performance.now();
-
-            // Try to open a single note
-            cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
-                .contains("Alice's Adventures in Wonderland")
-                .dblclick().then(() => {
-
-                // Assert that the note opened successfully
-                cy.contains('Reading progress').then(() => {
-                    const timeAfterOpeningNote = performance.now();
-                    const timeToOpenSingleNoteFromListing = timeAfterOpeningNote - timeBeforeOpeningNote;
-
-                    // Assert that it opened quick enough... but not quicker than realistically possible
-                    expect(timeToOpenSingleNoteFromListing, 'Note failed to load in between 200ms-2000ms').to.above(200).below(2000);
-                })
-            })
-        })
+            .should('be.gte', 1);
     }
 
+    function openSingleNote() {
+        // Try to open a single note
+        cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
+            .then(() => {
+                // Mark timestamp when note opening started
+                performance.mark('note-open-started');
+            })
+            .contains("Alice's Adventures in Wonderland")
+            .dblclick();
 
+        // Wait for the single note to load
+        cy.contains('Reading progress').then(() => {
+            // Mark timestamp when note opening finished
+            performance.mark('note-open-finished');
+        }).then(() => {
+            const timeToOpenSingleNote = performance.measure('note-open-time', 'note-open-started', 'note-open-finished').duration;
+            assert.isAtLeast(timeToOpenSingleNote, 200);
+            assert.isAtMost(timeToOpenSingleNote, 2000);
+        });
+    }
 });
