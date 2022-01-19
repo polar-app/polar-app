@@ -1,7 +1,7 @@
 ---
 title: Frequently Asked Questions (FAQ)
 layout: doc
-date: 2021-03-25T08:00:00.000-08:00
+date: 2022-01-20T08:00:00.000-08:00
 permalink: /docs/frequently-asked-questions.html
 description: Polar Frequently Asked Questions (FAQ) 
 ---
