@@ -30,13 +30,12 @@ export namespace StripeCouponRegistry {
                 id: "ppX1ONK4"
             }
         },
-        // FIXME these live codes are wrong.
         live: {
             PLUS_ONE_MONTH_FREE: {
-                id: '23456',
+                id: 'Aez57GHJ',
             },
             PRO_ONE_MONTH_FREE: {
-                id: "ppX1ONK4"
+                id: "TAgmdASE"
             }
         }
 
