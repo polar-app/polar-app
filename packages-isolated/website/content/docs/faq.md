@@ -30,7 +30,7 @@ In your document library, select File, then click add document and select either
 
 ### Is my data secure?
 
-Your data is [encrypted and kept securely](https://getpolarized.io/docs/cloud-sync.html) in the cloud. This means that all your files will be stored completely securely, no one will have access to them. Your data is stored with privacy first in mind.
+Your data is <a href="https://getpolarized.io/docs/cloud-sync.html" target="_blank">encrypted and kept securely</a> in the cloud. This means that all your files will be stored completely securely, no one will have access to them. Your data is stored with privacy first in mind.
 
 ### Can I backup / download my data?
 
@@ -44,11 +44,12 @@ We also support a snapshot feature in the premium tiers that allows you addition
 
 ### How do I sync my flashcards with Anki?
 
-Please visit [Anki Sync](https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html)
+Please visit <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" target="_blank">Anki sync</a>.
 
 ### How do I report bugs?
 
-Message us through our intercom, we currently have a bug bounty program where you can get Polar premium if you help us resolve bugs. See details [here](https://getpolarized.us10.list-manage.com/track/click?u=0b1739813ebf118e92faf8fc3&id=4adfee31c6&e=3f9665d98f).
+Message us through our intercom, we currently have a bug bounty program where you can get Polar premium if you help us resolve bugs. See details
+<a href="https://getpolarized.us10.list-manage.com/track/click?u=0b1739813ebf118e92faf8fc3&id=4adfee31c6&e=3f9665d98f" target="_blank">here</a>.
 
 ### Does Polar have enterprise pricing?
 
@@ -98,7 +99,9 @@ Flashcard review:
 
 You can review all flashcards and annotations that you have created in Polar in the annotation viewer. Polar supports spaced repetition that automatically schedules reviews based on how well you know a card.
 
-If you're not familiar with spaced repetition you can ready up on it [here](https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html) or read a more detailed overview [here](https://numinous.productions/ttft/).	
+If you're not familiar with spaced repetition you can ready up on it 
+<a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">here</a> or read a more detailed overview 
+<a href="https://numinous.productions/ttft/" target="_blank">here</a>.	
 
 Export to Anki:
 
@@ -108,57 +111,11 @@ Chrome Extension:
 
 ![](https://media.giphy.com/media/ec4N0tiT1mUtpku9zN/giphy.gif)
 
-You can also capture web cotent directly in Polar using our [Chrome extension](https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related)
+You can also capture web cotent directly in Polar using our 
+<a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related" target="_blank">Chrome extension</a>.
 
-When you sign up, you’ll see a button to download the [Chrome extension](https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related)
+When you sign up, you’ll see a button to download the 
+<a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related" target="_blank">Chrome extension</a>.
 
-To use the [Chrome extension](https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related), click it on the page you want to capture. It’ll remove all unnecessary content like ads and convert the page into an easy to read format
-
-
-
-
-
-
-
-## What is Polar?
-    
-Polar is an integrated reading environment that allows you to build a knowledge base from your reading. Polar allows you to actively read, annotate, connect thoughts, create flashcards, track your progress, and much more.
-    
-### What are the main benefits of reading and studying with Polar?
-    
-The main advantages of learning with Polar are the opportunity to read more efficiently and retain the read information more efficienty. But what does that mean? For starters, it means you can <a href="https://getpolarized.io/docs/spaced-repetition.html" target="_blank">read actively</a>. With the help of annotations and flashcards you can actively review content. Everything is in one place and directly accessible. In Polar, you can use <a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">Spaced Repetition</a>, i.e. the repetitive review of content. That way you can store information in your long-term memory and can remember what you have learned longer.
-    
-### Is Polar free?
-    
-Yes, Polar is free for anyone to use. For certain features that boost learning efficiency even more, such as automatic flashcards using AI, there are <a href="https://getpolarized.io/pricing/" target="_blank">premium plans</a>.
-    
-### How do I import my existing reading?
-    
-If you have a large number of PDF files that you would like to import, you can select ```File | Import``` and import multiple files or entire folders in one go. This process is fairly quick and takes about 1 minute per 100-200MB.
-    
-### Where is my data kept?
-    
-Your data is <a href="https://getpolarized.io/docs/cloud-sync.html" target="_blank">encrypted and kept securely</a> in the cloud. This means that all your files will be stored completely securely, no one will have access to them. Your data is stored with privacy first in mind.
-    
-### Can I backup / download my data?
-    
-You can download all your reading and annotations as a backup. To download your reading, click on the download button in the repository view for the files you want to download. To download your annotations, click on the download button in the annotation viewer. You can download your annotations as a JSON or markdown file.
-    
-### How do I sync my flashcards with Anki?
-    
-Please see <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" target="_blank">Anki Sync for Spaced Repetition</a>.
- 
-### What is a typical workflow for Polar?
-    
-See <a href="https://getpolarized.io/docs/Polar-Workflow.html" target="_blank">here</a> for a typical workflow.
- 
-### How do I report bugs?
-
-Message us directly in the app through the button at the bottom right.
-
-<img alt="Polar Support Button" src="https://i.imgur.com/5kxyMDG.png">
-
-
-### Does Polar have enterprise pricing?
-    
-Yes. Please reach out to us [here](mailto:founders@getpolarized.io) for details
+To use the 
+<a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/related" target="_blank">Chrome extension</a>, click it on the page you want to capture. It’ll remove all unnecessary content like ads and convert the page into an easy to read format
