@@ -29,8 +29,9 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const computeDurationForTimeout = React.useCallback((): readonly [ExpirationTimeWallClockMillis, DurationMillis] => {
 
-        const expirationTime = TimeDurations.computeExpirationTime(Date.now(), duration);
-        const durationMillis =  Math.abs(expirationTime - Date.now());
+        const now = new Date().getTime();
+        const expirationTime = TimeDurations.computeExpirationTime(now, duration);
+        const durationMillis =  Math.abs(expirationTime - now);
 
         return [expirationTime, durationMillis];
 
