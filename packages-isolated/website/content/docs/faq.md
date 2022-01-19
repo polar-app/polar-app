@@ -6,13 +6,13 @@ permalink: /docs/frequently-asked-questions.html
 description: Polar Frequently Asked Questions (FAQ) 
 ---
 
-## **Welcome to Polar**
+# **Welcome to Polar**
 
 Polar will take your reading, note-taking, and learning experience to the next level. 
 
-**Frequently asked questions:**
+## Frequently asked questions:
 
-**What is Polar?**
+### What is Polar?
 
 Polar is a reading, note-taking, and learning tool that allows you to create annotations, take notes directly out of your documents and connect your thoughts. Polar makes learning significantly more efficient, with features like creating flashcards easy from your highlights and using spaced repetition to automate your review schedules.
 
