@@ -16,23 +16,23 @@ Polar will take your reading, note-taking, and learning experience to the next l
 
 Polar is a reading, note-taking, and learning tool that allows you to create annotations, take notes directly out of your documents and connect your thoughts. Polar makes learning significantly more efficient, with features like creating flashcards easy from your highlights and using spaced repetition to automate your review schedules.
 
-**Why Use Polar?**
+### Why Use Polar?
 
 Polar allows you to read more efficiently, make annotations, take notes, and memorize all relevant information all in the same tool.
 
-**Is Polar Free?** 
+### Is Polar Free? 
 
 Yes, Polar is free for anyone to use, with free cloud storage and access to all core features. We also offer premium plans with more cloud storage and various advanced features. For our plans, visit [https://app.getpolarized.io/plans](https://app.getpolarized.io/plans)
 
-**How Do I Import My Files?**
+### How Do I Import My Files?
 
 In your document library, select File, then click add document and select either “Upload Files” or “Upload Folder”.
 
-**Is my data secure?**
+### Is my data secure?
 
 Your data is [encrypted and kept securely](https://getpolarized.io/docs/cloud-sync.html) in the cloud. This means that all your files will be stored completely securely, no one will have access to them. Your data is stored with privacy first in mind.
 
-**Can I backup / download my data?**
+### Can I backup / download my data?
 
 Yes, you can download all your reading and annotations as a backup. 
 
@@ -42,19 +42,19 @@ To download your annotations, click on the download button in the annotation vie
 
 We also support a snapshot feature in the premium tiers that allows you additionally back up all your information manually in one click.
 
-**How do I sync my flashcards with Anki?**
+### How do I sync my flashcards with Anki?
 
 Please visit [Anki Sync](https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html)
 
-**How do I report bugs?**
+### How do I report bugs?
 
 Message us through our intercom, we currently have a bug bounty program where you can get Polar premium if you help us resolve bugs. See details [here](https://getpolarized.us10.list-manage.com/track/click?u=0b1739813ebf118e92faf8fc3&id=4adfee31c6&e=3f9665d98f).
 
-**Does Polar have enterprise pricing?**
+### Does Polar have enterprise pricing?
 
 Yes, please reach out to us [here](mailto:founders@getpolarized.io) for details .
 
-**Getting Started:**
+### Getting Started:
 
 Document Library:
 
