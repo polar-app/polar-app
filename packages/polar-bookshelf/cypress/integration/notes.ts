@@ -1,5 +1,3 @@
-import {expect} from "chai";
-
 describe('Notes', function () {
 
     beforeEach(() => {
@@ -36,7 +34,7 @@ describe('Notes', function () {
         cy.get('#sidenav div[title=Notes]').click();
 
         // Wait for notes listing data table to have at least one note
-        cy.get('.notes-listing .MuiTableBody-root')
+        cy.get('.NotesRepoTable2 .MuiTableBody-root')
             .children({})
             .its('length')
             .should('be.gte', 1);
@@ -44,7 +42,7 @@ describe('Notes', function () {
 
     function openSingleNote() {
         // Try to open a single note
-        cy.get('.notes-listing .MuiTableBody-root td.MuiTableCell-body')
+        cy.get('.NotesRepoTable2 .MuiTableBody-root td.MuiTableCell-body')
             .then(() => {
                 // Mark timestamp when note opening started
                 performance.mark('note-open-started');
