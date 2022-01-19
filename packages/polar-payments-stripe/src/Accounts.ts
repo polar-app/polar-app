@@ -29,7 +29,7 @@ export namespace Accounts {
      * Validate that the given HTTP request has the right uid or someone
      * is just trying to monkey with someone's account.
      */
-    export async function validate(email: string, uid: string) {
+    export async function verifyPermissions(email: string, uid: string) {
 
         const user = await auth().getUserByEmail(email);
 
@@ -38,7 +38,7 @@ export namespace Accounts {
         }
 
         if (user.uid !== uid) {
-            throw new Error("Params not validated");
+            throw new Error(`User uid=${user.uid} is accessing the wrong user account: ${uid}`);
         }
 
     }

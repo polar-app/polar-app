@@ -53,9 +53,22 @@ export namespace StripeCustomers {
     type EmailStr = string;
     type CustomerQuery = EmailStr | CustomerQueryByID;
 
+    export async function createCustomer(stripeMode: StripeMode, email: string, name: string) {
+
+        const stripe = StripeUtils.getStripe(stripeMode);
+
+        return await stripe.customers.create({
+            email,
+            name
+        });
+
+    }
+
     // TODO should be getCustomer
     export async function getCustomerByEmail(stripeMode: StripeMode,
                                              query: CustomerQuery): Promise<Stripe.Customer | undefined> {
+
+        //
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
@@ -93,7 +106,8 @@ export namespace StripeCustomers {
     }
 
     interface CustomerSubscriptionsFilter {
-        readonly status?: "active";
+        // Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, or `unpaid`.
+        readonly status?: ReadonlyArray<`incomplete` | `incomplete_expired` | `trialing` | `active` | `past_due` | `canceled` | `unpaid`>;
     }
 
     export async function getCustomerSubscriptions(stripeMode: StripeMode,
@@ -108,35 +122,45 @@ export namespace StripeCustomers {
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
-        const subscriptions = await stripe.subscriptions.list({customer: customer.id, ...filter});
+        const rawSubscriptions = await stripe.subscriptions.list({customer: customer.id});
+
+        const subscriptions = rawSubscriptions.data.filter(current => {
+
+            if (filter.status) {
+                return filter.status.includes(current.status);
+            }
+
+            return true;
+
+        })
 
         if (subscriptions === undefined) {
             console.log("No subscriptions (subscriptions was undefined)");
             return {customer, subscriptions: []};
         }
 
-        const nrSubscriptions = subscriptions.data.length;
+        const nrSubscriptions = subscriptions.length;
 
         if (nrSubscriptions === 0) {
             console.log("No subscriptions (subscriptions array empty)");
             return {customer, subscriptions: []};
         }
 
-        return {customer, subscriptions: [...subscriptions.data]};
+        return {customer, subscriptions: [...subscriptions]};
 
     }
 
-    export async function getActiveCustomerSubscriptions(stripeMode: StripeMode,
-                                                         customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
+    export async function getActiveOrTrialingCustomerSubscriptions(stripeMode: StripeMode,
+                                                                   customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
 
-        return await getCustomerSubscriptions(stripeMode, customerQuery, {status: 'active'});
+        return await getCustomerSubscriptions(stripeMode, customerQuery, {status: ['active', 'trialing']});
 
     }
 
-    export async function getActiveCustomerSubscription(stripeMode: StripeMode,
-                                                        email: string): Promise<StripeCustomerSubscription> {
+    export async function getActiveOrTrialingCustomerSubscription(stripeMode: StripeMode,
+                                                                  email: string): Promise<StripeCustomerSubscription> {
 
-        const {customer, subscriptions} = await getActiveCustomerSubscriptions(stripeMode, email);
+        const {customer, subscriptions} = await getActiveOrTrialingCustomerSubscriptions(stripeMode, email);
 
         const nrSubscriptions = subscriptions.length;
 
@@ -183,14 +207,18 @@ export namespace StripeCustomers {
 
     }
 
+    /**
+     * Change the plan for a user and also potentially create their subscription if necessary.
+     */
     export async function changePlan(stripeMode: StripeMode,
                                      email: string,
                                      plan: Billing.V2Plan,
-                                     interval: Billing.Interval) {
+                                     interval: Billing.Interval,
+                                     trial_end?: number): Promise<Stripe.Subscription> {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
 
         const planID = StripePlanIDs.fromSubscription(stripeMode, plan, interval);
 
@@ -222,17 +250,20 @@ export namespace StripeCustomers {
 
             }
 
+            return subscription;
 
         } else {
 
             console.log(`Creating new subscription for plan ID ${planID} AKA ${plan.level} using mode ${stripeMode}`);
 
-            await stripe.subscriptions.create({
+            return await stripe.subscriptions.create({
                 customer: customer.id,
                 items: [{
                     plan: planID
-                }]
+                }],
+                trial_end
             });
+
         }
 
     }
@@ -241,7 +272,7 @@ export namespace StripeCustomers {
                                              email: string) {
 
         const stripe = StripeUtils.getStripe(stripeMode);
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -260,20 +291,35 @@ export namespace StripeCustomers {
 
     }
 
+    /**
+     * The ID to the coupon to apply to the account.
+     */
+    export type CouponIDStr = string;
+
     export async function applyCoupon(stripeMode: StripeMode,
                                       email: string,
-                                      coupon: string) {
+                                      coupon: CouponIDStr) {
 
         const stripe = StripeUtils.getStripe(stripeMode);
 
-        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
+        const customerSubscription = await getActiveOrTrialingCustomerSubscription(stripeMode, email);
         const {subscription} = customerSubscription;
 
         if (!subscription) {
             // we are already done. no subscription.
+            console.warn("No subscription");
             return;
         }
 
+        await stripe.subscriptions.update(subscription.id, {coupon});
+
+    }
+
+    export async function applyCouponToSubscription(stripeMode: StripeMode,
+                                                    subscription: Stripe.Subscription,
+                                                    coupon: CouponIDStr) {
+
+        const stripe = StripeUtils.getStripe(stripeMode);
         await stripe.subscriptions.update(subscription.id, {coupon});
 
     }
