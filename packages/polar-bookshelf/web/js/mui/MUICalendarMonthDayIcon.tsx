@@ -12,7 +12,7 @@ interface IProps {
 export const useMonthDay = () => {
 
     const [day] = useTimeInterval('1d');
-    return day;
+    return new Date(day).getDate();
 
 };
 
