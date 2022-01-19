@@ -22,7 +22,7 @@ Polar allows you to read more efficiently, make annotations, take notes, and mem
 
 ### Is Polar Free? 
 
-Yes, Polar is free for anyone to use, with free cloud storage and access to all core features. We also offer premium plans with more cloud storage and various advanced features. For our plans, visit [https://app.getpolarized.io/plans](https://app.getpolarized.io/plans)
+Yes, Polar is free for anyone to use, with free cloud storage and access to all core features. We also offer premium plans with more cloud storage and various advanced features. For our plans, check out <a href="https://app.getpolarized.io/plans" target="_blank">our plans</a>.
 
 ### How Do I Import My Files?
 
