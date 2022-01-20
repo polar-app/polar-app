@@ -37,14 +37,21 @@ export namespace AnkiExport{
             (doc: FirebaseFirestore.DocumentData ) => {
                 const flashcard = doc.data().content.value as IBlockFlashcard;
 
-                if (flashcard.type == FlashcardType.CLOZE) {
-                    flashCardExport.addCloze(flashcard.fields.text);
-                } else if (
-                    flashcard.type == FlashcardType.BASIC_FRONT_BACK_AND_REVERSE || 
-                    flashcard.type == FlashcardType.BASIC_FRONT_BACK_OR_REVERSE ||
-                    flashcard.type == FlashcardType.BASIC_FRONT_BACK 
-                ) {
-                    flashCardExport.addBasic(flashcard.fields.front, flashcard.fields.back);
+                switch (flashcard.type) {
+                    case FlashcardType.CLOZE:
+                        flashCardExport.addCloze(flashcard.fields.text);
+                        break;
+                    // The following three types get the same treatment
+                    // and we currently only support BASIC_FRONT_BACK
+                    // users can't actually create a flashcard of the other two types
+                    case FlashcardType.BASIC_FRONT_BACK_AND_REVERSE:
+                    case FlashcardType.BASIC_FRONT_BACK_OR_REVERSE:
+                    case FlashcardType.BASIC_FRONT_BACK:
+                        flashCardExport.addBasic(flashcard.fields.front, flashcard.fields.back);
+                        break;
+                    default:
+                        console.error("Undefined flashcard type")
+                        break;
                 }
             }
         );
