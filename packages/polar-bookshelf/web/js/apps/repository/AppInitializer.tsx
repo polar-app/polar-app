@@ -2,7 +2,6 @@ import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 import {PinchToZoom} from "../../ui/Gestures";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {PlatformStyles} from "../../ui/PlatformStyles";
-import {AppOrigin} from "../AppOrigin";
 import {IEventDispatcher, SimpleReactor} from "../../reactor/SimpleReactor";
 import {SyncBarProgress} from "../../ui/sync_bar/SyncBar";
 import {AuthHandlers} from "./auth_handler/AuthHandler";
@@ -66,7 +65,7 @@ export class AppInitializer {
         UIModes.register();
         PlatformStyles.assign();
 
-        AppOrigin.configure();
+        // AppOrigin.configure();
 
         PDFModernTextLayers.configure();
 
