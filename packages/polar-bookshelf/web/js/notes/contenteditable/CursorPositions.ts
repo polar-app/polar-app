@@ -193,10 +193,8 @@ export namespace CursorPositions {
     }
 
     export function computeCurrentOffset(element: HTMLElement): 'end' | number | undefined {
-        if (
-            (element.textContent || '').length === 0 &&
-            element.childNodes.length === 0
-        ) {
+
+        if ((element.textContent || '').length === 0 && element.childNodes.length === 0) {
             return 0;
         }
 
@@ -204,7 +202,7 @@ export namespace CursorPositions {
 
         const selection = document.getSelection();
 
-        if (! selection || ! selection.rangeCount) {
+        if (! selection || selection.rangeCount === 0) {
             return 0;
         }
 
@@ -214,7 +212,6 @@ export namespace CursorPositions {
         if (! positionInTextNode) {
             return 0;
         }
-
 
         const getIdxForNode = (positionInTextNode: ICursorPosition) => {
             const {node, offset} = positionInTextNode;
@@ -296,8 +293,8 @@ export namespace CursorPositions {
         const elemRect = elem.getBoundingClientRect();
         const selection = window.getSelection();
 
-    
-        if (! selection || ! selection.rangeCount) {
+
+        if (! selection || selection.rangeCount === 0) {
             return false;
         }
 

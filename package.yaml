@@ -66,6 +66,8 @@ devDependencies:
     "karma-webpack": "=5.0.0"
     "karma-summary-reporter": "=3.0.0"
     "puppeteer": "=11.0.0"
+    "playwright": "=1.18.0"
+    "karma-webkit-launcher": "=1.0.2"
 
     ## Mocha Dependencies
     "@types/mocha": "=9.0.0"
