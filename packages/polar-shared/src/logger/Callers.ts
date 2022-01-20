@@ -18,7 +18,6 @@ export class Callers {
 
     /**
      * Parse a specific frame in the stack trace.
-     * @protected
      */
     public static _parse(frame: string) {
 
@@ -38,7 +37,7 @@ export class Callers {
             return javascriptCaller;
         }
 
-        throw new Error(`Could not determine caller from frame: '${frame}'`);
+        return {filename: "unknown"};
 
     }
 
