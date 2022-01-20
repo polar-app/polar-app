@@ -5,7 +5,7 @@ import { BlockCollection } from "polar-firebase/src/firebase/om/BlockCollection"
 import { AnnotationContentType } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import { IBlockFlashcard } from "polar-blocks/src/annotations/IBlockFlashcard";
 import { FlashcardType } from "polar-shared/src/metadata/FlashcardType";
-import { tmpdir } from "os";
+import { FilePaths } from "polar-shared/src/util/FilePaths";
 
 export namespace AnkiExport{
 
@@ -56,6 +56,6 @@ export namespace AnkiExport{
             }
         );
 
-        return flashCardExport.save(tmpdir());
+        return flashCardExport.save(FilePaths.tmpdir());
     }
 }

@@ -5,16 +5,20 @@ import { assert } from "chai";
 
 describe("Flashcards export", () => {
 
+    const TARGET_BLOCK_IDS = [
+        "MvRZmJ1Mob",
+        "6UbrAqCFxu"
+    ];
+
+    const TEST_UID = "LeW3bbREKcQWsRnffMZ4Y5DD9Zk1";
+
     it("basic", async () => {
         const testRequest: FlashcardExportRequest = {
             ankiDeckName: "test",
-            targets: [
-                "MvRZmJ1Mob",
-                "6UbrAqCFxu"
-            ]
+            targets: TARGET_BLOCK_IDS 
         };
 
-        const path = await AnkiExport.create(testRequest, "LeW3bbREKcQWsRnffMZ4Y5DD9Zk1");
+        const path = await AnkiExport.create(testRequest, TEST_UID);
 
         assert.isTrue(existsSync(path));
     });
