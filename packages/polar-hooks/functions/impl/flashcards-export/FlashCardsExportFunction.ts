@@ -4,7 +4,15 @@ import { AnkiExport } from "./FlashcardsExport";
 import express from "express";
 
 export interface FlashcardExportRequest {
+    /**
+     * an array of flashcard block IDs
+     */
     readonly targets: ReadonlyArray<string>;
+
+    /**
+     * Generated file name will include this string + apkg extension
+     * example: anki_export.apkg
+     */
     readonly ankiDeckName: string;
 }
 
