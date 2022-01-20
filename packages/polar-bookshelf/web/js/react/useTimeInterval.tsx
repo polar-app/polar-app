@@ -21,8 +21,9 @@ type TimeIntervalTuple = readonly [ExpirationTimeMillis, ExpirationTimeWallClock
 export function currentTimeMillisWithLocale(): number {
     const now = new Date();
     const tzOffset = now.getTimezoneOffset();
+    const txOffsetMillis = tzOffset * 60 * 1000;
     const time = now.getTime();
-    return time + tzOffset;
+    return time + txOffsetMillis;
 }
 
 export function useTimeInterval(duration: Duration): TimeIntervalTuple {
