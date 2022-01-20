@@ -456,7 +456,11 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             // TODO: Ideally we wanna do the 2 following operations in one batch
             // but we can't do it until we get block renaming implemented properly
             await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, docInfo.title || "");
-            repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, {...repoDocInfo, docInfo});
+            repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, {
+                ...repoDocInfo,
+                title: docInfo.title || "Untitled",
+                docInfo
+            });
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
 
             mutator.refresh();
