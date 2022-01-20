@@ -244,6 +244,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         });
 
         rendition.on('rendered', (section: Section) => {
+            console.log("FIXME rendered: " + document.location.href);
+
             console.log('epubjs event: rendered: ');
             epubResizer();
             // we have to update the section here as we jumped within the EPUB
@@ -570,6 +572,23 @@ function useEPUBResizer() {
 
         }
 
+        function applyDocumentDomainForCrossOrigin() {
+
+            const iframe = docViewer.querySelector(".epub-view iframe") as HTMLIFrameElement;
+
+            if (iframe && iframe.contentDocument) {
+
+                if (iframe.contentDocument.domain === 'https://app.getpolarized.io') {
+                    iframe.contentDocument.domain = 'https://getpolarized.io'
+                    console.log("Adjusted iframe domain to " + iframe.contentDocument.domain);
+                }
+
+            } else {
+                console.error("Unable to determine iframe");
+            }
+
+        }
+
         console.log("Resizing EPUB");
 
         const dimensions = computeContainerDimensions();
@@ -577,6 +596,7 @@ function useEPUBResizer() {
         adjustEpubView(dimensions);
         adjustIframe(dimensions);
         adjustIframeBody(dimensions);
+        applyDocumentDomainForCrossOrigin();
 
     }, [docViewerElements, fixedWidth]);
 
