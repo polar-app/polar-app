@@ -19,8 +19,19 @@ interface IProps extends DOMTextHit {
 
 function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
 
+    console.log("FIXME: converting N regions: " + regions.length)
+
+    console.log("FIXME: regions: " , JSON.stringify(regions, null, "  "));
+
     try {
-        return Highlights.toHighlightViewportPositions(regions);
+        // FIXME:L this is the bug... we start with 1 it converts to 7...
+        const result = Highlights.toHighlightViewportPositions(regions);
+
+        console.log("FIXME: N results for convert: " + result.length)
+
+        console.log("FIXME: result: ", JSON.stringify(result, null, "  "))
+
+        return result;
     } catch (e) {
         console.error("Unable to handle viewport position: ", e);
         return undefined;
@@ -36,6 +47,8 @@ export const DOMHighlight = deepMemo(function DOMHighlight(props: IProps) {
     const {regions, onClick = NULL_FUNCTION} = props;
 
     const [highlightViewportPositions, setHighlightViewportPositions] = React.useState(toHighlightViewportPositions(regions))
+
+    console.log(`FIXME: going to render N positions for ID: ${props.id}: ` + highlightViewportPositions?.length)
 
     const redrawCallback = React.useMemo(() => withAnimationFrame(() => {
 

@@ -23,6 +23,8 @@ export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRender
         type: AnnotationContentType.TEXT_HIGHLIGHT,
     });
 
+    console.log("FIXME: going to render N highlights: ", highlightIDs.length);
+
     return (
         <>
             {highlightIDs.map(id => (
@@ -68,11 +70,11 @@ export const BlockTextHighlightRenderer: React.FC<IBlockTextHighlightRendererPro
 
     return (
         <TextHighlightRenderer type="block"
-                                id={pageAnnotation.annotation.id}
-                                container={pageAnnotation.container}
-                                pageNum={pageAnnotation.pageNum}
-                                fingerprint={pageAnnotation.fingerprint}
-                                pageAnnotation={pageAnnotation} />
+                               id={pageAnnotation.annotation.id}
+                               container={pageAnnotation.container}
+                               pageNum={pageAnnotation.pageNum}
+                               fingerprint={pageAnnotation.fingerprint}
+                               pageAnnotation={pageAnnotation} />
     );
 });
 

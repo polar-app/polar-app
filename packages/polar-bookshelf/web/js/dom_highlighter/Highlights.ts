@@ -119,11 +119,16 @@ export namespace Highlights {
                       .collect();
         }
 
-        // take each NodeTextRegion and split them out into one character each..
+        // take each NodeTextRegion and split them out into one character each...
         const splitNodeTextRegions = createSplitNodeTextRegions();
 
-        // compute each position in the viewport
+        console.log("FIXME: splitNodeTextRegions length: " + splitNodeTextRegions.length);
+
+        // compute each position in the viewport...
         const highlightViewportPositions = createHighlightViewportPositions(splitNodeTextRegions);
+
+        console.log("FIXME: highlightViewportPositions length: " + highlightViewportPositions.length);
+
         // then re-join based on top/height of each one.
         return mergeHighlightViewportPositions(highlightViewportPositions);
 

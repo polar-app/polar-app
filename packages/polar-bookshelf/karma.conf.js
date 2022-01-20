@@ -73,7 +73,7 @@ module.exports = (config) => {
 
             }
         },
-        browsers: ['ChromeHeadless'],
+        browsers: [ 'Safari'],
 
         customHeaders: [
             {
@@ -93,6 +93,7 @@ module.exports = (config) => {
 
         plugins: [
             'karma-chrome-launcher',
+            'karma-safari-launcher',
             'karma-webpack',
             'karma-mocha',
             'karma-spec-reporter',
