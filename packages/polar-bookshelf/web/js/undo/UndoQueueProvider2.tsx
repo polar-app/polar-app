@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
+import {UndoQueueGlobalHotKeys} from './UndoQueueGlobalHotKeys';
 import {UndoQueues2} from "./UndoQueues2";
 
 const UndoQueueContext = React.createContext(UndoQueues2.create({limit: 50}));
@@ -16,7 +17,7 @@ export const UndoQueueProvider2 = deepMemo(function UndoQueueProvider(props: IPr
     return (
         // <UndoQueueContext.Provider>
         <>
-            {/*<UndoQueueGlobalHotKeys/>*/}
+            <UndoQueueGlobalHotKeys/>
             {props.children}
         </>
         // </UndoQueueContext.Provider>
