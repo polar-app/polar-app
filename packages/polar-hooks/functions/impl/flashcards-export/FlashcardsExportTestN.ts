@@ -10,8 +10,7 @@ describe("Flashcards export", () => {
             ankiDeckName: "test",
             targets: [
                 "MvRZmJ1Mob",
-                "6UbrAqCFxu",
-                "FQs3Ru5U"
+                "6UbrAqCFxu"
             ]
         };
 
