@@ -73,7 +73,7 @@ module.exports = (config) => {
 
             }
         },
-        browsers: [ 'Webkit'],
+        browsers: [ 'Safari'],
 
         customHeaders: [
             {
