@@ -15,7 +15,7 @@ describe('Verify we do not have any errors', () => {
 
         // wait until we get the login text field...
 
-        cy.get('input[type=text]').type('alice@example.com')
+        cy.get('input[type=email]').type('alice@example.com');
 
         cy.get('.ConsoleError').should('not.exist');
 

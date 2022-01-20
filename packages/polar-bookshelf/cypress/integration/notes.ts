@@ -15,7 +15,7 @@ describe('Notes', function () {
     })
 
     function login() {
-        cy.get('input[type=text]').type('testing@getpolarized.io')
+        cy.get('input[type=email]').type('testing@getpolarized.io')
         cy.get('button[type=button]')
             .contains("SIGN IN WITH EMAIL", {matchCase: false})
             .click();
