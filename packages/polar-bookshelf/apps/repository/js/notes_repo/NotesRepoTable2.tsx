@@ -128,6 +128,7 @@ export const NotesRepoTable2 = profiled(observer(function NotesRepoTable2() {
     return (
 
         <MUIElevation elevation={0}
+                      className={'NotesRepoTable2'}
                       style={{
                           width: '100%',
                           height: '100%',

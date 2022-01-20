@@ -47,7 +47,17 @@ export const useNoteFormatBar = () => {
         const hideFormatBar = () => blockFormatBarStore.clear();
 
         const handleSelectionChange = () => {
+
             const selection = window.getSelection();
+
+            if (! selection) {
+                return;
+            }
+
+            if (selection.rangeCount === 0) {
+                return;
+            }
+
             const range = selection && selection.getRangeAt(0);
 
             if (! selection || ! range || range.collapsed) {
