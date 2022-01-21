@@ -4,7 +4,7 @@ export enum BlocksExportFormat {
     MARKDOWN = 'markdown',
     JSON = 'json',
     // HTML = 'html',
-};
+}
 
 export interface IBlocksFormatExporter {
     /**
