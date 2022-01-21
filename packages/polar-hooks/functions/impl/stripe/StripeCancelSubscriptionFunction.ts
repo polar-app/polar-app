@@ -1,7 +1,7 @@
-import {Accounts} from "./Accounts";
-import {StripeCustomers} from "./StripeCustomers";
-import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
-import {StripeMode} from "./StripeUtils";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
+import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
+import {StripeCustomerAccounts} from "polar-payments-stripe/src/StripeCustomerAccounts";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
 export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync('StripeCancelSubscriptionFunction', async (req, res, next) => {
@@ -12,7 +12,7 @@ export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync
 
     const account = await StripeCustomerAccounts.get(body.mode, body.email);
 
-    await Accounts.validate(body.email, body.uid);
+    await Accounts.verifyPermissions(body.email, body.uid);
     await StripeCustomers.cancelSubscription(body.mode, body.email);
     await Accounts.changePlanViaEmail(body.email, {type: 'stripe', customerID: account.customer.customerID}, 'free', 'month');
 

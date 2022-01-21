@@ -1,6 +1,6 @@
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeMode, StripeUtils} from "./StripeUtils";
-import {IDUser} from "../util/IDUsers";
+import {IDUser} from "polar-rpc/src/IDUser";
 
 export namespace StripeCreateCustomerPortalSessions {
 

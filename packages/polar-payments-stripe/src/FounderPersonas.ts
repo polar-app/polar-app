@@ -1,20 +1,20 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-interface IPersonaLinks {
+interface IFounderPersonaLinks {
     // the calendly for the user email for a user interview post subscription.
     readonly userInterviewForPro: string;
 }
 
-export interface IPersona {
+export interface IFounderPersona {
     readonly firstName: string;
     readonly role: 'founder',
     readonly email: string;
-    readonly links: IPersonaLinks;
+    readonly links: IFounderPersonaLinks;
 }
 
-export namespace Personas {
+export namespace FounderPersonas {
 
-    const backing: ReadonlyArray<IPersona> = [
+    const backing: ReadonlyArray<IFounderPersona> = [
         {
             firstName: 'Kevin',
             role: 'founder',
@@ -33,7 +33,7 @@ export namespace Personas {
         }
     ];
 
-    export function random(): IPersona {
+    export function random(): IFounderPersona {
         return Arrays.shuffle(...backing)[0]
     }
 

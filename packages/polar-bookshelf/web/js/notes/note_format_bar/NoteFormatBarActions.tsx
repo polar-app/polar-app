@@ -133,7 +133,7 @@ export const LinkCreator: React.FC<ILinkCreatorProps> = (props) => {
             <IconButton onClick={handleCreateLink} style={{ padding: 6 }}>
                 <CheckIcon fontSize="small" style={{ color: 'green' }} />
             </IconButton>
-                
+
         </Box>
     );
 };
@@ -191,15 +191,6 @@ export const useNoteFormatBarActions = () => {
     const handleUndo = React.useCallback(() => undoQueue.undo(), [undoQueue]);
     const handleRedo = React.useCallback(() => undoQueue.redo(), [undoQueue]);
 
-    const handleHideKeyboard = React.useCallback(() => {
-        const selection = document.getSelection();
-
-        if (selection) {
-            selection.removeAllRanges();
-        }
-    }, []);
-
-
     return React.useMemo(() => ({
         handleBold,
         handleItalic,
@@ -217,7 +208,6 @@ export const useNoteFormatBarActions = () => {
         handleEditTags,
         handleUndo,
         handleRedo,
-        handleHideKeyboard,
     }), [
         handleBold,
         handleItalic,
@@ -235,6 +225,5 @@ export const useNoteFormatBarActions = () => {
         handleEditTags,
         handleUndo,
         handleRedo,
-        handleHideKeyboard,
     ]);
 };

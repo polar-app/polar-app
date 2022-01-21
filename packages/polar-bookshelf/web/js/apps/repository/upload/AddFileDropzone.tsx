@@ -14,11 +14,11 @@ function useTaskProgress() {
 
     return React.useCallback(async (message: string, delegate: () => Promise<void>) => {
 
-        const progressCallback = await dialogManager.taskbar({message});
+        const taskbar = await dialogManager.taskbar({message});
 
-        progressCallback({value: 'indeterminate'});
+        taskbar.update({value: 'indeterminate'});
         await delegate();
-        progressCallback({value: 100});
+        taskbar.update({value: 100});
 
     }, [dialogManager]);
 
@@ -52,13 +52,13 @@ function useDropHandler() {
             }
 
             // create a progress dialog that we're computing the file list...
-            const progressCallback = await dialogManager.taskbar({
+            const taskbar = await dialogManager.taskbar({
                 message: "Computing file list... one sec.",
                 autoHideDuration: 1,
                 completedDuration: 1
             });
 
-            progressCallback({value: 'indeterminate'});
+            taskbar.update({value: 'indeterminate'});
 
             if (event.dataTransfer.items) {
 
@@ -70,7 +70,7 @@ function useDropHandler() {
                 const items = Array.from(event.dataTransfer.items);
                 const files = await FileSystemEntries.recurseDataTransferItems(items);
                 const uploads = await Uploads.fromFileSystemEntries(files);
-                progressCallback({value: 100});
+                taskbar.update({value: 100});
                 addFileImporter(uploads);
 
             } else if (event.dataTransfer.files) {
@@ -79,7 +79,7 @@ function useDropHandler() {
                 // which applies to Firefox and older browsers
 
                 const uploads = Uploads.fromFiles(event.dataTransfer.files);
-                progressCallback({value: 100});
+                taskbar.update({value: 100});
                 addFileImporter(uploads);
 
             }

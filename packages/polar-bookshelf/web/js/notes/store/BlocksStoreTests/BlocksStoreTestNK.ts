@@ -129,664 +129,654 @@ describe('BlocksStore', function() {
 
         const store = BlocksStoreTestUtils.createStore();
 
-        assertJSON(store, {
-            "_expanded": {},
-            "_hasSnapshot": false,
-            "relatedTagsManager": {
-                "docTagsIndex": {
-                    "102": {
-                        "tagRefs": {
-                            "World War II": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "107": {
-                        "tagRefs": {
-                            "Germany": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "108": {
-                        "tagRefs": {
-                            "Russia": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "109": {
-                        "tagRefs": {
-                            "Canada": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "112": {
-                        "tagRefs": {
-                            "Winston Churchill": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "113": {
-                        "tagRefs": {
-                            "Image parent": {
-                                "refs": 1
-                            }
-                        }
-                    },
-                    "2020document": {
-                        "tagRefs": {
-                            "Potato document": {
-                                "refs": 1
-                            }
-                        }
-                    }
-                },
-                "tagDocsIndex": {
-                    "Canada": {
-                        "docs": {
-                            "109": true
-                        },
-                        "tag": "Canada"
-                    },
-                    "Germany": {
-                        "docs": {
-                            "107": true
-                        },
-                        "tag": "Germany"
-                    },
-                    "Image parent": {
-                        "docs": {
-                            "113": true
-                        },
-                        "tag": "Image parent"
-                    },
-                    "Potato document": {
-                        "docs": {
-                            "2020document": true
-                        },
-                        "tag": "Potato document"
-                    },
-                    "Russia": {
-                        "docs": {
-                            "108": true
-                        },
-                        "tag": "Russia"
-                    },
-                    "Winston Churchill": {
-                        "docs": {
-                            "112": true
-                        },
-                        "tag": "Winston Churchill"
-                    },
-                    "World War II": {
-                        "docs": {
-                            "102": true
-                        },
-                        "tag": "World War II"
-                    }
-                },
-                "tagsIndex": {
-                    "102": {
-                        "id": "102",
-                        "label": "World War II"
-                    },
-                    "107": {
-                        "id": "107",
-                        "label": "Germany"
-                    },
-                    "108": {
-                        "id": "108",
-                        "label": "Russia"
-                    },
-                    "109": {
-                        "id": "109",
-                        "label": "Canada"
-                    },
-                    "112": {
-                        "id": "112",
-                        "label": "Winston Churchill"
-                    },
-                    "113": {
-                        "id": "113",
-                        "label": "Image parent"
-                    },
-                    "2020document": {
-                        "id": "2020document",
-                        "label": "Potato document"
-                    }
-                }
-            },
-            "_index": {
+        assertJSON(store._expanded, {});
+        assertJSON(store._hasSnapshot, false);
+        assertJSON(store.relatedTagsManager, {
+            "docTagsIndex": {
                 "102": {
-                    "_content": {
-                        "_data": "World War II",
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "name",
-                        "_links": [],
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "102",
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "103",
-                        [PositionalArrays.generateKey(2)]: "104",
-                        [PositionalArrays.generateKey(3)]: "105"
-                    },
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parents": [],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "103": {
-                    "_content": {
-                        "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "103",
-                    "_items": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "102",
-                    "_parents": [
-                        "102"
-                    ],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "104": {
-                    "_content": {
-                        "_data": "Axis Powers: Germany, Italy, Japan",
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "104",
-                    "_items": {[PositionalArrays.generateKey(1)]: "116"},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "102",
-                    "_parents": [
-                        "102"
-                    ],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "105": {
-                    "_content": {
-                        "_data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
-                        "_links": [
-                            {
-                                "id": "109",
-                                "text": "Canada"
-                            },
-                            {
-                                "id": "108",
-                                "text": "Russia"
-                            }
-                        ],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "105",
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "106"
-                    },
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "102",
-                    "_parents": [
-                        "102"
-                    ],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "106": {
-                    "_content": {
-                        "_data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
-                        "_links": [
-                            {
-                                "id": "112",
-                                "text": "Winston Churchill"
-                            }
-                        ],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "106",
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "117",
-                    },
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "105",
-                    "_parents": [
-                        "102",
-                        "105"
-                    ],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
+                    "tagRefs": {
+                        "World War II": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "107": {
-                    "_content": {
-                        "_data": "Germany",
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "name",
-                        "_links": [],
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "107",
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "110"
-                    },
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parents": [],
-                    "_root": "107",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
+                    "tagRefs": {
+                        "Germany": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "108": {
-                    "_content": {
-                        "_data": "Russia",
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "name",
-                        "_links": [],
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "108",
-                    "_items": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parents": [],
-                    "_root": "108",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
+                    "tagRefs": {
+                        "Russia": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "109": {
-                    "_content": {
-                        "_data": "Canada",
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "name",
-                        "_links": [],
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "109",
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "111"
-                    },
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parents": [],
-                    "_root": "109",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "110": {
-                    "_content": {
-                        "_data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
-                        "_links": [
-                            {
-                                "id": "102",
-                                "text": "World War II"
-                            }
-                        ],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "110",
-                    "_items": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "107",
-                    "_parents": [
-                        "107"
-                    ],
-                    "_root": "107",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "111": {
-                    "_content": {
-                        "_data": "Canada is north of the United States",
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "markdown",
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "111",
-                    "_items": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parent": "109",
-                    "_parents": [
-                        "109"
-                    ],
-                    "_root": "109",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
+                    "tagRefs": {
+                        "Canada": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "112": {
-                    "_content": {
-                        "_data": "Winston Churchill",
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": "name",
-                        "_links": [],
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "112",
-                    "_items": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_parents": [],
-                    "_root": "112",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
-                "116": {
-                    "_id": '116',
-                    "_nspace": "ns101",
-                    "_parent": "104",
-                    "_parents": ["102", "104"],
-                    "_root": "102",
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_data": 'Some random markdown',
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": 'markdown',
-                    },
-                    "_items": {},
-                    "_uid": "123",
-                    "_mutation": 0,
-                },
-                "117": {
-                    "_id": '117',
-                    "_nspace": "ns101",
-                    "_parent": "106",
-                    "_parents": ["102", "105", "106"],
-                    "_root": "102",
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_uid": "123",
-                    "_content": {
-                        "_data": 'Nested child with links [[Winston]]',
-                        "_links": [{ id: '112', text: 'Winston' }],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": 'markdown',
-                    },
-                    "_items": {
-                        [PositionalArrays.generateKey(1)]: "118"
-                    },
-                    "_mutation": 0,
-                },
-                "118": {
-                    "_id": '118',
-                    "_nspace": "ns101",
-                    "_parent": "117",
-                    "_parents": ["102", "105", "106", "117"],
-                    "_root": "102",
-                    "_uid": "123",
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": 'markdown',
-                        "_data": 'Deeply nested child',
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                    },
-                    "_items": {},
-                    "_mutation": 0,
+                    "tagRefs": {
+                        "Winston Churchill": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "113": {
-                    "_id": '113',
-                    "_uid": "123",
-                    "_parents": [],
-                    "_nspace": 'ns101',
-                    "_root": '113',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_data": 'Image parent',
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_type": 'name',
-                        "_links": [],
-                    },
-                    "_items": PositionalArrays.create([
-                        '114image',
-                        '115',
-                    ]),
-                    "_mutation": 0,
-                },
-                "114image": {
-                    "_id": '114image',
-                    "_nspace": 'ns101',
-                    "_parent": '113',
-                    "_parents": ['113'],
-                    "_root": '113',
-                    "_uid": "123",
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": 'image',
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_src": 'https://google.com',
-                        "_naturalHeight": 100,
-                        "_naturalWidth": 100,
-                        "_width": 100,
-                        "_height": 100,
-                        "_links": [],
-                    },
-                    "_items": {},
-                    "_mutation": 0,
-                },
-                "115": {
-                    "_id": '115',
-                    "_nspace": 'ns101',
-                    "_uid": "123",
-                    "_parent": '113',
-                    "_parents": ['113'],
-                    "_root": '113',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_data": '',
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_links": [],
-                        "_type": 'markdown',
-                    },
-                    "_items": {},
-                    "_mutation": 0,
+                    "tagRefs": {
+                        "Image parent": {
+                            "refs": 1
+                        }
+                    }
                 },
                 "2020document": {
-                    "_id": '2020document',
-                    "_nspace": "ns101",
-                    "_uid": "123",
-                    "_parents": [],
-                    "_root": '2020document',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": 'document',
-                        "_links": [],
-                        "_docInfo": {
-                            "flagged": false,
-                            "nrPages": 55,
-                            "archived": false,
-                            "progress": 55,
-                            "properties": {},
-                            "attachments": {},
-                            "fingerprint": '2020document',
-                            "pagemarkType": PagemarkType.SINGLE_COLUMN,
-                            "title": "Potato document",
-                            "nrAreaHighlights": 1,
-                            "nrTextHighlights": 1,
-                            "nrFlashcards": 1,
-                            "nrComments": 1,
-                            "nrAnnotations": 4,
-                        },
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                    },
-                    "_items": PositionalArrays.create([
-                        '2021text',
-                        '2022area',
-                    ]),
-                    "_mutation": 0,
-                },
-                "2021text": {
-                    "_id": '2021text',
-                    "_nspace": 'ns101',
-                    "_uid": '123',
-                    "_parent": '2020document',
-                    "_parents": ['2020document'],
-                    "_root": '2020document',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": AnnotationContentType.TEXT_HIGHLIGHT,
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_docID": '2020document',
-                        "_links": [],
-                        "_pageNum": 15,
-                        "_value": {
-                            "text": 'text highlight content',
-                            "rects": {},
-                            "color": 'yellow',
+                    "tagRefs": {
+                        "Potato document": {
+                            "refs": 1
                         }
-                    },
-                    "_items": {},
-                    "_mutation": 0,
-                },
-                "2022area": {
-                    "_id": '2022area',
-                    "_nspace": 'ns101',
-                    "_uid": '123',
-                    "_parent": '2020document',
-                    "_parents": ['2020document'],
-                    "_root": '2020document',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": AnnotationContentType.AREA_HIGHLIGHT,
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_docID": '2020document',
-                        "_pageNum": 15,
-                        "_links": [],
-                        "_value": {
-                            "rects": {},
-                            "color": 'yellow',
-                            "image": {
-                                "id": 'http://google.com',
-                                "type": 'image/png',
-                                "src": { backend: Backend.IMAGE, name: 'google.png' }
-                            },
-                        }
-                    },
-                    "_items": PositionalArrays.create(['2023flashcard', '2024']),
-                    "_mutation": 0,
-                },
-                "2023flashcard": {
-                    "_id": '2023flashcard',
-                    "_nspace": "ns101",
-                    "_uid": "123",
-                    "_parent": '2022area',
-                    "_parents": ['2020document', '2022area'],
-                    "_root": '2020document',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": AnnotationContentType.FLASHCARD,
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                        "_docID": '2020document',
-                        "_pageNum": 15,
-                        "_links": [],
-                        "_value": {
-                            "type": FlashcardType.BASIC_FRONT_BACK,
-                            "fields": {
-                                "front": 'front',
-                                "back": 'back',
-                            },
-                            "archetype": 'whatever'
-                        }
-                    },
-                    "_items": {},
-                    "_mutation": 0,
-                },
-                "2024": {
-                    "_id": '2024',
-                    "_nspace": 'ns101',
-                    "_uid": '123',
-                    "_parent": '2022area',
-                    "_parents": ['2020document', '2022area'],
-                    "_root": '2020document',
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_updated": "2012-03-02T11:38:49.321Z",
-                    "_content": {
-                        "_type": 'markdown',
-                        "_data": 'Annotation markdown child',
-                        "_links": [],
-                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
-                    },
-                    "_items": {},
-                    "_mutation": 0,
-                },
-            },
-            "_indexByName": {
-                "canada": "109",
-                "germany": "107",
-                "russia": "108",
-                "winston churchill": "112",
-                "world war ii": "102",
-                "image parent": "113",
-                "potato document": "2020document",
-            },
-            "_indexByDocumentID": {
-                "2020document": "2020document",
-            },
-            "_activeBlocksIndex": {},
-            "_reverse": {
-                "_index": {
-                    "102": [
-                        "110"
-                    ],
-                    "108": [
-                        "105"
-                    ],
-                    "109": [
-                        "105"
-                    ],
-                    "112": [
-                        "106",
-                        "117",
-                    ],
+                    }
                 }
             },
-            "_tagsIndex": {
-                "_index": {},
+            "tagDocsIndex": {
+                "Canada": {
+                    "docs": {
+                        "109": true
+                    },
+                    "tag": "Canada"
+                },
+                "Germany": {
+                    "docs": {
+                        "107": true
+                    },
+                    "tag": "Germany"
+                },
+                "Image parent": {
+                    "docs": {
+                        "113": true
+                    },
+                    "tag": "Image parent"
+                },
+                "Potato document": {
+                    "docs": {
+                        "2020document": true
+                    },
+                    "tag": "Potato document"
+                },
+                "Russia": {
+                    "docs": {
+                        "108": true
+                    },
+                    "tag": "Russia"
+                },
+                "Winston Churchill": {
+                    "docs": {
+                        "112": true
+                    },
+                    "tag": "Winston Churchill"
+                },
+                "World War II": {
+                    "docs": {
+                        "102": true
+                    },
+                    "tag": "World War II"
+                }
             },
-            "_interstitials": {},
-            "_selected": {},
-            "uid": "1234",
-            "undoQueue": {
-                "limit": 50
+            "tagsIndex": {
+                "102": {
+                    "id": "102",
+                    "label": "World War II"
+                },
+                "107": {
+                    "id": "107",
+                    "label": "Germany"
+                },
+                "108": {
+                    "id": "108",
+                    "label": "Russia"
+                },
+                "109": {
+                    "id": "109",
+                    "label": "Canada"
+                },
+                "112": {
+                    "id": "112",
+                    "label": "Winston Churchill"
+                },
+                "113": {
+                    "id": "113",
+                    "label": "Image parent"
+                },
+                "2020document": {
+                    "id": "2020document",
+                    "label": "Potato document"
+                }
             }
         });
 
+        assertJSON(store._index, {
+            "102": {
+                "_content": {
+                    "_data": "World War II",
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "name",
+                    "_links": [],
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "103",
+                    [PositionalArrays.generateKey(2)]: "104",
+                    [PositionalArrays.generateKey(3)]: "105"
+                },
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parents": [],
+                "_root": "102",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "103": {
+                "_content": {
+                    "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "103",
+                "_items": {},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "102",
+                "_parents": [
+                    "102"
+                ],
+                "_root": "102",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "104": {
+                "_content": {
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "104",
+                "_items": {[PositionalArrays.generateKey(1)]: "116"},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "102",
+                "_parents": [
+                    "102"
+                ],
+                "_root": "102",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "105": {
+                "_content": {
+                    "_data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
+                    "_links": [
+                        {
+                            "id": "109",
+                            "text": "Canada"
+                        },
+                        {
+                            "id": "108",
+                            "text": "Russia"
+                        }
+                    ],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "105",
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "106"
+                },
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "102",
+                "_parents": [
+                    "102"
+                ],
+                "_root": "102",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "106": {
+                "_content": {
+                    "_data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
+                    "_links": [
+                        {
+                            "id": "112",
+                            "text": "Winston Churchill"
+                        }
+                    ],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "106",
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "117",
+                },
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "105",
+                "_parents": [
+                    "102",
+                    "105"
+                ],
+                "_root": "102",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "107": {
+                "_content": {
+                    "_data": "Germany",
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "name",
+                    "_links": [],
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "107",
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "110"
+                },
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parents": [],
+                "_root": "107",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "108": {
+                "_content": {
+                    "_data": "Russia",
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "name",
+                    "_links": [],
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "108",
+                "_items": {},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parents": [],
+                "_root": "108",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "109": {
+                "_content": {
+                    "_data": "Canada",
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "name",
+                    "_links": [],
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "109",
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "111"
+                },
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parents": [],
+                "_root": "109",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "110": {
+                "_content": {
+                    "_data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
+                    "_links": [
+                        {
+                            "id": "102",
+                            "text": "World War II"
+                        }
+                    ],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "110",
+                "_items": {},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "107",
+                "_parents": [
+                    "107"
+                ],
+                "_root": "107",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "111": {
+                "_content": {
+                    "_data": "Canada is north of the United States",
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "markdown",
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "111",
+                "_items": {},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parent": "109",
+                "_parents": [
+                    "109"
+                ],
+                "_root": "109",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "112": {
+                "_content": {
+                    "_data": "Winston Churchill",
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": "name",
+                    "_links": [],
+                },
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "112",
+                "_items": {},
+                "_mutation": 0,
+                "_nspace": "ns101",
+                "_parents": [],
+                "_root": "112",
+                "_uid": "123",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            },
+            "116": {
+                "_id": '116',
+                "_nspace": "ns101",
+                "_parent": "104",
+                "_parents": ["102", "104"],
+                "_root": "102",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_data": 'Some random markdown',
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": 'markdown',
+                },
+                "_items": {},
+                "_uid": "123",
+                "_mutation": 0,
+            },
+            "117": {
+                "_id": '117',
+                "_nspace": "ns101",
+                "_parent": "106",
+                "_parents": ["102", "105", "106"],
+                "_root": "102",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_uid": "123",
+                "_content": {
+                    "_data": 'Nested child with links [[Winston]]',
+                    "_links": [{ id: '112', text: 'Winston' }],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": 'markdown',
+                },
+                "_items": {
+                    [PositionalArrays.generateKey(1)]: "118"
+                },
+                "_mutation": 0,
+            },
+            "118": {
+                "_id": '118',
+                "_nspace": "ns101",
+                "_parent": "117",
+                "_parents": ["102", "105", "106", "117"],
+                "_root": "102",
+                "_uid": "123",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": 'markdown',
+                    "_data": 'Deeply nested child',
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+            "113": {
+                "_id": '113',
+                "_uid": "123",
+                "_parents": [],
+                "_nspace": 'ns101',
+                "_root": '113',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_data": 'Image parent',
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_type": 'name',
+                    "_links": [],
+                },
+                "_items": PositionalArrays.create([
+                    '114image',
+                    '115',
+                ]),
+                "_mutation": 0,
+            },
+            "114image": {
+                "_id": '114image',
+                "_nspace": 'ns101',
+                "_parent": '113',
+                "_parents": ['113'],
+                "_root": '113',
+                "_uid": "123",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": 'image',
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_src": 'https://google.com',
+                    "_naturalHeight": 100,
+                    "_naturalWidth": 100,
+                    "_width": 100,
+                    "_height": 100,
+                    "_links": [],
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+            "115": {
+                "_id": '115',
+                "_nspace": 'ns101',
+                "_uid": "123",
+                "_parent": '113',
+                "_parents": ['113'],
+                "_root": '113',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_data": '',
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_links": [],
+                    "_type": 'markdown',
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+            "2020document": {
+                "_id": '2020document',
+                "_nspace": "ns101",
+                "_uid": "123",
+                "_parents": [],
+                "_root": '2020document',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": 'document',
+                    "_links": [],
+                    "_docInfo": {
+                        "flagged": false,
+                        "nrPages": 55,
+                        "archived": false,
+                        "progress": 55,
+                        "properties": {},
+                        "attachments": {},
+                        "fingerprint": '2020document',
+                        "pagemarkType": PagemarkType.SINGLE_COLUMN,
+                        "title": "Potato document",
+                        "nrAreaHighlights": 1,
+                        "nrTextHighlights": 1,
+                        "nrFlashcards": 1,
+                        "nrComments": 1,
+                        "nrAnnotations": 4,
+                    },
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                },
+                "_items": PositionalArrays.create([
+                    '2021text',
+                    '2022area',
+                ]),
+                "_mutation": 0,
+            },
+            "2021text": {
+                "_id": '2021text',
+                "_nspace": 'ns101',
+                "_uid": '123',
+                "_parent": '2020document',
+                "_parents": ['2020document'],
+                "_root": '2020document',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": AnnotationContentType.TEXT_HIGHLIGHT,
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_docID": '2020document',
+                    "_links": [],
+                    "_pageNum": 15,
+                    "_value": {
+                        "text": 'text highlight content',
+                        "rects": {},
+                        "color": 'yellow',
+                    }
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+            "2022area": {
+                "_id": '2022area',
+                "_nspace": 'ns101',
+                "_uid": '123',
+                "_parent": '2020document',
+                "_parents": ['2020document'],
+                "_root": '2020document',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": AnnotationContentType.AREA_HIGHLIGHT,
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_docID": '2020document',
+                    "_pageNum": 15,
+                    "_links": [],
+                    "_value": {
+                        "rects": {},
+                        "color": 'yellow',
+                        "image": {
+                            "id": 'http://google.com',
+                            "type": 'image/png',
+                            "src": { backend: Backend.IMAGE, name: 'google.png' }
+                        },
+                    }
+                },
+                "_items": PositionalArrays.create(['2023flashcard', '2024']),
+                "_mutation": 0,
+            },
+            "2023flashcard": {
+                "_id": '2023flashcard',
+                "_nspace": "ns101",
+                "_uid": "123",
+                "_parent": '2022area',
+                "_parents": ['2020document', '2022area'],
+                "_root": '2020document',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": AnnotationContentType.FLASHCARD,
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "_docID": '2020document',
+                    "_pageNum": 15,
+                    "_links": [],
+                    "_value": {
+                        "type": FlashcardType.BASIC_FRONT_BACK,
+                        "fields": {
+                            "front": 'front',
+                            "back": 'back',
+                        },
+                        "archetype": 'whatever'
+                    }
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+            "2024": {
+                "_id": '2024',
+                "_nspace": 'ns101',
+                "_uid": '123',
+                "_parent": '2022area',
+                "_parents": ['2020document', '2022area'],
+                "_root": '2020document',
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_updated": "2012-03-02T11:38:49.321Z",
+                "_content": {
+                    "_type": 'markdown',
+                    "_data": 'Annotation markdown child',
+                    "_links": [],
+                    "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                },
+                "_items": {},
+                "_mutation": 0,
+            },
+        });
+        assertJSON(store._indexByName, {
+            "canada": "109",
+            "germany": "107",
+            "russia": "108",
+            "winston churchill": "112",
+            "world war ii": "102",
+            "image parent": "113",
+            "potato document": "2020document",
+        });
+
+        assertJSON(store._indexByDocumentID, {
+            "2020document": "2020document",
+        });
+
+        assertJSON(store._reverse, {
+            "_index": {
+                "102": [
+                    "110"
+                ],
+                "108": [
+                    "105"
+                ],
+                "109": [
+                    "105"
+                ],
+                "112": [
+                    "106",
+                    "117",
+                ],
+            }
+        });
     });
 
     it('should not have corrupted data', () => {

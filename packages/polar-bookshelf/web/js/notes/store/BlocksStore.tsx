@@ -60,7 +60,7 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {ANNOTATION_REPO_CHILDREN_DEPTH, BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -327,6 +327,8 @@ export class BlocksStore implements IBlocksStore {
 
     @observable _indexByDocumentID: BlocksIndexByDocumentID = {};
 
+    @observable _annotationsIndex: Set<BlockIDStr> = new Set();
+
     /**
      * The reverse index so that we can build references to this node.
      */
@@ -415,6 +417,14 @@ export class BlocksStore implements IBlocksStore {
 
     @computed get tagsIndex() {
         return this._tagsIndex;
+    }
+
+    @computed get annotationsIndexSet(): Set<BlockIDStr> {
+        return this._annotationsIndex;
+    }
+
+    @computed get annotationsIndex(): ReadonlyArray<BlockIDStr> {
+        return Array.from(this._annotationsIndex);
     }
 
     @computed get expanded() {
@@ -542,7 +552,7 @@ export class BlocksStore implements IBlocksStore {
         /**
          * Changes to annotation blocks
          */
-        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, before)) {
+        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(before)) {
             const documentBlock = this.getBlock(before.root);
 
             if (documentBlock) {
@@ -552,7 +562,7 @@ export class BlocksStore implements IBlocksStore {
             }
         }
 
-        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(this, after)) {
+        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(after)) {
             const documentBlock = this.getBlock(after.root);
 
             if (documentBlock) {
@@ -568,7 +578,8 @@ export class BlocksStore implements IBlocksStore {
          */
         if (before && BlockPredicates.isDocumentBlock(before)) {
             if (before.content.hasTagsMutated(after.content)) {
-                const annotations = this.getChildren(before, ANNOTATION_REPO_CHILDREN_DEPTH)
+                const annotations = this.getChildren(before)
+                    .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock)
                     .map(({ id }) => id);
 
                 for (const tagLink of before.content.tagLinks) {
@@ -581,7 +592,8 @@ export class BlocksStore implements IBlocksStore {
 
         if (BlockPredicates.isDocumentBlock(after)) {
             if (! before || before.content.hasTagsMutated(after.content)) {
-                const annotations = this.getChildren(after, ANNOTATION_REPO_CHILDREN_DEPTH)
+                const annotations = this.getChildren(after)
+                    .filter(BlocksAnnotationRepoStore.isRepoAnnotationBlock)
                     .map(({ id }) => id);
 
                 for (const tagLink of after.content.tagLinks) {
@@ -590,6 +602,16 @@ export class BlocksStore implements IBlocksStore {
                     }
                 }
             }
+        }
+    }
+
+    private processAnnotations(before: Readonly<Block> | undefined, after: Readonly<Block>) {
+        if (before && BlocksAnnotationRepoStore.isRepoAnnotationBlock(before)) {
+            this._annotationsIndex.delete(before.id);
+        }
+
+        if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(after)) {
+            this._annotationsIndex.add(after.id);
         }
     }
 
@@ -646,6 +668,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             this.processInheritedTags(existingBlock, block);
+            this.processAnnotations(existingBlock, block);
 
             /**
              * Update tags indices
@@ -1946,7 +1969,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    public cursorOffsetRestore(active: IActiveBlock | undefined) {
+    @action public cursorOffsetRestore(active: IActiveBlock | undefined) {
 
         if (active?.id) {
 
@@ -2393,6 +2416,10 @@ export class BlocksStore implements IBlocksStore {
 
                     if (block.content.type === 'document') {
                         delete this._indexByDocumentID[block.content.docInfo.fingerprint];
+                    }
+
+                    if (BlocksAnnotationRepoStore.isRepoAnnotationBlock(block)) {
+                        this._annotationsIndex.delete(block.id);
                     }
 
                     this.collapse(blockID);

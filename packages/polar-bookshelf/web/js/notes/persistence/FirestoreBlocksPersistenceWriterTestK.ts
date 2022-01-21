@@ -19,7 +19,7 @@ import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = BlockIDs.createRandom();
 
-describe("BlocksPersistenceWriters", () => {
+describe("FirestoreBlocksPersistenceWriter", () => {
 
     let uid: UserIDStr;
     let docInfoIndex: RepoDocInfoDataObjectIndex;

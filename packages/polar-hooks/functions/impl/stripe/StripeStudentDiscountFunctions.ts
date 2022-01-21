@@ -6,7 +6,7 @@ import {Universities} from "polar-shared/src/util/Universities";
 import {University} from "polar-shared/src/util/University";
 import {Domains} from "polar-shared/src/util/Domains";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {StripeMode} from "./StripeUtils";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export interface StripeStudentDiscountRequest {

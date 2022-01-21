@@ -18,31 +18,31 @@ export function useUploadProgressTaskbar() {
 
         const message = `Uploading ${upload} of ${nrUploads} file(s)`;
 
-        const updateProgress = await dialogManager.taskbar({
+        const taskbar = await dialogManager.taskbar({
             message,
             ... opts
         });
 
-        updateProgress({value: 'indeterminate'});
+        taskbar.update({value: 'indeterminate'});
 
         return (progress) => {
 
             if (progress === 'terminate') {
-                updateProgress(progress);
+                taskbar.update(progress);
                 return;
             }
 
             if (typeof progress === 'number') {
-                updateProgress({value: progress as Percentage});
+                taskbar.update({value: progress as Percentage});
                 return;
             }
 
             switch (progress.type) {
                 case 'determinate':
-                    updateProgress({value: progress.value});
+                    taskbar.update({value: progress.value});
                     break;
                 case 'indeterminate':
-                    updateProgress({value: 'indeterminate'});
+                    taskbar.update({value: 'indeterminate'});
                     break;
             }
 
@@ -60,48 +60,55 @@ export interface BatchProgressUpdate {
     readonly progress: WriteFileProgress | number;
 }
 
-export type BatchProgressCallback = (update: BatchProgressUpdate | 'terminate') => void;
+export interface IBatchProgressUpdater {
+    update: (progress: BatchProgressUpdate | 'terminate') => void;
+    destroy: () => void;
+}
 
-export function useBatchProgressTaskbar() {
+export function useBatchProgressTaskbarFactory() {
 
     const dialogManager = useDialogManager();
 
-    return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<BatchProgressCallback> => {
+    return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<IBatchProgressUpdater> => {
 
-        const updateProgress = await dialogManager.taskbar(opts);
+        const taskbar = await dialogManager.taskbar(opts);
 
-        updateProgress({value: 'indeterminate'});
+        taskbar.update({value: 'indeterminate'});
 
-        return (update) => {
+        const update = (progress: BatchProgressUpdate | 'terminate') => {
 
-            if (update === 'terminate') {
-                updateProgress(update);
+            if(progress === 'terminate') {
+                taskbar.update(progress);
                 return;
             }
-
-            if (typeof update.progress === 'number') {
-                updateProgress({
-                    message: update.message,
-                    value: update.progress as Percentage
+            if (typeof progress.progress === 'number') {
+                taskbar.update({
+                    message: progress.message,
+                    value: progress.progress as Percentage
                 });
                 return;
             }
 
-            switch (update.progress.type) {
+            switch (progress.progress.type) {
                 case 'determinate':
-                    updateProgress({
-                        message: update.message,
-                        value: update.progress.value
+                    taskbar.update({
+                        message: progress.message,
+                        value: progress.progress.value
                     });
                     break;
                 case 'indeterminate':
-                    updateProgress({
-                        message: update.message,
+                    taskbar.update({
+                        message: progress.message,
                         value: 'indeterminate'
                     });
                     break;
             }
 
+        }
+
+        return {
+            update,
+            destroy: () => taskbar.destroy()
         };
 
     }, [dialogManager]);

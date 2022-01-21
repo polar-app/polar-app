@@ -1,5 +1,5 @@
 import {Customer} from "polar-firebase/src/firebase/om/AccountCollection";
-import {Accounts} from "polar-hooks-functions/impl/stripe/Accounts";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {Billing} from "polar-accounts/src/Billing";
 
 interface ChangePlanConfig {

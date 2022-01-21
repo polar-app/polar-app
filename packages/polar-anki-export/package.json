@@ -17,8 +17,7 @@
   },
   "author": "Polar",
   "license": "ISC",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "polar-anki-apkg": "0.0.0",
     "polar-shared": "0.0.0"

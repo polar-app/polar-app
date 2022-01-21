@@ -23,16 +23,16 @@ export function useAsyncActionTaskbar() {
 
         async function doAsync() {
 
-            const updateProgress = await dialogs.taskbar({
+            const taskbar = await dialogs.taskbar({
                 message: opts.message
             });
 
-            updateProgress({value: 'indeterminate'})
+            taskbar.update({value: 'indeterminate'})
 
             try {
                 await opts.action();
             } finally {
-                updateProgress({value: 100})
+                taskbar.update({value: 100})
             }
 
         }

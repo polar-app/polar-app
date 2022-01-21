@@ -13,14 +13,14 @@ export function useLogoutCallback() {
 
         async function doAsync() {
 
-            const progressCallback =
+            const taskbar =
                 await dialogs.taskbar({message: "Going to logout.  Clearing your data... one sec."})
 
-            progressCallback({value: 'indeterminate'});
+            taskbar.update({value: 'indeterminate'});
 
             await AccountActions.logout();
 
-            progressCallback({value: 100});
+            taskbar.update({value: 100});
 
             dialogs.snackbar({
                 type: 'success',

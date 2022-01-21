@@ -16,7 +16,6 @@ import {
     useRepoDocMetaManager,
     useTagsProvider
 } from "../persistence_layer/PersistenceLayerApp";
-import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
@@ -48,6 +47,7 @@ import {
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
@@ -456,7 +456,15 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             // TODO: Ideally we wanna do the 2 following operations in one batch
             // but we can't do it until we get block renaming implemented properly
             await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, docInfo.title || "");
+            repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, {
+                ...repoDocInfo,
+                title: docInfo.title || "Untitled",
+                docInfo
+            });
             BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, updater);
+
+            mutator.refresh();
+
         }
 
         doHandle()
@@ -900,8 +908,8 @@ const DocRepoStoreLoader: React.FC = React.memo(function DocRepoStoreLoader(prop
 
     useComponentWillUnmount(() => {
 
-        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doRefresh),
-                                      "Failed to remove event listener");
+            Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doRefresh),
+                "Failed to remove event listener");
     });
 
     const tagSidebarEventForwarder = React.useMemo<TagSidebarEventForwarder>(() => {

@@ -1,7 +1,7 @@
-import {Accounts} from "../../impl/stripe/Accounts";
-import {StripeCustomers} from "../../impl/stripe/StripeCustomers";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
+import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {StripeCustomerAccounts} from "../../impl/stripe/StripeCustomerAccounts";
+import {StripeCustomerAccounts} from "polar-payments-stripe/src/StripeCustomerAccounts";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanPro = Billing.V2PlanPro;
 import V2Plan = Billing.V2Plan;
@@ -16,6 +16,9 @@ async function provisionUserForLevel(email: string, plan: V2Plan) {
     }
 
     const interval = 'year';
+
+    // TODO: how do I set this up without a customer and give them a month
+    // coupon for free... or should I use a trial?
 
     const account = await StripeCustomerAccounts.get('live', email);
     await StripeCustomers.changePlan('live', email, plan, interval);

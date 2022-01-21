@@ -2,6 +2,7 @@ import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => void;
 
@@ -148,12 +149,19 @@ export namespace FirestoreBlocksStoreMutations {
                                     switch (patch.type) {
 
                                         case "remove":
+
+                                            Preconditions.assertString(patch.key, 'key');
+
                                             return {
                                                 id: mutation.id,
                                                 type: 'update-delete-field-value',
                                                 path: ['items', patch.key]
                                             }
                                         case "insert":
+
+                                            Preconditions.assertString(patch.key, 'key');
+                                            Preconditions.assertString(patch.id, 'id');
+
                                             return {
                                                 id: mutation.id,
                                                 type: 'update-path-string',

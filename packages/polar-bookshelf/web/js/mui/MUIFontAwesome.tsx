@@ -28,7 +28,7 @@ import {faLink} from "@fortawesome/free-solid-svg-icons/faLink";
 
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
-import {IntercomIcon} from "../apps/repository/integrations/Intercom";
+import {IntercomIcon} from "../apps/repository/integrations/IntercomIcon";
 
 library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faGoogle, faDiscord, faStickyNote, faFilePdf);
 
