@@ -72,7 +72,6 @@ interface IDialogProps {
      * When true, do not show the cancel button.
      */
     readonly noCancel?: boolean
-    readonly noAccept?: boolean
 
     readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 
