@@ -33,7 +33,7 @@ import {DeviceRouter} from '../ui/DeviceRouter';
 import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
-import {IntercomIcon} from "../apps/repository/integrations/Intercom";
+import {IntercomIcon} from "../apps/repository/integrations/IntercomIcon";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;

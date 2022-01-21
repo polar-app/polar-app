@@ -18,3 +18,12 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+/// <reference types="cypress" />
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            clearIndexedDB(): void
+        }
+    }
+}

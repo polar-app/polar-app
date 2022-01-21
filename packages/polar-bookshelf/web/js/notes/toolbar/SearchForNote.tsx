@@ -44,6 +44,7 @@ export const SearchForNote: React.FC = observer(() => {
                 }
             }}
             renderInput={(params) => <TextField {...params}
+                                                className={'SearchForNote'}
                                                 size="small"
                                                 InputProps={{
                                                     ...params.InputProps,

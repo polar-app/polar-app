@@ -7,8 +7,6 @@ describe('Verify we do not have any errors', () => {
         cy.clearLocalStorage()
         cy.clearCookies();
         cy.clearIndexedDB();
-        // cy.session().clear()
-
     });
 
     it('Verify there are no errors with the site', () => {
@@ -17,7 +15,7 @@ describe('Verify we do not have any errors', () => {
 
         // wait until we get the login text field...
 
-        cy.get('input[type=text]').type('alice@example.com')
+        cy.get('input[type=email]').type('alice@example.com');
 
         cy.get('.ConsoleError').should('not.exist');
 

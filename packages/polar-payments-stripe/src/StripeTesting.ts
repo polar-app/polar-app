@@ -1,12 +1,9 @@
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeUtils} from "./StripeUtils";
 import Stripe from "stripe";
-import {Billing} from "polar-accounts/src/Billing";
 
 export namespace StripeTesting {
 
-    import V2Plan = Billing.V2Plan;
-    import V2PlanPlus = Billing.V2PlanPlus;
     export const EMAIL = 'burtonator2011@gmail.com'
 
     export async function purgeCustomer() {

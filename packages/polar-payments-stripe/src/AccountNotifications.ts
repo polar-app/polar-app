@@ -1,6 +1,6 @@
 import {Billing} from "polar-accounts/src/Billing";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
-import {IPersona, Personas} from "../personas/Personas";
+import {FounderPersonas, IFounderPersona} from "./FounderPersonas";
 import {UserPersonas} from "polar-shared/src/util/UserPersonas";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
@@ -20,7 +20,7 @@ export namespace AccountNotifications {
             return;
         }
 
-        const persona = Personas.random();
+        const persona = FounderPersonas.random();
         const userPersona = UserPersonas.create(user);
 
         if (! userPersona) {
@@ -56,7 +56,7 @@ function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
     return `Thanks for Buying Polar ${sub.plan.level.toUpperCase()}!`;
 }
 
-function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
+function createBody(sub: V2Subscription, persona: IFounderPersona, userPersona: IUserPersona): string {
     return `<p>
 I'm ${persona.firstName}, one of the founders here at Polar.
 </p>

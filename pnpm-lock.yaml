@@ -152,11 +152,13 @@ importers:
     specifiers:
       firebase-admin: '=10.0.0'
       karma-structured-json-reporter: '=1.0.1'
+      polar-blocks: 0.0.0
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-shared: 0.0.0
     dependencies:
       firebase-admin: 10.0.0
+      polar-blocks: link:../polar-blocks
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
       polar-shared: link:../polar-shared
@@ -668,9 +670,10 @@ importers:
       polar-answers: 0.0.0
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
-      polar-hooks-functions: 0.0.0
+      polar-payments-stripe: 0.0.0
       polar-private-beta: 0.0.0
       polar-private-beta-api: 0.0.0
+      polar-rpc: 0.0.0
       polar-shared: 0.0.0
       source-map-support: '=0.5.19'
     dependencies:
@@ -686,9 +689,10 @@ importers:
       polar-answers: link:../polar-answers
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
-      polar-hooks-functions: link:../polar-hooks/functions
+      polar-payments-stripe: link:../polar-payments-stripe
       polar-private-beta: link:../polar-private-beta
       polar-private-beta-api: link:../polar-private-beta-api
+      polar-rpc: link:../polar-rpc
       polar-shared: link:../polar-shared
       source-map-support: 0.5.19
     devDependencies:
@@ -920,12 +924,16 @@ importers:
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-firestore-like: 0.0.0
+      polar-rpc: 0.0.0
+      polar-shared: 0.0.0
     dependencies:
       '@google-cloud/firestore': 4.15.1
       '@google-cloud/storage': 5.8.5
       firebase-admin: 10.0.0
       firebase-functions: 3.16.0_firebase-admin@10.0.0
       polar-firestore-like: link:../polar-firestore-like
+      polar-rpc: link:../polar-rpc
+      polar-shared: link:../polar-shared
     devDependencies:
       '@types/mocha': 9.0.0
       karma-structured-json-reporter: 1.0.1
@@ -1064,7 +1072,6 @@ importers:
       '@types/node-fetch': 2.5.7
       '@types/prompts': '=2.0.14'
       '@types/react': '=17.0.2'
-      '@types/stripe': '=6.32.13'
       '@types/yargs': '=13.0.12'
       archiver: '=5.3.0'
       body-parser: '=1.19.0'
@@ -1092,6 +1099,7 @@ importers:
       polar-firestore-like: 0.0.0
       polar-html: 0.0.0
       polar-migration-block-annotations: 0.0.0
+      polar-payments-stripe: 0.0.0
       polar-pdf: 0.0.0
       polar-private-beta: 0.0.0
       polar-rpc: 0.0.0
@@ -1107,7 +1115,6 @@ importers:
       prompts: '=2.4.1'
       react: '=17.0.2'
       react-dom: '=17.0.2'
-      stripe: '=8.119.0'
       yargs: '=15.3.1'
     dependencies:
       '@google-cloud/storage': 5.8.5
@@ -1142,6 +1149,7 @@ importers:
       polar-firestore-like: link:../../polar-firestore-like
       polar-html: link:../../polar-html
       polar-migration-block-annotations: link:../../polar-migration-block-annotations
+      polar-payments-stripe: link:../../polar-payments-stripe
       polar-pdf: link:../../polar-pdf
       polar-private-beta: link:../../polar-private-beta
       polar-rpc: link:../../polar-rpc
@@ -1156,7 +1164,6 @@ importers:
       prompts: 2.4.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      stripe: 8.119.0
       yargs: 15.3.1
     devDependencies:
       '@types/archiver': 5.1.1
@@ -1164,7 +1171,6 @@ importers:
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       '@types/react': 17.0.2
-      '@types/stripe': 6.32.13
       chai: 4.2.0
       mocha: 9.1.1
       polar-test: link:../../polar-test
@@ -1349,6 +1355,41 @@ importers:
       '@types/mocha': 9.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
+
+  packages/polar-payments-stripe:
+    specifiers:
+      '@types/chai': 4.2.11
+      '@types/jsdom': '=16.2.13'
+      '@types/mocha': '=9.0.0'
+      chai: 4.2.0
+      mocha: '=9.1.1'
+      polar-accounts: 0.0.0
+      polar-amplitude-backend: 0.0.0
+      polar-firebase: 0.0.0
+      polar-firebase-admin: 0.0.0
+      polar-firestore-like: 0.0.0
+      polar-rpc: 0.0.0
+      polar-sendgrid: 0.0.0
+      polar-shared: 0.0.0
+      polar-test: 0.0.0
+      stripe: '=8.197.0'
+    dependencies:
+      polar-accounts: link:../polar-accounts
+      polar-amplitude-backend: link:../polar-amplitude-backend
+      polar-firebase: link:../polar-firebase
+      polar-firebase-admin: link:../polar-firebase-admin
+      polar-firestore-like: link:../polar-firestore-like
+      polar-rpc: link:../polar-rpc
+      polar-sendgrid: link:../polar-sendgrid
+      polar-shared: link:../polar-shared
+      stripe: 8.197.0
+    devDependencies:
+      '@types/chai': 4.2.11
+      '@types/jsdom': 16.2.13
+      '@types/mocha': 9.0.0
+      chai: 4.2.0
+      mocha: 9.1.1
+      polar-test: link:../polar-test
 
   packages/polar-pdf:
     specifiers:
@@ -9490,12 +9531,6 @@ packages:
 
   /@types/stopword/0.3.0:
     resolution: {integrity: sha512-BPQgYJBb+Y7UC3pvU8J0OgF3VMG0kdLHWr10WmYlDUo+EW1ljX6OfTGziiFM3pG5+8a1zdyWtRPXiVldd9DrPA==}
-    dev: true
-
-  /@types/stripe/6.32.13:
-    resolution: {integrity: sha512-qMcM3ecF/4a0dtfMN2rm1w5TjSDzUqIIADI7BwXpkSUdXfekc4JjL2s7oAp9htB44nPsTYw5mxCCz9j1zTAXwA==}
-    dependencies:
-      '@types/node': 14.17.9
     dev: true
 
   /@types/tapable/1.0.8:
@@ -21883,11 +21918,11 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  /stripe/8.119.0:
-    resolution: {integrity: sha512-XQvbF+TE/rnjhghisp65L29GdVFuxs+vid5EeZ11R+f+W7+owcKgjIpfDrUCs3OxrqwoWPZ6xeBpEKcfYOi4AA==}
+  /stripe/8.197.0:
+    resolution: {integrity: sha512-EQLgqFiX1wNQEeve6QnUcGIby6XtXXzbzEWPJiZ68qFj02YFjNjLLxl9atueKgUQ+YRbrMAlrc6ECwvm+cf/Rw==}
     engines: {node: ^8.1 || >=10.*}
     dependencies:
-      '@types/node': 14.17.9
+      '@types/node': 16.11.7
       qs: 6.10.1
     dev: false
 

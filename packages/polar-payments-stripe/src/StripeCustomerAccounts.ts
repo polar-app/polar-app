@@ -1,7 +1,7 @@
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {Accounts, CustomerAccount} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
-import { StripeMode } from "./StripeUtils";
+import {StripeMode} from "./StripeUtils";
 
 export class StripeCustomerAccounts {
 

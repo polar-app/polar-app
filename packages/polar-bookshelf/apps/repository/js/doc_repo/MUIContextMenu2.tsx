@@ -152,7 +152,7 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 }
 
-export type ContextMenuProviderComponent = (props: IContextMenuProps) => JSX.Element;
+export type ContextMenuProviderComponent = React.FC<IContextMenuProps>;
 
 export type UseContextMenuHook = (opts?: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
 
@@ -264,16 +264,18 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
     }
 
-    const ProviderComponent = (props: IContextMenuProps): JSX.Element => {
+    const ProviderComponent = React.memo((props: IContextMenuProps): JSX.Element => {
+
+        const value = React.useMemo(() => ({ computeOrigin: opts.computeOrigin }), []);
 
         return (
-            <ContextMenuContext.Provider value={{computeOrigin: opts.computeOrigin}}>
+            <ContextMenuContext.Provider value={value}>
                 <MUIContextMenuStoreProvider>
                     <ProviderComponentInner {...props}/>
                 </MUIContextMenuStoreProvider>
             </ContextMenuContext.Provider>
         );
-    };
+    });
 
     return [ProviderComponent, useContextMenu];
 
@@ -303,6 +305,17 @@ interface MUIContextMenuProps {
 
 }
 
+const useStyles = makeStyles(() => ({
+    root: {
+        "& .MuiPopover-paper": {
+            bottom: "0",
+            width: "100%",
+            maxWidth: "100%",
+            left: "0 !important",
+        }
+    }
+}));
+
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
 
     const handleClose = React.useCallback(() => {
@@ -323,14 +336,6 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
         { top: props.mouseY, left: props.mouseX}
         :
         { top: window.innerHeight , left: 0 };
-
-    const useStyles = makeStyles(theme => ({
-        root: { "& .MuiPopover-paper": {
-                bottom: "0",
-                width: "100%",
-                maxWidth: "100%",
-                left: "0 !important",
-            }}}));
 
     const classes = useStyles();
     return (

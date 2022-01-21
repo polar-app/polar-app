@@ -1,6 +1,7 @@
 import {createStoreContext} from "../../../../web/js/react/store/StoreContext";
 import {action, computed, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import React from "react";
 
 interface IContextMenuActive<O> {
     readonly mouseX: number;
@@ -37,7 +38,9 @@ export class MUIContextMenuStore<O> {
 
 export function createContextMenuStore<O>() {
 
-    return createStoreContext(() => new MUIContextMenuStore<O>())
+    return createStoreContext(() => {
+        return React.useMemo(() => new MUIContextMenuStore<O>(), []);
+    });
 
 }
 

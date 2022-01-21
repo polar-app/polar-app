@@ -10,7 +10,7 @@ import {MultiLogger} from "../logger/MultiLogger";
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
  *
- * TODO: should be named as useErrorHandler I think
+ * @deprecated migrate to useErrorHandler
  */
 export function useLogger(): ILogger {
     const dialogManager = useDialogManager();
