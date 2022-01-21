@@ -14,12 +14,13 @@ import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 const AnkiExportDialog: React.FC = () => {
     const [ankiDeckUrl, setAnkiDeckUrl] = React.useState<string | undefined>(undefined);
 
+    // @TODO Remove when backend code below starts working
     setTimeout((): void => {
         // Emulate a slow RPC call
         setAnkiDeckUrl('https://example.com');
     }, 1000);
 
-    // Uncomment when backend is working
+    // TODO: Uncomment when backend is working
     // JSONRPC.exec<unknown, {
     //     temporary_url: string,
     // }>('FlashcardsExportFunction', {}).then((response) => {
