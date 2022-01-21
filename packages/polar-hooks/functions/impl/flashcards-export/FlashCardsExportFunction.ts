@@ -2,12 +2,13 @@ import { IDUser } from "polar-rpc/src/IDUser";
 import { ExpressFunctions } from "../util/ExpressFunctions";
 import { AnkiExport } from "./FlashcardsExport";
 import express from "express";
+import { BlockIDStr } from "polar-blocks/src/blocks/IBlock";
 
 export interface FlashcardExportRequest {
     /**
      * an array of flashcard block IDs
      */
-    readonly targets: ReadonlyArray<string>;
+    readonly blockIDs: ReadonlyArray<BlockIDStr>;
 
     /**
      * Generated file name will include this string + apkg extension
@@ -34,4 +35,4 @@ export namespace FlashCardsExportFunction {
     }
 }
 
-export const FlashcardsExportFunction = ExpressFunctions.createRPCHookResponse("FlashcardsExportFunction", FlashCardsExportFunction.exec);
+export const FlashcardsExportFunction = ExpressFunctions.createRPCHookWithRawResponse("FlashcardsExportFunction", FlashCardsExportFunction.exec);

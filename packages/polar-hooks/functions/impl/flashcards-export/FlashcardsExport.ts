@@ -2,20 +2,20 @@ import { FlashcardExportRequest } from "./FlashCardsExportFunction";
 import { FlashCardExport } from "polar-anki-export/src/FlashCardExport";
 import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
 import { BlockCollection } from "polar-firebase/src/firebase/om/BlockCollection";
-import { AnnotationContentType } from "polar-blocks/src/blocks/content/IAnnotationContent";
+import { AnnotationContentType, IAnnotationContent } from "polar-blocks/src/blocks/content/IAnnotationContent";
 import { IBlockFlashcard } from "polar-blocks/src/annotations/IBlockFlashcard";
 import { FlashcardType } from "polar-shared/src/metadata/FlashcardType";
 import { FilePaths } from "polar-shared/src/util/FilePaths";
+import { PathStr, UserIDStr } from "polar-shared/src/util/Strings";
+import { IBlock, BlockIDStr } from "polar-blocks/src/blocks/IBlock";
 
-export namespace AnkiExport{
+export namespace AnkiExport {
 
-    export async function fetchUserBlocks(uid: string, docIDRange: ReadonlyArray<string>) {
+    export async function fetchUserBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
         return FirebaseAdmin.app()
             .firestore()
             .collection(BlockCollection.COLLECTION)
-            .where('id', 'in', docIDRange)
-            .where('uid', '==', uid)
-            .where('content.type', '==', AnnotationContentType.FLASHCARD)
+            .where('id', 'in', blockIDs)
             .get();
     }
 
@@ -25,17 +25,25 @@ export namespace AnkiExport{
      * @param uid user id 
      * @returns generated apkg file path
      */
-    export async function create(request: FlashcardExportRequest, uid: string): Promise<string> {
+    export async function create(request: FlashcardExportRequest, uid: UserIDStr): Promise<PathStr> {
 
         const flashCardExport = FlashCardExport.init(request.ankiDeckName);
 
-        const docs = await fetchUserBlocks(uid, request.targets);
+        const docs = await fetchUserBlocks(request.blockIDs);
 
 
         // Converting blocks to Anki flashcards based on type
         docs.forEach(
             (doc: FirebaseFirestore.DocumentData ) => {
-                const flashcard = doc.data().content.value as IBlockFlashcard;
+                const block = doc.data() as IBlock<IAnnotationContent>;
+
+                // Skip blocks that the user doesn't have access to
+                // Or any block that isn't a flashcard
+                if ( block.uid !== uid || block.content.type !== AnnotationContentType.FLASHCARD ) {
+                    return;
+                }
+
+                const flashcard = block.content.value as IBlockFlashcard;
 
                 switch (flashcard.type) {
                     case FlashcardType.CLOZE:
