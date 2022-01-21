@@ -105,7 +105,7 @@ export class ExpressFunctions {
 
     }
 
-    public static createRPCHookResponse<R, V>(
+    public static createRPCHookWithRawResponse<R, V>(
         functionName: string,
         handler: (idUser: IDUser, request: R, response: express.Response) => Promise<V>
     ): ExpressRequestFunction {

@@ -8,12 +8,13 @@ import {Lazy} from "polar-shared/src/util/Lazy";
 import {Datastores} from "../datastore/Datastores";
 import * as fs from "fs";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
+import { BlockIDStr } from "polar-blocks/src/blocks/IBlock";
 
 export interface FlashcardExportRequest {
     /**
      * an array of flashcard block IDs
      */
-    readonly targets: ReadonlyArray<string>;
+    readonly blockIDs: ReadonlyArray<BlockIDStr>;
 
     /**
      * Generated file name will include this string + apkg extension
@@ -83,4 +84,4 @@ export namespace FlashCardsExportFunction {
     }
 }
 
-export const FlashcardsExportFunction = ExpressFunctions.createRPCHookResponse("FlashcardsExportFunction", FlashCardsExportFunction.exec);
+export const FlashcardsExportFunction = ExpressFunctions.createRPCHookWithRawResponse("FlashcardsExportFunction", FlashCardsExportFunction.exec);

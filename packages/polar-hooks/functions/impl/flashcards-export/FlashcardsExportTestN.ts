@@ -15,7 +15,7 @@ describe("Flashcards export", () => {
     it("basic", async () => {
         const testRequest: FlashcardExportRequest = {
             ankiDeckName: "test",
-            targets: TARGET_BLOCK_IDS 
+            blockIDs: TARGET_BLOCK_IDS 
         };
 
         const path = await AnkiExport.create(testRequest, TEST_UID);
