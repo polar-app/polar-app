@@ -68,6 +68,7 @@ devDependencies:
     "puppeteer": "=11.0.0"
     "playwright": "=1.18.0"
     "karma-webkit-launcher": "=1.0.2"
+    "karma-safarinative-launcher" : "=1.1.0"
 
     ## Mocha Dependencies
     "@types/mocha": "=9.0.0"

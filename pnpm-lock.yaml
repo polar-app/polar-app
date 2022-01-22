@@ -38,6 +38,7 @@ importers:
       karma-junit-reporter: '=2.0.1'
       karma-mocha: '=2.0.1'
       karma-safari-launcher: '=1.0.0'
+      karma-safarinative-launcher: '=1.1.0'
       karma-sourcemap-loader: '=0.3.8'
       karma-spec-reporter: '=0.0.32'
       karma-summary-reporter: '=3.0.0'
@@ -105,6 +106,7 @@ importers:
       karma-junit-reporter: 2.0.1_karma@6.3.8
       karma-mocha: 2.0.1
       karma-safari-launcher: 1.0.0_karma@6.3.8
+      karma-safarinative-launcher: 1.1.0_karma@6.3.8
       karma-sourcemap-loader: 0.3.8
       karma-spec-reporter: 0.0.32_karma@6.3.8
       karma-summary-reporter: 3.0.0_karma@6.3.8
@@ -17354,6 +17356,14 @@ packages:
 
   /karma-safari-launcher/1.0.0_karma@6.3.8:
     resolution: {integrity: sha1-lpgqLMR9BmquccVTursoMZEVos4=}
+    peerDependencies:
+      karma: '>=0.9'
+    dependencies:
+      karma: 6.3.8
+    dev: true
+
+  /karma-safarinative-launcher/1.1.0_karma@6.3.8:
+    resolution: {integrity: sha512-vdMjdQDHkSUbOZc8Zq2K5bBC0yJGFEgfrKRJTqt0Um0SC1Rt8drS2wcN6UA3h4LgsL3f1pMcmRSvKucbJE8Qdg==}
     peerDependencies:
       karma: '>=0.9'
     dependencies:

@@ -108,14 +108,16 @@ export namespace Highlights {
 
             }
 
-            function notCollapsed(item: IHighlightViewportPosition) {
-                return item.width !== 0 && item.height !== 0;
+            function isCollapsed(item: IHighlightViewportPosition) {
+                const collapsed = item.width === 0 || item.height === 0 ;
+                console.log("FIXME: collapsed: " + collapsed);
+                return collapsed;
             }
 
             return arrayStream(highlightViewportPositions)
                       .group(toKey)
                       .map(merge)
-                      .filter(notCollapsed)
+                      .filter(current => ! isCollapsed(current))
                       .collect();
         }
 
@@ -130,7 +132,12 @@ export namespace Highlights {
         console.log("FIXME: highlightViewportPositions length: " + highlightViewportPositions.length);
 
         // then re-join based on top/height of each one.
-        return mergeHighlightViewportPositions(highlightViewportPositions);
+        const result =  mergeHighlightViewportPositions(highlightViewportPositions);
+
+        console.log("FIXME2: result length: " + result.length);
+
+
+        return result;
 
     }
 
@@ -206,6 +213,8 @@ export namespace Highlights {
         }
 
         const rect = range.getBoundingClientRect();
+
+        console.log("FIXME: rect: ", JSON.stringify(rect))
 
         return {
             top: rect.top,
