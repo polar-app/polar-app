@@ -108,7 +108,9 @@ export namespace Highlights {
     export function mergeHighlightViewportPositions(highlightViewportPositions: ReadonlyArray<IHighlightViewportPosition>): MergeHighlightViewportPositionsResult {
 
         function toMultiMapKey(highlightViewportPosition: IHighlightViewportPosition): string {
-            return highlightViewportPosition.nodeID + ':' + highlightViewportPosition.top + ':' + highlightViewportPosition.height
+            // return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}&start=${highlightViewportPosition.start}&end=${highlightViewportPosition.end}`;
+
+            return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}`;
         }
 
         function merge(key: string, groupPositions: ReadonlyArray<IHighlightViewportPosition>): IHighlightViewportPosition {
