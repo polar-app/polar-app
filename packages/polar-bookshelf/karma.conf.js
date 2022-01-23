@@ -73,7 +73,7 @@ module.exports = (config) => {
 
             }
         },
-        browsers: [],
+        browsers: ['ChromeHeadless'],
 
         customHeaders: [
             {

@@ -47,9 +47,6 @@ export const TextHighlightRendererDynamic = deepMemo(function TextHighlightRende
         return null;
     }
 
-
-    console.log(`FIXME: rendering N regions for ID: ${hit.id}: ` + hit.regions.length);
-
     const color = HighlightColors.toBackgroundColor(annotation.color || 'yellow', 0.5);
 
     // this is a bit unclean because it assumes the container is 'body' but it

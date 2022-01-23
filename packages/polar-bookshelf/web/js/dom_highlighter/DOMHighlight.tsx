@@ -37,8 +37,6 @@ export const DOMHighlight = deepMemo(function DOMHighlight(props: IProps) {
 
     const [highlightViewportPositions, setHighlightViewportPositions] = React.useState(toHighlightViewportPositions(regions))
 
-    console.log(`FIXME: going to render N positions for ID: ${props.id}: ` + highlightViewportPositions?.length)
-
     const redrawCallback = React.useMemo(() => withAnimationFrame(() => {
 
         if (props.regions.length === 0) {

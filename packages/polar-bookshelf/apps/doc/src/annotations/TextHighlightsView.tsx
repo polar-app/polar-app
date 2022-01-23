@@ -23,8 +23,6 @@ export const BlockTextHighlightsViewRenderer: React.FC<ITextHighlightsViewRender
         type: AnnotationContentType.TEXT_HIGHLIGHT,
     });
 
-    console.log("FIXME: going to render N highlights: ", highlightIDs.length);
-
     return (
         <>
             {highlightIDs.map(id => (
