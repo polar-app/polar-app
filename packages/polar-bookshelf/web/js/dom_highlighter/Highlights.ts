@@ -2,7 +2,7 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {Rects} from "polar-shared/src/util/Rects";
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {arrayStream, ArrayStreamMultiMap} from "polar-shared/src/util/ArrayStreams";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
@@ -30,11 +30,17 @@ export namespace Highlights {
 
     }
 
+    export type HighlightViewportPositionsResult = readonly [
+        ReadonlyArray<IHighlightViewportPosition>,
+        ReadonlyArray<NodeTextRegion>,
+        ReadonlyArray<IHighlightViewportPosition>
+    ];
+
     /**
      * Take all the nodes we need to highlight, split them by character, then
      * segment them into rows that are overflowing.
      */
-    export function toHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>): ReadonlyArray<IHighlightViewportPosition> {
+    export function toHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>): HighlightViewportPositionsResult {
 
         function splitNodeTextRegion(nodeTextRegion: NodeTextRegion): ReadonlyArray<NodeTextRegion> {
 
@@ -76,68 +82,80 @@ export namespace Highlights {
 
         }
 
-        function mergeHighlightViewportPositions(highlightViewportPositions: ReadonlyArray<IHighlightViewportPosition>): ReadonlyArray<IHighlightViewportPosition> {
-
-            function toKey(highlightViewportPosition: IHighlightViewportPosition): string {
-                return highlightViewportPosition.nodeID + ':' + highlightViewportPosition.top + ':' + highlightViewportPosition.height
-            }
-
-            function merge(groupPositions: ReadonlyArray<IHighlightViewportPosition>): IHighlightViewportPosition {
-
-                const sorted = arrayStream(groupPositions)
-                    .sort((a, b) => a.start - b.start)
-                    .collect();
-
-                const first = Arrays.first(sorted)!;
-                const last = Arrays.last(sorted)!;
-
-                const left = first.left;
-                const right = last.left + last.width;
-                const width = right - left;
-
-                return {
-                    top: first.top,
-                    left: first.left,
-                    height: first.height,
-                    width,
-                    node: first.node,
-                    nodeID: first.nodeID,
-                    start: first.start,
-                    end: last.end
-                };
-
-            }
-
-            function isCollapsed(item: IHighlightViewportPosition) {
-                const collapsed = item.width === 0 || item.height === 0 ;
-                console.log("FIXME: collapsed: " + collapsed);
-                return collapsed;
-            }
-
-            return arrayStream(highlightViewportPositions)
-                      .group(toKey)
-                      .map(merge)
-                      .filter(current => ! isCollapsed(current))
-                      .collect();
-        }
-
         // take each NodeTextRegion and split them out into one character each...
         const splitNodeTextRegions = createSplitNodeTextRegions();
 
-        console.log("FIXME: splitNodeTextRegions length: " + splitNodeTextRegions.length);
-
         // compute each position in the viewport...
-        const highlightViewportPositions = createHighlightViewportPositions(splitNodeTextRegions);
-
-        console.log("FIXME: highlightViewportPositions length: " + highlightViewportPositions.length);
+        const rawHighlightViewportPositions = createHighlightViewportPositions(splitNodeTextRegions);
 
         // then re-join based on top/height of each one.
-        const result =  mergeHighlightViewportPositions(highlightViewportPositions);
+        const [mergedHighlightViewportPositions] =  mergeHighlightViewportPositions(rawHighlightViewportPositions);
 
-        console.log("FIXME2: result length: " + result.length);
+        return [mergedHighlightViewportPositions, splitNodeTextRegions, rawHighlightViewportPositions];
 
+    }
 
-        return result;
+    export type HighlightViewportPositionFiltered = ReadonlyArray<IHighlightViewportPosition>;
+    export type HighlightViewportPositionMerged = ReadonlyArray<IHighlightViewportPosition>;
+    export type HighlightViewportPositionGrouped = readonly (readonly IHighlightViewportPosition[])[];
+
+    export type MergeHighlightViewportPositionsResult = readonly [
+        HighlightViewportPositionFiltered,
+        HighlightViewportPositionMerged,
+        ArrayStreamMultiMap<IHighlightViewportPosition>
+    ];
+
+    export function mergeHighlightViewportPositions(highlightViewportPositions: ReadonlyArray<IHighlightViewportPosition>): MergeHighlightViewportPositionsResult {
+
+        function toMultiMapKey(highlightViewportPosition: IHighlightViewportPosition): string {
+            return highlightViewportPosition.nodeID + ':' + highlightViewportPosition.top + ':' + highlightViewportPosition.height
+        }
+
+        function merge(key: string, groupPositions: ReadonlyArray<IHighlightViewportPosition>): IHighlightViewportPosition {
+
+            const sorted = arrayStream(groupPositions)
+                .sort((a, b) => a.start - b.start)
+                .collect();
+
+            const first = Arrays.first(sorted)!;
+            const last = Arrays.last(sorted)!;
+
+            const left = first.left;
+            const right = last.left + last.width;
+            const width = right - left;
+
+            return {
+                top: first.top,
+                left: first.left,
+                height: first.height,
+                width,
+                node: first.node,
+                nodeID: first.nodeID,
+                start: first.start,
+                end: last.end
+            };
+
+        }
+
+        function isCollapsed(item: IHighlightViewportPosition) {
+            const collapsed = item.width === 0 || item.height === 0 ;
+            return collapsed;
+        }
+
+        const grouped
+            = arrayStream(highlightViewportPositions)
+                .toMultiMap(toMultiMapKey)
+
+        const merged
+            = arrayStream(Object.entries(grouped))
+                .map(entry => merge(entry[0], entry[1]))
+                .collect();
+
+        const filtered = arrayStream(merged)
+            .filter(current => ! isCollapsed(current))
+            .collect();
+
+        return [filtered, merged, grouped];
 
     }
 
@@ -213,8 +231,6 @@ export namespace Highlights {
         }
 
         const rect = range.getBoundingClientRect();
-
-        console.log("FIXME: rect: ", JSON.stringify(rect))
 
         return {
             top: rect.top,

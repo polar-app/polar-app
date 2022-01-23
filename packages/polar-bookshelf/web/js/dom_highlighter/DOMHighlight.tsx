@@ -19,19 +19,8 @@ interface IProps extends DOMTextHit {
 
 function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
 
-    console.log("FIXME: converting N regions: " + regions.length)
-
-    console.log("FIXME: regions: " , JSON.stringify(regions, null, "  "));
-
     try {
-        // FIXME:L this is the bug... we start with 1 it converts to 7...
-        const result = Highlights.toHighlightViewportPositions(regions);
-
-        console.log("FIXME: N results for convert: " + result.length)
-
-        console.log("FIXME: result: ", JSON.stringify(result, null, "  "))
-
-        return result;
+        return Highlights.toHighlightViewportPositions(regions)[0];
     } catch (e) {
         console.error("Unable to handle viewport position: ", e);
         return undefined;

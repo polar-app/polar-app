@@ -45,13 +45,16 @@ namespace AnnotationPositionCalculator {
         ) {
             const hit = domTextIndex.find(Texts.toText(textHighlight.text) || "", {caseInsensitive: true});
             if (hit) {
-                const positions = Highlights
-                    .toHighlightViewportPositions(hit.regions)
+
+                const [highlightViewportPositions] = Highlights.toHighlightViewportPositions(hit.regions);
+
+                const positions = highlightViewportPositions
                     .map(({ top, left, width, height }) => ({
                         top, left, width, height,
                         bottom: top + height,
                         right: left + width,
                     }));
+
                 if (positions.length) {
                     const rect = Object.values(positions).reduce(TextHighlightMerger.mergeRects);
                     const point: Point = {

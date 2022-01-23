@@ -4,21 +4,15 @@ import {Assertions} from "polar-test/src/test/Assertions";
 import {assert} from 'chai';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import assertJSON = Assertions.assertJSON;
+import HighlightViewportPositionsResult = Highlights.HighlightViewportPositionsResult;
 
 describe('Highlights', () => {
 
-    function doTest(html: HTMLStr) {
+    function doTest(html: HTMLStr): HighlightViewportPositionsResult {
 
         document.body.innerHTML = html;
 
         const elements = document.body.querySelectorAll('b');
-
-        // assert.equal(Math.floor(node0.getBoundingClientRect().width), 32);
-        // assert.equal(Math.floor(node0.getBoundingClientRect().height), 18);
-        //
-        // assert.equal(Math.floor(node1.getBoundingClientRect().width), 40);
-        // assert.equal(Math.floor(node1.getBoundingClientRect().height), 18);
-
         function createNodeTextRegionFromTextElement(node: HTMLElement) {
 
             const firstChild = node.firstChild as Text;
@@ -40,9 +34,9 @@ describe('Highlights', () => {
 
     it('basic', () => {
 
-        const result = doTest('<b>hello</b> <b>world</b>');
+        const [highlightViewportPositions] = doTest('<b>hello</b> <b>world</b>');
 
-        assertJSON(result, [
+        assertJSON(highlightViewportPositions, [
             {
                 "top": 8,
                 "left": 8,
@@ -59,11 +53,11 @@ describe('Highlights', () => {
 
     it('basic with breaks', () => {
 
-        const result = doTest('<b>hello</b> <br/> <br/><br/><b>world</b>');
+        const [highlightViewportPositions] = doTest('<b>hello</b> <br/> <br/><br/><b>world</b>');
 
-        assert.equal(result.length, 2);
+        assert.equal(highlightViewportPositions.length, 2);
 
-        assertJSON(result, [
+        assertJSON(highlightViewportPositions, [
             {
                 "top": 8,
                 "left": 8,
@@ -90,32 +84,36 @@ describe('Highlights', () => {
 
     it('super long paragraph with text that wraps to the next line', () => {
 
-        const result = doTest('<b>This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. </b>');
+        const [highlightViewportPositions, nodeTextRegions, rawHighlightViewportPositions] = doTest('<b>This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. This is some super long text that does a word wrap. </b>');
 
-        assert.equal(result.length, 6);
+        const [filtered, merged, grouped ] = Highlights.mergeHighlightViewportPositions(rawHighlightViewportPositions)
 
-        // assertJSON(result, [
-        //     {
-        //         "top": 8,
-        //         "left": 8,
-        //         "height": 18,
-        //         "width": 32.890625,
-        //         "node": {},
-        //         "nodeID": 0,
-        //         "start": 0,
-        //         "end": 5
-        //     },
-        //     {
-        //         "top": 62,
-        //         "left": 8,
-        //         "height": 18,
-        //         "width": 40,
-        //         "node": {},
-        //         "nodeID": 0,
-        //         "start": 0,
-        //         "end": 5
-        //     }
-        // ]);
+        assert.equal(Object.keys(grouped).length, 1);
+        assert.equal(merged.length, 1);
+
+        assert.equal(filtered.length, 1);
+        assert.equal(nodeTextRegions.length, 208);
+        assert.equal(rawHighlightViewportPositions.length, 208);
+        assert.equal(highlightViewportPositions.length, 1);
+
+        function canonicalize(data: any) {
+            return {
+                ...data,
+                width: Math.ceil(data.width)
+            };
+        }
+
+        assertJSON(canonicalize(highlightViewportPositions[0]), {
+                "top": 8,
+                "left": 8,
+                "height": 18,
+                "width": 1410,
+                "node": {},
+                "nodeID": 0,
+                "start": 0,
+                "end": 208
+            }
+        );
 
     });
 
