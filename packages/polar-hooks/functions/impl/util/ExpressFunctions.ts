@@ -105,15 +105,6 @@ export class ExpressFunctions {
 
     }
 
-    public static createRPCHookWithRawResponse<R, V>(
-        functionName: string,
-        handler: (idUser: IDUser, request: R, response: express.Response) => Promise<V>
-    ): ExpressRequestFunction {
-        return this.createHookAsync(functionName, async (req: express.Request, res: express.Response) => {
-            await UserRequests.executeAsync<R, V>(req, res, async (idUser, request) => await handler(idUser, request, res))
-        });
-    }
-
     // this should be something like JSONResponses
     public static sendResponse(res: express.Response,
                                body: any,

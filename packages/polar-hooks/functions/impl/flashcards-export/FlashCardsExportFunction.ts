@@ -1,14 +1,13 @@
 import {IDUser} from "polar-rpc/src/IDUser";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {AnkiExport} from "./FlashcardsExport";
-import express from "express";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {File} from "@google-cloud/storage";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {Datastores} from "../datastore/Datastores";
 import * as fs from "fs";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
-import { BlockIDStr } from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export interface FlashcardExportRequest {
     /**
@@ -56,12 +55,9 @@ export namespace FlashCardsExportFunction {
     }
 
     export async function exec(idUser: IDUser,
-                               request: FlashcardExportRequest,
-                               response: express.Response
-    ): Promise<FlashCardExportResponse> {
-        const path = await AnkiExport.create(request, idUser.uid);
+                               request: FlashcardExportRequest): Promise<FlashCardExportResponse> {
 
-        response.download(path);
+        const path = await AnkiExport.create(request, idUser.uid);
 
         const now = ISODateTimeStrings.create();
         const prettyFileName = `${now}-${request.ankiDeckName}.zip`;
@@ -84,4 +80,4 @@ export namespace FlashCardsExportFunction {
     }
 }
 
-export const FlashcardsExportFunction = ExpressFunctions.createRPCHookWithRawResponse("FlashcardsExportFunction", FlashCardsExportFunction.exec);
+export const FlashcardsExportFunction = ExpressFunctions.createRPCHook("FlashcardsExportFunction", FlashCardsExportFunction.exec);

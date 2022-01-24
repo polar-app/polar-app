@@ -9,7 +9,6 @@ import {BlocksExporter} from "../../../../../web/js/metadata/blocks-exporter/Blo
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {Button} from "@material-ui/core";
-import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
 const AnkiExportDialog: React.FC = () => {
     const [ankiDeckUrl, setAnkiDeckUrl] = React.useState<string | undefined>(undefined);
