@@ -1086,6 +1086,7 @@ importers:
       node-fetch: '=2.6.1'
       polar-accounts: 0.0.0
       polar-amplitude-backend: 0.0.0
+      polar-anki-export: 0.0.0
       polar-answers: 0.0.0
       polar-answers-api: 0.0.0
       polar-backend-api: 0.0.0
@@ -1135,6 +1136,7 @@ importers:
       node-fetch: 2.6.1
       polar-accounts: link:../../polar-accounts
       polar-amplitude-backend: link:../../polar-amplitude-backend
+      polar-anki-export: link:../../polar-anki-export
       polar-answers: link:../../polar-answers
       polar-answers-api: link:../../polar-answers-api
       polar-backend-api: link:../../polar-backend-api

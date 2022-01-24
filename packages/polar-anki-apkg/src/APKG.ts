@@ -36,8 +36,9 @@ export namespace APKG {
             mediaFiles.push(filename)
             writeFileSync(join(dest, `${index}`), data)
         }
-        async function save(destination: string): Promise<void> {
+        async function save(destination: string): Promise<string> {
             const archive = archiver.create('zip');
+            const savePath = join(destination, `${deck.name}.apkg`);
 
             const mediaObj = mediaFiles.reduce((obj, file, idx) => {
                 // @ts-ignore
@@ -50,7 +51,7 @@ export namespace APKG {
             archive.directory(dest, false);
 
             archive.pipe(
-                createWriteStream(join(destination, `${deck.name}.apkg`))
+                createWriteStream(savePath)
             );
 
             archive.on('end', () => {
@@ -58,6 +59,8 @@ export namespace APKG {
             });
 
             await archive.finalize();
+
+            return savePath;
         }
 
         return { addModels, addCard, addMedia, save };

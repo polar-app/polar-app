@@ -40,6 +40,7 @@ import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUpdateFunction";
 import {MigrationToBlockAnnotationsFunction} from "./impl/migrations/MigrationToBlockAnnotationsFunction";
 import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction";
+import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashCardsExportFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -90,3 +91,4 @@ exports.AnswerIndexer = AnswerIndexerFunction
 exports.AnswerExecutor = AnswerExecutorFunction;
 exports.AnswerExecutorTraceUpdate = AnswerExecutorTraceUpdateFunction
 exports.MigrationToBlockAnnotations = MigrationToBlockAnnotationsFunction
+exports.FlashcardsExportFunction = FlashcardsExportFunction
