@@ -170,6 +170,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     webview: {
-        height: "100%",
+        flex: 1,
     },
 });
