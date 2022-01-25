@@ -64,8 +64,6 @@ export namespace Highlights {
      */
     export function toHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>): HighlightViewportPositionsResult {
 
-        console.log("FIXME: nodeTextRegions: ", JSON.stringify(nodeTextRegions));
-
         /**
          * This is a bit of a hack as for some reason NodeTextRegion started off
          * as inclusive and changed to exclusive so it introduced a nasty bug.
@@ -73,8 +71,6 @@ export namespace Highlights {
         interface NodeTextRegionExclusive extends NodeTextRegion {
             readonly type: 'exclusive';
         }
-
-        // FIXME: I think we  could refactor this to REALLY split including creating new nodes...
 
         function splitNodeTextRegion(nodeTextRegion: NodeTextRegion): ReadonlyArray<NodeTextRegionExclusive> {
 
@@ -107,8 +103,6 @@ export namespace Highlights {
 
             function toHighlightViewportPositions(nodeTextRegion: NodeTextRegion): IHighlightViewportPosition {
 
-                // FIXME I need one that splits the regions for us into nodes
-                // and then I might be able to get the raw position directly..
                 const viewportPosition = Highlights.createViewportPosition(nodeTextRegion);
                 return {
                     ...viewportPosition,
@@ -147,11 +141,6 @@ export namespace Highlights {
     export function mergeHighlightViewportPositions(highlightViewportPositions: ReadonlyArray<IHighlightViewportPosition>): MergeHighlightViewportPositionsResult {
 
         function toMultiMapKey(highlightViewportPosition: IHighlightViewportPosition): string {
-            const ch = highlightViewportPosition.node.nodeValue![highlightViewportPosition.start];
-            // return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}&start=${highlightViewportPosition.start}&end=${highlightViewportPosition.end}`;
-
-            // return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}&ch=${ch}`;
-
             return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}`;
 
         }
@@ -197,24 +186,22 @@ export namespace Highlights {
             for (const group of Object.keys(grouped)) {
 
                 const groupValues = grouped[group];
-
-                console.log(`group: ${group}: `)
+                //
+                // console.log(`group: ${group}: `)
 
                 for(const highlightViewportPosition of groupValues) {
-                    const ch = highlightViewportPosition.node.nodeValue![highlightViewportPosition.start];
-
-                    console.log("    " + JSON.stringify({
-                        ch,
-                        start: highlightViewportPosition.start,
-                        end: highlightViewportPosition.end,
-                    }))
+                    // const ch = highlightViewportPosition.node.nodeValue![highlightViewportPosition.start];
+                    //
+                    // console.log("    " + JSON.stringify({
+                    //     ch,
+                    //     start: highlightViewportPosition.start,
+                    //     end: highlightViewportPosition.end,
+                    // }))
                 }
 
             }
 
         }
-
-        console.log("FIXME: grouped keys: ", JSON.stringify(Object.keys(grouped), null, '  '));
 
         dumpGroups();
 
@@ -291,8 +278,6 @@ export namespace Highlights {
         }
 
         try {
-
-            console.log(`FIXME: node start=${highlight.start}, end=${highlight.end} content: '${node.textContent}'` );
 
             range.setStart(node, highlight.start);
             range.setEnd(node, computeEnd());
