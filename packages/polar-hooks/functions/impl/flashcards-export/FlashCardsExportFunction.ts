@@ -7,29 +7,15 @@ import {Lazy} from "polar-shared/src/util/Lazy";
 import {Datastores} from "../datastore/Datastores";
 import * as fs from "fs";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-
-export interface FlashcardExportRequest {
-    /**
-     * an array of flashcard block IDs
-     */
-    readonly blockIDs: ReadonlyArray<BlockIDStr>;
-
-    /**
-     * Generated file name will include this string + apkg extension
-     * example: anki_export.apkg
-     */
-    readonly ankiDeckName: string;
-}
-
-export interface FlashCardExportResponse {
-    temporary_url: string,
-}
+import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
 
 export namespace FlashCardsExportFunction {
+    import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
+    import FlashCardExportResponse = FlashCardsExport.FlashcardExportResponse;
+
     function createFileInTmpBucket(file: string) {
         const project = storageConfig().config.project;
         const bucketName = `gs://tmp-${project}`;

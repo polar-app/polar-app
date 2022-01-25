@@ -274,6 +274,9 @@ importers:
       '@types/mocha': '=9.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
+      polar-blocks: 0.0.0
+    dependencies:
+      polar-blocks: link:../polar-blocks
     devDependencies:
       '@types/mocha': 9.0.0
       karma-structured-json-reporter: 1.0.1
