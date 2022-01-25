@@ -72,7 +72,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
         doAsync().catch(err => errorHandler(err));
 
-    }, [dialogManager, errorHandler]);
+    }, [dialogManager, errorHandler, ankiDeckDownloadHandler]);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
         const ids = blocksAnnotationRepoStore.view.map(({id}) => id);
