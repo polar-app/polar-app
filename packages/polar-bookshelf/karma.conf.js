@@ -92,10 +92,7 @@ module.exports = (config) => {
         frameworks: ['mocha', 'webpack'],
 
         plugins: [
-            'karma-safarinative-launcher',
             'karma-chrome-launcher',
-            'karma-safari-launcher',
-            'karma-webkit-launcher',
             'karma-webpack',
             'karma-mocha',
             'karma-spec-reporter',
