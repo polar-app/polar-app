@@ -1,7 +1,8 @@
-import { AnkiExport } from "./FlashcardsExport";
-import { FlashcardExportRequest } from "./FlashCardsExportFunction";
-import { existsSync } from "fs";
-import { assert } from "chai";
+import {AnkiExport} from "./FlashcardsExport";
+import {existsSync} from "fs";
+import {assert} from "chai";
+import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
+import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
 
 describe("Flashcards export", () => {
 
@@ -15,7 +16,7 @@ describe("Flashcards export", () => {
     it("basic", async () => {
         const testRequest: FlashcardExportRequest = {
             ankiDeckName: "test",
-            blockIDs: TARGET_BLOCK_IDS 
+            blockIDs: TARGET_BLOCK_IDS
         };
 
         const path = await AnkiExport.create(testRequest, TEST_UID);
