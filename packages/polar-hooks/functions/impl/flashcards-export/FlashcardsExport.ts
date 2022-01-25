@@ -1,15 +1,17 @@
-import { FlashcardExportRequest } from "./FlashCardsExportFunction";
-import { FlashCardExport } from "polar-anki-export/src/FlashCardExport";
-import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
-import { BlockCollection } from "polar-firebase/src/firebase/om/BlockCollection";
-import { AnnotationContentType, IAnnotationContent } from "polar-blocks/src/blocks/content/IAnnotationContent";
-import { IBlockFlashcard } from "polar-blocks/src/annotations/IBlockFlashcard";
-import { FlashcardType } from "polar-shared/src/metadata/FlashcardType";
-import { FilePaths } from "polar-shared/src/util/FilePaths";
-import { PathStr, UserIDStr } from "polar-shared/src/util/Strings";
-import { IBlock, BlockIDStr } from "polar-blocks/src/blocks/IBlock";
+import {FlashCardExport} from "polar-anki-export/src/FlashCardExport";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
+import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {PathStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
 
 export namespace AnkiExport {
+
+    import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
 
     export async function fetchUserBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
         return FirebaseAdmin.app()
@@ -20,9 +22,9 @@ export namespace AnkiExport {
     }
 
     /**
-     * 
+     *
      * @param request Flashcard export request
-     * @param uid user id 
+     * @param uid user id
      * @returns generated apkg file path
      */
     export async function create(request: FlashcardExportRequest, uid: UserIDStr): Promise<PathStr> {
