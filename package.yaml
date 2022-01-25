@@ -75,7 +75,6 @@ devDependencies:
     "karma-spec-reporter": "=0.0.32"
     "karma-typescript": "=5.5.2"
     "karma-typescript-es6-transform": "=5.5.2"
-    "karma-webdriver-launcher": "=1.0.8"
     "karma-webpack": "=5.0.0"
     "karma-summary-reporter": "=3.0.0"
     "puppeteer": "=11.0.0"
