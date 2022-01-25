@@ -5,6 +5,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream, ArrayStreamMultiMap} from "polar-shared/src/util/ArrayStreams";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Browsers} from "polar-browsers/src/Browsers";
 
 export namespace Highlights {
 
@@ -36,11 +37,36 @@ export namespace Highlights {
         ReadonlyArray<IHighlightViewportPosition>
     ];
 
+
+    /**
+     * Split the given text node so that every character has its own text
+     * node so that we can see the actual position on the screen.
+     */
+    export function splitTextNodePerCharacter(textNode: Text): ReadonlyArray<Text> {
+
+        const result: Text[] = [
+
+        ];
+
+        while (textNode.textContent && textNode.textContent.length > 1) {
+            result.push(textNode);
+            textNode = textNode.splitText(1);
+        }
+
+        result.push(textNode);
+
+        return result;
+
+    }
+
     /**
      * Take all the nodes we need to highlight, split them by character, then
      * segment them into rows that are overflowing.
      */
     export function toHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>): HighlightViewportPositionsResult {
+
+
+        // FIXME: I think we  could refactor this to REALLY split including creating new nodes...
 
         function splitNodeTextRegion(nodeTextRegion: NodeTextRegion): ReadonlyArray<NodeTextRegion> {
 
@@ -70,6 +96,8 @@ export namespace Highlights {
 
             function toHighlightViewportPositions(nodeTextRegion: NodeTextRegion): IHighlightViewportPosition {
 
+                // FIXME I need one that splits the regions for us into nodes
+                // and then I might be able to get the raw position directly..
                 const viewportPosition = Highlights.createViewportPosition(nodeTextRegion);
                 return {
                     ...viewportPosition,
@@ -220,13 +248,31 @@ export namespace Highlights {
             // polar-dom-text-search where sometimes the length is off by one.
             // we need to find the root cause but at last this works around it
             // for now and shouldn't impact anything once the bug is fixed.
-            return Math.min(node.nodeValue?.length, highlight.end + 1);
 
+            const browser = Browsers.get();
+
+            if (node.nodeValue.length === 1) {
+                console.log("FIXME: it's one!!!");
+            }
+
+            // if (browser?.id === 'safari') {
+            //     return Math.min(node.nodeValue?.length, highlight.end);
+            // }
+
+            return Math.min(node.nodeValue?.length, highlight.end + 1);
+            //
+            // // return Math.min(node.nodeValue?.length, highlight.en);
+            //
+            // return highlight.end + 1;
         }
 
         try {
+
+            console.log(`FIXME: node start=${highlight.start}, end=${highlight.end} content: '${node.textContent}'` );
+
             range.setStart(node, highlight.start);
             range.setEnd(node, computeEnd());
+
         } catch (e) {
             console.warn(`Unable to mount annotation on node: ${(e as any).message}`, node);
             throw e;
