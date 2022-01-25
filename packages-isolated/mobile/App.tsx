@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Alert, KeyboardAvoidingView, Linking, Platform, StyleSheet, View} from 'react-native';
+import {Alert, KeyboardAvoidingView, Linking, Platform, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
 import {EmailTempStorage} from "./util/EmailTempStorage";
@@ -21,12 +21,11 @@ const App = () => {
 
     return (
         <KeyboardAvoidingView enabled={Platform.OS === "ios"}
-                              behavior={"height"}
+                              behavior={Platform.OS === "ios" ? "height" : null}
                               style={{flex: 1}}>
             <AdaptiveSafeAreaView>
-                <View style={styles.container}>
-                    <InAppLiteServer
-                        onBuy={async (planName, email) => {
+                <View style={{flex: 1}}>
+                    <InAppLiteServer onBuy={async (planName, email) => {
 
                             if (planName === 'free') {
                                 // Redirect to Apple subscriptions page so the user can cancel his plan there
@@ -81,9 +80,3 @@ const App = () => {
     );
 };
 export default App;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
