@@ -5,7 +5,6 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream, ArrayStreamMultiMap} from "polar-shared/src/util/ArrayStreams";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Browsers} from "polar-browsers/src/Browsers";
 
 export namespace Highlights {
 
@@ -65,22 +64,34 @@ export namespace Highlights {
      */
     export function toHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>): HighlightViewportPositionsResult {
 
+        console.log("FIXME: nodeTextRegions: ", JSON.stringify(nodeTextRegions));
+
+        /**
+         * This is a bit of a hack as for some reason NodeTextRegion started off
+         * as inclusive and changed to exclusive so it introduced a nasty bug.
+         */
+        interface NodeTextRegionExclusive extends NodeTextRegion {
+            readonly type: 'exclusive';
+        }
 
         // FIXME: I think we  could refactor this to REALLY split including creating new nodes...
 
-        function splitNodeTextRegion(nodeTextRegion: NodeTextRegion): ReadonlyArray<NodeTextRegion> {
+        function splitNodeTextRegion(nodeTextRegion: NodeTextRegion): ReadonlyArray<NodeTextRegionExclusive> {
 
-            function createNodeTextRegion(start: number): NodeTextRegion {
+            function createNodeTextRegion(start: number): NodeTextRegionExclusive {
 
                 return {
                     ...nodeTextRegion,
                     start,
-                    end: start + 1
+                    end: start + 1,
+                    type: 'exclusive'
                 };
 
             }
 
-            return Numbers.range(nodeTextRegion.start, nodeTextRegion.end - 1)
+            // WARN: we MUST be careful here as nodeTextRegion is [start,end] (inclusive) but we need to
+            // return a range that's exclusive. [start, end)
+            return Numbers.range(nodeTextRegion.start, nodeTextRegion.end)
                           .map(createNodeTextRegion)
 
         }
@@ -136,9 +147,13 @@ export namespace Highlights {
     export function mergeHighlightViewportPositions(highlightViewportPositions: ReadonlyArray<IHighlightViewportPosition>): MergeHighlightViewportPositionsResult {
 
         function toMultiMapKey(highlightViewportPosition: IHighlightViewportPosition): string {
+            const ch = highlightViewportPosition.node.nodeValue![highlightViewportPosition.start];
             // return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}&start=${highlightViewportPosition.start}&end=${highlightViewportPosition.end}`;
 
+            // return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}&ch=${ch}`;
+
             return `nodeID=${highlightViewportPosition.nodeID}&top=${highlightViewportPosition.top}&height=${highlightViewportPosition.height}&nodeType=${highlightViewportPosition.node.nodeType}`;
+
         }
 
         function merge(key: string, groupPositions: ReadonlyArray<IHighlightViewportPosition>): IHighlightViewportPosition {
@@ -175,6 +190,33 @@ export namespace Highlights {
         const grouped
             = arrayStream(highlightViewportPositions)
                 .toMultiMap(toMultiMapKey)
+
+
+        function dumpGroups() {
+
+            for (const group of Object.keys(grouped)) {
+
+                const groupValues = grouped[group];
+
+                console.log(`group: ${group}: `)
+
+                for(const highlightViewportPosition of groupValues) {
+                    const ch = highlightViewportPosition.node.nodeValue![highlightViewportPosition.start];
+
+                    console.log("    " + JSON.stringify({
+                        ch,
+                        start: highlightViewportPosition.start,
+                        end: highlightViewportPosition.end,
+                    }))
+                }
+
+            }
+
+        }
+
+        console.log("FIXME: grouped keys: ", JSON.stringify(Object.keys(grouped), null, '  '));
+
+        dumpGroups();
 
         const merged
             = arrayStream(Object.entries(grouped))
@@ -244,26 +286,8 @@ export namespace Highlights {
                 return 0;
             }
 
-            // this is a workaround for a small bug with the
-            // polar-dom-text-search where sometimes the length is off by one.
-            // we need to find the root cause but at last this works around it
-            // for now and shouldn't impact anything once the bug is fixed.
+            return Math.min(node.nodeValue?.length, highlight.end);
 
-            const browser = Browsers.get();
-
-            if (node.nodeValue.length === 1) {
-                console.log("FIXME: it's one!!!");
-            }
-
-            // if (browser?.id === 'safari') {
-            //     return Math.min(node.nodeValue?.length, highlight.end);
-            // }
-
-            return Math.min(node.nodeValue?.length, highlight.end + 1);
-            //
-            // // return Math.min(node.nodeValue?.length, highlight.en);
-            //
-            // return highlight.end + 1;
         }
 
         try {
