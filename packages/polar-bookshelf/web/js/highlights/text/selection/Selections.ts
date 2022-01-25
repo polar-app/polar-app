@@ -7,9 +7,6 @@ export namespace Selections {
      */
     export function toRanges(selection: Selection): ReadonlyArray<Range> {
 
-        // return Numbers.range(0, selection.rangeCount - 1)
-        //               .map(selection.getRangeAt);
-
         const result = [];
 
         for (let idx = 0; idx < selection.rangeCount; idx++) {
