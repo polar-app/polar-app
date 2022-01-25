@@ -13,3 +13,4 @@ cypress/screenshots/*
 cypress/videos/*
 storybook-static
 !.storybook/*
+build-storybook.log

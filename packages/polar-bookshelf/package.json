@@ -34,7 +34,8 @@
     "mocha-ci": "mocha -p --retries 1 --reporter xunit --reporter-option output=test_results.xml --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token 8408551551bf --exit-once-uploaded"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
