@@ -27,7 +27,7 @@ describe('Highlights', () => {
 
     }
 
-    describe('Browser Behavior', () => {
+    xdescribe('Browser Behavior', () => {
 
         it('element with just one char BCR', () => {
 
@@ -89,7 +89,7 @@ describe('Highlights', () => {
 
     });
 
-    describe('Core Functionality', () => {
+    xdescribe('Core Functionality', () => {
 
         function doTest(html: HTMLStr): HighlightViewportPositionsResult {
 
