@@ -21,7 +21,7 @@ const App = () => {
 
     return (
         <KeyboardAvoidingView enabled={Platform.OS === "ios"}
-                              behavior={Platform.OS === "ios" ? "height" : null}
+                              behavior={Platform.OS === "ios" ? "padding" : null}
                               style={{flex: 1}}>
             <AdaptiveSafeAreaView>
                 <View style={{flex: 1}}>
