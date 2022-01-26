@@ -1,14 +1,19 @@
-import { join } from 'path'
-import { initDatabase, insertCard, insertCols } from './sql'
-import { createWriteStream, mkdirSync, writeFileSync, rmSync } from 'fs'
+import {join} from 'path'
+import {initDatabase, insertCard, insertCols} from './sql'
+import {createWriteStream, mkdirSync, rmSync, writeFileSync} from 'fs'
 import * as archiver from 'archiver'
-import { DeckConfig, DeckModels } from "./DeckConfig";
-import { Card } from "./Card";
+import {DeckConfig, DeckModels} from "./DeckConfig";
+import {Card} from "./Card";
 import Database from "better-sqlite3";
+import * as os from "os";
 
 export namespace APKG {
+
     export function init(name: string) {
-        const dest: string = join(__dirname, name);
+
+        const tmpdir = os.tmpdir();
+
+        const dest: string = join(tmpdir, name);
 
         mkdirSync(dest);
 
