@@ -595,7 +595,7 @@ workflows:
             - build-polar-app
             - mocha
             - karma
-            - cypress-desktop-chrome
+            # - cypress-desktop-chrome
             # - cypress-desktop-firefox
             # - cypress-tablet-chrome
             # - cypress-phone-chrome
