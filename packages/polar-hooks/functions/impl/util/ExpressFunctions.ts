@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, {NextFunction} from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {ErrorResponses} from './ErrorResponses';
@@ -21,7 +21,7 @@ const CORS_OPTIONS: cors.CorsOptions = {
     preflightContinue: true,
     allowedHeaders: ['Content-Type'],
     methods: [
-        'GET', 'PUT', 'POST', 'OPTIONS'
+        'GET', 'PUT', 'POST', 'OPTIONS', 'DELETE', 'PATCH'
     ]
 }
 
@@ -39,8 +39,7 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors(CORS_OPTIONS));
 
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        app.use(cors(CORS_OPTIONS), async (req, res, next) => {
+        const defaultHandler = async (req: express.Request, res: express.Response, next: NextFunction) => {
 
             try {
                 await delegate(req, res, next);
@@ -48,7 +47,14 @@ export class ExpressFunctions {
                 this.handleError(functionName, req, res, err);
             }
 
-        });
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        app.get('*', cors(CORS_OPTIONS), defaultHandler);
+        app.put('*', cors(CORS_OPTIONS), defaultHandler);
+        app.post('*', cors(CORS_OPTIONS), defaultHandler);
+        app.patch('*', cors(CORS_OPTIONS), defaultHandler);
+        app.delete('*', cors(CORS_OPTIONS), defaultHandler);
 
         return functions.https.onRequest(app);
 
@@ -62,14 +68,19 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors(CORS_OPTIONS));
 
-        app.use(cors(CORS_OPTIONS), (req, res, next) => {
-
+        const defaultHandler = (req: express.Request, res: express.Response, next: NextFunction) => {
             try {
                 delegate(req, res, next);
             } catch (err) {
                 this.handleError(functionName, req, res, err);
             }
-        });
+        };
+
+        app.get('*', cors(CORS_OPTIONS), defaultHandler);
+        app.put('*', cors(CORS_OPTIONS), defaultHandler);
+        app.post('*', cors(CORS_OPTIONS), defaultHandler);
+        app.patch('*', cors(CORS_OPTIONS), defaultHandler);
+        app.delete('*', cors(CORS_OPTIONS), defaultHandler);
 
         return functions.https.onRequest(app);
 
