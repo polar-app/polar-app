@@ -67,7 +67,9 @@ export class JSONRPC {
 
         const response = await fetch(url, {
             method: 'POST',
+            mode: 'cors',
             // credentials: 'include',
+            referrerPolicy: "no-referrer",
             headers: {
                 'Content-Type': 'application/json',
             },
