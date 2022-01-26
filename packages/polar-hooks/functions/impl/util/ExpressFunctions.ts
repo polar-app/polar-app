@@ -19,7 +19,7 @@ const CORS_OPTIONS: cors.CorsOptions = {
     ],
     credentials: true,
     preflightContinue: true,
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     methods: [
         'GET', 'PUT', 'POST', 'OPTIONS', 'DELETE', 'PATCH'
     ]
