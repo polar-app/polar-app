@@ -8,16 +8,7 @@ import {UserRequests} from './UserRequests';
 import {SentryReporters} from "../reporters/SentryReporter";
 
 const CORS_OPTIONS: cors.CorsOptions = {
-    origin: [
-        // "https://getpolarized.io",
-        // "https://app.getpolarized.io",
-        // "http://localhost:8050",
-        // "https://localhost:8050",
-        // "http://127.0.0.1:8050",
-        // "https://127.0.0.1:8050",
-        // "http://192.168.1.50:8050",:
-        "*"
-    ],
+    origin: "*",
     credentials: true,
     preflightContinue: true,
     allowedHeaders: "*",
