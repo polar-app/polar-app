@@ -18,8 +18,10 @@ const CORS_OPTIONS: cors.CorsOptions = {
         "http://192.168.1.50:8050",
     ],
     credentials: true,
+    preflightContinue: true,
+    allowedHeaders: ['Content-Type'],
     methods: [
-        'GET', 'PUT', 'POST'
+        'GET', 'PUT', 'POST', 'OPTIONS'
     ]
 }
 
