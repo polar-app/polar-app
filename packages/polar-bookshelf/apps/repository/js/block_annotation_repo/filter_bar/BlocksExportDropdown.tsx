@@ -29,7 +29,7 @@ function useAnkiDeckDownloadHandler() {
             ankiDeckName: 'polar-anki-deck' + Date.now()
         }
 
-        return await JSONRPC.exec<FlashcardExportRequest, FlashcardExportResponse>('FlashCardsExportFunction', request)
+        return await JSONRPC.exec<FlashcardExportRequest, FlashcardExportResponse>('FlashcardsExportFunction', request)
 
     }, [blocksAnnotationRepoStore])
 
