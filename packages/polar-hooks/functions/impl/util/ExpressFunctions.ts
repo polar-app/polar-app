@@ -8,7 +8,7 @@ import {UserRequests} from './UserRequests';
 import {SentryReporters} from "../reporters/SentryReporter";
 
 const CORS_OPTIONS: cors.CorsOptions = {
-    origin: "*",
+    origin: true,
     credentials: true,
     preflightContinue: true,
     allowedHeaders: "*",
