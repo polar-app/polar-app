@@ -51,4 +51,12 @@ export namespace E2E {
 
     }
 
+    export namespace ConsoleErrors {
+
+        export function verifyNoErrors() {
+            cy.get('.ConsoleError').should('not.exist');
+        }
+
+    }
+
 }

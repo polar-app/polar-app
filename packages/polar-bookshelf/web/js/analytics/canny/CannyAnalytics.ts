@@ -33,7 +33,7 @@ export class CannyAnalytics implements IAnalytics {
 
         this.identification = onlyDefinedProperties({
             email: user.email,
-            name: user.displayName,
+            name: user.displayName || 'Unknown',
             id: user.uid,
             avatarURL: user.photoURL,
             created: user.created,
