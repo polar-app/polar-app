@@ -27,8 +27,6 @@
 
 // https://github.com/cypress-io/cypress/issues/1208
 
-// import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-
 Cypress.Commands.add('clearIndexedDB', async () => {
     const databases = await window.indexedDB.databases();
 
@@ -53,10 +51,12 @@ Cypress.Commands.add('clearIndexedDB', async () => {
 });
 
 Cypress.Commands.add('purgeFirebaseUser', async (email: string) => {
-    //
+
+    // TODO: this ends up breaking cypress and not sure why.
+
     // const firebase = FirebaseAdmin.app();
     // const auth = firebase.auth();
-    //
+
     // try {
     //
     //     const user = await auth.getUserByEmail(email);
