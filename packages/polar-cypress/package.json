@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
-    "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome",
-    "chromatic": "npx chromatic --project-token 8408551551bf --exit-once-uploaded"
+    "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome"
   },
   "keywords": [],
   "author": "",
