@@ -21,6 +21,10 @@ describe('Notes', function () {
     })
 
     function openSingleNote() {
+
+        // FIXME: don't use then() here ideally because this is going to get annoying but the way
+        // cypress evaluates code might cause us issues.
+
         // Try to open a single note
         cy.get('.NotesRepoTable2 .MuiTableBody-root td.MuiTableCell-body')
             .then(() => {
