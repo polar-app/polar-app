@@ -26,8 +26,13 @@
 
 
 // https://github.com/cypress-io/cypress/issues/1208
+
 Cypress.Commands.add('clearIndexedDB', async () => {
     const databases = await window.indexedDB.databases();
+
+    // TODO: this could probably be a bit cleaner whereby we map over a function
+    // that returns a promise and then Promise.all so it's parallel but also a
+    // bit more readable and less prone to error.
 
     await Promise.all(
         databases.map(
@@ -43,4 +48,31 @@ Cypress.Commands.add('clearIndexedDB', async () => {
                 }),
         ),
     );
+});
+
+Cypress.Commands.add('purgeFirebaseUser', async (email: string) => {
+
+    // TODO: this ends up breaking cypress and not sure why.
+
+    // const firebase = FirebaseAdmin.app();
+    // const auth = firebase.auth();
+
+    // try {
+    //
+    //     const user = await auth.getUserByEmail(email);
+    //     await auth.deleteUser(user.uid);
+    //
+    //     // TODO: also wipe out the user data.. .
+    //
+    // } catch (e) {
+    //
+    //     if (e.code === 'auth/user-not-found') {
+    //         // we're done as this user isn't in the database
+    //         return;
+    //     }
+    //
+    //     throw e;
+    //
+    // }
+
 });
