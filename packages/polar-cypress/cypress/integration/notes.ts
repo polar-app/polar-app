@@ -10,7 +10,7 @@ describe('Notes', function () {
 
     it('Can open a single note', () => {
 
-        cy.visit('http://localhost:8050');
+        cy.visit(E2E.Sessions.appURL());
 
         E2E.Auth.doLogin('testing@getpolarized.io', '123 456');
 

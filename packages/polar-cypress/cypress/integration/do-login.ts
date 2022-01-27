@@ -8,7 +8,7 @@ describe('Verify that we can login', () => {
 
     it('Login and verify that we have no errors.', () => {
 
-        cy.visit('http://localhost:8050');
+        cy.visit(E2E.Sessions.appURL());
 
         E2E.ConsoleErrors.verifyNoErrors();
 

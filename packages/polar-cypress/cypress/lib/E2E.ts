@@ -13,6 +13,10 @@ export namespace E2E {
 
         }
 
+        export function appURL(): string {
+            return Cypress.env('APP_URL') || 'http://localhost:8050';
+        }
+
     }
 
     export namespace Auth {

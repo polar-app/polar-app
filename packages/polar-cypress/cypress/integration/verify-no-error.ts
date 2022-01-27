@@ -10,7 +10,7 @@ describe('Verify we do not have any errors', () => {
 
     it('Verify there are no errors with the site', () => {
 
-        cy.visit('http://localhost:8050');
+        cy.visit(E2E.Sessions.appURL());
 
         cy.get('input[type=email]').type('alice@example.com');
 
