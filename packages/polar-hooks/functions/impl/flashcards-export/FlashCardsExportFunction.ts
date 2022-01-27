@@ -1,6 +1,6 @@
 import {IDUser} from "polar-rpc/src/IDUser";
 import {ExpressFunctions} from "../util/ExpressFunctions";
-import {AnkiExport} from "./FlashcardsExport";
+import {AnkiExport} from "./FlashCardsExport";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {File} from "@google-cloud/storage";
 import {Lazy} from "polar-shared/src/util/Lazy";

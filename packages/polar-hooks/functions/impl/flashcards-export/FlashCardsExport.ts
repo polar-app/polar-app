@@ -6,18 +6,18 @@ import {IBlockFlashcard} from "polar-blocks/src/annotations/IBlockFlashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
 
 export namespace AnkiExport {
 
     import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
 
-    export async function fetchUserBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
+    export async function fetchUserBlocks(uid: UserIDStr) {
         return FirebaseAdmin.app()
             .firestore()
             .collection(BlockCollection.COLLECTION)
-            .where('id', 'in', blockIDs)
+            .where('uid', '==', uid)
             .get();
     }
 
@@ -31,7 +31,9 @@ export namespace AnkiExport {
 
         const flashCardExport = FlashCardExport.init(request.ankiDeckName);
 
-        const docs = await fetchUserBlocks(request.blockIDs);
+        const docs = await fetchUserBlocks(uid);
+
+        const requestedBlockIDs = new Set(request.blockIDs);
 
 
         // Converting blocks to Anki flashcards based on type
@@ -39,9 +41,13 @@ export namespace AnkiExport {
             (doc: FirebaseFirestore.DocumentData ) => {
                 const block = doc.data() as IBlock<IAnnotationContent>;
 
-                // Skip blocks that the user doesn't have access to
-                // Or any block that isn't a flashcard
-                if ( block.uid !== uid || block.content.type !== AnnotationContentType.FLASHCARD ) {
+                // Skip blocks that are NOT requested
+                if (! requestedBlockIDs.has(block.id)) {
+                    return;
+                }
+
+                // Skip blocks that aren't a flashcard
+                if (block.content.type !== AnnotationContentType.FLASHCARD) {
                     return;
                 }
 

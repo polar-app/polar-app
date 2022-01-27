@@ -1,4 +1,4 @@
-import {AnkiExport} from "./FlashcardsExport";
+import {AnkiExport} from "./FlashCardsExport";
 import {existsSync} from "fs";
 import {assert} from "chai";
 import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
