@@ -1,13 +1,9 @@
+import {E2E} from "../lib/E2E";
 
 describe('Verify that we can login', () => {
 
     beforeEach(() => {
-        // run the following "it" tests with the specified width/height viewport
-        cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
-
-        cy.clearLocalStorage()
-        cy.clearCookies();
-        cy.clearIndexedDB();
+        E2E.Sessions.reset();
     });
 
     it('Login and verify that we have no errors.', () => {

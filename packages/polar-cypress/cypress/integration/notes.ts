@@ -1,10 +1,11 @@
+import {E2E} from "../lib/E2E";
+
 describe('Notes', function () {
 
     beforeEach(() => {
-        cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
-        cy.clearLocalStorage()
-        cy.clearCookies();
-        cy.clearIndexedDB();
+
+        E2E.Sessions.reset();
+
     });
 
     it('Can open a single note', () => {
