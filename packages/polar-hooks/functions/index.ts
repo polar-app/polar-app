@@ -40,7 +40,7 @@ import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUpdateFunction";
 import {MigrationToBlockAnnotationsFunction} from "./impl/migrations/MigrationToBlockAnnotationsFunction";
 import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction";
-import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashCardsExportFunction";
+import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashcardsExportFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";

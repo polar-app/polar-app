@@ -1,6 +1,6 @@
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock"
 
-export namespace FlashCardsExport {
+export namespace FlashcardsExport {
 
     export interface FlashcardExportRequest {
         /**

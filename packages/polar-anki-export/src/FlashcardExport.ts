@@ -1,6 +1,6 @@
 
 import { APKG } from 'polar-anki-apkg/src/APKG';
-export namespace FlashCardExport {
+export namespace FlashcardExport {
     export function init(fileName: string) {
 
         const apkg = APKG.init(fileName);

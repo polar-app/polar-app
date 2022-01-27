@@ -1,8 +1,8 @@
-import {AnkiExport} from "./FlashCardsExport";
+import {AnkiExport} from "./FlashcardsExport";
 import {existsSync} from "fs";
 import {assert} from "chai";
-import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
-import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
+import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
+import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 
 describe("Flashcards export", () => {
 
