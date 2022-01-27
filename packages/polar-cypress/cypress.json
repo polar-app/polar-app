@@ -1,3 +1,4 @@
 {
-  "projectId": "utu2ad"
+  "projectId": "utu2ad",
+  "defaultCommandTimeout": 10000
 }
