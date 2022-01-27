@@ -64,12 +64,12 @@ export const BlocksExportDropdown: React.FC = () => {
                 await doDownload();
 
             } catch (e) {
-                taskbar.destroy();
                 throw e;
+            } finally {
+                taskbar.destroy();
             }
 
         }
-
 
         doAsync().catch(err => errorHandler(err));
 
