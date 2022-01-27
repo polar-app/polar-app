@@ -8,13 +8,13 @@ import {BlocksExportFormat} from "../../../../../web/js/metadata/blocks-exporter
 import {BlocksExporter} from "../../../../../web/js/metadata/blocks-exporter/BlocksExporter";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
+import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {FeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
-import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
-import FlashcardExportResponse = FlashCardsExport.FlashcardExportResponse;
+import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
+import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
 function useAnkiDeckDownloadHandler() {
 

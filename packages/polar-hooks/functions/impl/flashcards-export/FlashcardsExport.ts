@@ -1,4 +1,4 @@
-import {FlashCardExport} from "polar-anki-export/src/FlashCardExport";
+import {FlashcardExport} from "polar-anki-export/src/FlashcardExport";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
@@ -7,11 +7,11 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
-import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
+import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 
 export namespace AnkiExport {
 
-    import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
+    import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 
     export async function fetchUserBlocks(uid: UserIDStr) {
         return FirebaseAdmin.app()
@@ -29,7 +29,7 @@ export namespace AnkiExport {
      */
     export async function create(request: FlashcardExportRequest, uid: UserIDStr): Promise<PathStr> {
 
-        const flashCardExport = FlashCardExport.init(request.ankiDeckName);
+        const flashCardExport = FlashcardExport.init(request.ankiDeckName);
 
         const docs = await fetchUserBlocks(uid);
 

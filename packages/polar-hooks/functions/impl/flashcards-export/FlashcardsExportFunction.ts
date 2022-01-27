@@ -1,20 +1,20 @@
 import {IDUser} from "polar-rpc/src/IDUser";
 import {ExpressFunctions} from "../util/ExpressFunctions";
-import {AnkiExport} from "./FlashCardsExport";
+import {AnkiExport} from "./FlashcardsExport";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {File} from "@google-cloud/storage";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {Datastores} from "../datastore/Datastores";
 import * as fs from "fs";
 import {UUIDs} from "polar-shared/src/metadata/UUIDs";
-import {FlashCardsExport} from "polar-backend-api/src/api/FlashCardsExport";
+import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
 
-export namespace FlashCardsExportFunction {
-    import FlashcardExportRequest = FlashCardsExport.FlashcardExportRequest;
-    import FlashCardExportResponse = FlashCardsExport.FlashcardExportResponse;
+export namespace FlashcardsExportFunctionBackend {
+    import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
+    import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
     function createFileInTmpBucket(file: string) {
         const project = storageConfig().config.project;
@@ -41,7 +41,7 @@ export namespace FlashCardsExportFunction {
     }
 
     export async function exec(idUser: IDUser,
-                               request: FlashcardExportRequest): Promise<FlashCardExportResponse> {
+                               request: FlashcardExportRequest): Promise<FlashcardExportResponse> {
 
         const path = await AnkiExport.create(request, idUser.uid);
 
@@ -66,4 +66,4 @@ export namespace FlashCardsExportFunction {
     }
 }
 
-export const FlashcardsExportFunction = ExpressFunctions.createRPCHook("FlashcardsExportFunction", FlashCardsExportFunction.exec);
+export const FlashcardsExportFunction = ExpressFunctions.createRPCHook("FlashcardsExportFunction", FlashcardsExportFunctionBackend.exec);
