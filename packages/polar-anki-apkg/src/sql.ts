@@ -310,7 +310,7 @@ export function insertCols(database: Database, deck: DeckConfig): DeckModels {
 }
 
 export function insertCard(database: Database, deck: DeckConfig, modelId: number, card: Card) {
-  const createTime = card.timestamp || Date.now()
+  const createTime = Date.now()
   const cardId = createTime
   const noteId = cardId + 1
   const fieldsContent = card.content.join('\u001F')

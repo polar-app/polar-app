@@ -46,8 +46,8 @@ export namespace FlashCardsExportFunction {
         const path = await AnkiExport.create(request, idUser.uid);
 
         const now = ISODateTimeStrings.create();
-        const prettyFileName = `${now}-${request.ankiDeckName}.zip`;
-        const uniqueFileName = `${UUIDs.create()}.zip`;
+        const prettyFileName = `${now}-${request.ankiDeckName}.apkg`;
+        const uniqueFileName = `${UUIDs.create()}.apkg`;
 
         const storageFile = createFileInTmpBucket(`flashcard-exports/${uniqueFileName}`);
 
