@@ -23,7 +23,8 @@ import './commands'
 declare global {
     namespace Cypress {
         interface Chainable {
-            clearIndexedDB(): void
+            clearIndexedDB(): Promise<void>
+            purgeFirebaseUser(email: string): Promise<void>
         }
     }
 }

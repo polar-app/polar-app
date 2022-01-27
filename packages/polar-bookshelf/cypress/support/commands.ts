@@ -26,6 +26,7 @@
 
 
 // https://github.com/cypress-io/cypress/issues/1208
+
 Cypress.Commands.add('clearIndexedDB', async () => {
     const databases = await window.indexedDB.databases();
 
