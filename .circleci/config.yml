@@ -533,7 +533,7 @@ workflows:
           attach-workspace: true
           store_artifacts: true
 
-      # # @ Run Cypress tests for firefox-desktop (1080p)
+      # @ Run Cypress tests for firefox-desktop (1080p)
       # - cypress/run:
       #     name: cypress-desktop-firefox
       #     executor: ff-chrome
