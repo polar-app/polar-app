@@ -1,10 +1,10 @@
 describe('Notes', function () {
 
-    beforeEach(async () => {
+    beforeEach(() => {
         cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
         cy.clearLocalStorage()
         cy.clearCookies();
-        await cy.clearIndexedDB();
+        cy.clearIndexedDB();
     });
 
     it('Can open a single note', () => {

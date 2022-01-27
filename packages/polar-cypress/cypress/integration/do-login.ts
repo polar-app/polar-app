@@ -1,12 +1,12 @@
 describe('Verify that we can login', () => {
 
-    beforeEach(async () => {
+    beforeEach(() => {
         // run the following "it" tests with the specified width/height viewport
         cy.viewport(Cypress.env('WIDTH'), Cypress.env('HEIGHT'));
 
         cy.clearLocalStorage()
         cy.clearCookies();
-        await cy.clearIndexedDB();
+        cy.clearIndexedDB();
     });
 
     it('Login and verify that we have no errors.', () => {
