@@ -55,7 +55,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
                 const response = await ankiDeckDownloadHandler();
 
-                FileSavers.saveAs(response.temporary_url, 'polar-anki-deck' + Date.now());
+                FileSavers.downloadURL(response.temporary_url, 'polar-anki-deck' + Date.now());
 
             }
 
