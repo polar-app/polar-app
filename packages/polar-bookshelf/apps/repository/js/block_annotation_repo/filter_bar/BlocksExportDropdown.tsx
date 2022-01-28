@@ -43,7 +43,7 @@ export const BlocksExportDropdown: React.FC = () => {
     const errorHandler = useErrorHandler();
     const ankiDeckDownloadHandler = useAnkiDeckDownloadHandler();
 
-    const handleExportFlashcards = React.useCallback(() => {
+    const doExportFlashcards = React.useCallback(() => {
 
         async function doAsync() {
 
@@ -75,10 +75,24 @@ export const BlocksExportDropdown: React.FC = () => {
 
     }, [dialogManager, errorHandler, ankiDeckDownloadHandler]);
 
+    const handleExportFlashcards = React.useCallback(() => {
+
+        dialogManager.confirm({
+            title: "Download your flashcards as an Anki desk",
+            subtitle: "This will download all your flashcards as an Anki deck to your device.",
+            type: 'info',
+            acceptText: "OK",
+            onAccept: doExportFlashcards
+        });
+
+    }, [dialogManager, doExportFlashcards]);
+
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
+
         const ids = blocksAnnotationRepoStore.view.map(({id}) => id);
 
         BlocksExporter.exportAsFile(blocksStore, format, ids).catch(console.error);
+
     }, [blocksAnnotationRepoStore, blocksStore]);
 
     return (
