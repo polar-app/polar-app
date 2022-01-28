@@ -8,26 +8,18 @@ describe('Verify that we can login', () => {
 
     it('Login and verify that we have no errors.', () => {
 
-        cy.visit('http://localhost:8050');
+        cy.visit(E2E.Sessions.appURL());
 
-        function verifyNoErrors() {
-            cy.get('.ConsoleError').should('not.exist');
-        }
+        E2E.ConsoleErrors.verifyNoErrors();
 
-        verifyNoErrors();
-
-        cy.get('input[type=email]').type('testing@getpolarized.io')
-        cy.get('button[type=button]')
-            .contains("SIGN IN WITH EMAIL", {matchCase: false})
-            .click();
-        cy.get("input[placeholder='Enter your Code Here']").type('123 456')
-
-        cy.get('button[type=button]')
-            .contains("VERIFY CODE", {matchCase: false})
-            .click();
+        E2E.Auth.doLogin('testing@getpolarized.io', '123 456');
 
         // this will wait for the app to login now
-        cy.get('#add-content-dropdown', {timeout: 15000});
+        cy.get('#add-content-dropdown');
+
+        // TODO: this needs to be added back in because for some reason
+        // in CI it completely breaks
+        // E2E.ConsoleErrors.verifyNoErrors();
 
     });
 
