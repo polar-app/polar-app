@@ -26,22 +26,28 @@ export class CannyAnalytics implements IAnalytics {
 
     public identify(user: IAnalyticsUser) {
 
-        if (! this.cannyClient) {
-            console.warn("No Canny client");
-            return;
-        }
+        if (document.location.host === 'app.getpolarized.io') {
 
-        this.identification = onlyDefinedProperties({
-            email: user.email,
-            name: user.displayName || 'Unknown',
-            id: user.uid,
-            avatarURL: user.photoURL,
-            created: user.created,
-            customFields: {}
-        });
+            // TODO: do not identify when running on localhost.. .
 
-        if (this.identification) {
-            this.cannyClient.identify(this.identification);
+            if (! this.cannyClient) {
+                console.warn("No Canny client");
+                return;
+            }
+
+            this.identification = onlyDefinedProperties({
+                email: user.email,
+                name: user.displayName || 'Unknown',
+                id: user.uid,
+                avatarURL: user.photoURL,
+                created: user.created,
+                customFields: {}
+            });
+
+            if (this.identification) {
+                this.cannyClient.identify(this.identification);
+            }
+
         }
 
     }
