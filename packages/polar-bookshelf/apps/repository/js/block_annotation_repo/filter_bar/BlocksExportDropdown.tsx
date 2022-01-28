@@ -85,7 +85,7 @@ export const BlocksExportDropdown: React.FC = () => {
             onAccept: doExportFlashcards
         });
 
-    }, []);
+    }, [dialogManager, doExportFlashcards]);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 
