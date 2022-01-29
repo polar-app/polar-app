@@ -9,7 +9,7 @@ scripts:
     # To prevent other npm clients
     "preinstall": "only-allow pnpm"
     # To run app container
-    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -p 6006:6006 -ti --rm --init --ulimit memlock=819200000:819200000 --privileged polar bash"
+    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/home/node/polar-app:delegated -u $(id -u ${USER}):$(id -g ${USER}) -p 8050:8050 -p 8051:8051 -p 6006:6006 -ti --rm --init --ulimit memlock=819200000:819200000 --privileged polar bash"
     # Lint
     "eslint-all": "pnpm m run eslint --no-bail"
     "eslint-ci-all": "pnpm m run eslint-ci --no-bail"
@@ -66,17 +66,16 @@ devDependencies:
     ## Karma Dependencies
     "karma": "=6.3.8"
     "karma-chai": "=0.1.0"
-    "karma-chrome-launcher": "=3.1.0"
-    "karma-firefox-launcher": "=2.1.2"
     "karma-junit-reporter": "=2.0.1"
     "karma-mocha": "=2.0.1"
-    "karma-safari-launcher": "=1.0.0"
     "karma-sourcemap-loader": "=0.3.8"
     "karma-spec-reporter": "=0.0.32"
     "karma-typescript": "=5.5.2"
     "karma-typescript-es6-transform": "=5.5.2"
     "karma-webpack": "=5.0.0"
+    "@onslip/karma-playwright-launcher": "=0.2.1"
     "karma-summary-reporter": "=3.0.0"
+    "playwright": "=1.18.1"
     "puppeteer": "=11.0.0"
 
     ## Mocha Dependencies
