@@ -61,76 +61,81 @@ export class InAppLiteServer extends Component<Props, State> {
     render() {
         if (!this.state.isRunning) {
             // Show a spinner while the HTTP server is starting
-            return <View style={styles.spinnerWrapper}>
-                <ActivityIndicator size="large" style={styles.spinner}/>
-            </View>
+            return (
+                <View style={styles.spinnerWrapper}>
+                    <ActivityIndicator size="large" style={styles.spinner}/>
+                </View>
+            );
         }
 
-        return <WebView
-            nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
-            ref={(ref: any) => {
-                if (ref) {
-                    this.webview = ref;
-                }
-            }}
-            // Allow any URL to be loaded within the WebView
-            originWhitelist={['*']}
+        return (
+            <WebView
+                nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
+                ref={(ref: any) => {
+                    if (ref) {
+                        this.webview = ref;
+                    }
+                }}
+                // Allow any URL to be loaded within the WebView
+                originWhitelist={['*']}
 
-            // Enable JS
-            javaScriptEnabled={true}
+                // Enable JS
+                javaScriptEnabled={true}
 
-            // Scrollable viewport
-            scrollEnabled={true}
+                // Scrollable viewport
+                scrollEnabled={true}
 
-            // Enable Analytics cookies and such
-            thirdPartyCookiesEnabled={true}
+                // Enable Analytics cookies and such
+                thirdPartyCookiesEnabled={true}
 
-            source={{uri: this.state.url}}
+                source={{uri: this.state.url}}
 
-            style={styles.webview}
+                style={styles.webview}
 
-            // Inject JS within the web app
-            injectedJavaScriptBeforeContentLoaded={injectedJavaScriptBeforeContentLoaded()}
+                // Inject JS within the web app
+                injectedJavaScriptBeforeContentLoaded={injectedJavaScriptBeforeContentLoaded()}
 
-            // Listener for window.ReactNativeWebView.postMessage() calls from the JS code
-            // of the embedded web app
-            onMessage={(event) => {
-                const dataPayload = tryParseWebviewPostMessage(event);
+                // Listener for window.ReactNativeWebView.postMessage() calls from the JS code
+                // of the embedded web app
+                onMessage={(event) => {
+                    const dataPayload = tryParseWebviewPostMessage(event);
 
-                console.log('dataPayload', dataPayload);
+                    console.log('dataPayload', dataPayload);
 
-                if (!dataPayload) {
-                    console.error(JSON.stringify(event, null, 2));
-                    throw Error('Failed to parse payload from JS bridge. Check the logs');
-                }
+                    if (!dataPayload) {
+                        console.error(JSON.stringify(event, null, 2));
+                        throw Error('Failed to parse payload from JS bridge. Check the logs');
+                    }
 
-                switch (dataPayload.action) {
-                    case "console_log":
-                        console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
-                        break;
-                    case "buy_play":
-                        // Buying a plan
-                        this.props.onBuy(dataPayload.data!.plan!, dataPayload.data!.email!);
-                        break;
-                    case "android-go-back-exhausted":
-                        BackHandler.exitApp();
-                        break;
-                    default:
-                        throw Error('Switch case not implemented: ' + JSON.stringify(dataPayload));
-                }
-            }}
-            onNavigationStateChange={(event) => {
-                if (InAppLiteServer.isExternalUrl(event.url)) {
-                    this.webview?.stopLoading();
-                    Linking.openURL(event.url)
-                        .then()
-                        .catch(reason => {
-                            console.error(reason);
-                            alert('Failed to open a URL in external browser');
-                        })
-                }
-            }}
-        />;
+                    switch (dataPayload.action) {
+                        case "console_log":
+                            console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
+                            break;
+                        case "buy_play":
+                            // Buying a plan
+                            this.props.onBuy(dataPayload.data!.plan!, dataPayload.data!.email!);
+                            break;
+                        case "android-go-back-exhausted":
+                            BackHandler.exitApp();
+                            break;
+                        default:
+                            throw Error('Switch case not implemented: ' + JSON.stringify(dataPayload));
+                    }
+                }}
+                onNavigationStateChange={(event) => {
+                    if (InAppLiteServer.isExternalUrl(event.url)) {
+                        this.webview?.stopLoading();
+                        Linking.openURL(event.url)
+                            .then()
+                            .catch(reason => {
+                                console.error(reason);
+                                alert('Failed to open a URL in external browser');
+                            })
+                    }
+                }}
+            />
+        );
+
     }
 
     private static isExternalUrl(url: string) {
@@ -170,6 +175,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     webview: {
-        flex: 1,
+        // flex: 1,
+        height: '100%'
     },
 });
