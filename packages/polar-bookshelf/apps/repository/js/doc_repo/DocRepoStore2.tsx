@@ -399,11 +399,12 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         };
 
         async function doHandle() {
+            await withBatch(repoDocInfos.map(toAsyncTransaction));
             repoDocInfos.forEach(persistToBlocksStore);
+            Analytics.event2("doc-archived", { count: repoDocInfos.length, archived });
         }
 
         doHandle()
-            .then(() => Analytics.event2("doc-archived", { count: repoDocInfos.length, archived }))
             .catch(err => log.error(err));
 
     }
@@ -432,11 +433,15 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         };
 
         async function doHandle() {
+
+            await withBatch(repoDocInfos.map(toAsyncTransaction));
+
             repoDocInfos.forEach(persistToBlocksStore);
+
+            Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged });
         }
 
         doHandle()
-            .then(() => Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged }))
             .catch(err => log.error(err));
 
     }
