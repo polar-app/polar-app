@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import {Alert, KeyboardAvoidingView, Linking, Platform, View} from 'react-native';
+import {Alert, Linking, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
 import {EmailTempStorage} from "./util/EmailTempStorage";
 import {AdaptiveSafeAreaView} from "./AdaptiveSafeAreaView";
+import {AdaptiveKeyboardAvoidingView} from "./AdaptiveKeyboardAvoidingView";
 
 const App = () => {
 
@@ -20,9 +21,7 @@ const App = () => {
     }, [billing]);
 
     return (
-        <KeyboardAvoidingView enabled={Platform.OS === "ios"}
-                              behavior={Platform.OS === "ios" ? "padding" : null}
-                              style={{flex: 1}}>
+        <AdaptiveKeyboardAvoidingView>
             <AdaptiveSafeAreaView>
                 <View style={{flex: 1}}>
                     <InAppLiteServer onBuy={async (planName, email) => {
@@ -75,7 +74,7 @@ const App = () => {
                         }}/>
                 </View>
             </AdaptiveSafeAreaView>
-        </KeyboardAvoidingView>
+        </AdaptiveKeyboardAvoidingView>
 
     );
 };
