@@ -660,7 +660,9 @@ workflows:
             - approve-deploy
             - build-polar-app
             - mocha
-            - karma
+            - karma-chrome
+            - karma-safari
+            - karma-firefox
             - cypress-desktop-chrome
             # - cypress-desktop-firefox
             # - cypress-tablet-chrome
