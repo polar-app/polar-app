@@ -139,7 +139,7 @@ export class InAppLiteServer extends Component<Props, State> {
     }
 
     private static isExternalUrl(url: string) {
-        return !url.includes('app.getpolarized.io');
+        return !url.includes('app.getpolarized.io') && !url.includes('192.168.');
     }
 
     componentWillUnmount() {
