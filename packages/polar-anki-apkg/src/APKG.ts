@@ -15,7 +15,7 @@ export namespace APKG {
         save: (destination: string) => Promise<string>;
     } 
 
-    function sequenceGenerator(seed: number) {
+    function sequenceGenerator(seed: number): () => number {
         return () => {
             return seed++;
         }
