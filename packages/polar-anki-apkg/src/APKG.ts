@@ -3,13 +3,18 @@ import {initDatabase, insertCard, insertCols} from './sql'
 import {createWriteStream, mkdirSync, rmSync, writeFileSync} from 'fs'
 import * as archiver from 'archiver'
 import {DeckConfig, DeckModels} from "./DeckConfig";
-import {Card} from "./Card";
+import {Card, CardContent} from "./Card";
 import Database from "better-sqlite3";
 import * as os from "os";
 
 export namespace APKG {
-
+    function sequenceGenerator(seed: number) {
+        return () => {
+            return seed++;
+        }
+    }
     export function init(name: string) {
+        const sequence = sequenceGenerator(Date.now());
 
         const tmpdir = os.tmpdir();
 
@@ -32,7 +37,12 @@ export namespace APKG {
             return insertCols(db, deck);
         }
 
-        function addCard(modelID: number, card: Card): void {
+        function addCard(modelID: number, cardBody: CardContent): void {
+            const card: Card = {
+                timestamp: sequence(),
+                content: cardBody.content
+            };
+
             insertCard(db, deck, modelID, card);
         }
 

@@ -310,8 +310,8 @@ export function insertCols(database: Database, deck: DeckConfig): DeckModels {
 }
 
 export function insertCard(database: Database, deck: DeckConfig, modelId: number, card: Card) {
-  const createTime = Date.now();
-  const cardId = createTime + createRandomSuffix();
+  const createTime = card.timestamp;
+  const cardId = createTime;
   const noteId = cardId + 1
   const fieldsContent = card.content.join('\u001F')
   const sortField = card.content[0]
@@ -330,10 +330,6 @@ export function insertCard(database: Database, deck: DeckConfig, modelId: number
       sortField,
       parseInt(sha1(sortField).substr(0, 8), 16)
     )
-}
-
-function createRandomSuffix() {
-  return Math.floor(Math.random() * 1000) + 1;
 }
 
 function generateFields(fields: Array<string>) {
