@@ -1,13 +1,22 @@
 
 import { APKG } from 'polar-anki-apkg/src/APKG';
 export namespace FlashcardExport {
-    export function init(fileName: string) {
+    export interface IFlashcardExport {
+        addBasic: (front: string, back: string) => void;
+        addCloze: (text: string) => void;
+        addFrontBackAndReverse: (front: string, back: string) => void;
+        addFrontBackOrReverse: (front: string, back: string, addReverse: string) => void;
+        addMedia: (filename: string, data: Buffer) => void;
+        save: (destination: string) => Promise<string>;
+    }
 
-        const apkg = APKG.init(fileName);
+    export function create(fileName: string): IFlashcardExport {
+
+        const apkg = APKG.create(fileName);
 
         const models = apkg.addModels();
 
-        function addBasic (front: string, back: string): void {
+        function addBasic(front: string, back: string): void {
             apkg.addCard(models.BASIC_FRONT_BACK, {
                 content: [front, back]
             });
@@ -25,9 +34,9 @@ export namespace FlashcardExport {
                 content: [front, back]
             });
         }
-        
+
         function addFrontBackOrReverse(front: string, back: string,
-                                       addReverse: string): void {
+            addReverse: string): void {
 
             apkg.addCard(models.BASIC_FRONT_BACK_OR_REVERSE, {
                 content: [front, back, addReverse]

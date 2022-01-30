@@ -8,12 +8,19 @@ import Database from "better-sqlite3";
 import * as os from "os";
 
 export namespace APKG {
+    export interface IAPKG {
+        addModels: () => DeckModels;
+        addCard: (modelID: number, cardBody: CardContent) => void;
+        addMedia: (filename: string, data: Buffer) => void;
+        save: (destination: string) => Promise<string>;
+    } 
+
     function sequenceGenerator(seed: number) {
         return () => {
             return seed++;
         }
     }
-    export function init(name: string) {
+    export function create(name: string): IAPKG {
         const sequence = sequenceGenerator(Date.now());
 
         const tmpdir = os.tmpdir();
