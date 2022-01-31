@@ -8,23 +8,8 @@ import {IDStr} from "polar-shared/src/util/Strings";
  * at docChanges.
  */
 export namespace SnapshotCacheConsistencyManager {
-
-    // This system is partially incorrect.
-    //
-    // https://www.reddit.com/r/Firebase/comments/sge5co/is_there_a_way_to_compute_when_the_firestore/?
-
-    // additionally, there's another bug whereby if we have a dirty-cache on
-    // startup, we have NO way to determine that the cache is actually dirty
-    // until we get the first server-snapshot.
-    //
-    // I could probably solve this by having another state like 'stale' where
-    // we're unknown until we get the first server-side snapshot.
-
     /**
      * The consistency of snapshots:
-     *
-     * stale: We have not yet received a server-snapshot, so we don't know
-     * anything about the current cache status.
      *
      * dirty: We've written to the local cache, and not yet received an update
      * from the server.
@@ -34,7 +19,7 @@ export namespace SnapshotCacheConsistencyManager {
      * with the server.
      *
      */
-    export type Consistency = 'stale' | 'dirty' | 'clean';
+    export type Consistency = 'dirty' | 'clean';
 
     export interface ISnapshotCacheConsistencyManager {
         readonly update: (snapshot: ISnapshot<IQuerySnapshot<ISnapshotMetadata>>) => Consistency;
@@ -42,15 +27,13 @@ export namespace SnapshotCacheConsistencyManager {
 
     export function create(): ISnapshotCacheConsistencyManager {
 
-        let consistency: Consistency = 'stale';
+        let consistency: Consistency = 'dirty';
 
         interface IDirtyDocs {
             [id: IDStr]: boolean;
         }
 
         const dirtyDocs: IDirtyDocs = {};
-
-        let hasServerSnapshot: boolean = false;
 
         function update(snapshot: ISnapshot<IQuerySnapshot<ISnapshotMetadata>>): Consistency {
 
@@ -72,18 +55,8 @@ export namespace SnapshotCacheConsistencyManager {
 
                 handleSnapshot();
 
-                if (! snapshot.right.metadata.fromCache) {
-                    hasServerSnapshot = true;
-                }
-
                 function computeConsistency() {
-
-                    if (hasServerSnapshot) {
-                        return Object.keys(dirtyDocs).length === 0 ? 'clean' : 'dirty';
-                    }
-
-                    return 'stale';
-
+                    return Object.keys(dirtyDocs).length === 0 ? 'clean' : 'dirty';
                 }
 
                 // if there are no objects in the dirty buffer we're clean. one
