@@ -540,7 +540,7 @@ workflows:
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-cypress
-          command: npx cypress install && npx cypress run --env APP_URL=app.getpolarized.io WIDTH=1920,HEIGHT=1080 --browser chrome
+          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080,APP_URL=app.getpolarized.io --browser chrome
           attach-workspace: true
           store_artifacts: true
 
