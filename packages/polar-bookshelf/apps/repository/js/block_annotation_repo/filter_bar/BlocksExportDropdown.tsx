@@ -12,7 +12,6 @@ import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
-import {FeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
@@ -79,7 +78,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
         dialogManager.confirm({
             title: "Download your flashcards as an Anki desk",
-            subtitle: "This will download all your flashcards as an Anki deck to your device.",
+            subtitle: "This will download selected flashcards as an Anki deck to your device.",
             type: 'info',
             acceptText: "OK",
             onAccept: doExportFlashcards
@@ -108,10 +107,8 @@ export const BlocksExportDropdown: React.FC = () => {
                     <MUIMenuItem text="Download as JSON"
                                  onClick={handleExport(BlocksExportFormat.JSON)}/>
 
-                    <FeatureEnabled feature={['anki-deck-downloads']}>
-                        <MUIMenuItem text="Download Flashcards as an Anki Deck"
-                                     onClick={handleExportFlashcards}/>
-                    </FeatureEnabled>
+                    <MUIMenuItem text="Download Flashcards as an Anki Deck"
+                                 onClick={handleExportFlashcards}/>
 
                 </div>
 
