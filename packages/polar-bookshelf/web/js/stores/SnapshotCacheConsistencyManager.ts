@@ -59,7 +59,11 @@ export namespace SnapshotCacheConsistencyManager {
                 function handleCacheSnapshot() {
 
                     for (const docChange of snapshot.right!.docChanges()) {
-                        dirtyDocs[docChange.id] = true;
+
+                        if (docChange.doc.metadata.hasPendingWrites) {
+                            dirtyDocs[docChange.id] = true;
+                        }
+
                     }
 
                 }
@@ -67,7 +71,11 @@ export namespace SnapshotCacheConsistencyManager {
                 function handleServerSnapshot() {
 
                     for (const docChange of snapshot.right!.docChanges()) {
-                        delete dirtyDocs[docChange.id];
+
+                        if (! docChange.doc.metadata.hasPendingWrites) {
+                            delete dirtyDocs[docChange.id];
+                        }
+
                     }
 
                 }
