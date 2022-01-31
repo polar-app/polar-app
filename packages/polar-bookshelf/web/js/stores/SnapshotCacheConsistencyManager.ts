@@ -56,23 +56,13 @@ export namespace SnapshotCacheConsistencyManager {
 
             if (snapshot.right !== undefined) {
 
-                function handleCacheSnapshot() {
+                function handleSnapshot() {
 
                     for (const docChange of snapshot.right!.docChanges()) {
 
                         if (docChange.doc.metadata.hasPendingWrites) {
                             dirtyDocs[docChange.id] = true;
-                        }
-
-                    }
-
-                }
-
-                function handleServerSnapshot() {
-
-                    for (const docChange of snapshot.right!.docChanges()) {
-
-                        if (! docChange.doc.metadata.hasPendingWrites) {
+                        } else {
                             delete dirtyDocs[docChange.id];
                         }
 
@@ -80,10 +70,9 @@ export namespace SnapshotCacheConsistencyManager {
 
                 }
 
-                if (snapshot.right.metadata.fromCache) {
-                    handleCacheSnapshot();
-                } else {
-                    handleServerSnapshot();
+                handleSnapshot();
+
+                if (! snapshot.right.metadata.fromCache) {
                     hasServerSnapshot = true;
                 }
 
