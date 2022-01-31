@@ -41,9 +41,8 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Handheld Area Highlights",
         description: "Enable area highlights on handheld devices.",
     },
-
-    "anki-deck-downloads": {
-        title: "Anki Deck Downloads",
+    "legacy-anki-sync": {
+        title: "Legacy Anki Sync",
         description: "Enable anki deck downloads.",
     }
 
@@ -53,7 +52,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'anki-deck-downloads';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync';
 
 export interface IFeature {
 
