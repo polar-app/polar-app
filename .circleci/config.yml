@@ -533,44 +533,16 @@ workflows:
           attach-workspace: true
           store_artifacts: true
 
-      # @ Run Cypress tests for firefox-desktop (1080p)
-      # - cypress/run:
-      #     name: cypress-desktop-firefox
-      #     executor: ff-chrome
-      #     requires:
-      #       - build-polar-app
-      #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
-      #     wait-on: "http://localhost:8050"
-      #     command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
-      #     attach-workspace: true
-      #     store_artifacts: true
-
-      # # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
-      # - cypress/run:
-      #     name: cypress-phone-chrome
-      #     executor: ff-chrome
-      #     requires:
-      #       - build-polar-app
-      #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
-      #     wait-on: "http://localhost:8050"
-      #     command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
-      #     attach-workspace: true
-      #     store_artifacts: true
-
-      # # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
-      # - cypress/run:
-      #     name: cypress-tablet-chrome
-      #     executor: ff-chrome
-      #     requires:
-      #       - build-polar-app
-      #     working_directory: /root/project/packages/polar-bookshelf
-      #     start: export WEBPACK_BUNDLE=repository && time time npm run webpack-serve
-      #     wait-on: "http://localhost:8050"
-      #     command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
-      #     attach-workspace: true
-      #     store_artifacts: true
+      # @ Run Cypress tests post deployment
+      - cypress/run:
+          name: cypress-desktop-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-cypress
+          command: export APP_URL='app.getpolarized.io' && npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
+          attach-workspace: true
+          store_artifacts: true
 
       # @ Deploy CDK lambda/API-gateway Changes
       - aws-cdk:
