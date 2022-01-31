@@ -77,7 +77,7 @@ export const BlocksExportDropdown: React.FC = () => {
     const handleExportFlashcards = React.useCallback(() => {
 
         dialogManager.confirm({
-            title: "Download your flashcards as an Anki desk",
+            title: "Download your flashcards as an Anki deck",
             subtitle: "This will download selected flashcards as an Anki deck to your device.",
             type: 'info',
             acceptText: "OK",
