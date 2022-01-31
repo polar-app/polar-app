@@ -7,7 +7,7 @@ import { assert } from 'chai';
 
 describe("Flashcard export", () => {
     it("generates flashcard", async () => {
-        const ankiExport = FlashcardExport.init("test-export");
+        const ankiExport = FlashcardExport.create("test-export");
 
         ankiExport.addBasic("front example", `<div>back example</div> <img src="FlashcardTestN.png" />`);
 

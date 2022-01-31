@@ -29,7 +29,7 @@ export namespace AnkiExport {
      */
     export async function create(request: FlashcardExportRequest, uid: UserIDStr): Promise<PathStr> {
 
-        const flashCardExport = FlashcardExport.init(request.ankiDeckName);
+        const flashCardExport = FlashcardExport.create(request.ankiDeckName);
 
         const docs = await fetchUserBlocks(uid);
 
