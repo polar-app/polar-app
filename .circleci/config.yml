@@ -535,7 +535,7 @@ workflows:
 
       # @ Run Cypress tests post deployment
       - cypress/run:
-          name: cypress-desktop-chrome
+          name: cypress-production
           executor: ff-chrome
           requires:
             - build-polar-app
