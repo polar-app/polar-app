@@ -18,7 +18,7 @@ scripts:
     # Testing
     "test-all": "pnpm m run test"
     "test-ci-all": "pnpm m run test-ci"
-    "karma-all": "pnpm m run karma"
+    "karma-all": "pnpm m run karma --no-bail"
     # Publishing
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
     "publish-all": "pnpm m --config.use-beta-cli=true publish --no-git-checks"
