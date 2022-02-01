@@ -12,6 +12,7 @@ import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
+import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
@@ -41,6 +42,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const errorHandler = useErrorHandler();
     const ankiDeckDownloadHandler = useAnkiDeckDownloadHandler();
+    const analytics = useAnalytics();
 
     const doExportFlashcards = React.useCallback(() => {
 
@@ -53,6 +55,8 @@ export const BlocksExportDropdown: React.FC = () => {
             async function doDownload() {
 
                 const response = await ankiDeckDownloadHandler();
+
+                analytics.event2('anki-sync-flashcard-download');
 
                 FileSavers.downloadURL(response.temporary_url, 'polar-anki-deck' + Date.now());
 
