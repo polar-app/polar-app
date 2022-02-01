@@ -1,3 +1,5 @@
+import FileSaver from 'file-saver';
+
 /**
  * FileSaver interface for saving data to disk.
  *
@@ -9,7 +11,7 @@ export namespace FileSavers {
      * Trigger a file download using the specified filename and blob.
      */
     export function saveAs(blob: Blob | string | File, filename: string) {
-        saveAs(blob, filename);
+        FileSaver.saveAs(blob, filename);
     }
 
     /**
