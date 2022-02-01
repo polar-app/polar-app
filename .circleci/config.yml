@@ -271,7 +271,6 @@ jobs:
           key: nextjs-cache-node-modules-{{ checksum "/home/circleci/project/packages-isolated/website-v2/yarn.lock" }}
           paths:
             - /home/circleci/project/packages-isolated/website-v2/node_modules
-            - /home/circleci/project/packages-isolated/website-v2/.next/cache
       - save_cache:
           key: nextjs-build-cache
           paths:
