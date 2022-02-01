@@ -40,7 +40,10 @@ export class FirestoreAnalytics implements IAnalytics {
         const doWrite = async () => {
 
             const firestore = await FirestoreBrowserClient.getInstance();
+
             const uid = await FirebaseBrowser.currentUserID();
+
+            if (!uid) return;
 
             await HeartbeatCollection.write(firestore, uid);
 
