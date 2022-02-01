@@ -2,6 +2,7 @@ import {assert} from "chai";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {DeviceIDManager} from "./DeviceIDManager";
 import {PositionalArrays} from "./PositionalArrays";
+import {Numbers} from "./Numbers";
 import PositionalArray = PositionalArrays.PositionalArray;
 
 describe("PositionalArrays", () => {
@@ -182,6 +183,26 @@ describe("PositionalArrays", () => {
         });
 
     });
+
+    xit("Keep inserting between to test overrun...", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x1');
+        arr = PositionalArrays.append(arr, '0x2');
+
+        let seq = 3;
+        const nrInserts = 70
+
+        Numbers.range(1, nrInserts)
+            .forEach(() => {
+                arr = PositionalArrays.insert(arr, '0x2', `0x${seq++}`, 'before');
+            })
+
+        assertJSON(arr, PositionalArrays.toArray(arr));
+
+    });
+
 
     it("insert between (before)", () => {
 

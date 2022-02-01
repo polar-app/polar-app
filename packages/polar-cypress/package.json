@@ -1,0 +1,21 @@
+{
+  "name": "polar-cypress",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "cypress-desktop-chrome": "npx cypress run --record --key 63fdd419-e3fd-420f-992c-30154fc76121 --env WIDTH=1920,HEIGHT=1080 --browser chrome"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "=9.0.0",
+    "mocha": "=9.1.1"
+  },
+  "dependencies": {
+    "cypress": "=9.3.1",
+    "polar-firebase-admin": "0.0.0"
+  }
+}

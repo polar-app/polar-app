@@ -63,7 +63,7 @@ export class JSONRPC {
 
         const endpoint = CloudFunctions.createEndpoint();
 
-        const url = `${endpoint}/${opts.path}`;
+        const url = `${endpoint}/${opts.path}/`;
 
         const response = await fetch(url, {
             method: 'POST',

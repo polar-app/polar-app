@@ -6,28 +6,40 @@ license: "ISC"
 private: true
 
 scripts:
+    # To prevent other npm clients
     "preinstall": "only-allow pnpm"
+    # To run app container
     "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -p 8051:8051 -p 6006:6006 -ti --rm --init --ulimit memlock=819200000:819200000 --privileged polar bash"
+    # Lint
     "eslint-all": "pnpm m run eslint --no-bail"
     "eslint-ci-all": "pnpm m run eslint-ci --no-bail"
+    # Compile
     "compile-all": "pnpm m run compile"
+    # Testing
     "test-all": "pnpm m run test"
     "test-ci-all": "pnpm m run test-ci"
     "karma-all": "pnpm m run karma"
+    # Publishing
+    "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
     "publish-all": "pnpm m --config.use-beta-cli=true publish --no-git-checks"
+    # Clean
     "clean": "git clean -Xfd && git clean -fd"
+    "purge-node-modules": "pnpm m exec -- rm -rf node_modules"
+    # Build/Serve Polar-bookshelf
     "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)"
     "serve": "(cd packages/polar-bookshelf && pnpm run webpack-serve)"
+    # Storybook Stuff
     "storybook": "(cd packages/polar-bookshelf && pnpm run build-storybook && pnpm run storybook)"
-    "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
+    "chromatic": "(cd packages/polar-bookshelf && pnpm run chromatic)"
+    # Dumping packages
     "dump-packages": "./scripts/fetch-organize-packages/main.sh"
     "dump-oudated": "pnpm m outdated --prod --no-table --no-optional"
     "audit-packages": "pnpm audit --production --no-optional --audit-level high --registry https://registry.npmjs.org"
     "find-package-versions": "pnpm m exec jq -r .dependencies package.json  |grep -Eo '^  [^]+' | sort"
     "find-package-versions-conflicting": "pnpm run find-package-versions | uniq | grep -Eo '^[^:]+' | uniq -c | sort | grep -Ev '^[ ]+1 '"
+    # polar-create module scripts
     "create-module": "(cd ./packages/polar-create-module && node src/CreateModule.js)"
     "update-modules": "pnpm run compile --filter polar-create-module && pnpm m --config.use-beta-cli=true exec node $(pwd)/packages/polar-create-module/src/CreateModule.js --update"
-    "purge-node-modules": "pnpm m exec -- rm -rf node_modules"
 
 devDependencies:
     ## Typescript Dependencies

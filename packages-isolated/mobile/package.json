@@ -8,14 +8,9 @@
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
-  "workspaces": {
-    "nohoist": [
-      "*react-native*",
-      "*react-native*/**"
-    ]
-  },
   "dependencies": {
     "@react-native-async-storage/async-storage": "=1.15.9",
+    "@react-native-community/hooks": "^2.8.1",
     "react": "=17.0.2",
     "react-native": "0.64.1",
     "react-native-device-info": "=8.3.1",

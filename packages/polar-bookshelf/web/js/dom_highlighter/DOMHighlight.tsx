@@ -20,7 +20,7 @@ interface IProps extends DOMTextHit {
 function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
 
     try {
-        return Highlights.toHighlightViewportPositions(regions);
+        return Highlights.toHighlightViewportPositions(regions)[0];
     } catch (e) {
         console.error("Unable to handle viewport position: ", e);
         return undefined;

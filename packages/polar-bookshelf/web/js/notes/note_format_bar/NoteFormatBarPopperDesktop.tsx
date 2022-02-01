@@ -1,7 +1,14 @@
 import React from "react";
 import {Box, createStyles, makeStyles, Paper} from "@material-ui/core";
 import {observer} from "mobx-react-lite";
-import {FABoldIcon, FAItalicIcon, FALinkIcon, FAStrikethroughIcon, FASubscriptIcon, FASuperscriptIcon} from "../../mui/MUIFontAwesome";
+import {
+    FABoldIcon,
+    FAItalicIcon,
+    FALinkIcon,
+    FAStrikethroughIcon,
+    FASubscriptIcon,
+    FASuperscriptIcon
+} from "../../mui/MUIFontAwesome";
 import FormatClearIcon from '@material-ui/icons/FormatClear';
 import {useBlockFormatBarStore, useNoteFormatBar} from "./NoteFormatBar";
 import {LinkCreator, useNoteFormatBarActions} from "./NoteFormatBarActions";
@@ -14,6 +21,10 @@ import {abortEvent} from "../contenteditable/BlockKeyboardHandlers";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
+
+        paper: {
+            marginTop: theme.spacing(1)
+        },
         rootInner: {
             fontSize: '2rem',
         },
@@ -27,6 +38,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface INoteFormatBarPopperRendererProps extends INoteFormatBarState {}
+
+const ELEVATION=10;
 
 export const NoteFormatBarPopperDesktopRenderer: React.FC<INoteFormatBarPopperRendererProps> = observer((props) => {
     const { nonce, elem } = props;
@@ -50,7 +63,7 @@ export const NoteFormatBarPopperDesktopRenderer: React.FC<INoteFormatBarPopperRe
 
     return (
         <NoteFormatPopperPositioner elem={elem} key={nonce}>
-            <Paper onMouseDown={abortEvent}>
+            <Paper elevation={ELEVATION} onMouseDown={abortEvent} className={classes.paper}>
                 <Box p={0.7} display="flex" alignItems="center" className={classes.rootInner}>
                     <NoteFormatBarActionIcon icon={FABoldIcon}
                                              className={classes.iconWrapper}
@@ -86,7 +99,7 @@ export const NoteFormatBarPopperDesktopRenderer: React.FC<INoteFormatBarPopperRe
                 </Box>
             </Paper>
             {action && (
-                <Paper>
+                <Paper elevation={ELEVATION}>
                     <Box p={0.7} mt={0.5}>
                         {action === 'link' && <LinkCreator onLink={handleCreateLink} onClose={clearAction} />}
                     </Box>

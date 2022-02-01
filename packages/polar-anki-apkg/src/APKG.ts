@@ -1,14 +1,31 @@
-import { join } from 'path'
-import { initDatabase, insertCard, insertCols } from './sql'
-import { createWriteStream, mkdirSync, writeFileSync, rmSync } from 'fs'
+import {join} from 'path'
+import {initDatabase, insertCard, insertCols} from './sql'
+import {createWriteStream, mkdirSync, rmSync, writeFileSync} from 'fs'
 import * as archiver from 'archiver'
-import { DeckConfig, DeckModels } from "./DeckConfig";
-import { Card } from "./Card";
+import {DeckConfig, DeckModels} from "./DeckConfig";
+import {Card, CardContent} from "./Card";
 import Database from "better-sqlite3";
+import * as os from "os";
 
 export namespace APKG {
-    export function init(name: string) {
-        const dest: string = join(__dirname, name);
+    export interface IAPKG {
+        addModels: () => DeckModels;
+        addCard: (modelID: number, cardBody: CardContent) => void;
+        addMedia: (filename: string, data: Buffer) => void;
+        save: (destination: string) => Promise<string>;
+    } 
+
+    function sequenceGenerator(seed: number): () => number {
+        return () => {
+            return seed++;
+        }
+    }
+    export function create(name: string): IAPKG {
+        const sequence = sequenceGenerator(Date.now());
+
+        const tmpdir = os.tmpdir();
+
+        const dest: string = join(tmpdir, name);
 
         mkdirSync(dest);
 
@@ -27,7 +44,12 @@ export namespace APKG {
             return insertCols(db, deck);
         }
 
-        function addCard(modelID: number, card: Card): void {
+        function addCard(modelID: number, cardBody: CardContent): void {
+            const card: Card = {
+                timestamp: sequence(),
+                content: cardBody.content
+            };
+
             insertCard(db, deck, modelID, card);
         }
 
@@ -36,8 +58,9 @@ export namespace APKG {
             mediaFiles.push(filename)
             writeFileSync(join(dest, `${index}`), data)
         }
-        async function save(destination: string): Promise<void> {
+        async function save(destination: string): Promise<string> {
             const archive = archiver.create('zip');
+            const savePath = join(destination, `${deck.name}.apkg`);
 
             const mediaObj = mediaFiles.reduce((obj, file, idx) => {
                 // @ts-ignore
@@ -50,7 +73,7 @@ export namespace APKG {
             archive.directory(dest, false);
 
             archive.pipe(
-                createWriteStream(join(destination, `${deck.name}.apkg`))
+                createWriteStream(savePath)
             );
 
             archive.on('end', () => {
@@ -58,6 +81,8 @@ export namespace APKG {
             });
 
             await archive.finalize();
+
+            return savePath;
         }
 
         return { addModels, addCard, addMedia, save };

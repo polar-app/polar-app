@@ -28,8 +28,10 @@ const BlockComponent = deepMemo(function BlockComponent(props: BlockComponentPro
     const blocksAnnotationRepoStore = useBlocksAnnotationRepoStore();
 
     const height = React.useMemo(() => {
+
         const blocks = blocksAnnotationRepoStore.idsToRepoAnnotationBlocks(props.values.map(({ id }) => id));
-        return Numbers.sum(...blocks.map(current => fixedHeightAnnotationCalculator(current)));
+        return Numbers.sum(...blocks.map(current => fixedHeightAnnotationCalculator(current))) || 0;
+
     }, [props.values, blocksAnnotationRepoStore, fixedHeightAnnotationCalculator]);
 
     return (

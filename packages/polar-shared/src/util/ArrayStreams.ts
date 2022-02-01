@@ -23,7 +23,7 @@ export interface TypedDictionary<T> {
 
 export type PartitionKey<K> = [string, K];
 
-export type ToPartitionKeyFunction<K, T> = (value: T) => PartitionKey<K>;
+export type ToPartitionKeyFunction<K, V> = (value: V) => PartitionKey<K>;
 
 export interface MutablePartition<K, V> {
     readonly id: string;
@@ -50,6 +50,9 @@ export interface IValueWithIndex<V> {
 
 export type ScanTuple<V> = [V, boolean]
 export type ScanHandler<T, V> = (record: T, index: number) => ScanTuple<V>;
+
+export type ArrayStreamMultiMap<T> = Readonly<{[key: string]: ReadonlyArray<T>}>
+export type ArrayStreamMultiMapStream<T> = ArrayStream<Readonly<[string, ReadonlyArray<T>]>>;
 
 /**
  * Similar to Java streams but for Javascript/Typescript arrays.
@@ -175,6 +178,7 @@ export class ArrayStream<T> {
 
     /**
      * Create groups by key and return the groups as a stream.
+     * @deprecated
      */
     public group(toKey: ToKeyFunction<T> = defaultToKey): ArrayStream<ReadonlyArray<T>> {
 
@@ -187,6 +191,47 @@ export class ArrayStream<T> {
         })
 
         return new ArrayStream<ReadonlyArray<T>>(Object.values(map));
+
+    }
+
+    /**
+     * Convert this as a multimap but keep it as an arrayStream.
+     */
+    public multiMap(toKey: ToKeyFunction<T>): ArrayStreamMultiMapStream<T> {
+
+        const map: {[key: string]: ReadonlyArray<T>} = {};
+
+        this.values.forEach((value, idx) => {
+            const key = toKey(value, idx);
+            const entry = map[key] || [];
+            map[key] = [...entry, value];
+        })
+
+        const arr: Readonly<[string, ReadonlyArray<T>]>[] = [];
+
+        for (const key of Object.keys(map)) {
+            const value = map[key];
+            arr.push([key, value])
+        }
+
+        return arrayStream(arr);
+
+    }
+
+    /**
+     * Return this as a multimap.
+     */
+    public toMultiMap(toKey: ToKeyFunction<T>): ArrayStreamMultiMap<T> {
+
+        const map: {[key: string]: ReadonlyArray<T>} = {};
+
+        this.values.forEach((value, idx) => {
+            const key = toKey(value, idx);
+            const entry = map[key] || [];
+            map[key] = [...entry, value];
+        })
+
+        return map;
 
     }
 
@@ -340,6 +385,9 @@ export class ArrayStream<T> {
         return this.toMap2(toKey, () => true)
     }
 
+    // TODO: completely rework how we build maps internally.  I think think we
+    // need to consider just storing them as {[key: string]: ReadonlyArray<V>}
+    // and this probably needs to be called toMultiMap
     public toMap2<V>(toKey: (value: T, index: number) => string,
                      toValue: (value: T, index: number) => V ): {[key: string]: V} {
 
