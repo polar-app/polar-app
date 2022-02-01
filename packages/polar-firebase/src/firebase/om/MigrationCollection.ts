@@ -19,6 +19,8 @@ export namespace MigrationCollection {
 
     export type MigrationStatus = 'started' | 'completed' | 'failed';
 
+    export type MigrationIDStr = 'block-usertagsdb' | 'block-usertagsdb3' | 'block-annotations';
+
     export interface IMigrationBase<S extends MigrationStatus> {
 
         readonly id: string;
@@ -28,7 +30,7 @@ export namespace MigrationCollection {
         /**
          * The name of the migration that the user has just performed.
          */
-        readonly name: string;
+        readonly name: MigrationIDStr;
 
         readonly status: S;
 
@@ -69,7 +71,7 @@ export namespace MigrationCollection {
 
     export async function getByName<SM = unknown>(firestore: IFirestore<SM>,
                                                   uid: UserIDStr | undefined,
-                                                  name: IDStr) {
+                                                  name: MigrationIDStr) {
 
         return firestore.collection(COLLECTION_NAME)
                         .where('uid', '==', uid)
@@ -80,17 +82,19 @@ export namespace MigrationCollection {
 
     export async function createByName<SM = unknown>(firestore: IFirestore<SM>,
                                                      uid: UserIDStr,
-                                                     name: IDStr): Promise<IMigrationStarted | undefined> {
+                                                     name: MigrationIDStr): Promise<IMigrationStarted | undefined> {
 
         try {
 
             const id = createID({uid, name});
 
+            const now = ISODateTimeStrings.create();
+
             const migration: IMigrationStarted = {
                 id, uid, name,
                 status: 'started',
-                started: ISODateTimeStrings.create(),
-                written: ISODateTimeStrings.create()
+                started: now,
+                written: now
             }
 
             await firestore.collection(COLLECTION_NAME)
@@ -112,11 +116,36 @@ export namespace MigrationCollection {
 
     }
 
+    export async function markMigrationCompleted<SM = unknown>(firestore: IFirestore<SM>,
+                                                               uid: UserIDStr,
+                                                               name: MigrationIDStr) {
+
+        const id = createID({uid, name});
+
+        const now = ISODateTimeStrings.create();
+
+        const migration: IMigrationCompleted = {
+            id, uid, name,
+            status: 'completed',
+            started: now,
+            completed: now,
+            written: now
+        }
+
+        await write(firestore, migration);
+
+        return migration;
+
+    }
+
     type IWriteData = Omit<IMigrationCompleted, 'id' | 'written'>
                      | Omit<IMigrationStarted, 'id' | 'written'>
                      | Omit<IMigrationFailed, 'id' | 'written'>;
 
-
+    /**
+     * @deprecated We should not allow this directly but instead have functions
+     * like markMigrationFailed, markMigrationCompleted, etc.
+     */
     export async function write<SM = undefined>(firestore: IFirestore<SM>,
                                                 write: IWriteData) {
 
@@ -155,7 +184,7 @@ export namespace MigrationCollection {
 
     export function createSnapshotByName<SM = undefined>(firestore: IFirestore<SM>,
                                                          uid: UserIDStr | undefined,
-                                                         name: IDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+                                                         name: MigrationIDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
 
         if (! uid) {
             return FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER;
