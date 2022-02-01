@@ -17,7 +17,7 @@ export class HeartbeatCollection {
 
     private static COLLECTION: CollectionNameStr = "heartbeat";
 
-    public static async write<SM>(firestore: IFirestore<SM>,uid: UserIDStr | undefined) {
+    public static async write<SM>(firestore: IFirestore<SM>, uid: UserIDStr) {
 
         const heartbeat = this.create(uid);
 
@@ -28,23 +28,22 @@ export class HeartbeatCollection {
 
     }
 
-    public static create(uid: UserIDStr | undefined): HeartbeatsInit {
+    public static create(uid: UserIDStr): HeartbeatsInit {
 
-        const id = Hashcodes.createRandomID();
+        const device = Devices.get();
+        const id = uid + device;
         const created = ISODateTimeStrings.create();
         const machine = MachineIDs.get();
 
         const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
         const runtime = AppRuntime.get();
-        const device = Devices.get();
 
         return {
             id, created, uid, platform, machine, version, runtime, device
         };
 
     }
-
 }
 
 export interface HeartbeatsInit {
