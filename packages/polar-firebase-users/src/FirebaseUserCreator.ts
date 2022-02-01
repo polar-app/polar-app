@@ -41,6 +41,7 @@ export namespace FirebaseUserCreator {
         await UserPrefCollection.initForUser(firestore, user.uid);
 
         await MigrationCollection.createByName(firestore, user.uid, 'block-annotations');
+        await MigrationCollection.createByName(firestore, user.uid, 'block-usertagsdb');
         await MigrationCollection.createByName(firestore, user.uid, 'block-usertagsdb3');
 
         await sendWelcomeEmail(email);
