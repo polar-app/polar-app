@@ -535,6 +535,8 @@ workflows:
 
       - build-website-v2:
           executor: large
+          requires:
+            - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
       - cypress/run:
