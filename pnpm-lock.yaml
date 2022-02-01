@@ -1647,6 +1647,7 @@ importers:
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       node-fetch: '=2.6.1'
+      polar-browsers: 0.0.0
       polar-test: 0.0.0
       stopword: '=0.3.4'
       timekeeper: 2.2.0
@@ -1674,6 +1675,7 @@ importers:
       chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
+      polar-browsers: link:../polar-browsers
       polar-test: link:../polar-test
       wait-for-expect: 3.0.1
 

@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {Callers} from './Callers';
 import {FilePaths} from '../util/FilePaths';
+import {Browsers} from "polar-browsers/src/Browsers";
 
 describe('Callers', function() {
 
@@ -8,11 +9,14 @@ describe('Callers', function() {
 
         it("call method and to make sure we get the right caller", async function() {
 
+            Browsers.when(['chrome', 'firefox'], () => {
 
-            const actual = myCaller();
-            actual.filename = actual.filename.replace(/\.(js|ts)/, '.js');
+                const actual = myCaller();
+                actual.filename = actual.filename.replace(/\.(js|ts)/, '.js');
 
-            assert.deepEqual(actual, { filename: "CallerTest.js" });
+                assert.deepEqual(actual, {filename: "CallerTest.js"});
+
+            });
 
         });
 
