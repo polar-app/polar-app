@@ -19,7 +19,7 @@ export namespace MigrationCollection {
 
     export type MigrationStatus = 'started' | 'completed' | 'failed';
 
-    export type MigrationIDStr = 'block-usertagsdb3' | 'block-annotations';
+    export type MigrationIDStr = 'block-usertagsdb' | 'block-usertagsdb3' | 'block-annotations';
 
     export interface IMigrationBase<S extends MigrationStatus> {
 
