@@ -31,9 +31,10 @@ import {NameContent} from "../../../notes/content/NameContent";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IBlockContentStructure, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {autorun} from "mobx";
 
 export const MIGRATION_TO_BLOCK_ANNOTATIONS_NAME = 'block-annotations';
-const TAGS_MIGRATION_NAME = 'block-usertagsdb';
+const TAGS_MIGRATION_NAME = 'block-usertagsdb3';
 const MIGRATION_FUNCTION_PATH = 'MigrationToBlockAnnotations';
 const ANALYTICS_MIGRATION_EVENT_PREFIX = 'migration-to-block-annotations';
 const ANALYTICS_TAGS_MIGRATION_EVENT_PREFIX = 'user-tags-migration';
@@ -302,7 +303,7 @@ namespace UserTagsMigrationHelpers {
             nonExistentBlockContents.map(content => ({ id: Hashcodes.createRandomID(), content, children: [] }));
 
         if (nonExistentBlockStructures.length > 0) {
-            blocksStore.insertFromBlockContentStructure(nonExistentBlockStructures);
+            blocksStore.insertFromBlockContentStructure(nonExistentBlockStructures, { isUndoable: false });
         }
 
         // Tags that already exist as notes
@@ -327,6 +328,15 @@ function useTagsMigrationExecutor() {
     const startedRef = React.useRef(false);
     const { firestore, user } = useFirestore();
 
+    const waitForInitialSnapshot = React.useCallback<() => Promise<void>>(() => new Promise((resolve) => {
+        autorun((reaction) => {
+            if (blocksStore.hasSnapshot) {
+                resolve();
+                reaction.dispose();
+            }
+        });
+    }), [blocksStore]);
+
     const migrationExecutor = React.useCallback(() => {
         if (startedRef.current || ! user) {
             return;
@@ -336,6 +346,8 @@ function useTagsMigrationExecutor() {
         const startTs = ISODateTimeStrings.create();
 
         const migrateData = async () => {
+            await waitForInitialSnapshot();
+
             await MigrationCollection.write(firestore, {
                 uid: user.uid,
                 name: TAGS_MIGRATION_NAME,
@@ -397,7 +409,7 @@ function useTagsMigrationExecutor() {
             }).catch(console.error);
         });
 
-    }, [blocksStore, userTagsDB, firestore, user, setError, startedRef]);
+    }, [blocksStore, userTagsDB, firestore, user, setError, startedRef, waitForInitialSnapshot]);
 
     return { migrationExecutor, error };
 }
@@ -452,7 +464,7 @@ export const MigrationToBlockAnnotationsRenderer: React.FC<IProps> = React.memo(
 
         if (docMetaMigrationStatus === 'completed'
             && (tagsMigrationStatus === 'notstarted' || tagsMigrationStatus === 'started')) {
-            setTimeout(() => tagsMigrationExecutor(), 4000);
+            tagsMigrationExecutor();
         }
     }, [tagsMigrationExecutor, docMetaMigrationStatus, tagsMigrationStatus]);
 
