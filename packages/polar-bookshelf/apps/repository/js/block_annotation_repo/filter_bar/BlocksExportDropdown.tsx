@@ -76,7 +76,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
         doAsync().catch(err => errorHandler(err));
 
-    }, [dialogManager, errorHandler, ankiDeckDownloadHandler]);
+    }, [dialogManager, errorHandler, ankiDeckDownloadHandler, analytics]);
 
     const handleExportFlashcards = React.useCallback(() => {
 
