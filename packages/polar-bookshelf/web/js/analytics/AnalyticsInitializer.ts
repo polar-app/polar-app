@@ -29,7 +29,12 @@ export namespace AnalyticsInitializer {
     }
 
     function initHeartbeat() {
-        Analytics.heartbeat();
+
+
+        setInterval(
+            () => Analytics.heartbeat(),
+            1000 * 60 * 5 // five minutes
+        )
     }
 
     async function initAccount() {
