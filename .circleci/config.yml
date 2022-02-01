@@ -271,12 +271,9 @@ jobs:
           name: Next.JS Build
           command: cd /home/circleci/project/packages-isolated/website-v2 && yarn build
       - save_cache:
-          key: nextjs-cache-node-modules-{{ checksum "/home/circleci/project/packages-isolated/website-v2/yarn.lock" }}
+          key: nextjs-cache-{{ checksum "/home/circleci/project/packages-isolated/website-v2/yarn.lock" }}
           paths:
             - /home/circleci/project/packages-isolated/website-v2/node_modules
-      - save_cache:
-          key: nextjs-build-cache
-          paths:
             - /home/circleci/project/packages-isolated/website-v2/.next/cache
   # @ Deploy Polar-Bookshelf
   deploy-polar-app:
