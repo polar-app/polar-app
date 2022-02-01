@@ -88,11 +88,13 @@ export namespace MigrationCollection {
 
             const id = createID({uid, name});
 
+            const now = ISODateTimeStrings.create();
+
             const migration: IMigrationStarted = {
                 id, uid, name,
                 status: 'started',
-                started: ISODateTimeStrings.create(),
-                written: ISODateTimeStrings.create()
+                started: now,
+                written: now
             }
 
             await firestore.collection(COLLECTION_NAME)
@@ -111,6 +113,28 @@ export namespace MigrationCollection {
             throw e;
 
         }
+
+    }
+
+    export async function markMigrationCompleted<SM = unknown>(firestore: IFirestore<SM>,
+                                                               uid: UserIDStr,
+                                                               name: MigrationIDStr) {
+
+        const id = createID({uid, name});
+
+        const now = ISODateTimeStrings.create();
+
+        const migration: IMigrationCompleted = {
+            id, uid, name,
+            status: 'completed',
+            started: now,
+            completed: now,
+            written: now
+        }
+
+        await write(firestore, migration);
+
+        return migration;
 
     }
 
