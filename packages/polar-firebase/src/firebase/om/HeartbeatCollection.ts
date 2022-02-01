@@ -5,7 +5,6 @@ import {
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {IDStr, CollectionNameStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
@@ -61,7 +60,7 @@ export interface HeartbeatsInit {
     /**
      * The user ID that generated this heartbeat.
      */
-    readonly uid: UserIDStr | undefined;
+    readonly uid: UserIDStr; 
 
     /**
      * The user's platform.
