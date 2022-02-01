@@ -19,6 +19,8 @@ export namespace MigrationCollection {
 
     export type MigrationStatus = 'started' | 'completed' | 'failed';
 
+    export type MigrationIDStr = 'block-usertagsdb3' | 'block-annotations';
+
     export interface IMigrationBase<S extends MigrationStatus> {
 
         readonly id: string;
@@ -28,7 +30,7 @@ export namespace MigrationCollection {
         /**
          * The name of the migration that the user has just performed.
          */
-        readonly name: string;
+        readonly name: MigrationIDStr;
 
         readonly status: S;
 
@@ -69,7 +71,7 @@ export namespace MigrationCollection {
 
     export async function getByName<SM = unknown>(firestore: IFirestore<SM>,
                                                   uid: UserIDStr | undefined,
-                                                  name: IDStr) {
+                                                  name: MigrationIDStr) {
 
         return firestore.collection(COLLECTION_NAME)
                         .where('uid', '==', uid)
@@ -80,7 +82,7 @@ export namespace MigrationCollection {
 
     export async function createByName<SM = unknown>(firestore: IFirestore<SM>,
                                                      uid: UserIDStr,
-                                                     name: IDStr): Promise<IMigrationStarted | undefined> {
+                                                     name: MigrationIDStr): Promise<IMigrationStarted | undefined> {
 
         try {
 
@@ -155,7 +157,7 @@ export namespace MigrationCollection {
 
     export function createSnapshotByName<SM = undefined>(firestore: IFirestore<SM>,
                                                          uid: UserIDStr | undefined,
-                                                         name: IDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
+                                                         name: MigrationIDStr): FirestoreSnapshotSubscriber<IQuerySnapshot<SM>> {
 
         if (! uid) {
             return FIRESTORE_NULL_SNAPSHOT_SUBSCRIBER;
