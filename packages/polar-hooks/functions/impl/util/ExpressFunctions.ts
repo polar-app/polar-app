@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, {NextFunction} from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {ErrorResponses} from './ErrorResponses';
@@ -8,18 +8,12 @@ import {UserRequests} from './UserRequests';
 import {SentryReporters} from "../reporters/SentryReporter";
 
 const CORS_OPTIONS: cors.CorsOptions = {
-    origin: [
-        "https://getpolarized.io",
-        "https://app.getpolarized.io",
-        "http://localhost:8050",
-        "https://localhost:8050",
-        "http://127.0.0.1:8050",
-        "https://127.0.0.1:8050",
-        "http://192.168.1.50:8050",
-    ],
+    origin: true,
     credentials: true,
+    preflightContinue: true,
+    allowedHeaders: "*",
     methods: [
-        'GET', 'PUT', 'POST'
+        'GET', 'PUT', 'POST', 'OPTIONS', 'DELETE', 'PATCH'
     ]
 }
 
@@ -37,8 +31,7 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors(CORS_OPTIONS));
 
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        app.use(cors(CORS_OPTIONS), async (req, res, next) => {
+        const defaultHandler = async (req: express.Request, res: express.Response, next: NextFunction) => {
 
             try {
                 await delegate(req, res, next);
@@ -46,7 +39,14 @@ export class ExpressFunctions {
                 this.handleError(functionName, req, res, err);
             }
 
-        });
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        app.get('*', cors(CORS_OPTIONS), defaultHandler);
+        app.put('*', cors(CORS_OPTIONS), defaultHandler);
+        app.post('*', cors(CORS_OPTIONS), defaultHandler);
+        app.patch('*', cors(CORS_OPTIONS), defaultHandler);
+        app.delete('*', cors(CORS_OPTIONS), defaultHandler);
 
         return functions.https.onRequest(app);
 
@@ -60,14 +60,19 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors(CORS_OPTIONS));
 
-        app.use(cors(CORS_OPTIONS), (req, res, next) => {
-
+        const defaultHandler = (req: express.Request, res: express.Response, next: NextFunction) => {
             try {
                 delegate(req, res, next);
             } catch (err) {
                 this.handleError(functionName, req, res, err);
             }
-        });
+        };
+
+        app.get('*', cors(CORS_OPTIONS), defaultHandler);
+        app.put('*', cors(CORS_OPTIONS), defaultHandler);
+        app.post('*', cors(CORS_OPTIONS), defaultHandler);
+        app.patch('*', cors(CORS_OPTIONS), defaultHandler);
+        app.delete('*', cors(CORS_OPTIONS), defaultHandler);
 
         return functions.https.onRequest(app);
 

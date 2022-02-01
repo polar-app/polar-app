@@ -244,6 +244,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         });
 
         rendition.on('rendered', (section: Section) => {
+            console.log("FIXME rendered: " + document.location.href);
+
             console.log('epubjs event: rendered: ');
             epubResizer();
             // we have to update the section here as we jumped within the EPUB

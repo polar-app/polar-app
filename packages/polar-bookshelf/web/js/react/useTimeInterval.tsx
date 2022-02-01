@@ -18,10 +18,18 @@ type ExpirationTimeWallClockMillis = number;
 
 type TimeIntervalTuple = readonly [ExpirationTimeMillis, ExpirationTimeWallClockMillis, Duration]
 
+export function currentTimeMillisWithLocale(): number {
+    const now = new Date();
+    const tzOffset = now.getTimezoneOffset();
+    const txOffsetMillis = tzOffset * 60 * 1000;
+    const time = now.getTime();
+    return time + txOffsetMillis;
+}
+
 export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const [time, setTime] = React.useState<TimeIntervalTuple>(() => {
-        const now = Date.now();
+        const now = currentTimeMillisWithLocale();
         return [now, now, duration];
     });
 
@@ -29,7 +37,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const computeDurationForTimeout = React.useCallback((): readonly [ExpirationTimeWallClockMillis, DurationMillis] => {
 
-        const now = new Date().getTime();
+        const now = currentTimeMillisWithLocale();
         const expirationTime = TimeDurations.computeExpirationTime(now, duration);
         const durationMillis =  Math.abs(expirationTime - now);
 
@@ -42,7 +50,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
         const [expirationTime, duration] = computeDurationForTimeout();
 
         timeoutRef.current = window.setTimeout(() => {
-            setTime([expirationTime, Date.now(), duration]);
+            setTime([expirationTime, currentTimeMillisWithLocale(), duration]);
 
             //now reschedule in the future.
             scheduleTimeout();

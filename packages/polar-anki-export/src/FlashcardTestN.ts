@@ -1,4 +1,4 @@
-import { FlashCardExport } from './FlashCardExport';
+import { FlashcardExport } from './FlashcardExport';
 import { existsSync, readFileSync} from 'fs';
 import { join } from 'path';
 import { assert } from 'chai';
@@ -7,11 +7,11 @@ import { assert } from 'chai';
 
 describe("Flashcard export", () => {
     it("generates flashcard", async () => {
-        const ankiExport = FlashCardExport.init("test-export");
+        const ankiExport = FlashcardExport.create("test-export");
 
-        ankiExport.addBasic("front example", `<div>back example</div> <img src="FlashCardTestN.png" />`);
+        ankiExport.addBasic("front example", `<div>back example</div> <img src="FlashcardTestN.png" />`);
 
-        ankiExport.addMedia('FlashCardTestN.png', readFileSync(join(__dirname, "FlashCardTestN.png")));
+        ankiExport.addMedia('FlashcardTestN.png', readFileSync(join(__dirname, "FlashcardTestN.png")));
 
         ankiExport.addCloze("text {{c1::deletion}}");
 

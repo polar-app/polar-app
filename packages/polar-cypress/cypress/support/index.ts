@@ -24,6 +24,7 @@ declare global {
     namespace Cypress {
         interface Chainable {
             clearIndexedDB(): void
+            purgeFirebaseUser(email: string): void
         }
     }
 }

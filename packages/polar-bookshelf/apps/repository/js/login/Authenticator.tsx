@@ -287,6 +287,7 @@ const EmailTokenAuthButton = () => {
                                            onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                            placeholder="Enter your Code Here"
                                            variant="outlined"
+                                           type="numeric"
                                            style={{
                                                textAlign: 'center',
                                                flexGrow: 1,
@@ -317,6 +318,7 @@ const EmailTokenAuthButton = () => {
                                        onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                        placeholder="Enter your email address"
                                        variant="outlined"
+                                       type="email"
                                        style={{
                                            textAlign: 'center',
                                            flexGrow: 1,
@@ -433,6 +435,7 @@ export const RegisterForBetaButton = () => {
                                className={classes.email}
                                onChange={event => emailRef.current = event.target.value}
                                placeholder="Enter your email address"
+                               type="email"
                                InputProps={{
                                    startAdornment: (
                                        <EmailIcon style={{margin: '8px'}}/>

@@ -53,33 +53,20 @@ export namespace AccountNotifications {
 }
 
 function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
-    return `Thanks for Buying Polar ${sub.plan.level.toUpperCase()}!`;
+    return `Welcome to Polar ${sub.plan.level.toUpperCase()}! 🚀`;
 }
 
 function createBody(sub: V2Subscription, persona: IFounderPersona, userPersona: IUserPersona): string {
     return `<p>
-I'm ${persona.firstName}, one of the founders here at Polar.
+Welcome to Polar ${sub.plan.level.toUpperCase()}. I'm ${persona.firstName}, one of the founders here at Polar and wanted to briefly say hi.
 </p>
 
 <p>
-I just wanted to say thanks for subscribing to Polar ${sub.plan.level.toUpperCase()}!  We really 
-appreciate the support!
+If you have any questions or run into any issues, let me know directly. Either by email here or in-app through Intercom. We're still at the early stages of Polar but want to provide good support. It also helps us understand how to further improve the product 😊
 </p>
 
 <p>
-Would you have a few minutes to provide your thoughts about Polar?  We rely on these discussions to further improve Polar.
-</p>
-
-<p>
-<a href="${persona.links.userInterviewForPro}">Feel free to book a time here</a>
-</p>
-
-<p>
-Hope to chat soon!
-</p>
-
-<p>
-${persona.firstName}
+Cheers, ${persona.firstName}
 </p>
 
 `;

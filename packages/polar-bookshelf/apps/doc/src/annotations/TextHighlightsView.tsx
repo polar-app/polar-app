@@ -68,11 +68,11 @@ export const BlockTextHighlightRenderer: React.FC<IBlockTextHighlightRendererPro
 
     return (
         <TextHighlightRenderer type="block"
-                                id={pageAnnotation.annotation.id}
-                                container={pageAnnotation.container}
-                                pageNum={pageAnnotation.pageNum}
-                                fingerprint={pageAnnotation.fingerprint}
-                                pageAnnotation={pageAnnotation} />
+                               id={pageAnnotation.annotation.id}
+                               container={pageAnnotation.container}
+                               pageNum={pageAnnotation.pageNum}
+                               fingerprint={pageAnnotation.fingerprint}
+                               pageAnnotation={pageAnnotation} />
     );
 });
 
