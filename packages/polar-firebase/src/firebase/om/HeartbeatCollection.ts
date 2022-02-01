@@ -4,6 +4,7 @@ import {
     ISODateTimeStrings
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 import {IDStr, CollectionNameStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
@@ -30,7 +31,7 @@ export class HeartbeatCollection {
     public static create(uid: UserIDStr): HeartbeatsInit {
 
         const device = Devices.get();
-        const id = uid + device;
+        const id = Hashcodes.create({uid, device});
         const created = ISODateTimeStrings.create();
         const machine = MachineIDs.get();
 
