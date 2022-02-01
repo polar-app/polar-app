@@ -142,7 +142,10 @@ export namespace MigrationCollection {
                      | Omit<IMigrationStarted, 'id' | 'written'>
                      | Omit<IMigrationFailed, 'id' | 'written'>;
 
-
+    /**
+     * @deprecated We should not allow this directly but instead have functions
+     * like markMigrationFailed, markMigrationCompleted, etc.
+     */
     export async function write<SM = undefined>(firestore: IFirestore<SM>,
                                                 write: IWriteData) {
 
