@@ -255,19 +255,6 @@ jobs:
           paths:
             - project
 
-  # @ Build Polar Next.js website
-  build-website-v2:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Next.JS Build
-          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn install && yarn build
-
   # @ Deploy Polar-Bookshelf
   deploy-polar-app:
     parameters:
@@ -535,6 +522,10 @@ workflows:
 
       - build-website-v2:
           executor: large
+          working_directory: /root/project/packages-isolated/website-v2
+          command: |
+            yarn install
+            yarn build
 
       # @ Run Cypress tests for chrome-desktop (1080p)
       - cypress/run:
