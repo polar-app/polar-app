@@ -265,8 +265,11 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Install Next.js dependencies
+          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn install
+      - run:
           name: Next.JS Build
-          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn install && yarn build
+          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn build
       - save_cache:
           key: nextjs-cache-node-modules-{{ checksum "/home/circleci/project/packages-isolated/website-v2/yarn.lock" }}
           paths:
