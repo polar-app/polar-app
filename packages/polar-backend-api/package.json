@@ -21,7 +21,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "polar-blocks": "0.0.0"
+    "polar-blocks": "0.0.0",
+    "@google-cloud/language": "=4.2.5"
   },
   "devDependencies": {
     "@types/mocha": "=9.0.0",
