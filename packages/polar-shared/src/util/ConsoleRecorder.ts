@@ -157,11 +157,20 @@ export namespace ConsoleRecorder {
 
     export function broadcastMessage(message: IConsoleMessage) {
 
+        if (typeof message === 'function') {
+            console.warn("Attempted to broadcast function");
+            return;
+        }
+
         if (typeof window !== 'undefined') {
-            window.postMessage({
-                type: CHANNEL,
-                message
-            }, window.origin)
+            try {
+                window.postMessage({
+                    type: CHANNEL,
+                    message
+                }, window.origin)
+            } catch(e) {
+                delegates.error("Failed to handle broadcastMessage: ", e);
+            }
         }
 
     }
