@@ -38,9 +38,10 @@ export class HeartbeatCollection {
         const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
         const runtime = AppRuntime.get();
+        const ver = 'v2';
 
         return {
-            id, created, uid, platform, machine, version, runtime, device
+            id, created, uid, platform, machine, version, runtime, device, ver
         };
 
     }
@@ -73,6 +74,8 @@ export interface HeartbeatsInit {
     readonly version: VersionStr;
 
     readonly runtime: AppRuntimeID;
+
+    readonly ver: 'v2';
 
     /**
      * phone/tablet/desktop
