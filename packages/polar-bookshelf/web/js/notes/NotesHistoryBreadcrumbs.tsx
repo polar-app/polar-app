@@ -35,10 +35,12 @@ export function useNotesHistory() {
     }, []);
 
     const initialHistory = React.useMemo(() => {
+
         return [
             createHistoryEntry(history.location.pathname)
         ];
-    }, [createHistoryEntry]);
+
+    }, [createHistoryEntry, history]);
 
     const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>(initialHistory);
 
@@ -86,7 +88,7 @@ export function useNotesHistory() {
         });
 
 
-    }, [createHistoryEntry]);
+    }, [createHistoryEntry, history, notesHistory]);
 
     return notesHistory;
 

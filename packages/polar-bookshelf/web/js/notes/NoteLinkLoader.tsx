@@ -20,7 +20,7 @@ export function useNoteLinkLoader() {
         const newURL = RoutePathNames.NOTE(encodeURIComponent(target));
         historyRef.current.push(newURL);
 
-    }, []);
+    }, [historyRef]);
 
     return React.useCallback((target: BlockTargetStr) => {
 
@@ -34,7 +34,7 @@ export function useNoteLinkLoader() {
             doLoadTarget(target);
         }
 
-    }, [historyRef, doLoadTarget]);
+    }, [historyRef, doLoadTarget, blocksStore]);
 
 }
 
