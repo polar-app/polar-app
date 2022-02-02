@@ -393,7 +393,7 @@ importers:
       '@types/amplitude-js': '=7.0.1'
       '@types/chai': 4.2.11
       '@types/deep-equal': '=1.0.1'
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
       '@types/react': '=17.0.2'
@@ -417,7 +417,7 @@ importers:
       framer-motion: '=3.3.0'
       global-jsdom: '=8.4.0'
       js-cookie: '=2.2.1'
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       lodash: '=4.17.15'
       mobx: '=6.3.2'
@@ -506,7 +506,7 @@ importers:
       firebase: 8.10.0
       firebaseui: 4.8.0_firebase@8.10.0
       framer-motion: 3.3.0_react-dom@17.0.2+react@17.0.2
-      global-jsdom: 8.4.0_jsdom@16.7.0
+      global-jsdom: 8.4.0_jsdom@19.0.0
       js-cookie: 2.2.1
       lodash: 4.17.15
       mobx: 6.3.2
@@ -569,7 +569,7 @@ importers:
       '@types/amplitude-js': 7.0.1
       '@types/chai': 4.2.11
       '@types/deep-equal': 1.0.1
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
       '@types/mocha': 9.0.0
       '@types/node': 14.17.9
       '@types/react': 17.0.2
@@ -581,7 +581,7 @@ importers:
       babel-loader: 8.2.3_608c319311616febbd2e9e2a2b07cafe
       chai: 4.2.0
       dotenv: 8.6.0
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
@@ -629,7 +629,7 @@ importers:
     specifiers:
       '@google-cloud/storage': '=5.8.5'
       '@types/node-fetch': 2.5.7
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       node-fetch: '=2.6.1'
       polar-epub: 0.0.0
       polar-epub-generator: 0.0.0
@@ -641,7 +641,7 @@ importers:
     dependencies:
       '@google-cloud/storage': 5.8.5
       '@types/node-fetch': 2.5.7
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       node-fetch: 2.6.1
       polar-epub: link:../polar-epub
       polar-epub-generator: link:../polar-epub-generator
@@ -720,7 +720,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       jszip: '=3.7.1'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
@@ -733,7 +733,7 @@ importers:
       '@types/chai': 4.2.11
       '@types/mocha': 9.0.0
       chai: 4.2.0
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
       polar-test: link:../polar-test
@@ -809,11 +809,11 @@ importers:
   packages/polar-dom-text-search:
     specifiers:
       '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/jsdom-global': 3.0.2
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       jsdom-global: 3.0.2
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
@@ -824,12 +824,12 @@ importers:
       polar-test: link:../polar-test
     devDependencies:
       '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
       '@types/jsdom-global': 3.0.2
       '@types/mocha': 9.0.0
       chai: 4.2.0
-      jsdom: 16.7.0
-      jsdom-global: 3.0.2_jsdom@16.7.0
+      jsdom: 19.0.0
+      jsdom-global: 3.0.2_jsdom@19.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
@@ -849,7 +849,7 @@ importers:
       '@types/mocha': '=9.0.0'
       epubjs: '=0.3.89-polar.23'
       fast-xml-parser: '=3.19.0'
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       node-stream-zip: '=1.14.0'
@@ -857,7 +857,7 @@ importers:
     dependencies:
       epubjs: 0.3.89-polar.23
       fast-xml-parser: 3.19.0
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       node-stream-zip: 1.14.0
       polar-shared: link:../polar-shared
     devDependencies:
@@ -1049,16 +1049,16 @@ importers:
   packages/polar-hacker-news-crawler:
     specifiers:
       '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
     dependencies:
-      '@types/jsdom': 16.2.13
-      jsdom: 16.7.0
+      '@types/jsdom': 16.2.14
+      jsdom: 19.0.0
       polar-shared: link:../polar-shared
     devDependencies:
       '@types/chai': 4.2.11
@@ -1334,10 +1334,10 @@ importers:
 
   packages/polar-page-metadata-parser:
     specifiers:
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/mocha': '=9.0.0'
       '@types/node': '=14.17.9'
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-shared: 0.0.0
@@ -1347,9 +1347,9 @@ importers:
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
       '@types/mocha': 9.0.0
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
 
@@ -1371,7 +1371,7 @@ importers:
   packages/polar-payments-stripe:
     specifiers:
       '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/mocha': '=9.0.0'
       chai: 4.2.0
       mocha: '=9.1.1'
@@ -1397,7 +1397,7 @@ importers:
       stripe: 8.197.0
     devDependencies:
       '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
       '@types/mocha': 9.0.0
       chai: 4.2.0
       mocha: 9.1.1
@@ -1406,11 +1406,11 @@ importers:
   packages/polar-pdf:
     specifiers:
       '@types/chai': 4.2.11
-      '@types/jsdom': '=16.2.13'
+      '@types/jsdom': '=16.2.14'
       '@types/mocha': '=9.0.0'
       canvas: '=2.8.0'
       chai: 4.2.0
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       pdfjs-dist: '=2.8.250-polar.3'
@@ -1418,13 +1418,13 @@ importers:
       polar-test: 0.0.0
     dependencies:
       canvas: 2.8.0
-      jsdom: 16.7.0_canvas@2.8.0
+      jsdom: 19.0.0_canvas@2.8.0
       pdfjs-dist: 2.8.250-polar.3_worker-loader@3.0.8
       polar-shared: link:../polar-shared
       polar-test: link:../polar-test
     devDependencies:
       '@types/chai': 4.2.11
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
       '@types/mocha': 9.0.0
       chai: 4.2.0
       karma-structured-json-reporter: 1.0.1
@@ -1876,7 +1876,7 @@ importers:
 
   packages/polar-web-capture:
     specifiers:
-      jsdom: '=16.7.0'
+      jsdom: '=19.0.0'
       karma-structured-json-reporter: '=1.0.1'
       polar-bookshelf: 0.0.0
       polar-epub-generator: 0.0.0
@@ -1885,7 +1885,7 @@ importers:
       polar-shared: 0.0.0
       readability: 0.2.0-polar.2
     dependencies:
-      jsdom: 16.7.0
+      jsdom: 19.0.0
       polar-bookshelf: link:../polar-bookshelf
       polar-epub-generator: link:../polar-epub-generator
       polar-html: link:../polar-html
@@ -9044,7 +9044,6 @@ packages:
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
-    dev: false
 
   /@types/amplitude-js/7.0.1:
     resolution: {integrity: sha512-xrmhX39GoSBIuOOPWYL5uvVLn6a5Cvea0wb6SkJNW9+2w5GCK6hT0vvMaH1GaaeSqvb1QFjHNsEgXuyQqML0sw==}
@@ -9302,11 +9301,11 @@ packages:
   /@types/jsdom-global/3.0.2:
     resolution: {integrity: sha512-CFIPEDpO5vQWdQrVXrdSR2j5giiDuyb0hzZD04OJqMfizt7sh6WoqaLBdnP4w74yHDDcQkc0k5TzrXffhua3Jg==}
     dependencies:
-      '@types/jsdom': 16.2.13
+      '@types/jsdom': 16.2.14
     dev: true
 
-  /@types/jsdom/16.2.13:
-    resolution: {integrity: sha512-8JQCjdeAidptSsOcRWk2iTm9wCcwn9l+kRG6k5bzUacrnm1ezV4forq0kWjUih/tumAeoG+OspOvQEbbRucBTw==}
+  /@types/jsdom/16.2.14:
+    resolution: {integrity: sha512-6BAy1xXEmMuHeAJ4Fv4yXKwBDTGTOseExKE3OaHiNycdHdZw59KfYzrt0DkDluvwmik1HRt6QS7bImxUmpSy+w==}
     dependencies:
       '@types/node': 16.11.7
       '@types/parse5': 6.0.2
@@ -12522,8 +12521,8 @@ packages:
   /cssom/0.3.8:
     resolution: {integrity: sha512-b0tGHbfegbhPJpxpiBPU2sCkigAqtM9O121le6bbOlgyV+NyGyCmVfJ6QW9eRjz8CpNfWEOYBIMIGRYkLwsIYg==}
 
-  /cssom/0.4.4:
-    resolution: {integrity: sha512-p3pvU7r1MyyqbTk+WbNJIgJjG2VmTIaB10rI93LzVPrmDJKkzKYMtxxyAvQXR/NS6otuzveI7+7BBq3SjBS2mw==}
+  /cssom/0.5.0:
+    resolution: {integrity: sha512-iKuQcq+NdHqlAcwUY0o/HL69XQrUaQdMjmStJ8JFmUaiiQErlhrmuigkg/CU4E2J0IyUKUrMAgl36TvN67MqTw==}
 
   /cssstyle/2.3.0:
     resolution: {integrity: sha512-AZL67abkUzIuvcHqk7c09cezpGNcxUxU4Ioi/05xHk4DQeTkWmGYftIE6ctU6AEt+Gn4n1lDStOtj7FKycP71A==}
@@ -12741,13 +12740,13 @@ packages:
     resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
     engines: {node: '>= 6'}
 
-  /data-urls/2.0.0:
-    resolution: {integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==}
-    engines: {node: '>=10'}
+  /data-urls/3.0.1:
+    resolution: {integrity: sha512-Ds554NeT5Gennfoo9KN50Vh6tpgtvYEwraYjejXnyTpu1C7oXKxdFk75REooENHE8ndTVOJuv+BEs4/J/xcozw==}
+    engines: {node: '>=12'}
     dependencies:
       abab: 2.0.5
-      whatwg-mimetype: 2.3.0
-      whatwg-url: 8.7.0
+      whatwg-mimetype: 3.0.0
+      whatwg-url: 10.0.0
 
   /date-and-time/1.0.1:
     resolution: {integrity: sha512-7u+uNfnjWkX+YFQfivvW24TjaJG6ahvTrfw1auq7KlC7osuGcZBIWGBvB9UcENjH6JnLVhMqlRripk1dSHjAUA==}
@@ -13228,11 +13227,11 @@ packages:
   /domelementtype/2.2.0:
     resolution: {integrity: sha512-DtBMo82pv1dFtUmHyr48beiuq792Sxohr+8Hm9zoxklYPfa6n0Z3Byjj2IV7bmr2IyqClnqEQhfgHJJ5QF0R5A==}
 
-  /domexception/2.0.1:
-    resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
-    engines: {node: '>=8'}
+  /domexception/4.0.0:
+    resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
+    engines: {node: '>=12'}
     dependencies:
-      webidl-conversions: 5.0.0
+      webidl-conversions: 7.0.0
 
   /domhandler/4.2.2:
     resolution: {integrity: sha512-PzE9aBMsdZO8TK4BnuJwH0QT41wgMbRzuZrHUcpYncEjmQazq8QEaBWgLG7ZyC/DAZKEgglpIA6j4Qn/HmxS3w==}
@@ -14877,7 +14876,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.34
-    dev: false
 
   /format/0.2.2:
     resolution: {integrity: sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=}
@@ -15315,13 +15313,13 @@ packages:
     dependencies:
       ini: 2.0.0
 
-  /global-jsdom/8.4.0_jsdom@16.7.0:
+  /global-jsdom/8.4.0_jsdom@19.0.0:
     resolution: {integrity: sha512-0wBpSA/uTbPwMUldVKvPkJmQ30PZacTY8LzXSnTYlptZl6c5OFAVXSb24o1vdvjUNAmIksj+BAJb/c/KSPlLCQ==}
     engines: {node: '>=12'}
     peerDependencies:
       jsdom: '>=10.0.0 || <20'
     dependencies:
-      jsdom: 16.7.0
+      jsdom: 19.0.0
     dev: false
 
   /global-modules/2.0.0:
@@ -15858,11 +15856,11 @@ packages:
       wbuf: 1.7.3
     dev: true
 
-  /html-encoding-sniffer/2.0.1:
-    resolution: {integrity: sha512-D5JbOMBIR/TVZkubHT+OyT2705QvogUW4IBn6nHd756OwieSF9aDYFj4dv6HHEVGYbHaLETa3WggZYWWMyy3ZQ==}
-    engines: {node: '>=10'}
+  /html-encoding-sniffer/3.0.0:
+    resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
+    engines: {node: '>=12'}
     dependencies:
-      whatwg-encoding: 1.0.5
+      whatwg-encoding: 2.0.0
 
   /html-entities/2.3.2:
     resolution: {integrity: sha512-c3Ab/url5ksaT0WyleslpBEthOzWhrjQbg75y7XUsfSzi3Dgzt0l8w5e7DylRn15MTlMMD58dTfzddNS2kcAjQ==}
@@ -15980,7 +15978,6 @@ packages:
       debug: 4.3.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /http-proxy-middleware/2.0.1:
     resolution: {integrity: sha512-cfaXRVoZxSed/BmkA7SwBVNI9Kj7HFltaE5rqYOub5kWzWZ+gofV2koVN1j2rMW7pEfSSlCHGJ31xmuyFyfLOg==}
@@ -16941,17 +16938,17 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: true
 
-  /jsdom-global/3.0.2_jsdom@16.7.0:
+  /jsdom-global/3.0.2_jsdom@19.0.0:
     resolution: {integrity: sha1-a9KZwTsMRiay2iwDk81DhdYGrLk=}
     peerDependencies:
       jsdom: '>=10.0.0'
     dependencies:
-      jsdom: 16.7.0
+      jsdom: 19.0.0
     dev: true
 
-  /jsdom/16.7.0:
-    resolution: {integrity: sha512-u9Smc2G1USStM+s/x1ru5Sxrl6mPYCbByG1U/hUmqaVsm4tbNyS7CicOSRyuGQYZhTu0h84qkZZQ/I+dzizSVw==}
-    engines: {node: '>=10'}
+  /jsdom/19.0.0:
+    resolution: {integrity: sha512-RYAyjCbxy/vri/CfnjUWJQQtZ3LKlLnDqj+9XLNnJPgEGeirZs3hllKR20re8LUZ6o1b1X4Jat+Qd26zmP41+A==}
+    engines: {node: '>=12'}
     peerDependencies:
       canvas: ^2.5.0
     peerDependenciesMeta:
@@ -16961,15 +16958,15 @@ packages:
       abab: 2.0.5
       acorn: 8.5.0
       acorn-globals: 6.0.0
-      cssom: 0.4.4
+      cssom: 0.5.0
       cssstyle: 2.3.0
-      data-urls: 2.0.0
+      data-urls: 3.0.1
       decimal.js: 10.3.1
-      domexception: 2.0.1
+      domexception: 4.0.0
       escodegen: 2.0.0
-      form-data: 3.0.1
-      html-encoding-sniffer: 2.0.1
-      http-proxy-agent: 4.0.1
+      form-data: 4.0.0
+      html-encoding-sniffer: 3.0.0
+      http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.0
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.0
@@ -16978,21 +16975,21 @@ packages:
       symbol-tree: 3.2.4
       tough-cookie: 4.0.0
       w3c-hr-time: 1.0.2
-      w3c-xmlserializer: 2.0.0
-      webidl-conversions: 6.1.0
-      whatwg-encoding: 1.0.5
-      whatwg-mimetype: 2.3.0
-      whatwg-url: 8.7.0
-      ws: 7.5.5
-      xml-name-validator: 3.0.0
+      w3c-xmlserializer: 3.0.0
+      webidl-conversions: 7.0.0
+      whatwg-encoding: 2.0.0
+      whatwg-mimetype: 3.0.0
+      whatwg-url: 10.0.0
+      ws: 8.2.3
+      xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  /jsdom/16.7.0_canvas@2.8.0:
-    resolution: {integrity: sha512-u9Smc2G1USStM+s/x1ru5Sxrl6mPYCbByG1U/hUmqaVsm4tbNyS7CicOSRyuGQYZhTu0h84qkZZQ/I+dzizSVw==}
-    engines: {node: '>=10'}
+  /jsdom/19.0.0_canvas@2.8.0:
+    resolution: {integrity: sha512-RYAyjCbxy/vri/CfnjUWJQQtZ3LKlLnDqj+9XLNnJPgEGeirZs3hllKR20re8LUZ6o1b1X4Jat+Qd26zmP41+A==}
+    engines: {node: '>=12'}
     peerDependencies:
       canvas: ^2.5.0
     peerDependenciesMeta:
@@ -17003,15 +17000,15 @@ packages:
       acorn: 8.5.0
       acorn-globals: 6.0.0
       canvas: 2.8.0
-      cssom: 0.4.4
+      cssom: 0.5.0
       cssstyle: 2.3.0
-      data-urls: 2.0.0
+      data-urls: 3.0.1
       decimal.js: 10.3.1
-      domexception: 2.0.1
+      domexception: 4.0.0
       escodegen: 2.0.0
-      form-data: 3.0.1
-      html-encoding-sniffer: 2.0.1
-      http-proxy-agent: 4.0.1
+      form-data: 4.0.0
+      html-encoding-sniffer: 3.0.0
+      http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.0
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.0
@@ -17020,13 +17017,13 @@ packages:
       symbol-tree: 3.2.4
       tough-cookie: 4.0.0
       w3c-hr-time: 1.0.2
-      w3c-xmlserializer: 2.0.0
-      webidl-conversions: 6.1.0
-      whatwg-encoding: 1.0.5
-      whatwg-mimetype: 2.3.0
-      whatwg-url: 8.7.0
-      ws: 7.5.5
-      xml-name-validator: 3.0.0
+      w3c-xmlserializer: 3.0.0
+      webidl-conversions: 7.0.0
+      whatwg-encoding: 2.0.0
+      whatwg-mimetype: 3.0.0
+      whatwg-url: 10.0.0
+      ws: 8.2.3
+      xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -22401,6 +22398,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       punycode: 2.1.1
+    dev: false
+
+  /tr46/3.0.0:
+    resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
+    engines: {node: '>=12'}
+    dependencies:
+      punycode: 2.1.1
 
   /trim-trailing-lines/1.1.4:
     resolution: {integrity: sha512-rjUWSqnfTNrjbB9NQWfPMH/xRK1deHeGsHoVfpxJ++XeYXE0d6B1En37AHfw3jtfTU7dzMzZL2jjpe8Qb5gLIQ==}
@@ -23087,11 +23091,11 @@ packages:
     dependencies:
       browser-process-hrtime: 1.0.0
 
-  /w3c-xmlserializer/2.0.0:
-    resolution: {integrity: sha512-4tzD0mF8iSiMiNs30BiLO3EpfGLZUT2MSX/G+o7ZywDzliWQ3OPtTZ0PTC3B3ca1UAf4cJMHB+2Bf56EriJuRA==}
-    engines: {node: '>=10'}
+  /w3c-xmlserializer/3.0.0:
+    resolution: {integrity: sha512-3WFqGEgSXIyGhOmAFtlicJNMjEps8b1MG31NCA0/vOF9+nKMUW1ckhi9cnNHmf88Rzw5V+dwIwsm2C7X8k9aQg==}
+    engines: {node: '>=12'}
     dependencies:
-      xml-name-validator: 3.0.0
+      xml-name-validator: 4.0.0
 
   /wait-for-expect/3.0.1:
     resolution: {integrity: sha512-3Ha7lu+zshEG/CeHdcpmQsZnnZpPj/UsG3DuKO8FskjuDbkx3jE3845H+CuwZjA2YWYDfKMU2KhnCaXMLd3wVw==}
@@ -23168,13 +23172,14 @@ packages:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: true
 
-  /webidl-conversions/5.0.0:
-    resolution: {integrity: sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA==}
-    engines: {node: '>=8'}
-
   /webidl-conversions/6.1.0:
     resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
     engines: {node: '>=10.4'}
+    dev: false
+
+  /webidl-conversions/7.0.0:
+    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
+    engines: {node: '>=12'}
 
   /webpack-bundle-analyzer/4.5.0:
     resolution: {integrity: sha512-GUMZlM3SKwS8Z+CKeIFx7CVoHn3dXFcUAjT/dcZQQmfSZGvitPfMob2ipjai7ovFFqPvTqkEZ/leL4O0YOdAYQ==}
@@ -23454,10 +23459,11 @@ packages:
     resolution: {integrity: sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==}
     engines: {node: '>=0.8.0'}
 
-  /whatwg-encoding/1.0.5:
-    resolution: {integrity: sha512-b5lim54JOPN9HtzvK9HFXvBma/rnfFeqsic0hSpjtDbVxR3dJKLc+KB4V6GgiGOvl7CY/KNh8rxSo9DKQrnUEw==}
+  /whatwg-encoding/2.0.0:
+    resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
+    engines: {node: '>=12'}
     dependencies:
-      iconv-lite: 0.4.24
+      iconv-lite: 0.6.3
 
   /whatwg-fetch/2.0.4:
     resolution: {integrity: sha512-dcQ1GWpOD/eEQ97k66aiEVpNnapVj90/+R+SXTPYGHpYBBypfKJEQjLrvMZ7YXbKm21gXd4NcuxUTjiv1YtLng==}
@@ -23466,8 +23472,16 @@ packages:
     resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
     dev: false
 
-  /whatwg-mimetype/2.3.0:
-    resolution: {integrity: sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==}
+  /whatwg-mimetype/3.0.0:
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    engines: {node: '>=12'}
+
+  /whatwg-url/10.0.0:
+    resolution: {integrity: sha512-CLxxCmdUby142H5FZzn4D8ikO1cmypvXVQktsgosNy4a4BHrDHeciBBGZhb0bNoR5/MltoCatso+vFjjGx8t0w==}
+    engines: {node: '>=12'}
+    dependencies:
+      tr46: 3.0.0
+      webidl-conversions: 7.0.0
 
   /whatwg-url/5.0.0:
     resolution: {integrity: sha1-lmRU6HZUYuN2RNNib2dCzotwll0=}
@@ -23490,6 +23504,7 @@ packages:
       lodash: 4.17.21
       tr46: 2.1.0
       webidl-conversions: 6.1.0
+    dev: false
 
   /which-boxed-primitive/1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
@@ -23808,6 +23823,7 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: true
 
   /ws/8.2.3:
     resolution: {integrity: sha512-wBuoj1BDpC6ZQ1B7DWQBYVLphPWkm8i9Y0/3YdHjHKHiohOJ1ws+3OccDWtH+PoC9DZD5WOTrJvNbWvjS6JWaA==}
@@ -23842,8 +23858,9 @@ packages:
       word: 0.3.0
     dev: false
 
-  /xml-name-validator/3.0.0:
-    resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}
+  /xml-name-validator/4.0.0:
+    resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
+    engines: {node: '>=12'}
 
   /xml2js/0.4.19:
     resolution: {integrity: sha512-esZnJZJOiJR9wWKMyuvSE1y6Dq5LCuJanqhxslH2bxM6duahNZ+HMpCLhBQGZkbX6xRf8x1Y2eJlgt2q3qo49Q==}
