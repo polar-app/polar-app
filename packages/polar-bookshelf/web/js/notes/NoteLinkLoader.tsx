@@ -34,7 +34,7 @@ export function useNoteLinkLoader() {
             doLoadTarget(target);
         }
 
-    }, [historyRef, doLoadTarget, blocksStore]);
+    }, [doLoadTarget, blocksStore]);
 
 }
 
