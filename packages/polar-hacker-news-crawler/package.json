@@ -29,8 +29,8 @@
     "karma-structured-json-reporter": "=1.0.1"
   },
   "dependencies": {
-    "@types/jsdom": "=16.2.13",
-    "jsdom": "=16.7.0",
+    "@types/jsdom": "=16.2.14",
+    "jsdom": "=19.0.0",
     "polar-shared": "0.0.0"
   }
 }

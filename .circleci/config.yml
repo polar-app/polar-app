@@ -11,7 +11,7 @@ executors:
   # ! Default Executor for most jobs
   large:
     docker:
-      - image: polarciops/ci:latest
+      - image: polarciops/ci:v2-pw
         auth:
           username: $DOCKER_HUB_USER
           password: $DOCKER_HUB_PASSWORD
@@ -20,7 +20,7 @@ executors:
   # ! Hefty Jobs like Deployment
   xlarge:
     docker:
-      - image: polarciops/ci:latest
+      - image: polarciops/ci:v2-pw
         auth:
           username: $DOCKER_HUB_USER
           password: $DOCKER_HUB_PASSWORD
@@ -164,8 +164,8 @@ jobs:
           command: pnpm run eslint-ci-all
       - check_duplicates
 
-  # @ Run Karma Test Suite
-  karma:
+  # @ Run Karma Test Suite with (Chrome)
+  karma-chrome:
     parameters:
       executor:
         type: executor
@@ -177,7 +177,59 @@ jobs:
       - run:
           name: karma
           no_output_timeout: 120m
-          command: pnpm run karma-all
+          command: export KARMA_BROWSER='ChromiumHeadless' && pnpm run karma-all
+
+      # Generate a combined-karma-result.json file from all karma-result.json files in packages
+      - run:
+          name: combine-karma-coverage
+          command: npm install --prefix=$HOME/.local -g ts-node && npx ts-node-script ./scripts/combine-karma-summaries.ts
+
+      - store_test_results:
+          path: /home/circleci/project/packages
+
+      - store_artifacts:
+          path: /home/circleci/project/combined-karma-result.json
+
+    # @ Run Karma Test Suite with (Safari)
+  karma-safari:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: karma
+          no_output_timeout: 120m
+          command: export KARMA_BROWSER='WebKitHeadless' && pnpm run karma-all
+
+      # Generate a combined-karma-result.json file from all karma-result.json files in packages
+      - run:
+          name: combine-karma-coverage
+          command: npm install --prefix=$HOME/.local -g ts-node && npx ts-node-script ./scripts/combine-karma-summaries.ts
+
+      - store_test_results:
+          path: /home/circleci/project/packages
+
+      - store_artifacts:
+          path: /home/circleci/project/combined-karma-result.json
+
+    # @ Run Karma Test Suite with (firefox)
+  karma-firefox:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: karma
+          no_output_timeout: 120m
+          command: export KARMA_BROWSER='FirefoxHeadless' && pnpm run karma-all
 
       # Generate a combined-karma-result.json file from all karma-result.json files in packages
       - run:
@@ -521,7 +573,19 @@ workflows:
 
       ## ^ Polar App Sub-Workflow Below Here
       # @ Run Karma Tests
-      - karma:
+      - karma-chrome:
+          executor: large
+          requires:
+            - Code-Quality
+            - setting-up
+
+      - karma-safari:
+          executor: large
+          requires:
+            - Code-Quality
+            - setting-up
+
+      - karma-firefox:
           executor: large
           requires:
             - Code-Quality
@@ -603,7 +667,9 @@ workflows:
           requires:
             - approve-deploy
             - mocha
-            - karma
+            - karma-chrome
+            - karma-safari
+            - karma-firefox
           filters:
             branches:
               only:
@@ -619,7 +685,9 @@ workflows:
             - approve-deploy
             - build-polar-app
             - mocha
-            - karma
+            - karma-chrome
+            - karma-safari
+            - karma-firefox
             - cypress-desktop-chrome
             # - cypress-desktop-firefox
             # - cypress-tablet-chrome

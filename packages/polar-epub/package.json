@@ -29,7 +29,7 @@
     "epubjs": "=0.3.89-polar.23",
     "fast-xml-parser": "=3.19.0",
     "node-stream-zip": "=1.14.0",
-    "jsdom": "=16.7.0",
+    "jsdom": "=19.0.0",
     "polar-shared": "0.0.0"
   }
 }
