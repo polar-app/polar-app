@@ -11,10 +11,10 @@ export namespace GCL {
     export interface IAnalyzeEntitySentimentResponse {
 
         /** AnalyzeEntitySentimentResponse entities */
-        readonly entities?: (ReadonlyArray<IEntity>|null);
+        readonly entities?: ReadonlyArray<IEntity> | null;
 
         /** AnalyzeEntitySentimentResponse language */
-        readonly language?: (string|null);
+        readonly language?: string | null;
     }
 
 
@@ -22,22 +22,22 @@ export namespace GCL {
     export interface IEntity {
 
         /** Entity name */
-        readonly name?: (string|null);
+        readonly name?: string | null;
 
         /** Entity type */
-        readonly type?: (Entity.Type|keyof typeof Entity.Type|null);
+        readonly type?: Entity.Type | keyof typeof Entity.Type | null;
 
         /** Entity metadata */
-        readonly metadata?: ({ [k: string]: string }|null);
+        readonly metadata?: { [k: string]: string } | null;
 
         /** Entity salience */
-        readonly salience?: (number|null);
+        readonly salience?: number | null;
 
         /** Entity mentions */
-        readonly mentions?: (ReadonlyArray<IEntityMention>|null);
+        readonly mentions?: ReadonlyArray <IEntityMention> | null;
 
         /** Entity sentiment */
-        readonly sentiment?: (ISentiment|null);
+        readonly sentiment?: ISentiment | null;
     }
 
     export namespace Entity {
@@ -63,23 +63,23 @@ export namespace GCL {
     export interface ISentiment {
 
         /** Sentiment magnitude */
-        readonly magnitude?: (number|null);
+        readonly magnitude?: number | null;
 
         /** Sentiment score */
-        readonly score?: (number|null);
+        readonly score?: number | null;
     }
 
     /** Properties of an EntityMention. */
     export interface IEntityMention {
 
         /** EntityMention text */
-        readonly text?: (ITextSpan|null);
+        readonly text?: ITextSpan | null;
 
         /** EntityMention type */
-        readonly type?: (EntityMention.Type|keyof typeof EntityMention.Type|null);
+        readonly type?: EntityMention.Type | keyof typeof EntityMention.Type | null;
 
         /** EntityMention sentiment */
-        readonly sentiment?: (ISentiment|null);
+        readonly sentiment?: ISentiment | null;
     }
     
     export namespace EntityMention {
@@ -96,9 +96,9 @@ export namespace GCL {
     export interface ITextSpan {
 
         /** TextSpan content */
-        readonly content?: (string|null);
+        readonly content?: string | null;
 
         /** TextSpan beginOffset */
-        readonly beginOffset?: (number|null);
+        readonly beginOffset?: number | null;
     }
 }
