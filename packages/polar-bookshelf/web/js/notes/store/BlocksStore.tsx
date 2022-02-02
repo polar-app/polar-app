@@ -60,7 +60,9 @@ import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlockHighlights} from "polar-blocks/src/annotations/BlockHighlights";
 import {Analytics} from "../../analytics/Analytics";
-import {BlocksAnnotationRepoStore} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
+import {
+    BlocksAnnotationRepoStore
+} from "../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../BlockTextContentUtils";
 
@@ -684,18 +686,24 @@ export class BlocksStore implements IBlocksStore {
 
                 this.relatedTagsManager.update(block.root, 'set', block.content.getTags());
 
-                if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
-                    if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
-                        const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
-                        const tag = { id: existingBlock.id, label: oldName };
-                        this.relatedTagsManager.update(block.root, 'delete', [tag]);
-                    }
+                // TODO: we need a way to keep track of the the graph of blocks
+                // so that if the Foo page has a link to the Bar page that we
+                // update the related tags manager to include this relationship
 
-                    const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
-                    const tag = { id: block.id, label: newName };
-                    this.relatedTagsManager.update(block.root, 'set', [tag]);
+                // if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
+                //
+                //     if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
+                //         const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
+                //         const tag = { id: existingBlock.id, label: oldName };
+                //         this.relatedTagsManager.update(block.root, 'delete', [tag]);
+                //     }
+                //
+                //     const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
+                //     const tag = { id: block.id, label: newName };
+                //     this.relatedTagsManager.update(block.root, 'set', [tag]);
+                //
+                // }
 
-                }
             }
         }
 
