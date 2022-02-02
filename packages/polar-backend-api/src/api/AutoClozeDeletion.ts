@@ -1,12 +1,12 @@
-import { google } from '@google-cloud/language/build/protos/protos';
+import { GCL } from "./GCL";
 
 export interface AutoClozeDeletionRequest {
     readonly text: string;
 }
 
 export interface AutoClozeDeletionResponse {
-    clozeDeletions: ReadonlyArray<string>;
-    readonly GCLResponse: google.cloud.language.v1.IAnalyzeEntitiesResponse;
+    readonly clozeDeletionText: string;
+    readonly GCLResponse: GCL.IAnalyzeEntitySentimentResponse;
 }
 
 export interface AutoClozeDeletionError {
