@@ -29,8 +29,8 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "../../BlockTextContentUtils";
-import assertPresent = Asserts.assertPresent;
 import {BlockAsserts, BlocksStoreTestUtils} from "./BlocksStoreTestUtils";
+import assertPresent = Asserts.assertPresent;
 
 
 /**
@@ -174,13 +174,6 @@ describe('BlocksStore', function() {
                             "refs": 1
                         }
                     }
-                },
-                "2020document": {
-                    "tagRefs": {
-                        "Potato document": {
-                            "refs": 1
-                        }
-                    }
                 }
             },
             "tagDocsIndex": {
@@ -201,12 +194,6 @@ describe('BlocksStore', function() {
                         "113": true
                     },
                     "tag": "Image parent"
-                },
-                "Potato document": {
-                    "docs": {
-                        "2020document": true
-                    },
-                    "tag": "Potato document"
                 },
                 "Russia": {
                     "docs": {
@@ -251,10 +238,6 @@ describe('BlocksStore', function() {
                 "113": {
                     "id": "113",
                     "label": "Image parent"
-                },
-                "2020document": {
-                    "id": "2020document",
-                    "label": "Potato document"
                 }
             }
         });

@@ -128,6 +128,7 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
 
 
 export const useBlockTagEditorDialog = () => {
+
     const blocksStore = useBlocksStore();
     const dialogs = useDialogManager();
     const updateBlockTags = useUpdateBlockTags();
@@ -156,10 +157,11 @@ export const useBlockTagEditorDialog = () => {
             tagsProvider: () => blocksUserTagsDB.tags(),
             dialogs,
             doTagged: updateBlockTags,
+            relatedOptionsCalculator: blocksStore.relatedTagsManager.toRelatedOptionsCalculator()
         };
 
-
         TaggedCallbacks.create(opts)();
+
     }, [blocksStore, blocksUserTagsDB, dialogs, updateBlockTags]);
 };
 
