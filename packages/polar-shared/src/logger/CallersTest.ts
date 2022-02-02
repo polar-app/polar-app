@@ -9,7 +9,7 @@ describe('Callers', function() {
 
         it("call method and to make sure we get the right caller", async function() {
 
-            Browsers.when(['chrome', 'firefox'], () => {
+            Browsers.when(['chrome'], () => {
 
                 const actual = myCaller();
                 actual.filename = actual.filename.replace(/\.(js|ts)/, '.js');
