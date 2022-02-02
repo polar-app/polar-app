@@ -255,6 +255,26 @@ jobs:
           paths:
             - project
 
+  # @ Build Polar Next.js website
+  build-website-v2:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install Next.js dependencies
+          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn install
+      - run:
+          name: Next.JS Build
+          command: cd /home/circleci/project/packages-isolated/website-v2 && yarn build
+      - save_cache:
+          key: nextjs-cache-{{ checksum "/home/circleci/project/packages-isolated/website-v2/yarn.lock" }}
+          paths:
+            - /home/circleci/project/packages-isolated/website-v2/node_modules
+            - /home/circleci/project/packages-isolated/website-v2/.next/cache
   # @ Deploy Polar-Bookshelf
   deploy-polar-app:
     parameters:
@@ -483,7 +503,7 @@ workflows:
                 - master
 
       ## ^ Commonality Between Sub-Workflows
-      # @ Setup the repo for the subsquent stages
+      # @ Setup the repo for the subsequent stages
       - setting-up:
           executor: large
 
@@ -518,6 +538,11 @@ workflows:
           executor: large
           requires:
             - Code-Quality
+            - setting-up
+
+      - build-website-v2:
+          executor: large
+          requires:
             - setting-up
 
       # @ Run Cypress tests for chrome-desktop (1080p)
