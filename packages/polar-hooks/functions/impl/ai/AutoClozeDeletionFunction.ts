@@ -5,20 +5,28 @@ import { GCLAnalyzeEntities } from "polar-google-cloud-language/src/GCLAnalyzeEn
 
 export namespace AutoClozeDeletion {
 
-    function generateClozeDeletions( text: string,
-        entities: ReadonlyArray<GCLAnalyzeEntities.IEntity> ): ReadonlyArray<string> {
 
-        const clozeDeletions = [];
+    function clozeDeletionTagGenerator(seed: number = 1): (deletion: string) => string {
+        return (deletion: string): string => {
+            const tag = `{{c${seed}::${deletion}}}`
+            seed++;
+            return tag;
+        }
+    }
+    function generateClozeDeletions(text: string,
+                                    entities: ReadonlyArray<GCLAnalyzeEntities.IEntity> ): string {
+
+        let mutText = text;
+
+        const createClozeDeletionTag = clozeDeletionTagGenerator();
 
         for (const entity of entities) {
             if (entity.name) {
-                clozeDeletions.push(
-                    text.replace(entity.name, `{{c1::${entity.name}}}`)
-                );
+                mutText = mutText.replace(entity.name, createClozeDeletionTag(entity.name))
             }
         }
 
-        return clozeDeletions;
+        return mutText;
     }
 
     export async function analyzeText(text: string): Promise<AutoClozeDeletionResponse | AutoClozeDeletionError> {
@@ -32,13 +40,13 @@ export namespace AutoClozeDeletion {
         }
 
         return {
-            clozeDeletions: generateClozeDeletions(text, analysis.entities),
+            clozeDeletionText: generateClozeDeletions(text, analysis.entities),
             GCLResponse: analysis
         }
     }
 
-    export async function exec( idUser: IDUser,
-        request: AutoClozeDeletionRequest ): Promise<AutoClozeDeletionResponse | AutoClozeDeletionError> {
+    export async function exec(idUser: IDUser,
+                               request: AutoClozeDeletionRequest): Promise<AutoClozeDeletionResponse | AutoClozeDeletionError> {
         
         return await analyzeText(request.text);
     }
