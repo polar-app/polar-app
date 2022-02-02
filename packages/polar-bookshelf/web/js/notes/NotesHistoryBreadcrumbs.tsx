@@ -6,6 +6,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {useHistory} from "react-router-dom";
 import {URLPathStr} from "polar-shared/src/util/Strings";
+import {NoteURLs} from "./NoteURLs";
 
 interface IHistoryEntry {
     readonly title: string;
@@ -22,11 +23,22 @@ export function useNotesHistory() {
 
     const history = useHistory();
 
-    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<URLPathStr>>([])
+    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>([])
 
     React.useEffect(() => {
 
         return history.listen((location, action) => {
+
+            function createHistoryEntry(pathname: URLPathStr): IHistoryEntry {
+
+                const noteURL = NoteURLs.parse(pathname);
+
+                return {
+                    title: noteURL.target,
+                    path: pathname
+                };
+
+            }
 
             switch (action) {
 
@@ -34,7 +46,7 @@ export function useNotesHistory() {
 
                     function doPush() {
                         const result = [...notesHistory];
-                        result.push(location.pathname);
+                        result.push(createHistoryEntry(location.pathname));
                         return result;
                     }
 
@@ -55,7 +67,7 @@ export function useNotesHistory() {
 
                     function doReplace() {
                         const result = [...notesHistory];
-                        result[result.length - 1] = location.pathname;
+                        result[result.length - 1] = createHistoryEntry(location.pathname);
                         return result;
                     }
 
