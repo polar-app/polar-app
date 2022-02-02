@@ -17,6 +17,7 @@ import moment from 'moment';
 import {RepositoryToolbar} from '../apps/repository/RepositoryToolbar';
 import NotesIcon from "@material-ui/icons/Notes";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
+import {NotesHistoryBreadcrumbsUsingHistory} from "./NotesHistoryBreadcrumbs";
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -132,6 +133,9 @@ const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
                             <NotesIcon />
                         </StandardIconButton>
                     </div>
+
+                    <NotesHistoryBreadcrumbsUsingHistory/>
+
                     <div style={{marginLeft: 'auto'}}>
                         {/*<SearchForNoteHandheld />*/}
                         <MUIMenu button={{ icon: <MoreVertIcon/>, size: 'small' }}>

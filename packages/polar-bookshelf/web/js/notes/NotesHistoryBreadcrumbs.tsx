@@ -23,22 +23,28 @@ export function useNotesHistory() {
 
     const history = useHistory();
 
-    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>([])
+    const createHistoryEntry = React.useCallback((pathname: URLPathStr): IHistoryEntry => {
+
+        const noteURL = NoteURLs.parse(pathname);
+
+        return {
+            title: noteURL.target,
+            path: pathname
+        };
+
+    }, []);
+
+    const initialHistory = React.useMemo(() => {
+        return [
+            createHistoryEntry(history.location.pathname)
+        ];
+    }, [createHistoryEntry]);
+
+    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>(initialHistory);
 
     React.useEffect(() => {
 
         return history.listen((location, action) => {
-
-            function createHistoryEntry(pathname: URLPathStr): IHistoryEntry {
-
-                const noteURL = NoteURLs.parse(pathname);
-
-                return {
-                    title: noteURL.target,
-                    path: pathname
-                };
-
-            }
 
             switch (action) {
 
@@ -80,7 +86,7 @@ export function useNotesHistory() {
         });
 
 
-    });
+    }, [createHistoryEntry]);
 
     return notesHistory;
 
@@ -99,6 +105,10 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    if (props.history.length === 0) {
+        return null;
+    }
 
     return (
         <>
@@ -148,4 +158,12 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
         </>
     )
 
+}
+
+export const NotesHistoryBreadcrumbsUsingHistory = () => {
+    const notesHistory = useNotesHistory();
+
+    return (
+        <NotesHistoryBreadcrumbs history={notesHistory}/>
+    )
 }
