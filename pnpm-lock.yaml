@@ -271,13 +271,11 @@ importers:
 
   packages/polar-backend-api:
     specifiers:
-      '@google-cloud/language': '=4.2.5'
       '@types/mocha': '=9.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
       polar-blocks: 0.0.0
     dependencies:
-      '@google-cloud/language': 4.2.5
       polar-blocks: link:../polar-blocks
     devDependencies:
       '@types/mocha': 9.0.0
