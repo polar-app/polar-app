@@ -4,10 +4,10 @@ import {TextStr} from "polar-shared/src/util/Strings";
 import { google } from '@google-cloud/language/build/protos/protos';
 
 export namespace GCLAnalyzeEntities {
-    export type IAnalyizeEntitiesResponse = google.cloud.language.v1.IAnalyzeEntitySentimentResponse;
+    export type IAnalyzeEntitySentimentResponse = google.cloud.language.v1.IAnalyzeEntitySentimentResponse;
     export type IEntity = google.cloud.language.v1.IEntity;
 
-    export async function analyzeEntities(content: TextStr): Promise<IAnalyizeEntitiesResponse> {
+    export async function analyzeEntities(content: TextStr): Promise<IAnalyzeEntitySentimentResponse> {
 
         GCLCredentials.init();
 
