@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import useTheme from "@material-ui/core/styles/useTheme";
+import {useHistory} from "react-router-dom";
+import {URLPathStr} from "polar-shared/src/util/Strings";
 
 interface IHistoryEntry {
     readonly title: string;
@@ -16,7 +18,63 @@ export interface NotesHistoryProps {
 
 }
 
-export const NotesHistory = (props: NotesHistoryProps) => {
+export function useNotesHistory() {
+
+    const history = useHistory();
+
+    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<URLPathStr>>([])
+
+    React.useEffect(() => {
+
+        return history.listen((location, action) => {
+
+            switch (action) {
+
+                case 'PUSH':
+
+                    function doPush() {
+                        const result = [...notesHistory];
+                        result.push(location.pathname);
+                        return result;
+                    }
+
+                    setNotesHistory(doPush())
+
+                    break;
+                case 'POP':
+
+                    function doPop() {
+                        const result = [...notesHistory];
+                        result.pop();
+                        return result;
+                    }
+
+                    setNotesHistory(doPop())
+                    break;
+                case 'REPLACE':
+
+                    function doReplace() {
+                        const result = [...notesHistory];
+                        result[result.length - 1] = location.pathname;
+                        return result;
+                    }
+
+                    setNotesHistory(doReplace())
+
+                    break;
+
+            }
+
+        });
+
+
+    });
+
+    return notesHistory;
+
+}
+
+export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
     const theme = useTheme()
 
