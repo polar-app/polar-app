@@ -7,11 +7,11 @@ import {Version, VersionStr} from "polar-shared/src/util/Version";
 import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 import {IDStr, CollectionNameStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
-import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Device, Devices} from "polar-shared/src/util/Devices";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import { DeviceIDManager } from "polar-shared/src/util/DeviceIDManager";
 
 export class HeartbeatCollection {
 
@@ -30,18 +30,18 @@ export class HeartbeatCollection {
 
     public static create(uid: UserIDStr): HeartbeatsInit {
 
-        const device = Devices.get();
-        const id = Hashcodes.create({uid, device});
+        const deviceID = DeviceIDManager.DEVICE_ID;
+        const id = Hashcodes.create({uid, deviceID});
         const created = ISODateTimeStrings.create();
         const machine = MachineIDs.get();
 
         const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
-        const runtime = AppRuntime.get();
+        const userAgent = navigator.userAgent;
         const ver = 'v2';
 
         return {
-            id, created, uid, platform, machine, version, runtime, device, ver
+            id, created, uid, platform, machine, version, deviceID, ver, userAgent
         };
 
     }
@@ -73,14 +73,14 @@ export interface HeartbeatsInit {
 
     readonly version: VersionStr;
 
-    readonly runtime: AppRuntimeID;
-
     readonly ver: 'v2';
+
+    readonly userAgent: string;
 
     /**
      * phone/tablet/desktop
      */
-    readonly device: Device;
+    readonly deviceID: string;
 }
 
 export interface Heartbeat extends HeartbeatsInit {
