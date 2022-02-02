@@ -690,19 +690,24 @@ export class BlocksStore implements IBlocksStore {
                 // so that if the Foo page has a link to the Bar page that we
                 // update the related tags manager to include this relationship
 
-                // if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
-                //
-                //     if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
-                //         const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
-                //         const tag = { id: existingBlock.id, label: oldName };
-                //         this.relatedTagsManager.update(block.root, 'delete', [tag]);
-                //     }
-                //
-                //     const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
-                //     const tag = { id: block.id, label: newName };
-                //     this.relatedTagsManager.update(block.root, 'set', [tag]);
-                //
-                // }
+                if (block.id === block.root && BlockPredicates.isTextBlock(block)) {
+
+                    if (! BlockPredicates.isDocumentBlock(block) &&
+                        ! BlockPredicates.isDateBlock(block)) {
+
+                        if (existingBlock && BlockPredicates.isTextBlock(existingBlock)) {
+                            const oldName = BlockTextContentUtils.getTextContentMarkdown(existingBlock.content);
+                            const tag = { id: existingBlock.id, label: oldName };
+                            this.relatedTagsManager.update(block.root, 'delete', [tag]);
+                        }
+
+                        const newName = BlockTextContentUtils.getTextContentMarkdown(block.content);
+                        const tag = { id: block.id, label: newName };
+                        this.relatedTagsManager.update(block.root, 'set', [tag]);
+
+                    }
+
+                }
 
             }
         }
