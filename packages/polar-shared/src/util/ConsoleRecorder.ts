@@ -163,6 +163,11 @@ export namespace ConsoleRecorder {
         }
 
         if (typeof window !== 'undefined') {
+
+            // TODO: firestore will log message / objects with circular
+            // references and functions which means that the structured clone
+            // algorithm can't work here and we sometimes get errors.
+
             try {
                 window.postMessage({
                     type: CHANNEL,
@@ -177,6 +182,6 @@ export namespace ConsoleRecorder {
 
 }
 
-// NOTE: I don't like this but it's the only way
+// NOTE: I don't like this, but it's the only way
 
 ConsoleRecorder.init();

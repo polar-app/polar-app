@@ -22,6 +22,8 @@ interface IBuffer<T> {
      */
     readonly flushable: () => boolean;
 
+    readonly peek: () => ReadonlyArray<T>;
+
     /**
      * Create a snapshot of the underlying data and reset the internal buffer.
      */
@@ -44,9 +46,13 @@ function useBuffer<T>(capacity: number): IBuffer<T> {
         return buff.splice(0, buff.length);
     }, [buff])
 
+    const peek = React.useCallback(() => {
+        return [...buff];
+    }, [buff]);
+
     return React.useMemo(() => {
         return {
-            push, flushable, snapshotAndReset
+            push, flushable, snapshotAndReset, peek
         }
     }, [flushable, push, snapshotAndReset])
 
@@ -112,6 +118,12 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
         const snapshot = mutationBuffer.snapshotAndReset()
 
+        if (snapshot.length === 0) {
+            // there's nothing to commit.  This can happen if we've manually
+            // flushed
+            return;
+        }
+
         // IMPORTANT NOTE: with this mechanism, we might write to a block N
         // times but the operations are ordered so the last writer wins, so, I
         // think this should be safe.
@@ -130,6 +142,54 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     const debouncer = useDebouncer(doCommit, 5000);
 
+    /**
+     * Return true if a flush is required.
+     */
+    const flushRequired = React.useCallback(() => {
+
+        const snapshot = mutationBuffer.peek();
+
+        // Go through all mutations and if ANY mutation is for a document we
+        // require a flush. initially I was thinking that we would only do this
+        // if there was just one mutation and it was a document which normally
+        // would work fine, however, if the user types a bunch of text in the
+        // sidebar, then they click, flag on the document, we would want to
+        // flush everything immediately.
+        //
+        // Additionally, we flush immediately if more than one block ID is
+        // involved in the mutations.  This would happen during splits
+        // and other mutations.
+
+        const docIDs: {[key: string]: boolean} = {};
+
+        for(const mutation of snapshot) {
+
+            function computeBlock() {
+                switch (mutation.type) {
+                    case "added":
+                        return mutation.added;
+                    case "removed":
+                        return mutation.removed;
+                    case "modified":
+                        return mutation.after;
+
+                }
+            }
+
+            const block = computeBlock();
+
+            if (block.content.type === 'document') {
+                return true;
+            }
+
+            docIDs[block.id] = true;
+
+        }
+
+        return Object.keys(docIDs).length > 1;
+
+    }, [mutationBuffer])
+
     return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
         mutationBuffer.push(mutations);
@@ -144,7 +204,11 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             doCommit();
         }
 
-    }, [debouncer, doCommit, mutationBuffer]);
+        if (flushRequired()) {
+            doCommit();
+        }
+
+    }, [debouncer, doCommit, mutationBuffer, flushRequired]);
 
 }
 
