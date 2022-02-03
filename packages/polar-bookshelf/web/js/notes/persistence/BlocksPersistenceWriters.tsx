@@ -54,7 +54,7 @@ function useBuffer<T>(capacity: number): IBuffer<T> {
         return {
             push, flushable, snapshotAndReset, peek
         }
-    }, [flushable, push, snapshotAndReset])
+    }, [flushable, push, snapshotAndReset, peek])
 
 }
 
