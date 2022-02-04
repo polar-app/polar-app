@@ -2,6 +2,7 @@
 import {Functions} from './Functions';
 import {assert} from 'chai';
 import {Strings} from "./Strings";
+import {Browsers} from "polar-browsers/src/Browsers";
 
 describe('Functions', function() {
 
@@ -78,18 +79,21 @@ describe('Functions', function() {
 
     it("anonymize static function", async function () {
 
-        assert.equal(Strings.toUnixLineNewLines(MyClass.staticFunction.toString()),
-                     "staticFunction(val) {\n" +
-                         "        return val;\n" +
-                         "    }");
+        Browsers.when(['chrome', 'firefox'], () => {
 
-        assert.equal(Strings.toUnixLineNewLines(Functions._anonymizeFunction(MyClass.staticFunction.toString())),
-                     "(val) {\n" +
-                         "        return val;\n" +
-                         "    }");
+            assert.equal(Strings.toUnixLineNewLines(MyClass.staticFunction.toString()),
+                        "staticFunction(val) {\n" +
+                        "        return val;\n" +
+                        "    }");
+
+            assert.equal(Strings.toUnixLineNewLines(Functions._anonymizeFunction(MyClass.staticFunction.toString())),
+                        "(val) {\n" +
+                        "        return val;\n" +
+                        "    }");
+
+        });
 
     });
-
 
     it("test inline", async function () {
 

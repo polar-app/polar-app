@@ -183,7 +183,8 @@ export class RelatedTagsManager {
         const tagHitsDesc = Object.values(tagHits)
             // remove the input tags from the results...
             .filter(current => ! tags.includes(current.tag))
-            .filter(current => current.hits > 1)
+            // TODO: I removed the minimum hits filter as I think this is still valuable
+            // .filter(current => current.hits > 1)
             // sort the results descending.
             .sort((hit0, hit1) => hit1.hits - hit0.hits);
 

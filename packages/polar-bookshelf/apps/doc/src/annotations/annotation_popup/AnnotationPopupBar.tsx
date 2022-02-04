@@ -8,6 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FlashAutoIcon from "@material-ui/icons/FlashAuto";
 import CommentIcon from "@material-ui/icons/Comment";
 import PaletteIcon from "@material-ui/icons/Palette";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {StandardIconButton} from "../../../../repository/js/doc_repo/buttons/StandardIconButton";
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -77,9 +78,9 @@ export const AnnotationPopupBar: React.FC = () => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                {/*<ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>*/}
-                {/*    <LocalOfferIcon />*/}
-                {/*</ActionButton>*/}
+                <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
+                    <LocalOfferIcon />
+                </ActionButton>
                 <Divider orientation="vertical" flexItem />
                 <StandardIconButton
                     tooltip="Copy"

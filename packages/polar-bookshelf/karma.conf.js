@@ -73,7 +73,7 @@ module.exports = (config) => {
 
             }
         },
-        browsers: ['ChromeHeadless'],
+        browsers: [process.env.KARMA_BROWSER || 'ChromiumHeadless'],
 
         customHeaders: [
             {
@@ -92,13 +92,13 @@ module.exports = (config) => {
         frameworks: ['mocha', 'webpack'],
 
         plugins: [
-            'karma-chrome-launcher',
-            'karma-webpack',
             'karma-mocha',
+            'karma-webpack',
             'karma-spec-reporter',
             'karma-junit-reporter',
             'karma-summary-reporter',
             'karma-structured-json-reporter',
+            '@onslip/karma-playwright-launcher',
         ],
 
         files: getFiles(),

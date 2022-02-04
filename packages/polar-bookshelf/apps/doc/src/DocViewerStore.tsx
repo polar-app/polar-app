@@ -32,7 +32,6 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TaggedCallbacks} from "../../repository/js/annotation_repo/TaggedCallbacks";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import isEqual from 'react-fast-compare';
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
@@ -339,7 +338,6 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const docMetaContext = useDocMetaContext();
     const persistenceLayerContext = usePersistenceLayerContext();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
-    const dialogs = useDialogManager();
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
     const blocksStore = useBlocksStore();
     const blockTagEditorDialog = useBlockTagEditorDialog();
@@ -872,6 +870,9 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             }
 
             mutator(docMeta);
+
+            // Update the in-memory stores
+            updateDocMeta(docMeta);
 
             const documentBlock = getBlockForDocument(blocksStore, docMeta.docInfo.fingerprint);
 

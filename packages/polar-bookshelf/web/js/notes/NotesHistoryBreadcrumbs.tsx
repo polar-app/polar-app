@@ -4,6 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import useTheme from "@material-ui/core/styles/useTheme";
+import {useHistory} from "react-router-dom";
+import {URLPathStr} from "polar-shared/src/util/Strings";
+import {NoteURLs} from "./NoteURLs";
 
 interface IHistoryEntry {
     readonly title: string;
@@ -16,7 +19,82 @@ export interface NotesHistoryProps {
 
 }
 
-export const NotesHistory = (props: NotesHistoryProps) => {
+export function useNotesHistory() {
+
+    const history = useHistory();
+
+    const createHistoryEntry = React.useCallback((pathname: URLPathStr): IHistoryEntry => {
+
+        const noteURL = NoteURLs.parse(pathname);
+
+        return {
+            title: noteURL.target,
+            path: pathname
+        };
+
+    }, []);
+
+    const initialHistory = React.useMemo(() => {
+
+        return [
+            createHistoryEntry(history.location.pathname)
+        ];
+
+    }, [createHistoryEntry, history]);
+
+    const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>(initialHistory);
+
+    React.useEffect(() => {
+
+        return history.listen((location, action) => {
+
+            switch (action) {
+
+                case 'PUSH':
+
+                    function doPush() {
+                        const result = [...notesHistory];
+                        result.push(createHistoryEntry(location.pathname));
+                        return result;
+                    }
+
+                    setNotesHistory(doPush())
+
+                    break;
+                case 'POP':
+
+                    function doPop() {
+                        const result = [...notesHistory];
+                        result.pop();
+                        return result;
+                    }
+
+                    setNotesHistory(doPop())
+                    break;
+                case 'REPLACE':
+
+                    function doReplace() {
+                        const result = [...notesHistory];
+                        result[result.length - 1] = createHistoryEntry(location.pathname);
+                        return result;
+                    }
+
+                    setNotesHistory(doReplace())
+
+                    break;
+
+            }
+
+        });
+
+
+    }, [createHistoryEntry, history, notesHistory]);
+
+    return notesHistory;
+
+}
+
+export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
     const theme = useTheme()
 
@@ -29,6 +107,10 @@ export const NotesHistory = (props: NotesHistoryProps) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    if (props.history.length === 0) {
+        return null;
+    }
 
     return (
         <>
@@ -78,4 +160,12 @@ export const NotesHistory = (props: NotesHistoryProps) => {
         </>
     )
 
+}
+
+export const NotesHistoryBreadcrumbsUsingHistory = () => {
+    const notesHistory = useNotesHistory();
+
+    return (
+        <NotesHistoryBreadcrumbs history={notesHistory}/>
+    )
 }

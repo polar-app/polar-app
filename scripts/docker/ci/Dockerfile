@@ -5,14 +5,10 @@ FROM cimg/node:14.17.0
 USER circleci
 
 # ! Set Environment Variables
-ENV CHROME_BIN='/usr/bin/chromium-browser' GOPATH="/home/circleci/go" PATH="/home/circleci/go/bin:$PATH" POLAR_EXTENSION_TYPE="PROD" ENV_NAME="master"
+ENV GOPATH="/home/circleci/go" PATH="/home/circleci/go/bin:$PATH" POLAR_EXTENSION_TYPE="PROD" ENV_NAME="master"
 
 # ? Install Linux binaries / Chromium
-RUN sudo apt update && sudo apt install golang-go libvips libvips-dev pngquant software-properties-common --fix-missing -y
-    
-RUN sudo add-apt-repository ppa:saiarcot895/chromium-beta -y && \
-    sudo apt update && \
-    sudo apt install -y chromium-browser
+RUN sudo apt update && sudo apt install golang-go libvips libvips-dev pngquant --fix-missing -y
 
 # ? Configure tag publishing setup
 RUN mkdir ~/.ssh && \
@@ -24,6 +20,9 @@ RUN mkdir ~/.ssh && \
 # ? Install Global node_modules
 RUN sudo npm install -g pnpm && \
     sudo pnpm add firebase-tools only-allow semver jscpd @jscpd/leveldb-store --global
+
+# $ Install Playwright's Dependencies
+RUN pnpm dlx playwright install && sudo pnpm dlx playwright install-deps
 
 # $ Set npm configurations
 RUN npm config set legacy-peer-deps true
