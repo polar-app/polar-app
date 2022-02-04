@@ -51,6 +51,7 @@ import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
+import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 
 interface IDocRepoStore {
 
@@ -98,11 +99,6 @@ interface IDocRepoCallbacks {
     readonly setSelected: (selected: ReadonlyArray<IDStr> | 'all' | 'none') => void;
     readonly setFilters: (filters: DocRepoFilters2.Filter) => void;
     readonly setSort: (order: Sorting.Order, orderBy: keyof IDocInfo) => void;
-
-    // *** actual actions that manipulate the backend
-    readonly doTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>,
-                        tags: ReadonlyArray<Tag>,
-                        strategy: ComputeNewTagsStrategy) => void;
 
     readonly doOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly doRename: (repoDocInfo: RepoDocInfo, title: string) => void;
@@ -361,46 +357,27 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     // **** action / mutators
 
-    function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>,
-                      tags: ReadonlyArray<Tag>,
-                      strategy: ComputeNewTagsStrategy = 'set'): void {
-
-        function toAsyncTransaction(repoDocInfo: RepoDocInfo) {
-            const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
-            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
-        }
-
-        withBatch(repoDocInfos.map(toAsyncTransaction))
-            .then(() => Analytics.event2("doc-tagged", { count: repoDocInfos.length }))
-            .catch(err => log.error(err));
-
-    }
-
     function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
 
         const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
 
             function prepare() {
-                repoDocInfo.archived = archived;
-                repoDocInfo.docInfo.archived = archived;
+                const newRepoDocInfo: RepoDocInfo = { ...repoDocInfo, archived };
+                repoDocMetaManager.repoDocInfoIndex.put(repoDocInfo.fingerprint, newRepoDocInfo);
             }
 
-            function commit() {
-                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
+            async function commit() {
+                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
+                    content.docInfo.archived = archived;
+                });
             }
 
             return {prepare, commit};
         }
 
-        const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
-            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
-                content.docInfo.archived = archived;
-            });
-        };
 
         async function doHandle() {
             await withBatch(repoDocInfos.map(toAsyncTransaction));
-            repoDocInfos.forEach(persistToBlocksStore);
             Analytics.event2("doc-archived", { count: repoDocInfos.length, archived });
         }
 
@@ -414,29 +391,23 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
 
             function prepare() {
-                repoDocInfo.flagged = flagged;
-                repoDocInfo.docInfo.flagged = flagged;
+                const newRepoDocInfo: RepoDocInfo = { ...repoDocInfo, flagged: flagged };
+                repoDocMetaManager.repoDocInfoIndex.put(repoDocInfo.fingerprint, newRepoDocInfo);
             }
 
-            function commit() {
-                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
+            async function commit() {
+                BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, repoDocInfo.fingerprint, (content: IDocumentContent) => {
+                    content.docInfo.flagged = flagged;
+                });
             }
 
             return {prepare, commit};
 
         }
 
-        const persistToBlocksStore = ({ fingerprint }: RepoDocInfo) => {
-            BlockContentUtils.updateDocumentContentByFingerprint(blocksStore, fingerprint, (content: IDocumentContent) => {
-                content.docInfo.flagged = flagged;
-            });
-        };
-
         async function doHandle() {
 
             await withBatch(repoDocInfos.map(toAsyncTransaction));
-
-            repoDocInfos.forEach(persistToBlocksStore);
 
             Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged });
         }
@@ -753,7 +724,32 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             .filterPresent()
             .collect();
 
-        blockTagEditorDialog(blockIDs)
+        function handleUpdate() {
+
+            const prepare = () => {
+                const blocksMap = arrayStream(blocksStore.idsToBlocks(blockIDs))
+                    .filter(BlockPredicates.isDocumentBlock)
+                    .toMap(block => block.content.docInfo.fingerprint);
+
+                for (let repoDocInfo of selectedDocs) {
+                    const block = blocksMap[repoDocInfo.fingerprint];
+
+                    if (block) {
+                        const tags = arrayStream(block.content.getTags()).toMap(({ id }) => id);
+                        const newRepoDocInfo: RepoDocInfo = { ...repoDocInfo, tags };
+                        repoDocMetaManager.repoDocInfoIndex.put(repoDocInfo.fingerprint, newRepoDocInfo);
+                    }
+                }
+            };
+
+            const commit = async () => {}; // noop
+
+            withBatch([{ commit, prepare }])
+                .then(() => Analytics.event2("doc-tagged", { count: blockIDs.length }))
+                .catch(log.error);
+        }
+
+        blockTagEditorDialog(blockIDs, handleUpdate);
 
     }
 
@@ -770,7 +766,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         setFilters,
         setSort,
 
-        doTagged,
         doOpen,
         doRename,
         doCopyOriginalURL,
