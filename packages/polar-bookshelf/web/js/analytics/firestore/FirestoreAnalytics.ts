@@ -1,8 +1,5 @@
 import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
-import {HeartbeatCollection} from "polar-firebase/src/firebase/om/HeartbeatCollection";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {UserTraits} from "../../datastore/firebase/UserTraits";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 
 export class FirestoreAnalytics implements IAnalytics {
@@ -33,25 +30,6 @@ export class FirestoreAnalytics implements IAnalytics {
 
     public version(version: string) {
         // noop
-    }
-
-    public heartbeat(): void {
-
-        const doWrite = async () => {
-
-            const firestore = await FirestoreBrowserClient.getInstance();
-
-            const uid = await FirebaseBrowser.currentUserID();
-
-            if (!uid) return;
-
-            await HeartbeatCollection.write(firestore, uid);
-
-        };
-
-        doWrite()
-            .catch(err => console.error(err));
-
     }
 
     public logout(): void {
