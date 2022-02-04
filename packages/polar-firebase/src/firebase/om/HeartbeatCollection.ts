@@ -1,16 +1,12 @@
-
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
-import { Hashcodes } from "polar-shared/src/util/Hashcodes";
-import {IDStr, CollectionNameStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
-import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {CollectionNameStr, IDStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import { DeviceIDManager } from "polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager, DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
+import {Devices, DeviceStr} from "polar-shared/src/util/Devices";
 
 export class HeartbeatCollection {
 
@@ -29,10 +25,10 @@ export class HeartbeatCollection {
 
     public static create(uid: UserIDStr): HeartbeatsInit {
 
-        const deviceID = DeviceIDManager.DEVICE_ID;
-        const id = Hashcodes.create({uid, deviceID});
+        const device_id = DeviceIDManager.DEVICE_ID;
+        const id = Hashcodes.create({uid, device_id});
+        const device = Devices.get();
         const created = ISODateTimeStrings.create();
-        const machine = MachineIDs.get();
 
         const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
@@ -40,11 +36,13 @@ export class HeartbeatCollection {
         const ver = 'v2';
 
         return {
-            id, created, uid, platform, machine, version, deviceID, ver, userAgent
+            id, created, uid, platform, version, device_id, ver, userAgent, updated: created, device
         };
 
     }
 }
+
+export type UserAgentStr = string;
 
 export interface HeartbeatsInit {
 
@@ -59,24 +57,35 @@ export interface HeartbeatsInit {
     readonly created: ISODateTimeString;
 
     /**
+     * The last time this record was updated.
+     */
+    readonly updated: ISODateTimeString;
+
+    /**
      * The user ID that generated this heartbeat.
      */
-    readonly uid: UserIDStr; 
+    readonly uid: UserIDStr;
 
     /**
      * The user's platform.
      */
     readonly platform: PlatformStr;
 
-    readonly machine: MachineID;
-
     readonly version: VersionStr;
 
     readonly ver: 'v2';
 
-    readonly userAgent: string;
+    readonly userAgent: UserAgentStr;
 
-    readonly deviceID: string;
+    /**
+     * The device type they are using.
+     */
+    readonly device: DeviceStr;
+
+    /**
+     * The specific, unique device ID they are using./
+     */
+    readonly device_id: DeviceIDStr;
 }
 
 export interface Heartbeat extends HeartbeatsInit {

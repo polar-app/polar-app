@@ -5,6 +5,8 @@ const KEY = "machine-identifier";
 /**
  * Keeps a unique ID for this 'machine'.  No PII is kept in the ID.  It's just
  * an opaque string.
+ *
+ * @deprecated Use DeviceIDManager
  */
 export class MachineIDs {
 
