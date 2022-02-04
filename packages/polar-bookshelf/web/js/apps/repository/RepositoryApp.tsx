@@ -88,12 +88,12 @@ import {
     SpacedRepCollectionSnapshotProvider,
     SpaceRepCollectionSnapshotLatch,
     SpaceRepCollectionSnapshotLoader
-} from "../../snapshot_collections/UseSpacedRepCollectionSnapshot";
+} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
 import {
     SpacedRepStatCollectionLatch,
     SpacedRepStatCollectionLoader,
     SpacedRepStatCollectionSnapshotProvider
-} from "../../snapshot_collections/UseSpacedRepStatCollectionSnapshot";
+} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
 
 interface IProps {
     readonly app: App;

@@ -12,7 +12,7 @@ import {useNivoTheme} from "./NivoHooks";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {
     useSpacedRepCollectionSnapshotForModeAndType
-} from "../../../../web/js/snapshot_collections/UseSpacedRepStatCollectionSnapshot";
+} from "../../../../web/js/snapshot_collections/SpacedRepStatCollectionSnapshot";
 
 const HEIGHT = '300px';
 
