@@ -94,6 +94,7 @@ import {
     SpacedRepStatCollectionLoader,
     SpacedRepStatCollectionSnapshotProvider
 } from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
+import {HeartbeatCollectionSnapshotLoader} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 
 interface IProps {
     readonly app: App;
@@ -227,6 +228,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                             <>
                                                 <SpaceRepCollectionSnapshotLoader/>
                                                 <SpacedRepStatCollectionLoader/>
+                                                <HeartbeatCollectionSnapshotLoader/>
 
                                                 <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
                                                     <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
