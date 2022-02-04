@@ -76,9 +76,6 @@ export interface HeartbeatsInit {
 
     readonly userAgent: string;
 
-    /**
-     * phone/tablet/desktop
-     */
     readonly deviceID: string;
 }
 
