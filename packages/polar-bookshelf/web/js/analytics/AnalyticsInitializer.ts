@@ -18,7 +18,6 @@ export namespace AnalyticsInitializer {
 
         initVersion();
         await initAccount();
-        initHeartbeat();
 
         console.log("Analytics initialized");
 
@@ -26,10 +25,6 @@ export namespace AnalyticsInitializer {
 
     function initVersion() {
         Analytics.version(Version.get());
-    }
-
-    function initHeartbeat() {
-        Analytics.heartbeat();
     }
 
     async function initAccount() {
