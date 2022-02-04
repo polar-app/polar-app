@@ -94,6 +94,7 @@ import {
     SpacedRepStatCollectionLoader,
     SpacedRepStatCollectionSnapshotProvider
 } from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+import ReferAnotherUser from "./accounting/ReferAnotherUser";
 
 interface IProps {
     readonly app: App;
@@ -344,6 +345,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <Route exact path="/cdk-demo">
                                             <CDKDemo/>
+                                        </Route>
+
+                                        <Route exact path="/settings/referral">
+                                            <ReferAnotherUser/>
                                         </Route>
 
                                         <Route exact path="/private-beta/waiting-users">
