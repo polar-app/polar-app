@@ -1,4 +1,5 @@
 import {isPresent} from 'polar-shared/src/Preconditions';
+import {ErrorType} from "polar-shared/src/util/Errors";
 
 /**
  * A simple either implementation similar to Optional that works for either
@@ -89,3 +90,28 @@ export class Either<L, R> {
 export type LeftEither<L, R> = L | Either<L, R>;
 
 export type RightEither<L, R> = R | Either<L, R>;
+
+export interface IEitherLeft {
+    readonly left: ErrorType;
+    readonly right?: never;
+}
+
+/**
+ * Snapshot right value.  Right is the correct value (pun for correct).
+ *
+ * https://antman-does-software.com/stop-catching-errors-in-typescript-use-the-either-type-to-make-your-code-predictable
+ */
+export interface IEitherRight<T> {
+    readonly left?: never;
+    readonly right: T;
+}
+
+/**
+ * Provides two main states that are exposed to the user.
+ *
+ * - right: aka the CORRECT, state (right is a pun for correct) and is the primary value we should have.
+ *
+ * - left: the incorrect state, and only happens during errors.
+ */
+export type IEither<T> = IEitherRight<T> | IEitherLeft;
+

@@ -23,7 +23,7 @@ export namespace HeartbeatCollection {
 
     }
 
-    export function create(uid: UserIDStr): Heartbeat {
+    export function create(uid: UserIDStr): IHeartbeat {
 
         const device_id = DeviceIDManager.DEVICE_ID;
         const id = Hashcodes.create({uid, device_id});
@@ -44,7 +44,7 @@ export namespace HeartbeatCollection {
 
 export type UserAgentStr = string;
 
-export interface Heartbeat {
+export interface IHeartbeat {
 
     /**
      * The UD created which is just a random / unique ID

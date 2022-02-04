@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import {Heartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
+import {IHeartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",
@@ -18,7 +18,7 @@ async function computeStats() {
 
     const snapshot = await firestore.collection("heartbeat").get();
 
-    const heartbeats = snapshot.docs.map(doc => doc.data() as Heartbeat);
+    const heartbeats = snapshot.docs.map(doc => doc.data() as IHeartbeat);
 
     const total = snapshot.docs.length;
 
