@@ -1,6 +1,6 @@
 import React from 'react';
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {useSpacedRepCollectionSnapshot} from "./UseSpacedRepCollectionSnapshot";
+import {useSpacedRepCollectionSnapshot} from "../../../../web/js/snapshot_collections/UseSpacedRepCollectionSnapshot";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {
