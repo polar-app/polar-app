@@ -44,12 +44,6 @@ export class OnlineAnalytics implements IAnalytics {
         }
     }
 
-    public heartbeat(): void {
-        if (navigator.onLine) {
-            this.delegate.heartbeat();
-        }
-    }
-
     public logout(): void {
         if (navigator.onLine) {
             this.delegate.logout();

@@ -51,3 +51,4 @@ export class Devices {
 }
 
 export type Device = 'phone' | 'tablet' | 'desktop';
+export type DeviceStr = Device;
