@@ -44,51 +44,71 @@ export function useNotesHistory() {
 
     const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>(initialHistory);
 
+    const isNoteURL = React.useCallback((pathname: string) => {
+
+        // return pathname.startsWith("/daily") || pathname.startsWith("/notes/");
+        return pathname.startsWith("/notes/");
+
+    }, []);
+
     React.useEffect(() => {
 
         return history.listen((location, action) => {
 
-            switch (action) {
+            if (isNoteURL(location.pathname)) {
 
-                case 'PUSH':
+                console.log(`FIXME action: ${action} with current history of: `, notesHistory);
 
-                    function doPush() {
-                        const result = [...notesHistory];
-                        result.push(createHistoryEntry(location.pathname));
-                        return result;
-                    }
+                switch (action) {
 
-                    setNotesHistory(doPush())
+                    case 'PUSH':
 
-                    break;
-                case 'POP':
+                        function doPush() {
+                            const result = [...notesHistory];
+                            result.push(createHistoryEntry(location.pathname));
+                            return result;
+                        }
 
-                    function doPop() {
-                        const result = [...notesHistory];
-                        result.pop();
-                        return result;
-                    }
+                        setNotesHistory(doPush())
 
-                    setNotesHistory(doPop())
-                    break;
-                case 'REPLACE':
+                        break;
 
-                    function doReplace() {
-                        const result = [...notesHistory];
-                        result[result.length - 1] = createHistoryEntry(location.pathname);
-                        return result;
-                    }
+                    case 'POP':
 
-                    setNotesHistory(doReplace())
+                        function doPop() {
+                            const result = [...notesHistory];
+                            result.pop();
+                            return result;
+                        }
 
-                    break;
+                        setNotesHistory(doPop())
+                        break;
+
+                    case 'REPLACE':
+
+                        function doReplace() {
+                            const result = [...notesHistory];
+                            result[result.length - 1] = createHistoryEntry(location.pathname);
+                            return result;
+                        }
+
+                        setNotesHistory(doReplace())
+
+                        break;
+
+                }
+
+            } else {
+
+                console.log("FIXME: resetting notes history due to location: " + location.pathname)
+                setNotesHistory([]);
 
             }
 
         });
 
 
-    }, [createHistoryEntry, history, notesHistory]);
+    }, [createHistoryEntry, history, notesHistory, isNoteURL]);
 
     return notesHistory;
 
