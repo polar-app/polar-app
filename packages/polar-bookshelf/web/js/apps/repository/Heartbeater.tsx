@@ -46,7 +46,7 @@ function useHeartbeater() {
 
     }, [heartbeatRef, doHeartbeatUpdate, doHeartbeatCreate]);
 
-    const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 5000);
+    const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 60000);
 
     React.useEffect(() => {
 
