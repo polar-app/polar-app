@@ -47,7 +47,7 @@ export namespace E2E {
             cy.get('#sidenav div[title=Notes]').click();
 
             // Wait for notes listing data table to have at least one note
-            cy.get('.NotesRepoTable2 .MuiTableBody-root')
+            cy.get('.NotesRepoTable2 tbody')
                 .children({})
                 .its('length')
                 .should('be.gte', 1);

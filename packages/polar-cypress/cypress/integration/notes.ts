@@ -30,7 +30,7 @@ describe('Notes', function () {
         // cypress evaluates code might cause us issues.
 
         // Try to open a single note
-        cy.get('.NotesRepoTable2 .MuiTableBody-root td.MuiTableCell-body')
+        cy.get('.NotesRepoTable2 tbody')
             .then(() => {
                 // Mark timestamp when note opening started
                 performance.mark('note-open-started');
