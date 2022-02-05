@@ -48,11 +48,11 @@ function useHeartbeater() {
 
     }, [heartbeatRef, doHeartbeatUpdate, doHeartbeatCreate]);
 
-    const doHeartbeat = React.useCallback(async () => {
+    const doHeartbeat = React.useCallback(() => {
 
         doHeartbeatAsync().catch(errorHandler);
 
-    }, [doHeartbeatAsync]);
+    }, [doHeartbeatAsync, errorHandler]);
 
     const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 60000);
 
