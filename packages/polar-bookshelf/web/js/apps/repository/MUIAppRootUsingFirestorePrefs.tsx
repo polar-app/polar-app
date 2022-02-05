@@ -15,7 +15,7 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
 
     const firestorePrefs = useFirestorePrefs();
 
-    const theme = React.useMemo((): ThemeType => firestorePrefs.get('theme').getOrElse('dark') as ThemeType, []);
+    const theme = React.useMemo((): ThemeType => firestorePrefs.get('theme').getOrElse('dark') as ThemeType, [firestorePrefs]);
 
     // whether we should use the new design...
     const useRedesign = useFeatureEnabled('use-redesign-theme');
@@ -32,7 +32,7 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
 
         doAsync().catch(errorHandler);
 
-    }, []);
+    }, [firestorePrefs, errorHandler]);
 
     const legacyTheme = React.useMemo(() => {
 
