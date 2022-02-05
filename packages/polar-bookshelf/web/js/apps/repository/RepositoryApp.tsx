@@ -88,12 +88,17 @@ import {
     SpacedRepCollectionSnapshotProvider,
     SpaceRepCollectionSnapshotLatch,
     SpaceRepCollectionSnapshotLoader
-} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
+} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
 import {
     SpacedRepStatCollectionLatch,
     SpacedRepStatCollectionLoader,
     SpacedRepStatCollectionSnapshotProvider
-} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
+import {
+    HeartbeatCollectionSnapshotLoader,
+    HeartbeatCollectionSnapshotProvider
+} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
+import {Heartbeater} from "./Heartbeater";
 import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 
 interface IProps {
@@ -224,11 +229,23 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                      persistenceLayerManager={persistenceLayerManager}>
                                     <DocRepoStore2>
 
+                                    {/* TODO move this to a dedicated component */}
+
+                                    {/* Register all the providers first */}
+
                                         <SpacedRepCollectionSnapshotProvider>
                                             <SpacedRepStatCollectionSnapshotProvider>
+                                            <HeartbeatCollectionSnapshotProvider>
                                                 <>
+
+                                                    {/* Here we have to define ALL the loader so they can execute in
+                                                        parallel and all start listening to snapshots concurrently */}
+
                                                     <SpaceRepCollectionSnapshotLoader/>
                                                     <SpacedRepStatCollectionLoader/>
+                                                    <HeartbeatCollectionSnapshotLoader/>
+
+                                                    {/* Now all the latches that are REQUIRED for the entire app. */}
 
                                                     <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
                                                         <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
@@ -239,6 +256,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                     </SpaceRepCollectionSnapshotLatch>
 
                                                 </>
+                                            </HeartbeatCollectionSnapshotProvider>
 
                                             </SpacedRepStatCollectionSnapshotProvider>
 
@@ -333,9 +351,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                     <Initializers/>
 
-                                <ActiveKeyboardShortcuts/>
-                                <JumpToNoteKeyboardCommand/>
-                                <JumpToDocumentKeyboardCommand/>
+                                    <ActiveKeyboardShortcuts/>
+                                    <JumpToNoteKeyboardCommand/>
+                                    <JumpToDocumentKeyboardCommand/>
+
+                                    <Heartbeater/>
 
                                     <SideNav/>
                                     <DeviceRouters.NotDesktop>

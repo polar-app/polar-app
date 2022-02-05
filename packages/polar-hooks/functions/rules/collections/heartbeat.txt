@@ -1,1 +1,1 @@
-allow write;
+../profiles/auth_uid_rw2.txt

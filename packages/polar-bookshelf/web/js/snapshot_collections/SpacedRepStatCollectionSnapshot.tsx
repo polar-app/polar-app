@@ -1,4 +1,4 @@
-import {createFirestoreSnapshotForUserCollection} from "../../../../web/js/stores/FirestoreSnapshotStore";
+import {createFirestoreSnapshotForUserCollection} from "../stores/FirestoreSnapshotStore";
 import {
     SpacedRepStatCollection,
     SpacedRepStatRecord,

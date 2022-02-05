@@ -44,51 +44,68 @@ export function useNotesHistory() {
 
     const [notesHistory, setNotesHistory] = React.useState<ReadonlyArray<IHistoryEntry>>(initialHistory);
 
+    const isNoteURL = React.useCallback((pathname: string) => {
+
+        // return pathname.startsWith("/daily") || pathname.startsWith("/notes/");
+        return pathname.startsWith("/notes/");
+
+    }, []);
+
     React.useEffect(() => {
 
         return history.listen((location, action) => {
 
-            switch (action) {
+            if (isNoteURL(location.pathname)) {
 
-                case 'PUSH':
+                switch (action) {
 
-                    function doPush() {
-                        const result = [...notesHistory];
-                        result.push(createHistoryEntry(location.pathname));
-                        return result;
-                    }
+                    case 'PUSH':
 
-                    setNotesHistory(doPush())
+                        function doPush() {
+                            const result = [...notesHistory];
+                            result.push(createHistoryEntry(location.pathname));
+                            return result;
+                        }
 
-                    break;
-                case 'POP':
+                        setNotesHistory(doPush())
 
-                    function doPop() {
-                        const result = [...notesHistory];
-                        result.pop();
-                        return result;
-                    }
+                        break;
 
-                    setNotesHistory(doPop())
-                    break;
-                case 'REPLACE':
+                    case 'POP':
 
-                    function doReplace() {
-                        const result = [...notesHistory];
-                        result[result.length - 1] = createHistoryEntry(location.pathname);
-                        return result;
-                    }
+                        function doPop() {
+                            const result = [...notesHistory];
+                            result.pop();
+                            return result;
+                        }
 
-                    setNotesHistory(doReplace())
+                        setNotesHistory(doPop())
+                        break;
 
-                    break;
+                    case 'REPLACE':
+
+                        function doReplace() {
+                            const result = [...notesHistory];
+                            result[result.length - 1] = createHistoryEntry(location.pathname);
+                            return result;
+                        }
+
+                        setNotesHistory(doReplace())
+
+                        break;
+
+                }
+
+            } else {
+
+                setNotesHistory([]);
 
             }
 
         });
 
 
-    }, [createHistoryEntry, history, notesHistory]);
+    }, [createHistoryEntry, history, notesHistory, isNoteURL]);
 
     return notesHistory;
 
@@ -97,18 +114,42 @@ export function useNotesHistory() {
 export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
     const theme = useTheme()
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const handleClose = () => {
+    const handlePopoverClose = React.useCallback(() => {
         setAnchorEl(null);
-    };
+    }, []);
+
+    const goBackToHistoryEntry = React.useCallback((delta: number) => {
+
+        console.log("Going to delta: " + delta);
+
+        history.go(delta);
+
+        handlePopoverClose();
+
+    }, [history, handlePopoverClose]);
 
     if (props.history.length === 0) {
+
+        if (history.location.pathname === '/daily') {
+
+            return (
+                <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <div/>
+                    <Typography color="textPrimary">Daily Notes</Typography>
+
+                </Breadcrumbs>
+            );
+
+        }
+
         return null;
     }
 
@@ -125,10 +166,10 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
                          vertical: 'top',
                          horizontal: 'left',
                      }}
-                     onClose={handleClose}>
+                     onClose={handlePopoverClose}>
 
                 {props.history.slice(0, props.history.length - 1).map((current, idx) => (
-                    <MenuItem key={idx} onClick={handleClose}>{current.title}</MenuItem>
+                    <MenuItem key={idx} onClick={() => goBackToHistoryEntry((props.history.length - idx - 1) * -1)}>{current.title}</MenuItem>
                 ))}
 
             </Popover>
