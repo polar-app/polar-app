@@ -10,10 +10,12 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
 import {useRefValue} from "../../hooks/ReactHooks";
+import {useErrorHandler} from "../../mui/MUIErrorHandler";
 
 function useHeartbeater() {
 
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
+    const errorHandler = useErrorHandler();
 
     const heartbeatRef = useRefValue(heartbeat);
 
@@ -30,7 +32,7 @@ function useHeartbeater() {
         await HeartbeatCollection.write(firestore, {...heartbeat, updated});
     }, [firestore]);
 
-    const doHeartbeat = React.useCallback(async () => {
+    const doHeartbeatAsync = React.useCallback(async () => {
 
         if (! heartbeatRef.current.left) {
 
@@ -46,6 +48,12 @@ function useHeartbeater() {
 
     }, [heartbeatRef, doHeartbeatUpdate, doHeartbeatCreate]);
 
+    const doHeartbeat = React.useCallback(async () => {
+
+        doHeartbeatAsync().catch(errorHandler);
+
+    }, [doHeartbeatAsync]);
+
     const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 60000);
 
     React.useEffect(() => {
@@ -56,7 +64,7 @@ function useHeartbeater() {
             doHeartbeatWithDebounce();
         })
 
-    }, [doHeartbeatWithDebounce]);
+    }, [doHeartbeatWithDebounce, history]);
 
 }
 
