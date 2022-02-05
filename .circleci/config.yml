@@ -308,7 +308,7 @@ jobs:
             - project
 
   # @ Run tests
-  playwright-chrome:
+  playwright-chromium:
     parameters:
       executor:
         type: executor
@@ -629,7 +629,7 @@ workflows:
           requires:
             - setting-up
 
-      - playwright-chrome:
+      - playwright-chromium:
           executor: large
           requires:
             - build-polar-app
