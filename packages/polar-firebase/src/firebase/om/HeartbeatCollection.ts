@@ -8,22 +8,20 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {DeviceIDManager, DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {Devices, DeviceStr} from "polar-shared/src/util/Devices";
 
-export class HeartbeatCollection {
+export namespace HeartbeatCollection {
 
-    private static COLLECTION: CollectionNameStr = "heartbeat";
+    export const COLLECTION_NAME: CollectionNameStr = "heartbeat";
 
-    public static async write<SM>(firestore: IFirestore<SM>, uid: UserIDStr) {
+    export async function write<SM>(firestore: IFirestore<SM>, heartbeat: IHeartbeat) {
 
-        const heartbeat = this.create(uid);
-
-        const doc = firestore.collection(this.COLLECTION)
+        const doc = firestore.collection(COLLECTION_NAME)
                              .doc(heartbeat.id);
 
         await doc.set(Dictionaries.onlyDefinedProperties(heartbeat));
 
     }
 
-    public static create(uid: UserIDStr): HeartbeatsInit {
+    export function create(uid: UserIDStr): IHeartbeat {
 
         const device_id = DeviceIDManager.DEVICE_ID;
         const id = Hashcodes.create({uid, device_id});
@@ -44,7 +42,7 @@ export class HeartbeatCollection {
 
 export type UserAgentStr = string;
 
-export interface HeartbeatsInit {
+export interface IHeartbeat {
 
     /**
      * The UD created which is just a random / unique ID
@@ -86,7 +84,5 @@ export interface HeartbeatsInit {
      * The specific, unique device ID they are using./
      */
     readonly device_id: DeviceIDStr;
-}
 
-export interface Heartbeat extends HeartbeatsInit {
 }
