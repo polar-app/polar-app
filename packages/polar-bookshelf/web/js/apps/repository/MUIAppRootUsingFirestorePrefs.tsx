@@ -63,6 +63,17 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
 
     const redesignTheme = React.useMemo(() => {
 
+        function createLightTheme(): PaletteOptions {
+            return {
+                type: 'light',
+                divider: '#D4D8D9',
+                background: {
+                    default: '#FAFAFA',
+                    paper: '#202020'
+                },
+            }
+        }
+
         function createDarkTheme(): PaletteOptions {
             return {
                 type: 'dark',
@@ -116,7 +127,7 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
                 htmlFontSize: 12,
                 fontSize: 12
             },
-            palette: createDarkTheme()
+            palette: theme === 'light' ? createLightTheme() : createDarkTheme()
         });
 
     }, [theme]);
