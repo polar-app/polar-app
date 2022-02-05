@@ -10,6 +10,9 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
 
+// TODO: this needs to be tested but we're going to have to figure out away to
+// mock the 'firestore' interface.
+
 function useHeartbeater() {
 
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
