@@ -1,5 +1,5 @@
 import React from 'react';
-import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../../apps/repository/js/persistence_layer/FirestorePrefs";
 import {mapStream} from "polar-shared/src/util/ArrayStreams";
 import {deepMemo} from "../react/ReactUtils";
 
@@ -169,7 +169,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
         const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(features);
 
-        const prefs = usePrefsContext();
+        const prefs = useFirestorePrefs();
 
         for(const feature of features) {
             if (prefs.defined(feature)) {
@@ -220,7 +220,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     function useFeatureToggler() {
 
-        const prefs = usePrefsContext();
+        const prefs = useFirestorePrefs();
 
         return React.useCallback(async (featureName: F, enabled: boolean = true) => {
             prefs.mark(featureName, enabled);

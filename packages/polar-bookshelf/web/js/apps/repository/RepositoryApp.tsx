@@ -40,7 +40,7 @@ import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotatio
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddMobileScreen} from "./AddMobileScreen";
@@ -211,7 +211,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     Preconditions.assertPresent(app, 'app');
 
     const DataProviders: React.FC = React.useCallback(({children}) => (
-        <PrefsContext2>
+        <FirestorePrefs>
             <UserTagsDataLoader>
                 <BlocksUserTagsDataLoader>
                     <BlockStoreDefaultContextProvider>
@@ -248,7 +248,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                     </BlockStoreDefaultContextProvider>
                 </BlocksUserTagsDataLoader>
             </UserTagsDataLoader>
-        </PrefsContext2>
+        </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
     const GlobalProviders: React.FC = React.useCallback(({children}) => (

@@ -33,7 +33,7 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
 import {Devices} from 'polar-shared/src/util/Devices';
-import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../../../repository/js/persistence_layer/FirestorePrefs";
 import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
@@ -115,7 +115,7 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, b
 
 export function useFixedWidth() {
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     if (Devices.isDesktop()) {
         return prefs.isMarked('fixed-width-epub');

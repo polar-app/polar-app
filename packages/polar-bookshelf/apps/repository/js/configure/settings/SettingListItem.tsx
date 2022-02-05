@@ -4,7 +4,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
 
 export interface PrefsWriter {
 
@@ -31,7 +31,7 @@ export const SettingListItem =  React.memo(function SettingListItem(props: IProp
 
     const log = useLogger();
     const {setTheme} = useContext(MUIThemeTypeContext);
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const {name, defaultValue} = props;
 
