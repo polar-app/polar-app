@@ -81,10 +81,6 @@ export class CannyAnalytics implements IAnalytics {
         // noop
     }
 
-    public heartbeat(): void {
-        // noop
-    }
-
     public logout(): void {
         this.identification = undefined;
     }

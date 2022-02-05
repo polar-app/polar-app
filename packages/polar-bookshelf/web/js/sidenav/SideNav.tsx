@@ -34,6 +34,7 @@ import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
 import {IntercomIcon} from "../apps/repository/integrations/IntercomIcon";
+import {FeatureEnabled} from '../features/FeaturesRegistry';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -383,7 +384,11 @@ export const SideNav = React.memo(function SideNav() {
 
                             <div style={{marginBottom: '5px'}}>
                                 <SideNavDivider/>
-                                <DeviceRouter desktop={<SyncButton/>}/>
+
+                                <FeatureEnabled feature={['legacy-anki-sync']}>
+                                    <DeviceRouter desktop={<SyncButton/>}/>
+                                </FeatureEnabled>
+
                                 <AccountButton/>
 
                                 <SideNavQuestionButton/>

@@ -157,17 +157,31 @@ export namespace ConsoleRecorder {
 
     export function broadcastMessage(message: IConsoleMessage) {
 
+        if (typeof message === 'function') {
+            console.warn("Attempted to broadcast function");
+            return;
+        }
+
         if (typeof window !== 'undefined') {
-            window.postMessage({
-                type: CHANNEL,
-                message
-            }, window.origin)
+
+            // TODO: firestore will log message / objects with circular
+            // references and functions which means that the structured clone
+            // algorithm can't work here and we sometimes get errors.
+
+            try {
+                window.postMessage({
+                    type: CHANNEL,
+                    message
+                }, window.origin)
+            } catch(e) {
+                delegates.error("Failed to handle broadcastMessage: ", e);
+            }
         }
 
     }
 
 }
 
-// NOTE: I don't like this but it's the only way
+// NOTE: I don't like this, but it's the only way
 
 ConsoleRecorder.init();

@@ -4,6 +4,7 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 import IMigration = MigrationCollection.IMigration;
+import MigrationIDStr = MigrationCollection.MigrationIDStr;
 
 export function useMigrationSnapshot() {
 
@@ -16,7 +17,7 @@ export function useMigrationSnapshot() {
 
 }
 
-export function useMigrationSnapshotByName(name: string) {
+export function useMigrationSnapshotByName(name: MigrationIDStr) {
 
     const {uid, firestore} = useFirestore();
 

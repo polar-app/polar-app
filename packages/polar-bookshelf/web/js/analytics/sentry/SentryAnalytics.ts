@@ -30,10 +30,6 @@ export class SentryAnalytics implements IAnalytics {
         // noop
     }
 
-    public heartbeat(): void {
-        // noop
-    }
-
     public logout(): void {
         Sentry.configureScope(scope => scope.setUser(null));
     }

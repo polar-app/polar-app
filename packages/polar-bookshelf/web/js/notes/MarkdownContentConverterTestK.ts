@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
+import {Browsers} from "polar-browsers/src/Browsers";
 
 describe('MarkdownContentConverter', function() {
 
@@ -23,11 +24,14 @@ describe('MarkdownContentConverter', function() {
 
     }
 
-
     it("escape and unescape", async function() {
 
-        testTwoWayConversionFromMarkdown("This is some **bold** text and this is a wiki link [[Hello World]]",
-                                         "This is some <b>bold</b> text and this is a wiki link <a contenteditable=\"false\" class=\"note-link\" href=\"#Hello World\">Hello World</a>")
+        Browsers.when(['chrome', 'safari'], () => {
+
+            testTwoWayConversionFromMarkdown("This is some **bold** text and this is a wiki link [[Hello World]]",
+                "This is some <b>bold</b> text and this is a wiki link <a contenteditable=\"false\" class=\"note-link\" href=\"#Hello World\">Hello World</a>")
+
+        })
 
     });
 
@@ -65,12 +69,18 @@ describe('MarkdownContentConverter', function() {
     });
 
     it('Should not collapse edge whitespace when converting', () => {
-        const data = `    <a contenteditable="false" class="note-link" href="#polar">polar</a>     '    world    `;
-        const markdown = MarkdownContentConverter.toMarkdown(data);
-        assert.equal(markdown, `    [[polar]] ' world    `);
 
-        const html = MarkdownContentConverter.toHTML(markdown);
-        assert.equal(html, `    <a contenteditable="false" class="note-link" href="#polar">polar</a> ' world    `);
+        Browsers.when(['chrome', 'safari'], () => {
+
+            const data = `    <a contenteditable="false" class="note-link" href="#polar">polar</a>     '    world    `;
+            const markdown = MarkdownContentConverter.toMarkdown(data);
+            assert.equal(markdown, `    [[polar]] ' world    `);
+
+            const html = MarkdownContentConverter.toHTML(markdown);
+            assert.equal(html, `    <a contenteditable="false" class="note-link" href="#polar">polar</a> ' world    `);
+
+        });
+
     });
 
 });

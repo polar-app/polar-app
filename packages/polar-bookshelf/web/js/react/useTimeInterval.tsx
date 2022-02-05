@@ -47,7 +47,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const scheduleTimeout = React.useCallback(() => {
 
-        const [expirationTime, duration] = computeDurationForTimeout()
+        const [expirationTime, duration] = computeDurationForTimeout();
 
         timeoutRef.current = window.setTimeout(() => {
             setTime([expirationTime, currentTimeMillisWithLocale(), duration]);

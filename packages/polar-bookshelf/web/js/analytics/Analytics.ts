@@ -136,10 +136,6 @@ export namespace Analytics {
         instance.version(version);
     }
 
-    export function heartbeat(): void {
-        instance.heartbeat();
-    }
-
     export function logout(): void {
         instance.logout();
     }

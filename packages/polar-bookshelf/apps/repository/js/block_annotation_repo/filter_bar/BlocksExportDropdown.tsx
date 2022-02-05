@@ -12,7 +12,7 @@ import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
-import {FeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
+import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
@@ -42,6 +42,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const errorHandler = useErrorHandler();
     const ankiDeckDownloadHandler = useAnkiDeckDownloadHandler();
+    const analytics = useAnalytics();
 
     const doExportFlashcards = React.useCallback(() => {
 
@@ -54,6 +55,8 @@ export const BlocksExportDropdown: React.FC = () => {
             async function doDownload() {
 
                 const response = await ankiDeckDownloadHandler();
+
+                analytics.event2('anki-sync-flashcard-download');
 
                 FileSavers.downloadURL(response.temporary_url, 'polar-anki-deck' + Date.now());
 
@@ -73,13 +76,13 @@ export const BlocksExportDropdown: React.FC = () => {
 
         doAsync().catch(err => errorHandler(err));
 
-    }, [dialogManager, errorHandler, ankiDeckDownloadHandler]);
+    }, [dialogManager, errorHandler, ankiDeckDownloadHandler, analytics]);
 
     const handleExportFlashcards = React.useCallback(() => {
 
         dialogManager.confirm({
-            title: "Download your flashcards as an Anki desk",
-            subtitle: "This will download all your flashcards as an Anki deck to your device.",
+            title: "Download your flashcards as an Anki deck",
+            subtitle: "This will download selected flashcards as an Anki deck to your device.",
             type: 'info',
             acceptText: "OK",
             onAccept: doExportFlashcards
@@ -108,10 +111,8 @@ export const BlocksExportDropdown: React.FC = () => {
                     <MUIMenuItem text="Download as JSON"
                                  onClick={handleExport(BlocksExportFormat.JSON)}/>
 
-                    <FeatureEnabled feature={['anki-deck-downloads']}>
-                        <MUIMenuItem text="Download Flashcards as an Anki Deck"
-                                     onClick={handleExportFlashcards}/>
-                    </FeatureEnabled>
+                    <MUIMenuItem text="Download Flashcards as an Anki Deck"
+                                 onClick={handleExportFlashcards}/>
 
                 </div>
 

@@ -1,8 +1,8 @@
 import {UAParser} from "ua-parser-js";
 
-export class Browsers {
+export namespace Browsers {
 
-    public static get(): Browser | undefined {
+    export function get(): Browser | undefined {
         const parser = new UAParser();
         const result = parser.getResult();
 
@@ -24,7 +24,19 @@ export class Browsers {
 
     }
 
-    public static raw(): RawBrowser {
+    export function when(whitelist: ReadonlyArray<BrowserID>, callback: () => void) {
+
+        const browser = get();
+
+        if (browser && whitelist.includes(browser.id)) {
+            callback();
+        } else {
+            console.warn("Unable to execute for browser: " + browser?.id);
+        }
+
+    }
+
+    export function raw(): RawBrowser {
         const parser = new UAParser();
         return parser.getResult();
     }

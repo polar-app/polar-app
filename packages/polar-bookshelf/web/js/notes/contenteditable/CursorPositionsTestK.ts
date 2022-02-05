@@ -2,6 +2,7 @@ import {CursorPositions} from "./CursorPositions";
 import {assert} from "chai";
 import {Asserts} from "polar-shared/src/Asserts";
 import {ContentEditables} from "../ContentEditables";
+import {Browsers} from "polar-browsers/src/Browsers";
 
 describe('CursorPositions', () => {
     describe('computeCurrentOffset', () => {
@@ -10,10 +11,16 @@ describe('CursorPositions', () => {
         });
 
         it('should return 0 when there\'s no active selection', () => {
-            document.body.innerHTML = "<h1>Hello</h1>";
 
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 0);
+            Browsers.when(['chrome', 'firefox'], () => {
+
+                document.body.innerHTML = "<h1>Hello</h1>";
+
+                const pos = CursorPositions.computeCurrentOffset(document.body);
+                assert.equal(pos, 0);
+
+            })
+
         });
 
         it('should work with nested html', () => {
@@ -38,30 +45,47 @@ describe('CursorPositions', () => {
         });
 
         it('random test case 1', () => {
-            document.body.innerHTML = `types<span>are bad</span>`;
-            ContentEditables.setCaretPosition(document.body, 1); // The second child of document.body
-            const pos = CursorPositions.computeCurrentOffset(document.body);
 
-            assert.equal(pos, 5);
+            Browsers.when(['chrome', 'firefox'], () => {
+
+                document.body.innerHTML = `types<span>are bad</span>`;
+                ContentEditables.setCaretPosition(document.body, 1); // The second child of document.body
+                const pos = CursorPositions.computeCurrentOffset(document.body);
+
+                assert.equal(pos, 5);
+            });
+
         });
 
         it('should work with contenteditable false at the end with a space right after', () => {
-            document.body.innerHTML = `types<span contenteditable="false">are bad</span> `;
-            const span = document.querySelector<HTMLSpanElement>('span');
-            Asserts.assertPresent(span);
-            ContentEditables.setCaretPosition(span, 'end');
-            const pos = CursorPositions.computeCurrentOffset(document.body);
 
-            assert.equal(pos, document.body.textContent!.length - 1);
+            Browsers.when(['chrome', 'firefox'], () => {
+
+                document.body.innerHTML = `types<span contenteditable="false">are bad</span> `;
+                const span = document.querySelector<HTMLSpanElement>('span');
+                Asserts.assertPresent(span);
+                ContentEditables.setCaretPosition(span, 'end');
+                const pos = CursorPositions.computeCurrentOffset(document.body);
+
+                assert.equal(pos, document.body.textContent!.length - 1);
+
+            });
+
         });
 
         it('should work with empty nodes', () => {
-            document.body.innerHTML = `types<span contenteditable="false"></span> `;
-            const span = document.querySelector<HTMLSpanElement>('span');
-            Asserts.assertPresent(span);
-            ContentEditables.setCaretPosition(span, 'start');
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 5);
+
+            Browsers.when(['chrome', 'firefox'], () => {
+
+                document.body.innerHTML = `types<span contenteditable="false"></span> `;
+                const span = document.querySelector<HTMLSpanElement>('span');
+                Asserts.assertPresent(span);
+                ContentEditables.setCaretPosition(span, 'start');
+                const pos = CursorPositions.computeCurrentOffset(document.body);
+                assert.equal(pos, 5);
+
+            });
+
         });
     });
 

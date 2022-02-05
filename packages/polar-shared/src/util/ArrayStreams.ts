@@ -115,9 +115,11 @@ export class ArrayStream<T> {
         return this;
     }
 
-    public filter(predicate: (record: T, index: number) => boolean): ArrayStream<T> {
-        const values = this.values.filter((record, index) => predicate(record, index));
-        return new ArrayStream<T>(values);
+    public filter<S extends T>(predicate: (record: T, index: number) => record is S): ArrayStream<S>;
+    public filter(predicate: (value: T, index: number) => unknown): ArrayStream<T>;
+    public filter(predicate: any): any {
+        const values = this.values.filter(predicate);
+        return new ArrayStream(values);
     }
 
     /**

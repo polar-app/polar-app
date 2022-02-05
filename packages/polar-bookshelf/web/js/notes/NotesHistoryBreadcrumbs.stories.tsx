@@ -1,5 +1,5 @@
 import React from 'react';
-import {NotesHistory, NotesHistoryProps} from "./NotesHistory";
+import {NotesHistoryBreadcrumbs, NotesHistoryProps} from "./NotesHistoryBreadcrumbs";
 import {ComponentStory} from "@storybook/react";
 import {StorybookAppRoot} from "../storybook/StorybookAppRoot";
 import {BrowserRouter} from "react-router-dom";
@@ -8,7 +8,7 @@ import {AppBar, Toolbar} from "@material-ui/core";
 
 export default {
     title: 'NotesHistory',
-    component: NotesHistory,
+    component: NotesHistoryBreadcrumbs,
 };
 
 const Template = (args: NotesHistoryProps) => (
@@ -16,21 +16,21 @@ const Template = (args: NotesHistoryProps) => (
         <BrowserRouter>
             <AppBar color={"inherit"} position="static">
                 <Toolbar>
-                    <NotesHistory {...args} />
+                    <NotesHistoryBreadcrumbs {...args} />
                 </Toolbar>
             </AppBar>
         </BrowserRouter>
     </StorybookAppRoot>
 );
 
-export const WithoutHistory: ComponentStory<typeof NotesHistory> = Template.bind({});
+export const WithoutHistory: ComponentStory<typeof NotesHistoryBreadcrumbs> = Template.bind({});
 WithoutHistory.args = {
     history: [
         {title: 'Boulder', path: '/notes/Boulder'}
     ]
 };
 
-export const WithoutOneHistoryItem: ComponentStory<typeof NotesHistory> = Template.bind({});
+export const WithoutOneHistoryItem: ComponentStory<typeof NotesHistoryBreadcrumbs> = Template.bind({});
 WithoutOneHistoryItem.args = {
     history: [
         {title: 'Daily Notes', path: '/daily'},
