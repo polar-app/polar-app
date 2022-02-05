@@ -63,7 +63,7 @@ function useBuffer<T>(capacity: number): IBuffer<T> {
  *
  * Note that the debouncer must be idempotent.
  */
-function useDebouncer(callback: () => void, interval: number = 500) {
+export function useDebouncer(callback: () => void, interval: number = 500) {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
     const timeout = React.useRef<number | undefined>(undefined);

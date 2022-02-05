@@ -12,9 +12,7 @@ export namespace HeartbeatCollection {
 
     export const COLLECTION_NAME: CollectionNameStr = "heartbeat";
 
-    export async function write<SM>(firestore: IFirestore<SM>, uid: UserIDStr) {
-
-        const heartbeat = create(uid);
+    export async function write<SM>(firestore: IFirestore<SM>, heartbeat: IHeartbeat) {
 
         const doc = firestore.collection(COLLECTION_NAME)
                              .doc(heartbeat.id);

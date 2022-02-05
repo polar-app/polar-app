@@ -98,6 +98,7 @@ import {
     HeartbeatCollectionSnapshotLoader,
     HeartbeatCollectionSnapshotProvider
 } from '../../snapshot_collections/HeartbeatCollectionSnapshot';
+import {Heartbeater} from "./Heartbeater";
 
 interface IProps {
     readonly app: App;
@@ -347,9 +348,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                     <Initializers/>
 
-                                <ActiveKeyboardShortcuts/>
-                                <JumpToNoteKeyboardCommand/>
-                                <JumpToDocumentKeyboardCommand/>
+                                    <ActiveKeyboardShortcuts/>
+                                    <JumpToNoteKeyboardCommand/>
+                                    <JumpToDocumentKeyboardCommand/>
+
+                                    <Heartbeater/>
 
                                     <SideNav/>
                                     <DeviceRouters.NotDesktop>
