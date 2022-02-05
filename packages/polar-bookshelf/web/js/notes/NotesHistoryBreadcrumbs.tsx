@@ -57,8 +57,6 @@ export function useNotesHistory() {
 
             if (isNoteURL(location.pathname)) {
 
-                console.log(`FIXME action: ${action} with current history of: `, notesHistory);
-
                 switch (action) {
 
                     case 'PUSH':
@@ -100,7 +98,6 @@ export function useNotesHistory() {
 
             } else {
 
-                console.log("FIXME: resetting notes history due to location: " + location.pathname)
                 setNotesHistory([]);
 
             }
@@ -117,18 +114,42 @@ export function useNotesHistory() {
 export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
     const theme = useTheme()
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const handleClose = () => {
+    const handlePopoverClose = React.useCallback(() => {
         setAnchorEl(null);
-    };
+    }, []);
+
+    const goBackToHistoryEntry = React.useCallback((delta: number) => {
+
+        console.log("Going to delta: " + delta);
+
+        history.go(delta);
+
+        handlePopoverClose();
+
+    }, [history, handlePopoverClose]);
 
     if (props.history.length === 0) {
+
+        if (history.location.pathname === '/daily') {
+
+            return (
+                <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <div/>
+                    <Typography color="textPrimary">Daily Notes</Typography>
+
+                </Breadcrumbs>
+            );
+
+        }
+
         return null;
     }
 
@@ -145,10 +166,10 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
                          vertical: 'top',
                          horizontal: 'left',
                      }}
-                     onClose={handleClose}>
+                     onClose={handlePopoverClose}>
 
                 {props.history.slice(0, props.history.length - 1).map((current, idx) => (
-                    <MenuItem key={idx} onClick={handleClose}>{current.title}</MenuItem>
+                    <MenuItem key={idx} onClick={() => goBackToHistoryEntry((props.history.length - idx - 1) * -1)}>{current.title}</MenuItem>
                 ))}
 
             </Popover>
