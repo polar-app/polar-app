@@ -1,4 +1,4 @@
-import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
+import {HandleStyles, ResizeEnable, Rnd, RndDragCallback, RndResizeCallback} from "react-rnd";
 import {ResizeDirection} from "re-resizable";
 import * as React from "react";
 import {useState} from "react";
@@ -26,6 +26,8 @@ interface IProps {
     readonly document?: Document;
     readonly window?: Window;
     readonly draggable?: boolean;
+
+    readonly dragHandleClassName?: string;
 
     /**
      * Used to compute the initial position of the resize box during initial
@@ -95,7 +97,7 @@ function toggleUserSelect(doc: Document, resizing: boolean) {
 
 }
 
-export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
+export const ResizeBox: React.FC<IProps> = deepMemo(function ResizeBox(props) {
 
     const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
 
@@ -171,20 +173,6 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
         ...(props.resizeHandleStyle || {})
     };
 
-    const handleOnMouseOver = () => {
-        setState({
-            ...state,
-            active: true
-        });
-    }
-
-    const handleOnMouseOut = () => {
-        setState({
-            ...state,
-            active: false
-        });
-    }
-
     const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
     const outlineSize = 10;
@@ -210,12 +198,26 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
     const position = computePosition(state);
     const doc = props.document || document;
 
+    const [previewRect, setPreviewRect] = React.useState<IBox>(() => computeNewState());
+
+    const handleResizePreview: RndResizeCallback = React.useCallback((_, _1, _2, delta, pos) => {
+        setPreviewRect({
+            ...pos,
+            width: state.width + delta.width,
+            height: state.height + delta.height,
+        });
+    }, [state]);
+
+    const handleDragPreview: RndDragCallback = React.useCallback((_1, pos) => {
+        setPreviewRect(rect => ({
+            ...rect,
+            x: pos.x,
+            y: pos.y,
+        }));
+    }, []);
+
     return (
         <>
-
-            {/*{state.active &&*/}
-            {/*    <ControlBar bottom={state.y} left={state.x} width={state.width}/>}*/}
-
             <Rnd
                 ref={handleRndRef}
                 id={props.id}
@@ -228,6 +230,8 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                 position={position}
                 onDragStart={() => toggleUserSelect(doc, true)}
                 onResizeStart={() => toggleUserSelect(doc, true)}
+                onResize={handleResizePreview}
+                onDrag={handleDragPreview}
                 onDragStop={(_, d) => {
                     handleResize({
                         ...state,
@@ -236,7 +240,7 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                     }, "right");
                     toggleUserSelect(doc, false)
                 }}
-                disableDragging={!props.draggable}
+                dragHandleClassName={props.dragHandleClassName}
                 onResizeStop={(_,
                                direction,
                                ref,
@@ -307,19 +311,22 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                     },
                 }}
                 style={{
-                    ...props.style,
+                    zIndex: 10,
                     pointerEvents: props.draggable ? 'auto' : 'none',
                     cursor: props.draggable ? 'move' : 'auto',
                 }}
                 {...dataProps}>
-                {/*<div onContextMenu={props.onContextMenu}*/}
-                {/*     style={{*/}
-                {/*         width: state.width,*/}
-                {/*         height: state.height*/}
-                {/*     }}>*/}
-
-                {/*</div>*/}
+                {props.children}
             </Rnd>
+            <div style={{
+                    zIndex: 9,
+                    ...props.style,
+                    top: previewRect.y,
+                    left: previewRect.x,
+                    width: previewRect.width,
+                    height: previewRect.height,
+                    pointerEvents: 'none',
+                }} />
         </>
     );
 
