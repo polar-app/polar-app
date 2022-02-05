@@ -94,6 +94,7 @@ import {
     SpacedRepStatCollectionLoader,
     SpacedRepStatCollectionSnapshotProvider
 } from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 
 interface IProps {
     readonly app: App;
@@ -212,42 +213,44 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     const DataProviders: React.FC = React.useCallback(({children}) => (
         <FirestorePrefs>
-            <UserTagsDataLoader>
-                <BlocksUserTagsDataLoader>
-                    <BlockStoreDefaultContextProvider>
-                        <BlocksStoreProvider>
-                            <PersistenceLayerApp tagsType="documents"
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}
-                                                 persistenceLayerManager={persistenceLayerManager}>
-                                <DocRepoStore2>
+            <MUIAppRootUsingFirestorePrefs>
+                <UserTagsDataLoader>
+                    <BlocksUserTagsDataLoader>
+                        <BlockStoreDefaultContextProvider>
+                            <BlocksStoreProvider>
+                                <PersistenceLayerApp tagsType="documents"
+                                                     repoDocMetaManager={repoDocMetaManager}
+                                                     repoDocMetaLoader={repoDocMetaLoader}
+                                                     persistenceLayerManager={persistenceLayerManager}>
+                                    <DocRepoStore2>
 
-                                    <SpacedRepCollectionSnapshotProvider>
-                                        <SpacedRepStatCollectionSnapshotProvider>
-                                            <>
-                                                <SpaceRepCollectionSnapshotLoader/>
-                                                <SpacedRepStatCollectionLoader/>
+                                        <SpacedRepCollectionSnapshotProvider>
+                                            <SpacedRepStatCollectionSnapshotProvider>
+                                                <>
+                                                    <SpaceRepCollectionSnapshotLoader/>
+                                                    <SpacedRepStatCollectionLoader/>
 
-                                                <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
-                                                    <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
-                                                        <>
-                                                            {children}
-                                                        </>
-                                                    </SpacedRepStatCollectionLatch>
-                                                </SpaceRepCollectionSnapshotLatch>
+                                                    <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
+                                                        <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
+                                                            <>
+                                                                {children}
+                                                            </>
+                                                        </SpacedRepStatCollectionLatch>
+                                                    </SpaceRepCollectionSnapshotLatch>
 
-                                            </>
+                                                </>
 
-                                        </SpacedRepStatCollectionSnapshotProvider>
+                                            </SpacedRepStatCollectionSnapshotProvider>
 
-                                    </SpacedRepCollectionSnapshotProvider>
+                                        </SpacedRepCollectionSnapshotProvider>
 
-                                </DocRepoStore2>
-                            </PersistenceLayerApp>
-                        </BlocksStoreProvider>
-                    </BlockStoreDefaultContextProvider>
-                </BlocksUserTagsDataLoader>
-            </UserTagsDataLoader>
+                                    </DocRepoStore2>
+                                </PersistenceLayerApp>
+                            </BlocksStoreProvider>
+                        </BlockStoreDefaultContextProvider>
+                    </BlocksUserTagsDataLoader>
+                </UserTagsDataLoader>
+            </MUIAppRootUsingFirestorePrefs>
         </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
