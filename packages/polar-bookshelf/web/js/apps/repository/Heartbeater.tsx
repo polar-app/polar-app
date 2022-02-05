@@ -9,13 +9,13 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
-
-// TODO: this needs to be tested but we're going to have to figure out away to
-// mock the 'firestore' interface.
+import {useRefValue} from "../../hooks/ReactHooks";
 
 function useHeartbeater() {
 
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
+
+    const heartbeatRef = useRefValue(heartbeat);
 
     const {uid, firestore} = useFirestore();
     const history = useHistory();
@@ -32,17 +32,19 @@ function useHeartbeater() {
 
     const doHeartbeat = React.useCallback(async () => {
 
-        if (! heartbeat.left) {
+        if (! heartbeatRef.current.left) {
 
-            if (heartbeat.right === undefined) {
+            if (heartbeatRef.current.right === undefined) {
                 await doHeartbeatCreate();
             } else {
-                await doHeartbeatUpdate(heartbeat.right);
+                await doHeartbeatUpdate(heartbeatRef.current.right);
             }
 
+        } else {
+            console.error("heartbeat error: " , heartbeatRef.current.left);
         }
 
-    }, [heartbeat, doHeartbeatUpdate, doHeartbeatCreate]);
+    }, [heartbeatRef, doHeartbeatUpdate, doHeartbeatCreate]);
 
     const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 5000);
 
@@ -51,7 +53,7 @@ function useHeartbeater() {
         // now listen to the React history and make sure it's being debounced properly.
 
         return history.listen(() => {
-            doHeartbeatWithDebounce()
+            doHeartbeatWithDebounce();
         })
 
     }, [doHeartbeatWithDebounce]);

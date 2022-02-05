@@ -70,6 +70,7 @@ export function useDebouncer(callback: () => void, interval: number = 500) {
 
     React.useEffect(() => {
 
+        // this is needed to clear / unsubscribe any timeouts registered on unmount.
         return () => {
 
             if (timeout.current) {
