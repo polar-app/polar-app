@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import {IFirestoreContext, useFirestore} from "../../../../../apps/repository/js/FirestoreProvider";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TextField} from "@material-ui/core";
-import {Feature, FeatureEnabled, useFeatureEnabled} from "../../../features/FeaturesRegistry";
+import {useFeatureEnabled} from "../../../features/FeaturesRegistry";
 
 const getOrCreateReferralCode = (firestore: IFirestoreContext) => {
     const REF_CODES_COLLECTION = 'user_referral';
     const REF_CODE_CHAR_LENGTH = 10;
 
-    return new Promise<string>(resolve => {
+    return new Promise<string>((resolve, reject) => {
         firestore.firestore
             .collection(REF_CODES_COLLECTION)
             .where('uid', '==', firestore.uid)
@@ -36,23 +36,26 @@ const getOrCreateReferralCode = (firestore: IFirestoreContext) => {
                     })
                     .then(() => {
                         resolve(referral_code);
-                    });
+                    })
+                    .catch(err => reject(err));
             });
     });
 }
 
 const ReferAnotherUser: React.FC = () => {
     const featureEnabled = useFeatureEnabled('referral-system');
-    if (!featureEnabled) {
-        return <>Feature not enabled</>;
-    }
-
     const firestore = useFirestore();
     const [referralURL, setReferralURL] = useState<string>('');
 
     useEffect(() => {
-        getOrCreateReferralCode(firestore).then(referralCode => setReferralURL(`https://app.getpolarized.io/join/${referralCode}`));
+        getOrCreateReferralCode(firestore)
+            .then(referralCode => setReferralURL(`https://app.getpolarized.io/join/${referralCode}`))
+            .catch(err => console.error(err));
     }, [firestore]);
+
+    if (!featureEnabled) {
+        return <>Feature not enabled</>;
+    }
 
     if (!referralURL) {
         return <></>;
