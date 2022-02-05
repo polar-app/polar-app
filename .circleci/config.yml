@@ -307,6 +307,26 @@ jobs:
           paths:
             - project
 
+  # @ Run tests
+  playwright-chrome:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Serve & Wait till socket is available
+          command: |
+            cd /home/circleci/project
+            pnpm run serve &
+            timeout 300 bash -c 'until echo > /dev/tcp/localhost/8050; do sleep 1; done'
+      - run:
+          name: Run Playwright tests
+          command: (cd /home/circleci/project/packages/polar-playwright && pnpm dlx playwright test --project=chromium)
+
   # @ Build Polar Next.js website
   build-website-v2:
     parameters:
@@ -608,6 +628,12 @@ workflows:
           executor: large
           requires:
             - setting-up
+
+      - playwright-chrome:
+          executor: large
+          requires:
+            - build-polar-app
+          attach-workspace: true
 
       # @ Run Cypress tests for chrome-desktop (1080p)
       - cypress/run:
