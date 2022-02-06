@@ -77,26 +77,31 @@ const Main = () => {
     return (
         <Box pt={1} className={classes.root}>
             <List>
+
                 <SettingListItem title="Dark Mode"
                                  description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
                                  name="dark-mode"
                                  defaultValue={true}
                                  icon={<BrightnessMediumIcon />}/>
+
                 <SettingSelect title="PDF Dark Mode Handling"
                                 description="Enable custom dark mode handling for PDFs.  This allows to change how the PDF colors are displayed."
                                 name="dark-mode-pdf"
                                 icon={<ImportContactsIcon />}
                                 options={PREF_PDF_DARK_MODE_OPTIONS}/>
+
                 <SettingListItem
                     title="Automatically resume reading position"
                     description="This feature restores the document reading position using pagemarks when reopening a document."
                     name="settings-auto-resume"
                     icon={<FilterCenterFocusIcon />}
                     defaultValue={true}/>
+
                 <SettingListItem title="Fixed-width EPUBs"
                                  description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                  name="fixed-width-epub"
                                  icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}/>
+
                 {/*<SettingEntry title="Enable groups"*/}
                 {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                 {/*              name="groups"*/}
