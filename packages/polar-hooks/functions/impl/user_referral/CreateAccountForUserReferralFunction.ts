@@ -89,7 +89,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
         await createFirebaseUser();
         await createStripeSubscriptionWithTrial();
         await doAmplitudeEvent();
-        await sendResponseOK();
+        sendResponseOK();
 
     } catch (e) {
 
