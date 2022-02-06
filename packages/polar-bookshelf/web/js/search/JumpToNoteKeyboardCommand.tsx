@@ -5,6 +5,7 @@ import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../notes/NoteLinkLoader";
 import {INamedBlockEntry, useBlocksStore} from "../notes/store/BlocksStore";
 import {IKeyboardShortcutEvent} from "../keyboard_shortcuts/KeyboardShortcutsStore";
+import NotesIcon from '@material-ui/icons/Notes';
 
 export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICommandWithHandler>, OnCommandHandler<ICommandWithHandler>]> {
 
@@ -25,7 +26,13 @@ export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICom
                 noteLinkLoader(id);
             };
 
-            return {id, text: label, handler};
+            return {
+                id,
+                text: label,
+                handler,
+                icon: <NotesIcon/>
+
+            };
 
         }
 
@@ -49,6 +56,7 @@ export const JumpToNoteKeyboardCommand = observer(() => {
         <MUICommandMenuKeyboardShortcut group="Notes"
                                         name="Jump to Note by Name"
                                         description="Jump to a note by name"
+                                        enableIcons={true}
                                         sequences={[
                                             {
                                                 keys: 'shift+command+g',

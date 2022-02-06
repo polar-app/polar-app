@@ -28,6 +28,7 @@ export const SearchKeyboardCommand = observer(() => {
         <MUICommandMenuKeyboardShortcut group="Search"
                                         name="Search"
                                         description="Search Across All Items"
+                                        enableIcons={true}
                                         sequences={[
                                             {
                                                 keys: 'shift+command+s',
