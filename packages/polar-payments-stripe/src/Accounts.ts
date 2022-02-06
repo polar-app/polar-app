@@ -82,7 +82,10 @@ export namespace Accounts {
 
         const lastModified = new Date().toISOString();
 
+        const existingAccount = await Accounts.get(email);
+
         const account: IAccount = {
+            ver: existingAccount?.ver || undefined,
             id: user.uid,
             uid: user.uid,
             plan,
