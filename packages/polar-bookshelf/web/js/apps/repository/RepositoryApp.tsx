@@ -84,13 +84,14 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {SpacedRepCollectionSnapshots,} from '../../snapshot_collections/SpacedRepCollectionSnapshots';
-import {SpacedRepStatCollectionSnapshots,} from '../../snapshot_collections/SpacedRepStatCollectionSnapshots';
-import {HeartbeatCollectionSnapshots,} from '../../snapshot_collections/HeartbeatCollectionSnapshots';
+import {SpacedRepCollectionSnapshots} from '../../snapshot_collections/SpacedRepCollectionSnapshots';
+import {SpacedRepStatCollectionSnapshots} from '../../snapshot_collections/SpacedRepStatCollectionSnapshots';
+import {HeartbeatCollectionSnapshots} from '../../snapshot_collections/HeartbeatCollectionSnapshots';
 import {Heartbeater} from "./Heartbeater";
 import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
 import {FeatureEnabled} from '../../features/FeaturesRegistry';
+import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
 
 interface IProps {
     readonly app: App;
@@ -226,28 +227,32 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <SpacedRepCollectionSnapshots.Provider>
                                             <SpacedRepStatCollectionSnapshots.Provider>
-                                            <HeartbeatCollectionSnapshots.Provider>
-                                                <>
+                                                <HeartbeatCollectionSnapshots.Provider>
+                                                    <UserReferralCollectionSnapshots.Provider>
 
-                                                    {/* Here we have to define ALL the loader so they can execute in
-                                                        parallel and all start listening to snapshots concurrently */}
+                                                    <>
 
-                                                    <SpacedRepCollectionSnapshots.Loader/>
-                                                    <SpacedRepStatCollectionSnapshots.Loader/>
-                                                    <HeartbeatCollectionSnapshots.Loader/>
+                                                        {/* Here we have to define ALL the loader so they can execute in
+                                                            parallel and all start listening to snapshots concurrently */}
 
-                                                    {/* Now all the latches that are REQUIRED for the entire app. */}
+                                                        <SpacedRepCollectionSnapshots.Loader/>
+                                                        <SpacedRepStatCollectionSnapshots.Loader/>
+                                                        <HeartbeatCollectionSnapshots.Loader/>
+                                                        <UserReferralCollectionSnapshots.Loader/>
 
-                                                    <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                        <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                            <>
-                                                                {children}
-                                                            </>
-                                                        </SpacedRepStatCollectionSnapshots.Latch>
-                                                    </SpacedRepCollectionSnapshots.Latch>
+                                                        {/* Now all the latches that are REQUIRED for the entire app. */}
 
-                                                </>
-                                            </HeartbeatCollectionSnapshots.Provider>
+                                                        <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                            <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                <>
+                                                                    {children}
+                                                                </>
+                                                            </SpacedRepStatCollectionSnapshots.Latch>
+                                                        </SpacedRepCollectionSnapshots.Latch>
+
+                                                    </>
+                                                    </UserReferralCollectionSnapshots.Provider>
+                                                </HeartbeatCollectionSnapshots.Provider>
 
                                             </SpacedRepStatCollectionSnapshots.Provider>
 
