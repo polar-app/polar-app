@@ -16,7 +16,6 @@ import {
     PersistenceLayerContext,
     RepoDocMetaManagerContext
 } from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
@@ -92,6 +91,7 @@ import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
 import {FeatureEnabled} from '../../features/FeaturesRegistry';
 import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
+import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
 
 interface IProps {
     readonly app: App;
@@ -150,7 +150,6 @@ const FeatureRequestsScreen = () => {
 
 const SHARED_ROUTES = [
     {path: RoutePathNames.WHATS_NEW, component: (WhatsNewScreen)},
-    {path: RoutePathNames.INVITE, component: (InviteScreen)},
     {path: RoutePathNames.PLANS, component: (PricingScreen)},
     {path: RoutePathNames.PREMIUM, component: (PricingScreen)},
     {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
@@ -325,6 +324,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
             <Switch>
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>
+                </Route>
+
+                <Route exact path="/invite/:user_referral_code">
+                    <InviteScreen/>
                 </Route>
 
                 <Route exact path={["/sign-in", "/login", "/login.html"]}>
