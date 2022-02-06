@@ -6,7 +6,7 @@ import {
 } from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
-export const [SpacedRepStatCollectionSnapshotProvider, useSpacedRepStatCollectionSnapshot, SpacedRepStatCollectionLoader, SpacedRepStatCollectionLatch]
+export const [SpacedRepStatCollectionSnapshots, useSpacedRepStatCollectionSnapshot]
     = createFirestoreSnapshotForUserCollection<SpacedRepStatRecord>(SpacedRepStatCollection.COLLECTION_NAME, {initialEmpty: true});
 
 export function useSpacedRepCollectionSnapshotForModeAndType(mode: RepetitionMode, type: StatType) {

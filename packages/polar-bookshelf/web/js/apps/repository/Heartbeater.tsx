@@ -1,7 +1,7 @@
 import {LinearProgress} from "@material-ui/core";
 import * as React from "react";
 import {
-    HeartbeatCollectionSnapshotLatch,
+    HeartbeatCollectionSnapshots,
     useHeartbeatCollectionSnapshotForDeviceID
 } from "../../snapshot_collections/HeartbeatCollectionSnapshot";
 import {HeartbeatCollection, IHeartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
@@ -77,8 +77,8 @@ const Inner = () => {
 
 export const Heartbeater = () => {
     return (
-        <HeartbeatCollectionSnapshotLatch fallback={<LinearProgress/>}>
+        <HeartbeatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
             <Inner/>
-        </HeartbeatCollectionSnapshotLatch>
+        </HeartbeatCollectionSnapshots.Latch>
     );
 }

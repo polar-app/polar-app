@@ -84,20 +84,9 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {
-    SpacedRepCollectionSnapshotProvider,
-    SpaceRepCollectionSnapshotLatch,
-    SpaceRepCollectionSnapshotLoader
-} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
-import {
-    SpacedRepStatCollectionLatch,
-    SpacedRepStatCollectionLoader,
-    SpacedRepStatCollectionSnapshotProvider
-} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
-import {
-    HeartbeatCollectionSnapshotLoader,
-    HeartbeatCollectionSnapshotProvider
-} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
+import {SpacedRepCollectionSnapshots,} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
+import {SpacedRepStatCollectionSnapshots,} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
+import {HeartbeatCollectionSnapshots,} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 import {Heartbeater} from "./Heartbeater";
 import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
@@ -235,34 +224,34 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                     {/* Register all the providers first */}
 
-                                        <SpacedRepCollectionSnapshotProvider>
-                                            <SpacedRepStatCollectionSnapshotProvider>
-                                            <HeartbeatCollectionSnapshotProvider>
+                                        <SpacedRepCollectionSnapshots.Provider>
+                                            <SpacedRepStatCollectionSnapshots.Provider>
+                                            <HeartbeatCollectionSnapshots.Provider>
                                                 <>
 
                                                     {/* Here we have to define ALL the loader so they can execute in
                                                         parallel and all start listening to snapshots concurrently */}
 
-                                                    <SpaceRepCollectionSnapshotLoader/>
-                                                    <SpacedRepStatCollectionLoader/>
-                                                    <HeartbeatCollectionSnapshotLoader/>
+                                                    <SpacedRepCollectionSnapshots.Loader/>
+                                                    <SpacedRepStatCollectionSnapshots.Loader/>
+                                                    <HeartbeatCollectionSnapshots.Loader/>
 
                                                     {/* Now all the latches that are REQUIRED for the entire app. */}
 
-                                                    <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
-                                                        <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
+                                                    <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                        <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
                                                             <>
                                                                 {children}
                                                             </>
-                                                        </SpacedRepStatCollectionLatch>
-                                                    </SpaceRepCollectionSnapshotLatch>
+                                                        </SpacedRepStatCollectionSnapshots.Latch>
+                                                    </SpacedRepCollectionSnapshots.Latch>
 
                                                 </>
-                                            </HeartbeatCollectionSnapshotProvider>
+                                            </HeartbeatCollectionSnapshots.Provider>
 
-                                            </SpacedRepStatCollectionSnapshotProvider>
+                                            </SpacedRepStatCollectionSnapshots.Provider>
 
-                                        </SpacedRepCollectionSnapshotProvider>
+                                        </SpacedRepCollectionSnapshots.Provider>
 
                                     </DocRepoStore2>
                                 </PersistenceLayerApp>
