@@ -7,8 +7,8 @@ import {
     ShortcutEntry,
     useKeyboardShortcutsStore
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
-import {useJumpToNoteKeyboardCommands} from "../notes/JumpToNoteKeyboardCommand";
-import {useJumpToDocumentKeyboardCommands} from "../notes/JumpToDocumentKeyboardCommand";
+import {useJumpToNoteKeyboardCommands} from "../search/JumpToNoteKeyboardCommand";
+import {useJumpToDocumentKeyboardCommands} from "../search/JumpToDocumentKeyboardCommand";
 
 function useShortcuts() {
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts']);

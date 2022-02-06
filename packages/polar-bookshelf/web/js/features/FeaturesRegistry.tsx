@@ -52,7 +52,12 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "use-redesign-theme": {
         title: "Use Redesign Theme",
         description: "Use Marcella's super fancy redesign :)",
+    },
+    "local-search": {
+        title: "Enable new local search",
+        description: "Enable the new local search functionality.",
     }
+
 
 };
 
@@ -60,7 +65,17 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs' | 'use-redesign-theme';
+export type FeatureName = 'design-m0' |
+                          'note-stack' |
+                          'answers' |
+                          'features' |
+                          'dev' |
+                          'spaced-rep-purge' |
+                          'handheld-area-highlights' |
+                          'legacy-anki-sync' |
+                          'new-notes-handheld-breadcrumbs' |
+                          'local-search' |
+                          'use-redesign-theme';
 
 export interface IFeature {
 

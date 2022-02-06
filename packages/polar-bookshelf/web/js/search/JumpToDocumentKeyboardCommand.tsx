@@ -6,6 +6,7 @@ import {IKeyboardShortcutEvent} from "../keyboard_shortcuts/KeyboardShortcutsSto
 import {useDocRepoStore} from "../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {useDocLoaderForDocInfo} from "../apps/main/DocLoaderHooks";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import DescriptionIcon from '@material-ui/icons/Description';
 
 function useDocInfos() {
 
@@ -39,12 +40,18 @@ export function useJumpToDocumentKeyboardCommands(): Readonly<[CommandsProvider<
             const id = docInfo.fingerprint;
             const title = docInfo.title || 'Untitled';
 
+
             const handler = (event: IKeyboardShortcutEvent) => {
                 console.log("Executing handler to load note: " + id);
                 docLoader(docInfo);
             };
 
-            return {id, text: title, handler};
+            return {
+                id,
+                text: title,
+                handler,
+                icon: <DescriptionIcon/>
+            };
 
         }
 
@@ -68,6 +75,7 @@ export const JumpToDocumentKeyboardCommand = observer(() => {
         <MUICommandMenuKeyboardShortcut group="Documents"
                                         name="Jump to Document by Name"
                                         description="Jump to a document by name"
+                                        enableIcons={true}
                                         sequences={[
                                             {
                                                 keys: 'shift+command+d',

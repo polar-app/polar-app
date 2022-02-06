@@ -10,7 +10,7 @@ import {MUIDialog} from '../../ui/dialogs/MUIDialog';
 import {MUICommandMenu} from '../../mui/command_menu/MUICommandMenu';
 import {createStyles, IconButton, makeStyles, Tooltip} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import {useJumpToNoteKeyboardCommands} from "../JumpToNoteKeyboardCommand";
+import {useJumpToNoteKeyboardCommands} from "../../search/JumpToNoteKeyboardCommand";
 import {StandardIconButton} from "../../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 export const SearchForNote: React.FC = observer(() => {
