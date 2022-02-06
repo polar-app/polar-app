@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1.28.0
   slack: circleci/slack@4.4.4
+  wait-for: cobli/wait-for@1.0.0
 
 # @ Define Custom Executors
 executors:
@@ -322,7 +323,9 @@ jobs:
           command: |
             cd /home/circleci/project
             pnpm run serve &
-            timeout 300 bash -c 'until echo > /dev/tcp/localhost/8050; do sleep 1; done'
+      - wait-for/port:
+          port: 8050
+          timeout: 120
       - run:
           name: Run Playwright tests
           command: (cd /home/circleci/project/packages/polar-playwright && pnpm dlx playwright test --project=chromium)
