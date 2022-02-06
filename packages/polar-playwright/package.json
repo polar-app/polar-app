@@ -1,0 +1,19 @@
+{
+  "name": "polar-playwright",
+  "version": "0.0.0",
+  "description": "for all e2e testing",
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json . --no-error-on-unmatched-pattern",
+    "eslint-fix": "eslint -c ../../.eslintrc.json . --fix",
+    "eslint-ci": "eslint -c ../../.eslintrc.json -f compact . --no-error-on-unmatched-pattern",
+    "compile": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc; fi;",
+    "tsc": "tsc --project ./tsconfig.json",
+    "watch": "RESULT=\"$(find . -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else pnpm run tsc-watch; fi;",
+    "tsc-watch": "tsc --project ./tsconfig.json --watch"
+  },
+  "author": "Polar",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "=1.18.1"
+  }
+}

@@ -307,6 +307,63 @@ jobs:
           paths:
             - project
 
+  # @ Run playwright test for chromium
+  playwright-chromium:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Serve & Run Tests
+          command: |
+            cd /home/circleci/project
+            pnpm run serve &
+            echo "WAITING FOR SERVER TO START"
+            npx wait-on "http://localhost:8050"
+            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=chromium --reporter=list)
+
+  # @ Run playwright test for firefox
+  playwright-firefox:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Serve & Run Tests
+          command: |
+            cd /home/circleci/project
+            pnpm run serve &
+            echo "WAITING FOR SERVER TO START"
+            npx wait-on "http://localhost:8050"
+            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=firefox --reporter=list)
+
+  # @ Run playwright test for safari
+  playwright-safari:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Serve & Run Tests
+          command: |
+            cd /home/circleci/project
+            pnpm run serve &
+            echo "WAITING FOR SERVER TO START"
+            npx wait-on "http://localhost:8050"
+            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=webkit --reporter=list)
+
   # @ Build Polar Next.js website
   build-website-v2:
     parameters:
@@ -608,6 +665,21 @@ workflows:
           executor: large
           requires:
             - setting-up
+
+      - playwright-chromium:
+          executor: large
+          requires:
+            - build-polar-app
+
+      - playwright-firefox:
+          executor: large
+          requires:
+            - build-polar-app
+
+      - playwright-safari:
+          executor: large
+          requires:
+            - build-polar-app
 
       # @ Run Cypress tests for chrome-desktop (1080p)
       - cypress/run:
