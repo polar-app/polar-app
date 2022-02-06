@@ -3,7 +3,7 @@ import * as React from "react";
 import {
     HeartbeatCollectionSnapshots,
     useHeartbeatCollectionSnapshotForDeviceID
-} from "../../snapshot_collections/HeartbeatCollectionSnapshot";
+} from "../../snapshot_collections/HeartbeatCollectionSnapshots";
 import {HeartbeatCollection, IHeartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
