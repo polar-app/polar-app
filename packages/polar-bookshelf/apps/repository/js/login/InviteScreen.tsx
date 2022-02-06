@@ -37,6 +37,31 @@ export const InviteScreen = React.memo(function InviteScreen() {
 
     const classes = useStyles();
 
+    const emailRef = React.useRef("");
+
+    const handleCreateAccount = React.useCallback((email: string) => {
+
+
+    }, [])
+
+    const handleEmailProvided = React.useCallback(() => {
+
+        const email = emailRef.current.trim();
+
+        if (email !== '') {
+            handleCreateAccount(email);
+        }
+
+    }, [handleCreateAccount]);
+
+    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent<any>, callback: () => void) => {
+
+        if (event.key === 'Enter') {
+            callback();
+        }
+
+    }, []);
+
     return (
         <AdaptiveDialog>
             <>
@@ -58,8 +83,8 @@ export const InviteScreen = React.memo(function InviteScreen() {
 
                             <TextField autoFocus={true}
                                        className={classes.email}
-                                       // onChange={event => emailRef.current = event.target.value}
-                                       // onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                       onChange={event => emailRef.current = event.target.value}
+                                       onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                        placeholder="Enter your email address"
                                        variant="outlined"
                                        type="email"
@@ -77,10 +102,10 @@ export const InviteScreen = React.memo(function InviteScreen() {
                                     color="primary"
                                     size="large"
                                     className={classes.button}
-                                    // onClick={props.onClick}
-                                    >
+                                    onClick={() => handleEmailProvided()}>
 
                                 Create Free Account
+
                             </Button>
 
 
