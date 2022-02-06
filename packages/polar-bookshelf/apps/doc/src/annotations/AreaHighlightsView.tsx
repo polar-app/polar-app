@@ -1,5 +1,4 @@
 import * as React from "react";
-import {PageAnnotations} from "./PageAnnotations";
 import {AreaHighlightRenderer} from "./AreaHighlightRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
@@ -11,6 +10,8 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {observer} from "mobx-react-lite";
 import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {AreaHighlightRendererHandheld} from "./AreaHighlightRendererHandheld";
 
 interface IAreaHighlightsViewRenderer {
     docMeta: IDocMeta;
@@ -68,39 +69,25 @@ export const BlockAreaHighlightRenderer: React.FC<IBlockAreaHighlightRendererPro
     }
 
     return (
-        <AreaHighlightRenderer id={pageAnnotation.annotation.id}
-                               container={pageAnnotation.container}
-                               pageNum={pageAnnotation.pageNum}
-                               fingerprint={pageAnnotation.fingerprint}
-                               areaHighlight={pageAnnotation.annotation} />
+        <DeviceRouter
+            desktop={
+                <AreaHighlightRenderer id={pageAnnotation.annotation.id}
+                                       container={pageAnnotation.container}
+                                       pageNum={pageAnnotation.pageNum}
+                                       fingerprint={pageAnnotation.fingerprint}
+                                       areaHighlight={pageAnnotation.annotation} />
+            }
+            handheld={
+                <AreaHighlightRendererHandheld id={pageAnnotation.annotation.id}
+                                               container={pageAnnotation.container}
+                                               pageNum={pageAnnotation.pageNum}
+                                               fingerprint={pageAnnotation.fingerprint}
+                                               areaHighlight={pageAnnotation.annotation} />
+
+            }
+        />
     );
 });
-
-
-export const DocMetaAreaHighlightsView = () => {
-
-    const {docMeta} = useDocViewerStore(['docMeta']);
-    const annotationContainers = useAnnotationContainers();
-
-    if (!docMeta) {
-        return null;
-    }
-
-    const pageAnnotations = PageAnnotations.compute(docMeta, pageMeta => Object.values(pageMeta.areaHighlights || {}));
-    const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
-
-    const rendered = visiblePageAnnotations.map(current =>
-                                             <AreaHighlightRenderer
-                                                 key={current.annotation.id}
-                                                 id={current.annotation.id}
-                                                 container={current.container}
-                                                 pageNum={current.pageNum}
-                                                 fingerprint={docMeta?.docInfo.fingerprint}
-                                                 areaHighlight={current.annotation}/>);
-
-    return <>{rendered}</>;
-
-};
 
 export const AreaHighlightsView = React.memo(function AreaHighlightsView() {
 

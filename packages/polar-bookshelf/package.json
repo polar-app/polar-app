@@ -158,7 +158,7 @@
     "react-helmet": "=6.1.0",
     "react-intersection-observer": "=8.30.1",
     "react-moment": "=0.9.7",
-    "react-rnd": "=10.2.3",
+    "react-rnd": "=10.3.5",
     "react-router-dom": "=5.2.0",
     "react-router": "=5.2.0",
     "react-teleporter": "=2.1.1",
