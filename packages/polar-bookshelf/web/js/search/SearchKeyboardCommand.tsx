@@ -16,7 +16,7 @@ export const SearchKeyboardCommand = observer(() => {
         const notesCommands = notesCommandsProvider();
         const documentsCommands = documentsCommandsProvider()
 
-        return [...notesCommands, ...documentsCommands];
+        return [...notesCommands, ...documentsCommands].sort((a, b) => a.text.localeCompare(b.text));
 
     }, [notesCommandsProvider, documentsCommandsProvider]);
 
