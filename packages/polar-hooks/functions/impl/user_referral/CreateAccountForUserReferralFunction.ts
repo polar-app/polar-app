@@ -98,8 +98,6 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
             const user = await auth.getUser(userReferral!.uid)
 
-            const stripeCustomer = await StripeCustomers.getCustomerByEmail('live', user.email!);
-
             const account = await Accounts.get(user.email!);
 
             const plan = account?.plan || 'free';
