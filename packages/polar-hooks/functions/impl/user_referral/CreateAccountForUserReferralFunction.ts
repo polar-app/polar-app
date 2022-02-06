@@ -9,6 +9,9 @@ import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
 import {Billing} from "polar-accounts/src/Billing";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
 import V2PlanPlus = Billing.V2PlanPlus;
 
 // TODO: make these types published via API
@@ -86,9 +89,57 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         }
 
+        async function rewardReferringUser() {
+
+            // what is their level??
+
+            const firebase = FirebaseAdmin.app();
+            const auth = firebase.auth();
+
+            const user = await auth.getUser(userReferral!.uid)
+
+            const stripeCustomer = await StripeCustomers.getCustomerByEmail('live', user.email!);
+
+            const account = await Accounts.get(user.email!);
+
+            const plan = account?.plan || 'free';
+
+            if (plan === 'free') {
+
+                const trial_end = StripeTrials.computeTrialEnds('30d');
+                await StripeCustomers.changePlan('live', user.email!, V2PlanPlus, 'month', trial_end);
+
+            } else {
+
+                const couponRegistry = StripeCouponRegistry.get('live');
+
+                function computeCoupon() {
+
+                    switch (plan) {
+                        case "free":
+                        case "plus":
+                            return couponRegistry.PLUS_ONE_MONTH_FREE;
+                        case "pro":
+                            return couponRegistry.PRO_ONE_MONTH_FREE;
+                    }
+
+                    return couponRegistry.PLUS_ONE_MONTH_FREE;
+
+                }
+
+                const coupon = computeCoupon();
+
+                await StripeCustomers.applyCoupon('live', user.email!, coupon.id);
+
+            }
+
+        }
+
         await createFirebaseUser();
         await createStripeSubscriptionWithTrial();
         await doAmplitudeEvent();
+        await rewardReferringUser();
+
         sendResponseOK();
 
     } catch (e) {
