@@ -4,7 +4,7 @@ import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IEither} from "../util/Either";
 
-export const [HeartbeatCollectionSnapshotProvider, useHeartbeatCollectionSnapshot, HeartbeatCollectionSnapshotLoader, HeartbeatCollectionSnapshotLatch]
+export const [HeartbeatCollectionSnapshots, useHeartbeatCollectionSnapshot]
     = createFirestoreSnapshotForUserCollection<IHeartbeat>(HeartbeatCollection.COLLECTION_NAME, {initialEmpty: true});
 
 
