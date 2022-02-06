@@ -3,6 +3,7 @@ import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace UserReferralCollection {
 
@@ -38,6 +39,10 @@ export namespace UserReferralCollection {
     export async function get<SM = unknown>(firestore: IFirestore<SM>, uid: UIDStr): Promise<IUserReferral | undefined> {
         // return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['uid', '==', uid]]));
         return await Collections.get(firestore, COLLECTION_NAME, uid);
+    }
+
+    export async function getByReferralCode<SM = unknown>(firestore: IFirestore<SM>, referral_code: IDStr): Promise<IUserReferral | undefined> {
+        return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['referral_code', '==', referral_code]]));
     }
 
 }
