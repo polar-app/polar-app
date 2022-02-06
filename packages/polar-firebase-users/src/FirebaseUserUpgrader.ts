@@ -26,12 +26,12 @@ export namespace FirebaseUserUpgrader {
 
         if (! userReferral) {
 
-            const referral_code = Hashcodes.createRandomID();
+            const user_referral_code = Hashcodes.createRandomID();
 
             const userReferral: IUserReferral = {
                 id: uid,
                 uid,
-                referral_code
+                user_referral_code
             }
 
             await UserReferralCollection.write(firestore, userReferral)

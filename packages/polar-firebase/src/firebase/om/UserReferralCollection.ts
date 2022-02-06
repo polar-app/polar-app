@@ -19,9 +19,9 @@ export namespace UserReferralCollection {
         readonly uid: UIDStr;
 
         /**
-         * The referral code that this user uses to invite new users.
+         * The user referral code that this user uses to invite new users.
          */
-        readonly referral_code: IDStr;
+        readonly user_referral_code: IDStr;
 
     }
 
