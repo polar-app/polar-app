@@ -7,7 +7,7 @@ import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
 import {AppSites} from "./AppSites";
-import {CustomerType, IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
+import {AccountVer, CustomerType, IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface AuthHandler {
@@ -106,6 +106,7 @@ export function toUserInfo(user: firebase.User, account: IAccount | undefined): 
     const subscription = createSubscription();
 
     return {
+        ver: account?.ver || undefined,
         displayName: Optional.of(user.displayName).getOrUndefined(),
         email: Optional.of(user.email).get(),
         emailVerified: user.emailVerified,
@@ -209,6 +210,8 @@ export type UserInfoSubscription = Billing.Subscription & {
  * is anonymous and hasn't yet created an account.
  */
 export interface UserInfo {
+
+    readonly ver: undefined | AccountVer;
 
     readonly displayName?: string;
     readonly email: string;

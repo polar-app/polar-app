@@ -1,6 +1,9 @@
 import {Billing, Trial} from "polar-accounts/src/Billing";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {IDStr} from "polar-shared/src/util/Strings";
+import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
+import {UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export type CustomerType = 'google_iap' | 'apple_iap' | 'stripe';
 
@@ -29,19 +32,28 @@ export interface IAccountInit {
 
 }
 
+export type AccountVer = 'v2';
+
 export interface IAccount extends IAccountInit {
 
-    readonly id: string;
+    readonly id: IDStr;
+
+    /**
+     * The version of the account and the metadata that this account provides.
+     *
+     * v2: adds the user_referral table...
+     */
+    readonly ver: undefined | AccountVer;
 
     /**
      * The users uid in Firebase.
      */
-    readonly uid: string;
+    readonly uid: UIDStr;
 
     /**
      * The accounts primary email address.  We might add more in the future.
      */
-    readonly email: string;
+    readonly email: EmailStr;
 
     /**
      * The last time any important action was changed on the account. Payment
@@ -57,5 +69,20 @@ export interface IAccount extends IAccountInit {
      * When does this subscription expire
      */
     readonly expiresAt?: ISODateTimeString;
+
+}
+
+export namespace AccountCollection {
+
+    // TODO: need an 'upgrade' to add v2 to the version of this IAccount..
+
+    export const COLLECTION_NAME = 'account';
+
+    /**
+     * Upgrade this account to a specific version.
+     */
+    export async function upgrade<SM = unknown>(firestore: IFirestore<SM>, uid:  UIDStr, ver: AccountVer) {
+        await Collections.update(firestore, COLLECTION_NAME, uid, {ver});
+    }
 
 }
