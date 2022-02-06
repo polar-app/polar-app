@@ -8,12 +8,13 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
 import {Billing} from "polar-accounts/src/Billing";
+import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import V2PlanPlus = Billing.V2PlanPlus;
 
 // TODO: make these types published via API
 export interface ICreateAccountForUserReferralRequest {
     readonly email: EmailStr;
-    readonly referral_code: IDStr;
+    readonly user_referral_code: IDStr;
     readonly name: string;
 }
 
@@ -40,13 +41,13 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
     try {
         const firestore = FirestoreAdmin.getInstance();
 
-        const userReferral = await UserReferralCollection.getByReferralCode(firestore, request.referral_code);
+        const userReferral = await UserReferralCollection.getByReferralCode(firestore, request.user_referral_code);
 
         if (! userReferral) {
 
             const response: ICreateAccountForUserReferralResponse = {
                 code: "invalid-user-referral-code",
-                message: 'User referral code does not exist: ' + request.referral_code,
+                message: 'User referral code does not exist: ' + request.user_referral_code,
             };
 
             ExpressFunctions.sendResponse(res, response);
@@ -71,6 +72,10 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         }
 
+        async function doAmplitudeEvent() {
+            await AmplitudeBackendAnalytics.event2('CreateAccountForUserReferralFunction', {user_referral_code: request.user_referral_code})
+        }
+
         function sendResponseOK() {
 
             const response = {
@@ -83,6 +88,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         await createFirebaseUser();
         await createStripeSubscriptionWithTrial();
+        await doAmplitudeEvent();
         await sendResponseOK();
 
     } catch (e) {
