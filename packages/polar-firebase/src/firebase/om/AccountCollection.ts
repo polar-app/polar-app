@@ -2,18 +2,21 @@ import {Billing, Trial} from "polar-accounts/src/Billing";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 
-export interface IGoogleIAPCustomer {
-    readonly type: 'google_iap';
+export type CustomerType = 'google_iap' | 'apple_iap' | 'stripe';
+
+export interface IBaseCustomer<T extends CustomerType> {
+    readonly type: T;
+}
+
+export interface IGoogleIAPCustomer extends IBaseCustomer<'google_iap'> {
     readonly customerID: IDStr;
 }
 
-export interface IAppleIAPCustomer {
-    readonly type: 'apple_iap';
+export interface IAppleIAPCustomer extends IBaseCustomer<'apple_iap'> {
     readonly customerID: IDStr;
 }
 
-export interface IStripeCustomer {
-    readonly type: 'stripe';
+export interface IStripeCustomer extends IBaseCustomer<'stripe'> {
     readonly customerID: IDStr;
 }
 

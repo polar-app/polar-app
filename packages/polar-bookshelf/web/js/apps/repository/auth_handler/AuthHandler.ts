@@ -7,7 +7,7 @@ import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
 import {AppSites} from "./AppSites";
-import {IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
+import {CustomerType, IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface AuthHandler {
@@ -65,11 +65,13 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 export function toUserInfo(user: firebase.User, account: IAccount | undefined): UserInfo {
 
-    const createSubscription = (): Billing.Subscription => {
+    const createSubscription = (): UserInfoSubscription => {
 
         if (account) {
 
             if (account.trial?.expires) {
+
+                // TODO: I think this is deprecated now...
 
                 const now = ISODateTimeStrings.create();
                 if (ISODateTimeStrings.compare(now, account.trial.expires) === -1) {
@@ -77,13 +79,16 @@ export function toUserInfo(user: firebase.User, account: IAccount | undefined): 
                         plan: Billing.V2PlanPro,
                         interval: 'month',
                         trial: account.trial,
+                        type: undefined
                     };
                 }
+
             }
 
             return {
                 plan: account.plan,
-                interval: account.interval || 'month'
+                interval: account.interval || 'month',
+                type: account.customer?.type || 'stripe'
             };
 
 
@@ -91,7 +96,8 @@ export function toUserInfo(user: firebase.User, account: IAccount | undefined): 
         } else {
             return {
                 plan: 'free',
-                interval: 'month'
+                interval: 'month',
+                type: undefined
             };
         }
 
@@ -194,6 +200,10 @@ export interface AuthStatus {
     readonly type: AuthType;
 }
 
+export type UserInfoSubscription = Billing.Subscription & {
+    readonly type: CustomerType | undefined;
+}
+
 /**
  * A generic UserInfo object for this auth handler. If there's no email the user
  * is anonymous and hasn't yet created an account.
@@ -212,8 +222,8 @@ export interface UserInfo {
     readonly creationTime: ISODateTimeString;
 
     /**
-     * The users subscription level.
+     * The user's subscription level and customer type.
      */
-    readonly subscription: Billing.Subscription;
+    readonly subscription: UserInfoSubscription;
 
 }
