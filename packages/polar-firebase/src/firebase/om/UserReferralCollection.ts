@@ -1,4 +1,4 @@
-import {CollectionNameStr, IDStr} from "polar-shared/src/util/Strings";
+import {CollectionNameStr, EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
@@ -15,6 +15,8 @@ export namespace UserReferralCollection {
     export interface IUserReferral {
 
         readonly id: UIDStr;
+
+        readonly email: EmailStr;
 
         readonly uid: UIDStr;
 

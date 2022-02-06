@@ -3,22 +3,22 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferralCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
-import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
-import {Billing} from "polar-accounts/src/Billing";
-import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
-import {Accounts} from "polar-payments-stripe/src/Accounts";
-import V2PlanPlus = Billing.V2PlanPlus;
+import {UserReferrals} from "./UserReferrals";
+import IReferrer = UserReferrals.IReferrer;
+import IReferred = UserReferrals.IReferred;
 
 // TODO: make these types published via API
 export interface ICreateAccountForUserReferralRequest {
+
     readonly email: EmailStr;
+
     readonly user_referral_code: IDStr;
+
+    /**
+     * The name of this user for their new account.
+     */
     readonly name: string;
+
 }
 
 export interface ICreateAccountForUserReferralResponse {
@@ -58,27 +58,6 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         }
 
-        async function createFirebaseUser() {
-
-            const password = Hashcodes.createRandomID();
-            await FirebaseUserCreator.create(request.email, password);
-
-        }
-
-        async function createStripeSubscriptionWithTrial() {
-
-            await StripeCustomers.createCustomer('live', request.email, request.name);
-
-            const trial_end = StripeTrials.computeTrialEnds('30d');
-
-            await StripeCustomers.changePlan('live', request.email, V2PlanPlus, 'month', trial_end);
-
-        }
-
-        async function doAmplitudeEvent() {
-            await AmplitudeBackendAnalytics.event2('CreateAccountForUserReferralFunction', {user_referral_code: request.user_referral_code})
-        }
-
         function sendResponseOK() {
 
             const response = {
@@ -89,54 +68,18 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         }
 
-        async function rewardReferringUser() {
+        const referrer: IReferrer = {
+            uid: userReferral.uid,
+            user_referral_code: userReferral.user_referral_code,
+            email: userReferral.email
+        };
 
-            // what is their level??
-
-            const firebase = FirebaseAdmin.app();
-            const auth = firebase.auth();
-
-            const user = await auth.getUser(userReferral!.uid)
-
-            const account = await Accounts.get(user.email!);
-
-            const plan = account?.plan || 'free';
-
-            if (plan === 'free') {
-
-                const trial_end = StripeTrials.computeTrialEnds('30d');
-                await StripeCustomers.changePlan('live', user.email!, V2PlanPlus, 'month', trial_end);
-
-            } else {
-
-                const couponRegistry = StripeCouponRegistry.get('live');
-
-                function computeCoupon() {
-
-                    switch (plan) {
-                        case "free":
-                        case "plus":
-                            return couponRegistry.PLUS_ONE_MONTH_FREE;
-                        case "pro":
-                            return couponRegistry.PRO_ONE_MONTH_FREE;
-                    }
-
-                    return couponRegistry.PLUS_ONE_MONTH_FREE;
-
-                }
-
-                const coupon = computeCoupon();
-
-                await StripeCustomers.applyCoupon('live', user.email!, coupon.id);
-
-            }
-
+        const referred: IReferred = {
+            email: request.email,
+            name: request.name
         }
 
-        await createFirebaseUser();
-        await createStripeSubscriptionWithTrial();
-        await doAmplitudeEvent();
-        await rewardReferringUser();
+        await UserReferrals.createNewAccountAndApplyReward('live', referrer, referred);
 
         sendResponseOK();
 
