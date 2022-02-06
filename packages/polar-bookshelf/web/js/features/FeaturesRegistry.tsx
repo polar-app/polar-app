@@ -1,5 +1,5 @@
 import React from 'react';
-import {usePrefsContext} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../../apps/repository/js/persistence_layer/FirestorePrefs";
 import {mapStream} from "polar-shared/src/util/ArrayStreams";
 import {deepMemo} from "../react/ReactUtils";
 
@@ -49,6 +49,10 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "New Notes Handheld Breadcrumbs",
         description: "Enable the new notes handheld breadcrumbs per updated design.",
     },
+    "use-redesign-theme": {
+        title: "Use Redesign Theme",
+        description: "Use Marcella's super fancy redesign :)",
+    },
     "local-search": {
         title: "Enable new local search",
         description: "Enable the new local search functionality.",
@@ -61,7 +65,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs' | 'local-search';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs' | 'local-search' | 'use-redesign-theme';
 
 export interface IFeature {
 
@@ -173,7 +177,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
         const featureEnabledFromRegistry = useFeatureEnabledFromRegistry(features);
 
-        const prefs = usePrefsContext();
+        const prefs = useFirestorePrefs();
 
         for(const feature of features) {
             if (prefs.defined(feature)) {
@@ -224,7 +228,7 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     function useFeatureToggler() {
 
-        const prefs = usePrefsContext();
+        const prefs = useFirestorePrefs();
 
         return React.useCallback(async (featureName: F, enabled: boolean = true) => {
             prefs.mark(featureName, enabled);

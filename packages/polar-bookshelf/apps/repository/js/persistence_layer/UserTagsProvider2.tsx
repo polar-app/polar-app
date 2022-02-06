@@ -2,11 +2,11 @@ import * as React from "react";
 import {UserTag, UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
 import {ITagsContext, TagsContext} from "./PersistenceLayerApp";
 import {SubscriptionValue} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
-import {usePrefsContext} from "./PrefsContext2";
+import {useFirestorePrefs} from "./FirestorePrefs";
 
 function useUserTags(): SubscriptionValue<ReadonlyArray<UserTag>> {
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const userTagsDB = new UserTagsDB(prefs);
     userTagsDB.init();

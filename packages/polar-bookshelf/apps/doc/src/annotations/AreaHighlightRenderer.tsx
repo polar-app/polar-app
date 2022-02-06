@@ -7,7 +7,6 @@ import {computePageDimensions} from "./AnnotationHooks";
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
@@ -21,42 +20,18 @@ import {useDocViewerContext} from "../renderers/DocRenderer";
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly areaHighlight: IAreaHighlight | IBlockAreaHighlight;
+    readonly areaHighlight: IBlockAreaHighlight;
     readonly container: HTMLElement;
     readonly id: string;
 }
 
-export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(props: IProps) {
-
-    const {areaHighlight, fingerprint, pageNum, container, id} = props;
-    const {docScale} = useDocViewerStore(['docScale']);
+export const useToOverlayRect = (areaHighlight: IBlockAreaHighlight, pageNum: number) => {
     const docViewerElementsContext = useDocViewerElementsContext();
-    const {update: updateBlockAreaHighlight} = useBlockAreaHighlight();
-    const {fileType} = useDocViewerContext();
-    const docViewerElements = useDocViewerElementsContext();
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
+    const {docScale} = useDocViewerStore(['docScale']);
 
-    const [draggable, setDraggable] = React.useState(false);
-
-    React.useEffect(() => {
-        const handleKey = (e: KeyboardEvent) => {
-            if (e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey) {
-                setDraggable(true);
-            } else {
-                setDraggable(false);
-            }
-        };
-        window.addEventListener('keydown', handleKey, {passive: true});
-        window.addEventListener('keyup', handleKey, {passive: true});
-        return () => {
-            window.removeEventListener('keydown', handleKey);
-            window.removeEventListener('keyup', handleKey);
-        };
-    }, [setDraggable]);
-
-    const toOverlayRect = React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
-
+    return React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
         if (! pageElement) {
             return undefined;
         }
@@ -86,8 +61,38 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
         // pretty soon as they're not really used very much I imagine.
 
         return areaHighlightRect.toDimensions(pageDimensions);
+    }, [pageElement, docScale, areaHighlight]);
 
-    }, [areaHighlight.position, docScale, pageElement]);
+};
+
+export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(props: IProps) {
+
+    const {areaHighlight, fingerprint, pageNum, container, id} = props;
+    const {docScale} = useDocViewerStore(['docScale']);
+    const {update: updateBlockAreaHighlight} = useBlockAreaHighlight();
+    const {fileType} = useDocViewerContext();
+    const docViewerElements = useDocViewerElementsContext();
+
+    const toOverlayRect = useToOverlayRect(areaHighlight, pageNum);
+
+    const [draggable, setDraggable] = React.useState(false);
+
+    React.useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey) {
+                setDraggable(true);
+            } else {
+                setDraggable(false);
+            }
+        };
+        window.addEventListener('keydown', handleKey, {passive: true});
+        window.addEventListener('keyup', handleKey, {passive: true});
+        return () => {
+            window.removeEventListener('keydown', handleKey);
+            window.removeEventListener('keyup', handleKey);
+        };
+    }, [setDraggable]);
+
 
     const handleRegionResize = React.useCallback((overlayRect: ILTRect) => {
 
@@ -156,21 +161,9 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
     }, [toOverlayRect, id, areaHighlight.color, draggable, fingerprint, pageNum, handleRegionResize]);
 
-    // const rect = Arrays.first(Object.values(areaHighlight.rects));
-    //
-    // if (rect) {
-    //     return toReactPortal(rect, container)
-    // } else {
-    //     return null;
-    // }
-
     const portals = Object.values(areaHighlight.rects)
         .map(current => toReactPortal(current, container));
 
-    return (
-        <>
-            {portals}
-        </>
-    );
+    return <>{portals}</>;
 
 });

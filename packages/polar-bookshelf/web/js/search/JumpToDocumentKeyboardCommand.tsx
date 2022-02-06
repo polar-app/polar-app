@@ -26,6 +26,7 @@ function useDocInfos() {
 
 }
 
+
 export function useJumpToDocumentKeyboardCommands(): Readonly<[CommandsProvider<ICommandWithHandler>, OnCommandHandler<ICommandWithHandler>]> {
 
     const docLoader = useDocLoaderForDocInfo();

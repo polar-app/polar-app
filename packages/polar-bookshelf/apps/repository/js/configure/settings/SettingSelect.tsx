@@ -1,8 +1,18 @@
 import * as React from "react";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {PreviewWarning} from "./PreviewWarning";
-import {Box, createStyles, ListItemText, ListItemIcon, FormControlLabel, ListItem, makeStyles, Radio, RadioGroup} from "@material-ui/core";
+import {
+    Box,
+    createStyles,
+    FormControlLabel,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    makeStyles,
+    Radio,
+    RadioGroup
+} from "@material-ui/core";
 
 interface IProps {
     readonly title: string;
@@ -31,7 +41,7 @@ export const SettingSelect = (props: IProps) => {
 
     const classes = useStyles();
     const log = useLogger();
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const {name} = props;
 

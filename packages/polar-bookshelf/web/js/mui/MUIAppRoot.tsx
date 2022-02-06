@@ -7,7 +7,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider2} from "../undo/UndoQueueProvider2";
-import useLocalStorageState from 'use-local-storage-state'
 import {MUIErrorBoundary} from "./MUIErrorBoundary";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
@@ -17,7 +16,7 @@ interface IProps {
 
 export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
-    const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
+    const [theme, setTheme] = React.useState('dark' as ThemeType);
 
     const muiTheme = React.useMemo(() => {
 
@@ -45,6 +44,10 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
         });
 
     }, [theme]);
+
+    React.useEffect(() => {
+        console.log("Using MUI palette: ", JSON.stringify(muiTheme.palette, null, '  '))
+    }, [muiTheme]);
 
     return (
         <>
