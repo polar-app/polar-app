@@ -323,7 +323,7 @@ jobs:
             cd /home/circleci/project
             pnpm run serve &
             echo "WAITING FOR SERVER TO START"
-            timeout 300 bash -c 'until echo > /dev/tcp/localhost/8050; do sleep 1; done'
+            sleep 70
             (cd /home/circleci/project/packages/polar-playwright && pnpm dlx playwright test --project=chromium)
 
   # @ Build Polar Next.js website
