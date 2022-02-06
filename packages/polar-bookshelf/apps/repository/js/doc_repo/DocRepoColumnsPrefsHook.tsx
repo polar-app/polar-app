@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {usePrefsContext} from '../persistence_layer/PrefsContext2';
+import {useFirestorePrefs} from '../persistence_layer/FirestorePrefs';
 
 const PREF_KEY = 'doc_repo_columns';
 
 export function useDocRepoColumnsPrefs(): ReadonlyArray<keyof IDocInfo> {
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const prefValue = prefs.fetch(PREF_KEY);
 
@@ -27,7 +27,7 @@ export function useDocRepoColumnsPrefs(): ReadonlyArray<keyof IDocInfo> {
 
 export function useDocRepoColumnsPrefsMutator() {
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
     const log = useLogger();
 
     return React.useCallback((columns: ReadonlyArray<keyof IDocInfo>) => {

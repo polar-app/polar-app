@@ -6,7 +6,7 @@ import {
     ObservableStoreTuple,
     pick,
 } from "./ObservableStore";
-import {usePrefsContext} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
 
 /**
  * A handler that the internal store uses when reading the initial store and
@@ -72,7 +72,7 @@ function usePrefsBackingUsingLocalStorage<V, P extends keyof V>(pref: string): I
 
 function usePrefsBackingUsingPrefsContext<V, P extends keyof V>(pref: string): IPrefsBacking<V , P> {
 
-    const prefsContext = usePrefsContext();
+    const prefsContext = useFirestorePrefs();
 
     const reader: PrefsReader<V, P> = React.useCallback(() => {
 

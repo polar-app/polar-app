@@ -40,7 +40,7 @@ import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotatio
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddMobileScreen} from "./AddMobileScreen";
@@ -99,6 +99,7 @@ import {
     HeartbeatCollectionSnapshotProvider
 } from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 import {Heartbeater} from "./Heartbeater";
+import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
 
 interface IProps {
     readonly app: App;
@@ -216,23 +217,24 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     Preconditions.assertPresent(app, 'app');
 
     const DataProviders: React.FC = React.useCallback(({children}) => (
-        <PrefsContext2>
-            <UserTagsDataLoader>
-                <BlocksUserTagsDataLoader>
-                    <BlockStoreDefaultContextProvider>
-                        <BlocksStoreProvider>
-                            <PersistenceLayerApp tagsType="documents"
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}
-                                                 persistenceLayerManager={persistenceLayerManager}>
-                                <DocRepoStore2>
+        <FirestorePrefs>
+            <MUIAppRootUsingFirestorePrefs>
+                <UserTagsDataLoader>
+                    <BlocksUserTagsDataLoader>
+                        <BlockStoreDefaultContextProvider>
+                            <BlocksStoreProvider>
+                                <PersistenceLayerApp tagsType="documents"
+                                                     repoDocMetaManager={repoDocMetaManager}
+                                                     repoDocMetaLoader={repoDocMetaLoader}
+                                                     persistenceLayerManager={persistenceLayerManager}>
+                                    <DocRepoStore2>
 
                                     {/* TODO move this to a dedicated component */}
 
                                     {/* Register all the providers first */}
 
-                                    <SpacedRepCollectionSnapshotProvider>
-                                        <SpacedRepStatCollectionSnapshotProvider>
+                                        <SpacedRepCollectionSnapshotProvider>
+                                            <SpacedRepStatCollectionSnapshotProvider>
                                             <HeartbeatCollectionSnapshotProvider>
                                                 <>
 
@@ -256,17 +258,18 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 </>
                                             </HeartbeatCollectionSnapshotProvider>
 
-                                        </SpacedRepStatCollectionSnapshotProvider>
+                                            </SpacedRepStatCollectionSnapshotProvider>
 
-                                    </SpacedRepCollectionSnapshotProvider>
+                                        </SpacedRepCollectionSnapshotProvider>
 
-                                </DocRepoStore2>
-                            </PersistenceLayerApp>
-                        </BlocksStoreProvider>
-                    </BlockStoreDefaultContextProvider>
-                </BlocksUserTagsDataLoader>
-            </UserTagsDataLoader>
-        </PrefsContext2>
+                                    </DocRepoStore2>
+                                </PersistenceLayerApp>
+                            </BlocksStoreProvider>
+                        </BlockStoreDefaultContextProvider>
+                    </BlocksUserTagsDataLoader>
+                </UserTagsDataLoader>
+            </MUIAppRootUsingFirestorePrefs>
+        </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
     const GlobalProviders: React.FC = React.useCallback(({children}) => (

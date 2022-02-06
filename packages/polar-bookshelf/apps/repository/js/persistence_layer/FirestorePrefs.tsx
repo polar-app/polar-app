@@ -22,7 +22,7 @@ interface IProps {
  * This would be bad as we would flip from light to dark really quick (and other
  * issues).
  */
-export function usePrefsContext(): IPersistentPrefs {
+export function useFirestorePrefs(): IPersistentPrefs {
 
     const snapshot = useUserPrefContextSnapshot();
 
@@ -30,7 +30,7 @@ export function usePrefsContext(): IPersistentPrefs {
 
 }
 
-export const PrefsContext2 = React.memo((props: IProps) => {
+export const FirestorePrefs = React.memo((props: IProps) => {
 
     const {firestore, uid} = useFirestore();
     const dialogs = useDialogManager();

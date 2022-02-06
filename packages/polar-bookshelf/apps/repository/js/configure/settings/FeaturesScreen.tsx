@@ -4,7 +4,7 @@ import {createStyles, List, makeStyles} from "@material-ui/core";
 import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 import {useFeaturesRegistry} from "../../../../../web/js/features/FeaturesRegistry";
 import {FeatureListItem} from "./FeatureListItem";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -64,7 +64,7 @@ const ResetButton = () => {
 
     const featuresRegistry = useFeaturesRegistry()
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const onClick = React.useCallback(() => {
 

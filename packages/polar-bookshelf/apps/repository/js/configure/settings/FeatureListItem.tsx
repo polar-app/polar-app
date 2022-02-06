@@ -2,7 +2,7 @@ import * as React from "react";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
 
 export interface PrefsWriter {
 
@@ -23,7 +23,7 @@ interface IProps {
 export const FeatureListItem =  React.memo(function FeatureListItem(props: IProps){
 
     const log = useLogger();
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const {pref} = props;
 
