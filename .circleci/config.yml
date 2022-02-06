@@ -326,8 +326,8 @@ jobs:
             npx wait-on "http://localhost:8050"
             (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=chromium --reporter=list)
 
-  # @ Run playwright test for firfox
-  playwright-firfox:
+  # @ Run playwright test for firefox
+  playwright-firefox:
     parameters:
       executor:
         type: executor
@@ -343,7 +343,7 @@ jobs:
             pnpm run serve &
             echo "WAITING FOR SERVER TO START"
             npx wait-on "http://localhost:8050"
-            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=firfox --reporter=list)
+            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=firefox --reporter=list)
 
   # @ Run playwright test for safari
   playwright-safari:
