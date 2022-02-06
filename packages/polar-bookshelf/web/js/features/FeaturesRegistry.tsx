@@ -65,7 +65,17 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs' | 'local-search' | 'use-redesign-theme';
+export type FeatureName = 'design-m0' |
+                          'note-stack' |
+                          'answers' |
+                          'features' |
+                          'dev' |
+                          'spaced-rep-purge' |
+                          'handheld-area-highlights' |
+                          'legacy-anki-sync' |
+                          'new-notes-handheld-breadcrumbs' |
+                          'local-search' |
+                          'use-redesign-theme';
 
 export interface IFeature {
 
