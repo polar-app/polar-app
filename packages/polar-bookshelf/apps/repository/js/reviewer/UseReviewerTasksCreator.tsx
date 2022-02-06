@@ -8,7 +8,7 @@ import {
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {ITasksBuilder} from "./ITasksBuilder";
-import {useSpacedRepCollectionSnapshot} from "../../../../web/js/snapshot_collections/SpacedRepCollectionSnapshot";
+import {useSpacedRepCollectionSnapshot} from "../../../../web/js/snapshot_collections/SpacedRepCollectionSnapshots";
 
 export function useReviewerTasksCreator() {
 

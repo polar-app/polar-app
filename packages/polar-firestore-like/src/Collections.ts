@@ -1,8 +1,8 @@
-import { IFirestore, IFirestoreClient } from "./IFirestore";
+import {IFirestore, IFirestoreClient} from "./IFirestore";
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import { IQuerySnapshot } from "./IQuerySnapshot";
+import {IQuerySnapshot} from "./IQuerySnapshot";
 import {IWriteBatch} from "./IWriteBatch";
 import {IDRecord} from "polar-shared/src/util/IDMaps";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -179,6 +179,20 @@ export namespace Collections {
         value = Dictionaries.onlyDefinedProperties(value);
         const ref = firestore.collection(collection).doc(id);
         await ref.set(value);
+
+        if (! batch) {
+            await b.commit();
+        }
+
+    }
+
+    export async function update<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, id: string, value: T, batch?: IWriteBatch<SM>) {
+
+        const b = batch || firestore.batch();
+
+        value = Dictionaries.onlyDefinedProperties(value);
+        const ref = firestore.collection(collection).doc(id);
+        await ref.update(value);
 
         if (! batch) {
             await b.commit();

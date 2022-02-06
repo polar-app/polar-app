@@ -30,6 +30,7 @@
     "polar-firebase-admin": "0.0.0",
     "polar-firestore-like": "0.0.0",
     "polar-sendgrid": "0.0.0",
+    "polar-shared": "0.0.0",
     "polar-amplitude-backend": "0.0.0"
   },
   "peerDependencies": {
