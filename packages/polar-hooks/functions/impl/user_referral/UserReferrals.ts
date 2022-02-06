@@ -3,7 +3,6 @@ import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator"
 import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
 import {EmailStr} from "polar-shared/src/util/Strings";
@@ -61,21 +60,26 @@ export namespace UserReferrals {
 
         async function rewardReferringUser() {
 
-            // what is their level??
-
-            const firebase = FirebaseAdmin.app();
-            const auth = firebase.auth();
-
-            const user = await auth.getUser(referrer.uid)
-
-            const account = await Accounts.get(user.email!);
+            const account = await Accounts.get(referrer.email);
 
             const plan = account?.plan || 'free';
 
             if (plan === 'free') {
 
                 const trial_end = StripeTrials.computeTrialEnds('30d');
-                await StripeCustomers.changePlan(stripeMode, user.email!, V2PlanPlus, 'month', trial_end);
+                const subscription = await StripeCustomers.changePlan(stripeMode, referrer.email, V2PlanPlus, 'month', trial_end);
+
+                function computeCustomerID() {
+
+                    if (typeof subscription.customer === 'string') {
+                        return subscription.customer;
+                    }
+
+                    return subscription.customer.id;
+
+                }
+
+                await Accounts.changePlanViaEmail(referrer.email, {type: 'stripe', customerID: computeCustomerID()}, plan, 'month');
 
             } else {
 
@@ -97,7 +101,7 @@ export namespace UserReferrals {
 
                 const coupon = computeCoupon();
 
-                await StripeCustomers.applyCoupon(stripeMode, user.email!, coupon.id);
+                await StripeCustomers.applyCoupon(stripeMode, referrer.email, coupon.id);
 
             }
 
