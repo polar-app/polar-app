@@ -323,8 +323,8 @@ jobs:
             cd /home/circleci/project
             pnpm run serve &
             echo "WAITING FOR SERVER TO START"
-            sleep 70
-            (cd /home/circleci/project/packages/polar-playwright && pnpm dlx playwright test --project=chromium)
+            npx wait-on "http://localhost:8050"
+            (cd /home/circleci/project/packages/polar-playwright && npx playwright test --project=chromium)
 
   # @ Build Polar Next.js website
   build-website-v2:
