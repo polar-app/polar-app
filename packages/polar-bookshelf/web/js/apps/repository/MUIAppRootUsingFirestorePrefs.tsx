@@ -3,9 +3,12 @@ import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {PaletteOptions} from "@material-ui/core/styles/createPalette";
 import {useFirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
-import {useErrorHandler} from "../../mui/MUIErrorHandler";
-import {MUIThemeTypeContext, ThemeType} from "../../mui/context/MUIThemeTypeContext";
+import {MUIThemeTypeContext} from "../../mui/context/MUIThemeTypeContext";
 import {useFeatureEnabled} from "../../features/FeaturesRegistry";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {GlobalCss} from "../../mui/css/GlobalCss";
+import {GlobalCSSBootstrap} from "../../mui/css/GlobalCSSBootstrap";
+import {GlobalCssMobile} from "../../mui/css/GlobalCssMobile";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -15,24 +18,12 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
 
     const firestorePrefs = useFirestorePrefs();
 
-    const theme = React.useMemo((): ThemeType => firestorePrefs.get('theme').getOrElse('dark') as ThemeType, [firestorePrefs]);
+    const darkMode = React.useMemo(() => firestorePrefs.get('dark-mode').getOrElse('true') === 'true', [firestorePrefs]);
+
+    const theme = React.useMemo(() => darkMode ? 'dark' : 'light', [darkMode]);
 
     // whether we should use the new design...
     const useRedesign = useFeatureEnabled('use-redesign-theme');
-
-    const errorHandler = useErrorHandler();
-
-    // the setter for the theme
-    const setTheme = React.useCallback((theme: 'light' | 'dark') => {
-
-        async function doAsync() {
-            firestorePrefs.set('theme', theme);
-            await firestorePrefs.commit();
-        }
-
-        doAsync().catch(errorHandler);
-
-    }, [firestorePrefs, errorHandler]);
 
     const legacyTheme = React.useMemo(() => {
 
@@ -141,8 +132,17 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
     return (
         <>
             <ThemeProvider theme={muiTheme}>
-                <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
-                    {props.children}
+                <MUIThemeTypeContext.Provider value={{theme}}>
+
+                    <>
+                        <CssBaseline/>
+                        <GlobalCss/>
+                        <GlobalCSSBootstrap/>
+                        <GlobalCssMobile/>
+
+                        {props.children}
+
+                    </>
                 </MUIThemeTypeContext.Provider>
             </ThemeProvider>
         </>
