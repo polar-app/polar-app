@@ -22,7 +22,7 @@ export namespace FirebaseUserUpgrader {
     async function upgradeUserReferral(uid: UserIDStr) {
 
         const firestore = FirestoreAdmin.getInstance();
-        const userReferral = UserReferralCollection.get(firestore, uid);
+        const userReferral = await UserReferralCollection.get(firestore, uid);
 
         if (! userReferral) {
 
