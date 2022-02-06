@@ -100,6 +100,7 @@ import {
 } from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 import {Heartbeater} from "./Heartbeater";
 import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
+import {FeatureEnabled} from '../../features/FeaturesRegistry';
 
 interface IProps {
     readonly app: App;
@@ -352,7 +353,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <ActiveKeyboardShortcuts/>
                                     <JumpToNoteKeyboardCommand/>
                                     <JumpToDocumentKeyboardCommand/>
-                                    <SearchKeyboardCommand/>
+
+                                    <FeatureEnabled feature="local-search">
+                                        <SearchKeyboardCommand/>
+                                    </FeatureEnabled>
 
                                     <Heartbeater/>
 

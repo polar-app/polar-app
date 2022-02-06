@@ -48,6 +48,10 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "new-notes-handheld-breadcrumbs": {
         title: "New Notes Handheld Breadcrumbs",
         description: "Enable the new notes handheld breadcrumbs per updated design.",
+    },
+    "local-search": {
+        title: "Enable new local search",
+        description: "Enable the new local search functionality.",
     }
 
 
@@ -57,7 +61,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
 // FeatureRegistry I think.  That would be easier to maintain but requires
 // another refactor of the code.
 
-export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs';
+export type FeatureName = 'design-m0' | 'note-stack' | 'answers' | 'features' | 'dev' | 'spaced-rep-purge' | 'handheld-area-highlights' | 'legacy-anki-sync' | 'new-notes-handheld-breadcrumbs' | 'local-search';
 
 export interface IFeature {
 
