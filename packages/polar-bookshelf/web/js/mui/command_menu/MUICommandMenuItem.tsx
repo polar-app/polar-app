@@ -7,6 +7,7 @@ import * as React from "react";
 import {KeySequences} from "../../hotkeys/KeySequences";
 import {GenericInputEvent, KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -93,8 +94,10 @@ export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: 
                   onClick={event => handleClick(event)}>
 
             {props.enableIcons && props.icon && (
-                <ListItemIcon>
-                    {props.icon}
+                <ListItemIcon style={{minWidth: 0}}>
+                    <Box mr={1}>
+                        {props.icon}
+                    </Box>
                 </ListItemIcon>)}
 
             {props.text}

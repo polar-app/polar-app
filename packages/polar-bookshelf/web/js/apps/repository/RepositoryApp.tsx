@@ -71,8 +71,8 @@ import {
     BlocksAnnotationRepoStoreProvider
 } from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NoteProviders} from "../../notes/NoteProviders";
-import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
-import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {JumpToNoteKeyboardCommand} from "../../search/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../search/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
@@ -84,22 +84,13 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {
-    SpacedRepCollectionSnapshotProvider,
-    SpaceRepCollectionSnapshotLatch,
-    SpaceRepCollectionSnapshotLoader
-} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
-import {
-    SpacedRepStatCollectionLatch,
-    SpacedRepStatCollectionLoader,
-    SpacedRepStatCollectionSnapshotProvider
-} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
-import {
-    HeartbeatCollectionSnapshotLoader,
-    HeartbeatCollectionSnapshotProvider
-} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
+import {SpacedRepCollectionSnapshots,} from '../../snapshot_collections/SpacedRepCollectionSnapshot';
+import {SpacedRepStatCollectionSnapshots,} from '../../snapshot_collections/SpacedRepStatCollectionSnapshot';
+import {HeartbeatCollectionSnapshots,} from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 import {Heartbeater} from "./Heartbeater";
 import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
+import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
+import {FeatureEnabled} from '../../features/FeaturesRegistry';
 
 interface IProps {
     readonly app: App;
@@ -233,34 +224,34 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                     {/* Register all the providers first */}
 
-                                        <SpacedRepCollectionSnapshotProvider>
-                                            <SpacedRepStatCollectionSnapshotProvider>
-                                            <HeartbeatCollectionSnapshotProvider>
+                                        <SpacedRepCollectionSnapshots.Provider>
+                                            <SpacedRepStatCollectionSnapshots.Provider>
+                                            <HeartbeatCollectionSnapshots.Provider>
                                                 <>
 
                                                     {/* Here we have to define ALL the loader so they can execute in
                                                         parallel and all start listening to snapshots concurrently */}
 
-                                                    <SpaceRepCollectionSnapshotLoader/>
-                                                    <SpacedRepStatCollectionLoader/>
-                                                    <HeartbeatCollectionSnapshotLoader/>
+                                                    <SpacedRepCollectionSnapshots.Loader/>
+                                                    <SpacedRepStatCollectionSnapshots.Loader/>
+                                                    <HeartbeatCollectionSnapshots.Loader/>
 
                                                     {/* Now all the latches that are REQUIRED for the entire app. */}
 
-                                                    <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
-                                                        <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
+                                                    <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                        <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
                                                             <>
                                                                 {children}
                                                             </>
-                                                        </SpacedRepStatCollectionLatch>
-                                                    </SpaceRepCollectionSnapshotLatch>
+                                                        </SpacedRepStatCollectionSnapshots.Latch>
+                                                    </SpacedRepCollectionSnapshots.Latch>
 
                                                 </>
-                                            </HeartbeatCollectionSnapshotProvider>
+                                            </HeartbeatCollectionSnapshots.Provider>
 
-                                            </SpacedRepStatCollectionSnapshotProvider>
+                                            </SpacedRepStatCollectionSnapshots.Provider>
 
-                                        </SpacedRepCollectionSnapshotProvider>
+                                        </SpacedRepCollectionSnapshots.Provider>
 
                                     </DocRepoStore2>
                                 </PersistenceLayerApp>
@@ -354,6 +345,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <ActiveKeyboardShortcuts/>
                                     <JumpToNoteKeyboardCommand/>
                                     <JumpToDocumentKeyboardCommand/>
+
+                                    <FeatureEnabled feature="local-search">
+                                        <SearchKeyboardCommand/>
+                                    </FeatureEnabled>
 
                                     <Heartbeater/>
 

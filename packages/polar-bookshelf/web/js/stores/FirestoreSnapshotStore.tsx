@@ -133,13 +133,16 @@ export type FirestoreSnapshotStoreLoader = React.FC<FirestoreSnapshotLoaderProps
 
 export type FirestoreSnapshotStoreLatch = React.FC<SnapshotStoreLatchProps>;
 
-export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
-    FirestoreSnapshotStoreProvider,
-    UseFirestoreSnapshotStore<D>,
-    FirestoreSnapshotStoreLoader,
-    FirestoreSnapshotStoreLatch
-];
+export interface FirestoreSnapshotStoreComponent<D> {
+    readonly Provider: FirestoreSnapshotStoreProvider;
+    readonly Loader: FirestoreSnapshotStoreLoader;
+    readonly Latch: FirestoreSnapshotStoreLatch;
+}
 
+export type FirestoreSnapshotStoreTuple<D = TDocumentData> = readonly [
+    FirestoreSnapshotStoreComponent<D>,
+    UseFirestoreSnapshotStore<D>,
+];
 
 interface FirestoreSnapshotForUserCollectionOpts {
 
@@ -224,7 +227,7 @@ export function createFirestoreSnapshotForUserCollection<D = TDocumentData>(coll
 
     }));
 
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [{Provider, Loader, Latch: SnapshotStoreLatch}, useSnapshotStore];
 
 }
 
@@ -281,6 +284,6 @@ export function createMockFirestoreSnapshotForUserCollection<D = TDocumentData>(
 
     }));
 
-    return [Provider, useSnapshotStore, Loader, SnapshotStoreLatch];
+    return [{Provider, Loader, Latch: SnapshotStoreLatch}, useSnapshotStore];
 
 }

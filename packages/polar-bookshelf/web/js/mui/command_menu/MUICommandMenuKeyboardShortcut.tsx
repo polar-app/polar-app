@@ -29,6 +29,13 @@ interface IProps<C extends ICommand> {
     readonly sequences: ReadonlyArray<KeyBinding>;
     readonly commandsProvider: CommandsProvider<C>;
     readonly onCommand: (command: C, event: GenericInputEvent) => void;
+
+    /**
+     * When true, we enable icons to the left. This way we require every action
+     * to have an icon but only if enabled.
+     */
+    readonly enableIcons?: boolean;
+
 }
 
 export const MUICommandMenuKeyboardShortcut = <C extends ICommand>(props: IProps<C>) => {
@@ -74,6 +81,7 @@ export const MUICommandMenuKeyboardShortcut = <C extends ICommand>(props: IProps
                                    title={props.name}
                                    className={classes.commandMenu}
                                    onClose={() => setActive(false)}
+                                   enableIcons={props.enableIcons}
                                    commandsProvider={props.commandsProvider}/>
 
             </MUIDialog>
