@@ -2,8 +2,8 @@ import * as React from "react";
 import {CommandsProvider, ICommandWithHandler, OnCommandHandler} from "../mui/command_menu/MUICommandMenu";
 import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 import {observer} from "mobx-react-lite"
-import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {INamedBlockEntry, useBlocksStore} from "./store/BlocksStore";
+import {useNoteLinkLoader} from "../notes/NoteLinkLoader";
+import {INamedBlockEntry, useBlocksStore} from "../notes/store/BlocksStore";
 import {IKeyboardShortcutEvent} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 export function useJumpToNoteKeyboardCommands(): Readonly<[CommandsProvider<ICommandWithHandler>, OnCommandHandler<ICommandWithHandler>]> {

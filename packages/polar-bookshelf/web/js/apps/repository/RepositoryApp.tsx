@@ -71,8 +71,8 @@ import {
     BlocksAnnotationRepoStoreProvider
 } from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NoteProviders} from "../../notes/NoteProviders";
-import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
-import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {JumpToNoteKeyboardCommand} from "../../search/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../search/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
@@ -99,6 +99,7 @@ import {
     HeartbeatCollectionSnapshotProvider
 } from '../../snapshot_collections/HeartbeatCollectionSnapshot';
 import {Heartbeater} from "./Heartbeater";
+import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
 
 interface IProps {
     readonly app: App;
@@ -351,6 +352,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <ActiveKeyboardShortcuts/>
                                     <JumpToNoteKeyboardCommand/>
                                     <JumpToDocumentKeyboardCommand/>
+                                    <SearchKeyboardCommand/>
 
                                     <Heartbeater/>
 
