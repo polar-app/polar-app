@@ -15,7 +15,7 @@ export function useOnlineOnlyTaskHandler() {
                 title: "Can't perform action while offline",
                 body: (
                     <div>
-                        Looks like you're currently offline and this action requires an Intenret connection.
+                        Looks like you're currently offline and this action requires an Internet connection.
                     </div>
                 ),
                 onAccept: NULL_FUNCTION
