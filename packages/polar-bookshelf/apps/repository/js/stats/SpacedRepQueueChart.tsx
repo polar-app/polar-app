@@ -10,7 +10,9 @@ import {StatBox} from "./StatBox";
 import {minDatapointsReducer, sumDatapointsReducer} from './StatisticsReducers';
 import {useNivoTheme} from "./NivoHooks";
 import useTheme from '@material-ui/core/styles/useTheme';
-import {useSpacedRepCollectionSnapshotForModeAndType} from "../reviewer/UseSpacedRepStatCollectionSnapshot";
+import {
+    useSpacedRepCollectionSnapshotForModeAndType
+} from "../../../../web/js/snapshot_collections/SpacedRepStatCollectionSnapshots";
 
 const HEIGHT = '300px';
 

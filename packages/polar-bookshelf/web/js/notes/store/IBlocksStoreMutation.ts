@@ -5,7 +5,6 @@ export type BlockUpdateMutationType = 'added' | 'removed' | 'modified';
 export interface IBlocksStoreMutationAdded {
     readonly id: BlockIDStr;
     readonly type: 'added';
-
     readonly added: IBlock;
 
 }
@@ -14,7 +13,6 @@ export interface IBlocksStoreMutationRemoved {
 
     readonly id: BlockIDStr;
     readonly type: 'removed';
-
     readonly removed: IBlock;
 
 }

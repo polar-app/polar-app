@@ -56,10 +56,6 @@ export class IntercomAnalytics implements IAnalytics {
         // noop
     }
 
-    public heartbeat(): void {
-        // noop
-    }
-
     public logout(): void {
         this.user = undefined;
         this.boot(toIntercomData(undefined));

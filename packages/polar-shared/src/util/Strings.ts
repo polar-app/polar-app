@@ -298,6 +298,11 @@ export type HTMLStr = string;
 export type URLStr = string;
 
 /**
+ * The path component of a URL
+ */
+export type URLPathStr = string;
+
+/**
  * A string representing a local file path.
  */
 export type PathStr = string;

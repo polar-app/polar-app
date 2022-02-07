@@ -1,12 +1,12 @@
 import * as React from "react";
 import {BlocksUserTagsDB} from "../../../../web/js/datastore/BlocksUserTagsDB";
-import {usePrefsContext} from "./PrefsContext2";
+import {useFirestorePrefs} from "./FirestorePrefs";
 
 export const BlocksUserTagsContext = React.createContext<BlocksUserTagsDB | null>(null);
 
 export const BlocksUserTagsDataLoader: React.FC = React.memo(function UserTagsDataLoader({ children }) {
 
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
 
     const userTagsDB = React.useMemo(() => {
         const userTagsDB = new BlocksUserTagsDB(prefs);

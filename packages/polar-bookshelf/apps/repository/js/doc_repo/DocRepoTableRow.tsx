@@ -1,14 +1,14 @@
 import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {ContextMenuHandler} from "./MUIDocContextMenu";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import {createStyles, makeStyles} from "@material-ui/core/styles";
 import {RepoDocInfo} from "../RepoDocInfo";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {cells, DocRepoTableRowInner} from "./DocRepoTableRowInner";
 import {useDocRepoContextMenu} from "./DocRepoTable2";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100%',
@@ -41,7 +41,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-const Delegate = React.memo(function Delegate(props: IProps) {
+export const DocRepoTableRow = React.memo(function Delegate(props: IProps) {
 
     const classes = useStyles();
 
@@ -77,10 +77,3 @@ const Delegate = React.memo(function Delegate(props: IProps) {
     );
 
 }, isEqual);
-
-export const DocRepoTableRow = React.memo((props: IProps) => (
-    // <MUIHoverStoreProvider initialValue={false}>
-    <Delegate {...props}/>
-    // </MUIHoverStoreProvider>
-));
-

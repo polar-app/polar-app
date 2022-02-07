@@ -1,10 +1,8 @@
 import * as React from "react";
-import {useContext} from "react";
-import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
-import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
+import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 
 export interface PrefsWriter {
 
@@ -29,29 +27,16 @@ interface IProps {
 
 export const SettingListItem =  React.memo(function SettingListItem(props: IProps){
 
-    const log = useLogger();
-    const {setTheme} = useContext(MUIThemeTypeContext);
-    const prefs = usePrefsContext();
+    const errorHandler = useErrorHandler();
+    const prefs = useFirestorePrefs();
 
     const {name, defaultValue} = props;
 
     const value = prefs.isMarked(name, defaultValue);
 
-    const handleDarkModeToggle = React.useCallback((enabled: boolean) => {
-
-        const theme = enabled ? 'dark' : 'light';
-
-        setTimeout(() => setTheme(theme), 1);
-
-    }, [setTheme]);
-
     const onChange = React.useCallback((value: boolean) => {
         console.log("Setting " + name);
         prefs.mark(name, value);
-
-        if (name === 'dark-mode') {
-            handleDarkModeToggle(value);
-        }
 
         const doCommit = async () => {
             await prefs.commit();
@@ -59,8 +44,9 @@ export const SettingListItem =  React.memo(function SettingListItem(props: IProp
         };
 
         doCommit()
-            .catch(err => log.error("Could not write prefs: ", err));
-    }, [handleDarkModeToggle, log, name, prefs]);
+            .catch(errorHandler);
+
+    }, [errorHandler, name, prefs]);
 
     return (
         <>

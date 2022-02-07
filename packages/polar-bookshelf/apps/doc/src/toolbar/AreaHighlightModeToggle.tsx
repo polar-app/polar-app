@@ -51,7 +51,7 @@ export const AreaHighlightModeToggle: React.FC = () => {
 
             const pageMeta = docMeta.pageMetas[pageNum];
 
-            if (! pageMeta || ! pageMeta.pageInfo.dimensions) {
+            if (! pageMeta) {
                 return;
             }
 

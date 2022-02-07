@@ -34,6 +34,7 @@ import {BLOCK_LINK_ACTION, useBlockActionTrigger} from "./contenteditable/BlockA
 import {ReverseIndex} from "./store/ReverseIndex";
 import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 import {BlockTextContentUtils} from "./BlockTextContentUtils";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export const useDocumentBlockFromDocInfoCreator = () => {
 
@@ -128,12 +129,13 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
 
 
 export const useBlockTagEditorDialog = () => {
+
     const blocksStore = useBlocksStore();
     const dialogs = useDialogManager();
     const updateBlockTags = useUpdateBlockTags();
     const blocksUserTagsDB = useBlocksUserTagsDB();
 
-    return React.useCallback((ids: ReadonlyArray<BlockIDStr>) => {
+    return React.useCallback((ids: ReadonlyArray<BlockIDStr>, cb: () => void = NULL_FUNCTION) => {
         const blocks = arrayStream(ids)
             .map(id => blocksStore.getBlockForMutation(id))
             .filterPresent()
@@ -155,11 +157,15 @@ export const useBlockTagEditorDialog = () => {
             targets: () => blocks.map(toTarget),
             tagsProvider: () => blocksUserTagsDB.tags(),
             dialogs,
-            doTagged: updateBlockTags,
+            doTagged: (...args) => {
+                updateBlockTags(...args);
+                cb();
+            },
+            relatedOptionsCalculator: blocksStore.relatedTagsManager.toRelatedOptionsCalculator()
         };
 
-
         TaggedCallbacks.create(opts)();
+
     }, [blocksStore, blocksUserTagsDB, dialogs, updateBlockTags]);
 };
 

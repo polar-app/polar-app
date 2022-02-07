@@ -8,6 +8,7 @@ import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChalle
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {isPrivateBetaEnabled} from "polar-private-beta/src/isPrivateBetaEnabled";
+import {FirebaseUserUpgrader} from "polar-firebase-users/src/FirebaseUserUpgrader";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -145,6 +146,10 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
         customToken,
         isNewUser: authUser.isNewUser
     };
+
+    // we now need to upgrade this users account before they are authenticated,
+    // so that they have all the data they need.
+    await FirebaseUserUpgrader.upgrade(authUser.user.uid);
 
     // set a session token with the user's UID so that the request is unique for
     // SSR so that it doesn't mess with the cache.  Note that we have to clear

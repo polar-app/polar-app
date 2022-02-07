@@ -519,7 +519,7 @@ interface AuthContentProps {
 /**
  * Auth content wrapper which adds the logo, any title text.
  */
-const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
+export const AuthContent = React.memo(function AuthContent(props: AuthContentProps) {
 
     return (
         <>

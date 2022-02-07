@@ -1,6 +1,3 @@
-/**
- * Various functions and types around billing.
- */
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export interface Trial {
@@ -8,6 +5,9 @@ export interface Trial {
     readonly expires: ISODateTimeString;
 }
 
+/**
+ * Various functions and types around billing.
+ */
 export namespace Billing {
 
     export type V1Plan = 'free' | 'bronze' | 'silver' | 'gold';

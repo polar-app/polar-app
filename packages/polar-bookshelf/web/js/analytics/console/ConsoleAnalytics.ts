@@ -42,10 +42,6 @@ export class ConsoleAnalytics implements IAnalytics {
         // noop
     }
 
-    public heartbeat(): void {
-        // noop
-    }
-
     public logout(): void {
     }
 

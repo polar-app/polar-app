@@ -12,6 +12,9 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
  */
 export type GenericClause = readonly [string, TWhereFilterOp, any];
 
+/**
+ * @deprecated Use the new SnapshotStore system
+ */
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,
                                                 listener: (snapshot: IGenericCollectionSnapshot<T>) => void) {

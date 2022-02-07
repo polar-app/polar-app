@@ -42,7 +42,7 @@ import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
-import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
+import {useFirestorePrefs} from "../../../../repository/js/persistence_layer/FirestorePrefs";
 import {usePDFUpgrader} from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
@@ -144,7 +144,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const {setFinder} = useDocFindCallbacks();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
-    const prefs = usePrefsContext();
+    const prefs = useFirestorePrefs();
     const hasPagesInitRef = React.useRef(false);
     const hasLoadRef = React.useRef(false);
 

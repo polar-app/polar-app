@@ -21,11 +21,11 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/jsdom": "=16.2.13",
+    "@types/jsdom": "=16.2.14",
     "@types/jsdom-global": "3.0.2",
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
-    "jsdom": "=16.7.0",
+    "jsdom": "=19.0.0",
     "jsdom-global": "3.0.2",
     "mocha": "=9.1.1",
     "karma-structured-json-reporter": "=1.0.1"

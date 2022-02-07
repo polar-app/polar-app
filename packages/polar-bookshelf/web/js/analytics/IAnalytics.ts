@@ -48,12 +48,6 @@ export interface IAnalytics {
      */
     version(version: string): void;
 
-    /**
-     * The user has has loaded the app nad we should record a heartbeat so that
-     * we can track app usage.
-     */
-    heartbeat(): void;
-
     logout(): void;
 
 }

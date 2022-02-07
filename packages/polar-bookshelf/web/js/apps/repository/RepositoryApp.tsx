@@ -16,7 +16,6 @@ import {
     PersistenceLayerContext,
     RepoDocMetaManagerContext
 } from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
@@ -40,7 +39,7 @@ import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotatio
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AddMobileScreen} from "./AddMobileScreen";
@@ -71,8 +70,8 @@ import {
     BlocksAnnotationRepoStoreProvider
 } from '../../../../apps/repository/js/block_annotation_repo/BlocksAnnotationRepoStore';
 import {NoteProviders} from "../../notes/NoteProviders";
-import {JumpToNoteKeyboardCommand} from "../../notes/JumpToNoteKeyboardCommand";
-import {JumpToDocumentKeyboardCommand} from "../../notes/JumpToDocumentKeyboardCommand";
+import {JumpToNoteKeyboardCommand} from "../../search/JumpToNoteKeyboardCommand";
+import {JumpToDocumentKeyboardCommand} from "../../search/JumpToDocumentKeyboardCommand";
 import {ActiveKeyboardShortcuts} from "../../hotkeys/ActiveKeyboardShortcuts";
 import {MigrationToBlockAnnotations} from "./notes_migration/MigrationToBlockAnnotations"
 import {ListUsers} from "./private-beta/ListUsers";
@@ -84,16 +83,15 @@ import {DailyNotesScreen} from '../../notes/DailyNotesScreen';
 import {SingleNoteScreen} from '../../notes/SingleNoteScreen';
 import {FeaturesScreen} from "../../../../apps/repository/js/configure/settings/FeaturesScreen";
 import {ReviewMobileScreen} from './ReviewMobileScreen';
-import {
-    SpacedRepCollectionSnapshotProvider,
-    SpaceRepCollectionSnapshotLatch,
-    SpaceRepCollectionSnapshotLoader
-} from "../../../../apps/repository/js/reviewer/UseSpacedRepCollectionSnapshot";
-import {
-    SpacedRepStatCollectionLatch,
-    SpacedRepStatCollectionLoader,
-    SpacedRepStatCollectionSnapshotProvider
-} from "../../../../apps/repository/js/reviewer/UseSpacedRepStatCollectionSnapshot";
+import {SpacedRepCollectionSnapshots} from '../../snapshot_collections/SpacedRepCollectionSnapshots';
+import {SpacedRepStatCollectionSnapshots} from '../../snapshot_collections/SpacedRepStatCollectionSnapshots';
+import {HeartbeatCollectionSnapshots} from '../../snapshot_collections/HeartbeatCollectionSnapshots';
+import {Heartbeater} from "./Heartbeater";
+import {MUIAppRootUsingFirestorePrefs} from "./MUIAppRootUsingFirestorePrefs";
+import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
+import {FeatureEnabled} from '../../features/FeaturesRegistry';
+import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
+import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
 
 interface IProps {
     readonly app: App;
@@ -152,7 +150,6 @@ const FeatureRequestsScreen = () => {
 
 const SHARED_ROUTES = [
     {path: RoutePathNames.WHATS_NEW, component: (WhatsNewScreen)},
-    {path: RoutePathNames.INVITE, component: (InviteScreen)},
     {path: RoutePathNames.PLANS, component: (PricingScreen)},
     {path: RoutePathNames.PREMIUM, component: (PricingScreen)},
     {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
@@ -211,44 +208,63 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     Preconditions.assertPresent(app, 'app');
 
     const DataProviders: React.FC = React.useCallback(({children}) => (
-        <PrefsContext2>
-            <UserTagsDataLoader>
-                <BlocksUserTagsDataLoader>
-                    <BlockStoreDefaultContextProvider>
-                        <BlocksStoreProvider>
-                            <PersistenceLayerApp tagsType="documents"
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}
-                                                 persistenceLayerManager={persistenceLayerManager}>
-                                <DocRepoStore2>
+        <FirestorePrefs>
+            <MUIAppRootUsingFirestorePrefs>
+                <UserTagsDataLoader>
+                    <BlocksUserTagsDataLoader>
+                        <BlockStoreDefaultContextProvider>
+                            <BlocksStoreProvider>
+                                <PersistenceLayerApp tagsType="documents"
+                                                     repoDocMetaManager={repoDocMetaManager}
+                                                     repoDocMetaLoader={repoDocMetaLoader}
+                                                     persistenceLayerManager={persistenceLayerManager}>
+                                    <DocRepoStore2>
 
-                                    <SpacedRepCollectionSnapshotProvider>
-                                        <SpacedRepStatCollectionSnapshotProvider>
-                                            <>
-                                                <SpaceRepCollectionSnapshotLoader/>
-                                                <SpacedRepStatCollectionLoader/>
+                                    {/* TODO move this to a dedicated component */}
 
-                                                <SpaceRepCollectionSnapshotLatch fallback={<LinearProgress/>}>
-                                                    <SpacedRepStatCollectionLatch fallback={<LinearProgress/>}>
-                                                        <>
-                                                            {children}
-                                                        </>
-                                                    </SpacedRepStatCollectionLatch>
-                                                </SpaceRepCollectionSnapshotLatch>
+                                    {/* Register all the providers first */}
 
-                                            </>
+                                        <SpacedRepCollectionSnapshots.Provider>
+                                            <SpacedRepStatCollectionSnapshots.Provider>
+                                                <HeartbeatCollectionSnapshots.Provider>
+                                                    <UserReferralCollectionSnapshots.Provider>
 
-                                        </SpacedRepStatCollectionSnapshotProvider>
+                                                    <>
 
-                                    </SpacedRepCollectionSnapshotProvider>
+                                                        {/* Here we have to define ALL the loader so they can execute in
+                                                            parallel and all start listening to snapshots concurrently */}
 
-                                </DocRepoStore2>
-                            </PersistenceLayerApp>
-                        </BlocksStoreProvider>
-                    </BlockStoreDefaultContextProvider>
-                </BlocksUserTagsDataLoader>
-            </UserTagsDataLoader>
-        </PrefsContext2>
+                                                        <SpacedRepCollectionSnapshots.Loader/>
+                                                        <SpacedRepStatCollectionSnapshots.Loader/>
+                                                        <HeartbeatCollectionSnapshots.Loader/>
+                                                        <UserReferralCollectionSnapshots.Loader/>
+
+                                                        {/* Now all the latches that are REQUIRED for the entire app. */}
+
+                                                        <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                            <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                <>
+                                                                    {children}
+                                                                </>
+                                                            </SpacedRepStatCollectionSnapshots.Latch>
+                                                        </SpacedRepCollectionSnapshots.Latch>
+
+                                                    </>
+                                                    </UserReferralCollectionSnapshots.Provider>
+                                                </HeartbeatCollectionSnapshots.Provider>
+
+                                            </SpacedRepStatCollectionSnapshots.Provider>
+
+                                        </SpacedRepCollectionSnapshots.Provider>
+
+                                    </DocRepoStore2>
+                                </PersistenceLayerApp>
+                            </BlocksStoreProvider>
+                        </BlockStoreDefaultContextProvider>
+                    </BlocksUserTagsDataLoader>
+                </UserTagsDataLoader>
+            </MUIAppRootUsingFirestorePrefs>
+        </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
 
     const GlobalProviders: React.FC = React.useCallback(({children}) => (
@@ -310,6 +326,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                     <CreateAccountScreen/>
                 </Route>
 
+                <Route exact path="/invite/:user_referral_code">
+                    <InviteScreen/>
+                </Route>
+
                 <Route exact path={["/sign-in", "/login", "/login.html"]}>
                     <SignInScreen/>
                 </Route>
@@ -330,9 +350,15 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                     <Initializers/>
 
-                                <ActiveKeyboardShortcuts/>
-                                <JumpToNoteKeyboardCommand/>
-                                <JumpToDocumentKeyboardCommand/>
+                                    <ActiveKeyboardShortcuts/>
+                                    <JumpToNoteKeyboardCommand/>
+                                    <JumpToDocumentKeyboardCommand/>
+
+                                    <FeatureEnabled feature="local-search">
+                                        <SearchKeyboardCommand/>
+                                    </FeatureEnabled>
+
+                                    <Heartbeater/>
 
                                     <SideNav/>
                                     <DeviceRouters.NotDesktop>
