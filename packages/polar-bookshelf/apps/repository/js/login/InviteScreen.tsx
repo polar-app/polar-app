@@ -12,9 +12,12 @@ import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
 import {
     ICreateAccountForUserReferralError,
+    ICreateAccountForUserReferralFailed,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
+import {isRPCError} from "polar-shared/src/util/IRPCError";
+import {useHistory} from "react-router-dom";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -39,10 +42,6 @@ export const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IInviteParams {
-    readonly user_referral_code: string;
-}
-
 interface IProps {
     readonly user_referral_code: string;
 }
@@ -52,10 +51,11 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
     const {user_referral_code} = props;
 
     const classes = useStyles();
-
     const emailRef = React.useRef("");
-
     const errorHandler = useErrorHandler();
+    const history = useHistory();
+
+    // TODO require the user online...
 
     const handleCreateAccount = React.useCallback((email: string) => {
 
@@ -65,12 +65,32 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
         };
 
         async function doAsync() {
+
             const response = await JSONRPC.exec<unknown, ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralError>('CreateAccountForUserReferral', request);
+
+            if (isRPCError(response)) {
+
+                switch (response.code) {
+
+                    case "invalid-user-referral-code":
+                        errorHandler("Unable to handle invite. Referral code is invalid.");
+                        break;
+
+                    case "failed":
+                        errorHandler("Unable to handle invite. " + (response as ICreateAccountForUserReferralFailed).message);
+                        break;
+
+                }
+
+            } else {
+                history.push('/login');
+            }
+
         }
 
         doAsync().catch(errorHandler);
 
-    }, [errorHandler, user_referral_code])
+    }, [errorHandler, user_referral_code, history])
 
     const handleEmailProvided = React.useCallback(() => {
 
