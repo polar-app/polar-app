@@ -79,7 +79,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
             name: request.name
         }
 
-        await UserReferrals.createNewAccountAndApplyReward('live', referrer, referred);
+        await UserReferrals.createReferredAccountAndApplyRewardToReferrer('live', referrer, referred);
 
         sendResponseOK();
 
