@@ -53,8 +53,8 @@ const useStyles = makeStyles((theme) =>
             flexDirection: 'column',
             width: SIDENAV_WIDTH,
             minWidth: SIDENAV_WIDTH,
-            color: theme.palette.text.secondary,
-            backgroundColor: theme.palette.background.default,
+            color: '#F1F1F1',
+            backgroundColor: '#050A16',
             alignItems: 'center'
         },
         logo: {
@@ -400,7 +400,7 @@ export const SideNav = React.memo(function SideNav() {
                         </div>
                     </ZenModeActiveContainer>
                 )}
-                <Divider orientation="vertical"/>
+                {/*<Divider orientation="vertical"/>*/}
                 <DeviceRouter handheld={<div id="sidenav-sidecar" style={{flex: 1}}/>}/>
             </div>
         </>

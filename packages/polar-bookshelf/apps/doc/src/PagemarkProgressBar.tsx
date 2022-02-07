@@ -34,7 +34,7 @@ export const ProgressBar = deepMemo(function ProgressBar() {
                   onDoubleClick={handleDoubleClick}
                   className="mt-auto mb-auto"
                   style={{
-                    background: theme.palette.grey['300'],
+                    // background: theme.palette.grey['300'],
                     width: '100%',
                     height: 6,
                     borderRadius: 9999,

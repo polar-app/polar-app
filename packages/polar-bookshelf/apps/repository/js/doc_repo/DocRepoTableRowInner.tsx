@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         progress: {
             width: COLUMN_MAP.progress.width,
-            background: theme.palette.grey['300'],
+            background: theme.palette.grey['500'],
             height: 6,
             borderRadius: 9999,
         },
