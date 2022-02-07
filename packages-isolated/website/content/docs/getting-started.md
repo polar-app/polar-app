@@ -11,7 +11,7 @@ description: How to get started with Polar to read, take notes, and learn and me
 
 Your starting point in Polar is the document library. Here you can organize all your PDFs, EPUBs and webpages in one place, organize and work with them.
 
-![](https://i.imgur.com/drHm9az.png)
+![](https://i.imgur.com/y3v4aCg.png)
 
 Files can be uploaded by dragging them into the window or using the `Add document` button at the top left.
 
@@ -19,7 +19,7 @@ Files can be uploaded by dragging them into the window or using the `Add documen
 
 When reading your documents with Polar you can create highlights, comment on highlights, (text & area highlights), annotate them, and manage them using the annotation viewer. The annotation viewer captures your highlights and annotations from all files in one place.
 
-![](https://i.imgur.com/PpxzV2C.png)
+![](https://imgur.com/VvBVAf8.png)
 
 ## All Notes:
 
