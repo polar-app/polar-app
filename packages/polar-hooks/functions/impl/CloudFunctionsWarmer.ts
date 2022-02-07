@@ -13,8 +13,8 @@ async function doWarm() {
 
     await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/VerifyTokenAuth/");
     await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/StartTokenAuth/");
-    await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/AnswerExecutor/");
-    await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/AnswerExecutorTraceUpdate/");
+    // await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/AnswerExecutor/");
+    // await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/AnswerExecutorTraceUpdate/");
 
 }
 
