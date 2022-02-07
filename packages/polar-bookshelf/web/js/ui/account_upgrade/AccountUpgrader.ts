@@ -6,7 +6,6 @@ import {useAccounting} from "../../apps/repository/accounting/Accounting";
 import V2Plan = Billing.V2Plan;
 import IRequiredPlan = AccountUpgrades.IRequiredPlan;
 
-
 export interface IAccountUpgrade extends IRequiredPlan {
     readonly required: boolean;
     readonly plan: V2Plan;

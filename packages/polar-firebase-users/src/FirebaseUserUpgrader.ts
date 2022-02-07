@@ -21,13 +21,13 @@ export namespace FirebaseUserUpgrader {
         const email = await getUserEmail();
 
         await upgradeUserReferral(uid, email);
-        await doAccountUpgrade(uid);
+        await doAccountUpgrade(uid, email);
 
     }
 
-    async function doAccountUpgrade(uid: UserIDStr) {
+    async function doAccountUpgrade(uid: UserIDStr, email: EmailStr) {
         const firestore = FirestoreAdmin.getInstance();
-        await AccountCollection.upgrade(firestore, uid, 'v2');
+        await AccountCollection.upgrade(firestore, uid, email, 'v2');
 
     }
 
