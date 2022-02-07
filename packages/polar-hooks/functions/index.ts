@@ -41,6 +41,7 @@ import {AnswerExecutorTraceUpdateFunction} from "./impl/ai/AnswerExecutorTraceUp
 import {MigrationToBlockAnnotationsFunction} from "./impl/migrations/MigrationToBlockAnnotationsFunction";
 import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction";
 import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashcardsExportFunction";
+import {CreateAccountForUserReferralFunction} from "./impl/user_referral/CreateAccountForUserReferralFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -92,3 +93,5 @@ exports.AnswerExecutor = AnswerExecutorFunction;
 exports.AnswerExecutorTraceUpdate = AnswerExecutorTraceUpdateFunction
 exports.MigrationToBlockAnnotations = MigrationToBlockAnnotationsFunction
 exports.FlashcardsExportFunction = FlashcardsExportFunction
+exports.FlashcardsExport = FlashcardsExportFunction
+exports.CreateAccountForUserReferral = CreateAccountForUserReferralFunction

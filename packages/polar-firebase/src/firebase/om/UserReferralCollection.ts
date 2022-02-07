@@ -1,8 +1,9 @@
-import {CollectionNameStr, IDStr} from "polar-shared/src/util/Strings";
+import {CollectionNameStr, EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace UserReferralCollection {
 
@@ -15,12 +16,14 @@ export namespace UserReferralCollection {
 
         readonly id: UIDStr;
 
+        readonly email: EmailStr;
+
         readonly uid: UIDStr;
 
         /**
-         * The referral code that this user uses to invite new users.
+         * The user referral code that this user uses to invite new users.
          */
-        readonly referral_code: IDStr;
+        readonly user_referral_code: IDStr;
 
     }
 
@@ -38,6 +41,10 @@ export namespace UserReferralCollection {
     export async function get<SM = unknown>(firestore: IFirestore<SM>, uid: UIDStr): Promise<IUserReferral | undefined> {
         // return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['uid', '==', uid]]));
         return await Collections.get(firestore, COLLECTION_NAME, uid);
+    }
+
+    export async function getByReferralCode<SM = unknown>(firestore: IFirestore<SM>, referral_code: IDStr): Promise<IUserReferral | undefined> {
+        return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['referral_code', '==', referral_code]]));
     }
 
 }
