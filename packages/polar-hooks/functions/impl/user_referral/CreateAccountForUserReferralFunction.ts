@@ -4,6 +4,8 @@ import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferra
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserReferrals} from "./UserReferrals";
 import {
+    IAnswerExecutorErrorInvalidUserReferralCode,
+    ICreateAccountForUserReferralFailed,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
@@ -31,9 +33,9 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         if (! userReferral) {
 
-            const response: ICreateAccountForUserReferralResponse = {
+            const response: IAnswerExecutorErrorInvalidUserReferralCode = {
+                error: true,
                 code: "invalid-user-referral-code",
-                message: 'User referral code does not exist: ' + request.user_referral_code,
             };
 
             ExpressFunctions.sendResponse(res, response);
@@ -43,7 +45,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         function sendResponseOK() {
 
-            const response = {
+            const response: ICreateAccountForUserReferralResponse = {
                 code: 'ok',
             };
 
@@ -67,8 +69,9 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
     } catch (e) {
 
-        const response: ICreateAccountForUserReferralResponse = {
-            code: 'unable-to-handle-user-referral',
+        const response: ICreateAccountForUserReferralFailed = {
+            error: true,
+            code: 'failed',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             message: (e as any).message || "",
         };

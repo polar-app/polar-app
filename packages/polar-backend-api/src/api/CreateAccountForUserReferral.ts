@@ -1,4 +1,5 @@
 import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
+import {IRPCError} from "polar-shared/src/util/IRPCError";
 
 export interface ICreateAccountForUserReferralRequest {
 
@@ -9,6 +10,14 @@ export interface ICreateAccountForUserReferralRequest {
 }
 
 export interface ICreateAccountForUserReferralResponse {
-    readonly code: 'invalid-user-referral-code' | 'unable-to-handle-user-referral';
+    readonly code: 'ok';
+}
+
+export type ICreateAccountForUserReferralError = ICreateAccountForUserReferralFailed | IAnswerExecutorErrorInvalidUserReferralCode;
+
+export interface ICreateAccountForUserReferralFailed extends IRPCError<'failed'> {
     readonly message: string;
 }
+
+export type IAnswerExecutorErrorInvalidUserReferralCode = IRPCError<'invalid-user-referral-code'>;
+
