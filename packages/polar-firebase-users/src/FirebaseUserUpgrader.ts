@@ -21,14 +21,13 @@ export namespace FirebaseUserUpgrader {
         const email = await getUserEmail();
 
         await upgradeUserReferral(uid, email);
-        await doAccountUpgrade(uid);
+        // await doAccountUpgrade(uid);
 
     }
 
     async function doAccountUpgrade(uid: UserIDStr) {
         const firestore = FirestoreAdmin.getInstance();
         await AccountCollection.upgrade(firestore, uid, 'v2');
-
     }
 
     async function upgradeUserReferral(uid: UserIDStr, email: EmailStr) {
@@ -36,7 +35,7 @@ export namespace FirebaseUserUpgrader {
         const firestore = FirestoreAdmin.getInstance();
         const userReferral = await UserReferralCollection.get(firestore, uid);
 
-        if (! userReferral) {
+        if (!userReferral) {
 
             const user_referral_code = Hashcodes.createRandomID();
 
