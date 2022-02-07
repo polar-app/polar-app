@@ -2,7 +2,7 @@
 title: Getting Started
 layout: doc
 permalink: /docs/
-description:
+description: How to get started with Polar to read, take notes, and learn and memorize key content
 ---
 
 # Getting Started:
