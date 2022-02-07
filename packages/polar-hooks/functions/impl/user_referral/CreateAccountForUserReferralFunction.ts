@@ -1,31 +1,14 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferralCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserReferrals} from "./UserReferrals";
+import {
+    ICreateAccountForUserReferralRequest,
+    ICreateAccountForUserReferralResponse
+} from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import IReferrer = UserReferrals.IReferrer;
 import IReferred = UserReferrals.IReferred;
-
-// TODO: make these types published via API
-export interface ICreateAccountForUserReferralRequest {
-
-    readonly email: EmailStr;
-
-    readonly user_referral_code: IDStr;
-
-    /**
-     * The name of this user for their new account.
-     */
-    readonly name: string;
-
-}
-
-export interface ICreateAccountForUserReferralResponse {
-    readonly code: 'invalid-user-referral-code' | 'unable-to-handle-user-referral';
-    readonly message: string;
-}
-
 
 export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookAsync('CreateAccountForUserReferralFunction', async (req, res) => {
 

@@ -8,7 +8,14 @@ import EmailIcon from "@material-ui/icons/Email";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
-
+import {useParams} from "react-router-dom";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
+import {
+    ICreateAccountForUserReferralRequest,
+    ICreateAccountForUserReferralResponse
+} from "polar-backend-api/src/api/CreateAccountForUserReferral";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -33,16 +40,44 @@ export const useStyles = makeStyles((theme) =>
     }),
 );
 
+interface IInviteParams {
+    readonly user_referral_code: string;
+}
+
+function useInviteParams(): IInviteParams {
+
+    const {user_referral_code} = useParams() as any;
+
+    Preconditions.assertPresent(user_referral_code, 'user_referral_code');
+
+    return {user_referral_code};
+
+}
+
 export const InviteScreen = React.memo(function InviteScreen() {
 
     const classes = useStyles();
 
     const emailRef = React.useRef("");
 
+    const errorHandler = useErrorHandler();
+
+    const {user_referral_code} = useInviteParams();
+
     const handleCreateAccount = React.useCallback((email: string) => {
 
+        const request: ICreateAccountForUserReferralRequest = {
+            email,
+            user_referral_code
+        };
 
-    }, [])
+        async function doAsync() {
+            const response = await JSONRPC.exec<unknown, ICreateAccountForUserReferralResponse>('CreateAccountForUserReferral', request);
+        }
+
+        doAsync().catch(errorHandler);
+
+    }, [errorHandler, user_referral_code])
 
     const handleEmailProvided = React.useCallback(() => {
 
