@@ -2,11 +2,11 @@ import React from 'react';
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-export function useOnlineOnlyTaskHandler() {
+export function useOnlineOnlyTaskHandler<V>(delegate: (value: V) => void) {
 
     const dialogManger = useDialogManager();
 
-    return React.useCallback(async (delegate: () => Promise<void>): Promise<void> => {
+    return React.useCallback((value: V): void => {
 
         if (! navigator.onLine) {
 
@@ -24,8 +24,8 @@ export function useOnlineOnlyTaskHandler() {
             return;
         }
 
-        await delegate();
+        delegate(value);
 
-    }, [dialogManger]);
+    }, [dialogManger, delegate]);
 
 }
