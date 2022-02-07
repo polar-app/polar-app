@@ -12,10 +12,10 @@ const Main = () => {
 }
 
 
-export const FeaturesScreen = React.memo(function FeaturesScreen() {
+export const ReferralScreen = React.memo(function ReferralScreen() {
 
     return (
-        <AdaptivePageLayout title="Feature Toggles">
+        <AdaptivePageLayout title="Referrals">
             <Main/>
         </AdaptivePageLayout>
     );
