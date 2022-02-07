@@ -17,13 +17,11 @@ export namespace UserReferrals {
     export interface IReferrer {
         readonly uid: UIDStr
         readonly email: EmailStr;
-        readonly name: string;
         readonly user_referral_code: string;
     }
 
     export interface IReferred {
         readonly email: EmailStr;
-        readonly name: string;
     }
 
     async function createNewFirebaseUser(email: EmailStr) {
@@ -111,7 +109,7 @@ export namespace UserReferrals {
                                                                         referred: IReferred) {
 
         await createNewFirebaseUser(referred.email);
-        await createStripeSubscriptionWithTrial(stripeMode, referred.email, referred.name);
+        await createStripeSubscriptionWithTrial(stripeMode, referred.email, "");
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
         await rewardReferringUser(stripeMode, referrer.email);
 
@@ -128,13 +126,13 @@ export namespace UserReferrals {
                                                         referrer: IReferrer,
                                                         referred: IReferred) {
 
-        async function doCreate(email: string, name: string) {
+        async function doCreate(email: string) {
             await createNewFirebaseUser(email);
-            await createStripeSubscriptionWithTrial(stripeMode, email, name);
+            await createStripeSubscriptionWithTrial(stripeMode, email, "");
         }
 
-        await doCreate(referrer.email, referrer.name);
-        await doCreate(referred.email, referred.name);
+        await doCreate(referrer.email);
+        await doCreate(referred.email);
 
     }
 

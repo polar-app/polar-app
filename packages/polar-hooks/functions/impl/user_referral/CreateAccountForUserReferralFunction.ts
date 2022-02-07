@@ -76,7 +76,6 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
         const referred: IReferred = {
             email: request.email,
-            name: request.name
         }
 
         await UserReferrals.createReferredAccountAndApplyRewardToReferrer('live', referrer, referred);
