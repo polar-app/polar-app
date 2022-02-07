@@ -5,6 +5,7 @@ import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
+import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
 
 export namespace FirebaseUserCreator {
 
@@ -30,6 +31,18 @@ export namespace FirebaseUserCreator {
 
     }
 
+    /**
+     * Define a challenge for this user so that they are able to login with this challenge code.
+     */
+    export async function defineFixedChallenge(email: string, challenge: string) {
+        const firestore = FirestoreAdmin.getInstance();
+
+        await AuthChallengeFixedCollection.set(firestore, email, {
+            id: email,
+            email,
+            challenge
+        });
+    }
 
     export async function create(email: string, password: string, referral_code?: string) {
 

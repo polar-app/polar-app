@@ -5,7 +5,6 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 /**
  * Support fixed challenge codes by email.
- *
  */
 export namespace AuthChallengeFixedCollection {
 
@@ -18,13 +17,13 @@ export namespace AuthChallengeFixedCollection {
     }
 
     export async function get<SM = unknown>(firestore: IFirestore<SM>, email: EmailStr): Promise<IAuthChallengeFixed | undefined> {
-
         Preconditions.assertPresent(email, 'email');
+        return Collections.get<IAuthChallengeFixed, SM>(firestore, COLLECTION_NAME, email);
+    }
 
-        const id = email;
-
-        return Collections.get<IAuthChallengeFixed, SM>(firestore, COLLECTION_NAME, id)
-
+    export async function set<SM = unknown>(firestore: IFirestore<SM>, email: EmailStr, challenge: IAuthChallengeFixed) {
+        Preconditions.assertPresent(email, 'email');
+        return Collections.set(firestore, COLLECTION_NAME, email, challenge);
     }
 
 }
