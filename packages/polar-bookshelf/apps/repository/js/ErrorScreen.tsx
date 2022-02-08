@@ -1,4 +1,5 @@
 import React from 'react';
+import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
 
 export const ErrorScreen = () => {
 
@@ -11,7 +12,9 @@ export const ErrorScreen = () => {
     }
 
     return (
-        <div>this should fail</div>
+        <MUIAppRoot useRedesign={false} darkMode={true}>
+            <div>this should fail</div>
+        </MUIAppRoot>
     );
 
 }

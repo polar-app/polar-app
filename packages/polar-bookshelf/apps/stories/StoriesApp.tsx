@@ -346,7 +346,7 @@ const StoriesRouter = deepMemo(function StoriesRouter() {
 
 export const StoriesApp = () => {
     return (
-        <MUIAppRoot>
+        <MUIAppRoot useRedesign={false} darkMode={true}>
 
             <BrowserRouter>
 

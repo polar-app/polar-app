@@ -34,7 +34,6 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
 import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
-import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
@@ -92,6 +91,7 @@ import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
 import {FeatureEnabled} from '../../features/FeaturesRegistry';
 import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
 import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
+import {KeyboardShortcuts} from "../../keyboard_shortcuts/KeyboardShortcuts";
 
 interface IProps {
     readonly app: App;
@@ -207,62 +207,63 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     Preconditions.assertPresent(app, 'app');
 
-    const DataProviders: React.FC = React.useCallback(({children}) => (
+    const AppProviders: React.FC = React.useCallback(({children}) => (
         <FirestorePrefs>
             <MUIAppRootUsingFirestorePrefs>
-                <UserTagsDataLoader>
-                    <BlocksUserTagsDataLoader>
-                        <BlockStoreDefaultContextProvider>
-                            <BlocksStoreProvider>
-                                <PersistenceLayerApp tagsType="documents"
-                                                     repoDocMetaManager={repoDocMetaManager}
-                                                     repoDocMetaLoader={repoDocMetaLoader}
-                                                     persistenceLayerManager={persistenceLayerManager}>
-                                    <DocRepoStore2>
+                <KeyboardShortcuts/>
+                    <UserTagsDataLoader>
+                        <BlocksUserTagsDataLoader>
+                            <BlockStoreDefaultContextProvider>
+                                <BlocksStoreProvider>
+                                    <PersistenceLayerApp tagsType="documents"
+                                                         repoDocMetaManager={repoDocMetaManager}
+                                                         repoDocMetaLoader={repoDocMetaLoader}
+                                                         persistenceLayerManager={persistenceLayerManager}>
+                                        <DocRepoStore2>
 
-                                    {/* TODO move this to a dedicated component */}
+                                        {/* TODO move this to a dedicated component */}
 
-                                    {/* Register all the providers first */}
+                                        {/* Register all the providers first */}
 
-                                        <SpacedRepCollectionSnapshots.Provider>
-                                            <SpacedRepStatCollectionSnapshots.Provider>
-                                                <HeartbeatCollectionSnapshots.Provider>
-                                                    <UserReferralCollectionSnapshots.Provider>
+                                            <SpacedRepCollectionSnapshots.Provider>
+                                                <SpacedRepStatCollectionSnapshots.Provider>
+                                                    <HeartbeatCollectionSnapshots.Provider>
+                                                        <UserReferralCollectionSnapshots.Provider>
 
-                                                    <>
+                                                        <>
 
-                                                        {/* Here we have to define ALL the loader so they can execute in
-                                                            parallel and all start listening to snapshots concurrently */}
+                                                            {/* Here we have to define ALL the loader so they can execute in
+                                                                parallel and all start listening to snapshots concurrently */}
 
-                                                        <SpacedRepCollectionSnapshots.Loader/>
-                                                        <SpacedRepStatCollectionSnapshots.Loader/>
-                                                        <HeartbeatCollectionSnapshots.Loader/>
-                                                        <UserReferralCollectionSnapshots.Loader/>
+                                                            <SpacedRepCollectionSnapshots.Loader/>
+                                                            <SpacedRepStatCollectionSnapshots.Loader/>
+                                                            <HeartbeatCollectionSnapshots.Loader/>
+                                                            <UserReferralCollectionSnapshots.Loader/>
 
-                                                        {/* Now all the latches that are REQUIRED for the entire app. */}
+                                                            {/* Now all the latches that are REQUIRED for the entire app. */}
 
-                                                        <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                            <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                                <>
-                                                                    {children}
-                                                                </>
-                                                            </SpacedRepStatCollectionSnapshots.Latch>
-                                                        </SpacedRepCollectionSnapshots.Latch>
+                                                            <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                    <>
+                                                                        {children}
+                                                                    </>
+                                                                </SpacedRepStatCollectionSnapshots.Latch>
+                                                            </SpacedRepCollectionSnapshots.Latch>
 
-                                                    </>
-                                                    </UserReferralCollectionSnapshots.Provider>
-                                                </HeartbeatCollectionSnapshots.Provider>
+                                                        </>
+                                                        </UserReferralCollectionSnapshots.Provider>
+                                                    </HeartbeatCollectionSnapshots.Provider>
 
-                                            </SpacedRepStatCollectionSnapshots.Provider>
+                                                </SpacedRepStatCollectionSnapshots.Provider>
 
-                                        </SpacedRepCollectionSnapshots.Provider>
+                                            </SpacedRepCollectionSnapshots.Provider>
 
-                                    </DocRepoStore2>
-                                </PersistenceLayerApp>
-                            </BlocksStoreProvider>
-                        </BlockStoreDefaultContextProvider>
-                    </BlocksUserTagsDataLoader>
-                </UserTagsDataLoader>
+                                        </DocRepoStore2>
+                                    </PersistenceLayerApp>
+                                </BlocksStoreProvider>
+                            </BlockStoreDefaultContextProvider>
+                        </BlocksUserTagsDataLoader>
+                    </UserTagsDataLoader>
             </MUIAppRootUsingFirestorePrefs>
         </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
@@ -284,12 +285,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <UseLocationChangeStoreProvider>
                                 <BrowserRouter>
                                     <UseLocationChangeRoot>
-                                        <MUIDialogController>
-                                            <>
-                                                <AndroidHistoryListener/>
-                                                {children}
-                                            </>
-                                        </MUIDialogController>
+                                        <>
+                                            <AndroidHistoryListener/>
+                                            {children}
+                                        </>
                                     </UseLocationChangeRoot>
                                 </BrowserRouter>
                             </UseLocationChangeStoreProvider>
@@ -322,6 +321,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         <GlobalProviders>
             <ConsoleError/>
             <Switch>
+
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>
                 </Route>
@@ -341,7 +341,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                 </Route>
 
                 <AuthRequired>
-                    <DataProviders>
+                    <AppProviders>
                         <MigrationToBlockAnnotations>
                             <AddFileDropzoneRoot>
                                 <div className={classes.root}>
@@ -462,7 +462,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 </Switch>
                             </AddFileDropzoneRoot>
                         </MigrationToBlockAnnotations>
-                    </DataProviders>
+                    </AppProviders>
                 </AuthRequired>
 
             </Switch>
