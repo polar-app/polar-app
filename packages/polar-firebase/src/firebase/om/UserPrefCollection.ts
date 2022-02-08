@@ -1,4 +1,4 @@
-import {UserIDStr} from "polar-shared/src/util/Strings";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
@@ -18,6 +18,7 @@ export namespace UserPrefCollection {
         const ref = firestore.collection(COLLECTION_NAME).doc(uid);
 
         const userPref: IUserPref = {
+            id: uid,
             uid,
             value: {
                 // Enable Fixed-Width ePUBs by default for every user who is init-ed
@@ -68,6 +69,7 @@ export interface StringToPrefDict {
 }
 
 export interface IUserPref {
+    readonly id: IDStr;
     readonly uid: UserIDStr;
     readonly value: StringToPrefDict;
 }
