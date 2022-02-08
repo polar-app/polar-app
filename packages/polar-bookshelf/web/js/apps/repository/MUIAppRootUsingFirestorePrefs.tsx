@@ -123,11 +123,11 @@ export const MUIAppRootUsingFirestorePrefs = React.memo(function MUIAppRootUsing
 
     }, [theme]);
 
+    const muiTheme = React.useMemo(() => useRedesign ? redesignTheme : legacyTheme, [useRedesign, redesignTheme, legacyTheme]);
+
     React.useEffect(() => {
         console.log("Using MUI palette: ", JSON.stringify(redesignTheme.palette, null, '  '))
     }, [redesignTheme]);
-
-    const muiTheme = React.useMemo(() => useRedesign ? redesignTheme : legacyTheme, [useRedesign, redesignTheme, legacyTheme]);
 
     return (
         <>

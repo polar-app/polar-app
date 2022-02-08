@@ -92,6 +92,7 @@ import {SearchKeyboardCommand} from '../../search/SearchKeyboardCommand';
 import {FeatureEnabled} from '../../features/FeaturesRegistry';
 import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
 import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
+import {ReferralScreen} from "../../../../apps/repository/js/configure/settings/ReferralScreen";
 
 interface IProps {
     readonly app: App;
@@ -372,6 +373,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <Route exact path="/private-beta/waiting-users">
                                             <ListUsers/>
+                                        </Route>
+
+                                        <Route exact path="/settings/user-referral">
+                                            <ReferralScreen/>
                                         </Route>
 
                                         <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>

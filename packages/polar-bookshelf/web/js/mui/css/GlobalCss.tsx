@@ -54,6 +54,7 @@ export const GlobalCssOverflowStyles = withStyles(() => {
 
 
 export const GlobalCssScrollbarStyles = withStyles(() => {
+
     const theme = useTheme();
 
     const scrollbars = ScrollbarColors.createCSSForReact(theme);
