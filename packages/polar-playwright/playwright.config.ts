@@ -21,5 +21,9 @@ const config: PlaywrightTestConfig = {
       use: { ...devices['Desktop Safari'] },
     },
   ],
+  reportSlowTests: {
+    threshold: 60*1000, // Treat tests that take longer than 1 minute as "slow" (default is 15 seconds)
+    max: 5,
+  }
 };
 export default config;
