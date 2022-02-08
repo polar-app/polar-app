@@ -92,6 +92,7 @@ import {FeatureEnabled} from '../../features/FeaturesRegistry';
 import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserReferralCollectionSnapshots';
 import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
 import {KeyboardShortcuts} from "../../keyboard_shortcuts/KeyboardShortcuts";
+import {UndoQueueProvider2} from '../../undo/UndoQueueProvider2';
 
 interface IProps {
     readonly app: App;
@@ -210,60 +211,64 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     const AppProviders: React.FC = React.useCallback(({children}) => (
         <FirestorePrefs>
             <MUIAppRootUsingFirestorePrefs>
-                <KeyboardShortcuts/>
-                    <UserTagsDataLoader>
-                        <BlocksUserTagsDataLoader>
-                            <BlockStoreDefaultContextProvider>
-                                <BlocksStoreProvider>
-                                    <PersistenceLayerApp tagsType="documents"
-                                                         repoDocMetaManager={repoDocMetaManager}
-                                                         repoDocMetaLoader={repoDocMetaLoader}
-                                                         persistenceLayerManager={persistenceLayerManager}>
-                                        <DocRepoStore2>
+                <UndoQueueProvider2>
+                    <>
+                        <KeyboardShortcuts/>
+                        <UserTagsDataLoader>
+                                <BlocksUserTagsDataLoader>
+                                    <BlockStoreDefaultContextProvider>
+                                        <BlocksStoreProvider>
+                                            <PersistenceLayerApp tagsType="documents"
+                                                                 repoDocMetaManager={repoDocMetaManager}
+                                                                 repoDocMetaLoader={repoDocMetaLoader}
+                                                                 persistenceLayerManager={persistenceLayerManager}>
+                                                <DocRepoStore2>
 
-                                        {/* TODO move this to a dedicated component */}
+                                                {/* TODO move this to a dedicated component */}
 
-                                        {/* Register all the providers first */}
+                                                {/* Register all the providers first */}
 
-                                            <SpacedRepCollectionSnapshots.Provider>
-                                                <SpacedRepStatCollectionSnapshots.Provider>
-                                                    <HeartbeatCollectionSnapshots.Provider>
-                                                        <UserReferralCollectionSnapshots.Provider>
+                                                    <SpacedRepCollectionSnapshots.Provider>
+                                                        <SpacedRepStatCollectionSnapshots.Provider>
+                                                            <HeartbeatCollectionSnapshots.Provider>
+                                                                <UserReferralCollectionSnapshots.Provider>
 
-                                                        <>
+                                                                <>
 
-                                                            {/* Here we have to define ALL the loader so they can execute in
-                                                                parallel and all start listening to snapshots concurrently */}
+                                                                    {/* Here we have to define ALL the loader so they can execute in
+                                                                        parallel and all start listening to snapshots concurrently */}
 
-                                                            <SpacedRepCollectionSnapshots.Loader/>
-                                                            <SpacedRepStatCollectionSnapshots.Loader/>
-                                                            <HeartbeatCollectionSnapshots.Loader/>
-                                                            <UserReferralCollectionSnapshots.Loader/>
+                                                                    <SpacedRepCollectionSnapshots.Loader/>
+                                                                    <SpacedRepStatCollectionSnapshots.Loader/>
+                                                                    <HeartbeatCollectionSnapshots.Loader/>
+                                                                    <UserReferralCollectionSnapshots.Loader/>
 
-                                                            {/* Now all the latches that are REQUIRED for the entire app. */}
+                                                                    {/* Now all the latches that are REQUIRED for the entire app. */}
 
-                                                            <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                                <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
-                                                                    <>
-                                                                        {children}
-                                                                    </>
-                                                                </SpacedRepStatCollectionSnapshots.Latch>
-                                                            </SpacedRepCollectionSnapshots.Latch>
+                                                                    <SpacedRepCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                        <SpacedRepStatCollectionSnapshots.Latch fallback={<LinearProgress/>}>
+                                                                            <>
+                                                                                {children}
+                                                                            </>
+                                                                        </SpacedRepStatCollectionSnapshots.Latch>
+                                                                    </SpacedRepCollectionSnapshots.Latch>
 
-                                                        </>
-                                                        </UserReferralCollectionSnapshots.Provider>
-                                                    </HeartbeatCollectionSnapshots.Provider>
+                                                                </>
+                                                                </UserReferralCollectionSnapshots.Provider>
+                                                            </HeartbeatCollectionSnapshots.Provider>
 
-                                                </SpacedRepStatCollectionSnapshots.Provider>
+                                                        </SpacedRepStatCollectionSnapshots.Provider>
 
-                                            </SpacedRepCollectionSnapshots.Provider>
+                                                    </SpacedRepCollectionSnapshots.Provider>
 
-                                        </DocRepoStore2>
-                                    </PersistenceLayerApp>
-                                </BlocksStoreProvider>
-                            </BlockStoreDefaultContextProvider>
-                        </BlocksUserTagsDataLoader>
-                    </UserTagsDataLoader>
+                                                </DocRepoStore2>
+                                            </PersistenceLayerApp>
+                                        </BlocksStoreProvider>
+                                    </BlockStoreDefaultContextProvider>
+                                </BlocksUserTagsDataLoader>
+                            </UserTagsDataLoader>
+                    </>
+                </UndoQueueProvider2>
             </MUIAppRootUsingFirestorePrefs>
         </FirestorePrefs>
     ), [repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager]);
