@@ -9,9 +9,9 @@ import {
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/PersistentRoute";
-import {useCopyAnnotation} from "./AnnotationPopupBar";
 import {IBlockAnnotation} from "./AnnotationPopupReducer";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
+import {useCopyAnnotation} from "./AnnotationPopupActions";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 

@@ -14,6 +14,29 @@ import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
+import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
+import {useDocViewerContext} from "../../renderers/DocRenderer";
+import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {Devices} from "polar-shared/src/util/Devices";
+
+
+export const useCopyAnnotation = () => {
+    const {annotation, selectionEvent} = useAnnotationPopup();
+    const {fileType} = useDocViewerContext();
+
+    return React.useCallback(() => {
+        if (annotation) {
+            Clipboards.writeText(BlockTextHighlights.toText(annotation.content.value));
+        } else if (selectionEvent) {
+            const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
+                noRectTexts: fileType === "epub",
+                fileType,
+            });
+            Clipboards.writeText(selectedContent.text);
+        }
+    }, [selectionEvent, fileType, annotation]);
+};
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { className = "", style = {}, annotation } = props;
@@ -36,7 +59,7 @@ const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
                 selected={annotation.content.value.color}
                 onChange={handleChange}
                 hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
-                withHints
+                withHints={Devices.isDesktop()}
             />
         </div>
     );
@@ -53,8 +76,6 @@ const useStyles = makeStyles((theme) =>
         },
     }),
 );
-
-
 
 
 const ACTIONS: Record<AnnotationPopupActionEnum, React.FC<IAnnotationPopupActionProps>> = {

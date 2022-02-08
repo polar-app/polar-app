@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Grow} from "@material-ui/core";
+import {Box, createStyles, Grow, makeStyles, Theme} from "@material-ui/core";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {useDocViewerStore} from "../../DocViewerStore";
 import {AnnotationPopupProvider, useAnnotationPopup} from "./AnnotationPopupContext";
@@ -13,22 +13,18 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {AnnotationPopupShortcuts} from "./AnnotationPopupShortcuts";
 import clsx from "clsx";
 import {DeviceRouter} from "../../../../../web/js/ui/DeviceRouter";
-import {Devices} from "polar-shared/src/util/Devices";
 import {FileType} from "../../../../../web/js/apps/main/file_loaders/FileType";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 
-const IS_HANDHELD = ! Devices.isDesktop();
-
-const stopPropagation = (event: React.MouseEvent | React.TouchEvent) => {
-    event.stopPropagation();
-};
+const stopPropagation = (event: React.MouseEvent | React.TouchEvent) => event.stopPropagation();
 
 const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     const classes = useAnnotationPopupStyles();
+
     return (
         <div
             ref={ref}
-            className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })}
+            className={clsx(classes.outer)}
             // Abort all events to prevent accidentally triggering selection events
             // when interacting with the annotation bar
             onMouseDown={stopPropagation}
@@ -87,9 +83,10 @@ const AnnotationPopupRendererHandheld: React.FC<IAnnotationPopupRendererHandheld
 
     React.useEffect(() => {
         if (ref.current) {
-            ref.current.style.left = "50%";
-            ref.current.style.top = "10px";
-            ref.current.style.transform = "translateX(-50%)";
+            ref.current.style.top = "initial";
+            ref.current.style.left = "0";
+            ref.current.style.bottom = "0";
+            ref.current.style.width = "100%";
         }
     }, [ref]);
 

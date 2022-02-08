@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import {Box, CircularProgress, Divider, useTheme} from "@material-ui/core";
+import {Box, CircularProgress, createStyles, Divider, makeStyles, useTheme} from "@material-ui/core";
 import NoteIcon from "@material-ui/icons/Note";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import EditIcon from "@material-ui/icons/Edit";
@@ -14,49 +14,52 @@ import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
-import {useDocViewerContext} from "../../renderers/DocRenderer";
-import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {useCopyAnnotation} from "./AnnotationPopupActions";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
+import {Devices} from "polar-shared/src/util/Devices";
 
-export const useCopyAnnotation = () => {
-    const {annotation, selectionEvent} = useAnnotationPopup();
-    const {fileType} = useDocViewerContext();
+const IS_HANDHELD = ! Devices.isDesktop();
 
-    return React.useCallback(() => {
-        if (annotation) {
-            Clipboards.writeText(BlockTextHighlights.toText(annotation.content.value));
-        } else if (selectionEvent) {
-            const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
-                noRectTexts: fileType === "epub",
-                fileType,
-            });
-            Clipboards.writeText(selectedContent.text);
-        }
-    }, [selectionEvent, fileType, annotation]);
-};
+export const useAnnotationPopupBarStyles = makeStyles((theme) =>
+    createStyles({
+        outer: {
+            ...(IS_HANDHELD && {
+                borderRadius: 0,
+            }),
+        },
+        root: {
+            width: '100%',
+            ...(IS_HANDHELD && {
+                justifyContent: 'space-between',
+                display: 'flex',
+                padding: '0 0.8rem',
+            }),
+        },
+    })
+);
 
 export const AnnotationPopupBar: React.FC = () => {
     const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
     const copyAnnotation = useCopyAnnotation();
     const theme = useTheme();
-
+    const baseClasses = useAnnotationPopupBarStyles();
     const annotationPopupClasses = useAnnotationPopupStyles();
 
     return (
         <Box
             boxShadow={8}
-            display="flex"
-            className={clsx(annotationPopupClasses.root, annotationPopupClasses.barPadding)}
+            className={clsx(annotationPopupClasses.root, annotationPopupClasses.barPadding, baseClasses.outer)}
+            width="100%"
             style={{ userSelect: "none" }}
         >
-            <MUIButtonBar>
-                <ColorChanger
-                    isOpen={activeAction === AnnotationPopupActionEnum.CHANGE_COLOR}
-                    onToggle={toggleAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
-                />
-                <Divider orientation="vertical" flexItem />
+            <MUIButtonBar className={baseClasses.root}>
+                <Box display="flex">
+                    <ColorChanger
+                        isOpen={activeAction === AnnotationPopupActionEnum.CHANGE_COLOR}
+                        onToggle={toggleAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
+                    />
+                    <Divider orientation="vertical" flexItem style={{ marginLeft: '1rem' }} />
+                </Box>
                 <ActionButton tooltip="Edit highlight (e)" action={AnnotationPopupActionEnum.EDIT}>
                     <EditIcon />
                 </ActionButton>
@@ -81,7 +84,6 @@ export const AnnotationPopupBar: React.FC = () => {
                 <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
                     <LocalOfferIcon />
                 </ActionButton>
-                <Divider orientation="vertical" flexItem />
                 <StandardIconButton
                     tooltip="Copy"
                     size="small"
