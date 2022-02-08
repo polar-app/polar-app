@@ -15,7 +15,7 @@ interface IProps {
 
 }
 
-export const MUIThemeRoot = React.memo(function MUIAppRootUsingFirestorePrefs(props: IProps) {
+export const MUIThemeRoot = React.memo(function MUIThemeRoot(props: IProps) {
 
     const {darkMode, useRedesign} = props;
 
@@ -121,9 +121,9 @@ export const MUIThemeRoot = React.memo(function MUIAppRootUsingFirestorePrefs(pr
 
     }, [theme]);
 
-    React.useEffect(() => {
-        console.log("Using MUI palette: ", JSON.stringify(redesignTheme.palette, null, '  '))
-    }, [redesignTheme]);
+    // React.useEffect(() => {
+    //     console.log("Using MUI palette: ", JSON.stringify(redesignTheme.palette, null, '  '))
+    // }, [redesignTheme]);
 
     const muiTheme = React.useMemo(() => useRedesign ? redesignTheme : legacyTheme, [useRedesign, redesignTheme, legacyTheme]);
 
