@@ -1,69 +1,16 @@
 import React from "react";
 import clsx from "clsx";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
-import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
-import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
+import {AnnotationPopupActionEnum, useAnnotationPopupStore} from "./AnnotationPopupContext";
 import {EditAnnotation} from "./Actions/EditAnnotation";
 import {CreateComment} from "./Actions/CreateComment";
 import {CreateFlashcard} from "./Actions/CreateFlashcard";
 import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
-import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
-import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
-import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
-import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
-import {useDocViewerContext} from "../../renderers/DocRenderer";
-import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
-import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
-import {Devices} from "polar-shared/src/util/Devices";
-
-
-export const useCopyAnnotation = () => {
-    const {annotation, selectionEvent} = useAnnotationPopup();
-    const {fileType} = useDocViewerContext();
-
-    return React.useCallback(() => {
-        if (annotation) {
-            Clipboards.writeText(BlockTextHighlights.toText(annotation.content.value));
-        } else if (selectionEvent) {
-            const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
-                noRectTexts: fileType === "epub",
-                fileType,
-            });
-            Clipboards.writeText(selectedContent.text);
-        }
-    }, [selectionEvent, fileType, annotation]);
-};
-
-const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
-    const { className = "", style = {}, annotation } = props;
-    const { clear } = useAnnotationPopup();
-
-    const blocksStore = useBlocksStore();
-    const handleChange = React.useCallback((color: ColorStr) => {
-        const annotationJSON = annotation.content.toJSON();
-
-        blocksStore.setBlockContent(annotation.id, {
-            ...annotationJSON,
-            value: { ...annotationJSON.value, color }
-        });
-        clear();
-    }, [blocksStore, annotation, clear]);
-
-    return (
-        <div className={className} style={{ ...style, width: "auto" }}>
-            <ColorMenu
-                selected={annotation.content.value.color}
-                onChange={handleChange}
-                hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
-                withHints={Devices.isDesktop()}
-            />
-        </div>
-    );
-};
+import {ColorPicker} from "./Actions/ColorPicker";
+import {observer} from "mobx-react-lite";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -85,16 +32,15 @@ const ACTIONS: Record<AnnotationPopupActionEnum, React.FC<IAnnotationPopupAction
     [AnnotationPopupActionEnum.CREATE_FLASHCARD]: CreateFlashcard,
     [AnnotationPopupActionEnum.CREATE_AI_FLASHCARD]: CreateAIFlashcard,
     [AnnotationPopupActionEnum.EDIT_TAGS]: EditTags,
-    [AnnotationPopupActionEnum.DELETE]: DeleteAnnotation,
 };
 
-export const AnnotationPopupActions: React.FC = () => {
-    const {activeAction, annotation} = useAnnotationPopup();
+export const AnnotationPopupActions: React.FC = observer(() => {
+    const { selectedAnnotationID, activeAction } = useAnnotationPopupStore();
     const classes = useStyles();
     const annotationPopupClasses = useAnnotationPopupStyles();
     const ActionComponent = activeAction ? ACTIONS[activeAction] : null;
 
-    if (!ActionComponent || !annotation) {
+    if (! ActionComponent || ! selectedAnnotationID) {
         return null;
     }
 
@@ -102,8 +48,8 @@ export const AnnotationPopupActions: React.FC = () => {
         <Grow in>
             <ActionComponent
                 className={clsx(classes.root, annotationPopupClasses.root)}
-                annotation={annotation}
+                annotationID={selectedAnnotationID}
             />
         </Grow>
     );
-};
+});

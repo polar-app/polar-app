@@ -13,14 +13,20 @@ import {StandardIconButton} from "../../../../repository/js/doc_repo/buttons/Sta
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
-import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import {useCopyAnnotation} from "./AnnotationPopupActions";
+import {AnnotationPopupActionEnum, useAnnotationPopupStore} from "./AnnotationPopupContext";
+import {useCopyAnnotation} from "./Actions/Copy";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 import {Devices} from "polar-shared/src/util/Devices";
+import {reaction} from "mobx";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
+import {observer} from "mobx-react-lite";
+import {useDeleteAnnotation} from "./Actions/DeleteAnnotation";
 
 const IS_HANDHELD = ! Devices.isDesktop();
 
-export const useAnnotationPopupBarStyles = makeStyles((theme) =>
+export const useAnnotationPopupBarStyles = makeStyles(() =>
     createStyles({
         outer: {
             ...(IS_HANDHELD && {
@@ -38,12 +44,13 @@ export const useAnnotationPopupBarStyles = makeStyles((theme) =>
     })
 );
 
-export const AnnotationPopupBar: React.FC = () => {
-    const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
+export const AnnotationPopupBar: React.FC = observer(() => {
+    const annotationPopupStore = useAnnotationPopupStore();
     const copyAnnotation = useCopyAnnotation();
     const theme = useTheme();
     const baseClasses = useAnnotationPopupBarStyles();
     const annotationPopupClasses = useAnnotationPopupStyles();
+    const deleteAnnotation = useDeleteAnnotation();
 
     return (
         <Box
@@ -54,9 +61,9 @@ export const AnnotationPopupBar: React.FC = () => {
         >
             <MUIButtonBar className={baseClasses.root}>
                 <Box display="flex">
-                    <ColorChanger
-                        isOpen={activeAction === AnnotationPopupActionEnum.CHANGE_COLOR}
-                        onToggle={toggleAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
+                    <ColorChangerIcon
+                        isOpen={annotationPopupStore.activeAction === AnnotationPopupActionEnum.CHANGE_COLOR}
+                        onToggle={() => annotationPopupStore.toggleActiveAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
                     />
                     <Divider orientation="vertical" flexItem style={{ marginLeft: '1rem' }} />
                 </Box>
@@ -76,7 +83,7 @@ export const AnnotationPopupBar: React.FC = () => {
                     tooltip="Create flashcard automatically (g)"
                     action={AnnotationPopupActionEnum.CREATE_AI_FLASHCARD}
                 >
-                    {aiFlashcardStatus === "waiting"
+                    {annotationPopupStore.aiFlashcardStatus === "waiting"
                         ? <CircularProgress size={ theme.typography.pxToRem(24) } color="secondary"/>
                         : <FlashAutoIcon/>
                     }
@@ -91,32 +98,43 @@ export const AnnotationPopupBar: React.FC = () => {
                 >
                     <NoteIcon />
                 </StandardIconButton>
-                {annotation && (
-                    <ActionButton tooltip="Delete (d)" action={AnnotationPopupActionEnum.DELETE}>
-                        <DeleteIcon/>
-                    </ActionButton>
-                )}
+                <StandardIconButton tooltip="Delete (d)" size="small" onClick={deleteAnnotation}>
+                    <DeleteIcon />
+                </StandardIconButton>
             </MUIButtonBar>
         </Box>
     );
-};
+});
 
-type IColorChangerProps = {
-    onToggle: () => void;
-    isOpen: boolean;
-    active?: boolean;
+interface IColorChangerProps {
+    readonly onToggle: () => void;
+    readonly isOpen: boolean;
+    readonly active?: boolean;
 }
 
-const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
-    const { annotation } = useAnnotationPopup();
+const ColorChangerIcon: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
+    const annotationPopupStore = useAnnotationPopupStore();
+    const { getBlock } = useAnnotationBlockManager();
 
-    const color = React.useMemo<string | undefined>(() => {
-        if (! annotation) {
-            return undefined;
+    const getColor = React.useCallback(() => {
+        const { selectedAnnotationID: annotationID } = annotationPopupStore;
+
+        if (! annotationID) {
+            return MAIN_HIGHLIGHT_COLORS[0];
         }
 
+        const annotation = getBlock(annotationID, AnnotationContentType.TEXT_HIGHLIGHT);
+
+        if (! annotation) {
+            return;
+        }
+        
         return annotation.content.value.color;
-    }, [annotation]);
+    }, [annotationPopupStore, getBlock]);
+
+    const [color, setColor] = React.useState(getColor);
+
+    React.useEffect(() => reaction(getColor, setColor), [setColor, getColor]);
 
     return (
         <Box
@@ -144,9 +162,9 @@ type IActionButtonProps = {
     tooltip: string;
 };
 
-export const ActionButton: React.FC<IActionButtonProps> = (props) => {
+export const ActionButton: React.FC<IActionButtonProps> = observer((props) => {
     const {action, children, tooltip} = props;
-    const {activeAction, toggleAction} = useAnnotationPopup();
+    const annotationPopupStore = useAnnotationPopupStore();
     const theme = useTheme();
 
     return (
@@ -154,13 +172,13 @@ export const ActionButton: React.FC<IActionButtonProps> = (props) => {
             tooltip={tooltip}
             size="small"
             style={{
-                color: action === activeAction
+                color: action === annotationPopupStore.activeAction
                     ? theme.palette.primary.main
                     : theme.palette.text.secondary,
             }}
-            onClick={toggleAction(action)}
+            onClick={() => annotationPopupStore.toggleActiveAction(action)}
         >
             <>{children}</>
         </StandardIconButton>
     );
-};
+});
