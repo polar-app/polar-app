@@ -9,7 +9,7 @@ export class PopupApp {
 
     public static start() {
         ReactDOM.render(
-            <MUIAppRoot>
+            <MUIAppRoot useRedesign={false} darkMode={true}>
                 <FirestoreProvider>
                     <UserInfoProvider>
                         <>
