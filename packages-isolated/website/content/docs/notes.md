@@ -34,4 +34,4 @@ If you want to create a note, within the daily note section select the “Create
 
 Each note is structured into two sections. The first one is where you can capture any information on that specific note. Below that you will find any linked references. For example, if you created a backlink in daily notes to that specific note, it will show up there by date.
 
-![Add Notes](https://i.imgur.com/67PX7PJ.png)
+![Add Notes](https://i.imgur.com/v3qBYp0.png)
