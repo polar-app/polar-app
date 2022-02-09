@@ -2,6 +2,7 @@ import {LinearProgress} from "@material-ui/core";
 import * as React from "react";
 import {
     HeartbeatCollectionSnapshots,
+    useActiveHeartbeats,
     useHeartbeatCollectionSnapshotForDeviceID
 } from "../../snapshot_collections/HeartbeatCollectionSnapshots";
 import {HeartbeatCollection, IHeartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
@@ -15,6 +16,7 @@ import {useAnalytics} from "../../analytics/Analytics";
 
 function useHeartbeater() {
 
+    const activeHeartbeats = useActiveHeartbeats();
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
     const errorHandler = useErrorHandler();
 
@@ -27,9 +29,9 @@ function useHeartbeater() {
 
     const doAnalytics = React.useCallback(() => {
 
-        analytics.event2('heartbeat', {});
+        analytics.event2('heartbeat', {nr_active: activeHeartbeats.length});
 
-    }, [analytics]);
+    }, [analytics, activeHeartbeats]);
 
     const doHeartbeatCreate = React.useCallback(async () => {
         const heartbeat = HeartbeatCollection.create(uid!);
@@ -42,6 +44,8 @@ function useHeartbeater() {
     const doHeartbeatUpdate = React.useCallback(async (heartbeat: IHeartbeat) => {
         const updated = ISODateTimeStrings.create();
         await HeartbeatCollection.write(firestore, {...heartbeat, updated});
+
+        console.log("FIXME: doHeartbeatUpdate");
 
         doAnalytics();
 
