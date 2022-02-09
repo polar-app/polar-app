@@ -30,7 +30,7 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
-import {MUICalendarMonthDayIcon} from '../icons/MUICalendarMonthDayIcon';
+import {CalendarMonthDayIcon} from '../icons/CalendarMonthDayIcon';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
 import {IntercomIcon} from "../apps/repository/integrations/IntercomIcon";
@@ -165,7 +165,7 @@ const DailyNotesButton = React.memo(function AnnotationsButton() {
     return (
         <SideNavHistoryButton title="Daily Notes"
                               path={RoutePathNames.DAILY}>
-            <MUICalendarMonthDayIcon className={classes.secondaryIcon}/>
+            <CalendarMonthDayIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });

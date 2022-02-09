@@ -1,6 +1,6 @@
 import {useHistory} from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
-import {MUICalendarMonthDayIcon} from "../../../../web/js/icons/MUICalendarMonthDayIcon";
+import {CalendarMonthDayIcon} from "../../../../web/js/icons/CalendarMonthDayIcon";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -30,7 +30,7 @@ export const MobileDailyNotesFab = () => {
              onClick={() => history.push("/daily")}
              className={classes.fab}>
 
-            <MUICalendarMonthDayIcon className={classes.icon}/>
+            <CalendarMonthDayIcon className={classes.icon}/>
         </Fab>
     );
 }

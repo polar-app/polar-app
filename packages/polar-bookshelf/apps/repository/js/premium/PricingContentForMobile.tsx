@@ -1,6 +1,6 @@
 import React from "react";
 import {Box, makeStyles, Paper} from "@material-ui/core";
-import {FATimesCircleIcon} from "../../../../web/js/icons/MUIFontAwesome";
+import {FATimesCircleIcon} from "../../../../web/js/icons/FontAwesomeIcons";
 import {PurchaseOrChangePlanButton} from "./PurchaseOrChangePlanButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";

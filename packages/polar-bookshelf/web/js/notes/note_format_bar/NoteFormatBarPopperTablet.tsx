@@ -8,7 +8,7 @@ import RedoIcon from '@material-ui/icons/Redo';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import FormatIndentIncreaseIcon from '@material-ui/icons/FormatIndentIncrease';
-import {FAItalicIcon, FALinkIcon, FAStrikethroughIcon} from "../../icons/MUIFontAwesome";
+import {FAItalicIcon, FALinkIcon, FAStrikethroughIcon} from "../../icons/FontAwesomeIcons";
 import {abortEvent} from "../contenteditable/BlockKeyboardHandlers";
 
 const useStyles = makeStyles((theme) =>

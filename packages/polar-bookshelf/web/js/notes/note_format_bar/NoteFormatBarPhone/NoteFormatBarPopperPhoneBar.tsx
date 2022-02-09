@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, createStyles, Divider, makeStyles, Paper} from "@material-ui/core";
 import {BacklinkIconButton} from "../../../mui/icon_buttons/BacklinkIconButton";
-import {FABoldIcon, FAItalicIcon, FAStrikethroughIcon} from "../../../icons/MUIFontAwesome";
+import {FABoldIcon, FAItalicIcon, FAStrikethroughIcon} from "../../../icons/FontAwesomeIcons";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';

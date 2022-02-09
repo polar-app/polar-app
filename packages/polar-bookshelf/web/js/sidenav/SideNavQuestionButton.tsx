@@ -6,7 +6,7 @@ import Divider from "@material-ui/core/Divider";
 import {Analytics} from "../analytics/Analytics";
 import {useActiveKeyboardShortcutsCallbacks} from "../hotkeys/ActiveKeyboardShortcutsStore";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
-import {FADiscordIcon, FALikeIntercomIcon} from "../icons/MUIFontAwesome";
+import {FADiscordIcon, FALikeIntercomIcon} from "../icons/FontAwesomeIcons";
 import {Nav} from "../ui/util/Nav";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {SideNavQuestionMenuItem} from "./SideNavQuestionMenuItem";

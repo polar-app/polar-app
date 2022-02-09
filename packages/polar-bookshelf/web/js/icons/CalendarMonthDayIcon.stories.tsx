@@ -1,15 +1,15 @@
 import React from 'react';
 
-import {MUICalendarMonthDayIcon} from './MUICalendarMonthDayIcon';
+import {CalendarMonthDayIcon} from './CalendarMonthDayIcon';
 
 export default {
     title: 'MUICalendarMonthDayIcon',
-    component: MUICalendarMonthDayIcon,
+    component: CalendarMonthDayIcon,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         backgroundColor: { control: 'color' },
     },
 };
 
-export const Primary = <MUICalendarMonthDayIcon />;
+export const Primary = <CalendarMonthDayIcon />;
 
