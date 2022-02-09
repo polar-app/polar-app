@@ -148,17 +148,17 @@ const FeatureRequestsScreen = () => {
     return null;
 };
 
-const SHARED_ROUTES = [
-    {path: RoutePathNames.WHATS_NEW, component: (WhatsNewScreen)},
-    {path: RoutePathNames.PLANS, component: (PricingScreen)},
-    {path: RoutePathNames.PREMIUM, component: (PricingScreen)},
-    {path: RoutePathNames.SUPPORT, component: (SupportScreen)},
-    {path: RoutePathNames.STATISTICS, component: (StatsScreen)},
-    {path: RoutePathNames.SETTINGS, component: (SettingsScreen)},
-    {path: RoutePathNames.FEATURES, component: (FeaturesScreen)},
-    {path: RoutePathNames.LOGS, component: (LogsScreen)},
-    {path: RoutePathNames.DEVICE_INFO, component: (DeviceScreen)},
-    {path: RoutePathNames.FEATURE_REQUESTS, component: (FeatureRequestsScreen)},
+const ROUTES = [
+    {path: RoutePathNames.WHATS_NEW, component: WhatsNewScreen},
+    {path: RoutePathNames.PLANS, component: PricingScreen},
+    {path: RoutePathNames.PREMIUM, component: PricingScreen},
+    {path: RoutePathNames.SUPPORT, component: SupportScreen},
+    {path: RoutePathNames.STATISTICS, component: StatsScreen},
+    {path: RoutePathNames.SETTINGS, component: SettingsScreen},
+    {path: RoutePathNames.FEATURES, component: FeaturesScreen},
+    {path: RoutePathNames.LOGS, component: LogsScreen},
+    {path: RoutePathNames.DEVICE_INFO, component: DeviceScreen},
+    {path: RoutePathNames.FEATURE_REQUESTS, component: FeatureRequestsScreen},
 ];
 
 const SharedRoutes: React.FC = () => {
@@ -166,7 +166,7 @@ const SharedRoutes: React.FC = () => {
 
     return (
         <>
-            {SHARED_ROUTES.map((props) => <Route key={props.path} exact location={location} {...props} />)}
+            {ROUTES.map((props) => <Route key={props.path} exact location={location} {...props} />)}
         </>
     );
 };
