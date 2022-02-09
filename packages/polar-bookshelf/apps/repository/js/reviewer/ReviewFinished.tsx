@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {CheckedSVGIcon} from "../../../../web/js/ui/svg_icons/CheckedSVGIcon";
-import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
+import {CheckedSVGIcon} from "../../../../web/js/icons/CheckedSVGIcon";
+import {SVGIcon} from "../../../../web/js/icons/SVGIcon";
 import Button from '@material-ui/core/Button';
 
 interface ReviewLayoutProps {

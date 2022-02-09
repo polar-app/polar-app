@@ -20,7 +20,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import {FADatabaseIcon} from "../../../../web/js/mui/MUIFontAwesome";
+import {FADatabaseIcon} from "../../../../web/js/icons/FontAwesomeIcons";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";

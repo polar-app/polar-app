@@ -1,15 +1,20 @@
 import React from 'react';
 
 import {MobileDailyNotesFab} from './MobileDailyNotesFab';
+import {StorybookAppRoot} from "../../../../web/js/storybook/StorybookAppRoot";
+import {ComponentStory} from "@storybook/react";
 
 export default {
     title: 'MobileDailyNotesFab',
     component: MobileDailyNotesFab,
-    // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-    argTypes: {
-        backgroundColor: { control: 'color' },
-    },
 };
 
-export const Primary = <MobileDailyNotesFab />;
+const Template = () => (
+    <StorybookAppRoot>
+        <MobileDailyNotesFab />
+    </StorybookAppRoot>
+);
 
+export const Primary: ComponentStory<typeof MobileDailyNotesFab> = Template.bind({});
+Primary.args = {
+};

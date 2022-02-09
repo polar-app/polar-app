@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../../../../web/js/icons/PolarSVGIcon";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {

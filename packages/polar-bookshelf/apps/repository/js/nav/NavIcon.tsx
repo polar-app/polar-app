@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../../../../web/js/icons/PolarSVGIcon";
 import {Devices} from "polar-shared/src/util/Devices";
 
 export class NavIcon extends React.PureComponent<IProps, IState> {
