@@ -28,7 +28,7 @@ const Main = () => {
 
         dialogManager.snackbar({message: "Invite link copied to clipboard!"})
 
-    }, [dialogManager]);
+    }, [dialogManager, errorHandler, inviteLink]);
 
     return (
         <Box pt={1}
