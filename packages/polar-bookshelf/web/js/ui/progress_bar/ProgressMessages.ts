@@ -1,5 +1,4 @@
 import {ProgressMessage} from './ProgressMessage';
-import {Messenger} from 'polar-electron-framework/src/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
 
 export class ProgressMessages {
@@ -13,8 +12,7 @@ export class ProgressMessages {
             value: progressMessage
         };
 
-        Messenger.postMessage({message})
-            .catch(err => console.error("Could not send message: ", err));
+        window.postMessage(JSON.parse(JSON.stringify(message)), "*");
 
     }
 
