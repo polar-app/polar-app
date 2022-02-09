@@ -46,7 +46,8 @@ export namespace FirebaseUserCreator {
     }
 
     export interface ICreateOpts {
-        referral_code?: string
+        readonly referral_code?: string
+        readonly fixed_challenge?: string;
     }
 
     export async function create(email: string, opts: ICreateOpts = {}) {
@@ -70,6 +71,10 @@ export namespace FirebaseUserCreator {
 
         await sendWelcomeEmail(email);
 
+        if (opts.fixed_challenge) {
+            await defineFixedChallenge(email, opts.fixed_challenge);
+        }
+
         if (opts.referral_code) {
             await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
         }
@@ -86,7 +91,7 @@ export namespace FirebaseUserCreator {
      *
      */
     export async function createTestUser() {
-        const email = `test+${Date.now()}@getpolarized.io`;
+        const email = ` getpolarized.test+${Date.now()}@getpolarized.io`;
 
         return await create(email);
 
