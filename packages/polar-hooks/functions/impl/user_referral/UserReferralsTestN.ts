@@ -66,17 +66,13 @@ describe('UserReferrals', () => {
             uid: alice.uid,
             email: alice.email!,
             user_referral_code,
-        }, {
-            email: emailOfBob,
-        });
-
-        // Assertions
+        }, {email: emailOfBob});
 
         const user = await auth.getUserByEmail(emailOfBob);
         expect(user.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
     });
 
-    it('Alice invites Bob and Alice receives a free month in Stripe', async () => {
+    it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
@@ -110,6 +106,18 @@ describe('UserReferrals', () => {
         expect(firstSubscription?.trial_start).lessThan(now, 'Trial start date is not in the past');
         expect(firstSubscription?.trial_end).approximately(in30Days, 100, 'Trial end date is either far below or far above 30 days from now');
     });
+
+    xit('Alice (plus member) invites Bob and receives a free +1 month extension of her plan', async () => {
+    });
+    xit('Alice (pro member) invites Bob and receives a free +1 month extension of her plan', async () => {
+    });
+    xit('Alice invites Bob but Bob was already a member so Alice gets nothing', async () => {
+    });
+    xit('Alice invites 2 different Bobs and receives 2 months of Plus extension', async () => {
+    });
+    xit('Alice (not a member) and Bob (not a member) both become members when Bob accepts Alice\'s invite', async () => {
+        // UserReferrals.createBothReferrerAndReferred()
+    })
 
     afterEach(async () => {
         if (tmpUserEmails.length) {
