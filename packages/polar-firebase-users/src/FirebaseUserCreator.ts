@@ -6,7 +6,7 @@ import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
-import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace FirebaseUserCreator {
 
@@ -45,9 +45,18 @@ export namespace FirebaseUserCreator {
         });
     }
 
-    export async function create(email: string, password: string, referral_code?: string) {
+    export interface ICreateOpts {
+        referral_code?: string
+    }
+
+    export async function create(email: string, opts: ICreateOpts = {}) {
 
         const auth = FirebaseAdmin.app().auth();
+
+        // note that the passwd here is irrelevant as we don't use it to login but
+        // use the auth code.
+        const password = Hashcodes.createRandomID();
+
         const user = await auth.createUser({email, password});
 
         const firestore = FirestoreAdmin.getInstance();
@@ -61,8 +70,8 @@ export namespace FirebaseUserCreator {
 
         await sendWelcomeEmail(email);
 
-        if (referral_code) {
-            await AmplitudeBackendAnalytics.traits(user, {referral_code})
+        if (opts.referral_code) {
+            await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
         }
 
         return user;
@@ -70,18 +79,17 @@ export namespace FirebaseUserCreator {
     }
 
     /**
-     * 
+     *
      * Generates a test user that has an email of format:
      * test+xxx@getpolarized.io
      * 'xxx' suffix is replaced with the current timestamp
-     * 
+     *
      */
     export async function createTestUser() {
         const email = `test+${Date.now()}@getpolarized.io`;
 
-        const password = Hashcodes.createRandomID();
+        return await create(email);
 
-        return await create(email, password);
     }
 
     export async function deleteUser(uid: UserIDStr) {
