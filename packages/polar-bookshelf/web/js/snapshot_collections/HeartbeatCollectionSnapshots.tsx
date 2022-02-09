@@ -5,8 +5,6 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IEither} from "../util/Either";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Simulate} from "react-dom/test-utils";
-
 
 export const [HeartbeatCollectionSnapshots, useHeartbeatCollectionSnapshot]
     = createFirestoreSnapshotForUserCollection<IHeartbeat>(HeartbeatCollection.COLLECTION_NAME, {initialEmpty: true});
