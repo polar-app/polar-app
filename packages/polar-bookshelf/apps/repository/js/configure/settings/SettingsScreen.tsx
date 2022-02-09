@@ -21,7 +21,7 @@ import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {ListItemLinkButton} from './ListItemLinkButton';
 import {useHistory} from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import {Feature} from '../../../../../web/js/features/FeaturesRegistry';
+import {Feature, FeatureEnabled} from '../../../../../web/js/features/FeaturesRegistry';
 import {SpacedRepetitionPurgeListItem} from "./SpacedRepetitionPurgeListItem";
 import {WhenAccountLevel} from "./WhenAccountLevel";
 
@@ -158,9 +158,11 @@ const Main = () => {
 
                 <Feature feature='features' enabled={<FeaturesListItem/>}/>
 
-                <WhenAccountLevel ver="v2">
-                    <UserReferralListItem/>
-                </WhenAccountLevel>
+                <FeatureEnabled feature="new-referral-system">
+                    <WhenAccountLevel ver="v2">
+                        <UserReferralListItem/>
+                    </WhenAccountLevel>
+                </FeatureEnabled>
 
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
