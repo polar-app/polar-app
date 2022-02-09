@@ -16,8 +16,12 @@ import {useAnalytics} from "../../analytics/Analytics";
 
 function useHeartbeater() {
 
-    const activeHeartbeats = useActiveHeartbeats();
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
+
+    const activeHeartbeats = useActiveHeartbeats();
+    const nrActiveDevices = React.useMemo(() => activeHeartbeats.length, [activeHeartbeats]);
+    const nrActiveDevicesRef = useRefValue(nrActiveDevices);
+
     const errorHandler = useErrorHandler();
 
     const heartbeatRef = useRefValue(heartbeat);
@@ -29,9 +33,9 @@ function useHeartbeater() {
 
     const doAnalytics = React.useCallback(() => {
 
-        analytics.event2('heartbeat', {nr_active: activeHeartbeats.length});
+        analytics.event2('heartbeat', {nr_active_devices: nrActiveDevicesRef.current});
 
-    }, [analytics, activeHeartbeats]);
+    }, [analytics, nrActiveDevicesRef]);
 
     const doHeartbeatCreate = React.useCallback(async () => {
         const heartbeat = HeartbeatCollection.create(uid!);
@@ -44,8 +48,6 @@ function useHeartbeater() {
     const doHeartbeatUpdate = React.useCallback(async (heartbeat: IHeartbeat) => {
         const updated = ISODateTimeStrings.create();
         await HeartbeatCollection.write(firestore, {...heartbeat, updated});
-
-        console.log("FIXME: doHeartbeatUpdate");
 
         doAnalytics();
 
@@ -76,6 +78,10 @@ function useHeartbeater() {
     const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 60000);
 
     React.useEffect(() => {
+
+
+        // first heartbeat on startup
+        doHeartbeatWithDebounce();
 
         // now listen to the React history and make sure it's being debounced properly.
 
