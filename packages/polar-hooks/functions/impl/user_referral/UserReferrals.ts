@@ -1,4 +1,3 @@
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
@@ -26,8 +25,7 @@ export namespace UserReferrals {
 
     async function createNewFirebaseUser(email: EmailStr) {
 
-        const password = Hashcodes.createRandomID();
-        await FirebaseUserCreator.create(email, password);
+        await FirebaseUserCreator.create(email);
 
     }
 

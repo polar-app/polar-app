@@ -1,5 +1,4 @@
 import React from "react";
-import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {InputOptions, SimpleInputForm} from "./SimpleInputForm";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";
@@ -14,15 +13,17 @@ import {
 import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/GetDefaultFlashcardType";
 import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {useAnnotationPopupStore} from "../AnnotationPopupContext";
 
-type BasicFrontBackForm = {
-    front: string;
-    back: string;
+interface BasicFrontBackForm {
+    readonly front: string;
+    readonly back: string;
 }
 
-type ClozeForm = {
-    text: string;
-};
+interface ClozeForm {
+    readonly text: string;
+}
 
 
 type FormTypes = InputOptions<BasicFrontBackForm> | InputOptions<ClozeForm>;
@@ -51,10 +52,11 @@ const keyMap = keyMapWithGroup({
 });
 
 export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) => {
-    const { annotation, style = {}, className = "" } = props;
-    const { clear } = useAnnotationPopup();
+    const { style, className, annotationID } = props;
+    const annotationPopupStore = useAnnotationPopupStore();
     const [flashcardType, setFlashcardType] = React.useState<CreatableFlashcardType>(() => getDefaultFlashcardType());
     const clozeRef = React.useRef<HTMLInputElement>(null);
+    const { getBlock } = useAnnotationBlockManager();
 
     const getInputsForType = React.useCallback((flashcardType: FlashcardType, initialValue: string) => {
         if (flashcardType === FlashcardType.CLOZE) {
@@ -69,15 +71,19 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         }
     }, []);
 
-    const [inputs, setInputs] = React.useState<FormTypes>(() => {
-        const text = BlockTextHighlights.toText(annotation.content.value);
-        return getInputsForType(flashcardType, text);
-    });
+    const getAnnotationText = React.useCallback(() => {
+        const annotation = getBlock(annotationID, AnnotationContentType.TEXT_HIGHLIGHT);
+        return annotation ? BlockTextHighlights.toText(annotation.content.value) : "";
+    }, [getBlock, annotationID]);
+
+    const [inputs, setInputs] = React.useState<FormTypes>(() =>
+        getInputsForType(flashcardType, getAnnotationText()));
 
     React.useEffect(() => {
-        const text = BlockTextHighlights.toText(annotation.content.value);
+        const text = getAnnotationText();
+
         setInputs(getInputsForType(flashcardType, text));
-    }, [flashcardType, setInputs, annotation, getInputsForType]);
+    }, [flashcardType, setInputs, annotationID, getInputsForType, getAnnotationText]);
 
     const onClozeDelete = React.useCallback(() => {
         const elem = clozeRef.current;
@@ -131,19 +137,19 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
     const { createFlashcard } = useAnnotationBlockManager();
     const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
         if (flashcardType === FlashcardType.CLOZE) {
-            createFlashcard(annotation.id, {
+            createFlashcard(annotationID, {
                 type: FlashcardType.CLOZE,
                 ...(data as ClozeForm),
-            })
+            });
         } else {
-            createFlashcard(annotation.id, {
+            createFlashcard(annotationID, {
                 type: FlashcardType.BASIC_FRONT_BACK,
                 ...(data as BasicFrontBackForm),
-            })
+            });
         }
 
-        clear();
-    }, [annotation, createFlashcard, flashcardType, clear]);
+        annotationPopupStore.clearActiveAction();
+    }, [annotationID, annotationPopupStore, createFlashcard, flashcardType]);
 
     const keyHandler = React.useMemo(() => ({ CLOZE: onClozeDelete }), [onClozeDelete]);
 
@@ -156,7 +162,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
                 className={className}
                 style={style}
                 inputs={inputs}
-                onCancel={clear}
+                onCancel={() => annotationPopupStore.clearActiveAction()}
                 onSubmit={onSubmit}
                 footer={footer}
             />

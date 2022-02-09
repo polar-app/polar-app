@@ -10,7 +10,6 @@ export const StorybookAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
     const muiTheme = React.useMemo(() => {
 
-
         return createMuiTheme({
             typography: {
                 htmlFontSize: 12,

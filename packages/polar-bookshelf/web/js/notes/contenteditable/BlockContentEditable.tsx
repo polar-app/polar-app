@@ -5,7 +5,7 @@ import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler} from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
+import {useMutationObserver} from '../../hooks/ReactHooks';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {BlockIDStr, IBlockContentStructure} from 'polar-blocks/src/blocks/IBlock';
 import {useBlocksTreeStore} from '../BlocksTree';

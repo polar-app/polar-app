@@ -6,6 +6,7 @@ import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace FirebaseUserCreator {
 
@@ -44,9 +45,19 @@ export namespace FirebaseUserCreator {
         });
     }
 
-    export async function create(email: string, password: string, referral_code?: string) {
+    export interface ICreateOpts {
+        readonly referral_code?: string
+        readonly fixed_challenge?: string;
+    }
+
+    export async function create(email: string, opts: ICreateOpts = {}) {
 
         const auth = FirebaseAdmin.app().auth();
+
+        // note that the passwd here is irrelevant as we don't use it to login but
+        // use the auth code.
+        const password = Hashcodes.createRandomID();
+
         const user = await auth.createUser({email, password});
 
         const firestore = FirestoreAdmin.getInstance();
@@ -60,11 +71,38 @@ export namespace FirebaseUserCreator {
 
         await sendWelcomeEmail(email);
 
-        if (referral_code) {
-            await AmplitudeBackendAnalytics.traits(user, {referral_code})
+        if (opts.fixed_challenge) {
+            await defineFixedChallenge(email, opts.fixed_challenge);
+        }
+
+        if (opts.referral_code) {
+            await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
         }
 
         return user;
+
+    }
+
+    export type FirebaseAuthCustomTokenStr = string;
+
+    export async function createCustomTokenForAuth(email: string): Promise<FirebaseAuthCustomTokenStr> {
+        const auth = FirebaseAdmin.app().auth();
+
+        const user = await auth.getUserByEmail(email);
+        return await auth.createCustomToken(user.uid);
+    }
+
+    /**
+     *
+     * Generates a test user that has an email of format:
+     * test+xxx@getpolarized.io
+     * 'xxx' suffix is replaced with the current timestamp
+     *
+     */
+    export async function createTestUser() {
+        const email = ` getpolarized.test+${Date.now()}@getpolarized.io`;
+
+        return await create(email);
 
     }
 
