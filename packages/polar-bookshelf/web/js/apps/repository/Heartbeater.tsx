@@ -11,6 +11,7 @@ import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
 import {useRefValue} from "../../hooks/ReactHooks";
 import {useErrorHandler} from "../../mui/MUIErrorHandler";
+import {useAnalytics} from "../../analytics/Analytics";
 
 function useHeartbeater() {
 
@@ -22,15 +23,29 @@ function useHeartbeater() {
     const {uid, firestore} = useFirestore();
     const history = useHistory();
 
+    const analytics = useAnalytics();
+
+    const doAnalytics = React.useCallback(() => {
+
+        analytics.event2('heartbeat', {});
+
+    }, [analytics]);
+
     const doHeartbeatCreate = React.useCallback(async () => {
         const heartbeat = HeartbeatCollection.create(uid!);
         await HeartbeatCollection.write(firestore, heartbeat);
-    }, [uid, firestore]);
+
+        doAnalytics();
+
+    }, [uid, firestore, doAnalytics]);
 
     const doHeartbeatUpdate = React.useCallback(async (heartbeat: IHeartbeat) => {
         const updated = ISODateTimeStrings.create();
         await HeartbeatCollection.write(firestore, {...heartbeat, updated});
-    }, [firestore]);
+
+        doAnalytics();
+
+    }, [firestore, doAnalytics]);
 
     const doHeartbeatAsync = React.useCallback(async () => {
 
