@@ -55,23 +55,29 @@ export const MUIThemeRoot = React.memo(function MUIThemeRoot(props: IProps) {
         function createLightTheme(): PaletteOptions {
             return {
                 type: 'light',
-                divider: '#D4D8D9',
                 background: {
                     default: '#FAFAFA',
-                    paper: '#202020'
+                    paper: '#F1F1F1'
                 },
+                divider: '#D4D8D9',
+                text: {
+                    primary: '#202020',
+                    secondary: '#383838',
+                    disabled: '#9CA3B1',
+                    hint: '#959697'
+                }
             }
         }
 
         function createDarkTheme(): PaletteOptions {
             return {
                 type: 'dark',
-                // primary: {
-                //     main: 'rgb(103, 84, 214)',
-                // },
-                // secondary: {
-                //     main: 'rgb(103, 84, 214)',
-                // },
+                primary: {
+                    main: '#B4C6EF',
+                },
+                secondary: {
+                    main: '#070F21',
+                },
                 // error: {
                 //     main: 'rgb(103, 84, 214)',
                 // },
@@ -84,12 +90,12 @@ export const MUIThemeRoot = React.memo(function MUIThemeRoot(props: IProps) {
                 // success: {
                 //     main: 'rgb(103, 84, 214)',
                 // },
-                // text: {
-                //     primary: '',
-                //     secondary: '',
-                //     disabled: '',
-                //     hint: ''
-                // },
+                text: {
+                    primary: '#FAFAFA',
+                    secondary: '#DADADA',
+                    disabled: '#5F6062',
+                    hint: '#F1F1F1'
+                },
                 divider: '#959697',
                 // action: {
                 //     // active: '',
@@ -105,8 +111,8 @@ export const MUIThemeRoot = React.memo(function MUIThemeRoot(props: IProps) {
                 //     // activatedOpacity: 0,
                 // },
                 background: {
-                    default: '#121212',
-                    paper: '#202020'
+                    default: '#18191A',
+                    paper: '#010409'
                 },
             }
         }
