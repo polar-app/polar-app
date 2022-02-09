@@ -8,7 +8,7 @@ export namespace UploadProgressApp {
     export function start(container: Element = document.body) {
 
         ReactDOM.render(
-            <MUIAppRoot>
+            <MUIAppRoot useRedesign={false} darkMode={true}>
                 <SaveToPolarProgressListener progress={{type: 'indeterminate'}}/>
             </MUIAppRoot>
             ,

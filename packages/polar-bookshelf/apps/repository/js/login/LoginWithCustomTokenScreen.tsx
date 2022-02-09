@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
+import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 
 interface IProps {
 
@@ -39,44 +40,47 @@ export const LoginWithCustomTokenScreen = React.memo(function LoginWithCustomTok
     }
 
     return (
-        <div style={{
-                 display: 'flex',
-                 width: '100%',
-                 height: '100%'
-             }}>
+        <MUIAppRoot useRedesign={false} darkMode={true}>
 
-            <Paper style={{
-                       margin: 'auto',
-                       maxWidth: '450px',
-                       maxHeight: '500px',
-                       width: '100%',
-                       height: '100%',
-                       display: 'flex',
-                       flexDirection: 'column'
-                   }}>
+            <div style={{
+                     display: 'flex',
+                     width: '100%',
+                     height: '100%'
+                 }}>
 
-
-                <div>
-
-                    <h2>Authenticate with Custom Token</h2>
-
-                    <p>
-                        <TextField label="Custom Token"
-                                   value=""
-                                   onChange={event => customTokenRef.current = event.target.value}/>
-                    </p>
+                <Paper style={{
+                           margin: 'auto',
+                           maxWidth: '450px',
+                           maxHeight: '500px',
+                           width: '100%',
+                           height: '100%',
+                           display: 'flex',
+                           flexDirection: 'column'
+                       }}>
 
 
-                    <p>
-                        <Button variant="contained" onClick={() => handleAuth(customTokenRef.current)}>
-                            Auth with Custom Token
-                        </Button>
-                    </p>
+                    <div>
 
-                </div>
+                        <h2>Authenticate with Custom Token</h2>
 
-            </Paper>
+                        <p>
+                            <TextField label="Custom Token"
+                                       value=""
+                                       onChange={event => customTokenRef.current = event.target.value}/>
+                        </p>
 
-        </div>
+
+                        <p>
+                            <Button variant="contained" onClick={() => handleAuth(customTokenRef.current)}>
+                                Auth with Custom Token
+                            </Button>
+                        </p>
+
+                    </div>
+
+                </Paper>
+
+            </div>
+        </MUIAppRoot>
     );
 });
