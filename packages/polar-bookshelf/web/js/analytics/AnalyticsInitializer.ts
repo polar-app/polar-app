@@ -4,6 +4,7 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import firebase from 'firebase/app'
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export namespace AnalyticsInitializer {
 
@@ -65,8 +66,19 @@ export namespace AnalyticsInitializer {
 
             };
 
+            const doDeviceID = () => {
+
+                const device_id = DeviceIDManager.DEVICE_ID
+
+                Analytics.traits({
+                    device_id
+                });
+
+            }
+
             doUserEmailDomain();
             doUserCreated();
+            doDeviceID();
 
         };
 
