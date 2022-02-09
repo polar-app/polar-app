@@ -1,9 +1,9 @@
 import React from "react";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock";
 import {useUploadHandler} from "../UploadHandler";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {HTMLToBlocks} from "../HTMLToBlocks";
+import {useOnlineOnlyTaskHandler} from "../../react/useOnlineOnlyTaskHandler";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -141,7 +141,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
     const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, id } = opts;
     const uploadHandler = useUploadHandler();
 
-    return React.useCallback((event: React.ClipboardEvent) => {
+    const handler = React.useCallback((event: React.ClipboardEvent) => {
 
         // TODO: we need to handle other type's of pastes including
         //
@@ -230,5 +230,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
         }
 
     }, [uploadHandler, id, onPasteImage, onPasteBlocks, onPasteText, onPasteError])
+
+    return useOnlineOnlyTaskHandler(handler);
 
 }
