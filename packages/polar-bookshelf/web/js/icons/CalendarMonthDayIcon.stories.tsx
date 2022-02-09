@@ -2,20 +2,22 @@ import React from 'react';
 
 import {CalendarMonthDayIcon} from './CalendarMonthDayIcon';
 import {StorybookAppRoot} from "../storybook/StorybookAppRoot";
+import {ComponentStory} from "@storybook/react";
+import IconButton from "@material-ui/core/IconButton";
 
 export default {
     title: 'CalendarMonthDayIcon',
     component: CalendarMonthDayIcon,
-    // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-    argTypes: {
-        backgroundColor: { control: 'color' },
-    },
 };
 
-export const Primary = (
+const Template = () => (
     <StorybookAppRoot>
-        <CalendarMonthDayIcon />
+        <IconButton>
+            <CalendarMonthDayIcon />
+        </IconButton>
     </StorybookAppRoot>
-    )
-;
+);
 
+export const Primary: ComponentStory<typeof CalendarMonthDayIcon> = Template.bind({});
+Primary.args = {
+};
