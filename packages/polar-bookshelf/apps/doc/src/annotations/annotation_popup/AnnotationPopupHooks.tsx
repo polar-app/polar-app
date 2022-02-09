@@ -14,16 +14,18 @@ import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {rangeConstrain} from "../AreaHighlightDrawer";
 import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
-import {IBlockAnnotation} from "./AnnotationPopupReducer";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
+import {AnnotationContentType, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
-export type ActiveHighlightData = {
-    highlightID: string,
-    pageNum: number,
-};
+export interface ActiveHighlightData {
+    readonly highlightID: string;
+    readonly pageNum: number;
+}
 
 namespace AnnotationPositionCalculator {
     export function getAnnotationEPUBPosition(
-        annotation: IBlockAnnotation,
+        annotation: IBlock<ITextHighlightAnnotationContent>,
         domTextIndex: DOMTextIndex,
         docViewerElements: IDocViewerElements,
     ): ILTRect | undefined {
@@ -127,7 +129,7 @@ namespace AnnotationPositionCalculator {
     }
 
     export function getAnnotationPDFPosition(
-        annotation: IBlockAnnotation,
+        annotation: IBlock<ITextHighlightAnnotationContent>,
         docViewerElements: IDocViewerElements,
         docScale: IDocScale
     ): ILTRect | undefined {
@@ -161,16 +163,18 @@ namespace AnnotationPositionCalculator {
     }
 }
 
-type IUsePopupBarPositionOpts = {
-    selectionEvent?: ActiveSelectionEvent;
-    annotation?: IBlockAnnotation;
+interface IUsePopupBarPositionOpts {
+    readonly selectionEvent?: ActiveSelectionEvent;
+    readonly annotationID?: BlockIDStr;
 };
+
 export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | undefined => {
-    const {selectionEvent, annotation} = opts;
-    const {docScale} = useDocViewerStore(["docScale"]);
+    const { selectionEvent, annotationID } = opts;
+    const { docScale } = useDocViewerStore(["docScale"]);
     const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
     const {fileType} = useDocViewerContext();
     const textIndex = useDOMTextIndexContext();
+    const {getBlock} = useAnnotationBlockManager();
 
     return React.useMemo(() => {
         if (selectionEvent) {
@@ -185,7 +189,13 @@ export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | u
                     docViewerElementsRef.current
                 );
             }
-        } else if (annotation) {
+        } else if (annotationID) {
+            const annotation = getBlock(annotationID, AnnotationContentType.TEXT_HIGHLIGHT);
+
+            if (! annotation) {
+                return;
+            }
+
             if (fileType === "epub" && textIndex && textIndex.index) {
                 return AnnotationPositionCalculator.getAnnotationEPUBPosition(
                     annotation,
@@ -202,7 +212,7 @@ export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | u
         }
         return;
         // TODO: Prevent rerenders if the annotation rects haven't changed
-    }, [fileType, annotation, selectionEvent, docScale, textIndex, docViewerElementsRef]);
+    }, [fileType, annotationID, getBlock, selectionEvent, docScale, textIndex, docViewerElementsRef]);
 };
 
 const CONTAINER_SPACING = 10;
