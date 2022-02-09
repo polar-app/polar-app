@@ -128,22 +128,16 @@ export const MUIThemeRoot = React.memo(function MUIThemeRoot(props: IProps) {
     const muiTheme = React.useMemo(() => useRedesign ? redesignTheme : legacyTheme, [useRedesign, redesignTheme, legacyTheme]);
 
     return (
-        <>
-            <ThemeProvider theme={muiTheme}>
-                <MUIThemeTypeContext.Provider value={{theme}}>
+        <ThemeProvider theme={muiTheme}>
+            <MUIThemeTypeContext.Provider value={{theme}}>
+                <CssBaseline/>
+                <GlobalCss/>
+                <GlobalCSSBootstrap/>
+                <GlobalCssMobile/>
 
-                    <>
-                        <CssBaseline/>
-                        <GlobalCss/>
-                        <GlobalCSSBootstrap/>
-                        <GlobalCssMobile/>
-
-                        {props.children}
-
-                    </>
-                </MUIThemeTypeContext.Provider>
-            </ThemeProvider>
-        </>
+                {props.children}
+            </MUIThemeTypeContext.Provider>
+        </ThemeProvider>
     );
 
 });
