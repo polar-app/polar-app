@@ -83,6 +83,15 @@ export namespace FirebaseUserCreator {
 
     }
 
+    export type FirebaseAuthCustomTokenStr = string;
+
+    export async function createCustomTokenForAuth(email: string): Promise<FirebaseAuthCustomTokenStr> {
+        const auth = FirebaseAdmin.app().auth();
+
+        const user = await auth.getUserByEmail(email);
+        return await auth.createCustomToken(user.uid);
+    }
+
     /**
      *
      * Generates a test user that has an email of format:
