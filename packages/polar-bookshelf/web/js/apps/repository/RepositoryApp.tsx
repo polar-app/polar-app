@@ -93,6 +93,7 @@ import {UserReferralCollectionSnapshots} from '../../snapshot_collections/UserRe
 import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
 import {KeyboardShortcuts} from "../../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider2} from '../../undo/UndoQueueProvider2';
+import {ReferralScreen} from "../../../../apps/repository/js/configure/settings/ReferralScreen";
 
 interface IProps {
     readonly app: App;
@@ -377,6 +378,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                         <Route exact path="/private-beta/waiting-users">
                                             <ListUsers/>
+                                        </Route>
+
+                                        <Route exact path="/settings/user-referral">
+                                            <ReferralScreen/>
                                         </Route>
 
                                         <PersistentRoute strategy="display" exact path={RoutePathNames.HOME}>
