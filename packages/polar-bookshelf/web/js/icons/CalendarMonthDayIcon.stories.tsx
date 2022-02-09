@@ -1,9 +1,10 @@
 import React from 'react';
 
 import {CalendarMonthDayIcon} from './CalendarMonthDayIcon';
+import {StorybookAppRoot} from "../storybook/StorybookAppRoot";
 
 export default {
-    title: 'MUICalendarMonthDayIcon',
+    title: 'CalendarMonthDayIcon',
     component: CalendarMonthDayIcon,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
@@ -11,5 +12,10 @@ export default {
     },
 };
 
-export const Primary = <CalendarMonthDayIcon />;
+export const Primary = (
+    <StorybookAppRoot>
+        <CalendarMonthDayIcon />
+    </StorybookAppRoot>
+    )
+;
 
