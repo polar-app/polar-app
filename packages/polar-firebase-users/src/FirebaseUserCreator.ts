@@ -6,6 +6,7 @@ import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 
 export namespace FirebaseUserCreator {
 
@@ -66,6 +67,21 @@ export namespace FirebaseUserCreator {
 
         return user;
 
+    }
+
+    /**
+     * 
+     * Generates a test user that has an email of format:
+     * test+xxx@getpolarized.io
+     * 'xxx' suffix is replaced with the current timestamp
+     * 
+     */
+    export async function createTestUser() {
+        const email = `test+${Date.now()}@getpolarized.io`;
+
+        const password = Hashcodes.createRandomID();
+
+        return await create(email, password);
     }
 
     export async function deleteUser(uid: UserIDStr) {
