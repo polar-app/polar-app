@@ -20,7 +20,7 @@ You can sort and filter your notes by title, data and the date it was last updat
 
 If you want to delete a note, click on the three dots on the right and select delete. 
 
-![Notes - Delete](https://i.imgur.com/m0KkO7V.png)
+![Notes - Delete](https://i.imgur.com/zZ1vU1T.png)
 
 Daily Notes:
 
