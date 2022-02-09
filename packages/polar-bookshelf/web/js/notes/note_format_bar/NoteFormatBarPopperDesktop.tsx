@@ -8,7 +8,7 @@ import {
     FAStrikethroughIcon,
     FASubscriptIcon,
     FASuperscriptIcon
-} from "../../mui/MUIFontAwesome";
+} from "../../icons/MUIFontAwesome";
 import FormatClearIcon from '@material-ui/icons/FormatClear';
 import {useBlockFormatBarStore, useNoteFormatBar} from "./NoteFormatBar";
 import {LinkCreator, useNoteFormatBarActions} from "./NoteFormatBarActions";

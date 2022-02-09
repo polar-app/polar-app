@@ -17,7 +17,7 @@ import {RoutePathNames} from "../apps/repository/RoutePathNames";
 import {observer} from "mobx-react-lite";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import moment from "moment";
-import {useMonthDay} from "../mui/MUICalendarMonthDayIcon";
+import {useMonthDay} from "../icons/MUICalendarMonthDayIcon";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 

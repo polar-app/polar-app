@@ -5,7 +5,7 @@ import {useLinkLoader} from "../../../web/js/ui/util/LinkLoaderHook";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Browsers} from "polar-browsers/src/Browsers";
 import Button from '@material-ui/core/Button';
-import {FAChromeIcon} from "../../../web/js/mui/MUIFontAwesome";
+import {FAChromeIcon} from "../../../web/js/icons/MUIFontAwesome";
 import {useSnapshotSubscriber} from "../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {WebExtensionPresenceClient} from "polar-web-extension-api/src/WebExtensionPresenceClient";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";

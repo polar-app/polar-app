@@ -1,6 +1,6 @@
 import {useHistory} from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
-import {MUICalendarMonthDayIcon} from "../../../../web/js/mui/MUICalendarMonthDayIcon";
+import {MUICalendarMonthDayIcon} from "../../../../web/js/icons/MUICalendarMonthDayIcon";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
