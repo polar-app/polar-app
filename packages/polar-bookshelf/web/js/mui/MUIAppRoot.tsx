@@ -15,9 +15,7 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
         <MUIThemeRoot useRedesign={props.useRedesign} darkMode={props.darkMode}>
             <MUIErrorBoundary>
                 <MUIDialogController>
-                    <>
-                        {props.children}
-                    </>
+                    {props.children}
                 </MUIDialogController>
             </MUIErrorBoundary>
         </MUIThemeRoot>
