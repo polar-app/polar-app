@@ -1,4 +1,4 @@
-import {assert, expect} from "chai";
+import {expect} from "chai";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
