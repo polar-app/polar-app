@@ -1,5 +1,5 @@
 import React from "react";
-import {FACheckCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
+import {FACheckCircleIcon} from "../../../../web/js/icons/FontAwesomeIcons";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 

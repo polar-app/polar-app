@@ -1,5 +1,5 @@
 import React from 'react';
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../../../../web/js/icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';

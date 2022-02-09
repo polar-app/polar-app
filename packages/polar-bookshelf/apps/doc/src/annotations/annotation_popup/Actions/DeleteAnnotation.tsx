@@ -1,18 +1,19 @@
 import React from "react";
-import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightBlocksHooks";
-import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
+import {useAnnotationPopupStore} from "../AnnotationPopupContext";
 
 
-export const DeleteAnnotation: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
-    const { clear } = useAnnotationPopup();
+export const useDeleteAnnotation = () => {
+    const annotationPopupStore = useAnnotationPopupStore();
     const { remove } = useAnnotationBlockManager();
 
-    React.useEffect(() => {
-        clear();
-        remove(annotation.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    return React.useCallback(() => {
+        const { selectedAnnotationID } = annotationPopupStore;
 
-    return <div />;
+        if (selectedAnnotationID) {
+            remove(selectedAnnotationID);
+        }
+
+        annotationPopupStore.reset();
+    }, [annotationPopupStore, remove]);
 };

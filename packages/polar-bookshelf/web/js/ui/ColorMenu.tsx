@@ -33,18 +33,18 @@ const useStyles = makeStyles((theme) =>
             gridTemplateRows: "repeat(3, 1fr)",
             gridAutoFlow: "column",
             background: theme.palette.background.default,
-            padding: 6,
+            padding: theme.spacing(0.75),
         },
         iconButton: {
             padding: 0,
-            width: 26,
-            height: 26,
+            width: theme.spacing(3.25),
+            height: theme.spacing(3.25),
             "&.selected": {
                 border: `2px solid ${theme.palette.info.dark}`,
             },
         },
         item: {
-            padding: 3,
+            padding: theme.spacing(0.75),
             cursor: "pointer",
             display: "flex",
             alignItems: "center",

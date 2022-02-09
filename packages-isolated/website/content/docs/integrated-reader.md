@@ -5,49 +5,64 @@ permalink: /docs/integrated-reader.html
 description: Polar has an integrated reader for epub, pdfs, and webpages with a wide variety of features. The annotation sidebar in Polar shows a list of highlights, comments and flashcards associated with a specific document. 
 ---
 
-# Integrated Reader
+# Polar Reader
 
-Polar has an integrated reader for all uploaded documents. The reader supports EPUBs, PDFs, and webpages (captured through the Chrome extension). Any annotation, highlight, or comment created in Polar is captured into your annotation repository.
+## Overview
 
-# Setting up your reader
+One of Polar’s core features is reading uploaded files through our integrated reader. Polar supports PDFs, EPUBs, and web content captured with the <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd?hl=en">Chrome extension</a>. Once you’ve uploaded a file and open it in Polar, you’ll see the file on the very left in the side nav
 
-You can personalize your reader across several areas - dark mode, PDF handling of dark mode, EPUB text width, automatic position resume, and auto-pagemarks. You can adjust all those items in your settings
+When you open a file, you have all reading features within one shortcut away
+At the top, you can manage the file itself (e.g., tagging,...)
+On the left you have the outline. not all files will have one (shortcut: ```[```)
+On the right you see the annotation sidebar  (shortcut: ```]```)
+In the center you have the file where you can read, highlight, etc
 
-Polar supports light and dark mode. Your global setting is automatically adopted for the reader. For PDFs, you can decide how dark mode is handled - from full color inversion, to grey scale, to keeping the original colors of the file.
+<img class="img-fluid" src="https://i.imgur.com/baNDlHS.png">
 
-In addition, Polar allows you to automatically resume your reading position if you turn the feature on. For this, you need to use pagemarks to mark your reading position. Pagemarks can be set manually by right-clicking anywhere in the file. Alternatively, you can also turn on auto-pagemarks which will automatically update your reading positio in the background.
+### Managing the file in the reader
 
-<img class="img-fluid" src="https://i.imgur.com/gc8TyZ2.png">
+At the top of the file, you have various feature to manage the file and the reader itself. You can manage the file just like in the library view, including tagging, flagging, archiving, and much more
 
-# Managing the file in the reader
+You can also set the number of columns for the file in the overflow menu. For example, in scientific literature, you oftentimes see multi-column layouts. Adjusting this will ensure highlights are ordered correctly
 
-In the top right of the reader, you can manage your file the same way you can manage it in the document repository. This includes, tagging, flagging, archiving, opening and copying the original URL.
+You can also see the outline for the file by opening the outline pane (shortcut: ```[```). Please note, Polar does not auto-generate an outline but only shows the outline that comes with a file
 
-In addition, you can set the number of columns for a file there. Many research papers are written in a two-column format. If this is not setting is not defined for the document, it can mess up the order of annotations for example.
+You can see all your highlights, comments, etc in the annotation sidebar. Open it with the shortcut ```]```.
 
-<img class="img-fluid" src="https://i.imgur.com/LdJvmcg.png">
+## Reading features
 
-# Outline
+### Highlighting
 
-The reader also provides an outline of the document, assuming the document includes one. By default, outline view is disabled. You can turn it on at the top left of the reader or by pressing ```[```.
+The core of active reading is obviously highlighting and taking notes on what you read. You can highlight text simply by selecting the relevant text and picking a color (shortcuts ```1``` - ```6```). Alternatively, you can also enter text highlight mode by pressing ```v```. Now a highlight with the default color is automatically created every time you select text. If you’re reading and trying to capture content quickly, this is the easiest route
 
-# Reading features
+We also support area highlights, meaning you can create an image from any part of the file. To do this, just press ```a``` and drag the cursor across the area you want to highlight
 
-Polar's reader supports state-of-the-art reading features, including text highlights, area highlights, and pagemarks. Please note, area highlights are currently not available for EPUB and captured web pages.
+### Tracking reading progress
 
-Polar supports multiple features for your annotations. This includes, direct edits, comments, flaschards from text highlights, automatic flashcards using AI, color changes, and tags for annotations to build a networked knowledge base.
+Polar allows you to track your reading progress, including for incremental reading purposes. To track reading progress, just create a pagemark to where you currently are
 
-When creating flashcards manually, the annotation text is automatically becomes the back of the card. Both front and backend can be edited of course.
+Polar supports two types of pagemarks:
+Pagemark to Current Location - this will set a pagemark from the beginning of the file to where you currently are
+Pagemark from Page to Current Location - this will allow you to set a starting point other than the beginning of the file to where you currently are (only in PDFs)
 
-You can also create flashcards in only one click using the AI flashcard feature. This feature automatically generates both question and answer from a text highlight using GPT-3. See an example below
+You can also mark an entire document as read
 
-[![Polar AI flashcards](https://i.imgur.com/rrSWq7L.png)](https://vimeo.com/502245710)
+<img class="img-fluid" src="https://i.imgur.com/6APNYV0.png">
 
-Pagemarks allow you to closely track your reading progress. We support different types of pagemarks - specifically pagemarks from the very beginning of a doc (```Pagemark to current location```) and pagemarks from a specific page to your current location (```Pagemark from Page to Current Location```). The latter is currently only available for PDFs. In addition, you can also label pagemarks. For details on pagemark, see more <a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">here</a>.
+FYI - Polar by default automatically tracks reading progress. You can control that feature in the settings.
 
-# Annotation Sidebar
+Finally, you can also see an outline of the entire file by clicking ```[``` if a file comes with an outline.
 
-The annotation sidebar in on the right in the reader shows the list of highlights, comments and
-flashcards in that document. This is where you can work with your annotations
+### Working with highlights
 
-To view your annotations across all documents, use the annotation viewer in Polar.
+Highlights are treated just like notes in highlights once you’ve created them. Meaning, you can edit them, create backlinks to relevant content, and do many other things with them.
+
+Polar allows you to work with a highlight in two ways. The first is directly in-line. When you create a highlight or click on an existing one, it’ll show you the highlight bar. The bar supports changing the highlight color, editing, commenting, creating manual or AI flashcards, tagging (same as creating a tag using #), copying the text, and deleting the highlight. Everything comes with shortcuts to make it as convenient as possible.
+
+The second way is in the annotation sidebar where you can see all highlights consolidated for that file. Here again you can do all the same actions as in-line. Usually, the annotation sidebar is more useful when you want to first read through a file and then work with the annotations subsequently.
+
+Once you’ve read a file and created highlights, the highlights are captured in your annotation viewer. All annotations inherit tags from the file level. Meaning if you tag the file as ‘chem101’, all highlights will also show up under that tag in the annotation viewer.
+
+When you create highlights in a file, Polar also automatically creates a notes page with the same title as the file. There you will also find all your highlights. See below an overview of the workflow.
+
+<a href="https://youtu.be/OiSWMMqXrdI">See a short video about the Reader here</a>

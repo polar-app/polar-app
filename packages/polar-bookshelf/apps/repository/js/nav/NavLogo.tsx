@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../../../../web/js/icons/PolarSVGIcon";
 import {Devices} from "polar-shared/src/util/Devices";
 import {MUIRouterLink} from "../../../../web/js/mui/MUIRouterLink";
 import {RoutePathNames} from '../../../../web/js/apps/repository/RoutePathNames';

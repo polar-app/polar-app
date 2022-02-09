@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
-import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
@@ -30,7 +30,7 @@ import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
-import {MUICalendarMonthDayIcon} from '../mui/MUICalendarMonthDayIcon';
+import {CalendarMonthDayIcon} from '../icons/CalendarMonthDayIcon';
 import {createIntercomClient} from "../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "../apps/repository/integrations/IntercomHooks";
 import {IntercomIcon} from "../apps/repository/integrations/IntercomIcon";
@@ -165,7 +165,7 @@ const DailyNotesButton = React.memo(function AnnotationsButton() {
     return (
         <SideNavHistoryButton title="Daily Notes"
                               path={RoutePathNames.DAILY}>
-            <MUICalendarMonthDayIcon className={classes.secondaryIcon}/>
+            <CalendarMonthDayIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });

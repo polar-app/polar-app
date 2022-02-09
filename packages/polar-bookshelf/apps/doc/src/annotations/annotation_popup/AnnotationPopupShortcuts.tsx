@@ -6,12 +6,15 @@ import {
     HandlerMap,
     keyMapWithGroup
 } from "../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
-import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
+import {AnnotationPopupActionEnum, useAnnotationPopupStore} from "./AnnotationPopupContext";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/PersistentRoute";
-import {useCopyAnnotation} from "./AnnotationPopupBar";
-import {IBlockAnnotation} from "./AnnotationPopupReducer";
 import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
+import {useCopyAnnotation} from "./Actions/Copy";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightBlocksHooks";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {useDeleteAnnotation} from "./Actions/DeleteAnnotation";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 
@@ -79,12 +82,12 @@ const annotationBarKeyMap = keyMapWithGroup({
 });
 
 export const AnnotationPopupShortcuts: React.FC = () => {
-    const {toggleAction} = useAnnotationPopup();
+    const annotationPopupStore = useAnnotationPopupStore();
     const {active} = usePersistentRouteContext();
-    const copyAnnotation = useCopyAnnotation();
 
-    const toggleActionRef = useRefWithUpdates((action: AnnotationPopupActionEnum) => toggleAction(action)());
-    const copyAnnotationRef = useRefWithUpdates(() => copyAnnotation());
+    const toggleActionRef = useRefWithUpdates((action: AnnotationPopupActionEnum) => annotationPopupStore.toggleActiveAction(action));
+    const copyAnnotationRef = useRefWithUpdates(useCopyAnnotation());
+    const deleteAnnotationRef = useRefWithUpdates(useDeleteAnnotation());
 
     const handlers = React.useMemo<HandlerMap>(() => ({
         EDIT_ANNOTATION: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT),
@@ -93,8 +96,8 @@ export const AnnotationPopupShortcuts: React.FC = () => {
         CREATE_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_FLASHCARD),
         CREATE_AI_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
         EDIT_TAGS: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT_TAGS),
-        DELETE: () => toggleActionRef.current(AnnotationPopupActionEnum.DELETE),
-    }), [toggleActionRef, copyAnnotationRef]);
+        DELETE: () => deleteAnnotationRef.current(),
+    }), [toggleActionRef, copyAnnotationRef, deleteAnnotationRef]);
 
     if (!active) {
         return null;
@@ -117,21 +120,29 @@ const keyToColor = (key: string): ColorStr | undefined => {
     return undefined;
 };
 
-type IHighlightColorShortcuts = {
-    annotation: IBlockAnnotation;
+interface IHighlightColorShortcuts {
+    readonly annotationID: BlockIDStr;
 };
 
-const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = ({ annotation }) => {
+const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = React.memo(({ annotationID }) => {
     const blocksStore = useBlocksStore();
+    const {getBlock} = useAnnotationBlockManager();
+
     const handleColorChangeRef = useRefWithUpdates(({ key }: KeyboardEvent) => {
         const color = keyToColor(key);
-        if (color && color !== annotation.content.value.color) {
-            const contentJSON = annotation.content.toJSON();
-            blocksStore.setBlockContent(annotation.id, {
-                ...contentJSON,
-                value: { ...contentJSON.value, color }
-            });
+        const annotation = getBlock(annotationID, AnnotationContentType.TEXT_HIGHLIGHT);
+
+        if (! annotation || ! color || color === annotation.content.value.color) {
+            return;
         }
+
+        const contentJSON = annotation.content.toJSON();
+
+        blocksStore.setBlockContent(annotation.id, {
+            ...contentJSON,
+            value: { ...contentJSON.value, color },
+        });
+
     });
 
     const handlers = React.useMemo<HandlerMap>(() => ({
@@ -139,15 +150,18 @@ const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = ({ annotatio
     }), [handleColorChangeRef]);
 
     return <GlobalKeyboardShortcuts keyMap={annotationBarColorsKeyMap} handlerMap={handlers}/>;
-};
+});
 
 const SelectionColorShortcuts: React.FC = () => {
-    const {onCreateAnnotation} = useAnnotationPopup();
+    const annotationPopupStore = useAnnotationPopupStore();
 
-    const handleColorChangeRef = useRefWithUpdates(({key}: KeyboardEvent) => {
+    const handleColorChangeRef = useRefWithUpdates(({ key }: KeyboardEvent) => {
         const color = keyToColor(key);
-        if (color) {
-            onCreateAnnotation(color);
+
+        const { selectionEvent } = annotationPopupStore;
+
+        if (color && selectionEvent) {
+            annotationPopupStore.createAnnotationFromSelectionEvent(color, selectionEvent);
         }
     });
 
@@ -159,10 +173,10 @@ const SelectionColorShortcuts: React.FC = () => {
 };
 
 const ColorShortcuts: React.FC = () => {
-    const {annotation} = useAnnotationPopup();
+    const { selectedAnnotationID } = useAnnotationPopupStore();
 
-    if (annotation) {
-        return <HighlightColorShortcuts annotation={annotation} />;
+    if (selectedAnnotationID) {
+        return <HighlightColorShortcuts annotationID={selectedAnnotationID} />;
     }
 
     return <SelectionColorShortcuts />;
