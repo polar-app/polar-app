@@ -3,6 +3,7 @@ import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ImageContent} from "./content/ImageContent";
 import {UploadedFile, useUploadHandler} from "./UploadHandler";
+import {useOnlineOnlyTaskHandler} from "../react/useOnlineOnlyTaskHandler";
 
 const getBlockContent = (uploadedFile: UploadedFile) => {
     const {type, url} = uploadedFile;
@@ -83,7 +84,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
         event.stopPropagation();
     }, []);
 
-    const handleDrop = React.useCallback((event: DragEvent) => {
+    const handleDropWhileOnline = React.useCallback((event: DragEvent) => {
         const dropTarget = blocksTreeStore.dropTarget;
         const files = event.dataTransfer?.files;
         if (! dropTarget || ! files || files.length === 0) {
@@ -135,6 +136,8 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
         blocksTreeStore.clearDrop();
 
     }, [blocksTreeStore, id, isRoot, uploadHandler]);
+
+    const handleDrop = useOnlineOnlyTaskHandler(handleDropWhileOnline);
 
     const onDrop = React.useCallback((event: React.DragEvent) => {
 

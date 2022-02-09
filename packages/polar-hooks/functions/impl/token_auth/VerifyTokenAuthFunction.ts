@@ -1,7 +1,6 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {UserRecord} from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
@@ -107,9 +106,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
         async function doCreateUser(email: string): Promise<IAuthUser> {
 
-            const password = Hashcodes.createRandomID();
-
-            const user = await FirebaseUserCreator.create(email, password);
+            const user = await FirebaseUserCreator.create(email);
 
             return {
                 user,

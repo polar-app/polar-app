@@ -127,6 +127,7 @@ export const PlanIntervalToggle = React.memo(function PlanIntervalToggle() {
                     <Typography color="secondary">One Month Free</Typography>
                 </ToggleButton>
 
+                {/*
                 <ToggleButton className={classes.button}
                               value="4year"
                               onClick={() => handleChange('4year')}
@@ -135,6 +136,7 @@ export const PlanIntervalToggle = React.memo(function PlanIntervalToggle() {
                     &nbsp;&nbsp;
                     <Typography color="secondary">Save Over 40%</Typography>
                 </ToggleButton>
+                */}
 
             </ToggleButtonGroup>
         </Paper>

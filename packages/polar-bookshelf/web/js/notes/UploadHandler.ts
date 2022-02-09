@@ -57,6 +57,7 @@ type IUseUploadHandlerOpts = {
 };
 
 export const useUploadHandler = (): (opts: IUseUploadHandlerOpts) => Promise<UploadedFile | undefined> => {
+
     const blocksTreeStore = useBlocksTreeStore();
     const firebaseCloudStorage = useFirebaseCloudStorage();
 

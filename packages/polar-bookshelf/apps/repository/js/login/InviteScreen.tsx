@@ -1,8 +1,8 @@
 import React from "react";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
-import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
-import {GiftSVGIcon} from "../../../../web/js/ui/svg_icons/GiftSVGIcon";
+import {SVGIcon} from "../../../../web/js/icons/SVGIcon";
+import {GiftSVGIcon} from "../../../../web/js/icons/GiftSVGIcon";
 import TextField from "@material-ui/core/TextField";
 import EmailIcon from "@material-ui/icons/Email";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -18,6 +18,8 @@ import {
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
 import {useHistory} from "react-router-dom";
+import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
+import Box from "@material-ui/core/Box";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -111,57 +113,60 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
     }, []);
 
     return (
-        <AdaptiveDialog>
-            <>
+        <MUIAppRoot useRedesign={false} darkMode={true}>
 
-                {/*<AuthContent title="" alternative={<div/>}>*/}
-                    <div className={classes.root}>
+            <AdaptiveDialog>
+                <>
 
-                            <div className="m-2">
-                                <SVGIcon size={150}>
-                                    <GiftSVGIcon/>
-                                </SVGIcon>
-                            </div>
+                    {/*<AuthContent title="" alternative={<div/>}>*/}
+                        <div className={classes.root}>
 
-                            <h1 className="title">You've been Invited to Polar!</h1>
+                                <Box mt={2}>
+                                    <SVGIcon size={150}>
+                                        <GiftSVGIcon/>
+                                    </SVGIcon>
+                                </Box>
 
-                            <h2>
-                                One free month of premium on us!
-                            </h2>
+                                <h1 className="title">You've been Invited to Polar!</h1>
 
-                            <TextField autoFocus={true}
-                                       className={classes.email}
-                                       onChange={event => emailRef.current = event.target.value}
-                                       onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
-                                       placeholder="Enter your email address"
-                                       variant="outlined"
-                                       type="email"
-                                       style={{
-                                           textAlign: 'center',
-                                           flexGrow: 1,
-                                       }}
-                                       InputProps={{
-                                           startAdornment: (
-                                               <EmailIcon style={{margin: '8px'}}/>
-                                           )
-                                       }}/>
+                                <h2>
+                                    One free month of premium on us!
+                                </h2>
 
-                            <Button variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    className={classes.button}
-                                    onClick={() => handleEmailProvided()}>
+                                <TextField autoFocus={true}
+                                           className={classes.email}
+                                           onChange={event => emailRef.current = event.target.value}
+                                           onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
+                                           placeholder="Enter your email address"
+                                           variant="outlined"
+                                           type="email"
+                                           style={{
+                                               textAlign: 'center',
+                                               flexGrow: 1,
+                                           }}
+                                           InputProps={{
+                                               startAdornment: (
+                                                   <EmailIcon style={{margin: '8px'}}/>
+                                               )
+                                           }}/>
 
-                                Create Free Account
+                                <Button variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        className={classes.button}
+                                        onClick={() => handleEmailProvided()}>
 
-                            </Button>
+                                    Create Free Account
+
+                                </Button>
 
 
-                    </div>
-                {/*</AuthContent>*/}
+                        </div>
+                    {/*</AuthContent>*/}
 
-                <Intercom/>
-            </>
-        </AdaptiveDialog>
+                    <Intercom/>
+                </>
+            </AdaptiveDialog>
+        </MUIAppRoot>
     );
 });

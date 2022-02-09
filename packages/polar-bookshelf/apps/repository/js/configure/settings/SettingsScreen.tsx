@@ -21,8 +21,9 @@ import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {ListItemLinkButton} from './ListItemLinkButton';
 import {useHistory} from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import {Feature} from '../../../../../web/js/features/FeaturesRegistry';
+import {Feature, FeatureEnabled} from '../../../../../web/js/features/FeaturesRegistry';
 import {SpacedRepetitionPurgeListItem} from "./SpacedRepetitionPurgeListItem";
+import {WhenAccountLevel} from "./WhenAccountLevel";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -51,6 +52,25 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+export const UserReferralListItem = React.memo(function UserReferralListItem() {
+
+    const history = useHistory();
+
+    const handleClick = React.useCallback(() => {
+        history.push("/settings/user-referral")
+    }, [history]);
+
+    return (
+        <ListItem button onClick={handleClick}>
+            <ListItemIcon>
+                <PlaylistAddIcon />
+            </ListItemIcon>
+            <ListItemText primary="User Referral" />
+        </ListItem>
+    );
+
+});
+
 
 export const FeaturesListItem = React.memo(function FeaturesListItem() {
 
@@ -70,6 +90,7 @@ export const FeaturesListItem = React.memo(function FeaturesListItem() {
     );
 
 });
+
 const Main = () => {
 
     const classes = useStyles();
@@ -136,6 +157,12 @@ const Main = () => {
                 <ExportDataListItem/>
 
                 <Feature feature='features' enabled={<FeaturesListItem/>}/>
+
+                <FeatureEnabled feature="new-referral-system">
+                    <WhenAccountLevel ver="v2">
+                        <UserReferralListItem/>
+                    </WhenAccountLevel>
+                </FeatureEnabled>
 
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>

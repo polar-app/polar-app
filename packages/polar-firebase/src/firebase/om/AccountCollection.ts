@@ -1,5 +1,5 @@
 import {Billing, Trial} from "polar-accounts/src/Billing";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
@@ -78,11 +78,40 @@ export namespace AccountCollection {
 
     export const COLLECTION_NAME = 'account';
 
+
+    export async function get<SM = unknown>(firestore: IFirestore<SM>, uid: UIDStr) {
+        return await Collections.get<IAccount>(firestore, COLLECTION_NAME, uid);
+    }
+
+    export async function set<SM = unknown>(firestore: IFirestore<SM>, uid: UIDStr, account: IAccount) {
+        return await Collections.set<IAccount>(firestore, COLLECTION_NAME, uid, account);
+    }
+
     /**
      * Upgrade this account to a specific version.
      */
-    export async function upgrade<SM = unknown>(firestore: IFirestore<SM>, uid:  UIDStr, ver: AccountVer) {
-        await Collections.update(firestore, COLLECTION_NAME, uid, {ver});
+    export async function upgrade<SM = unknown>(firestore: IFirestore<SM>, uid: UIDStr, email: EmailStr, ver: AccountVer) {
+
+        const account = await get(firestore, uid);
+
+        const now = ISODateTimeStrings.create();
+
+        if (account) {
+            await Collections.update(firestore, COLLECTION_NAME, uid, {ver, lastModified: now});
+        } else {
+
+            const newAccount: IAccount = {
+                id: uid,
+                uid,
+                email,
+                lastModified: now,
+                ver,
+                plan: 'free'
+            }
+
+            await set(firestore, uid, newAccount);
+
+        }
     }
 
 }

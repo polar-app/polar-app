@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {SplashBox} from "./SplashBox";
-import {PolarSVGIcon} from "../svg_icons/PolarSVGIcon";
+import {PolarSVGIcon} from "../../icons/PolarSVGIcon";
 
 export function LoadingSplash() {
 

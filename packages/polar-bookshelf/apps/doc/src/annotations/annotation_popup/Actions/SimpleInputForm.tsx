@@ -104,7 +104,7 @@ export function SimpleInputForm<
                 ))}
             </Box>
 
-            <Box display="flex" justifyContent="space-between" mt={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
                 <div>{footer}</div>
                 <Button color="primary"
                         type="submit"

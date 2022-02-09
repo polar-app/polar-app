@@ -2,6 +2,7 @@ import {LinearProgress} from "@material-ui/core";
 import * as React from "react";
 import {
     HeartbeatCollectionSnapshots,
+    useActiveHeartbeats,
     useHeartbeatCollectionSnapshotForDeviceID
 } from "../../snapshot_collections/HeartbeatCollectionSnapshots";
 import {HeartbeatCollection, IHeartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
@@ -11,10 +12,16 @@ import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
 import {useRefValue} from "../../hooks/ReactHooks";
 import {useErrorHandler} from "../../mui/MUIErrorHandler";
+import {useAnalytics} from "../../analytics/Analytics";
 
 function useHeartbeater() {
 
     const heartbeat = useHeartbeatCollectionSnapshotForDeviceID();
+
+    const activeHeartbeats = useActiveHeartbeats();
+    const nrActiveDevices = React.useMemo(() => activeHeartbeats.length, [activeHeartbeats]);
+    const nrActiveDevicesRef = useRefValue(nrActiveDevices);
+
     const errorHandler = useErrorHandler();
 
     const heartbeatRef = useRefValue(heartbeat);
@@ -22,15 +29,29 @@ function useHeartbeater() {
     const {uid, firestore} = useFirestore();
     const history = useHistory();
 
+    const analytics = useAnalytics();
+
+    const doAnalytics = React.useCallback(() => {
+
+        analytics.event2('heartbeat', {nr_active_devices: nrActiveDevicesRef.current});
+
+    }, [analytics, nrActiveDevicesRef]);
+
     const doHeartbeatCreate = React.useCallback(async () => {
         const heartbeat = HeartbeatCollection.create(uid!);
         await HeartbeatCollection.write(firestore, heartbeat);
-    }, [uid, firestore]);
+
+        doAnalytics();
+
+    }, [uid, firestore, doAnalytics]);
 
     const doHeartbeatUpdate = React.useCallback(async (heartbeat: IHeartbeat) => {
         const updated = ISODateTimeStrings.create();
         await HeartbeatCollection.write(firestore, {...heartbeat, updated});
-    }, [firestore]);
+
+        doAnalytics();
+
+    }, [firestore, doAnalytics]);
 
     const doHeartbeatAsync = React.useCallback(async () => {
 
@@ -57,6 +78,10 @@ function useHeartbeater() {
     const doHeartbeatWithDebounce = useDebouncer(doHeartbeat, 60000);
 
     React.useEffect(() => {
+
+
+        // first heartbeat on startup
+        doHeartbeatWithDebounce();
 
         // now listen to the React history and make sure it's being debounced properly.
 

@@ -7,7 +7,7 @@ import {AppBar, Toolbar} from "@material-ui/core";
 
 
 export default {
-    title: 'NotesHistory',
+    title: 'NotesHistoryBreadcrumbs',
     component: NotesHistoryBreadcrumbs,
 };
 
