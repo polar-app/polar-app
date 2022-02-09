@@ -6,6 +6,8 @@ import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
+import {Testing} from "polar-shared/src/util/Testing";
+import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
 
 export namespace FirebaseUserCreator {
 
@@ -58,9 +60,13 @@ export namespace FirebaseUserCreator {
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb');
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb3');
 
-        await sendWelcomeEmail(email);
+        await FirebaseUserUpgrader.upgrade(user.uid);
 
-        if (referral_code) {
+        if (!Testing.isTestingRuntime()) {
+            await sendWelcomeEmail(email);
+        }
+
+        if (referral_code && !Testing.isTestingRuntime()) {
             await AmplitudeBackendAnalytics.traits(user, {referral_code})
         }
 
