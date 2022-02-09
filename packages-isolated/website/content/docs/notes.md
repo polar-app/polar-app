@@ -10,7 +10,7 @@ Polar allows you to take note-taking to the next level, connecting your thoughts
 
 You can access all of your notes in the left-side of the navigation bar, once you click the icon you will be greeted by the [notes dashboard](https://app.getpolarized.io/notes).
 
-![Document - Notes Button](https://i.imgur.com/Tm5lBC0.png)
+![Document - Notes Button](https://i.imgur.com/D8w1MBq.png)
 
 Notes Dashboard:
 
