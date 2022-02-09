@@ -1,8 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import {ElectronIpcRenderers} from "polar-electron-framework/src/ElectronIpcRenderers";
 
-// FIXME: this won't look right in MUI
 export function RestartForUpdateButton() {
 
     return (
@@ -48,7 +46,6 @@ export function RestartForUpdateButton() {
 
                 <div className="text-center text-white">
                     <Button
-                        onClick={() => ElectronIpcRenderers.send('app-update:quit-and-install')}
                         size="large"
                         variant="contained"
                         color="primary">
