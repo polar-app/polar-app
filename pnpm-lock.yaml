@@ -435,7 +435,6 @@ importers:
       polar-browsers: 0.0.0
       polar-content-capture: 0.0.0
       polar-dom-text-search: 0.0.0
-      polar-electron-framework: 0.0.0
       polar-epub: 0.0.0
       polar-file-saver: 0.0.0
       polar-firebase: 0.0.0
@@ -523,7 +522,6 @@ importers:
       polar-browsers: link:../polar-browsers
       polar-content-capture: link:../polar-content-capture
       polar-dom-text-search: link:../polar-dom-text-search
-      polar-electron-framework: link:../polar-electron-framework
       polar-epub: link:../polar-epub
       polar-file-saver: link:../polar-file-saver
       polar-firebase: link:../polar-firebase
