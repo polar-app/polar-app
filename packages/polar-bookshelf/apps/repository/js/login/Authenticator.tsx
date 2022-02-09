@@ -443,8 +443,7 @@ export const RegisterForBetaButton = () => {
                                }}
                                variant="outlined"/>
 
-                    <TextField autoFocus={true}
-                               className={classes.email}
+                    <TextField className={classes.email}
                                onChange={event => codeRef.current = event.target.value}
                                placeholder="Referral code (optional)"
                                InputProps={{
