@@ -9,7 +9,7 @@ export const WhenAccountLevel = (props: IProps) => {
 
     const userInfoContext = useUserInfoContext();
 
-    if (props.ver <= (userInfoContext?.userInfo?.ver || '')) {
+    if (props.ver >= (userInfoContext?.userInfo?.ver || 'v0')) {
         return null;
     }
 

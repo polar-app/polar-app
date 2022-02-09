@@ -19,6 +19,7 @@ import {
 import {isRPCError} from "polar-shared/src/util/IRPCError";
 import {useHistory} from "react-router-dom";
 import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
+import Box from "@material-ui/core/Box";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -120,11 +121,11 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
                     {/*<AuthContent title="" alternative={<div/>}>*/}
                         <div className={classes.root}>
 
-                                <div className="m-2">
+                                <Box mt={2}>
                                     <SVGIcon size={150}>
                                         <GiftSVGIcon/>
                                     </SVGIcon>
-                                </div>
+                                </Box>
 
                                 <h1 className="title">You've been Invited to Polar!</h1>
 

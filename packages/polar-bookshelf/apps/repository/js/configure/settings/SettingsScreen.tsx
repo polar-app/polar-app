@@ -156,8 +156,6 @@ const Main = () => {
                 </DeviceRouters.Desktop>
                 <ExportDataListItem/>
 
-                <ListItemLinkButton icon={<DescriptionIcon/>} text={"User Referrals"} href={'https://getpolarized.io/privacy-policy'}/>
-
                 <Feature feature='features' enabled={<FeaturesListItem/>}/>
 
                 <WhenAccountLevel ver="v2">
