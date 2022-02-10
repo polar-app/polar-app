@@ -17,7 +17,7 @@ export namespace CaptureApp {
                           container: Element = document.body) {
 
         ReactDOM.render(
-            <MUIAppRoot>
+            <MUIAppRoot useRedesign={false} darkMode={true}>
                 <CaptureContentContext.Provider value={content}>
                     <CaptureRoot/>
                 </CaptureContentContext.Provider>

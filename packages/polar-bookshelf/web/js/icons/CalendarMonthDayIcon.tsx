@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) =>
     })
 );
 
-export const MUICalendarMonthDayIcon: React.FC<IProps> = (props) => {
+export const CalendarMonthDayIcon: React.FC<IProps> = (props) => {
     const { className, style } = props;
     const monthDay = useMonthDay();
     const classes = useStyles();

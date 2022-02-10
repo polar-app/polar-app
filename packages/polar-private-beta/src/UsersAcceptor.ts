@@ -1,4 +1,3 @@
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {IDUser} from "polar-rpc/src/IDUser";
 import {IUserRecord} from 'polar-firestore-like/src/IUserRecord'
@@ -61,7 +60,7 @@ export namespace UsersAcceptor {
             // earliest used or some other intelligent algorithm
             const referral_code = waitingUserRequest.tags.find(() => true);
 
-            const user = await FirebaseUserCreator.create(email, Hashcodes.createRandomID(), referral_code);
+            const user = await FirebaseUserCreator.create(email, {referral_code});
 
             await PrivateBetaReqCollection.deleteByEmail(firestore, email);
 

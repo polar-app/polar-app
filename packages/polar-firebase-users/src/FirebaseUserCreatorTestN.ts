@@ -21,7 +21,7 @@ describe('FirebaseUserCreator', function() {
 
     it("basic", async function() {
         console.log("Creating user...")
-        await FirebaseUserCreator.create(email, '123456');
+        await FirebaseUserCreator.create(email);
     });
 
 });
