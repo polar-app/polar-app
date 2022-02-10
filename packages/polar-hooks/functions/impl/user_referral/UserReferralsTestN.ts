@@ -22,7 +22,7 @@ describe('UserReferrals', () => {
     const createUser = async (email: string) => {
         const password = Hashcodes.createRandomID();
         console.log(`Creating dummy Firebase auth user with email ${email}...`);
-        const user = await FirebaseUserCreator.create(email, password);
+        const user = await FirebaseUserCreator.create(email);
         console.log(`Creating dummy Firebase auth user with email ${email}... Done. UID is ${user.uid}`);
         tmpUserEmails.push(user.email as string);
         return user;
