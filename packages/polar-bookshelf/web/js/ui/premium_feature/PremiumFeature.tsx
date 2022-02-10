@@ -1,5 +1,4 @@
 import React from 'react';
-import {Analytics} from "../../analytics/Analytics";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 import {UpgradeButton} from './UpgradeButton';
 import {Plans} from "polar-accounts/src/Plans";
@@ -18,11 +17,6 @@ export const PremiumFeature = (props: IProps) => {
 
     const {required, feature} = props;
     const userInfoContext = useUserInfoContext();
-
-    function onUpgrade() {
-        Analytics.event({category: 'premium', action: 'upgrade-from-premium-feature-wall'});
-        document.location.hash = "plans";
-    }
 
     const PremiumFeatureWarningSM = () => {
         return (
