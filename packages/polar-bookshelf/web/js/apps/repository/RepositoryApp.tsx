@@ -327,9 +327,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     return (
         <GlobalProviders>
             <ConsoleError/>
+            <AnalyticsLocationListener/>
             <Switch>
 
-                <AnalyticsLocationListener />
 
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>
