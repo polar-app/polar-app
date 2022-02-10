@@ -134,6 +134,7 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
                                 </h2>
 
                                 <TextField autoFocus={true}
+                                           size="medium"
                                            className={classes.email}
                                            onChange={event => emailRef.current = event.target.value}
                                            onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
