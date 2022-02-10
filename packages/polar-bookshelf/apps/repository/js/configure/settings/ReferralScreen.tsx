@@ -5,7 +5,7 @@ import {
     UserReferralCollectionSnapshots,
     useUserReferral
 } from "../../../../../web/js/snapshot_collections/UserReferralCollectionSnapshots";
-import {LinearProgress, OutlinedInput} from "@material-ui/core";
+import {LinearProgress, TextField} from "@material-ui/core";
 import {SVGIcon} from "../../../../../web/js/icons/SVGIcon";
 import {GiftSVGIcon} from "../../../../../web/js/icons/GiftSVGIcon";
 import Button from "@material-ui/core/Button";
@@ -53,13 +53,14 @@ const Main = () => {
                      display: 'flex',
                      minWidth: '450px',
                      marginLeft: 'auto',
-                     marginRight: 'auto'
+                     marginRight: 'auto',
                  }}>
 
-                <OutlinedInput autoFocus={true}
-                               style={{flexGrow: 1}}
-                               onClick={copyLink}
-                               value={inviteLink}/>
+                <TextField autoFocus={true}
+                           variant="outlined"
+                           style={{flexGrow: 1}}
+                           onClick={copyLink}
+                           value={inviteLink}/>
 
                 <Button color="primary"
                         onClick={copyLink}

@@ -134,6 +134,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/invite/:user_referral_code",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/notes",
         "destination": "/apps/repository/index.html"
       },

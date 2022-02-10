@@ -35,6 +35,7 @@ export class DefaultRewrites {
                     "/settings",
                     "/profile",
                     "/device",
+                    "/invite",
                     "/error",
                     "/daily"
                 ],
