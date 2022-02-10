@@ -50,7 +50,22 @@ export namespace UserReferrals {
 
         const account = await Accounts.get(email);
 
-        const plan = account?.plan || 'free';
+        // Return a simple (string) plan name regardless if the Account has a V1 or V2 plan
+        const computePlanName = (): string => {
+            if (!account) {
+                return 'free';
+            }
+            const isV2Plan = (plan: Billing.V1Plan | Billing.V2Plan): plan is Billing.V2Plan => {
+                return (plan as Billing.V2Plan).level !== undefined;
+            }
+
+            if (isV2Plan(account.plan)) {
+                return account.plan.level;
+            }
+            return account.plan;
+        }
+
+        const plan = computePlanName();
 
         if (plan === 'free') {
 
