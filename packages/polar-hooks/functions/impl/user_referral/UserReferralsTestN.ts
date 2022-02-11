@@ -240,7 +240,8 @@ describe('UserReferrals', () => {
         // Check if Alice has a discount coupon applied
         expect(firstSubscription?.discount?.coupon.id).eq(StripeCouponRegistry.get('test').PRO_ONE_MONTH_FREE.id);
     });
-    it('Alice invites Bob but Bob was already a member so Alice gets nothing', async () => {
+
+    it('Alice invites Bob but Bob was already a member, so it should fail and Alice gets nothing', async () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
