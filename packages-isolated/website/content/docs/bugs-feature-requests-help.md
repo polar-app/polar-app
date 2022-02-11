@@ -6,7 +6,7 @@ permalink: /docs/reporting-bugs.html
 description: File a Bug Report
 ---
 
-# Reporting Bugs
+# Reporting Bugs, feature requests, and getting help
 
 Get hit with a bug and want to get it fixed?  
 
