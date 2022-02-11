@@ -5,6 +5,7 @@ import {StripePlanIDs} from "./StripePlanIDs";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 
+
 export interface StripeCustomerSubscription {
     readonly customer: Stripe.Customer;
     readonly subscription?: Stripe.Subscription;
@@ -31,7 +32,7 @@ export namespace StripeCustomers {
                 return;
             }
 
-            if (customer.sources && customer.sources.data.length === 1){
+            if (customer.sources && customer.sources.data.length === 1) {
 
                 const sourceID = customer.sources.data[0].id;
 
@@ -62,6 +63,16 @@ export namespace StripeCustomers {
             name
         });
 
+    }
+
+    export async function deleteCustomer(stripeMode: StripeMode, email: string) {
+        const stripe = StripeUtils.getStripe(stripeMode);
+
+        const customer = await getCustomerByEmail(stripeMode, email)
+        if (!customer) {
+            throw new Error(`Can not delete Stripe customer by email ${email} because he was not found in Stripe`);
+        }
+        return await stripe.customers.del(customer.id);
     }
 
     // TODO should be getCustomer
@@ -116,7 +127,7 @@ export namespace StripeCustomers {
 
         const customer = await getCustomerByEmail(stripeMode, customerQuery);
 
-        if (! customer) {
+        if (!customer) {
             throw new Error("No customer for email: " + JSON.stringify(customerQuery));
         }
 
