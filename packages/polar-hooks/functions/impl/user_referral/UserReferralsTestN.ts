@@ -240,12 +240,60 @@ describe('UserReferrals', () => {
         // Check if Alice has a discount coupon applied
         expect(firstSubscription?.discount?.coupon.id).eq(StripeCouponRegistry.get('test').PRO_ONE_MONTH_FREE.id);
     });
-    xit('Alice invites Bob but Bob was already a member so Alice gets nothing', async () => {
+    it('Alice invites Bob but Bob was already a member so Alice gets nothing', async () => {
+        // Setup Alice
+        const emailOfAlice = getRandomEmail('alice');
+        const alice = await createUser(emailOfAlice);
+        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+
+        // Configure a default payment method for Alice
+        const customer = stripeCustomerAlice.id;
+        await setupDefaultPaymentMethod(customer);
+
+        // Switch Alice to the Plus plan initially (this requires a default payment to be set up above)
+        await StripeCustomers.changePlan('test', emailOfAlice, V2PlanPro, 'month');
+        await Accounts.changePlanViaEmail(emailOfAlice, {type: 'stripe', customerID: customer}, V2PlanPro, 'month');
+
+        // Get the referral code for Alice
+        const referralCodeDocument = await UserReferralCollection.get(firestore, alice.uid);
+        const user_referral_code = referralCodeDocument?.user_referral_code as string;
+
+        const emailOfBob = getRandomEmail('bob');
+        const bob = await createUser(emailOfBob);
+
+        try {
+            await UserReferrals.createReferredAccountAndApplyRewardToReferrer("test", {
+                uid: alice.uid,
+                email: alice.email!,
+                user_referral_code,
+            }, {
+                email: bob.email!,
+            });
+            expect.fail('Referring an existing user should have throw an error to this point');
+        } catch (e: any) {
+            expect((e as Error).message).to.include('Can not refer an existing user');
+        }
+
+        // Fetch Subscription of Alice from Stripe
+        const subscriptions = await StripeCustomers.getCustomerSubscriptions('test', emailOfAlice);
+        const firstSubscription = subscriptions.subscriptions.find(() => true);
+
+        expect(
+            firstSubscription?.discount,
+            'Alice has a promo code in subscription but she should not. Bob was an existing member when she invited him'
+        ).null;
     });
     xit('Alice invites 2 different Bobs and receives 2 months of Plus extension', async () => {
+        // @TODO Just updating the Stripe subscription with the same coupon code DOES NOT seem to mean the next 2 subscriptions will be free?
     });
     xit('Alice (not a member) and Bob (not a member) both become members when Bob accepts invite by Alice', async () => {
-        // UserReferrals.createBothReferrerAndReferred()
+        // @TODO We'll focus on this a bit later, after the basic version of the Referral system is out
+        // @TODO Reason being: the existing "user_referral_codes" collection requires a Firebase auth UID but in THIS
+        // @TODO scenario specifically we want Alice to invite Bob BEFORE she herself is even a member
+        // @TODO So this scenarios probably requires some restructuring of the existing collection or a new collection
+
+
+        // @TODO Test UserReferrals.createBothReferrerAndReferred() here
     })
 
     afterEach(async () => {

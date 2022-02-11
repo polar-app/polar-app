@@ -8,6 +8,10 @@ import {EmailStr} from "polar-shared/src/util/Strings";
 import {Billing} from "polar-accounts/src/Billing";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
+import {Plans} from "polar-accounts/src/Plans";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
+import {Testing} from "polar-shared/src/util/Testing";
 
 export namespace UserReferrals {
 
@@ -50,22 +54,7 @@ export namespace UserReferrals {
 
         const account = await Accounts.get(email);
 
-        // Return a simple (string) plan name regardless if the Account has a V1 or V2 plan
-        const computePlanName = (): string => {
-            if (!account) {
-                return 'free';
-            }
-            const isV2Plan = (plan: Billing.V1Plan | Billing.V2Plan): plan is Billing.V2Plan => {
-                return (plan as Billing.V2Plan).level !== undefined;
-            }
-
-            if (isV2Plan(account.plan)) {
-                return account.plan.level;
-            }
-            return account.plan;
-        }
-
-        const plan = computePlanName();
+        const plan = Plans.toV2(account?.plan).level;
 
         if (plan === 'free') {
 
@@ -110,6 +99,35 @@ export namespace UserReferrals {
 
     }
 
+    async function isExistingUser(email: EmailStr) {
+        const auth = FirebaseAdmin.app().auth();
+        try {
+            const existingUser = await auth.getUserByEmail(email);
+            return !!existingUser.uid;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async function notifyReferrerByEmailOfFreeUpgrade(referrer: EmailStr, referred: EmailStr) {
+        if (Testing.isTestingRuntime()) {
+            return;
+        }
+        const message = {
+            to: referrer,
+            from: 'founders@getpolarized.io',
+            subject: `Congrats, Polar Plus on us!`,
+            html: `<p>Hey there! 👋</p>
+                   <p>Congrats, ${referred} has accepted your invite. Enjoy a month of Polar Plus on us 🎉</p>
+                   <p>You don’t have to do anything. Your account has automatically been credited the free upgrade.</p>
+                   <p>As a reminder, you can get additional months on us by inviting more friends and spreading the word about Polar! 🚀</p>
+                   <p>Cheers,</p>
+                   <p>The Polar Team</p>
+`
+        };
+        await Sendgrid.send(message);
+    }
+
     /**
      * Used with our basic referral system.
      *
@@ -121,11 +139,14 @@ export namespace UserReferrals {
                                                                         referrer: IReferrer,
                                                                         referred: IReferred) {
 
+        if (await isExistingUser(referred.email)) {
+            throw new Error(`Can not refer an existing user`);
+        }
         await createNewFirebaseUser(referred.email);
         await createStripeSubscriptionWithTrial(stripeMode, referred.email, "");
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
         await rewardReferringUser(stripeMode, referrer.email);
-
+        await notifyReferrerByEmailOfFreeUpgrade(referrer.email, referred.email);
     }
 
     /**
