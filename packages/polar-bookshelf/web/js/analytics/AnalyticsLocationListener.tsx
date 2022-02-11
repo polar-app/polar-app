@@ -7,26 +7,30 @@ export const AnalyticsLocationListener = React.memo(function AnalyticsLocationLi
 
     const loc = useLocation();
 
-    try {
+    React.useEffect(() => {
 
-        const location = loc.pathname + loc.search + (loc.hash || "");
-        const locationCanonicalized = AnalyticsURLCanonicalizer.canonicalize(location);
+        try {
 
-        const hostname = window.location.hostname;
-        const title = document.title;
+            const location = loc.pathname + loc.search + (loc.hash || "");
+            const locationCanonicalized = AnalyticsURLCanonicalizer.canonicalize(location);
 
-        console.log(`Location change: `, {
-            location,
-            locationCanonicalized,
-            hostname,
-            title
-        });
+            const hostname = window.location.hostname;
+            const title = document.title;
 
-        Analytics.page({location, locationCanonicalized});
+            console.log(`Location change: `, {
+                location,
+                locationCanonicalized,
+                hostname,
+                title
+            });
 
-    } catch (e) {
-        console.error("Unable to handle nav change", e);
-    }
+            Analytics.page({location, locationCanonicalized});
+
+        } catch (e) {
+            console.error("Unable to handle nav change", e);
+        }
+
+    }, [loc])
 
     return null;
 
