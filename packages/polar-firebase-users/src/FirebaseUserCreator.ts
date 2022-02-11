@@ -107,7 +107,6 @@ export namespace FirebaseUserCreator {
      */
     export async function createTestUser() {
         const email = ` getpolarized.test+${Date.now()}@getpolarized.io`;
-
         return await create(email);
 
     }
