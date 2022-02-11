@@ -66,7 +66,7 @@ export class StandardUserInterviewMessageFactory implements UserInterviewMessage
 
     private computeMailBody() {
 
-        return `Hey ${this.messageOpts.to.firstName},
+        return `Hey,
 
 I'm ${this.messageOpts.from.firstName}, one of the founders of Polar..  
 
@@ -92,7 +92,7 @@ ${this.messageOpts.from.firstName}
 
     private computeMailSubject() {
         const {firstName} = this.messageOpts.to;
-        return`Hey ${firstName}, can I interview you about Polar?`;
+        return`Hey, can I interview you about Polar?`;
     }
 
 }
@@ -111,7 +111,7 @@ export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageF
 
     private computeMailBody() {
 
-        return `Hey ${this.messageOpts.to.firstName},
+        return `Hey,
 
 I'm ${this.messageOpts.from.firstName}, one of the founders of Polar and I need your help.  
 
@@ -133,7 +133,7 @@ ${this.messageOpts.from.firstName}
 
     private computeMailSubject() {
         const {firstName} = this.messageOpts.to;
-        return`Hey ${firstName}, can I interview you about Polar?`;
+        return`Hey, can I interview you about Polar?`;
     }
 
 }

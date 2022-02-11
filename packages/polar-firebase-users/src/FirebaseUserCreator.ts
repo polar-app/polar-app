@@ -69,8 +69,6 @@ export namespace FirebaseUserCreator {
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb');
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb3');
 
-        await sendWelcomeEmail(email);
-
         if (opts.fixed_challenge) {
             await defineFixedChallenge(email, opts.fixed_challenge);
         }
@@ -78,6 +76,8 @@ export namespace FirebaseUserCreator {
         if (opts.referral_code) {
             await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
         }
+
+        await sendWelcomeEmail(email);
 
         return user;
 
