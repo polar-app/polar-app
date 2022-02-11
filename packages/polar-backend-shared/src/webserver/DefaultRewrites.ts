@@ -43,6 +43,12 @@ export class DefaultRewrites {
             },
             {
                 "source": [
+                    "/invite/:user_referral_code",
+                ],
+                "destination": "/apps/repository/index.html"
+            },
+            {
+                "source": [
                     "/d/:category/:title/:hashcode",
                     "/d/:title/:hashcode",
                     "/d/:hashcode",

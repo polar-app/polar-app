@@ -1,6 +1,7 @@
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {UserRequest} from '../db/UserRequest';
 import {CloudFunctions} from '../../firebase/CloudFunctions';
+import {Analytics} from "../../../analytics/Analytics";
 
 const AwsApiGatewayURL = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod';
 
@@ -74,6 +75,8 @@ export class JSONRPC {
             body: JSON.stringify(userRequest)
         });
 
+        Analytics.event2("CloudFunctionCalled", {name: opts.path});
+
         if (response.status !== 200) {
             throw new JSONRPCError(response, "Unable to handle RPC: " + opts.path);
         }
@@ -114,6 +117,8 @@ export class JSONRPC {
             headers,
             body: JSON.stringify(opts.request)
         });
+
+        Analytics.event2("CloudFunctionCalled", {name: opts.path});
 
         if (response.status !== 200) {
             console.error(response);
