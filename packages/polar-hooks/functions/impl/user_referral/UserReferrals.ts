@@ -99,35 +99,6 @@ export namespace UserReferrals {
 
     }
 
-    async function isExistingUser(email: EmailStr) {
-        const auth = FirebaseAdmin.app().auth();
-        try {
-            const existingUser = await auth.getUserByEmail(email);
-            return !!existingUser.uid;
-        } catch (e) {
-            return false;
-        }
-    }
-
-    async function notifyReferrerByEmailOfFreeUpgrade(referrer: EmailStr, referred: EmailStr) {
-        if (Testing.isTestingRuntime()) {
-            return;
-        }
-        const message = {
-            to: referrer,
-            from: 'founders@getpolarized.io',
-            subject: `Congrats, Polar Plus on us!`,
-            html: `<p>Hey there! 👋</p>
-                   <p>Congrats, ${referred} has accepted your invite. Enjoy a month of Polar Plus on us 🎉</p>
-                   <p>You don’t have to do anything. Your account has automatically been credited the free upgrade.</p>
-                   <p>As a reminder, you can get additional months on us by inviting more friends and spreading the word about Polar! 🚀</p>
-                   <p>Cheers,</p>
-                   <p>The Polar Team</p>
-`
-        };
-        await Sendgrid.send(message);
-    }
-
     /**
      * Used with our basic referral system.
      *
@@ -168,6 +139,35 @@ export namespace UserReferrals {
         await doCreate(referrer.email);
         await doCreate(referred.email);
 
+    }
+
+    async function isExistingUser(email: EmailStr) {
+        const auth = FirebaseAdmin.app().auth();
+        try {
+            const existingUser = await auth.getUserByEmail(email);
+            return !!existingUser.uid;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async function notifyReferrerByEmailOfFreeUpgrade(referrer: EmailStr, referred: EmailStr) {
+        if (Testing.isTestingRuntime()) {
+            return;
+        }
+        const message = {
+            to: referrer,
+            from: 'founders@getpolarized.io',
+            subject: `Congrats, Polar Plus on us!`,
+            html: `<p>Hey there! 👋</p>
+                   <p>Congrats, ${referred} has accepted your invite. Enjoy a month of Polar Plus on us 🎉</p>
+                   <p>You don’t have to do anything. Your account has automatically been credited the free upgrade.</p>
+                   <p>As a reminder, you can get additional months on us by inviting more friends and spreading the word about Polar! 🚀</p>
+                   <p>Cheers,</p>
+                   <p>The Polar Team</p>
+`
+        };
+        await Sendgrid.send(message);
     }
 
 

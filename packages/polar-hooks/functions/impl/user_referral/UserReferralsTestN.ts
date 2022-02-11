@@ -23,22 +23,6 @@ describe('UserReferrals', () => {
     const firestore = FirestoreAdmin.getInstance();
     const stripe = StripeUtils.getStripe('test');
 
-
-    // If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
-    const getRandomEmail = (suffix?: string) => {
-        const alias = suffix ? `${suffix}-` : '';
-        return `testing+${alias}${Math.round(new Date().getTime() / 1000)}-${Hashcodes.createRandomID({len: 5}).toLowerCase()}@getpolarized.io`
-    }
-
-    const createUser = async (email: string) => {
-        const password = Hashcodes.createRandomID();
-        console.log(`Creating dummy Firebase auth user with email ${email}...`);
-        const user = await FirebaseUserCreator.create(email);
-        console.log(`Creating dummy Firebase auth user with email ${email}... Done. UID is ${user.uid}`);
-        tmpUserEmails.push(user.email as string);
-        return user;
-    }
-
     it('Can register Alice and Bob', async () => {
         const alice = await createUser(getRandomEmail());
         const bob = await createUser(getRandomEmail());
@@ -127,25 +111,6 @@ describe('UserReferrals', () => {
         expect(firstSubscription?.items.data.find(() => true)?.price.id).eq(stripePlanPlusId);
     });
 
-    /**
-     * Create a dummy Payment Method in Stripe and attach it to the provided Stripe customer
-     * @param customer
-     */
-    async function setupDefaultPaymentMethod(customer: string) {
-        const paymentMethod = await stripe.paymentMethods.create({
-            type: 'card',
-            card: {
-                number: '4242424242424242',
-                exp_month: 12,
-                exp_year: new Date().getUTCFullYear() + 3,
-                cvc: '123',
-            },
-        });
-        await stripe.paymentMethods.attach(paymentMethod.id, {customer})
-        await stripe.customers.update(customer, {
-            invoice_settings: {default_payment_method: paymentMethod.id},
-        });
-    }
 
     it('Alice created as Plus member is indeed a Plus member in Stripe', async () => {
         // Setup Alice
@@ -297,7 +262,46 @@ describe('UserReferrals', () => {
 
 
         // @TODO Test UserReferrals.createBothReferrerAndReferred() here
-    })
+    });
+
+    /**
+     * If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
+     */
+    const getRandomEmail = (suffix?: string) => {
+        const alias = suffix ? `${suffix}-` : '';
+        return `testing+${alias}${Math.round(new Date().getTime() / 1000)}-${Hashcodes.createRandomID({len: 5}).toLowerCase()}@getpolarized.io`
+    }
+
+    /**
+     * Create a dummy Firebase auth user and corresponding Account document in Firestore
+     */
+    const createUser = async (email: string) => {
+        console.log(`Creating dummy Firebase auth user with email ${email}...`);
+        const user = await FirebaseUserCreator.create(email);
+        console.log(`Creating dummy Firebase auth user with email ${email}... Done. UID is ${user.uid}`);
+        tmpUserEmails.push(user.email as string);
+        return user;
+    }
+
+    /**
+     * Create a dummy Payment Method in Stripe and attach it to the provided Stripe customer
+     * @param customer
+     */
+    async function setupDefaultPaymentMethod(customer: string) {
+        const paymentMethod = await stripe.paymentMethods.create({
+            type: 'card',
+            card: {
+                number: '4242424242424242',
+                exp_month: 12,
+                exp_year: new Date().getUTCFullYear() + 3,
+                cvc: '123',
+            },
+        });
+        await stripe.paymentMethods.attach(paymentMethod.id, {customer})
+        await stripe.customers.update(customer, {
+            invoice_settings: {default_payment_method: paymentMethod.id},
+        });
+    }
 
     afterEach(async () => {
         for (let tmpUserEmail of tmpUserEmails) {
