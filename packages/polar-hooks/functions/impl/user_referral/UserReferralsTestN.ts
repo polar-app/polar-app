@@ -23,6 +23,8 @@ describe('UserReferrals', () => {
     const firestore = FirestoreAdmin.getInstance();
     const stripe = StripeUtils.getStripe('test');
 
+
+    // If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
     const getRandomEmail = (suffix?: string) => {
         const alias = suffix ? `${suffix}-` : '';
         return `testing+${alias}${Math.round(new Date().getTime() / 1000)}-${Hashcodes.createRandomID({len: 5}).toLowerCase()}@getpolarized.io`
