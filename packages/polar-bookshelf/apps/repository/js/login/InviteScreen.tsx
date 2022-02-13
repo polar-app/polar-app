@@ -20,6 +20,7 @@ import {isRPCError} from "polar-shared/src/util/IRPCError";
 import {RouteComponentProps, useHistory} from "react-router-dom";
 import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 import Box from "@material-ui/core/Box";
+import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -90,7 +91,10 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                 }
 
             } else {
-                history.push('/login');
+
+                await FirebaseAuth.loginWithCustomToken(response.auth_token);
+                history.push('/');
+
             }
 
         }
