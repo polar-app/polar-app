@@ -43,7 +43,7 @@ export namespace UserReferralCollection {
         return await Collections.get(firestore, COLLECTION_NAME, uid);
     }
 
-    export async function getByReferralCode<SM = unknown>(firestore: IFirestore<SM>, user_referral_code: IDStr): Promise<IUserReferral | undefined> {
+    export async function getByUserReferralCode<SM = unknown>(firestore: IFirestore<SM>, user_referral_code: IDStr): Promise<IUserReferral | undefined> {
         return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['user_referral_code', '==', user_referral_code]]));
     }
 
