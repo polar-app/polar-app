@@ -16,6 +16,7 @@ import {Testing} from "polar-shared/src/util/Testing";
 export namespace UserReferrals {
 
     import V2PlanPlus = Billing.V2PlanPlus;
+    import IFirebaseUserRecord = FirebaseUserCreator.IFirebaseUserRecord;
 
     export interface IReferrer {
         readonly uid: UIDStr
@@ -27,11 +28,12 @@ export namespace UserReferrals {
         readonly email: EmailStr;
     }
 
-    async function createNewFirebaseUser(email: EmailStr) {
+    async function createNewFirebaseUser(email: EmailStr): Promise<IFirebaseUserRecord> {
 
         console.log(`Creating new firebase user: ${email}...`);
 
-        await FirebaseUserCreator.create(email);
+        const user = await FirebaseUserCreator.create(email);
+        return {uid: user.uid, email};
 
     }
 
@@ -51,9 +53,11 @@ export namespace UserReferrals {
 
         console.log("Sending amplitude event...");
 
-        await AmplitudeBackendAnalytics.event2('CreateAccountForUserReferralFunction', {
+        await AmplitudeBackendAnalytics.event2('UserReferralCompleted', {
             stripeMode,
-            user_referral_code: user_referral_code
+            // TODO: I do not think it's a good idea to use every referral code because I think we're going to
+            // end up with too much cardinality on events.
+            // user_referral_code: user_referral_code
         })
     }
 
@@ -130,11 +134,14 @@ export namespace UserReferrals {
             throw new Error(`Can not refer an existing user`);
         }
 
-        await createNewFirebaseUser(referred.email);
+        const newUser = await createNewFirebaseUser(referred.email);
         await createStripeSubscriptionWithTrial(stripeMode, referred.email, "");
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
         await rewardReferringUser(stripeMode, referrer.email);
         await notifyReferrerByEmailOfFreeUpgrade(referrer.email, referred.email);
+
+        return newUser;
+
     }
 
     /**

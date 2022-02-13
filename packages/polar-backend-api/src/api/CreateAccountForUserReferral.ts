@@ -9,8 +9,11 @@ export interface ICreateAccountForUserReferralRequest {
 
 }
 
+export type AuthTokenStr = string;
+
 export interface ICreateAccountForUserReferralResponse {
     readonly code: 'ok';
+    readonly auth_token: AuthTokenStr;
 }
 
 export type ICreateAccountForUserReferralError = ICreateAccountForUserReferralFailed | IAnswerExecutorErrorInvalidUserReferralCode;
