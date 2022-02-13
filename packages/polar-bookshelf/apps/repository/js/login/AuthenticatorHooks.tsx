@@ -12,25 +12,29 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 
 export type AuthStatus = 'needs-auth';
 
+
+function handleAuthRedirect(redirectURL: string, isNewUser: boolean) {
+
+    Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
+
+    FirestoreBrowserClient.terminateAndRedirect(redirectURL)
+        .catch(err => console.error(err));
+}
+
+export function handleAuthResultForNewUser(strategy: 'user_referral_code' | 'none' = 'none') {
+    console.log("New user authenticated");
+    Analytics.event2('new-user-signup', {strategy});
+    handleAuthRedirect('/#welcome', true);
+
+}
+
 export function handleAuthResult(isNewUser: boolean) {
 
-    function handleRedirect(redirectURL: string) {
-
-        Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
-
-        FirestoreBrowserClient.terminateAndRedirect(redirectURL)
-            .catch(err => console.error(err));
-    }
-
     if (isNewUser) {
-
-        console.log("New user authenticated");
-        Analytics.event2('new-user-signup');
-        handleRedirect('/#welcome');
-
+        handleAuthResultForNewUser();
     } else {
         const redirectURL = SignInSuccessURLs.get() || '/';
-        handleRedirect(redirectURL);
+        handleAuthRedirect(redirectURL, isNewUser);
     }
 
 }
