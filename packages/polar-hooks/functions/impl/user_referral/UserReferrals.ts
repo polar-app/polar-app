@@ -153,7 +153,7 @@ export namespace UserReferrals {
                                                                         referrer: IReferrer,
                                                                         referred: IReferred) {
 
-        const referrerUser = await getExistingUser(referred.email)
+        const referrerUser = await getExistingUser(referrer.email)
 
         if (! referrerUser) {
             throw new Error(`Referrer does not exist.`);
