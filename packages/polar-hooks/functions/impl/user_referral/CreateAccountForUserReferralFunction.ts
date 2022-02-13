@@ -1,16 +1,7 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferralCollection";
-import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {UserReferrals} from "./UserReferrals";
-import {
-    IAnswerExecutorErrorInvalidUserReferralCode,
-    ICreateAccountForUserReferralFailed,
-    ICreateAccountForUserReferralRequest,
-    ICreateAccountForUserReferralResponse
-} from "polar-backend-api/src/api/CreateAccountForUserReferral";
-import IReferrer = UserReferrals.IReferrer;
-import IReferred = UserReferrals.IReferred;
+import {ICreateAccountForUserReferralRequest} from "polar-backend-api/src/api/CreateAccountForUserReferral";
+import {CreateAccountForUserReferrals} from "./CreateAccountForUserReferrals";
 
 export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookAsync('CreateAccountForUserReferralFunction', async (req, res) => {
 
@@ -26,58 +17,8 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
     const request: ICreateAccountForUserReferralRequest = req.body;
 
-    try {
-        const firestore = FirestoreAdmin.getInstance();
+    const response = CreateAccountForUserReferrals.exec(request);
 
-        const userReferral = await UserReferralCollection.getByUserReferralCode(firestore, request.user_referral_code);
-
-        if (! userReferral) {
-
-            const response: IAnswerExecutorErrorInvalidUserReferralCode = {
-                error: true,
-                code: "invalid-user-referral-code",
-            };
-
-            ExpressFunctions.sendResponse(res, response);
-            return;
-
-        }
-
-        function sendResponseOK() {
-
-            const response: ICreateAccountForUserReferralResponse = {
-                code: 'ok',
-            };
-
-            ExpressFunctions.sendResponse(res, response);
-
-        }
-
-        const referrer: IReferrer = {
-            uid: userReferral.uid,
-            user_referral_code: userReferral.user_referral_code,
-            email: userReferral.email
-        };
-
-        const referred: IReferred = {
-            email: request.email,
-        }
-
-        await UserReferrals.createReferredAccountAndApplyRewardToReferrer('live', referrer, referred);
-
-        sendResponseOK();
-
-    } catch (e) {
-
-        const response: ICreateAccountForUserReferralFailed = {
-            error: true,
-            code: 'failed',
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            message: (e as any).message || "",
-        };
-
-        ExpressFunctions.sendResponse(res, response);
-
-    }
+    ExpressFunctions.sendResponse(res, response);
 
 });
