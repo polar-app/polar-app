@@ -17,7 +17,7 @@ import {
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
-import {useHistory} from "react-router-dom";
+import {RouteComponentProps, useHistory} from "react-router-dom";
 import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 import Box from "@material-ui/core/Box";
 
@@ -48,18 +48,22 @@ interface IProps {
     readonly user_referral_code: string;
 }
 
-export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
+export const InviteScreen = React.memo(function InviteScreen(props: RouteComponentProps<IProps>) {
 
-    const {user_referral_code} = props;
+    const { match: { params } } = props;
+    const {user_referral_code} = params;
 
     const classes = useStyles();
     const emailRef = React.useRef("");
     const errorHandler = useErrorHandler();
     const history = useHistory();
 
-    // TODO require the user online...
-
     const handleCreateAccount = React.useCallback((email: string) => {
+
+        if (! user_referral_code) {
+            console.error("No user_referral_code: " + user_referral_code);
+            return;
+        }
 
         const request: ICreateAccountForUserReferralRequest = {
             email,
@@ -68,7 +72,8 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
 
         async function doAsync() {
 
-            const response = await JSONRPC.exec<unknown, ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralError>('CreateAccountForUserReferral', request);
+            const response = await JSONRPC.execWithoutAuth<ICreateAccountForUserReferralRequest,
+                                                           ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralError>('CreateAccountForUserReferral', request);
 
             if (isRPCError(response)) {
 
