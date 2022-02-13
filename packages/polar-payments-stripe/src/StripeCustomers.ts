@@ -79,8 +79,6 @@ export namespace StripeCustomers {
     export async function getCustomerByEmail(stripeMode: StripeMode,
                                              query: CustomerQuery): Promise<Stripe.Customer | undefined> {
 
-        //
-
         const stripe = StripeUtils.getStripe(stripeMode);
 
         if (typeof query === 'string') {

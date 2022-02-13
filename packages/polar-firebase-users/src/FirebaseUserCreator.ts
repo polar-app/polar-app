@@ -9,8 +9,14 @@ import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthC
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Testing} from "polar-shared/src/util/Testing";
 import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
+import {EmailStr} from "polar-shared/src/util/Strings";
 
 export namespace FirebaseUserCreator {
+
+    export interface IFirebaseUserRecord {
+        readonly uid: UserIDStr;
+        readonly email: EmailStr;
+    }
 
     export async function createMigrationForBlockAnnotations(uid: UserIDStr) {
         const firestore = FirestoreAdmin.getInstance();
@@ -99,15 +105,33 @@ export namespace FirebaseUserCreator {
     }
 
     /**
+     * Generate a test user email following a pattern that allows us to easily
+     * discard new accounts.
      *
-     * Generates a test user that has an email of format:
-     * test+xxx@getpolarized.io
-     * 'xxx' suffix is replaced with the current timestamp
-     *
+     * @param hint Include this in the email for debug purposes.
      */
-    export async function createTestUser() {
-        const email = ` getpolarized.test+${Date.now()}@getpolarized.io`;
-        return await create(email);
+    export function createTestUserEmail(hint?: string): EmailStr {
+
+        if (hint) {
+            return `getpolarized.test+${hint}-${Date.now()}@getpolarized.io`
+        }
+
+        return `getpolarized.test+${Date.now()}@getpolarized.io`
+
+    }
+
+    /**
+     * Generate a test user
+     */
+    export async function createTestUser(hint?: string): Promise<IFirebaseUserRecord> {
+
+        const email = createTestUserEmail(hint);
+        const user = await create(email);
+
+        return {
+            uid: user.uid,
+            email
+        }
 
     }
 
