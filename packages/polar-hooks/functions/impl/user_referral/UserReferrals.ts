@@ -53,9 +53,11 @@ export namespace UserReferrals {
 
         console.log("Sending amplitude event...");
 
-        await AmplitudeBackendAnalytics.event2('CreateAccountForUserReferralFunction', {
+        await AmplitudeBackendAnalytics.event2('UserReferralCompleted', {
             stripeMode,
-            user_referral_code: user_referral_code
+            // TODO: I do not think it's a good idea to use every referral code because I think we're going to
+            // end up with too much cardinality on events.
+            // user_referral_code: user_referral_code
         })
     }
 
