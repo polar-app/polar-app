@@ -2,9 +2,11 @@ import {CollectionNameStr, EmailStr, IDStr, UIDStr} from "polar-shared/src/util/
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {RandomHashcodeStr} from "polar-shared/src/util/Hashcodes";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace UserReferralCompletedCollection {
+
+    import RandomHashcodeStr = Hashcodes.RandomHashcodeStr;
 
     export interface IUserReferralCompleted {
 
