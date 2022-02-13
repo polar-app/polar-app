@@ -29,7 +29,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
     try {
         const firestore = FirestoreAdmin.getInstance();
 
-        const userReferral = await UserReferralCollection.getByReferralCode(firestore, request.user_referral_code);
+        const userReferral = await UserReferralCollection.getByUserReferralCode(firestore, request.user_referral_code);
 
         if (! userReferral) {
 

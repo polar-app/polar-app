@@ -5,29 +5,112 @@ import {Analytics} from "../../../analytics/Analytics";
 
 const AwsApiGatewayURL = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod';
 
-export class JSONRPC {
+export namespace JSONRPC {
 
     /**
      * Define the list of paths that should be forwarded to the CDK deployed
      * API Gateway instead of to Google Cloud Functions
      */
-    private static _awsLambdaFunctions = [
+    const _awsLambdaFunctions = [
         'test',
         'private-beta/register',
         'private-beta/accept-users',
         'private-beta/users'
     ];
 
-    public static async exec<R, V>(path: string, request: R): Promise<V> {
+    function isAwsLambdaFunction(functionName: string) {
+        return _awsLambdaFunctions.includes(functionName);
+    }
+
+    /**
+     * Execute with authentication.
+     */
+    export async function exec<R, V>(path: string, request: R): Promise<V> {
 
         FirebaseBrowser.init();
 
         const user = await FirebaseBrowser.currentUserAsync();
         const idToken = user ? await user.getIdToken() : undefined;
 
-        if (this.isAwsLambdaFunction(path)) {
+        interface IExecOpts<R> {
+            // Path within the AWS API Gateway
+            readonly path: string;
+
+            // The request payload
+            readonly request: R;
+
+            // Firebase token of the current user
+            readonly idToken?: string,
+
+        }
+
+        async function execWithFirebase<R, V>(opts: IExecOpts<R>) {
+
+            if (!opts.idToken) {
+                throw new Error("User not authenticated");
+            }
+
+            const userRequest: UserRequest<R> = {
+                idToken: opts.idToken,
+                request: opts.request,
+            };
+
+            const endpoint = CloudFunctions.createEndpoint();
+
+            const url = `${endpoint}/${opts.path}/`;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                // credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userRequest)
+            });
+
+            Analytics.event2("CloudFunctionCalled", {name: opts.path});
+
+            if (response.status !== 200) {
+                throw new JSONRPCError(response, "Unable to handle RPC: " + opts.path);
+            }
+
+            return <V>await response.json();
+        }
+
+        /**
+         * Execute the request at AWS Lambda
+         */
+        async function execWithAWS<R, V>(opts: IExecOpts<R>) {
+
+            const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
+
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            if (opts.idToken) {
+                headers.append('Authorization', opts.idToken);
+            }
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(opts.request)
+            });
+
+            Analytics.event2("CloudFunctionCalled", {name: opts.path});
+
+            if (response.status !== 200) {
+                console.error(response);
+                throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${opts.path}`);
+            }
+
+            return <V>await response.json();
+
+        }
+
+        if (isAwsLambdaFunction(path)) {
             // Proxy the function call to AWS Lambda
-            return <V>await this.execWithAWS<R, V>({
+            return <V>await execWithAWS<R, V>({
                 path,
                 request,
                 idToken,
@@ -35,7 +118,7 @@ export class JSONRPC {
         }
 
         // Execute the Firebase cloud function
-        return await this.execWithFirebase<R, V>({
+        return await execWithFirebase<R, V>({
             path,
             request,
             idToken
@@ -43,90 +126,90 @@ export class JSONRPC {
 
     }
 
-    private static async execWithFirebase<R, V>(opts: {
-        // Path within the AWS API Gateway
-        path: string;
-
-        // The request payload
-        request: R;
-
-        // Firebase token of the current user
-        idToken?: string,
-    }) {
-        if (!opts.idToken) {
-            throw new Error("User not authenticated");
-        }
-
-        const userRequest: UserRequest<R> = {
-            idToken: opts.idToken,
-            request: opts.request,
-        };
-
-        const endpoint = CloudFunctions.createEndpoint();
-
-        const url = `${endpoint}/${opts.path}/`;
-
-        const response = await fetch(url, {
-            method: 'POST',
-            // credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userRequest)
-        });
-
-        Analytics.event2("CloudFunctionCalled", {name: opts.path});
-
-        if (response.status !== 200) {
-            throw new JSONRPCError(response, "Unable to handle RPC: " + opts.path);
-        }
-
-        return <V>await response.json();
-    }
-
-    private static isAwsLambdaFunction(functionName: string) {
-        return this._awsLambdaFunctions.includes(functionName);
-    }
 
     /**
-     * Execute the request at AWS Lambda
-     * @param opts
-     * @private
+     * Execute without authentication. Used within functions that need to be
+     * executed before the user logs in.
      */
-    private static async execWithAWS<R, V>(opts: {
-        // Path within the AWS API Gateway
-        path: string;
+    export async function execWithoutAuth<R, V>(path: string, request: R): Promise<V> {
 
-        // The request payload
-        request: R;
+        FirebaseBrowser.init();
 
-        // Firebase token of the current user
-        idToken?: string,
-    }) {
-        const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
+        interface IExecOpts<R> {
+            // Path within the AWS API Gateway
+            readonly path: string;
 
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+            // The request payload
+            readonly request: R;
 
-        if (opts.idToken) {
-            headers.append('Authorization', opts.idToken);
         }
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(opts.request)
+        async function execWithFirebase<R, V>(opts: IExecOpts<R>) {
+
+            const endpoint = CloudFunctions.createEndpoint();
+
+            const url = `${endpoint}/${opts.path}/`;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                // credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(opts.request)
+
+            });
+
+            Analytics.event2("CloudFunctionCalled", {name: opts.path});
+
+            if (response.status !== 200) {
+                throw new JSONRPCError(response, "Unable to handle RPC: " + opts.path);
+            }
+
+            return <V>await response.json();
+        }
+
+        async function execWithAWS<R, V>(opts: IExecOpts<R>) {
+
+            const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
+
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(opts.request)
+            });
+
+            Analytics.event2("CloudFunctionCalled", {name: opts.path});
+
+            if (response.status !== 200) {
+                console.error(response);
+                throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${opts.path}`);
+            }
+
+            return <V>await response.json();
+
+        }
+
+        if (isAwsLambdaFunction(path)) {
+            // Proxy the function call to AWS Lambda
+            return <V>await execWithAWS<R, V>({
+                path,
+                request,
+            });
+        }
+
+        // Execute the Firebase cloud function
+        return await execWithFirebase<R, V>({
+            path,
+            request,
         });
 
-        Analytics.event2("CloudFunctionCalled", {name: opts.path});
-
-        if (response.status !== 200) {
-            console.error(response);
-            throw new JSONRPCError(response, `Unable to handle RPC to AWS endpoint: ${opts.path}`);
-        }
-
-        return <V>await response.json();
     }
+
+
 }
 
 export class JSONRPCError extends Error {
