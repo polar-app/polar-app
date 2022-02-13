@@ -7,10 +7,14 @@ import {
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import IReferrer = UserReferrals.IReferrer;
 import IReferred = UserReferrals.IReferred;
 
 export namespace CreateAccountForUserReferrals {
+
+    import IFirebaseUserRecord = FirebaseUserCreator.IFirebaseUserRecord;
 
     export async function exec(request: ICreateAccountForUserReferralRequest, stripeMode: 'live' | 'test' = 'live'): Promise<IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
 
@@ -29,10 +33,19 @@ export namespace CreateAccountForUserReferrals {
 
             }
 
-            function createResponseOK() {
+            async function createResponseOK(newUser: IFirebaseUserRecord) {
+
+                async function createAuthToken() {
+                    const firebase = FirebaseAdmin.app();
+                    const auth = firebase.auth();
+                    return await auth.createCustomToken(newUser.uid);
+                }
+
+                const auth_token = await createAuthToken();
 
                 return <ICreateAccountForUserReferralResponse>{
                     code: 'ok',
+                    auth_token
                 };
 
             }
@@ -47,9 +60,9 @@ export namespace CreateAccountForUserReferrals {
                 email: request.email,
             }
 
-            await UserReferrals.createReferredAccountAndApplyRewardToReferrer(stripeMode, referrer, referred);
+            const newUser = await UserReferrals.createReferredAccountAndApplyRewardToReferrer(stripeMode, referrer, referred);
 
-            return createResponseOK();
+            return await createResponseOK(newUser);
 
         } catch (e) {
 
