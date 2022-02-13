@@ -12,7 +12,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 
 export type AuthStatus = 'needs-auth';
 
-function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: boolean) {
+export function handleAuthResult(isNewUser: boolean) {
 
     function handleRedirect(redirectURL: string) {
 
@@ -23,10 +23,9 @@ function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: b
     }
 
     if (isNewUser) {
+
         console.log("New user authenticated");
-
         Analytics.event2('new-user-signup');
-
         handleRedirect('/#welcome');
 
     } else {
@@ -97,7 +96,7 @@ export function useAuthHandler() {
 
                 const authResult = await firebase.auth().signInWithEmailLink(email, location.href);
 
-                handleAuthResult(authResult, authResult.additionalUserInfo?.isNewUser || false);
+                handleAuthResult(authResult.additionalUserInfo?.isNewUser || false);
                 return true;
 
             }
@@ -121,7 +120,7 @@ export function useAuthHandler() {
             const auth = firebase.auth();
 
             const authResult = await auth.getRedirectResult();
-            handleAuthResult(authResult, authResult.additionalUserInfo?.isNewUser || false);
+            handleAuthResult(authResult.additionalUserInfo?.isNewUser || false);
 
         } else {
             setStatus('needs-auth');
@@ -310,8 +309,8 @@ export function useTriggerVerifyTokenAuth() {
                 const auth = firebase.auth();
                 console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
                 Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
-                const userCredential = await auth.signInWithCustomToken(response.customToken);
-                handleAuthResult(userCredential, response.isNewUser);
+                await auth.signInWithCustomToken(response.customToken);
+                handleAuthResult(response.isNewUser);
                 return response;
             case 'no-email-for-challenge':
                 throw new Error('No email was found for that challenge.');
