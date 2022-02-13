@@ -107,17 +107,25 @@ export namespace FirebaseUserCreator {
     /**
      * Generate a test user email following a pattern that allows us to easily
      * discard new accounts.
+     *
+     * @param hint Include this in the email for debug purposes.
      */
-    export function createTestUserEmail(): EmailStr {
+    export function createTestUserEmail(hint?: string): EmailStr {
+
+        if (hint) {
+            return `getpolarized.test+${hint}-${Date.now()}@getpolarized.io`
+        }
+
         return `getpolarized.test+${Date.now()}@getpolarized.io`
+
     }
 
     /**
      * Generate a test user
      */
-    export async function createTestUser(): Promise<IFirebaseUserRecord> {
+    export async function createTestUser(hint?: string): Promise<IFirebaseUserRecord> {
 
-        const email = createTestUserEmail();
+        const email = createTestUserEmail(hint);
         const user = await create(email);
 
         return {

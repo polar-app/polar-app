@@ -29,11 +29,15 @@ export namespace UserReferrals {
 
     async function createNewFirebaseUser(email: EmailStr) {
 
+        console.log(`Creating new firebase user: ${email}...`);
+
         await FirebaseUserCreator.create(email);
 
     }
 
     async function createStripeSubscriptionWithTrial(stripeMode: StripeMode, email: EmailStr, name: string) {
+
+        console.log(`Creating stripe subscription with trial: ${email}...`);
 
         await StripeCustomers.createCustomer(stripeMode, email, name);
 
@@ -44,6 +48,9 @@ export namespace UserReferrals {
     }
 
     async function doAmplitudeEvent(stripeMode: StripeMode, user_referral_code: string) {
+
+        console.log("Sending amplitude event...");
+
         await AmplitudeBackendAnalytics.event2('CreateAccountForUserReferralFunction', {
             stripeMode,
             user_referral_code: user_referral_code
@@ -52,6 +59,8 @@ export namespace UserReferrals {
 
     async function rewardReferringUser(stripeMode: StripeMode, email: EmailStr) {
 
+        console.log(`Rewarding referring user ${email}...`);
+
         const account = await Accounts.get(email);
 
         const plan = Plans.toV2(account?.plan).level;
@@ -59,6 +68,13 @@ export namespace UserReferrals {
         if (plan === 'free') {
 
             const trial_end = StripeTrials.computeTrialEnds('30d');
+
+            const customer = await StripeCustomers.getCustomerByEmail(stripeMode, email);
+
+            if (! customer) {
+                await StripeCustomers.createCustomer(stripeMode, email, "");
+            }
+
             const subscription = await StripeCustomers.changePlan(stripeMode, email, V2PlanPlus, 'month', trial_end);
 
             function computeCustomerID() {
@@ -113,6 +129,7 @@ export namespace UserReferrals {
         if (await isExistingUser(referred.email)) {
             throw new Error(`Can not refer an existing user`);
         }
+
         await createNewFirebaseUser(referred.email);
         await createStripeSubscriptionWithTrial(stripeMode, referred.email, "");
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
@@ -152,9 +169,13 @@ export namespace UserReferrals {
     }
 
     async function notifyReferrerByEmailOfFreeUpgrade(referrer: EmailStr, referred: EmailStr) {
+
+        console.log(`Notifying referred of free upgrade: ${referred}...`)
+
         if (Testing.isTestingRuntime()) {
             return;
         }
+
         const message = {
             to: referrer,
             from: 'founders@getpolarized.io',

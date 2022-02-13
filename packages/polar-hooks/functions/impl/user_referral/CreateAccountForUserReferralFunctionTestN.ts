@@ -21,8 +21,8 @@ describe('CreateAccountForUserReferralFunction', () => {
 
     beforeEach(async () => {
 
-        alice = await FirebaseUserCreator.createTestUser();
-        bob = await FirebaseUserCreator.createTestUserEmail();
+        alice = await FirebaseUserCreator.createTestUser('alice');
+        bob = await FirebaseUserCreator.createTestUserEmail('bob');
 
     });
 
@@ -47,7 +47,7 @@ describe('CreateAccountForUserReferralFunction', () => {
         }
 
         await doPurgeAlice();
-        await doPurgeAlice();
+        await doPurgeBob();
 
     });
 
