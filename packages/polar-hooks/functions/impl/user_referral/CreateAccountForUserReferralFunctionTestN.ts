@@ -1,9 +1,3 @@
-// TODO:
-// create alice/bob pair
-// get alice's referral code
-// create bob's account
-//
-
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferralCollection";
@@ -64,7 +58,7 @@ describe('CreateAccountForUserReferralFunction', () => {
         await CreateAccountForUserReferrals.exec({
             email: bob,
             user_referral_code
-        });
+        }, 'test');
 
     });
 

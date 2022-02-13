@@ -12,9 +12,10 @@ import IReferred = UserReferrals.IReferred;
 
 export namespace CreateAccountForUserReferrals {
 
-    export async function exec(request: ICreateAccountForUserReferralRequest): Promise<IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
+    export async function exec(request: ICreateAccountForUserReferralRequest, stripeMode: 'live' | 'test' = 'live'): Promise<IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
 
         try {
+
             const firestore = FirestoreAdmin.getInstance();
 
             const userReferral = await UserReferralCollection.getByUserReferralCode(firestore, request.user_referral_code);
@@ -46,7 +47,7 @@ export namespace CreateAccountForUserReferrals {
                 email: request.email,
             }
 
-            await UserReferrals.createReferredAccountAndApplyRewardToReferrer('live', referrer, referred);
+            await UserReferrals.createReferredAccountAndApplyRewardToReferrer(stripeMode, referrer, referred);
 
             return createResponseOK();
 
