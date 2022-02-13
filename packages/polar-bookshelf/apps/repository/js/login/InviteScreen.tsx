@@ -8,13 +8,10 @@ import EmailIcon from "@material-ui/icons/Email";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
-import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
 import {
-    ICreateAccountForUserReferralError,
     ICreateAccountForUserReferralFailed,
-    ICreateAccountForUserReferralRequest,
-    ICreateAccountForUserReferralResponse
+    ICreateAccountForUserReferralRequest
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
 import {useHistory} from "react-router-dom";
@@ -61,14 +58,27 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
 
     const handleCreateAccount = React.useCallback((email: string) => {
 
-        const request: ICreateAccountForUserReferralRequest = {
-            email,
-            user_referral_code
-        };
 
         async function doAsync() {
 
-            const response = await JSONRPC.exec<unknown, ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralError>('CreateAccountForUserReferral', request);
+            const body: ICreateAccountForUserReferralRequest = {
+                email,
+                user_referral_code
+            };
+
+            const init: RequestInit = {
+                mode: "cors",
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: 'follow',
+                body: JSON.stringify(body)
+            };
+
+            const url = `https://us-central1-polar-32b0f.cloudfunctions.net/CreateAccountForUserReferral/`;
+
+            const response = await fetch(url, init);
 
             if (isRPCError(response)) {
 
@@ -79,7 +89,7 @@ export const InviteScreen = React.memo(function InviteScreen(props: IProps) {
                         break;
 
                     case "failed":
-                        errorHandler("Unable to handle invite. " + (response as ICreateAccountForUserReferralFailed).message);
+                        errorHandler("Unable to handle invite. " + (response as ICreateAccountForUserReferralFailed).body.message);
                         break;
 
                 }

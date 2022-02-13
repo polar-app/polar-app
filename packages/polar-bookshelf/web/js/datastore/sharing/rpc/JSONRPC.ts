@@ -57,6 +57,8 @@ export class JSONRPC {
             throw new Error("User not authenticated");
         }
 
+        // TODO: we handle this differently..
+
         const userRequest: UserRequest<R> = {
             idToken: opts.idToken,
             request: opts.request,
