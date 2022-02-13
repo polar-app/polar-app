@@ -5,29 +5,41 @@ import {Analytics} from "../../../analytics/Analytics";
 
 const AwsApiGatewayURL = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod';
 
-export class JSONRPC {
+export namespace JSONRPC {
 
     /**
      * Define the list of paths that should be forwarded to the CDK deployed
      * API Gateway instead of to Google Cloud Functions
      */
-    private static _awsLambdaFunctions = [
+    const _awsLambdaFunctions = [
         'test',
         'private-beta/register',
         'private-beta/accept-users',
         'private-beta/users'
     ];
 
-    public static async exec<R, V>(path: string, request: R): Promise<V> {
+    interface IExecOpts<R> {
+        // Path within the AWS API Gateway
+        readonly path: string;
+
+        // The request payload
+        readonly request: R;
+
+        // Firebase token of the current user
+        readonly idToken?: string,
+
+    }
+
+    export async function exec<R, V>(path: string, request: R): Promise<V> {
 
         FirebaseBrowser.init();
 
         const user = await FirebaseBrowser.currentUserAsync();
         const idToken = user ? await user.getIdToken() : undefined;
 
-        if (this.isAwsLambdaFunction(path)) {
+        if (isAwsLambdaFunction(path)) {
             // Proxy the function call to AWS Lambda
-            return <V>await this.execWithAWS<R, V>({
+            return <V>await execWithAWS<R, V>({
                 path,
                 request,
                 idToken,
@@ -35,7 +47,7 @@ export class JSONRPC {
         }
 
         // Execute the Firebase cloud function
-        return await this.execWithFirebase<R, V>({
+        return await execWithFirebase<R, V>({
             path,
             request,
             idToken
@@ -43,16 +55,8 @@ export class JSONRPC {
 
     }
 
-    private static async execWithFirebase<R, V>(opts: {
-        // Path within the AWS API Gateway
-        path: string;
+    async function execWithFirebase<R, V>(opts: IExecOpts<R>) {
 
-        // The request payload
-        request: R;
-
-        // Firebase token of the current user
-        idToken?: string,
-    }) {
         if (!opts.idToken) {
             throw new Error("User not authenticated");
         }
@@ -84,8 +88,8 @@ export class JSONRPC {
         return <V>await response.json();
     }
 
-    private static isAwsLambdaFunction(functionName: string) {
-        return this._awsLambdaFunctions.includes(functionName);
+    function isAwsLambdaFunction(functionName: string) {
+        return _awsLambdaFunctions.includes(functionName);
     }
 
     /**
@@ -93,16 +97,8 @@ export class JSONRPC {
      * @param opts
      * @private
      */
-    private static async execWithAWS<R, V>(opts: {
-        // Path within the AWS API Gateway
-        path: string;
+    async function execWithAWS<R, V>(opts: IExecOpts<R>) {
 
-        // The request payload
-        request: R;
-
-        // Firebase token of the current user
-        idToken?: string,
-    }) {
         const url = `${AwsApiGatewayURL}/rpc/${opts.path}`;
 
         const headers = new Headers();
@@ -126,7 +122,9 @@ export class JSONRPC {
         }
 
         return <V>await response.json();
+
     }
+
 }
 
 export class JSONRPCError extends Error {
