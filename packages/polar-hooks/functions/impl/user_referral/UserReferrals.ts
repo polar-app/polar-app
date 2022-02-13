@@ -4,7 +4,7 @@ import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
 import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
-import {EmailStr} from "polar-shared/src/util/Strings";
+import {EmailStr, IDStr} from "polar-shared/src/util/Strings";
 import {Billing} from "polar-accounts/src/Billing";
 import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
@@ -12,6 +12,10 @@ import {Plans} from "polar-accounts/src/Plans";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {Testing} from "polar-shared/src/util/Testing";
+import {UserReferralCompletedCollection} from "polar-firebase/src/firebase/om/UserReferralCompletedCollection";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export namespace UserReferrals {
 
@@ -119,6 +123,25 @@ export namespace UserReferrals {
 
     }
 
+    async function writeUserReferralCompleted(user_referral_code: IDStr,
+                                                     referrer: IFirebaseUserRecord,
+                                                     referred: IFirebaseUserRecord) {
+
+        const firestore = FirestoreAdmin.getInstance();
+
+        await UserReferralCompletedCollection.write(firestore, {
+            id: Hashcodes.createRandomID(),
+            ver: 'v1',
+            completed: ISODateTimeStrings.create(),
+            user_referral_code,
+            referrer_uid: referrer.uid,
+            referrer_email: referrer.email,
+            referred_uid: referred.uid,
+            referred_email: referred.email,
+        });
+
+    }
+
     /**
      * Used with our basic referral system.
      *
@@ -130,17 +153,24 @@ export namespace UserReferrals {
                                                                         referrer: IReferrer,
                                                                         referred: IReferred) {
 
-        if (await isExistingUser(referred.email)) {
+        const referrerUser = await getExistingUser(referred.email)
+
+        if (! referrerUser) {
+            throw new Error(`Referrer does not exist.`);
+        }
+
+        if (await getExistingUser(referred.email)) {
             throw new Error(`Can not refer an existing user`);
         }
 
-        const newUser = await createNewFirebaseUser(referred.email);
+        const referredUser = await createNewFirebaseUser(referred.email);
         await createStripeSubscriptionWithTrial(stripeMode, referred.email, "");
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
         await rewardReferringUser(stripeMode, referrer.email);
         await notifyReferrerByEmailOfFreeUpgrade(referrer.email, referred.email);
+        await writeUserReferralCompleted(referrer.user_referral_code, referrerUser, referredUser)
 
-        return newUser;
+        return referredUser;
 
     }
 
@@ -165,14 +195,19 @@ export namespace UserReferrals {
 
     }
 
-    async function isExistingUser(email: EmailStr) {
+    async function getExistingUser(email: EmailStr): Promise<IFirebaseUserRecord | undefined> {
+
         const auth = FirebaseAdmin.app().auth();
+
         try {
             const existingUser = await auth.getUserByEmail(email);
-            return !!existingUser.uid;
+
+            return {uid: existingUser.uid, email};
+
         } catch (e) {
-            return false;
+            return undefined;
         }
+
     }
 
     async function notifyReferrerByEmailOfFreeUpgrade(referrer: EmailStr, referred: EmailStr) {

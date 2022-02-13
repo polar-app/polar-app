@@ -7,11 +7,6 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace UserReferralCollection {
 
-    // TODO: there are some more issues here
-    //
-    // - if a user doesn't have an account how do they invite since they don't have a uid
-    // - how are rules permissions setup?
-
     export interface IUserReferral {
 
         readonly id: UIDStr;
