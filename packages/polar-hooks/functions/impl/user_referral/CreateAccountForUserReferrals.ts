@@ -53,6 +53,8 @@ export namespace CreateAccountForUserReferrals {
 
             const newUser = await UserReferrals.createReferredAccountAndApplyRewardToReferrer(stripeMode, referrer, referred);
 
+            // TODO we should NOT grant auth here just yet... that's the next big thing I have to fix..
+
             // now trigger the start token auth process so that they can just auth directly
             await StartTokenAuths.startTokenAuth({email: newUser.email});
 
