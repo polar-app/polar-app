@@ -12,9 +12,13 @@ import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
-import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
+import {Analytics, useAnalytics} from "../../../../../web/js/analytics/Analytics";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
+import {useAccountUpgrader} from "../../../../../web/js/ui/account_upgrade/AccountUpgrader";
+import {Billing} from "polar-accounts/src/Billing";
+import V2PlanFree = Billing.V2PlanFree;
+import {useHistory} from "react-router-dom";
 
 function useAnkiDeckDownloadHandler() {
 
@@ -43,6 +47,9 @@ export const BlocksExportDropdown: React.FC = () => {
     const errorHandler = useErrorHandler();
     const ankiDeckDownloadHandler = useAnkiDeckDownloadHandler();
     const analytics = useAnalytics();
+
+    const accountUpgrade = useAccountUpgrader();
+    const history = useHistory();
 
     const doExportFlashcards = React.useCallback(() => {
 
@@ -80,6 +87,21 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const handleExportFlashcards = React.useCallback(() => {
 
+        if (accountUpgrade?.plan === V2PlanFree) {
+            Analytics.event2('account-upgrade-required', {
+                reason: 'anki_export'
+            });
+
+            dialogManager.confirm({
+                title: 'Account Upgraded Required',
+                acceptText: "Upgrade Plan",
+                type: 'primary',
+                subtitle: 'Anki export is available in the Plus and Pro plan',
+                onAccept: () => history.push('/plans')
+            })
+            return;
+        }
+
         dialogManager.confirm({
             title: "Download your flashcards as an Anki deck",
             subtitle: "This will download selected flashcards as an Anki deck to your device.",
@@ -88,7 +110,7 @@ export const BlocksExportDropdown: React.FC = () => {
             onAccept: doExportFlashcards
         });
 
-    }, [dialogManager, doExportFlashcards]);
+    }, [dialogManager, doExportFlashcards, accountUpgrade, history]);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 
