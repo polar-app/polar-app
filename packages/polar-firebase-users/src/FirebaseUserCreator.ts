@@ -10,6 +10,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Testing} from "polar-shared/src/util/Testing";
 import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {Nonces} from "polar-shared/src/util/Nonces";
 
 export namespace FirebaseUserCreator {
 
@@ -104,6 +105,8 @@ export namespace FirebaseUserCreator {
         return await auth.createCustomToken(user.uid);
     }
 
+    const NONCE_GENERATOR = Nonces.createFactory();
+
     /**
      * Generate a test user email following a pattern that allows us to easily
      * discard new accounts.
@@ -112,11 +115,13 @@ export namespace FirebaseUserCreator {
      */
     export function createTestUserEmail(hint?: string): EmailStr {
 
+        const nonce = NONCE_GENERATOR();
+
         if (hint) {
-            return `getpolarized.test+${hint}-${Date.now()}@getpolarized.io`
+            return `getpolarized.test+${hint}-${Date.now()}-${nonce}@getpolarized.io`
         }
 
-        return `getpolarized.test+${Date.now()}@getpolarized.io`
+        return `getpolarized.test+${Date.now()}-${nonce}@getpolarized.io`
 
     }
 

@@ -101,6 +101,8 @@ export namespace Hashcodes {
          */
         readonly len?: number;
     }
+    export type HashcodeStr = string;
+    export type RandomHashcodeStr = HashcodeStr;
 
     /**
      * Create a random ID which is the the same format as createID() (opaque).
@@ -108,7 +110,7 @@ export namespace Hashcodes {
      * The, when given, should be always a constant so that the hashcode output
      * is namespaced.
      */
-    export function createRandomID(opts: CreateRandomIDOpts = {}) {
+    export function createRandomID(opts: CreateRandomIDOpts = {}): RandomHashcodeStr {
 
         const {seed} = opts;
 
