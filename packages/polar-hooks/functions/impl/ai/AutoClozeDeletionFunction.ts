@@ -40,7 +40,7 @@ export namespace AutoClozeDeletion {
         }
 
         return {
-            clozeDeletionText: generateClozeDeletions(text, analysis.entities),
+            text: generateClozeDeletions(text, analysis.entities),
             GCLResponse: analysis
         }
     }

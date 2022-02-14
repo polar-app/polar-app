@@ -5,7 +5,7 @@ export interface AutoClozeDeletionRequest {
 }
 
 export interface AutoClozeDeletionResponse {
-    readonly clozeDeletionText: string;
+    readonly text: string;
     readonly GCLResponse: GCL.IAnalyzeEntitySentimentResponse;
 }
 
