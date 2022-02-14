@@ -1,18 +1,18 @@
 import {expect} from "chai";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {UserReferrals} from "./UserReferrals";
 import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferralCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {StripePlanIDs} from "polar-payments-stripe/src/StripePlanIDs";
 import {Billing} from "polar-accounts/src/Billing";
-import V2PlanPlus = Billing.V2PlanPlus;
 import {StripeUtils} from "polar-payments-stripe/src/StripeUtils";
 import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
-import V2PlanPro = Billing.V2PlanPro;
 import {Accounts} from "polar-payments-stripe/src/Accounts";
+import {FirebaseUserPurger} from "polar-firebase-users/src/FirebaseUserPurger";
+import V2PlanPlus = Billing.V2PlanPlus;
+import V2PlanPro = Billing.V2PlanPro;
 
 describe('UserReferrals', () => {
 
@@ -267,9 +267,8 @@ describe('UserReferrals', () => {
     /**
      * If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
      */
-    const getRandomEmail = (suffix?: string) => {
-        const alias = suffix ? `${suffix}-` : '';
-        return `testing+${alias}${Math.round(new Date().getTime() / 1000)}-${Hashcodes.createRandomID({len: 5}).toLowerCase()}@getpolarized.io`
+    const getRandomEmail = (hint?: string) => {
+        return FirebaseUserCreator.createTestUserEmail(hint)
     }
 
     /**
@@ -305,30 +304,46 @@ describe('UserReferrals', () => {
 
     afterEach(async () => {
         for (let tmpUserEmail of tmpUserEmails) {
-            try {
-                const user = await auth.getUserByEmail(tmpUserEmail);
-                await auth.deleteUser(user.uid);
-                console.log(`Firebase auth user with email ${tmpUserEmail} deleted`);
-            } catch (e: any) {
-                if (e.errorInfo.code === 'auth/user-not-found') {
-                    // User already deleted, probably inside the it() function. Just skip it
-                    continue;
+
+            async function doUserDelete() {
+
+                try {
+                    const user = await auth.getUserByEmail(tmpUserEmail);
+
+                    await FirebaseUserPurger.doPurge(user.uid)
+                    console.log(`Firebase auth user with email ${tmpUserEmail} deleted`);
+
+                } catch (e: any) {
+                    if (e.errorInfo.code === 'auth/user-not-found') {
+                        // User already deleted, probably inside the it() function. Just skip it
+                        return;
+                    }
+                    console.error(e);
+                    console.error(`Failed to cleanup Firebase auth user with email ${tmpUserEmail}`);
                 }
-                console.error(e);
-                console.error(`Failed to cleanup Firebase auth user with email ${tmpUserEmail}`);
+
+
             }
 
-            try {
-                // Also delete the Stripe customer, if exists
-                const stripeCustomerExists = await StripeCustomers.getCustomerByEmail('test', tmpUserEmail);
-                if (stripeCustomerExists?.id) {
-                    await StripeCustomers.deleteCustomer('test', tmpUserEmail);
+            async function doStripeDelete() {
+
+                try {
+                    // Also delete the Stripe customer, if exists
+                    const stripeCustomerExists = await StripeCustomers.getCustomerByEmail('test', tmpUserEmail);
+                    if (stripeCustomerExists?.id) {
+                        await StripeCustomers.deleteCustomer('test', tmpUserEmail);
+                    }
+                    console.log(`Stripe customer for email ${tmpUserEmail} deleted`);
+                } catch (e) {
+                    console.error(e);
+                    console.error(`Failed to delete Stripe customer for email ${tmpUserEmail}`);
                 }
-                console.log(`Stripe customer for email ${tmpUserEmail} deleted`);
-            } catch (e) {
-                console.error(e);
-                console.error(`Failed to delete Stripe customer for email ${tmpUserEmail}`);
+
             }
+
+            await doUserDelete();
+            await doStripeDelete();
+
         }
     });
 })

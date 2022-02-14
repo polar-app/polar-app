@@ -205,7 +205,13 @@ export namespace UserReferrals {
             return {uid: existingUser.uid, email};
 
         } catch (e) {
-            return undefined;
+
+            if ((e as any).errorInfo.code === 'auth/user-not-found') {
+                return undefined;
+            }
+
+            throw e;
+
         }
 
     }
