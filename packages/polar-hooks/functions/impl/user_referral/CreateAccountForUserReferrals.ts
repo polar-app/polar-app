@@ -7,8 +7,8 @@ import {
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
+import {StartTokenAuths} from "../token_auth/StartTokenAuths";
 import IReferrer = UserReferrals.IReferrer;
 import IReferred = UserReferrals.IReferred;
 
@@ -35,17 +35,8 @@ export namespace CreateAccountForUserReferrals {
 
             async function createResponseOK(newUser: IFirebaseUserRecord) {
 
-                async function createAuthToken() {
-                    const firebase = FirebaseAdmin.app();
-                    const auth = firebase.auth();
-                    return await auth.createCustomToken(newUser.uid);
-                }
-
-                const auth_token = await createAuthToken();
-
                 return <ICreateAccountForUserReferralResponse>{
                     code: 'ok',
-                    auth_token
                 };
 
             }
@@ -61,6 +52,9 @@ export namespace CreateAccountForUserReferrals {
             }
 
             const newUser = await UserReferrals.createReferredAccountAndApplyRewardToReferrer(stripeMode, referrer, referred);
+
+            // now trigger the start token auth process so that they can just auth directly
+            await StartTokenAuths.startTokenAuth({email: newUser.email});
 
             return await createResponseOK(newUser);
 
