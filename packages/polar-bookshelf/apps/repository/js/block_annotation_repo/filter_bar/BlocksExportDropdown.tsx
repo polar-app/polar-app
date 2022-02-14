@@ -19,6 +19,7 @@ import {useAccountUpgrader} from "../../../../../web/js/ui/account_upgrade/Accou
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanFree = Billing.V2PlanFree;
 import {useHistory} from "react-router-dom";
+import {useFeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
 
 function useAnkiDeckDownloadHandler() {
 
@@ -50,6 +51,8 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const accountUpgrade = useAccountUpgrader();
     const history = useHistory();
+
+    const isAnkiExportAPremiumFeature = useFeatureEnabled('premium-anki-export');
 
     const doExportFlashcards = React.useCallback(() => {
 
@@ -87,7 +90,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const handleExportFlashcards = React.useCallback(() => {
 
-        if (accountUpgrade?.plan === V2PlanFree) {
+        if (isAnkiExportAPremiumFeature && accountUpgrade?.plan === V2PlanFree) {
             Analytics.event2('account-upgrade-required', {
                 reason: 'anki_export'
             });
@@ -110,7 +113,7 @@ export const BlocksExportDropdown: React.FC = () => {
             onAccept: doExportFlashcards
         });
 
-    }, [dialogManager, doExportFlashcards, accountUpgrade, history]);
+    }, [dialogManager, doExportFlashcards, accountUpgrade, history, isAnkiExportAPremiumFeature]);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 
