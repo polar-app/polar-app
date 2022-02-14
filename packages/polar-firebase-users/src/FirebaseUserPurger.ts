@@ -1,4 +1,4 @@
-import {UserIDStr} from "polar-shared/src/util/Strings";
+import {UIDStr} from "polar-shared/src/util/Strings";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
@@ -9,7 +9,7 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
  */
 export namespace FirebaseUserPurger {
 
-    export async function doPurge(uid: UserIDStr) {
+    export async function doPurge(uid: UIDStr) {
 
         const firebase = FirebaseAdmin.app();
         const auth = firebase.auth();
