@@ -239,5 +239,4 @@ export namespace UserReferrals {
         await Sendgrid.send(message);
     }
 
-
 }

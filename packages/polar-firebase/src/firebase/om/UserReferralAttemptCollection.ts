@@ -4,14 +4,13 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
-/**
- * @deprecated
- */
-export namespace UserReferralCompletedCollection {
+export namespace UserReferralAttemptCollection {
 
     import RandomHashcodeStr = Hashcodes.RandomHashcodeStr;
 
-    export interface IUserReferralCompleted {
+    export type UserReferralAttemptStatus = 'started' | 'completed';
+
+    export interface IUserReferralAttemptBase<S extends UserReferralAttemptStatus> {
 
         readonly id: RandomHashcodeStr;
 
@@ -29,16 +28,23 @@ export namespace UserReferralCompletedCollection {
         readonly referred_uid: EmailStr;
         readonly referred_email: EmailStr;
 
+        readonly status: S;
+
     }
 
-    export const COLLECTION_NAME: CollectionNameStr = "user_referral_completed";
+    export type IUserReferralAttemptStarted = IUserReferralAttemptBase<'started'>;
+    export type IUserReferralAttemptCompleted = IUserReferralAttemptBase<'completed'>;
 
-    export async function write<SM = unknown>(firestore: IFirestore<SM>, userReferralCompleted: IUserReferralCompleted) {
+    export type IUserReferralAttempt = IUserReferralAttemptStarted | IUserReferralAttemptCompleted;
+
+    export const COLLECTION_NAME: CollectionNameStr = "user_referral_attempt";
+
+    export async function write<SM = unknown>(firestore: IFirestore<SM>, userReferralAttempt: IUserReferralAttempt) {
 
         const doc = firestore.collection(COLLECTION_NAME)
-            .doc(userReferralCompleted.id);
+            .doc(userReferralAttempt.id);
 
-        await doc.set(Dictionaries.onlyDefinedProperties(userReferralCompleted));
+        await doc.set(Dictionaries.onlyDefinedProperties(userReferralAttempt));
 
     }
 
