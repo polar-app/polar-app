@@ -3,16 +3,19 @@ import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export namespace UserReferralAttemptCollection {
 
     import RandomHashcodeStr = Hashcodes.RandomHashcodeStr;
 
+    export type UserReferralAttemptIDStr = RandomHashcodeStr;
+
     export type UserReferralAttemptStatus = 'started' | 'completed';
 
     export interface IUserReferralAttemptBase<S extends UserReferralAttemptStatus> {
 
-        readonly id: RandomHashcodeStr;
+        readonly id: UserReferralAttemptIDStr;
 
         readonly ver: 'v1',
 
@@ -48,5 +51,10 @@ export namespace UserReferralAttemptCollection {
 
     }
 
+    export async function get<SM = unknown>(firestore: IFirestore<SM>, id: UserReferralAttemptIDStr) {
+
+        return await Collections.get<IUserReferralAttempt>(firestore, COLLECTION_NAME, id);
+
+    }
 
 }

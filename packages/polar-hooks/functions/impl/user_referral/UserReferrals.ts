@@ -12,15 +12,17 @@ import {Plans} from "polar-accounts/src/Plans";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
 import {Testing} from "polar-shared/src/util/Testing";
-import {UserReferralCompletedCollection} from "polar-firebase/src/firebase/om/UserReferralCompletedCollection";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {UserReferralAttemptCollection} from "polar-firebase/src/firebase/om/UserReferralAttemptCollection";
 
 export namespace UserReferrals {
 
     import V2PlanPlus = Billing.V2PlanPlus;
     import IFirebaseUserRecord = FirebaseUserCreator.IFirebaseUserRecord;
+    import UserReferralAttemptIDStr = UserReferralAttemptCollection.UserReferralAttemptIDStr;
+    import IUserReferralAttemptStarted = UserReferralAttemptCollection.IUserReferralAttemptStarted;
 
     export interface IReferrer {
         readonly uid: UIDStr
@@ -123,14 +125,16 @@ export namespace UserReferrals {
 
     }
 
-    async function writeUserReferralCompleted(user_referral_code: IDStr,
-                                                     referrer: IFirebaseUserRecord,
-                                                     referred: IFirebaseUserRecord) {
+    async function writeUserReferralAttemptStarted(user_referral_code: IDStr,
+                                                   referrer: IFirebaseUserRecord,
+                                                   referred: IFirebaseUserRecord): Promise<IUserReferralAttemptStarted> {
 
         const firestore = FirestoreAdmin.getInstance();
 
-        await UserReferralCompletedCollection.write(firestore, {
-            id: Hashcodes.createRandomID(),
+        const id = Hashcodes.createRandomID();
+
+        const record: IUserReferralAttemptStarted = {
+            id,
             ver: 'v1',
             completed: ISODateTimeStrings.create(),
             user_referral_code,
@@ -138,6 +142,28 @@ export namespace UserReferrals {
             referrer_email: referrer.email,
             referred_uid: referred.uid,
             referred_email: referred.email,
+            status: 'started'
+        };
+
+        await UserReferralAttemptCollection.write(firestore, record);
+
+        return record;
+
+    }
+
+    async function writeUserReferralAttemptCompleted(id: UserReferralAttemptIDStr) {
+
+        const firestore = FirestoreAdmin.getInstance();
+
+        const userReferralAttempt = await UserReferralAttemptCollection.get(firestore, id);
+
+        if (! userReferralAttempt) {
+            throw new Error("No user_referral_attempt");
+        }
+
+        await UserReferralAttemptCollection.write(firestore, {
+            ...userReferralAttempt,
+            status: 'completed'
         });
 
     }
@@ -168,32 +194,38 @@ export namespace UserReferrals {
         await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
         await rewardReferringUser(stripeMode, referrer.email);
         await notifyReferrerByEmailOfFreeUpgrade(referrer.email, referred.email);
-        await writeUserReferralCompleted(referrer.user_referral_code, referrerUser, referredUser)
+
+        const userReferralAttempt = await writeUserReferralAttemptStarted(referrer.user_referral_code, referrerUser, referredUser)
+
+        // TODO: here is where we need to continue...
+
+        await writeUserReferralAttemptCompleted(userReferralAttempt.id)
 
         return referredUser;
 
     }
 
-    /**
-     * This is used to jump the queue and allow two users to invite one another.
-     *
-     * @param stripeMode The mode for stripe to operate.
-     * @param referrer The user who referred this user.
-     * @param referred The new user account that will be created.  This was the user that was invited.
-     */
-    export async function createBothReferrerAndReferred(stripeMode: StripeMode,
-                                                        referrer: IReferrer,
-                                                        referred: IReferred) {
-
-        async function doCreate(email: string) {
-            await createNewFirebaseUser(email);
-            await createStripeSubscriptionWithTrial(stripeMode, email, "");
-        }
-
-        await doCreate(referrer.email);
-        await doCreate(referred.email);
-
-    }
+    //
+    // /**
+    //  * This is used to jump the queue and allow two users to invite one another.
+    //  *
+    //  * @param stripeMode The mode for stripe to operate.
+    //  * @param referrer The user who referred this user.
+    //  * @param referred The new user account that will be created.  This was the user that was invited.
+    //  */
+    // export async function createBothReferrerAndReferred(stripeMode: StripeMode,
+    //                                                     referrer: IReferrer,
+    //                                                     referred: IReferred) {
+    //
+    //     async function doCreate(email: string) {
+    //         await createNewFirebaseUser(email);
+    //         await createStripeSubscriptionWithTrial(stripeMode, email, "");
+    //     }
+    //
+    //     await doCreate(referrer.email);
+    //     await doCreate(referred.email);
+    //
+    // }
 
     async function getExistingUser(email: EmailStr): Promise<IFirebaseUserRecord | undefined> {
 
