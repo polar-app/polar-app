@@ -31,11 +31,13 @@ const Main = () => {
     }, [dialogManager, errorHandler, inviteLink]);
 
     return (
-        <Box pt={1}
+        <Box p={1}
              style={{
                  display: 'flex',
                  flexDirection: 'column',
+                 maxWidth: '450px',
                  textAlign: 'center',
+                 margin: 'auto'
              }}>
 
             <Box mt={2}>
@@ -48,13 +50,35 @@ const Main = () => {
 
             <h2>When they sign up, you will BOTH get a free month of Polar!</h2>
 
-            <Box mt="3"
+            <Box mt="4"
                  style={{
                      display: 'flex',
-                     minWidth: '450px',
-                     marginLeft: 'auto',
-                     marginRight: 'auto',
+                     // minWidth: '450px',
+                     // marginLeft: 'auto',
+                     // marginRight: 'auto',
                  }}>
+
+                {/*<Grid container spacing={1}>*/}
+
+                {/*    <Grid item xs={12} sm={10} style={{display: 'flex'}}>*/}
+                {/*        <TextField autoFocus={true}*/}
+                {/*                   variant="outlined"*/}
+                {/*                   style={{flexGrow: 1}}*/}
+                {/*                   onClick={copyLink}*/}
+                {/*                   value={inviteLink}/>*/}
+                {/*    </Grid>*/}
+
+                {/*    <Grid item xs={12} sm={2}>*/}
+                {/*        <Button color="primary"*/}
+                {/*                size="large"*/}
+                {/*                onClick={copyLink}*/}
+                {/*                style={{whiteSpace: 'nowrap'}}*/}
+                {/*                variant="contained">*/}
+                {/*            Copy Link*/}
+                {/*        </Button>*/}
+
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
 
                 <TextField autoFocus={true}
                            variant="outlined"
@@ -63,8 +87,9 @@ const Main = () => {
                            value={inviteLink}/>
 
                 <Button color="primary"
+                        size="large"
                         onClick={copyLink}
-                        style={{marginLeft: '5px'}}
+                        style={{whiteSpace: 'nowrap', marginLeft: '5px'}}
                         variant="contained">
                     Copy Link
                 </Button>
@@ -79,7 +104,7 @@ const Main = () => {
 export const ReferralScreen = React.memo(function ReferralScreen() {
 
     return (
-        <AdaptivePageLayout title="Referrals">
+        <AdaptivePageLayout title="Get Free Polar">
             <UserReferralCollectionSnapshots.Latch fallback={<LinearProgress/>}>
                 <Main/>
             </UserReferralCollectionSnapshots.Latch>

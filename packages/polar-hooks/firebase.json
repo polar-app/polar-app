@@ -17,6 +17,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/settings/user-referral",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/annotations",
         "destination": "/apps/repository/index.html"
       },
