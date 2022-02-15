@@ -74,7 +74,7 @@ export namespace AccountVerifiedAction {
 
             delegate();
 
-        }, [accountUpgrade, dialogManager, history])
+        }, [accountUpgrade, dialogManager, history, delegate])
 
     }
 
