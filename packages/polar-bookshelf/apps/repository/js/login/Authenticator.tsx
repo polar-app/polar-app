@@ -188,7 +188,7 @@ const EmailTokenAuthButton = () => {
             message: 'Check your email for a code to login to your account!'
         });
 
-    }, [setTriggered]);
+    }, [setTriggered, triggeredRef]);
 
     const doTriggerStartTokenAuth = React.useCallback(async (email: string) => {
 
