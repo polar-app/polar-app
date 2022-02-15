@@ -56,10 +56,6 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "local-search": {
         title: "Enable new local search",
         description: "Enable the new local search functionality.",
-    },
-    "new-referral-system": {
-        title: "Enable the new referral system",
-        description: "Enable the new referral system which gives us a link under settings ",
     }
 };
 
@@ -77,8 +73,7 @@ export type FeatureName = 'design-m0' |
                           'legacy-anki-sync' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
-                          'use-redesign-theme' |
-                          'new-referral-system';
+                          'use-redesign-theme';
 
 export interface IFeature {
 

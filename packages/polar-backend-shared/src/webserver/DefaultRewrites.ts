@@ -33,6 +33,7 @@ export class DefaultRewrites {
                     "/premium",
                     "/account",
                     "/settings",
+                    "/settings/user-referral",
                     "/profile",
                     "/device",
                     "/invite",

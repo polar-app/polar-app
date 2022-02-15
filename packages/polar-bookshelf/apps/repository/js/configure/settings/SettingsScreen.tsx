@@ -21,9 +21,11 @@ import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {ListItemLinkButton} from './ListItemLinkButton';
 import {useHistory} from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import {Feature, FeatureEnabled} from '../../../../../web/js/features/FeaturesRegistry';
+import {Feature} from '../../../../../web/js/features/FeaturesRegistry';
 import {SpacedRepetitionPurgeListItem} from "./SpacedRepetitionPurgeListItem";
 import {WhenAccountLevel} from "./WhenAccountLevel";
+import {Alert} from "@material-ui/lab";
+import Button from "@material-ui/core/Button";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -93,10 +95,25 @@ export const FeaturesListItem = React.memo(function FeaturesListItem() {
 
 const Main = () => {
 
+    const history = useHistory();
     const classes = useStyles();
 
     return (
         <Box pt={1} className={classes.root}>
+
+            <WhenAccountLevel ver="v2">
+                <Alert variant="filled"
+                       severity="info"
+                       action={
+                           <Button variant="contained" onClick={() => history.push("/settings/user-referral")}>
+                               GET FREE POLAR
+                           </Button>
+                       }
+                       style={{fontSize: '16px'}}>
+                    <b>Get Free Polar</b> When you Refer a Friend
+                </Alert>
+            </WhenAccountLevel>
+
             <List>
 
                 <SettingListItem title="Dark Mode"
@@ -157,12 +174,6 @@ const Main = () => {
                 <ExportDataListItem/>
 
                 <Feature feature='features' enabled={<FeaturesListItem/>}/>
-
-                <FeatureEnabled feature="new-referral-system">
-                    <WhenAccountLevel ver="v2">
-                        <UserReferralListItem/>
-                    </WhenAccountLevel>
-                </FeatureEnabled>
 
                 <ListItemLinkButton icon={<DescriptionIcon/>} text={"Privacy Policy"} href={'https://getpolarized.io/privacy-policy'}/>
                 <ListItemLinkButton icon={<VerifiedUserIcon/>} text={"Terms of Service"} href={'https://getpolarized.io/terms'}/>
