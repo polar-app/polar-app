@@ -61,7 +61,6 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Enable the new referral system",
         description: "Enable the new referral system which gives us a link under settings ",
     }
-
 };
 
 // TODO: we might want to rework this and make FeatureName be keyof

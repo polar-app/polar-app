@@ -6,11 +6,13 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {useHistory} from 'react-router-dom';
 import {AccountUpgrades} from "../../../../web/js/accounts/AccountUpgrades";
+import {Plans} from "polar-accounts/src/Plans";
 
 export namespace AccountVerifiedAction {
 
     import V2Plan = Billing.V2Plan;
     import AccountUpgradeReason = AccountUpgrades.AccountUpgradeReason;
+    import V2PlanFree = Billing.V2PlanFree;
 
     export function useAccountVerifiedAction() {
 
@@ -39,6 +41,40 @@ export namespace AccountVerifiedAction {
             }
 
         }, [accountUpgrade?.plan, accountUpgrade?.reason, accountUpgrade?.required, dialogs, history]);
+
+    }
+
+    export function usePremiumFeatureCallback(delegate: () => void) {
+
+        const accountUpgrade = useAccountUpgrader();
+        const dialogManager = useDialogManager();
+        const history = useHistory();
+
+        return React.useCallback(() => {
+
+            const currentPlan = Plans.toV2(accountUpgrade?.plan);
+
+            if (currentPlan === V2PlanFree) {
+
+                Analytics.event2('account-upgrade-required', {
+                    reason: 'anki_export'
+                });
+
+                dialogManager.confirm({
+                    title: 'Account Upgraded Required',
+                    acceptText: "Upgrade Plan",
+                    type: 'primary',
+                    subtitle: 'This feature is only available in the Plus and Pro plan',
+                    onAccept: () => history.push('/plans')
+                });
+
+                return;
+
+            }
+
+            delegate();
+
+        }, [accountUpgrade, dialogManager, history, delegate])
 
     }
 
