@@ -11,6 +11,7 @@ import {StripeUtils} from "polar-payments-stripe/src/StripeUtils";
 import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegistry";
 import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {FirebaseUserPurger} from "polar-firebase-users/src/FirebaseUserPurger";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
 
@@ -166,10 +167,16 @@ describe('UserReferrals', () => {
 
         // Fetch Subscription of Alice from Stripe
         const subscriptions = await StripeCustomers.getCustomerSubscriptions('test', emailOfAlice);
-        const firstSubscription = subscriptions.subscriptions.find(() => true);
+
+        expect(subscriptions.subscriptions.length).to.be.eq(1);
+
+        const firstSubscription = Arrays.first(subscriptions.subscriptions);
 
         // Check if Alice has a discount coupon applied
+        expect(firstSubscription?.discount?.coupon.id).to.not.be.undefined;
+
         expect(firstSubscription?.discount?.coupon.id).eq(StripeCouponRegistry.get('test').PLUS_ONE_MONTH_FREE.id);
+
     });
 
     it('Alice (pro member) invites Bob and receives a free +1 month extension of her plan', async () => {
