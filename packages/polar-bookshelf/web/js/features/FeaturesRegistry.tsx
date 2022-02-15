@@ -60,12 +60,7 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "new-referral-system": {
         title: "Enable the new referral system",
         description: "Enable the new referral system which gives us a link under settings ",
-    },
-    "premium-anki-export": {
-        title: "Anki export as a premium only feature",
-        description: "Makes the Anki export feature not accessible unless you are on a paid plan",
-    },
-
+    }
 };
 
 // TODO: we might want to rework this and make FeatureName be keyof
@@ -83,8 +78,7 @@ export type FeatureName = 'design-m0' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
                           'use-redesign-theme' |
-                          'new-referral-system' |
-                          'premium-anki-export';
+                          'new-referral-system';
 
 export interface IFeature {
 

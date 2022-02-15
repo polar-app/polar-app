@@ -12,14 +12,13 @@ import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
-import {Analytics, useAnalytics} from "../../../../../web/js/analytics/Analytics";
+import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
+import {useAccountUpgrader} from "../../../../../web/js/ui/account_upgrade/AccountUpgrader";
+import {useHistory} from "react-router-dom";
+import {AccountVerifiedAction} from "../../ui/AccountVerifiedAction";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
-import {useAccountUpgrader} from "../../../../../web/js/ui/account_upgrade/AccountUpgrader";
-import {Billing} from "polar-accounts/src/Billing";
-import V2PlanFree = Billing.V2PlanFree;
-import {useHistory} from "react-router-dom";
-import {useFeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
+import usePremiumFeatureCallback = AccountVerifiedAction.usePremiumFeatureCallback;
 
 function useAnkiDeckDownloadHandler() {
 
@@ -51,8 +50,6 @@ export const BlocksExportDropdown: React.FC = () => {
 
     const accountUpgrade = useAccountUpgrader();
     const history = useHistory();
-
-    const isAnkiExportAPremiumFeature = useFeatureEnabled('premium-anki-export');
 
     const doExportFlashcards = React.useCallback(() => {
 
@@ -88,22 +85,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     }, [dialogManager, errorHandler, ankiDeckDownloadHandler, analytics]);
 
-    const handleExportFlashcards = React.useCallback(() => {
-
-        if (isAnkiExportAPremiumFeature && accountUpgrade?.plan === V2PlanFree) {
-            Analytics.event2('account-upgrade-required', {
-                reason: 'anki_export'
-            });
-
-            dialogManager.confirm({
-                title: 'Account Upgraded Required',
-                acceptText: "Upgrade Plan",
-                type: 'primary',
-                subtitle: 'Anki export is available in the Plus and Pro plan',
-                onAccept: () => history.push('/plans')
-            })
-            return;
-        }
+    const handleExportFlashcardsForPremiumAccount = React.useCallback(() => {
 
         dialogManager.confirm({
             title: "Download your flashcards as an Anki deck",
@@ -113,7 +95,9 @@ export const BlocksExportDropdown: React.FC = () => {
             onAccept: doExportFlashcards
         });
 
-    }, [dialogManager, doExportFlashcards, accountUpgrade, history, isAnkiExportAPremiumFeature]);
+    }, [dialogManager, doExportFlashcards]);
+
+    const handleExportFlashcards = usePremiumFeatureCallback(handleExportFlashcardsForPremiumAccount);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 
