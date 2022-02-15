@@ -110,7 +110,7 @@ const Main = () => {
                            </Button>
                        }
                        style={{fontSize: '16px'}}>
-                    <b>Get Free Polar</b> When you Refer a Friend
+                    <b>Get Free Polar Premium</b> When you Refer a Friend
                 </Alert>
             </WhenAccountLevel>
 
