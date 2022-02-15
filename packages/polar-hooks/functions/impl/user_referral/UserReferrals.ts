@@ -15,7 +15,7 @@ import {Testing} from "polar-shared/src/util/Testing";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
-import {UserReferralAttemptCollection} from "polar-firebase/src/firebase/om/UserReferralAttemptCollection";
+import {UserReferralAttemptCollection,} from "polar-firebase/src/firebase/om/UserReferralAttemptCollection";
 
 export namespace UserReferrals {
 
@@ -23,6 +23,7 @@ export namespace UserReferrals {
     import IFirebaseUserRecord = FirebaseUserCreator.IFirebaseUserRecord;
     import UserReferralAttemptIDStr = UserReferralAttemptCollection.UserReferralAttemptIDStr;
     import IUserReferralAttemptStarted = UserReferralAttemptCollection.IUserReferralAttemptStarted;
+    import UserReferralAttemptStatus = UserReferralAttemptCollection.UserReferralAttemptStatus;
 
     export interface IReferrer {
         readonly uid: UIDStr
@@ -169,11 +170,98 @@ export namespace UserReferrals {
     }
 
     /**
+     * Create a user referral transaction. It's designed so that the 'prepare'
+     * stage writes all the necessary information and StartTokenAuth can do the
+     * reward by checking the status, and then committing the transaction if
+     * necessary.
+     */
+    export interface IUserReferralTransaction {
+
+        readonly prepare: () => Promise<void>;
+
+        /**
+         * Get the status of this user referral to determine if we need to commit.
+         */
+        readonly status: (referred: UIDStr) => Promise<UserReferralAttemptStatus>;
+
+        /**
+         * Go ahead and commit this transaction.
+         */
+        readonly commit: (referred: UIDStr) => Promise<void>;
+
+    }
+
+    /**
      * Used with our basic referral system.
      *
      * @param stripeMode The mode for stripe to operate.
      * @param referrer The user who referred this user.
      * @param referred The new user account that will be created.  This was the user that was invited.
+     */
+    export function createTransaction(stripeMode: StripeMode,
+                                      referrer: IReferrer,
+                                      referred: IReferred): IUserReferralTransaction {
+
+        async function prepare() {
+
+            const referrerUser = await getExistingUser(referrer.email)
+
+            if (! referrerUser) {
+                throw new Error(`Referrer does not exist.`);
+            }
+
+            if (await getExistingUser(referred.email)) {
+                throw new Error(`Can not refer an existing user`);
+            }
+
+            const referredUser = await createNewFirebaseUser(referred.email);
+            await writeUserReferralAttemptStarted(referrer.user_referral_code, referrerUser, referredUser)
+
+        }
+
+        async function getUserReferralAttemptForReferred(referred: UIDStr) {
+
+            const firestore = FirestoreAdmin.getInstance();
+            const userReferralAttempt = await UserReferralAttemptCollection.getByReferredUID(firestore, referred);
+
+            if (! userReferralAttempt) {
+                throw new Error("No user referral attempt");
+            }
+
+            return userReferralAttempt;
+
+        }
+
+        async function status(referred: UIDStr) {
+            const userReferralAttempt = await getUserReferralAttemptForReferred(referred);
+            return userReferralAttempt.status;
+        }
+
+        async function commit(referred: UIDStr) {
+
+            const userReferralAttempt = await getUserReferralAttemptForReferred(referred);
+
+            await createStripeSubscriptionWithTrial(stripeMode, userReferralAttempt.referred_email, "");
+            await doAmplitudeEvent(stripeMode, referrer.user_referral_code);
+            await rewardReferringUser(stripeMode, referrer.email);
+
+            // TODO: shouldn't we notify both parties?
+
+            await notifyReferrerByEmailOfFreeUpgrade(referrer.email, userReferralAttempt.referred_email);
+
+        }
+
+        return {prepare, status, commit}
+
+    }
+
+    /**
+     * Used with our basic referral system.
+     *
+     * @param stripeMode The mode for stripe to operate.
+     * @param referrer The user who referred this user.
+     * @param referred The new user account that will be created.  This was the user that was invited.
+     * @deprecated This is no longer being used and should become a transaction.
      */
     export async function createReferredAccountAndApplyRewardToReferrer(stripeMode: StripeMode,
                                                                         referrer: IReferrer,
