@@ -111,7 +111,15 @@ function _featureEnabledFromRegistry(features: FeatureNameArray<string>, registr
 }
 
 
-export const [Feature, FeatureEnabled, FeatureDisabled, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler] = createFeatureRegistry(DEFAULT_REGISTRY);
+export const [
+    Feature,
+    FeatureEnabled,
+    FeatureDisabled,
+    useFeatureEnabled,
+    useFeaturesRegistry,
+    useFeatureToggler,
+    useFeatureEnabledCallback
+] = createFeatureRegistry(DEFAULT_REGISTRY);
 
 interface FeatureProps<F extends string> {
     readonly feature: FeatureNameArrayLike<F>;
@@ -144,13 +152,16 @@ type UseFeaturesRegistry<F extends string> = () => FeatureRegistry<F>;
  */
 type UseFeatureToggler<F> = () => (feature: F, enabled: boolean) => Promise<void>;
 
+type UseFeatureEnabledCallback<F> = (feature: F, enabledCallback: () => void, disabledCallback: () => void) => void;
+
 type FeatureRegistryTuple<F extends string> = readonly [
     React.FC<FeatureProps<F>>,
     React.FC<FeatureEnabledProps<F>>,
     React.FC<FeatureDisabledProps<F>>,
     UseFeatureEnabled<F>,
     UseFeaturesRegistry<F>,
-    UseFeatureToggler<F>
+    UseFeatureToggler<F>,
+    UseFeatureEnabledCallback<F>
 ];
 
 export function createFeatureRegistry<F extends string>(registry: FeatureRegistry<F>): FeatureRegistryTuple<F> {
@@ -256,7 +267,23 @@ export function createFeatureRegistry<F extends string>(registry: FeatureRegistr
 
     }
 
-    return [Feature, FeatureEnabled, FeatureDisabled, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler];
+    function useFeatureEnabledCallback(feature: F, enabledCallback: () => void, disabledCallback: () => void) {
+
+        const featureEnabled = useFeatureEnabled(feature);
+
+        return React.useCallback(() => {
+
+            if (featureEnabled) {
+                enabledCallback();
+            } else {
+                disabledCallback();
+            }
+
+        }, [featureEnabled, enabledCallback, disabledCallback])
+
+    }
+
+    return [Feature, FeatureEnabled, FeatureDisabled, useFeatureEnabled, useFeaturesRegistry, useFeatureToggler, useFeatureEnabledCallback];
 
 }
 
