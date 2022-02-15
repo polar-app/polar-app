@@ -1,4 +1,4 @@
-import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {IDStr, UIDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
@@ -13,9 +13,11 @@ export namespace UserPrefCollection {
      * ONE pref to get an empty snapshot.
      */
     export async function initForUser<SM = unknown>(firestore: IFirestore<SM>,
-                                                    uid: UserIDStr) {
+                                                    uid: UIDStr) {
 
         const ref = firestore.collection(COLLECTION_NAME).doc(uid);
+
+        const now = ISODateTimeStrings.create();
 
         const userPref: IUserPref = {
             id: uid,
@@ -25,7 +27,12 @@ export namespace UserPrefCollection {
                 'fixed-width-epub': {
                     key: 'fixed-width-epub',
                     value: 'true',
-                    written: ISODateTimeStrings.create(),
+                    written: now,
+                },
+                'dark-mode-pdf': {
+                    key: 'dark-mode-pdf',
+                    value: 'natural',
+                    written: now,
                 }
             }
         };
@@ -35,7 +42,7 @@ export namespace UserPrefCollection {
     }
 
     export async function doDelete<SM = unknown>(firestore: IFirestore<SM>,
-                                                 uid: UserIDStr) {
+                                                 uid: UIDStr) {
 
         const ref = firestore.collection(COLLECTION_NAME).doc(uid);
 
@@ -70,6 +77,6 @@ export interface StringToPrefDict {
 
 export interface IUserPref {
     readonly id: IDStr;
-    readonly uid: UserIDStr;
+    readonly uid: UIDStr;
     readonly value: StringToPrefDict;
 }
