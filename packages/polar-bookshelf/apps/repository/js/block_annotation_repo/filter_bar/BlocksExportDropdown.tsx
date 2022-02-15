@@ -13,8 +13,6 @@ import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
-import {useAccountUpgrader} from "../../../../../web/js/ui/account_upgrade/AccountUpgrader";
-import {useHistory} from "react-router-dom";
 import {AccountVerifiedAction} from "../../ui/AccountVerifiedAction";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
@@ -47,9 +45,6 @@ export const BlocksExportDropdown: React.FC = () => {
     const errorHandler = useErrorHandler();
     const ankiDeckDownloadHandler = useAnkiDeckDownloadHandler();
     const analytics = useAnalytics();
-
-    const accountUpgrade = useAccountUpgrader();
-    const history = useHistory();
 
     const doExportFlashcards = React.useCallback(() => {
 
