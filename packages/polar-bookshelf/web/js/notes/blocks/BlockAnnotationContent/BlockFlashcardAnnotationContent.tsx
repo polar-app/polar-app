@@ -1,4 +1,4 @@
-import {createStyles, makeStyles} from "@material-ui/core";
+import {Box, CircularProgress, createStyles, IconButton, makeStyles} from "@material-ui/core";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import React from "react";
@@ -14,6 +14,9 @@ import {BlockTagsSection} from "./BlockHighlightContentWrapper";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockTextContentUtils} from "../../BlockTextContentUtils";
+import {AutoClozeDeletionIcon} from "../../../icons/AutoClozeDeletionIcon";
+import {useAIFlashcardVerifiedAction} from "../../../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
+import {useAutoClozeDeletionBlock} from "../../../annotation_sidebar/AutoClozeDeletionHook";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -124,6 +127,8 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
     const { fields: { text } } = flashcard;
     const { getBlock } = useAnnotationBlockManager();
     const blocksTreeStore = useBlocksTreeStore();
+    const verifiedAction = useAIFlashcardVerifiedAction();
+    const [aiClozeDeletionState, aiClozeDeletionHandler] = useAutoClozeDeletionBlock();
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
@@ -133,6 +138,17 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
         }
     }, [id, getBlock, blocksTreeStore]);
 
+    const handleAutoCloze = React.useCallback(() => {
+        if (aiClozeDeletionState === 'waiting') {
+            return;
+        }
+
+        verifiedAction(() => {
+            aiClozeDeletionHandler(id)
+                .catch(e => console.error("Could not handle verified action: ", e));
+        });
+    }, [verifiedAction, aiClozeDeletionHandler, aiClozeDeletionState, id]);
+
     return (
         <div className="flashcard-wrapper-item">
             <BlockContentEditable
@@ -140,9 +156,17 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
                 content={text}
                 onChange={handleChange}
             />
-            <div style={{ marginTop: 5 }}>
+            <Box display="flex" mt="0.75rem" style={{ marginTop: 5 }}>
+                <Box mr="0.5rem">
+                    <IconButton disabled={aiClozeDeletionState === 'waiting'} size="small" onClick={handleAutoCloze}>
+                        {aiClozeDeletionState === 'idle'
+                            ? <AutoClozeDeletionIcon />
+                            : <CircularProgress size="1.7rem" color="secondary" /> 
+                        }
+                    </IconButton>
+                </Box>
                 <DocAnnotationMoment created={created} />
-            </div>
+            </Box>
         </div>
     );
 };

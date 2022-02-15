@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) =>
             width: '1em',
             height: '1em',
             display: 'inline-block',
-            fontSize: theme.typography.pxToRem(24),
+            fontSize: 'inherit',
         },
         root: {
             fill: 'currentColor',
