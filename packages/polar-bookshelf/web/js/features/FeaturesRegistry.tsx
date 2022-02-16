@@ -49,6 +49,10 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "New Notes Handheld Breadcrumbs",
         description: "Enable the new notes handheld breadcrumbs per updated design.",
     },
+    "ai-cloze-deletions": {
+        title: "AI Cloze Deletions",
+        description: "Enable the new AI generated cloze deletion flashcards",
+    },
     "use-redesign-theme": {
         title: "Use Redesign Theme",
         description: "Use Marcella's super fancy redesign :)",
@@ -73,6 +77,7 @@ export type FeatureName = 'design-m0' |
                           'legacy-anki-sync' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
+                          'ai-cloze-deletions' |
                           'use-redesign-theme';
 
 export interface IFeature {

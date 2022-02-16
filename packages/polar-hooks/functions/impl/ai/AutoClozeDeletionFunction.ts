@@ -1,10 +1,14 @@
-import { AutoClozeDeletionError, AutoClozeDeletionRequest, AutoClozeDeletionResponse } from "polar-backend-api/src/api/AutoClozeDeletion";
+import { AutoClozeDeletions } from "polar-backend-api/src/api/AutoClozeDeletion";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {IDUser} from "../util/IDUsers";
 import { GCLAnalyzeEntities } from "polar-google-cloud-language/src/GCLAnalyzeEntities";
 
+
 export namespace AutoClozeDeletion {
 
+    import AutoClozeDeletionError = AutoClozeDeletions.AutoClozeDeletionError;
+    import AutoClozeDeletionRequest = AutoClozeDeletions.AutoClozeDeletionRequest;
+    import AutoClozeDeletionResponse = AutoClozeDeletions.AutoClozeDeletionResponse;
 
     function clozeDeletionTagGenerator(seed: number = 1): (deletion: string) => string {
         return (deletion: string): string => {

@@ -1,11 +1,8 @@
 import * as React from 'react';
-import {IDocAnnotationRef} from "./DocAnnotation";
 import {AutoFlashcardRequests} from "../api/AutoFlashcardRequests";
 import {useLogger} from '../mui/MUILogger';
 import {AutoFlashcards} from 'polar-backend-api/src/api/AutoFlashcards';
-import {IFlashcardCreate, useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {Refs} from "polar-shared/src/metadata/Refs";
 import {Analytics} from "../analytics/Analytics";
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
 import {useAnnotationBlockManager} from '../notes/HighlightBlocksHooks';
@@ -46,43 +43,6 @@ export function useAIFlashcardHandler(): IAutoFlashcardHandlerTuple  {
     }, [setState, log]);
 
     return [state, handler];
-}
-
-export type IAutoFlashcardCreatorTuple = [IAutoFlashcardHandlerState, IAutoFlashcardCreator];
-
-export function useAutoFlashcardCreator(annotation: IDocAnnotationRef): IAutoFlashcardCreatorTuple {
-
-    const annotationMutations = useAnnotationMutationsContext();
-    const createFlashcard = annotationMutations.createFlashcardCallback(annotation);
-    const [state, aiFlashcardHandler] = useAIFlashcardHandler();
-
-    const handler = React.useCallback(async () => {
-
-        // get the currently active flashcards
-
-        if (! annotation.text) {
-            console.log("No annotation text")
-            return;
-        }
-
-        const fields = await aiFlashcardHandler(annotation.text);
-
-        const mutation: IFlashcardCreate = {
-            type: 'create',
-            flashcardType: FlashcardType.BASIC_FRONT_BACK,
-            fields,
-            parent: Refs.createRef(annotation)
-        };
-
-        Analytics.event2('ai-flashcard-created');
-
-        createFlashcard(mutation);
-
-
-    }, [annotation, createFlashcard, aiFlashcardHandler]);
-
-    return [state, handler];
-
 }
 
 export type IAutoFlashcardBlockCreator = (parentID: BlockIDStr, text: string) => Promise<void>;
