@@ -135,5 +135,6 @@
     ".pnpm-store": true,
     ".idea": true,
     ".jscpd": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
