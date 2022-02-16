@@ -14,5 +14,22 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials"
   ],
-  framework: "@storybook/react"
+  framework: "@storybook/react",
+  "webpackFinal": async (config, { configType }) => {
+
+    // config.resolve = {};
+
+    config.resolve.fallback = {
+      fs: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      path: false,
+      crypto: false,
+      stream: false,
+      os: false
+    };
+
+    return config;
+  }
 }
