@@ -178,7 +178,7 @@ function NavBarMobile() {
   };
 
   const links = Devices.isDesktop()
-    ? ['docs', 'blog', 'download', 'extension', 'forum']
+    ? ['docs', 'blog', 'extension', 'forum']
     : ['docs', 'blog'];
 
   const list = (anchor) => (
@@ -324,13 +324,13 @@ function NavBarDesktop() {
           <Button className={classes.navChoices} color='inherit' href='/blog'>
             blog
           </Button>
-          <Button
+          {/* <Button
             className={classes.navChoices}
             color='inherit'
             href='/download'
           >
             download
-          </Button>
+          </Button> */}
           <Button
             className={classes.navChoices}
             color='inherit'
