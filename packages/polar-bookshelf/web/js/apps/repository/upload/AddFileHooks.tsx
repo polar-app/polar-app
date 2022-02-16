@@ -9,7 +9,7 @@ import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
 import {Either} from "../../../util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
-import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/AccountVerifiedAction";
+import {useAccountVerifiedAction} from "../../../../../apps/repository/js/ui/useAccountVerifiedAction";
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
@@ -20,8 +20,6 @@ import {useDocumentBlockFromDocInfoCreator} from "../../../notes/NoteUtils";
 import {useErrorHandler} from "../../../mui/MUIErrorHandler";
 
 export namespace AddFileHooks {
-
-    import useAccountVerifiedAction = AccountVerifiedAction.useAccountVerifiedAction;
 
     export function useAddFileImporter() {
 
