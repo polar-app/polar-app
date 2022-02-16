@@ -1,43 +1,19 @@
 import * as React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
+import {MUIAppRoot} from "../mui/MUIAppRoot";
+import {BrowserRouter} from "react-router-dom";
 
 interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const StorybookAppRoot = React.memo(function MUIAppRoot(props: IProps) {
-
-    const muiTheme = React.useMemo(() => {
-
-        return createMuiTheme({
-            typography: {
-                htmlFontSize: 12,
-                fontSize: 12
-            },
-            palette: {
-                type: 'dark',
-                primary: {
-                    'main': 'rgb(103, 84, 214)'
-                },
-            }
-        });
-
-
-    }, []);
-
+export const StorybookAppRoot = React.memo(function StorybookAppRoot(props: IProps) {
 
     return (
-        <>
-            <ThemeProvider theme={muiTheme}>
-                <>
-                    <CssBaseline/>
-                    {props.children}
-
-
-                </>
-            </ThemeProvider>
-        </>
+        <BrowserRouter>
+            <MUIAppRoot useRedesign={false} darkMode={true}>
+                {props.children}
+            </MUIAppRoot>
+        </BrowserRouter>
     );
 
 });

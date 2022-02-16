@@ -16,8 +16,8 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {BlockTextContentUtils} from "../../BlockTextContentUtils";
 import {AutoClozeDeletionIcon} from "../../../icons/AutoClozeDeletionIcon";
 import {useAutoClozeDeletionBlock} from "../../../annotation_sidebar/AutoClozeDeletionHook";
-import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/AccountVerifiedAction";
 import {FeatureEnabled} from "../../../features/FeaturesRegistry";
+import {usePremiumFeatureCallback} from "../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -148,7 +148,7 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
             .catch(e => console.error("Could not handle verified action: ", e));
     }, [aiClozeDeletionHandler, aiClozeDeletionState, id]);
 
-    const premiumFeatureCallback = AccountVerifiedAction.usePremiumFeatureCallback(handleAutoCloze);
+    const premiumFeatureCallback = usePremiumFeatureCallback(handleAutoCloze);
 
     return (
         <div className="flashcard-wrapper-item">
@@ -166,7 +166,7 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
 
                             {aiClozeDeletionState === 'idle'
                                 ? <AutoClozeDeletionIcon />
-                                : <CircularProgress size="1.7rem" color="secondary" /> 
+                                : <CircularProgress size="1.7rem" color="secondary" />
                             }
 
                         </IconButton>

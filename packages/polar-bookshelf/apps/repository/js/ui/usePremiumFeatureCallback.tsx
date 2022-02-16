@@ -7,11 +7,30 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanFree = Billing.V2PlanFree;
 
+export function usePremiumFeatureCallbackDialogWarning() {
+
+    const history = useHistory();
+    const dialogManager = useDialogManager();
+
+    return React.useCallback(() => {
+
+        dialogManager.confirm({
+            title: 'Account Upgraded Required',
+            acceptText: "Upgrade Plan",
+            type: 'primary',
+            subtitle: 'This feature is only available in the Plus and Pro plan',
+            onAccept: () => history.push('/plans')
+        });
+
+    }, [dialogManager, history]);
+
+}
+
 export function usePremiumFeatureCallback(delegate: () => void) {
 
     const accountUpgrade = useAccountUpgrader();
-    const dialogManager = useDialogManager();
-    const history = useHistory();
+
+    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
     return React.useCallback(() => {
 
@@ -23,13 +42,7 @@ export function usePremiumFeatureCallback(delegate: () => void) {
                 reason: 'anki_export'
             });
 
-            dialogManager.confirm({
-                title: 'Account Upgraded Required',
-                acceptText: "Upgrade Plan",
-                type: 'primary',
-                subtitle: 'This feature is only available in the Plus and Pro plan',
-                onAccept: () => history.push('/plans')
-            });
+            premiumFeatureCallbackDialogWarning();
 
             return;
 
@@ -37,6 +50,6 @@ export function usePremiumFeatureCallback(delegate: () => void) {
 
         delegate();
 
-    }, [accountUpgrade, dialogManager, history, delegate])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning])
 
 }
