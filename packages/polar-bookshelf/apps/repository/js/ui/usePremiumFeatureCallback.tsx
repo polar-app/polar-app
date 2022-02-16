@@ -50,6 +50,6 @@ export function usePremiumFeatureCallback(delegate: () => void) {
 
         delegate();
 
-    }, [accountUpgrade, delegate])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning])
 
 }
