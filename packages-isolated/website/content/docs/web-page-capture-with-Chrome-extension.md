@@ -14,7 +14,7 @@ Polar’s chrome extension allows you to upload web content to your document lib
 
 Visit this <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd?hl=en" target="_blank">link</a> and click the Add to Chrome button.
 
-<img alt="Pin Chrome extension" src="https://imgur.com/C7zORSs">
+<img alt="Pin Chrome extension" src="https://imgur.com/C7zORSs.png">
 
 If you’ve added the extension and you don’t see it, click the puzzle icon at the top right and pin the extension in the list. That way, it’ll be visible all the time and easier to access
 
@@ -24,11 +24,11 @@ If you’ve added the extension and you don’t see it, click the puzzle icon at
 
 Once you have installed the chrome extension, visit any website and click on the Polar chrome extension.
 
-<img alt="Pin Chrome extension" src="https://imgur.com/ZKwGHVp">
+<img alt="Pin Chrome extension" src="https://imgur.com/ZKwGHVp.png">
 
 Once you click on the chrome extension, wait for the article to load within Polar and then click on “Save to Polar” 
 
-<img alt="Pin Chrome extension" src="https://imgur.com/WjepU3A">
+<img alt="Pin Chrome extension" src="https://imgur.com/WjepU3A.png">
 
 When you capture a web page with the Chrome extension, a snapshot is saved in your repository. Please note, this means that if the website is updated or deleted in the future, those changes will not be reflected in your captured version.
 
