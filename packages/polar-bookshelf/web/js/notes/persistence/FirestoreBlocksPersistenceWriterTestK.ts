@@ -15,9 +15,35 @@ import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWrit
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { FirebaseUserCreator } from "polar-firebase-users/src/FirebaseUserCreator";
+import { Challenges } from "polar-shared/src/util/Challenges"
+import { AuthChallengeCollection } from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import { IFirestore } from "polar-firestore-like/src/IFirestore";
+import { IVerifyTokenAuthRequest, IVerifyTokenAuthResponse, IVerifyTokenAuthResponseError} from "polar-backend-api/src/api/VerifyTokenAuth";
 
 const ID = BlockIDs.createRandom();
+
+async function ClientRPC<R, S, E>(functionName: string, request: R): Promise<S | E> {
+    const url = `https://us-central1-polar-32b0f.cloudfunctions.net/${functionName}/`;
+
+    const init: RequestInit = {
+        mode: "cors",
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request)
+    };
+
+    const response = await fetch(url, init);
+
+    if (response.status === 200) {
+        return await response.json() as S;
+    }
+
+    return await response.json() as E;
+}
 
 describe("FirestoreBlocksPersistenceWriter", () => {
 
@@ -28,11 +54,13 @@ describe("FirestoreBlocksPersistenceWriter", () => {
 
         TestingTime.freeze();
 
+        const token = await FirebaseUserCreator.createCustomTokenForAuth(FirebaseTestingUsers.FIREBASE_USER);
+
         const app = FirebaseBrowser.init();
 
         const auth = app.auth();
 
-        await auth.signInWithEmailAndPassword(FirebaseTestingUsers.FIREBASE_USER, FirebaseTestingUsers.FIREBASE_PASS);
+        await auth.signInWithCustomToken(token);
 
         await FirestoreBlocks.doDelete(ID);
 
