@@ -16,11 +16,7 @@ import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { FirebaseUserCreator } from "polar-firebase-users/src/FirebaseUserCreator";
-import { Challenges } from "polar-shared/src/util/Challenges"
-import { AuthChallengeCollection } from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
-import { IFirestore } from "polar-firestore-like/src/IFirestore";
-import { IVerifyTokenAuthRequest, IVerifyTokenAuthResponse, IVerifyTokenAuthResponseError} from "polar-backend-api/src/api/VerifyTokenAuth";
 
 const ID = BlockIDs.createRandom();
 
