@@ -25,6 +25,7 @@ export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = (props) 
 
         verifiedAction(() => {
             annotationPopupStore.setAiFlashcardStatus("waiting");
+
             handler(annotation.id, BlockTextHighlights.toText(annotation.content.value))
                 .then(() => {
                     annotationPopupStore.setAiFlashcardStatus("idle");
