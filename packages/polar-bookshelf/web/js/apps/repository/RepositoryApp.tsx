@@ -94,6 +94,7 @@ import {InviteScreen} from "../../../../apps/repository/js/login/InviteScreen";
 import {KeyboardShortcuts} from "../../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider2} from '../../undo/UndoQueueProvider2';
 import {ReferralScreen} from "../../../../apps/repository/js/configure/settings/ReferralScreen";
+import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 
 interface IProps {
     readonly app: App;
@@ -326,7 +327,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     return (
         <GlobalProviders>
             <ConsoleError/>
+            <AnalyticsLocationListener/>
             <Switch>
+
 
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>

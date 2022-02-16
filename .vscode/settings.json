@@ -130,10 +130,14 @@
   ],
   //"eslint.workingDirectories": [{ "mode": "auto" }],
   "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": false,
+  "editor.guides.highlightActiveBracketPair": true,
   "files.exclude": {
     ".pytest_cache": true,
     ".pnpm-store": true,
     ".idea": true,
     ".jscpd": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

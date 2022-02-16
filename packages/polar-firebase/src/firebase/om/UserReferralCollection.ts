@@ -7,11 +7,6 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace UserReferralCollection {
 
-    // TODO: there are some more issues here
-    //
-    // - if a user doesn't have an account how do they invite since they don't have a uid
-    // - how are rules permissions setup?
-
     export interface IUserReferral {
 
         readonly id: UIDStr;
@@ -43,8 +38,8 @@ export namespace UserReferralCollection {
         return await Collections.get(firestore, COLLECTION_NAME, uid);
     }
 
-    export async function getByReferralCode<SM = unknown>(firestore: IFirestore<SM>, referral_code: IDStr): Promise<IUserReferral | undefined> {
-        return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['referral_code', '==', referral_code]]));
+    export async function getByUserReferralCode<SM = unknown>(firestore: IFirestore<SM>, user_referral_code: IDStr): Promise<IUserReferral | undefined> {
+        return Arrays.first(await Collections.list(firestore, COLLECTION_NAME, [['user_referral_code', '==', user_referral_code]]));
     }
 
 }

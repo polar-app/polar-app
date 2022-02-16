@@ -17,6 +17,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/settings/user-referral",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/annotations",
         "destination": "/apps/repository/index.html"
       },
@@ -131,6 +135,10 @@
       },
       {
         "source": "/notes/:id",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/invite/:user_referral_code",
         "destination": "/apps/repository/index.html"
       },
       {

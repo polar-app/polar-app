@@ -7,4 +7,7 @@ description:
 
 # Mobile
 
-We don't currently have mobile applications ready for Polar but are actively working on releasing them.  
+Beta versions of our mobile apps are available for <a href="https://play.google.com/store/apps/details?id=io.getpolarized.polar" target="_blank">Android</a>
+ and <a href="https://apps.apple.com/us/app/polar-the-learning-app/id1572700966" target="_blank">iOS</a>.
+ 
+ Please note, those are still beta versions and we're actively working on improving them.

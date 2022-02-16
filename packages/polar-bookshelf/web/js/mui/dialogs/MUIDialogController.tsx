@@ -217,16 +217,20 @@ export const MUIDialogControllerContext = React.createContext<DialogManager>(Nul
 
 /**
  * Component to allow us to inject new components like snackbars, dialog boxes,
- * modals, etc but still use the react tree.
+ * modals, etc but still use the React tree.
  */
 export const MUIDialogController = React.memo(function MUIDialogController(props: IProps) {
 
     const [dialogManager, setDialogManager] = useState<DialogManager | undefined>();
 
+    const handleDialogManager = React.useCallback((dialogManger: DialogManager) => {
+        setDialogManager(dialogManger)
+    }, []);
+
     return (
         <>
 
-            <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
+            <DialogHost onDialogManager={dialogManger => handleDialogManager(dialogManger)}/>
 
             {dialogManager && (
                 <MUIDialogControllerContext.Provider value={dialogManager}>
@@ -238,7 +242,5 @@ export const MUIDialogController = React.memo(function MUIDialogController(props
     );
 
 });
-
-MUIDialogController.displayName='MUIDialogController';
 
 

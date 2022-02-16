@@ -13,6 +13,7 @@ import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
+import {usePremiumFeatureCallback} from "../../ui/usePremiumFeatureCallback";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
 
@@ -78,7 +79,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     }, [dialogManager, errorHandler, ankiDeckDownloadHandler, analytics]);
 
-    const handleExportFlashcards = React.useCallback(() => {
+    const handleExportFlashcardsForPremiumAccount = React.useCallback(() => {
 
         dialogManager.confirm({
             title: "Download your flashcards as an Anki deck",
@@ -89,6 +90,8 @@ export const BlocksExportDropdown: React.FC = () => {
         });
 
     }, [dialogManager, doExportFlashcards]);
+
+    const handleExportFlashcards = usePremiumFeatureCallback(handleExportFlashcardsForPremiumAccount);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 

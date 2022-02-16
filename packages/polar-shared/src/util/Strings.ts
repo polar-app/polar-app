@@ -341,7 +341,12 @@ export type JSONStr = string;
 
 export type DataURLStr = string;
 
-export type UserIDStr = string;
+export type UIDStr = string;
+
+/**
+ * @deprecated use UIDStr
+ */
+export type UserIDStr = UIDStr;
 
 export type CollectionNameStr = string;
 

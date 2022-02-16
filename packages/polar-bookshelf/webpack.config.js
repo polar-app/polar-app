@@ -285,7 +285,7 @@ module.exports = {
         }),
         new NodePolyfillPlugin(),
 
-        // isDevServer && new webpack.HotModuleReplacementPlugin(),
+        isDevServer && new webpack.HotModuleReplacementPlugin(),
         // isDevServer && new ReactRefreshWebpackPlugin(),
         // NOTE: uncomment the following line to add the webpack bundle analyzer
         // plugin.  This is important to keep becuase it allows us to figure out

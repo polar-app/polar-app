@@ -33,10 +33,18 @@ export class DefaultRewrites {
                     "/premium",
                     "/account",
                     "/settings",
+                    "/settings/user-referral",
                     "/profile",
                     "/device",
+                    "/invite",
                     "/error",
                     "/daily"
+                ],
+                "destination": "/apps/repository/index.html"
+            },
+            {
+                "source": [
+                    "/invite/:user_referral_code",
                 ],
                 "destination": "/apps/repository/index.html"
             },

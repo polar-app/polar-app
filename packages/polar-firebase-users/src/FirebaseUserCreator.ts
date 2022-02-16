@@ -7,8 +7,17 @@ import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBa
 import {UserPrefCollection} from "polar-firebase/src/firebase/om/UserPrefCollection";
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {Testing} from "polar-shared/src/util/Testing";
+import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
+import {EmailStr} from "polar-shared/src/util/Strings";
+import {Nonces} from "polar-shared/src/util/Nonces";
 
 export namespace FirebaseUserCreator {
+
+    export interface IFirebaseUserRecord {
+        readonly uid: UserIDStr;
+        readonly email: EmailStr;
+    }
 
     export async function createMigrationForBlockAnnotations(uid: UserIDStr) {
         const firestore = FirestoreAdmin.getInstance();
@@ -69,13 +78,17 @@ export namespace FirebaseUserCreator {
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb');
         await MigrationCollection.markMigrationCompleted(firestore, user.uid, 'block-usertagsdb3');
 
-        await sendWelcomeEmail(email);
+        await FirebaseUserUpgrader.upgrade(user.uid);
+
+        if (!Testing.isTestingRuntime()) {
+            await sendWelcomeEmail(email);
+        }
 
         if (opts.fixed_challenge) {
             await defineFixedChallenge(email, opts.fixed_challenge);
         }
 
-        if (opts.referral_code) {
+        if (opts.referral_code && !Testing.isTestingRuntime()) {
             await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
         }
 
@@ -92,17 +105,38 @@ export namespace FirebaseUserCreator {
         return await auth.createCustomToken(user.uid);
     }
 
-    /**
-     *
-     * Generates a test user that has an email of format:
-     * test+xxx@getpolarized.io
-     * 'xxx' suffix is replaced with the current timestamp
-     *
-     */
-    export async function createTestUser() {
-        const email = ` getpolarized.test+${Date.now()}@getpolarized.io`;
+    const NONCE_GENERATOR = Nonces.createFactory();
 
-        return await create(email);
+    /**
+     * Generate a test user email following a pattern that allows us to easily
+     * discard new accounts.
+     *
+     * @param hint Include this in the email for debug purposes.
+     */
+    export function createTestUserEmail(hint?: string): EmailStr {
+
+        const nonce = NONCE_GENERATOR();
+
+        if (hint) {
+            return `getpolarized.test+${hint}-${Date.now()}-${nonce}@getpolarized.io`
+        }
+
+        return `getpolarized.test+${Date.now()}-${nonce}@getpolarized.io`
+
+    }
+
+    /**
+     * Generate a test user
+     */
+    export async function createTestUser(hint?: string): Promise<IFirebaseUserRecord> {
+
+        const email = createTestUserEmail(hint);
+        const user = await create(email);
+
+        return {
+            uid: user.uid,
+            email
+        }
 
     }
 

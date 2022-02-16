@@ -5,6 +5,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Lazy} from "polar-shared/src/util/Lazy";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());
@@ -100,7 +101,7 @@ export namespace Accounts {
             (account as any).expiresAt = expiresAt;
         }
 
-        await Accounts.write(account);
+        await Accounts.write(Dictionaries.onlyDefinedProperties(account));
 
     }
 

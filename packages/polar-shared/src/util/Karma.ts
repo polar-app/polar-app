@@ -1,7 +1,7 @@
 export namespace Karma {
 
     export function isKarma() {
-        return (window as any).__karma__ !== undefined;
+        return typeof window !== "undefined" && (window as any).__karma__ !== undefined;
     }
 
 }
