@@ -49,9 +49,15 @@ export namespace FirebaseUserPurger {
             async function doPurgeCollection(collectionName: string) {
 
                 console.log("Purging collection: " + collectionName);
+                
+                let uidField = 'uid';
 
-                const records = await Collections.list<IRecord>(firestore, collectionName, [['uid', '==', uid]]);
+                if (collectionName === 'user_referral') {
+                    uidField = 'referrer_uid'
+                } 
 
+                const records = await Collections.list<IRecord>(firestore, collectionName, [[uidField, '==', uid]]);
+                
                 // TODO: would be faster to do this via matches.
                 for(const record of records) {
                     await Collections.doDelete(firestore, collectionName, record.id);
