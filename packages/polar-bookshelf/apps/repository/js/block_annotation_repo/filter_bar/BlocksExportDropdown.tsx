@@ -13,10 +13,9 @@ import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
-import {AccountVerifiedAction} from "../../ui/AccountVerifiedAction";
+import {usePremiumFeatureCallback} from "../../ui/usePremiumFeatureCallback";
 import FlashcardExportRequest = FlashcardsExport.FlashcardExportRequest;
 import FlashcardExportResponse = FlashcardsExport.FlashcardExportResponse;
-import usePremiumFeatureCallback = AccountVerifiedAction.usePremiumFeatureCallback;
 
 function useAnkiDeckDownloadHandler() {
 
