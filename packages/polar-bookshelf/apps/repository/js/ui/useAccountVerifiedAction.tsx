@@ -9,11 +9,29 @@ import {AccountUpgrades} from "../../../../web/js/accounts/AccountUpgrades";
 import AccountUpgradeReason = AccountUpgrades.AccountUpgradeReason;
 import V2Plan = Billing.V2Plan;
 
+export function useAccountVerifiedActionDialogWarning() {
+
+    const dialogs = useDialogManager();
+    const history = useHistory();
+
+    return React.useCallback((reason: AccountUpgrades.AccountUpgradeReason, plan: Billing.V2Plan) => {
+        dialogs.confirm({
+            title: 'Account Upgraded Required',
+            acceptText: "Upgrade Plan",
+            type: 'primary',
+            subtitle: <WarningSelector reason={reason} plan={plan}/>,
+            onAccept: () => history.push('/plans')
+        })
+
+    }, [dialogs, history]);
+
+}
+
 export function useAccountVerifiedAction() {
 
     const accountUpgrade = useAccountUpgrader();
-    const dialogs = useDialogManager();
-    const history = useHistory();
+
+    const accountVerifiedActionDialogWarning = useAccountVerifiedActionDialogWarning();
 
     return React.useCallback((delegate: () => void) => {
 
@@ -23,19 +41,13 @@ export function useAccountVerifiedAction() {
                 reason: accountUpgrade.reason
             });
 
-            dialogs.confirm({
-                title: 'Account Upgraded Required',
-                acceptText: "Upgrade Plan",
-                type: 'primary',
-                subtitle: <WarningSelector reason={accountUpgrade.reason} plan={accountUpgrade.plan}/>,
-                onAccept: () => history.push('/plans')
-            })
+            accountVerifiedActionDialogWarning(accountUpgrade.reason, accountUpgrade.plan);
 
         } else {
             delegate();
         }
 
-    }, [accountUpgrade?.plan, accountUpgrade?.reason, accountUpgrade?.required, dialogs, history]);
+    }, [accountUpgrade?.plan, accountUpgrade?.reason, accountUpgrade?.required, accountVerifiedActionDialogWarning]);
 
 }
 
