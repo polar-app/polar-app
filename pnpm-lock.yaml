@@ -442,6 +442,7 @@ importers:
       polar-firebase: 0.0.0
       polar-firebase-browser: 0.0.0
       polar-firebase-test: 0.0.0
+      polar-firebase-users: 0.0.0
       polar-firestore-like: 0.0.0
       polar-html: 0.0.0
       polar-markdown-parser: 0.0.0
@@ -588,6 +589,7 @@ importers:
       jsdom: 19.0.0
       karma-structured-json-reporter: 1.0.1
       mocha: 9.1.1
+      polar-firebase-users: link:../polar-firebase-users
       polar-test: link:../polar-test
       userflow.js: 2.2.0
       wait-for-expect: 3.0.1
