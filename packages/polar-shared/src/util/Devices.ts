@@ -48,6 +48,12 @@ export class Devices {
         return this.get() === 'tablet';
     }
 
+    public static isNativeMobileApp(): boolean {
+        // This flag is ONLY set programmatically through the React Native app,
+        // embedding the React app inside its WebView
+        return !!(window as any).isNativeApp;
+    }
+
 }
 
 export type Device = 'phone' | 'tablet' | 'desktop';

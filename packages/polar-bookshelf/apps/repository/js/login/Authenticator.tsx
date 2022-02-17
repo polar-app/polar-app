@@ -20,7 +20,9 @@ import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
 import {IRPCError} from "polar-shared/src/util/IRPCError";
+import {Devices} from "polar-shared/src/util/Devices";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {NativeAppDownloadLinks} from "./NativeAppDownloadLinks/NativeAppDownloadLinks";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -470,6 +472,7 @@ const SignInWithExistingAccountButton = () => {
 
     const history = useHistory();
 
+
     return (
         <div style={{textAlign: 'center'}}>
             <Button variant="text" onClick={() => history.push('/sign-in')}>
@@ -556,9 +559,9 @@ export const AuthContent = React.memo(function AuthContent(props: AuthContentPro
 
                 {props.alternative}
 
-                <Box m={2} flexGrow={1}>
+                {props.alternative && <Box m={2} flexGrow={1}>
                     <Divider/>
-                </Box>
+                </Box>}
                 <AuthLegalDisclaimer/>
             </div>
         </>
@@ -566,13 +569,27 @@ export const AuthContent = React.memo(function AuthContent(props: AuthContentPro
 });
 
 export const PrivateBetaRegisterAuthContent = () => {
+    const isMobile = (Devices.isPhone() || Devices.isTablet());
+    const isNativeApp = Devices.isNativeMobileApp();
+
+    // Prevent showing Sign In link on mobile browsers
+    const shouldPushToNativeApp = !isNativeApp && isMobile;
+
     return (
-        <AuthContent title="Join the Waiting List"
-                     alternative={<SignInWithExistingAccountButton/>}>
+        <>
+            <AuthContent title="Join the Waiting List"
+                         alternative={shouldPushToNativeApp
+                             ? undefined
+                             : <SignInWithExistingAccountButton/>}>
 
-            <RegisterForBetaButton/>
+                <RegisterForBetaButton/>
 
-        </AuthContent>
+            </AuthContent>
+
+            {shouldPushToNativeApp && <div style={{marginTop: '1em'}}>
+                <NativeAppDownloadLinks/>
+            </div>}
+        </>
     )
 }
 
