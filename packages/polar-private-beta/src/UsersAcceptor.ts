@@ -18,7 +18,7 @@ export namespace UsersAcceptor {
      * Define a list of users that can invoke this cloud function
      * for accepting users into the private beta
      */
-    export function authorized(idUser: IDUser) {
+    export function userCanAcceptWaitingUsers(idUser: IDUser) {
         const allowedEmails = [
             'dzhuneyt@getpolarized.io',
             'jonathan@getpolarized.io',
@@ -26,12 +26,14 @@ export namespace UsersAcceptor {
             'jonathan.graeupner@gmail.com',
             'jwalkenhorst.social@gmail.com',
             'anas@getpolarized.io',
+            'michael.desutter@gmail.com',
+            'sarah@getpolarized.io',
         ];
-        return allowedEmails.includes(idUser.user.email as string);
+        return allowedEmails.includes(idUser.user.email.toLowerCase());
     }
 
     export const exec = async (idUser: IDUser, request: IUsersAcceptorRequest): Promise<IUsersAcceptorResponse> => {
-        if (!authorized(idUser)) {
+        if (!userCanAcceptWaitingUsers(idUser)) {
             throw new Error('Not authorized');
         }
 
