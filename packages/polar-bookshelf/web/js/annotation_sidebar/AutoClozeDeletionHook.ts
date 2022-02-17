@@ -3,9 +3,11 @@ import {AutoClozeDeletionRequests} from "../api/AutoClozeDeletionRequests";
 import {AutoClozeDeletions} from 'polar-backend-api/src/api/AutoClozeDeletion';
 import {useLogger} from '../mui/MUILogger';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {useBlocksStore} from "../notes/store/BlocksStore";
 import {Analytics} from "../analytics/Analytics";
-import {BlockPredicates} from "../notes/store/BlockPredicates";
+import {useAnnotationBlockManager} from "../notes/HighlightBlocksHooks";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 export type IAutoClozeDeletionHandlerState = 'idle' | 'waiting';
 
@@ -50,30 +52,27 @@ export type IAutoClozeDeletionTuple = [IAutoClozeDeletionHandlerState, IAutoCloz
 export function useAutoClozeDeletionBlock(): IAutoClozeDeletionTuple {
 
     const [state, aiClozeDeletionHandler] = useAIClozeDeletion();
-    const blocksStore = useBlocksStore();
+    const { getBlock, createFlashcard } = useAnnotationBlockManager();
 
-    const handler = React.useCallback(async (id: BlockIDStr) => {
-        const block = blocksStore.getBlock(id);
+    const handler = React.useCallback(async (parentID: BlockIDStr) => {
+        const block = getBlock(parentID, AnnotationContentType.TEXT_HIGHLIGHT);
 
-        if (! block || ! BlockPredicates.isClozeFlashcardBlock(block)) {
-            return console.error('Can\'t use ai cloze deletion with non cloze flashcard blocks');
+        if (! block) {
+            return;
         }
 
         const content = block.content.toJSON();
 
-        const { text: clozeText } = await aiClozeDeletionHandler(content.value.fields.text);
+        const { text: clozeText } = await aiClozeDeletionHandler(BlockTextHighlights.toText(content.value));
 
-        blocksStore.setBlockContent(id, {
-            ...content,
-            value: {
-                ...content.value,
-                fields: { text: clozeText }
-            }
+        createFlashcard(parentID, {
+            type: FlashcardType.CLOZE,
+            text: clozeText,
         });
 
         Analytics.event2('ai-cloze-deletion');
 
-    }, [blocksStore, aiClozeDeletionHandler]);
+    }, [getBlock, createFlashcard, aiClozeDeletionHandler]);
 
     return [state, handler];
 
