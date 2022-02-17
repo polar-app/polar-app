@@ -52,6 +52,6 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
 
         delegate();
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason])
 
 }
