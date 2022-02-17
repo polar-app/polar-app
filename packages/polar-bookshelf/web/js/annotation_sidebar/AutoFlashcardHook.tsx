@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {AutoFlashcardRequests} from "../api/AutoFlashcardRequests";
-import {useLogger} from '../mui/MUILogger';
 import {AutoFlashcards} from 'polar-backend-api/src/api/AutoFlashcards';
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Analytics} from "../analytics/Analytics";
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
 import {useAnnotationBlockManager} from '../notes/HighlightBlocksHooks';
+import {useErrorHandler} from "../mui/MUIErrorHandler";
 
 export type IAutoFlashcardHandlerState = 'idle' | 'waiting';
 
@@ -15,7 +15,7 @@ export type IAutoFlashcardCreator = () => Promise<void>;
 export type IAutoFlashcardHandlerTuple = [IAutoFlashcardHandlerState, IAutoFlashcardHandler];
 
 export function useAIFlashcardHandler(): IAutoFlashcardHandlerTuple  {
-    const log = useLogger();
+    const errorHandler = useErrorHandler();
     const [state, setState] = React.useState<IAutoFlashcardHandlerState>('idle');
 
     const handler = React.useCallback(async (text: string) => {
@@ -27,7 +27,7 @@ export function useAIFlashcardHandler(): IAutoFlashcardHandlerTuple  {
             const response = await AutoFlashcardRequests.exec({ query_text: text });
 
             if (AutoFlashcards.isError(response)) {
-                log.error("Unable to automatically compute flashcard: ", response.error);
+                errorHandler("Unable to automatically compute flashcard: ", response.error);
                 throw response;
             }
 
@@ -40,7 +40,7 @@ export function useAIFlashcardHandler(): IAutoFlashcardHandlerTuple  {
             setState('idle');
         }
 
-    }, [setState, log]);
+    }, [setState, errorHandler]);
 
     return [state, handler];
 }

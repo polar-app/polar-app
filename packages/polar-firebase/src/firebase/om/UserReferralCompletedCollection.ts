@@ -4,6 +4,9 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
+/**
+ * @deprecated
+ */
 export namespace UserReferralCompletedCollection {
 
     import RandomHashcodeStr = Hashcodes.RandomHashcodeStr;

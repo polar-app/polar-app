@@ -21,6 +21,7 @@ import {AdaptiveDialog} from "../../../../web/js/mui/AdaptiveDialog";
 import {EmailAddressParser} from '../../../../web/js/util/EmailAddressParser';
 import {IRPCError} from "polar-shared/src/util/IRPCError";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {LoginURLs} from "./LoginURLs";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -176,6 +177,19 @@ const EmailTokenAuthButton = () => {
 
     }, [doTriggerVerifyTokenAuth])
 
+    const updateStateForStartTokenAuth = React.useCallback(() => {
+
+        Analytics.event2("auth:EmailTokenAuthStarted", {resend: triggeredRef.current})
+
+        setTriggered(true);
+
+        setAlert({
+            type: 'success',
+            message: 'Check your email for a code to login to your account!'
+        });
+
+    }, [setTriggered, triggeredRef]);
+
     const doTriggerStartTokenAuth = React.useCallback(async (email: string) => {
 
         setAlert(undefined);
@@ -184,18 +198,11 @@ const EmailTokenAuthButton = () => {
 
             try {
 
-                Analytics.event2("auth:EmailTokenAuthStarted", {resend: triggeredRef.current})
-
                 setPending(true);
 
                 await triggerStartTokenAuth(email, triggeredRef.current);
 
-                setTriggered(true);
-
-                setAlert({
-                    type: 'success',
-                    message: 'Check your email for a code to login to your account!'
-                });
+                updateStateForStartTokenAuth();
 
             } finally {
                 setPending(false);
@@ -208,7 +215,7 @@ const EmailTokenAuthButton = () => {
             });
         }
 
-    }, [triggerStartTokenAuth, setTriggered, triggeredRef]);
+    }, [triggerStartTokenAuth, triggeredRef, updateStateForStartTokenAuth]);
 
     const handleTriggerStartTokenAuth = React.useCallback((email: string) => {
 
@@ -259,6 +266,16 @@ const EmailTokenAuthButton = () => {
         }
 
     }, [active, handleEmailProvided, handleTriggerVerifyTokenAuth, triggered])
+
+    React.useEffect(() => {
+
+        const loginURL = LoginURLs.parse();
+
+        if (loginURL.email) {
+            updateStateForStartTokenAuth();
+        }
+
+    }, [updateStateForStartTokenAuth]);
 
     return (
         <>
