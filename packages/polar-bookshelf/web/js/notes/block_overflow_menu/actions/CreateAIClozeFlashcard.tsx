@@ -5,7 +5,6 @@ import {CircularProgress} from "@material-ui/core";
 import {useAutoClozeDeletionBlock} from "../../../annotation_sidebar/AutoClozeDeletionHook";
 import {usePremiumFeatureCallback} from "../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
 import {AutoClozeDeletionIcon} from "../../../icons/AutoClozeDeletionIcon";
-import {FeatureEnabled} from "../../../features/FeaturesRegistry";
 
 export const CreateAIClozeFlashcard: React.FC<IBlockOverflowMenuActionProps> = (props) => {
     const { id } = props;
@@ -23,15 +22,11 @@ export const CreateAIClozeFlashcard: React.FC<IBlockOverflowMenuActionProps> = (
     const triggerAutoCloze = usePremiumFeatureCallback(handleAutoCloze);
 
     return (
-        <FeatureEnabled feature="ai-cloze-deletions">
-            <>
-                <MUIMenuItem onClick={triggerAutoCloze}
-                             disabled={aiClozeDeletionState === 'waiting'}
-                             icon={aiClozeDeletionState === 'waiting'
-                                ? <CircularProgress size="1.8rem" color="secondary" /> 
-                                : <AutoClozeDeletionIcon />}
-                             text="Create AI cloze flashcard" />
-            </>
-        </FeatureEnabled>
+        <MUIMenuItem onClick={triggerAutoCloze}
+                     disabled={aiClozeDeletionState === 'waiting'}
+                     icon={aiClozeDeletionState === 'waiting'
+                        ? <CircularProgress size="1.8rem" color="secondary" /> 
+                        : <AutoClozeDeletionIcon />}
+                     text="Create AI cloze flashcard" />
     );
 };
