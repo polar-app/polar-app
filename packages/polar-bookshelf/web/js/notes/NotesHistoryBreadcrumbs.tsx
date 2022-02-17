@@ -1,5 +1,5 @@
 import React from 'react';
-import {Breadcrumbs, MenuItem, Popover} from "@material-ui/core";
+import {Breadcrumbs, createStyles, makeStyles, MenuItem, Popover} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -111,10 +111,32 @@ export function useNotesHistory() {
 
 }
 
+const useStyles = makeStyles(() =>
+    createStyles({
+        breadcrumbsOuter: {
+            minWidth: 0,
+        },
+        breadcrumbsInner: {
+            flexWrap: 'nowrap',
+        },
+        breadcrumb: {
+            '&:last-child': {
+                minWidth: 0,
+            },
+        },
+        title: {
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        },
+    }),
+);
+
 export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
     const theme = useTheme()
     const history = useHistory();
+    const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -174,7 +196,7 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
             </Popover>
 
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
+            <Breadcrumbs classes={{ root: classes.breadcrumbsOuter, ol: classes.breadcrumbsInner, li: classes.breadcrumb }} separator="›" aria-label="breadcrumb">
 
                 <div/>
 
@@ -194,7 +216,7 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
                     </Button>
                 )}
 
-                <Typography color="textPrimary">{props.history[props.history.length - 1].title}</Typography>
+                <Typography color="textPrimary" className={classes.title}>{props.history[props.history.length - 1].title}</Typography>
 
             </Breadcrumbs>
 

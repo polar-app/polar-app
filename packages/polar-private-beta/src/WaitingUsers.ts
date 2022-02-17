@@ -1,6 +1,7 @@
 import {IDUser} from "polar-rpc/src/IDUser";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
+import {UsersAcceptor} from "./UsersAcceptor";
 
 export namespace WaitingUsers {
 
@@ -12,25 +13,8 @@ export namespace WaitingUsers {
         error: string,
     }
 
-    /**
-     * If the provided user can list the waiting users list
-     * @param idUser
-     * @private
-     */
-    function isAuthorized(idUser: IDUser) {
-        const allowed = [
-            'dzhuneyt@getpolarized.io',
-            'jonathan@getpolarized.io',
-            'burton@getpolarized.io',
-            'jonathan.graeupner@gmail.com',
-            'jwalkenhorst.social@gmail.com',
-            'anas@getpolarized.io',
-        ];
-        return allowed.includes(idUser.user.email);
-    }
-
     export async function getList(idUser: IDUser): Promise<Response | ErrorResponse> {
-        if (!isAuthorized(idUser)) {
+        if (!UsersAcceptor.userCanAcceptWaitingUsers(idUser)) {
             return {error: 'Not authorized'}
         }
 

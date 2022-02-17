@@ -24,7 +24,6 @@ import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 import {observer} from "mobx-react-lite";
 import {useDeleteAnnotation} from "./Actions/DeleteAnnotation";
 import {AutoClozeDeletionIcon} from "../../../../../web/js/icons/AutoClozeDeletionIcon";
-import {FeatureEnabled} from "../../../../../web/js/features/FeaturesRegistry";
 
 const IS_HANDHELD = ! Devices.isDesktop();
 
@@ -91,18 +90,16 @@ export const AnnotationPopupBar: React.FC = observer(() => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                <FeatureEnabled feature="ai-cloze-deletions">
-                    <ActionButton
-                        tooltip="Create cloze flashcard automatically (h)"
-                        action={AnnotationPopupActionEnum.CREATE_AI_CLOZE_FLASHCARD}
-                        disabled={annotationPopupStore.aiClozeFlashcardStatus === "waiting"}
-                    >
-                        {annotationPopupStore.aiClozeFlashcardStatus === "waiting"
-                            ? <CircularProgress size={ theme.typography.pxToRem(24) } color="secondary"/>
-                            : <AutoClozeDeletionIcon/>
-                        }
-                    </ActionButton>
-                </FeatureEnabled>
+                <ActionButton
+                    tooltip="Create cloze flashcard automatically (h)"
+                    action={AnnotationPopupActionEnum.CREATE_AI_CLOZE_FLASHCARD}
+                    disabled={annotationPopupStore.aiClozeFlashcardStatus === "waiting"}
+                >
+                    {annotationPopupStore.aiClozeFlashcardStatus === "waiting"
+                        ? <CircularProgress size={ theme.typography.pxToRem(24) } color="secondary"/>
+                        : <AutoClozeDeletionIcon/>
+                    }
+                </ActionButton>
                 <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
                     <LocalOfferIcon />
                 </ActionButton>
