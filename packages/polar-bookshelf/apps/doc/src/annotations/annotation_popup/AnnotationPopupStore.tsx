@@ -1,5 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import {IAutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {IAutoClozeDeletionHandlerState} from "../../../../../web/js/annotation_sidebar/AutoClozeDeletionHook";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
@@ -15,6 +16,7 @@ export class AnnotationPopupStore {
     @observable private _selectionEvent: ActiveSelectionEvent | undefined = undefined;
     @observable private _activeAction: AnnotationPopupActionEnum | undefined = undefined;
     @observable private _aiFlashcardStatus: IAutoFlashcardHandlerState = 'idle';
+    @observable private _aiClozeFlashcardStatus: IAutoClozeDeletionHandlerState = 'idle';
 
     public createAnnotationFromSelectionEvent: IAnnotationCreator;
 
@@ -42,6 +44,10 @@ export class AnnotationPopupStore {
         return this._aiFlashcardStatus;
     }
 
+    get aiClozeFlashcardStatus() {
+        return this._aiClozeFlashcardStatus;
+    }
+
     @action setSelection(event: ActiveSelectionEvent) {
         this._selectionEvent = event;
     }
@@ -52,6 +58,10 @@ export class AnnotationPopupStore {
 
     @action setAiFlashcardStatus(status: IAutoFlashcardHandlerState) {
         this._aiFlashcardStatus = status;
+    }
+
+    @action setAiClozeFlashcardStatus(status: IAutoClozeDeletionHandlerState) {
+        this._aiClozeFlashcardStatus = status;
     }
 
     @action toggleActiveAction(action: AnnotationPopupActionEnum) {

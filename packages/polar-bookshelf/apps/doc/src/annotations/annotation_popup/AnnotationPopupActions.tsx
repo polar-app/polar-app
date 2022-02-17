@@ -11,6 +11,7 @@ import {IAnnotationPopupActionProps} from "./IAnnotationPopupActionProps";
 import {useAnnotationPopupStyles} from "./UseAnnotationPopupStyles";
 import {ColorPicker} from "./Actions/ColorPicker";
 import {observer} from "mobx-react-lite";
+import {CreateAIClozeFlashcard} from "./Actions/CreateAIClozeFlashcard";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -31,6 +32,7 @@ const ACTIONS: Record<AnnotationPopupActionEnum, React.FC<IAnnotationPopupAction
     [AnnotationPopupActionEnum.EDIT]: EditAnnotation,
     [AnnotationPopupActionEnum.CREATE_FLASHCARD]: CreateFlashcard,
     [AnnotationPopupActionEnum.CREATE_AI_FLASHCARD]: CreateAIFlashcard,
+    [AnnotationPopupActionEnum.CREATE_AI_CLOZE_FLASHCARD]: CreateAIClozeFlashcard,
     [AnnotationPopupActionEnum.EDIT_TAGS]: EditTags,
 };
 
