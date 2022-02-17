@@ -19,14 +19,14 @@ export const CreateAIClozeFlashcard: React.FC<IBlockOverflowMenuActionProps> = (
             .catch(e => console.error("Could not handle verified action: ", e));
     }, [aiClozeDeletionHandler, aiClozeDeletionState, id]);
 
-    const triggerAutoCloze = usePremiumFeatureCallback(handleAutoCloze);
+    const triggerAutoCloze = usePremiumFeatureCallback('ai-cloze-flashcard', handleAutoCloze);
 
     return (
-        <MUIMenuItem onClick={triggerAutoCloze}
-                     disabled={aiClozeDeletionState === 'waiting'}
-                     icon={aiClozeDeletionState === 'waiting'
-                        ? <CircularProgress size="1.8rem" color="secondary" /> 
-                        : <AutoClozeDeletionIcon />}
-                     text="Create AI cloze flashcard" />
+                <MUIMenuItem onClick={triggerAutoCloze}
+                             disabled={aiClozeDeletionState === 'waiting'}
+                             icon={aiClozeDeletionState === 'waiting'
+                                ? <CircularProgress size="1.8rem" color="secondary" />
+                                : <AutoClozeDeletionIcon />}
+                             text="Create AI cloze flashcard" />
     );
 };
