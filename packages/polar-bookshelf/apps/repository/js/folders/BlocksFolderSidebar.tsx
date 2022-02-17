@@ -10,7 +10,10 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {Box} from "@material-ui/core";
-import {useBlocksFolderSidebarDropHandler, useBlocksFolderSidebarStore} from "../folder_sidebar/BlocksFolderSidebarStore";
+import {
+    useBlocksFolderSidebarDropHandler,
+    useBlocksFolderSidebarStore
+} from "../folder_sidebar/BlocksFolderSidebarStore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {observer} from "mobx-react-lite";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -19,6 +22,7 @@ import {Paths} from "polar-shared/src/util/Paths";
 import {BlocksFolderSidebarMenu} from "./BlocksFolderSidebarMenu";
 import {TagType} from "polar-shared/src/tags/Tags";
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -56,7 +60,7 @@ export const useCreateBlockUserTagDialog = () => {
     const dialogs = useDialogManager();
     const createBlockUserTag = useCreateBlockUserTag();
     const folderSidebarStore = useBlocksFolderSidebarStore();
-    
+
     return React.useCallback((type: TagType) => () => {
         const getLabel = (text: string): string => {
             switch (type) {
@@ -84,7 +88,7 @@ export const useRenameBlockUserTagDialog = () => {
     const dialogs = useDialogManager();
     const renameBlockUserTag = useRenameBlockUserTag();
     const folderSidebarStore = useBlocksFolderSidebarStore();
-    
+
     return React.useCallback((type: TagType) => () => {
         const tagToBeRenamed = folderSidebarStore.selectedTags[0];
 
@@ -150,7 +154,7 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
     const handleSetFilter = React.useCallback((filter: string) => folderSidebarStore.setFilter(filter), [folderSidebarStore]);
 
     return (
-        <MUIElevation className={clsx("FolderSidebar2", classes.root)}
+        <MUIElevation className={clsx("BlocksFolderSidebar", classes.root)}
                       elevation={2}>
             <MUIPaperToolbar borderBottom>
                 {props.header && <Box px={1} display="flex" children={props.header} />}
@@ -187,6 +191,11 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
                         </FoldersContextMenu>
                     </Box>
                 )}
+
+                <ListSubheader component="div"
+                               style={{paddingLeft: 0, lineHeight: '2.5rem'}}>
+                    Tags
+                </ListSubheader>
 
                 <TagsContextMenu>
                     <MUITagList tags={folderSidebarStore.tagsView}
