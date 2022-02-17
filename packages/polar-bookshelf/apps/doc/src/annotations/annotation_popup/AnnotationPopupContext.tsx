@@ -163,14 +163,13 @@ const AnnotationPopupListeners: React.FC<IAnnotationPopupListenersProps> = (prop
     React.useEffect(() => {
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
+            annotationPopupStore.reset();
             if (event.type === "created") {
                 if (textHighlightColorRef.current) {
                     createAnnotationFromSelectionEvent(textHighlightColorRef.current, event);
                 } else {
                     annotationPopupStore.setSelection(event);
                 }
-            } else {
-                annotationPopupStore.reset();
             }
         };
 
