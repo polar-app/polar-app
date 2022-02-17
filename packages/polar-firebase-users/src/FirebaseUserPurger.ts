@@ -46,7 +46,9 @@ export namespace FirebaseUserPurger {
                     'user_trait',
                 ],
                 'referrer_uid': [
-                    'user_referral'
+                    'user_referral',
+                    'user_referral_attempt',
+                    'user_referral_completed'
                 ]
             }
 
