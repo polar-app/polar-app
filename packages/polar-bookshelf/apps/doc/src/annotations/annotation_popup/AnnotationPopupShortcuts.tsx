@@ -60,23 +60,29 @@ const annotationBarKeyMap = keyMapWithGroup({
             sequences: [{ keys: "g", platforms: ['macos', 'windows', 'linux']}],
             priority: 5,
         },
+        CREATE_AI_CLOZE_FLASHCARD: {
+            name: "Create AI Cloze Flashcard",
+            description: "Generate an AI cloze deletion flashcard for the selected annotation",
+            sequences: [{ keys: "h", platforms: ['macos', 'windows', 'linux']}],
+            priority: 6,
+        },
         EDIT_TAGS: {
             name: "Edit Tags",
             description: "Edit the tags of the selected annotation",
             sequences: [{ keys: "t", platforms: ['macos', 'windows', 'linux']}],
-            priority: 6,
+            priority: 7,
         },
         COPY_ANNOTATION: {
             name: "Copy Annotation",
             description: "Copy the text of the selected annotation",
             sequences: [{ keys: "ctrl+c", platforms: ['windows','linux']}, {keys: "command+c", platforms: ['macos']}],
-            priority: 7,
+            priority: 8,
         },
         DELETE: {
             name: "Delete Annotation",
             description: "Deleted the selected annotation",
             sequences: [{ keys: "d", platforms: ['macos', 'windows', 'linux']}],
-            priority: 8,
+            priority: 9,
         },
     },
 });
@@ -95,6 +101,7 @@ export const AnnotationPopupShortcuts: React.FC = () => {
         CREATE_COMMENT: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_COMMENT),
         CREATE_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_FLASHCARD),
         CREATE_AI_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
+        CREATE_AI_CLOZE_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_AI_CLOZE_FLASHCARD),
         EDIT_TAGS: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT_TAGS),
         DELETE: () => deleteAnnotationRef.current(),
     }), [toggleActionRef, copyAnnotationRef, deleteAnnotationRef]);
