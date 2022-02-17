@@ -25,12 +25,13 @@ import {InputEscapeListener} from "../../../../../web/js/mui/complete_listeners/
 import {AnnotationPopupStore, IAnnotationCreator} from "./AnnotationPopupStore";
 
 export enum AnnotationPopupActionEnum {
-    CHANGE_COLOR = "CHANGE_COLOR",
-    EDIT = "EDIT",
-    CREATE_COMMENT = "CREATE_COMMENT",
-    CREATE_FLASHCARD = "CREATE_FLASHCARD",
-    CREATE_AI_FLASHCARD = "CREATE_AI_FLASHCARD",
-    EDIT_TAGS = "EDIT_TAGS",
+    CHANGE_COLOR              = "CHANGE_COLOR",
+    EDIT                      = "EDIT",
+    CREATE_COMMENT            = "CREATE_COMMENT",
+    CREATE_FLASHCARD          = "CREATE_FLASHCARD",
+    CREATE_AI_FLASHCARD       = "CREATE_AI_FLASHCARD",
+    CREATE_AI_CLOZE_FLASHCARD = "CREATE_AI_CLOZE_FLASHCARD",
+    EDIT_TAGS                 = "EDIT_TAGS",
 };
 
 interface IAnnotationPopupProviderProps {
