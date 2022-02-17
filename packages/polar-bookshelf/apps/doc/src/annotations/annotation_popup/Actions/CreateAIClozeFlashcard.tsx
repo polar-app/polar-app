@@ -2,7 +2,7 @@ import React from "react";
 import {IAnnotationPopupActionProps} from "../IAnnotationPopupActionProps";
 import {useAnnotationPopupStore} from "../AnnotationPopupContext";
 import {useAutoClozeDeletionBlock} from "../../../../../../web/js/annotation_sidebar/AutoClozeDeletionHook";
-import {usePremiumFeatureCallback} from "../../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
+import {usePremiumFeatureCallback} from "../../../../../repository/js/ui/usePremiumFeatureCallback";
 
 export const CreateAIClozeFlashcard: React.FC<IAnnotationPopupActionProps> = (props) => {
     const { annotationID } = props;
@@ -27,7 +27,7 @@ export const CreateAIClozeFlashcard: React.FC<IAnnotationPopupActionProps> = (pr
             });
     }, [annotationID, annotationPopupStore, aiClozeDeletionHandler]);
 
-    const triggerAIClozeFlashcard = usePremiumFeatureCallback(handleAIClozeFlashcard);
+    const triggerAIClozeFlashcard = usePremiumFeatureCallback('ai-cloze-flashcard', handleAIClozeFlashcard);
 
     React.useEffect(() => {
 
