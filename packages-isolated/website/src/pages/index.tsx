@@ -52,6 +52,26 @@ const theme = createMuiTheme({
     }
 });
 
+const ExistingUsersCTA = () => {
+    const isMobile = window.screen.width <= 1024; // covers Phone and Tablet
+
+    if (isMobile) {
+        return <div style={{marginBottom: '10px'}}>
+            Already a user?{" "}
+            <a style={{color: "#A88CFF"}} href={'/download-app'}>
+                Download
+            </a> the app now
+        </div>;
+    }
+
+    return <div style={{marginBottom: '10px'}}>
+        Already using Polar?{" "}
+        <a style={{color: "#A88CFF"}} href="https://app.getpolarized.io/sign-in">
+            Sign in
+        </a>
+    </div>;
+}
+
 const Landing = ({}) => {
 
   const breakpoints = useBreakpoint();
@@ -105,12 +125,7 @@ const Landing = ({}) => {
 
                   </div>
 
-                  <div style={{marginBottom: '10px'}}>
-                      Already using Polar?{" "}
-                      <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
-                          Sign in
-                      </a>
-                  </div>
+                  <ExistingUsersCTA/>
 
                   <ColorBackground0 style={{
                                        marginTop: '50px',
