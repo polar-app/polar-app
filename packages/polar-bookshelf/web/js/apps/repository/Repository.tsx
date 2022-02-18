@@ -6,21 +6,48 @@ import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager'
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Accounts} from '../../accounts/Accounts';
-import {App, AppInitializer} from "./AppInitializer";
+import {RepositoryAppInitializer} from "./RepositoryAppInitializer";
 import {RepositoryApp} from './RepositoryApp';
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {SentryBrowser} from "../../logger/SentryBrowser";
 
-export class Repository {
+export interface IRepository {
+    readonly start: () => Promise<void>;
+}
 
-    constructor(private readonly persistenceLayerManager = new PersistenceLayerManager(),
-                private readonly repoDocMetaManager = new RepoDocMetaManager(persistenceLayerManager),
-                private readonly repoDocMetaLoader = new RepoDocMetaLoader(persistenceLayerManager)) {
+export namespace Repository {
+
+    const persistenceLayerManager = new PersistenceLayerManager();
+    const repoDocMetaManager = new RepoDocMetaManager(persistenceLayerManager);
+    const repoDocMetaLoader = new RepoDocMetaLoader(persistenceLayerManager);
+
+    function onFileUpload() {
+        console.log("File uploaded and sending event via postMessage");
+        window.postMessage({type: 'file-uploaded'}, '*');
     }
 
-    public async start() {
+    function handleRepoDocInfoEvents() {
+
+        repoDocMetaLoader.addEventListener(event => {
+
+            for (const mutation of event.mutations) {
+
+                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
+                    repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
+                } else {
+                    repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, undefined);
+                }
+
+            }
+
+        });
+
+    }
+    async function start() {
+
+        const rootElement = getRootElement();
 
         SentryBrowser.initWhenNecessary();
 
@@ -28,12 +55,10 @@ export class Repository {
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
-        const persistenceLayerManager = this.persistenceLayerManager;
-
-        const app = await AppInitializer.init({
+        const app = RepositoryAppInitializer.init({
             persistenceLayerManager,
 
-            onNeedsAuthentication: async (app: App) => {
+            onNeedsAuthentication: async () => {
 
 
             }
@@ -45,15 +70,13 @@ export class Repository {
 
         // TODO: splashes renders far far far too late and there's a delay.
 
-        const rootElement = getRootElement();
-
         ReactDOM.render(
             <RepositoryApp app={app}
                            persistenceLayerManager={persistenceLayerManager}
-                           repoDocMetaManager={this.repoDocMetaManager}
-                           repoDocMetaLoader={this.repoDocMetaLoader}
+                           repoDocMetaManager={repoDocMetaManager}
+                           repoDocMetaLoader={repoDocMetaLoader}
                            updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                           onFileUpload={this.onFileUpload}/>
+                           onFileUpload={onFileUpload}/>
             ,
             rootElement
         );
@@ -78,9 +101,9 @@ export class Repository {
             // and unauthenticated so that if statements are cleaner
             if (authStatus.type !== 'needs-authentication') {
 
-                this.handleRepoDocInfoEvents();
+                handleRepoDocInfoEvents();
 
-                await this.repoDocMetaLoader.start();
+                await repoDocMetaLoader.start();
 
                 await persistenceLayerManager.start();
 
@@ -95,28 +118,10 @@ export class Repository {
 
     }
 
-    private onFileUpload() {
-        console.log("File uploaded and sending event via postMessage");
-        window.postMessage({type: 'file-uploaded'}, '*');
+    export function create(): IRepository {
+        return {start};
     }
 
-    private handleRepoDocInfoEvents() {
-
-        this.repoDocMetaLoader.addEventListener(event => {
-
-            for (const mutation of event.mutations) {
-
-                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
-                } else {
-                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, undefined);
-                }
-
-            }
-
-        });
-
-    }
 }
 
 function getRootElement() {
