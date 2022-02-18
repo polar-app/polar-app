@@ -6,7 +6,7 @@ import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager'
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Accounts} from '../../accounts/Accounts';
-import {App, RepositoryAppInitializer} from "./RepositoryAppInitializer";
+import {RepositoryAppInitializer} from "./RepositoryAppInitializer";
 import {RepositoryApp} from './RepositoryApp';
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
@@ -58,7 +58,7 @@ export namespace Repository {
         const app = RepositoryAppInitializer.init({
             persistenceLayerManager,
 
-            onNeedsAuthentication: async (app: App) => {
+            onNeedsAuthentication: async () => {
 
 
             }
