@@ -26,7 +26,12 @@ export namespace AutoClozeDeletion {
 
         for (const entity of entities) {
             if (entity.name) {
-                mutText = mutText.replace(entity.name, createClozeDeletionTag(entity.name))
+
+                // Regex pattern matches entities that does NOT have the Anki cloze deletion tag pattern
+                // e.g.: `{{c1::example}}`
+                const pattern = new RegExp(`(?!{{c\#::)${entity.name}(?!}})`);
+                
+                mutText = mutText.replace(pattern, createClozeDeletionTag(entity.name));
             }
         }
 
