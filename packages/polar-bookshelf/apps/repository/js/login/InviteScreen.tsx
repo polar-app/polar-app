@@ -12,7 +12,6 @@ import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
 import {
     ICreateAccountForUserReferralError,
-    ICreateAccountForUserReferralFailed,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
@@ -85,7 +84,7 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                         break;
 
                     case "failed":
-                        errorHandler("Unable to handle invite. " + (response as ICreateAccountForUserReferralFailed).message);
+                        errorHandler("Unable to handle invite. " + response.message);
                         break;
 
                 }

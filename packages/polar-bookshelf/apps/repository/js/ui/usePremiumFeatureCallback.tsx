@@ -26,7 +26,9 @@ export function usePremiumFeatureCallbackDialogWarning() {
 
 }
 
-export function usePremiumFeatureCallback(delegate: () => void) {
+export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard'
+
+export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
 
     const accountUpgrade = useAccountUpgrader();
 
@@ -39,7 +41,7 @@ export function usePremiumFeatureCallback(delegate: () => void) {
         if (currentPlan === V2PlanFree) {
 
             Analytics.event2('account-upgrade-required', {
-                reason: 'anki_export'
+                reason
             });
 
             premiumFeatureCallbackDialogWarning();
@@ -50,6 +52,6 @@ export function usePremiumFeatureCallback(delegate: () => void) {
 
         delegate();
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason])
 
 }

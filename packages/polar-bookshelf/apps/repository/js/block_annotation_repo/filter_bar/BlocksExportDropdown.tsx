@@ -91,7 +91,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     }, [dialogManager, doExportFlashcards]);
 
-    const handleExportFlashcards = usePremiumFeatureCallback(handleExportFlashcardsForPremiumAccount);
+    const handleExportFlashcards = usePremiumFeatureCallback('anki-export', handleExportFlashcardsForPremiumAccount);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 
