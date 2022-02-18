@@ -10,7 +10,8 @@ async function start() {
     console.log("Starting logging init");
     console.log("Starting logging init... done");
 
-    await new Repository().start();
+    const repository = Repository.create();
+    await repository.start();
 
 }
 

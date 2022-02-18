@@ -19,7 +19,7 @@ import {
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
-import {App} from "./AppInitializer";
+import {App} from "./RepositoryAppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIRepositoryRoot} from "../../mui/MUIRepositoryRoot";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
