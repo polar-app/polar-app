@@ -8,6 +8,7 @@ export const NotesRepoScreen2 = React.memo(function NotesRepoScreen2() {
     return (
         <TableGridStoreProvider>
             <>
+
                 <NotesRepoTable2/>
 
                 <DeviceRouters.NotDesktop>
