@@ -151,12 +151,12 @@ export namespace StripeWebhooks {
 
             const user = await auth().getUserByEmail(customer.email)
 
-            AmplitudeBackendAnalytics.event2('planChanged', {
+            await AmplitudeBackendAnalytics.event2('planChanged', {
                 from_plan_level: from.plan.level,
                 from_plan_interval: from.interval,
                 to_plan_level: to.plan.level,
                 to_plan_interval: to.interval
-            }, user).catch(e=>{console.log(e)});
+            }, user);
 
         }
 
