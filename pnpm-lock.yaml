@@ -474,7 +474,7 @@ importers:
       semver: '=6.3.0'
       throttle-debounce: '=3.0.1'
       typemoq: '=2.1.0'
-      use-local-storage-state: '=6.0.0'
+      use-local-storage-state: '=15.0.0'
       userflow.js: '=2.2.0'
       wait-for-expect: 3.0.1
     dependencies:
@@ -560,7 +560,7 @@ importers:
       semver: 6.3.0
       throttle-debounce: 3.0.1
       typemoq: 2.1.0
-      use-local-storage-state: 6.0.0_react@17.0.2
+      use-local-storage-state: 15.0.0_react-dom@17.0.2+react@17.0.2
     devDependencies:
       '@babel/core': 7.16.7
       '@storybook/addon-actions': 6.4.10_0607d8bab5983684f0a746a30ac1a448
@@ -23432,13 +23432,15 @@ packages:
       use-isomorphic-layout-effect: 1.1.1_@types+react@17.0.2+react@17.0.2
     dev: true
 
-  /use-local-storage-state/6.0.0_react@17.0.2:
-    resolution: {integrity: sha512-lLql7/6CFNM6xDz5xpNDsK8oxVjjskRDMm3gKhLkWT+mJ2zePbH4XtDp1x+sOhtVr4INPtDcb41/ut8iQ+SKFg==}
-    engines: {node: '>=10'}
+  /use-local-storage-state/15.0.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-0Dh4DiqgsxpyZDa7PRNs7Mct9OHqTuuZl/V3zzPwNJaR9NVuO4HAZdKSJeelgq8h8bE83ZKMlXMLWzMRxu3ZLg==}
+    engines: {node: '>=12'}
     peerDependencies:
       react: '>=16.8.0'
+      react-dom: '>=16.8.0'
     dependencies:
       react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /use/3.1.1:
