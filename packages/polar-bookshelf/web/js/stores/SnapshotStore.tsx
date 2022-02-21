@@ -116,7 +116,7 @@ export function createSnapshotStore<S>(id: string): SnapshotStoreTuple<S> {
 
     // TODO: implement a proper latch verification...
 
-    const SnapshotStoreLatchInner: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatch(props) {
+    const SnapshotStoreLatchInner: React.FC<SnapshotStoreLatchProps> = React.memo(function SnapshotStoreLatchInner(props) {
 
         const value = useValue();
         const snapshotCreated = React.useRef(0);

@@ -3,31 +3,51 @@ import * as React from 'react';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager,} from '../../datastore/PersistenceLayerManager';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Accounts} from '../../accounts/Accounts';
-import {App, AppInitializer} from "./AppInitializer";
+import {RepositoryAppInitializer} from "./RepositoryAppInitializer";
 import {RepositoryApp} from './RepositoryApp';
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {SentryBrowser} from "../../logger/SentryBrowser";
-import {LicenseInfo} from '@material-ui/x-grid';
 
-// Add xgrid license
-LicenseInfo.setLicenseKey('e8f3730ab06cd9f0c5cb3e6c2dfcddbaT1JERVI6MjgwMDQsRVhQSVJZPTE2NTk5MDA0NzkwMDAsS0VZVkVSU0lPTj0x');
+export interface IRepository {
+    readonly start: () => Promise<void>;
+}
 
-const log = Logger.create();
+export namespace Repository {
 
-export class Repository {
+    const persistenceLayerManager = new PersistenceLayerManager();
+    const repoDocMetaManager = new RepoDocMetaManager(persistenceLayerManager);
+    const repoDocMetaLoader = new RepoDocMetaLoader(persistenceLayerManager);
 
-    constructor(private readonly persistenceLayerManager = new PersistenceLayerManager(),
-                private readonly repoDocMetaManager = new RepoDocMetaManager(persistenceLayerManager),
-                private readonly repoDocMetaLoader = new RepoDocMetaLoader(persistenceLayerManager)) {
+    function onFileUpload() {
+        console.log("File uploaded and sending event via postMessage");
+        window.postMessage({type: 'file-uploaded'}, '*');
     }
 
-    public async start() {
+    function handleRepoDocInfoEvents() {
+
+        repoDocMetaLoader.addEventListener(event => {
+
+            for (const mutation of event.mutations) {
+
+                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
+                    repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
+                } else {
+                    repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, undefined);
+                }
+
+            }
+
+        });
+
+    }
+    async function start() {
+
+        const rootElement = getRootElement();
 
         SentryBrowser.initWhenNecessary();
 
@@ -35,12 +55,10 @@ export class Repository {
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
-        const persistenceLayerManager = this.persistenceLayerManager;
-
-        const app = await AppInitializer.init({
+        const app = RepositoryAppInitializer.init({
             persistenceLayerManager,
 
-            onNeedsAuthentication: async (app: App) => {
+            onNeedsAuthentication: async () => {
 
 
             }
@@ -48,19 +66,17 @@ export class Repository {
         });
 
         Accounts.listenForPlanUpgrades()
-            .catch(err => log.error("Unable to listen for plan upgrades: ", err));
+            .catch(err => console.error("Unable to listen for plan upgrades: ", err));
 
         // TODO: splashes renders far far far too late and there's a delay.
-
-        const rootElement = getRootElement();
 
         ReactDOM.render(
             <RepositoryApp app={app}
                            persistenceLayerManager={persistenceLayerManager}
-                           repoDocMetaManager={this.repoDocMetaManager}
-                           repoDocMetaLoader={this.repoDocMetaLoader}
+                           repoDocMetaManager={repoDocMetaManager}
+                           repoDocMetaLoader={repoDocMetaLoader}
                            updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                           onFileUpload={this.onFileUpload}/>
+                           onFileUpload={onFileUpload}/>
             ,
             rootElement
         );
@@ -85,9 +101,9 @@ export class Repository {
             // and unauthenticated so that if statements are cleaner
             if (authStatus.type !== 'needs-authentication') {
 
-                this.handleRepoDocInfoEvents();
+                handleRepoDocInfoEvents();
 
-                await this.repoDocMetaLoader.start();
+                await repoDocMetaLoader.start();
 
                 await persistenceLayerManager.start();
 
@@ -98,32 +114,14 @@ export class Repository {
         }
 
         handleAuth()
-            .catch(err => log.error("Could not handle auth: ", err));
+            .catch(err => console.error("Could not handle auth: ", err));
 
     }
 
-    private onFileUpload() {
-        console.log("File uploaded and sending event via postMessage");
-        window.postMessage({type: 'file-uploaded'}, '*');
+    export function create(): IRepository {
+        return {start};
     }
 
-    private handleRepoDocInfoEvents() {
-
-        this.repoDocMetaLoader.addEventListener(event => {
-
-            for (const mutation of event.mutations) {
-
-                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
-                } else {
-                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, undefined);
-                }
-
-            }
-
-        });
-
-    }
 }
 
 function getRootElement() {
