@@ -26,6 +26,21 @@ const useStyles = makeStyles({
     }
 });
 
+/**
+ * Return a stringified version of an array of Referral codes for the given waiting user
+ * Remove duplicates and remove "system" tags
+ */
+const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
+    // eslint-disable-next-line functional/prefer-readonly-type
+    const tags: string[] = [];
+    waitingUser.tags.forEach(tag => {
+        if (!tags.includes(tag) && tag !== 'initial_signup') {
+            tags.push(tag);
+        }
+    })
+    return tags.join(', ');
+};
+
 const NoUsersComponent: React.FC = (props) => {
     return <TableRow>
         <TableCell component="th" scope="row">
@@ -52,7 +67,7 @@ export const ListUsers: React.FC = (ref) => {
 
     const dialogManager = useDialogManager();
 
-    const reloadUsersList = async () => {
+    const reloadUsersList = React.useCallback(async () => {
         setUsers([]);
 
         try {
@@ -105,27 +120,12 @@ export const ListUsers: React.FC = (ref) => {
                 message: "Failed to fetch list of waiting users",
             })
         }
-    };
+    }, [dialogManager, sortBy, sortDirection]);
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         reloadUsersList().then();
-    }, [dialogManager, sortBy, sortDirection]);
-
-    /**
-     * Return a stringified version of an array of Referral codes for the given waiting user
-     * Remove duplicates and remove "system" tags
-     */
-    const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
-        // eslint-disable-next-line functional/prefer-readonly-type
-        const tags: string[] = [];
-        waitingUser.tags.forEach(tag => {
-            if (!tags.includes(tag) && tag !== 'initial_signup') {
-                tags.push(tag);
-            }
-        })
-        return tags.join(', ');
-    };
+    }, [dialogManager, sortBy, sortDirection, reloadUsersList]);
 
     const showSuccessSnackbar = React.useCallback(() => {
         dialogManager.snackbar({
