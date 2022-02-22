@@ -15,6 +15,7 @@ import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 const useStyles = makeStyles({
     container: {
@@ -30,15 +31,8 @@ const useStyles = makeStyles({
  * Return a stringified version of an array of Referral codes for the given waiting user
  * Remove duplicates and remove "system" tags
  */
-const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
-    // eslint-disable-next-line functional/prefer-readonly-type
-    const tags: string[] = [];
-    waitingUser.tags.forEach(tag => {
-        if (!tags.includes(tag) && tag !== 'initial_signup') {
-            tags.push(tag);
-        }
-    })
-    return tags.join(', ');
+export const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
+    return arrayStream(waitingUser.tags).filter(current => current !== 'initial_signup').unique().collect().join(', ');
 };
 
 const NoUsersComponent: React.FC = (props) => {
