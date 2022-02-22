@@ -28,7 +28,7 @@ export function usePremiumFeatureCallbackDialogWarning() {
 
 export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard' | 'doc-viewer';
 
-function usePremiumFeaturePredicate(reason: PremiumFeatureUpgradeReason) {
+function usePremiumAccountRequiredPredicate(reason: PremiumFeatureUpgradeReason) {
 
     const accountUpgrade = useAccountUpgrader();
 
@@ -46,11 +46,11 @@ function usePremiumFeaturePredicate(reason: PremiumFeatureUpgradeReason) {
 
             premiumFeatureCallbackDialogWarning();
 
-            return false;
+            return true;
 
         }
 
-        return true;
+        return false;
 
     }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning, reason])
 
@@ -63,17 +63,15 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
 
     const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
-    const premiumFeature = usePremiumFeaturePredicate(reason);
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
 
     return React.useCallback(() => {
 
-        if (premiumFeature()) {
-            return;
+        if (! premiumAccountRequired()) {
+            delegate();
         }
 
-        delegate();
-
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumFeature])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
 
 }
 
@@ -86,16 +84,14 @@ export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReaso
 
     const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
-    const premiumFeature = usePremiumFeaturePredicate(reason);
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
 
     return React.useCallback((value) => {
 
-        if (premiumFeature()) {
-            return;
+        if (! premiumAccountRequired()) {
+            delegate(value);
         }
 
-        delegate(value);
-
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumFeature])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
 
 }

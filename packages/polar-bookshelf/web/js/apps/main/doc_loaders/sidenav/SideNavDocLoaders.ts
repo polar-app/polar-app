@@ -4,6 +4,8 @@ import React from "react";
 import {ViewerURLs} from "../ViewerURLs";
 import {TabContentType, useSideNavCallbacks} from "../../../../sidenav/SideNavStore";
 import {LoadDocRequest} from "../LoadDocRequest";
+import {useFeatureEnabled} from "../../../../features/FeaturesRegistry";
+import {usePremiumFeatureCallback1} from "../../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
 
 function computeTabContentType(loadDocRequest: LoadDocRequest): TabContentType {
 
@@ -26,8 +28,9 @@ export function useSideNavDocLoader() {
     const {persistenceLayerProvider} = usePersistenceLayerContext()
     const docMigration = useDocMigration();
     const {addTab} = useSideNavCallbacks();
+    const premiumDocViewer = useFeatureEnabled('premium-doc-viewer');
 
-    return React.useCallback((loadDocRequest: LoadDocRequest) => {
+    const sideNavDocLoaderPremium = React.useCallback((loadDocRequest: LoadDocRequest) => {
 
         if (! docMigration(loadDocRequest)) {
 
@@ -56,5 +59,9 @@ export function useSideNavDocLoader() {
         }
 
     }, [addTab, docMigration, persistenceLayerProvider]);
+
+    const sideNavDocLoader = usePremiumFeatureCallback1('doc-viewer', sideNavDocLoaderPremium);
+
+    return premiumDocViewer ? sideNavDocLoader : sideNavDocLoaderPremium;
 
 }

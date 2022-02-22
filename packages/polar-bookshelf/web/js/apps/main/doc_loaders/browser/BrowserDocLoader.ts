@@ -6,6 +6,9 @@ import React from 'react';
 import {usePremiumFeatureCallback1} from "../../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
 import {useFeatureEnabled} from "../../../../features/FeaturesRegistry";
 
+/**
+ * @deprecated This is no longer used and needs to beremoved
+ */
 export function useBrowserDocLoader() {
 
     const {persistenceLayerProvider} = usePersistenceLayerContext()
