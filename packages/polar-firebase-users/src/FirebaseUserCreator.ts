@@ -88,7 +88,7 @@ export namespace FirebaseUserCreator {
             await defineFixedChallenge(email, opts.fixed_challenge);
         }
 
-        const stripeMode = Testing.isProductionRuntime() ? 'test' : 'live'
+        const stripeMode = Testing.isProductionRuntime() ? 'live' : 'test'
 
         async function createTrial(stripeMode: StripeMode, email: EmailStr, name: string) {
 
