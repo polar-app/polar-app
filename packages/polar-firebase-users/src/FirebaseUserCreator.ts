@@ -94,7 +94,7 @@ export namespace FirebaseUserCreator {
 
             console.log(`Creating stripe subscription with trial: ${email}...`);
 
-            await StripeCustomers.createCustomer(stripeMode, email, name);
+            await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
 
             const trial_end = StripeTrials.computeTrialEnds('14d');
 

@@ -45,7 +45,7 @@ export namespace UserReferrals {
 
         console.log(`Creating stripe subscription with trial: ${email}...`);
 
-        await StripeCustomers.createCustomer(stripeMode, email, name);
+        await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
 
         const trial_end = StripeTrials.computeTrialEnds('30d');
 
