@@ -21,7 +21,7 @@ export namespace CreateAccountForUserReferrals {
 
         try {
 
-            const university = await UniversityEmails.getUniversityByEmailDomain(request.email);
+            const university = UniversityEmails.getUniversityByEmailDomain(request.email);
 
             if (!university) {
                 return <IAnswerExecutorErrorNotUniversityEmail>{
