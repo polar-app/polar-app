@@ -18,11 +18,13 @@ export interface ICreateAccountForUserReferralResponse {
 
 export type ICreateAccountForUserReferralError =
     ICreateAccountForUserReferralFailed
-    | IAnswerExecutorErrorInvalidUserReferralCode;
+    | IAnswerExecutorErrorInvalidUserReferralCode
+    | IAnswerExecutorErrorNotUniversityEmail;
 
 export interface ICreateAccountForUserReferralFailed extends IRPCError<'failed'> {
     readonly message: string;
 }
 
-export type IAnswerExecutorErrorInvalidUserReferralCode = IRPCError<'invalid-user-referral-code' | 'not-university-email'>;
+export type IAnswerExecutorErrorInvalidUserReferralCode = IRPCError<'invalid-user-referral-code'>;
+export type IAnswerExecutorErrorNotUniversityEmail = IRPCError<'not-university-email'>;
 

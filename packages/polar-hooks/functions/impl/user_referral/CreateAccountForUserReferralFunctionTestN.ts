@@ -17,8 +17,8 @@ describe('CreateAccountForUserReferralFunction', () => {
 
     beforeEach(async () => {
 
-        alice = await FirebaseUserCreator.createTestUser('alice');
-        bob = FirebaseUserCreator.createTestUserEmail('bob');
+        alice = await FirebaseUserCreator.createTestUser({hint: 'alice'});
+        bob = FirebaseUserCreator.createTestUserEmail({hint: 'bob'});
 
         emailsToPurge.push(alice.email);
         emailsToPurge.push(bob);
@@ -78,8 +78,12 @@ describe('CreateAccountForUserReferralFunction', () => {
     });
 
     it.only('GIVEN a valid university email THEN referral code registration works', async () => {
-        const universityAlice = await FirebaseUserCreator.createTestUser('alice', 'harvard.edu');
-        const universityBobEmail = FirebaseUserCreator.createTestUserEmail('bob', 'harvard.edu');
+        const universityAlice = await FirebaseUserCreator.createTestUser({
+            hint: 'alice', domain: 'harvard.edu'
+        });
+        const universityBobEmail = FirebaseUserCreator.createTestUserEmail({
+            hint: 'bob', domain: 'harvard.edu'
+        });
 
         emailsToPurge.push(universityAlice.email);
         emailsToPurge.push(universityBobEmail);

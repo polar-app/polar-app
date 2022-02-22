@@ -2,7 +2,7 @@ import {UserReferralCollection} from "polar-firebase/src/firebase/om/UserReferra
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {UserReferrals} from "./UserReferrals";
 import {
-    IAnswerExecutorErrorInvalidUserReferralCode,
+    IAnswerExecutorErrorInvalidUserReferralCode, IAnswerExecutorErrorNotUniversityEmail,
     ICreateAccountForUserReferralFailed,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
@@ -17,14 +17,14 @@ export namespace CreateAccountForUserReferrals {
 
     import IFirebaseUserRecord = FirebaseUserCreator.IFirebaseUserRecord;
 
-    export async function exec(request: ICreateAccountForUserReferralRequest, stripeMode: 'live' | 'test' = 'live'): Promise<IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
+    export async function exec(request: ICreateAccountForUserReferralRequest, stripeMode: 'live' | 'test' = 'live'): Promise<IAnswerExecutorErrorNotUniversityEmail | IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
 
         try {
 
             const university = await UniversityEmails.getUniversityByEmailDomain(request.email);
 
             if (!university) {
-                return <IAnswerExecutorErrorInvalidUserReferralCode>{
+                return <IAnswerExecutorErrorNotUniversityEmail>{
                     error: true,
                     code: "not-university-email",
                 };
