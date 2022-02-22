@@ -26,9 +26,9 @@ export function usePremiumFeatureCallbackDialogWarning() {
 
 }
 
-export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard'
+export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard' | 'doc-viewer';
 
-export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
+function usePremiumFeaturePredicate(reason: PremiumFeatureUpgradeReason) {
 
     const accountUpgrade = useAccountUpgrader();
 
@@ -46,12 +46,56 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
 
             premiumFeatureCallbackDialogWarning();
 
-            return;
+            return false;
 
+        }
+
+        return true;
+
+    }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning, reason])
+
+}
+
+
+export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
+
+    const accountUpgrade = useAccountUpgrader();
+
+    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
+
+    const premiumFeature = usePremiumFeaturePredicate(reason);
+
+    return React.useCallback(() => {
+
+        if (premiumFeature()) {
+            return;
         }
 
         delegate();
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason])
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumFeature])
+
+}
+
+/**
+ * Wraps a callback with a single argument.
+ */
+export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReason, delegate: (value: V) => void) {
+
+    const accountUpgrade = useAccountUpgrader();
+
+    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
+
+    const premiumFeature = usePremiumFeaturePredicate(reason);
+
+    return React.useCallback((value) => {
+
+        if (premiumFeature()) {
+            return;
+        }
+
+        delegate(value);
+
+    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumFeature])
 
 }

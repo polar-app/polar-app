@@ -7,6 +7,8 @@ import {DocURLLoader, useDocURLLoader} from './DocURLLoader';
 import {usePersistenceLayerContext} from "../../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDocMigration} from "../DocMigration";
 import React from 'react';
+import {usePremiumFeatureCallback1} from "../../../../../../apps/repository/js/ui/usePremiumFeatureCallback";
+import {useFeatureEnabled} from "../../../../features/FeaturesRegistry";
 
 export class BrowserDocLoader implements IDocLoader {
 
@@ -43,7 +45,9 @@ export function useBrowserDocLoader() {
     const docURLLoader = useDocURLLoader();
     const docMigration = useDocMigration();
 
-    return React.useCallback((loadDocRequest) => {
+    const premiumDocViewer = useFeatureEnabled('premium-doc-viewer');
+
+    const loaderPremium = React.useCallback((loadDocRequest) => {
 
         if (! docMigration(loadDocRequest)) {
             const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
@@ -51,5 +55,9 @@ export function useBrowserDocLoader() {
         }
 
     }, [docMigration, docURLLoader, persistenceLayerProvider]);
+
+    const premiumFeatureCallback = usePremiumFeatureCallback1('doc-viewer', loaderPremium);
+
+    return premiumDocViewer ? premiumFeatureCallback : loaderPremium;
 
 }
