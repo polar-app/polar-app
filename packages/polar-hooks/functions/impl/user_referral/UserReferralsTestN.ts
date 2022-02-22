@@ -68,7 +68,11 @@ describe('UserReferrals', () => {
         expect(user.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
     });
 
-    it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async () => {
+    it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async function () {
+        // Stripe subscriptions seem to provide "eventual consistency" or something, rendering this test Flaky sometimes
+        // so retry it 3 times before considering it as failed
+        this.retries(3);
+
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);

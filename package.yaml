@@ -23,7 +23,7 @@ scripts:
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc"
     "publish-all": "pnpm m --config.use-beta-cli=true publish --no-git-checks"
     # Clean
-    "clean": "git clean -Xfd && git clean -fd"
+    "clean": "git clean -Xfd ./packages* && git clean -fd ./packages*"
     "purge-node-modules": "pnpm m exec -- rm -rf node_modules"
     # Build/Serve Polar-bookshelf
     "build": "(cd packages/polar-bookshelf && pnpm run build-webapp)"
