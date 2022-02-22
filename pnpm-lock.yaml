@@ -991,17 +991,21 @@ importers:
       '@types/mocha': '=9.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
+      polar-accounts: 0.0.0
       polar-amplitude-backend: 0.0.0
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-firestore-like: 0.0.0
+      polar-payments-stripe: 0.0.0
       polar-sendgrid: 0.0.0
       polar-shared: 0.0.0
     dependencies:
+      polar-accounts: link:../polar-accounts
       polar-amplitude-backend: link:../polar-amplitude-backend
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
       polar-firestore-like: link:../polar-firestore-like
+      polar-payments-stripe: link:../polar-payments-stripe
       polar-sendgrid: link:../polar-sendgrid
       polar-shared: link:../polar-shared
     devDependencies:

@@ -11,6 +11,10 @@ import {Testing} from "polar-shared/src/util/Testing";
 import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {Nonces} from "polar-shared/src/util/Nonces";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
+import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
+import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
+import {Billing} from "polar-accounts/src/Billing";
 
 export namespace FirebaseUserCreator {
 
@@ -80,16 +84,34 @@ export namespace FirebaseUserCreator {
 
         await FirebaseUserUpgrader.upgrade(user.uid);
 
-        if (!Testing.isTestingRuntime()) {
-            await sendWelcomeEmail(email);
-        }
-
         if (opts.fixed_challenge) {
             await defineFixedChallenge(email, opts.fixed_challenge);
         }
 
-        if (opts.referral_code && !Testing.isTestingRuntime()) {
-            await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
+        const stripeMode = Testing.isProductionRuntime() ? 'test' : 'live'
+
+        async function createTrial(stripeMode: StripeMode, email: EmailStr, name: string) {
+
+            console.log(`Creating stripe subscription with trial: ${email}...`);
+
+            await StripeCustomers.createCustomer(stripeMode, email, name);
+
+            const trial_end = StripeTrials.computeTrialEnds('14d');
+
+            await StripeCustomers.changePlan(stripeMode, email, Billing.V2PlanPlus, 'month', trial_end);
+
+        }
+
+        await createTrial(stripeMode, email, "");
+
+        if (Testing.isProductionRuntime()) {
+
+            await sendWelcomeEmail(email);
+
+            if (opts.referral_code) {
+                await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
+            }
+
         }
 
         return user;
