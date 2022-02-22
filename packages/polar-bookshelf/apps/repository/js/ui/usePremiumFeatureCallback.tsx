@@ -59,8 +59,6 @@ function usePremiumAccountRequiredPredicate(reason: PremiumFeatureUpgradeReason)
 
 export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
 
-    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
-
     const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
 
     return React.useCallback(() => {
@@ -69,7 +67,7 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
             delegate();
         }
 
-    }, [delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
+    }, [delegate, premiumAccountRequired])
 
 }
 
@@ -77,8 +75,6 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
  * Wraps a callback with a single argument.
  */
 export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReason, delegate: (value: V) => void) {
-
-    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
     const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
 
@@ -88,6 +84,6 @@ export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReaso
             delegate(value);
         }
 
-    }, [delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
+    }, [delegate, premiumAccountRequired])
 
 }
