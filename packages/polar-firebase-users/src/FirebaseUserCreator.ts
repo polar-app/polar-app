@@ -112,25 +112,28 @@ export namespace FirebaseUserCreator {
      * discard new accounts.
      *
      * @param hint Include this in the email for debug purposes.
+     * @param suffix the domain name to use for the test user
      */
-    export function createTestUserEmail(hint?: string): EmailStr {
+    export function createTestUserEmail(hint?: string, suffix?: string): EmailStr {
 
         const nonce = NONCE_GENERATOR();
 
+        const domain = suffix ?? 'getpolarized.io';
+
         if (hint) {
-            return `getpolarized.test+${hint}-${Date.now()}-${nonce}@getpolarized.io`
+            return `getpolarized.test+${hint}-${Date.now()}-${nonce}@${domain}`
         }
 
-        return `getpolarized.test+${Date.now()}-${nonce}@getpolarized.io`
+        return `getpolarized.test+${Date.now()}-${nonce}@${domain}`
 
     }
 
     /**
      * Generate a test user
      */
-    export async function createTestUser(hint?: string): Promise<IFirebaseUserRecord> {
+    export async function createTestUser(hint?: string, suffix?: string): Promise<IFirebaseUserRecord> {
 
-        const email = createTestUserEmail(hint);
+        const email = createTestUserEmail(hint, suffix);
         const user = await create(email);
 
         return {

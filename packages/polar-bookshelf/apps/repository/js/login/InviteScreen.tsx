@@ -86,7 +86,9 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                     case "failed":
                         errorHandler("Unable to handle invite. " + response.message);
                         break;
-
+                    case "not-university-email":
+                        errorHandler('This is not a valid university email');
+                        break;
                 }
 
             } else {

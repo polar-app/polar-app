@@ -11,6 +11,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import IReferrer = UserReferrals.IReferrer;
 import IReferred = UserReferrals.IReferred;
+import {UniversityEmails} from "polar-shared/src/util/UniversityEmails";
 
 export namespace CreateAccountForUserReferrals {
 
@@ -19,6 +20,15 @@ export namespace CreateAccountForUserReferrals {
     export async function exec(request: ICreateAccountForUserReferralRequest, stripeMode: 'live' | 'test' = 'live'): Promise<IAnswerExecutorErrorInvalidUserReferralCode | ICreateAccountForUserReferralResponse | ICreateAccountForUserReferralFailed> {
 
         try {
+
+            const university = await UniversityEmails.getUniversityByEmailDomain(request.email);
+
+            if (!university) {
+                return <IAnswerExecutorErrorInvalidUserReferralCode>{
+                    error: true,
+                    code: "not-university-email",
+                };
+            }
 
             const firestore = FirestoreAdmin.getInstance();
 
