@@ -52,14 +52,12 @@ function usePremiumAccountRequiredPredicate(reason: PremiumFeatureUpgradeReason)
 
         return false;
 
-    }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning, reason])
+    }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning])
 
 }
 
 
 export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
-
-    const accountUpgrade = useAccountUpgrader();
 
     const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
@@ -71,7 +69,7 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
             delegate();
         }
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
+    }, [delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
 
 }
 
@@ -79,8 +77,6 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
  * Wraps a callback with a single argument.
  */
 export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReason, delegate: (value: V) => void) {
-
-    const accountUpgrade = useAccountUpgrader();
 
     const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
@@ -92,6 +88,6 @@ export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReaso
             delegate(value);
         }
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
+    }, [delegate, premiumFeatureCallbackDialogWarning, reason, premiumAccountRequired])
 
 }
