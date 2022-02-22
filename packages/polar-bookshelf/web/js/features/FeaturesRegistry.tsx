@@ -57,6 +57,11 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Enable new local search",
         description: "Enable the new local search functionality.",
     }
+    ,
+    "premium-doc-viewer": {
+        title: "Make the doc viewer premium",
+        description: "The doc viewer will now be premium and require plus or pro.",
+    }
 };
 
 // TODO: we might want to rework this and make FeatureName be keyof
@@ -73,7 +78,8 @@ export type FeatureName = 'design-m0' |
                           'legacy-anki-sync' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
-                          'use-redesign-theme';
+                          'use-redesign-theme' |
+                          'premium-doc-viewer';
 
 export interface IFeature {
 
