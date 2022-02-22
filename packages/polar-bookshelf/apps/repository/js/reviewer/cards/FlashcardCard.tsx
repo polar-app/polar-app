@@ -131,7 +131,7 @@ export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IP
                     <Box textAlign="center">
                         <Button color="primary"
                                 variant="contained"
-                                size="large"
+                                size="medium"
                                 onClick={handleShowAnswer}>
                             Show Answer
                         </Button>

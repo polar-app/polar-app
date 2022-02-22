@@ -7,6 +7,7 @@ import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {ITaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/ITaskRep";
 import {ITaskAction} from "../ITaskAction";
+import {createStyles, makeStyles} from '@material-ui/core';
 
 interface IProps<T extends ITaskAction> {
 
@@ -17,9 +18,17 @@ interface IProps<T extends ITaskAction> {
 
 }
 
+const useStyles = makeStyles((theme) => createStyles({
+    root: {
+        fontSize: theme.typography.pxToRem(12),
+    },
+}));
+
+
 export const RatingButton = deepMemo(function RatingButton<T extends ITaskAction>(props: IProps<T>) {
 
     const {rating, taskRep, color} = props;
+    const classes = useStyles();
 
     // TODO: this isn't returning the right time so we're not really getting exponential
     // backoff.  To fix this just dump the taskRep as JSON and debug from there.  It
@@ -29,8 +38,9 @@ export const RatingButton = deepMemo(function RatingButton<T extends ITaskAction
 
     return (
         <ColorButton variant="contained"
+                     className={classes.root}
                      color={color}
-                     size="large"
+                     size="medium"
                      style={{flexGrow: 1}}
                      onClick={() => props.onRating(taskRep, rating)}>
             {rating}
