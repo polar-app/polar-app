@@ -19,6 +19,7 @@ import {isRPCError} from "polar-shared/src/util/IRPCError";
 import Box from "@material-ui/core/Box";
 import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
 import {handleAuthResultForNewUser} from "./AuthenticatorHooks";
+import {InviteScreenURLs} from "./InviteScreenURLs";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -45,7 +46,9 @@ export const useStyles = makeStyles((theme) =>
 
 export const InviteScreen = React.memo(function InviteScreen() {
 
-    const user_referral_code = 'HZMgucEyn9';
+    const inviteScreenURL = React.useMemo(() => InviteScreenURLs.parse(document.location.href), []);
+
+    const user_referral_code = inviteScreenURL?.user_referral_code;
 
     const classes = useStyles();
     const emailRef = React.useRef("");
