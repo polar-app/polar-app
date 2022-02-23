@@ -75,7 +75,7 @@ export const useHandlePurgeDocumentBlocks = () => {
     }, [blocksStore, dialogs]);
 };
 
-const useDesktopStyles = makeStyles((theme) =>
+const useDesktopStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
@@ -120,18 +120,27 @@ const DesktopNotesToolbar = () => {
     );
 };
 
+const useHandheldStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            padding: theme.spacing(1.4),
+        },
+    }),
+);
+
 const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
+    const classes = useHandheldStyles();
 
     return (
         <>
-            <AppBar color={"inherit"} position="static">
-                <Toolbar>
+            <AppBar color="inherit" position="static">
+                <Toolbar classes={{ gutters: classes.root }}>
                     <div>
                         <StandardIconButton tooltip="Back to notes"
                                             onClick={() => history.push("/notes")}>
-                            <NotesIcon />
+                            <NotesIcon fontSize="small" />
                         </StandardIconButton>
                     </div>
 

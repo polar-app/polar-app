@@ -92,7 +92,7 @@ export const NoteFormatBarExtensionButton: React.FC<INoteFormatBarButton> = (pro
 
             <NoteFormatBarButton {...rest} className={classes.iconButton} />
 
-            <Box fontSize="0.75rem" pt={0.5}>
+            <Box fontSize="0.85rem" pt={0.5}>
                 {children}
             </Box>
         </Box>
