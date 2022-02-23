@@ -96,6 +96,7 @@ import {UndoQueueProvider2} from '../../undo/UndoQueueProvider2';
 import {ReferralScreen} from "../../../../apps/repository/js/configure/settings/ReferralScreen";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {MUIAppRoot} from "../../mui/MUIAppRoot";
 
 interface IProps {
     readonly app: App;
@@ -357,23 +358,34 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
             <AnalyticsLocationListener/>
             <Switch>
 
-
                 <Route exact path={["/create-account"]}>
-                    <CreateAccountScreen/>
+                    <MUIAppRoot>
+                        <CreateAccountScreen/>
+                    </MUIAppRoot>
                 </Route>
 
-                <Route exact path="/invite/:user_referral_code" component={InviteScreen}/>
+                <Route exact path="/invite/:user_referral_code">
+                    <MUIAppRoot>
+                        <InviteScreen/>
+                    </MUIAppRoot>
+                </Route>
 
                 <Route exact path={["/sign-in", "/login", "/login.html"]}>
-                    <SignInScreen/>
+                    <MUIAppRoot>
+                        <SignInScreen/>
+                    </MUIAppRoot>
                 </Route>
 
                 <Route exact path={["/login-with-custom-token"]}>
-                    <LoginWithCustomTokenScreen/>
+                    <MUIAppRoot>
+                        <LoginWithCustomTokenScreen/>
+                    </MUIAppRoot>
                 </Route>
 
                 <Route exact path="/error">
-                    <ErrorScreen/>
+                    <MUIAppRoot>
+                        <ErrorScreen/>
+                    </MUIAppRoot>
                 </Route>
 
                 <AuthRequired>

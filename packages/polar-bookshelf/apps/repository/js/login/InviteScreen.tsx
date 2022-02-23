@@ -16,8 +16,6 @@ import {
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
-import {RouteComponentProps} from "react-router-dom";
-import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 import Box from "@material-ui/core/Box";
 import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
 import {handleAuthResultForNewUser} from "./AuthenticatorHooks";
@@ -45,14 +43,9 @@ export const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IProps {
-    readonly user_referral_code: string;
-}
+export const InviteScreen = React.memo(function InviteScreen() {
 
-export const InviteScreen = React.memo(function InviteScreen(props: RouteComponentProps<IProps>) {
-
-    const { match: { params } } = props;
-    const {user_referral_code} = params;
+    const user_referral_code = 'HZMgucEyn9';
 
     const classes = useStyles();
     const emailRef = React.useRef("");
@@ -124,7 +117,6 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
     }, []);
 
     return (
-        <MUIAppRoot useRedesign={false} darkMode={true}>
 
             <AdaptiveDialog>
                 <>
@@ -179,7 +171,6 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                     <Intercom/>
                 </>
             </AdaptiveDialog>
-        </MUIAppRoot>
     );
 });
 
