@@ -9,7 +9,7 @@ interface Request {
 }
 
 // @TODO finish this function to handle cancellations, plan changes, etc
-export const AppstoreServerNotification = ExpressFunctions.createHookAsync('AppstoreServerNotification', async (req, res) => {
+export const AppstoreServerNotification = ExpressFunctions.createHook('AppstoreServerNotification', (req, res) => {
 
     const request: Request = req.body;
 

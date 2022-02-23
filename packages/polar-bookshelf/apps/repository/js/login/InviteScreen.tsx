@@ -9,14 +9,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../web/js/mui/useErrorHandler";
 import {
     ICreateAccountForUserReferralError,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
-import {RouteComponentProps} from "react-router-dom";
 import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 import Box from "@material-ui/core/Box";
 import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
@@ -49,10 +48,9 @@ interface IProps {
     readonly user_referral_code: string;
 }
 
-export const InviteScreen = React.memo(function InviteScreen(props: RouteComponentProps<IProps>) {
+export const InviteScreen = React.memo(function InviteScreen() {
 
-    const { match: { params } } = props;
-    const {user_referral_code} = params;
+    const user_referral_code = "HZMgucEyn9";
 
     const classes = useStyles();
     const emailRef = React.useRef("");
@@ -91,8 +89,14 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
 
             } else {
 
-                await FirebaseAuth.loginWithCustomToken(response.auth_token);
-                handleAuthResultForNewUser('user_referral_code');
+                if (response.auth_token) {
+
+                    await FirebaseAuth.loginWithCustomToken(response.auth_token);
+                    handleAuthResultForNewUser('user_referral_code');
+
+                } else {
+                    errorHandler("No auth_token in response");
+                }
 
             }
 

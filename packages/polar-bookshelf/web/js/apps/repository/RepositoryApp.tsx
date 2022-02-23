@@ -330,12 +330,13 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
             <AnalyticsLocationListener/>
             <Switch>
 
-
                 <Route exact path={["/create-account"]}>
                     <CreateAccountScreen/>
                 </Route>
 
-                <Route exact path="/invite/:user_referral_code" component={InviteScreen}/>
+                <Route exact path="/invite/:user_referral_code">
+                    <InviteScreen/>
+                </Route>
 
                 <Route exact path={["/sign-in", "/login", "/login.html"]}>
                     <SignInScreen/>

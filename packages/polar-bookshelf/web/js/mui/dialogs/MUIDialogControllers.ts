@@ -1,11 +1,10 @@
 import React from "react";
-import {MUIDialogControllerContext} from "./MUIDialogController";
+import {DialogManager} from "./MUIDialogController";
 import {Callback, Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useLogger} from "../MUILogger";
+import {createValueStore} from "../../stores/ValueStore";
 
-export function useDialogManager() {
-    return React.useContext(MUIDialogControllerContext);
-}
+export const [DialogManagerProvider, useDialogManager, useDialogManagerSetter] = createValueStore<DialogManager>()
 
 interface ILatentActionOpts {
     readonly message: string;

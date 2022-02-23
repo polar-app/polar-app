@@ -13,8 +13,10 @@ import {
 import {Latch} from "polar-shared/src/util/Latch";
 import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
 import {InputCompletionType} from "../complete_listeners/InputCompleteListener";
+import {DialogManagerProvider, useDialogManagerSetter} from "./MUIDialogControllers";
 
 export interface DialogManager {
+    name: string;
     confirm: (props: ConfirmDialogProps) => void;
     prompt: (promptDialogProps: PromptDialogProps) => void;
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
@@ -25,10 +27,11 @@ export interface DialogManager {
 }
 
 function nullDialog() {
-    console.warn("WARNING using null dialog manager");
+    console.warn("WARNING using null dialog manager", new Error("Wrong dialog manager"));
 }
 
 export const NullDialogManager: DialogManager = {
+    name: 'null',
     confirm: nullDialog,
     prompt: nullDialog,
     autocomplete: nullDialog,
@@ -179,6 +182,7 @@ const DialogHost = (props: DialogHostProps) => {
         };
 
         const dialogManager: DialogManager = {
+            name: 'default',
             confirm,
             prompt,
             autocomplete,
@@ -213,18 +217,13 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const MUIDialogControllerContext = React.createContext<DialogManager>(NullDialogManager);
+const MUIDialogControllerInner = React.memo(function MUIDialogControllerInner(props: IProps) {
 
-/**
- * Component to allow us to inject new components like snackbars, dialog boxes,
- * modals, etc but still use the React tree.
- */
-export const MUIDialogController = React.memo(function MUIDialogController(props: IProps) {
+    const setDialogManager = useDialogManagerSetter();
 
-    const [dialogManager, setDialogManager] = useState<DialogManager | undefined>();
-
-    const handleDialogManager = React.useCallback((dialogManger: DialogManager) => {
-        setDialogManager(dialogManger)
+    const handleDialogManager = React.useCallback((newDialogManager: DialogManager) => {
+        console.log("FIXME: god dialog manager: ", newDialogManager)
+        setDialogManager(newDialogManager)
     }, []);
 
     return (
@@ -232,11 +231,26 @@ export const MUIDialogController = React.memo(function MUIDialogController(props
 
             <DialogHost onDialogManager={dialogManger => handleDialogManager(dialogManger)}/>
 
-            {dialogManager && (
-                <MUIDialogControllerContext.Provider value={dialogManager}>
+            {props.children}
+
+        </>
+    );
+
+});
+
+/**
+ * Component to allow us to inject new components like snackbars, dialog boxes,
+ * modals, etc but still use the React tree.
+ */
+export const MUIDialogController = React.memo(function MUIDialogController(props: IProps) {
+
+    return (
+        <>
+            <DialogManagerProvider initialStore={NullDialogManager}>
+                <MUIDialogControllerInner {...props}>
                     {props.children}
-                </MUIDialogControllerContext.Provider>
-            )}
+                </MUIDialogControllerInner>
+            </DialogManagerProvider>
 
         </>
     );

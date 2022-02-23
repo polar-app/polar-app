@@ -11,6 +11,9 @@ export type ErrorHandler = (msg: string, ...args: any[]) => void;
 export function useErrorHandler(): ErrorHandler {
 
     const dialogManager = useDialogManager();
+
+    console.log("FIXME: dialog namager name: " + dialogManager.name);
+
     const sentryLogger = React.useMemo(() => new SentryBrowserLogger(), []);
 
     const createErrorDialog = React.useCallback((msg: string | undefined) => {
