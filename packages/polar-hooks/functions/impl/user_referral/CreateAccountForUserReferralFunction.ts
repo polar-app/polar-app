@@ -17,7 +17,7 @@ export const CreateAccountForUserReferralFunction = ExpressFunctions.createHookA
 
     const request: ICreateAccountForUserReferralRequest = req.body;
 
-    const response = CreateAccountForUserReferrals.exec(request);
+    const response = await CreateAccountForUserReferrals.exec(request);
 
     ExpressFunctions.sendResponse(res, response);
 
