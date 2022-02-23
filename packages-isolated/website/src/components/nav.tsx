@@ -195,7 +195,7 @@ function NavBarMobile() {
           <IconButton>
             <CloseIcon />
           </IconButton>
-          {links.map((text, index) => (
+          {/* {links.map((text, index) => (
             <Box key={text}>
               <ListItem
                 component={Button}
@@ -216,7 +216,7 @@ function NavBarMobile() {
               </ListItem>
               <Divider style={{ marginLeft: '10%', width: '80%' }} />
             </Box>
-          ))}
+          ))} */}
         </React.Fragment>
       </List>
     </div>
