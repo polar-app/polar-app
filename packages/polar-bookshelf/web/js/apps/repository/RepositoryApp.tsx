@@ -383,6 +383,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                         <MigrationToBlockAnnotations>
                             <AddFileDropzoneRoot>
+
+                                {/*APP NOTIFICATION BAR COULD GO HERE*/}
+
                                 <div className={classes.root}>
 
                                     <Initializers/>
