@@ -48,7 +48,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup Bob
         const emailOfBob = getRandomEmail('bob');
@@ -76,7 +76,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup Bob
         const emailOfBob = getRandomEmail('bob');
@@ -125,7 +125,7 @@ describe('UserReferrals', () => {
         await createUser(emailOfAlice);
 
         // Create a Stripe customer
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup default payment method. Required to switch to a non-free plan
         await setupDefaultPaymentMethod(stripeCustomerAlice.id);
@@ -146,7 +146,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
@@ -187,7 +187,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
@@ -223,7 +223,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
