@@ -23,8 +23,9 @@ export const useStyles = makeStyles((theme) =>
             gridTemplateColumns: `repeat(auto-fill, minmax(${theme.spacing(9)}px, 1fr))`,
             gridRowGap: theme.spacing(5),
             gridColumnGap: theme.spacing(1.5),
+            fontSize: '1.4rem',
         },
-        icon: { fontSize: '1.3rem' },
+        icon: { fontSize: '1.2rem' },
     })
 );
 
