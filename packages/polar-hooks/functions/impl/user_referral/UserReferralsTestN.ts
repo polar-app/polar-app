@@ -279,7 +279,7 @@ describe('UserReferrals', () => {
      * If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
      */
     const getRandomEmail = (hint?: string) => {
-        return FirebaseUserCreator.createTestUserEmail(hint)
+        return FirebaseUserCreator.createTestUserEmail({hint})
     }
 
     /**
