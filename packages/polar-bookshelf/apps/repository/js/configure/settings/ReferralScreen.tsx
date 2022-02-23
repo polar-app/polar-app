@@ -10,7 +10,7 @@ import {SVGIcon} from "../../../../../web/js/icons/SVGIcon";
 import {GiftSVGIcon} from "../../../../../web/js/icons/GiftSVGIcon";
 import Button from "@material-ui/core/Button";
 import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../../web/js/mui/useErrorHandler";
 
 const Main = () => {
 

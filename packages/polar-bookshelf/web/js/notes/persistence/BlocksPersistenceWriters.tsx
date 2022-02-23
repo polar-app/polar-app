@@ -6,7 +6,7 @@ import {useRepoDocMetaManager} from '../../../../apps/repository/js/persistence_
 import {Testing} from "polar-shared/src/util/Testing";
 import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {IBlocksStoreMutation} from '../store/IBlocksStoreMutation';
-import {useErrorHandler} from "../../mui/MUIErrorHandler";
+import {useErrorHandler} from "../../mui/useErrorHandler";
 
 const IS_NODE = typeof window === 'undefined';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {ComponentStory} from "@storybook/react";
-import IconButton from "@material-ui/core/IconButton";
 import {StorybookAppRoot} from "../../../../web/js/storybook/StorybookAppRoot";
 import {useAccountVerifiedAction, useAccountVerifiedActionDialogWarning} from "./useAccountVerifiedAction";
 import {Billing} from "polar-accounts/src/Billing";
@@ -28,9 +27,7 @@ const Demo = () => {
 const Template = () => (
 
     <StorybookAppRoot>
-        <IconButton>
-            <Demo />
-        </IconButton>
+        <Demo />
     </StorybookAppRoot>
 
 );

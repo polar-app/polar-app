@@ -9,7 +9,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../web/js/mui/useErrorHandler";
 import {
     ICreateAccountForUserReferralError,
     ICreateAccountForUserReferralRequest,
@@ -86,6 +86,7 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                     case "failed":
                         errorHandler("Unable to handle invite. " + response.message);
                         break;
+
                     case "not-university-email":
                         errorHandler('This is not a valid university email');
                         break;
@@ -181,3 +182,4 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
         </MUIAppRoot>
     );
 });
+
