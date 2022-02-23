@@ -20,7 +20,7 @@ describe("Stringifyable", () => {
 
         interface ByIndexSignature {
 
-            [key: string]: string | number |  undefined;
+            readonly [key: number | string]: string | number |  undefined;
 
         }
 
