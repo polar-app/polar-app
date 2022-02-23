@@ -80,7 +80,7 @@ export namespace UserReferrals {
             const customer = await StripeCustomers.getCustomerByEmail(stripeMode, email);
 
             if (! customer) {
-                await StripeCustomers.createCustomer(stripeMode, email, "");
+                await StripeCustomers.getOrCreateCustomer(stripeMode, email, "");
             }
 
             const subscription = await StripeCustomers.changePlan(stripeMode, email, V2PlanPlus, 'month', trial_end);
