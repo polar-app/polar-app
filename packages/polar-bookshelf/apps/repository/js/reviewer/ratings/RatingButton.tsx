@@ -30,7 +30,7 @@ export const RatingButton = deepMemo(function RatingButton<T extends ITaskAction
     return (
         <ColorButton variant="contained"
                      color={color}
-                     size="large"
+                     size="medium"
                      style={{flexGrow: 1}}
                      onClick={() => props.onRating(taskRep, rating)}>
             {rating}

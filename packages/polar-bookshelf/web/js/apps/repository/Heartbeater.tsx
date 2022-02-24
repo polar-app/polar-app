@@ -11,7 +11,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {useDebouncer} from "../../notes/persistence/BlocksPersistenceWriters";
 import {useHistory} from "react-router";
 import {useRefValue} from "../../hooks/ReactHooks";
-import {useErrorHandler} from "../../mui/MUIErrorHandler";
+import {useErrorHandler} from "../../mui/useErrorHandler";
 import {useAnalytics} from "../../analytics/Analytics";
 
 function useHeartbeater() {
