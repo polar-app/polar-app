@@ -17,7 +17,7 @@ import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 import {useAnalytics} from "../../../analytics/Analytics";
 import {useDocumentBlockFromDocInfoCreator} from "../../../notes/NoteUtils";
-import {useErrorHandler} from "../../../mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../mui/useErrorHandler";
 
 export namespace AddFileHooks {
 

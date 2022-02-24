@@ -3,7 +3,7 @@ import { FirebaseUserPurger } from "./FirebaseUserPurger";
 
 describe("FirebaseUserPurger", () => {
     it("basic", async () => {
-        const user = await FirebaseUserCreator.createTestUser();
+        const user = await FirebaseUserCreator.createTestUser({});
 
         await FirebaseUserPurger.doPurge(user.uid);
     });

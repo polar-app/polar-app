@@ -48,6 +48,7 @@ importers:
       node-polyfill-webpack-plugin: '=1.1.4'
       null-loader: '=4.0.1'
       playwright: '=1.18.1'
+      playwright-core: '=1.18.1'
       postcss-loader: '=6.2.0'
       prettier: '=2.4.1'
       process: '=0.11.10'
@@ -112,6 +113,7 @@ importers:
       node-polyfill-webpack-plugin: 1.1.4_webpack@5.61.0
       null-loader: 4.0.1_webpack@5.61.0
       playwright: 1.18.1
+      playwright-core: 1.18.1
       postcss-loader: 6.2.0_webpack@5.61.0
       prettier: 2.4.1
       process: 0.11.10
@@ -991,17 +993,21 @@ importers:
       '@types/mocha': '=9.0.0'
       karma-structured-json-reporter: '=1.0.1'
       mocha: '=9.1.1'
+      polar-accounts: 0.0.0
       polar-amplitude-backend: 0.0.0
       polar-firebase: 0.0.0
       polar-firebase-admin: 0.0.0
       polar-firestore-like: 0.0.0
+      polar-payments-stripe: 0.0.0
       polar-sendgrid: 0.0.0
       polar-shared: 0.0.0
     dependencies:
+      polar-accounts: link:../polar-accounts
       polar-amplitude-backend: link:../polar-amplitude-backend
       polar-firebase: link:../polar-firebase
       polar-firebase-admin: link:../polar-firebase-admin
       polar-firestore-like: link:../polar-firestore-like
+      polar-payments-stripe: link:../polar-payments-stripe
       polar-sendgrid: link:../polar-sendgrid
       polar-shared: link:../polar-shared
     devDependencies:

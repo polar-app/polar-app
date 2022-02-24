@@ -5,6 +5,17 @@ describe("GCLAnalyzeEntities", function() {
 
     describe("analyzeEntities", () => {
 
+        it("double mentions", async () => {
+
+            const text = "This is the first mention of Sacramento and this is the second mention of Sacramento."
+
+            const analysis = await GCLAnalyzeEntities.analyzeEntities(text);
+
+            console.log(JSON.stringify(analysis, null, '  '));
+
+        });
+
+
         it("extended", async () => {
 
             const text = "Yes, he owned slaves. He owned more than two hundred."

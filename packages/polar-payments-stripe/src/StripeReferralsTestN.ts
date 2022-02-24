@@ -29,7 +29,7 @@ describe('StripeReferrals', function() {
 
         xit("Create new customer with a 30d trial.", async function() {
 
-            await StripeCustomers.createCustomer('test', email, name);
+            await StripeCustomers.getOrCreateCustomer('test', email, name);
 
             const trial_end = StripeTrials.computeTrialEnds('30d');
 
@@ -39,7 +39,7 @@ describe('StripeReferrals', function() {
 
         xit("Create new customer with a 30d trial and apply coupon", async function() {
 
-            await StripeCustomers.createCustomer('test', email, name);
+            await StripeCustomers.getOrCreateCustomer('test', email, name);
 
             const trial_end = StripeTrials.computeTrialEnds('30d');
 
