@@ -6,7 +6,6 @@ import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
 import {SentryReporters} from "../reporters/SentryReporter";
-import {Stringifyable} from "polar-shared/src/util/Stringifyable";
 
 const CORS_OPTIONS: cors.CorsOptions = {
     origin: true,
@@ -113,7 +112,7 @@ export class ExpressFunctions {
 
     // this should be something like JSONResponses
     public static sendResponse(res: express.Response,
-                               body: Stringifyable,
+                               body: any,
                                status: number = 200,
                                contentType: string = 'application/json') {
 

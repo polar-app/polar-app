@@ -3,7 +3,7 @@ import {assert} from 'chai';
 
 describe("Stringifyable", () => {
 
-    function doTest<K>(val: Stringifyable<K>) {
+    function doTest<K>(val: Stringifyable) {
         const result = JSON.parse(JSON.stringify(val));
         assert.deepEqual(result, val);
     }
@@ -23,10 +23,10 @@ describe("Stringifyable", () => {
         // doTest(101);
         // doTest(false);
         //
-        // doTest({
-        //     error: 'some error string'
-        // })
-        //
+        doTest({
+            error: 'some error string'
+        })
+
         // doTest(<ErrorResponse> {err: 'asdf'})
 
         // FIXME: try keyof here...
