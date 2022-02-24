@@ -11,9 +11,6 @@ export interface IAccountUpgrade extends IRequiredPlan {
     readonly plan: V2Plan;
 }
 
-/**
- * True when the account needs to be upgraded..
- */
 export function useAccountUpgrader(): IAccountUpgrade | undefined {
 
     const userInfoContext = useUserInfoContext();

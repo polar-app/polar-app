@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {RoutePathNames} from '../apps/repository/RoutePathNames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
-import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
+import {useSideNavStore} from './SideNavStore';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
@@ -72,11 +72,6 @@ export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
         PREV_TAB: () => doNavRef.current(-1),
         NEXT_TAB: () => doNavRef.current(+1),
     }), [doNavRef]);
-
-
-    if (! SIDE_NAV_ENABLED) {
-        return null;
-    }
 
     return (
         <>

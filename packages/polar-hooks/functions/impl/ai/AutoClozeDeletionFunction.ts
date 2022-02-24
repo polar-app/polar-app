@@ -1,7 +1,9 @@
-import { AutoClozeDeletions } from "polar-backend-api/src/api/AutoClozeDeletion";
+import {AutoClozeDeletions} from "polar-backend-api/src/api/AutoClozeDeletion";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {IDUser} from "../util/IDUsers";
-import { GCLAnalyzeEntities } from "polar-google-cloud-language/src/GCLAnalyzeEntities";
+import {GCLAnalyzeEntities} from "polar-google-cloud-language/src/GCLAnalyzeEntities";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {GCL} from "polar-backend-api/src/api/GCL";
 
 
 export namespace AutoClozeDeletion {
@@ -9,28 +11,48 @@ export namespace AutoClozeDeletion {
     import AutoClozeDeletionError = AutoClozeDeletions.AutoClozeDeletionError;
     import AutoClozeDeletionRequest = AutoClozeDeletions.AutoClozeDeletionRequest;
     import AutoClozeDeletionResponse = AutoClozeDeletions.AutoClozeDeletionResponse;
+    import IEntityMention = GCL.IEntityMention;
 
-    function clozeDeletionTagGenerator(seed: number = 1): (deletion: string) => string {
-        return (deletion: string): string => {
-            const tag = `{{c${seed}::${deletion}}}`
-            seed++;
-            return tag;
-        }
+    export function _createClozeWithinText(text: string,
+                                           start: number,
+                                           end: number,
+                                           idx: number) {
+
+        const clozedText = text.substring(start, end);
+
+        const replacement = `{{c${idx}::${clozedText}}}`
+
+        return text.substring(0, start) + replacement + text.substring(end, text.length);
+
     }
-    function generateClozeDeletions(text: string,
-                                    entities: ReadonlyArray<GCLAnalyzeEntities.IEntity> ): string {
 
-        let mutText = text;
+    export function generateClozeDeletions(text: string,
+                                           entities: ReadonlyArray<GCLAnalyzeEntities.IEntity> ): string {
 
-        const createClozeDeletionTag = clozeDeletionTagGenerator();
+        let result = text;
 
-        for (const entity of entities) {
-            if (entity.name) {
-                mutText = mutText.replace(entity.name, createClozeDeletionTag(entity.name))
-            }
+        // sort the entities by offset desc...
+
+        function toBeginOffset(mention: IEntityMention) {
+            return mention.text?.beginOffset || 0;
         }
 
-        return mutText;
+        const mentions = arrayStream(entities)
+            .map(current => current.mentions)
+            .flatMap(current => current!)
+            .sort((a, b) => toBeginOffset(b) - toBeginOffset(a))
+            .collect()
+
+        let idx = mentions.length;
+
+        for (const mention of mentions) {
+            const start = mention.text?.beginOffset || 0;
+            const end = start + (mention.text?.content || '').length;
+            result = _createClozeWithinText(result, start, end, idx--)
+        }
+
+        return result;
+
     }
 
     export async function analyzeText(text: string): Promise<AutoClozeDeletionResponse | AutoClozeDeletionError> {
@@ -51,7 +73,7 @@ export namespace AutoClozeDeletion {
 
     export async function exec(idUser: IDUser,
                                request: AutoClozeDeletionRequest): Promise<AutoClozeDeletionResponse | AutoClozeDeletionError> {
-        
+
         return await analyzeText(request.text);
     }
 

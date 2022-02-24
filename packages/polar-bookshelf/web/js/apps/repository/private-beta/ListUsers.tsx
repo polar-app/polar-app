@@ -8,13 +8,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import {Button, CircularProgress} from "@material-ui/core";
+import {Button, CircularProgress, TableSortLabel} from "@material-ui/core";
 import {JSONRPC} from "../../../datastore/sharing/rpc/JSONRPC";
 import {PrivateBetaReqCollection} from "polar-firebase/src/firebase/om/PrivateBetaReqCollection";
 import IPrivateBetaReq = PrivateBetaReqCollection.IPrivateBetaReq;
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 const useStyles = makeStyles({
     container: {
@@ -25,6 +26,14 @@ const useStyles = makeStyles({
         minWidth: 650,
     }
 });
+
+/**
+ * Return a stringified version of an array of Referral codes for the given waiting user
+ * Remove duplicates and remove "system" tags
+ */
+export const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
+    return arrayStream(waitingUser.tags).filter(current => current !== 'initial_signup').unique().collect().join(', ');
+};
 
 const NoUsersComponent: React.FC = (props) => {
     return <TableRow>
@@ -42,62 +51,75 @@ export const ListUsers: React.FC = (ref) => {
     // Keep the list of displayed users in an array in state
     const [users, setUsers] = React.useState<ReadonlyArray<IPrivateBetaReq>>([]);
 
+    // Which column to sort by?
+    type SORTABLE_COLUMNS = 'created_at' | 'invite_code';
+    const [sortBy, setSortBy] = React.useState<SORTABLE_COLUMNS>('created_at');
+    const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('desc');
+
     // Keep the list of users who are "being accepted" in a temporary array in state, while they are processed
     const [usersBeingProcessed, setUsersBeingProcessed] = React.useState<ReadonlyArray<string>>([]);
 
     const dialogManager = useDialogManager();
 
-    useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        (async () => {
-            try {
-                type Response = {
-                    readonly list: ReadonlyArray<PrivateBetaReqCollection.IPrivateBetaReq>,
-                }
-                type ErrorResponse = {
-                    error: string,
-                }
-                const response = await JSONRPC.exec<{}, Response | ErrorResponse>('private-beta/users', {});
-                if ('error' in response) {
-                    console.error(response);
-                    dialogManager.snackbar({
-                        type: "error",
-                        message: response.error,
-                    });
-                    return;
-                }
-                setUsers(response.list);
-            } catch (e: any) {
-                console.error(JSON.stringify(e, null, 2));
-                if (e.error?.error) {
-                    dialogManager.snackbar({
-                        type: "error",
-                        message: "Failed to fetch list of waiting users: " + e.error.error,
-                    });
-                    return;
-                }
+    const reloadUsersList = React.useCallback(async () => {
+        setUsers([]);
+
+        try {
+            type Response = {
+                readonly list: PrivateBetaReqCollection.IPrivateBetaReq[],
+            }
+            type ErrorResponse = {
+                error: string,
+            }
+
+            const response = await JSONRPC.exec<{}, Response | ErrorResponse>('private-beta/users', {});
+
+            if ('error' in response) {
+                console.error(response);
                 dialogManager.snackbar({
                     type: "error",
-                    message: "Failed to fetch list of waiting users",
-                })
+                    message: response.error,
+                });
+                return;
             }
-        })();
-    }, [dialogManager]);
 
-    /**
-     * Return a stringified version of an array of Referral codes for the given waiting user
-     * Remove duplicates and remove "system" tags
-     */
-    const stringifyReferralCodes = (waitingUser: PrivateBetaReqCollection.IPrivateBetaReq) => {
-        // eslint-disable-next-line functional/prefer-readonly-type
-        const tags: string[] = [];
-        waitingUser.tags.forEach(tag => {
-            if (!tags.includes(tag) && tag !== 'initial_signup') {
-                tags.push(tag);
+            switch (sortBy) {
+                case "created_at":
+                    response.list.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+                    break;
+                case "invite_code":
+                    response.list.sort((a, b) => {
+                        const aTags = stringifyReferralCodes(a);
+                        const bTags = stringifyReferralCodes(b);
+                        if (aTags < bTags) return -1;
+                        return aTags > bTags ? 1 : 0;
+                    });
+                    break;
             }
-        })
-        return tags.join(', ');
-    };
+            if (sortDirection === 'desc') {
+                response.list.reverse();
+            }
+            setUsers(response.list);
+        } catch (e: any) {
+            console.error(JSON.stringify(e, null, 2));
+            if (e.error?.error) {
+                dialogManager.snackbar({
+                    type: "error",
+                    message: "Failed to fetch list of waiting users: " + e.error.error,
+                });
+                return;
+            }
+            dialogManager.snackbar({
+                type: "error",
+                message: "Failed to fetch list of waiting users",
+            })
+        }
+    }, [dialogManager, sortBy, sortDirection]);
+
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        reloadUsersList().then();
+    }, [dialogManager, sortBy, sortDirection, reloadUsersList]);
 
     const showSuccessSnackbar = React.useCallback(() => {
         dialogManager.snackbar({
@@ -121,17 +143,11 @@ export const ListUsers: React.FC = (ref) => {
                 email,
             ]);
 
-            type Request = {
-                readonly emails: ReadonlyArray<string>,
-            };
-            type Response = {
-                readonly accepted: ReadonlyArray<IUserRecord>,
-            };
+            type Request = { readonly emails: ReadonlyArray<string> };
+            type Response = { readonly accepted: ReadonlyArray<IUserRecord> };
 
             // Accept this user
-            const path = 'private-beta/accept-users';
-            const request = {emails: [email]};
-            await JSONRPC.exec<Request, Response>(path, request);
+            await JSONRPC.exec<Request, Response>('private-beta/accept-users', {emails: [email]});
 
             // Remove user from the list in the frontend
             // He was already removed from DB as part of the API call anyway,
@@ -153,6 +169,18 @@ export const ListUsers: React.FC = (ref) => {
         return usersBeingProcessed.includes(email);
     }
 
+    const columnClicked = React.useCallback((columnName: SORTABLE_COLUMNS) => {
+        setSortBy(columnName);
+
+        // If sort column has changed, always enforce descending order first
+        if (sortBy !== columnName) {
+            setSortDirection('desc');
+            return;
+        }
+        // Reverse column sorting direction
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    }, [sortBy, sortDirection]);
+
     return (
         <div className={classes.container}>
             <h1>Manage waiting users</h1>
@@ -161,8 +189,18 @@ export const ListUsers: React.FC = (ref) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Email {users.length > 0 && `(${users.length} users)`}</TableCell>
-                            <TableCell>Registered at</TableCell>
-                            <TableCell>Invite code</TableCell>
+                            <TableCell>
+                                <TableSortLabel
+                                    active={sortBy === 'created_at'}
+                                    direction={sortDirection}
+                                    onClick={() => columnClicked('created_at')}>Registered at</TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                <TableSortLabel
+                                    active={sortBy === 'invite_code'}
+                                    direction={sortDirection}
+                                    onClick={() => columnClicked('invite_code')}>Referral code</TableSortLabel>
+                            </TableCell>
                             <TableCell align="right">&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>

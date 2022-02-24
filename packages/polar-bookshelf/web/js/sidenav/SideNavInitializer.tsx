@@ -1,5 +1,5 @@
 import React from 'react';
-import {SIDE_NAV_ENABLED, TabDescriptor, useSideNavStore} from "./SideNavStore"
+import {TabDescriptor, useSideNavStore} from "./SideNavStore"
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useRepoDocMetaManager} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDocLoader} from "../apps/main/DocLoaderHooks";
@@ -22,10 +22,6 @@ export function useSideNavInitializer() {
     const docViewerURL = DocViewerAppURLs.parse(location.pathname)
 
     const handleDocLoad = React.useCallback((id: IDStr) => {
-
-        if (! SIDE_NAV_ENABLED) {
-            return;
-        }
 
         const repoDocInfo = repoDocMetaManager.repoDocInfoIndex.get(id);
 

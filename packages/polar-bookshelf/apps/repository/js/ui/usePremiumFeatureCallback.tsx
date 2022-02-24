@@ -26,9 +26,9 @@ export function usePremiumFeatureCallbackDialogWarning() {
 
 }
 
-export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard'
+export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard' | 'doc-viewer';
 
-export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
+function usePremiumAccountRequiredPredicate(reason: PremiumFeatureUpgradeReason) {
 
     const accountUpgrade = useAccountUpgrader();
 
@@ -46,12 +46,44 @@ export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, d
 
             premiumFeatureCallbackDialogWarning();
 
-            return;
+            return true;
 
         }
 
-        delegate();
+        return false;
 
-    }, [accountUpgrade, delegate, premiumFeatureCallbackDialogWarning, reason])
+    }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning])
+
+}
+
+
+export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
+
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
+
+    return React.useCallback(() => {
+
+        if (! premiumAccountRequired()) {
+            delegate();
+        }
+
+    }, [delegate, premiumAccountRequired])
+
+}
+
+/**
+ * Wraps a callback with a single argument.
+ */
+export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReason, delegate: (value: V) => void) {
+
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
+
+    return React.useCallback((value) => {
+
+        if (! premiumAccountRequired()) {
+            delegate(value);
+        }
+
+    }, [delegate, premiumAccountRequired])
 
 }

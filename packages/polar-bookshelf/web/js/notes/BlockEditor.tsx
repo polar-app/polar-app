@@ -17,6 +17,9 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
 import {Block} from "./store/Block";
 import {BlockContent, useBlocksStore} from "./store/BlocksStore";
 import {BlockTextContentUtils} from "./BlockTextContentUtils";
+import {FeatureEnabled} from "../features/FeaturesRegistry";
+import {BlockDebug} from "./BlockDebug";
+import {Box} from "@material-ui/core";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -238,7 +241,12 @@ interface IProps {
 export const BlockEditor = observer(function BlockEditor(props: IProps) {
 
     return (
-        <NoteEditorWithEditorStore {...props}/>
+        <Box flex="1">
+            <FeatureEnabled feature="notes-debug-tools">
+                <BlockDebug id={props.id} />
+            </FeatureEnabled>
+            <NoteEditorWithEditorStore {...props}/>
+        </Box>
     );
 
 });
