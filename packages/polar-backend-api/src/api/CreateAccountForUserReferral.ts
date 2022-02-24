@@ -16,11 +16,15 @@ export interface ICreateAccountForUserReferralResponse {
     readonly auth_token: AuthTokenStr;
 }
 
-export type ICreateAccountForUserReferralError = ICreateAccountForUserReferralFailed | IAnswerExecutorErrorInvalidUserReferralCode;
+export type ICreateAccountForUserReferralError =
+    ICreateAccountForUserReferralFailed
+    | IAnswerExecutorErrorInvalidUserReferralCode
+    | IAnswerExecutorErrorNotUniversityEmail;
 
 export interface ICreateAccountForUserReferralFailed extends IRPCError<'failed'> {
     readonly message: string;
 }
 
 export type IAnswerExecutorErrorInvalidUserReferralCode = IRPCError<'invalid-user-referral-code'>;
+export type IAnswerExecutorErrorNotUniversityEmail = IRPCError<'not-university-email'>;
 

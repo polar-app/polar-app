@@ -56,8 +56,11 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
     "local-search": {
         title: "Enable new local search",
         description: "Enable the new local search functionality.",
-    }
-    ,
+    },
+    "notes-debug-tools": {
+        title: "Enable the notes debug tools",
+        description: "Enable the notes debug tools.",
+    },
     "premium-doc-viewer": {
         title: "Make the doc viewer premium",
         description: "The doc viewer will now be premium and require plus or pro.",
@@ -79,6 +82,7 @@ export type FeatureName = 'design-m0' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
                           'use-redesign-theme' |
+                          'notes-debug-tools' |
                           'premium-doc-viewer';
 
 export interface IFeature {
