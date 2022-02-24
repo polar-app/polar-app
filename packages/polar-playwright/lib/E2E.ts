@@ -48,7 +48,8 @@ export namespace E2E {
 
             await page.locator('button', {hasText: 'VERIFY CODE'}).click();
 
-            await page.waitForTimeout(1000);
+            // Wait for doc repository to load
+            await page.locator('button', {hasText: 'Add Document'}).waitFor();
         }
     }
 
