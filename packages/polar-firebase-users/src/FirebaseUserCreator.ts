@@ -102,7 +102,7 @@ export namespace FirebaseUserCreator {
 
         }
 
-        await createTrial(stripeMode, email, "");
+        // await createTrial(stripeMode, email, "");
 
         if (Testing.isProductionRuntime()) {
 
