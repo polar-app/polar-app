@@ -34,3 +34,7 @@ describe("Stringifyable", () => {
     });
 
 })
+
+// type NoPromises<T> = T extends (Promise<unknown> | PromiseLike<unknown>) ? never : T;
+
+type NoPromises<T> = T extends (Promise<unknown> | PromiseLike<unknown>) ? never : T;
