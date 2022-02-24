@@ -1,4 +1,4 @@
-import {AppBar, Box, Button, createStyles, makeStyles, Toolbar} from '@material-ui/core';
+import {AppBar, Box, createStyles, makeStyles, Toolbar} from '@material-ui/core';
 import React from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {SearchForNote} from "./toolbar/SearchForNote";
@@ -19,6 +19,7 @@ import NotesIcon from "@material-ui/icons/Notes";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import {NotesHistoryBreadcrumbsUsingHistory} from "./NotesHistoryBreadcrumbs";
 import {FeatureEnabled} from '../features/FeaturesRegistry';
+import {CreateNoteButton} from './toolbar/CreateNoteButton';
 
 export const useCreateNoteDialog = () => {
     const dialogs = useDialogManager();
@@ -75,7 +76,7 @@ export const useHandlePurgeDocumentBlocks = () => {
     }, [blocksStore, dialogs]);
 };
 
-const useDesktopStyles = makeStyles((theme) =>
+const useDesktopStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
@@ -98,20 +99,11 @@ const useDesktopStyles = makeStyles((theme) =>
 
 const DesktopNotesToolbar = () => {
     const classes = useDesktopStyles();
-    const handleCreateNote = useCreateNoteDialog();
 
     return (
         <RepositoryToolbar className={classes.root}>
             <Box px={1} py={1} className={classes.left}>
-                <Button color="primary"
-                        style={{ height: 38, width: 284 }}
-                        variant="contained"
-                        disableElevation
-                        startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
-                        onClick={handleCreateNote}
-                        size="medium">
-                    Create a new note
-                </Button>
+                <CreateNoteButton />
             </Box>
             <Box px={1} py={1} className={classes.right}>
                 <SearchForNote />
@@ -120,18 +112,27 @@ const DesktopNotesToolbar = () => {
     );
 };
 
+const useHandheldStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            padding: theme.spacing(1.4),
+        },
+    }),
+);
+
 const HandheldNotesToolbar = React.memo(function HandheldNotesToolbar() {
     const createNoteDialog = useCreateNoteDialog();
     const history = useHistory();
+    const classes = useHandheldStyles();
 
     return (
         <>
-            <AppBar color={"inherit"} position="static">
-                <Toolbar>
+            <AppBar color="inherit" position="static">
+                <Toolbar classes={{ gutters: classes.root }}>
                     <div>
                         <StandardIconButton tooltip="Back to notes"
                                             onClick={() => history.push("/notes")}>
-                            <NotesIcon />
+                            <NotesIcon fontSize="small" />
                         </StandardIconButton>
                     </div>
 

@@ -53,7 +53,7 @@ export namespace RegisterForPrivateBeta {
             subject: `Polar | Early access list`,
             html: `<p>Hi!</p>
                    <p>Thanks for signing up for early access to Polar. We’re consistently letting in new users and your turn is coming up soon!</p>
-                   <p>Want to skip the waitlist and get personal onboarding? Reply to this email and we're happy to walk you through the tool and give you access right now</p>
+                   <p>Want to skip the waitlist and get personal onboarding? Reply to this email and we're happy to walk you through the tool and give you access right now. We'll even give you two weeks of Polar Plus on us.</p>
 
                    <p>Cheers</p>
                    <p>The Polar team</p>

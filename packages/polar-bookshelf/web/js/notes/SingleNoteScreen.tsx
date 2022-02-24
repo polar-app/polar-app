@@ -18,7 +18,7 @@ import {autorun} from "mobx";
 
 interface INoteRootParams {
     readonly id: BlockIDStr;
-};
+}
 
 interface ISingleNoteScreenProps extends RouteComponentProps<INoteRootParams> {}
 
@@ -80,15 +80,17 @@ export const NoteRenderer: React.FC<INoteRendererProps> = React.memo((props) => 
             {rootID
                 ? (
                     <BlocksTreeProvider root={rootID} autoExpandRoot>
-                        <Block id={rootID}
-                               parent={undefined}
-                               isHeader
-                               alwaysExpanded
-                               hasGutter
-                               noBullet />
-                        <div style={{ marginTop: 64 }}>
-                            <NotesInbound id={rootID} />
-                        </div>
+                        <Box py="1.5rem">
+                            <Block id={rootID}
+                                   parent={undefined}
+                                   isHeader
+                                   alwaysExpanded
+                                   hasGutter
+                                   noBullet />
+                            <div style={{ marginTop: 64 }}>
+                                <NotesInbound id={rootID} />
+                            </div>
+                        </Box>
                     </BlocksTreeProvider>
                 ) : (
                     <NoteNotFound target={target} />

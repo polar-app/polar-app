@@ -14,8 +14,10 @@ import {UserAvatarIconButton} from "../../../../web/js/ui/cloud_auth/UserAvatarI
 import {RoutePathNames} from "../../../../web/js/apps/repository/RoutePathNames";
 import {useHistory} from "react-router-dom";
 import {profiled} from "../../../../web/js/profiler/ProfiledComponents";
+import {Box} from "@material-ui/core";
+import {NotesToolbar} from "../../../../web/js/notes/NotesToolbar";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
@@ -46,15 +48,13 @@ const NotesRepoTableToolbarMain = React.memo(function NotesRepoTableToolbarMain(
     const selected = [];
 
     return (
-        <>
-            <DeviceRouter.Desktop>
-                <div style={{display: 'flex',marginRight: 'auto'}}>
-                    <NotesRepoTableHeadCheck/>
-
-                    {selected.length > 0 && <SelectionActiveButtons/>}
-                </div>
-            </DeviceRouter.Desktop>
-        </>
+        <DeviceRouter.Desktop>
+            <Box display="flex" width="100%">
+                <NotesRepoTableHeadCheck/>
+                
+                {selected.length > 0 && <SelectionActiveButtons/>}
+            </Box>
+        </DeviceRouter.Desktop>
     );
 
 });
@@ -67,9 +67,12 @@ export const NotesRepoTableToolbar = React.memo(profiled(function NotesRepoTable
     return (
         <>
             <DeviceRouter.Desktop>
-                <RepositoryToolbar className={classes.root}>
-                    <NotesRepoTableToolbarMain/>
-                </RepositoryToolbar>
+                <>
+                    <NotesToolbar />
+                    <RepositoryToolbar className={classes.root}>
+                        <NotesRepoTableToolbarMain/>
+                    </RepositoryToolbar>
+                </>
             </DeviceRouter.Desktop>
 
             <DeviceRouter.Handheld>

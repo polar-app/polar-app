@@ -54,6 +54,18 @@ export namespace StripeCustomers {
     type EmailStr = string;
     type CustomerQuery = EmailStr | CustomerQueryByID;
 
+    export async function getOrCreateCustomer(stripeMode: StripeMode, email: string, name: string) {
+
+        const customer = await getCustomerByEmail(stripeMode, email);
+
+        if (! customer) {
+            return await createCustomer(stripeMode, email, name);
+        }
+
+        return customer;
+
+    }
+
     export async function createCustomer(stripeMode: StripeMode, email: string, name: string) {
 
         const stripe = StripeUtils.getStripe(stripeMode);
