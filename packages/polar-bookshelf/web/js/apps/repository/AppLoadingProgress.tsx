@@ -8,7 +8,8 @@ import {PolarLogoImage} from "../../../../apps/repository/js/nav/PolarLogoImage"
 export const AppLoadingProgress = React.memo(function AppLoadingProgress() {
 
     return (
-        <div style={{display: 'flex', height: '100%', flexGrow: 1, flexDirection: 'column'}}>
+        <div data-test="AppLoadingProgress"
+             style={{display: 'flex', height: '100%', flexGrow: 1, flexDirection: 'column'}}>
 
             <LinearProgress/>
 

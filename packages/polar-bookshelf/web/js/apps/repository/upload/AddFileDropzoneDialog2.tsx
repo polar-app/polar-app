@@ -47,7 +47,7 @@ interface IProps {
 /**
  * Shown while the user is hovering while a file ready to drop.
  */
-export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
+export const AddFileDropzoneDialog2 = React.memo(function AddFileDropzoneDialog2(props: IProps) {
 
     const classes = useStyles();
 
@@ -58,7 +58,7 @@ export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
                 onClose={props.onClose}
                 open={props.open}>
 
-            <div className={classes.dropbox}>
+            <div data-test="AddFileDropzoneDialog2" className={classes.dropbox}>
 
                 <p className={classes.title}>
                     Drag and Drop

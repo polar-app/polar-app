@@ -12,7 +12,8 @@ interface IProps {
  */
 export const RepositoryToolbar = (props: IProps) => {
     return (
-        <Paper square 
+        <Paper data-test="RepositoryToolbar"
+               square
                style={props.style}
                className={ props.className }>
 

@@ -281,6 +281,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                 <RepositoryRoot>
                     <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
                         <div className="RepositoryApp"
+                             data-test="RepositoryApp"
                              style={{
                                  display: 'flex',
                                  minWidth: 0,
