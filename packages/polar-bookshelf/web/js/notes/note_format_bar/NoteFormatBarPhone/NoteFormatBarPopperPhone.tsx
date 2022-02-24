@@ -25,7 +25,7 @@ export const useNoteFormatBarPopperPhoneStyles = makeStyles((theme) =>
                 height: NOTE_FORMAT_BAR_POPPER_PHONE_BAR_HEIGHT
                         + NOTE_FORMAT_BAR_POPPER_PHONE_EXTENSION_HEIGHT,
             },
-            fontSize: '1.55rem',
+            fontSize: '1.75rem',
         },
         bar: {
             height: theme.spacing(5.5),

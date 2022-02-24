@@ -6,7 +6,7 @@ export const GlobalCssMobileRootStyles = withStyles({
     // @global is handled by jss-plugin-global.
     '@global': {
         'html, body': {
-            fontSize: '16px',
+            fontSize: '14px',
         },
     },
 });
