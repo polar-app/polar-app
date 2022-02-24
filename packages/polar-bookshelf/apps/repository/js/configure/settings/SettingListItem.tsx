@@ -2,7 +2,7 @@ import * as React from "react";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {Box, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
-import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../../web/js/mui/useErrorHandler";
 
 export interface PrefsWriter {
 
