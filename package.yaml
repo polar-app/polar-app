@@ -61,6 +61,7 @@ devDependencies:
     "eslint-plugin-promise": "=5.1.1"
     "eslint-plugin-react": "=7.27.0"
     "eslint-plugin-react-hooks": "=4.3.0"
+    "eslint-plugin-test-selectors": "=2.0.3"
     "prettier": "=2.4.1"
 
     ## Karma Dependencies

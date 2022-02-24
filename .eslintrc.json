@@ -5,17 +5,19 @@
     "project": "./tsconfig.json"
   },
   "extends": [
-    "eslint:recommended",
     "standard",
+    "prettier",
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "plugin:test-selectors/recommendedWithErrors"
   ],
   "plugins": [
     "@typescript-eslint",
     "react",
     "react-hooks",
     "unused-imports",
-    "functional"
+    "functional",
+    "test-selectors"
   ],
   "env": {
     "es6": true,
