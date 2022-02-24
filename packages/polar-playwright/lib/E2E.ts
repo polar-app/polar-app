@@ -32,6 +32,26 @@ export namespace E2E {
 
     }
 
+    export namespace Auth {
+
+        export async function doLogin(page: Page, email: string, code: string) {
+
+            await page.locator('h2', {hasText: 'Sign In to Polar'}).waitFor()
+
+            await page.locator('input[type=email]').type(email);
+
+            await page.locator('button', {hasText: 'Sign In with Email'}).click();
+
+            await page.locator('button', {hasText: 'VERIFY CODE'}).waitFor();
+
+            await page.locator('input[type=numeric]').type(code);
+
+            await page.locator('button', {hasText: 'VERIFY CODE'}).click();
+
+            await page.waitForTimeout(1000);
+        }
+    }
+
     export namespace Nav {
         export async function goToNotes(page: Page) {
 
