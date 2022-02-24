@@ -3,48 +3,33 @@ import {assert} from 'chai';
 
 describe("Stringifyable", () => {
 
-    function doTest(val: Stringifyable) {
+    function doTest<K>(val: Stringifyable<K>) {
         const result = JSON.parse(JSON.stringify(val));
         assert.deepEqual(result, val);
     }
 
+    interface ErrorResponse {
+
+        /**
+         * Human readable error string
+         */
+        readonly err?: string;
+
+    }
+
     it("basic", () => {
 
-        doTest('hello');
-        doTest(101);
-        doTest(false);
-
-        doTest({
-            error: 'some error string'
-        })
-
-        interface ByIndexSignature {
-
-            readonly [key: number | string]: string | number |  undefined;
-
-        }
-
-        interface ErrorResponse {
-
-            /**
-             * Human readable error string
-             */
-            readonly err: string;
-
-        }
-
-        const errorResponse: ErrorResponse = {
-            err: 'some error'
-        }
-
-        const byIndexSignature: ByIndexSignature = errorResponse;
-
-        // //
-        // // const errorResponse: ErrorResponse = {
-        // //
-        // // }
+        // doTest('hello');
+        // doTest(101);
+        // doTest(false);
+        //
+        // doTest({
+        //     error: 'some error string'
+        // })
         //
         // doTest(<ErrorResponse> {err: 'asdf'})
+
+        // FIXME: try keyof here...
 
     });
 
