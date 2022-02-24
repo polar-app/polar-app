@@ -18,18 +18,15 @@ type ExpirationTimeWallClockMillis = number;
 
 type TimeIntervalTuple = readonly [ExpirationTimeMillis, ExpirationTimeWallClockMillis, Duration]
 
-export function currentTimeMillisWithLocale(): number {
-    const now = new Date();
-    const tzOffset = now.getTimezoneOffset();
-    const txOffsetMillis = tzOffset * 60 * 1000;
-    const time = now.getTime();
-    return time + txOffsetMillis;
+export function getTimezoneOffsetMs(): number {
+    const tzOffset = new Date().getTimezoneOffset();
+    return tzOffset * 60 * 1000 * -1;
 }
 
 export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const [time, setTime] = React.useState<TimeIntervalTuple>(() => {
-        const now = currentTimeMillisWithLocale();
+        const now = Date.now();
         return [now, now, duration];
     });
 
@@ -37,11 +34,17 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
 
     const computeDurationForTimeout = React.useCallback((): readonly [ExpirationTimeWallClockMillis, DurationMillis] => {
 
-        const now = currentTimeMillisWithLocale();
-        const expirationTime = TimeDurations.computeExpirationTime(now, duration);
-        const durationMillis =  Math.abs(expirationTime - now);
+        const now = Date.now();
+        const offsetMs = getTimezoneOffsetMs();
+        const nowWithOffset = now + offsetMs;
 
-        return [expirationTime, durationMillis];
+        const expirationTime = TimeDurations.computeExpirationTime(nowWithOffset, duration);
+        const durationMillis =  Math.abs(expirationTime - nowWithOffset);
+
+        return [
+            expirationTime - offsetMs,
+            durationMillis,
+        ];
 
     }, [duration]);
 
@@ -50,7 +53,7 @@ export function useTimeInterval(duration: Duration): TimeIntervalTuple {
         const [expirationTime, duration] = computeDurationForTimeout();
 
         timeoutRef.current = window.setTimeout(() => {
-            setTime([expirationTime, currentTimeMillisWithLocale(), duration]);
+            setTime([expirationTime, Date.now(), duration]);
 
             //now reschedule in the future.
             scheduleTimeout();
