@@ -51,6 +51,17 @@ export namespace E2E {
             // Wait for doc repository to load
             await page.locator('button', {hasText: 'Add Document'}).waitFor();
         }
+
+        export async function doLogout(page: Page) {
+            await page.click("#sidenav > div > div:nth-child(10) > div:nth-child(2) > div > svg > path");
+            
+            await page.click(".text-right .MuiButton-label");         
+
+            await page.click("[role='presentation'] .MuiButton-contained .MuiButton-label");
+
+            // waits for logout to fully finish
+            await page.locator('h2', {hasText: 'Sign In to Polar'}).waitFor();
+        }
     }
 
     export namespace Nav {
