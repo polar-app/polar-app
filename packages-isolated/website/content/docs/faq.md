@@ -20,6 +20,14 @@ Polar is a reading, note-taking, and learning tool that allows you to create ann
 
 Yes, Polar is free for anyone to use, with free cloud storage and access to all core features. We also offer premium plans with more cloud storage and various advanced features. For our plans, check out <a href="https://app.getpolarized.io/plans" target="_blank">our plans</a>.
 
+### Do you offer student discounts?
+
+Yes, we offer 25% student discounts. Just reach out to us with your university email
+
+### Do you offer referral rewards?
+
+Yes, we give you a month of free Polar Plus (Pro for existing Pro users) for every successful student referral.
+
 ### Does Polar have a desktop app?
 
 No, we currently do not have a desktop app. We have previously supported one but have discontinued it and plan to introduce a desktop app again in the future.
@@ -45,6 +53,11 @@ To download your reading, click on the download button in the repository view fo
 To download your annotations, click on the download button in the annotation viewer. You can download your annotations as a JSON or markdown file.
 
 We also support a snapshot feature in the premium tiers that allows you additionally back up all your information manually in one click.
+
+### Can I export my data?
+
+Yes, you can export all your highlights and annotations in one click or each file from your library.You can also export your flashcards as a deck to Anki. Finally, we provide a snapshot feature where you can create a manual copy of your entire Polar content (available to all Plus and Pro uses)
+
 
 ### How do I export my flashcards to Anki?
 
