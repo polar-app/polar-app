@@ -11,8 +11,8 @@ interface IProps {
 
 export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
-    const useRedesign = props.useRedesign || false;
-    const darkMode = props.darkMode || true;
+    const useRedesign = props.useRedesign ?? false;
+    const darkMode = props.darkMode ?? true;
 
     return (
         <MUIThemeRoot useRedesign={useRedesign} darkMode={darkMode}>

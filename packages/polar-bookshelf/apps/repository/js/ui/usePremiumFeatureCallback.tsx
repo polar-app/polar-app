@@ -5,6 +5,7 @@ import * as React from "react";
 import {Plans} from "polar-accounts/src/Plans";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Billing} from "polar-accounts/src/Billing";
+import {TimeToUpgradeContent} from "./TimeToUpgradeContent";
 import V2PlanFree = Billing.V2PlanFree;
 
 export function usePremiumFeatureCallbackDialogWarning() {
@@ -16,9 +17,11 @@ export function usePremiumFeatureCallbackDialogWarning() {
 
         dialogManager.confirm({
             title: 'Account Upgraded Required',
-            acceptText: "Upgrade Plan",
-            type: 'primary',
-            subtitle: 'This feature is only available in the Plus and Pro plan',
+            type: 'none',
+            subtitle: <TimeToUpgradeContent/>,
+            cancelText: "No Thanks",
+            acceptText: "View Plans",
+            noDialogTitle: true,
             onAccept: () => history.push('/plans')
         });
 

@@ -121,7 +121,7 @@ export const InviteScreen = React.memo(function InviteScreen() {
 
     return (
 
-            <AdaptiveDialog>
+            <AdaptiveDialog data-test-id="InviteScreen">
                 <>
 
                     {/*<AuthContent title="" alternative={<div/>}>*/}
