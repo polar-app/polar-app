@@ -7,7 +7,7 @@ export namespace E2E {
         export async function reset(page: Page) {
 
             // Clear local storage
-            await page.evaluate("window.localStorage.reset()")
+            await page.evaluate("window.localStorage.clear()")
 
             // Clear cookies by setting expiry date in the past
             // Could use CookieStore API here but it's not supported on
