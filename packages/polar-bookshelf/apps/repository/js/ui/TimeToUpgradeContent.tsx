@@ -1,26 +1,50 @@
 import * as React from 'react';
-
-interface IProps {
-    readonly onRefer: () => void;
-    readonly onCancel: () => void;
-    readonly onUpgrade: () => void;
-}
+import Box from "@material-ui/core/Box";
+import {MUIAnchor} from "../../../../web/js/mui/MUIAnchor";
 
 export const TimeToUpgradeContent = () => {
+
     return (
         <div data-test-id="TimeToUpgradeContent"
              style={{display: 'flex', flexDirection: 'column', textAlign: 'center'}}>
 
-            <UpgradeSVGIcon/>
+            <Box mt={3} mb={2}>
+                <UpgradeSVGIcon/>
+            </Box>
 
-            <h1 style={{fontSize: '28px'}}>
-                It's Time to Upgrade
-            </h1>
+            <Box mt={1}>
+                <h1 style={{fontSize: '28px'}}>
+                    It's Time to Upgrade
+                </h1>
+            </Box>
 
-            <h2 style={{fontSize: '14px'}}>
-                This feature is only available on Plus or Pro Plans.
-            </h2>
+            <Box m={0}>
+                <h2 style={{fontSize: '14px'}}>
+                    This feature is only available in the Plus or Pro Plans.
+                </h2>
+            </Box>
 
+            <Box m={2}>
+                <MUIAnchor href="/settings/user-referral">
+                    Student? Refer a friend, and when they sign up, you will BOTH get a free month of Polar Premium!
+                </MUIAnchor>
+            </Box>
+
+            {/*<Box m={2} >*/}
+
+            {/*    <Box m="auto" style={{display: 'flex', justifyContent: 'center'}}>*/}
+            {/*        <Box m={1}>*/}
+            {/*            <Button onClick={props.onCancel}>No Thanks</Button>*/}
+            {/*        </Box>*/}
+
+            {/*        <Box m={1}>*/}
+            {/*            <MUIAnchorButton href="/plans"*/}
+            {/*                             variant="contained"*/}
+            {/*                             color="primary">View Plans</MUIAnchorButton>*/}
+            {/*        </Box>*/}
+
+            {/*    </Box>*/}
+            {/*</Box>*/}
 
         </div>
     );
