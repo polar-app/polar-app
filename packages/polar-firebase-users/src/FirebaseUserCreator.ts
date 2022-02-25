@@ -61,6 +61,7 @@ export namespace FirebaseUserCreator {
     export interface ICreateOpts {
         readonly referral_code?: string
         readonly fixed_challenge?: string;
+        readonly trialDuration?: string;
     }
 
     export async function create(email: string, opts: ICreateOpts = {}) {
@@ -96,13 +97,15 @@ export namespace FirebaseUserCreator {
 
             await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
 
-            const trial_end = StripeTrials.computeTrialEnds('14d');
+            const trial_duration = opts.trialDuration ?? '14d';
+
+            const trial_end = StripeTrials.computeTrialEnds(trial_duration);
 
             await StripeCustomers.changePlan(stripeMode, email, Billing.V2PlanPlus, 'month', trial_end);
 
         }
 
-        // await createTrial(stripeMode, email, "");
+        await createTrial(stripeMode, email, "");
 
         if (Testing.isProductionRuntime()) {
 
