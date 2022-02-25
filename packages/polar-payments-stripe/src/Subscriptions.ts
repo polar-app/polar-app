@@ -8,7 +8,7 @@ export namespace Subscriptions {
 
     export async function getSubscriptionByEmail(email: string): Promise<Billing.V2Subscription> {
 
-        const account = await Accounts.get(email);
+        const account = await Accounts.getByEmail(email);
 
         if (! account || ! account.plan) {
 

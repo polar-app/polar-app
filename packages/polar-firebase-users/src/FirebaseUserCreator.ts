@@ -15,6 +15,7 @@ import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
 import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
 import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
 import {Billing} from "polar-accounts/src/Billing";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
 
 export namespace FirebaseUserCreator {
 
@@ -95,13 +96,15 @@ export namespace FirebaseUserCreator {
 
             console.log(`Creating stripe subscription with trial: ${email}...`);
 
-            await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
+            const customer = await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
 
             const trial_duration = opts.trialDuration ?? '14d';
 
             const trial_end = StripeTrials.computeTrialEnds(trial_duration);
 
             await StripeCustomers.changePlan(stripeMode, email, Billing.V2PlanPlus, 'month', trial_end);
+
+            await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: customer.id}, Billing.V2PlanPlus, 'month');
 
         }
 

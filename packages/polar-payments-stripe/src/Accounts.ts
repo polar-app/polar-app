@@ -6,9 +6,13 @@ import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollecti
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {UIDStr} from "polar-shared/src/util/Strings";
+import {Collections} from "polar-firestore-like/src/Collections";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
-const firestore = Lazy.create(() => firebase().firestore());
+const firestore = Lazy.create(() => FirestoreAdmin.getInstance());
 const auth = Lazy.create(() => firebase().auth());
 
 const log = Logger.create();
@@ -24,7 +28,12 @@ export interface AccountInit {
 
 }
 
+/**
+ * @deprecated use AccountCollection instead
+ */
 export namespace Accounts {
+
+    export const COLLECTION_NAME = 'account';
 
     /**
      * Validate that the given HTTP request has the right uid or someone
@@ -83,7 +92,7 @@ export namespace Accounts {
 
         const lastModified = new Date().toISOString();
 
-        const existingAccount = await Accounts.get(email);
+        const existingAccount = await Accounts.getByEmail(email);
 
         const account: IAccount = {
             ver: existingAccount?.ver || undefined,
@@ -105,7 +114,7 @@ export namespace Accounts {
 
     }
 
-    export async function get(email: string): Promise<IAccount | undefined> {
+    export async function getByEmail(email: string): Promise<IAccount | undefined> {
 
         const query = firestore()
             .collection('account')
@@ -121,6 +130,12 @@ export namespace Accounts {
         const doc = querySnapshot.docs[0].data();
 
         return <IAccount> doc;
+
+    }
+
+    export async function getByUID(uid: UIDStr): Promise<IAccount | undefined> {
+
+        return Arrays.first(await Collections.list(firestore(), COLLECTION_NAME, [['uid', '==', uid]]))
 
     }
 
