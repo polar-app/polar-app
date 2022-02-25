@@ -12,8 +12,12 @@ import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegist
 import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {FirebaseUserPurger} from "polar-firebase-users/src/FirebaseUserPurger";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Plans} from "polar-accounts/src/Plans";
+import {Assertions} from "polar-test/src/test/Assertions";
+import {UIDStr} from "polar-shared/src/util/Strings";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
+import assertJSON = Assertions.assertJSON;
 
 describe('UserReferrals', () => {
 
@@ -24,7 +28,7 @@ describe('UserReferrals', () => {
     const firestore = FirestoreAdmin.getInstance();
     const stripe = StripeUtils.getStripe('test');
 
-    it('Can register Alice and Bob', async () => {
+    it('Can create user Alice and Bob', async () => {
         const alice = await createUser(getRandomEmail());
         const bob = await createUser(getRandomEmail());
 
@@ -64,8 +68,23 @@ describe('UserReferrals', () => {
             user_referral_code,
         }, {email: emailOfBob});
 
-        const user = await auth.getUserByEmail(emailOfBob);
-        expect(user.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
+        const bob = await auth.getUserByEmail(emailOfBob);
+        expect(bob.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
+
+        async function getPlan(uid: UIDStr) {
+            return Plans.toV2((await Accounts.getByUID(uid))?.plan);
+        }
+
+        assertJSON(await getPlan(alice.uid), {
+            "level": "plus",
+            "ver": "v2"
+        });
+
+        assertJSON(await getPlan(bob.uid), {
+            "level": "plus",
+            "ver": "v2"
+        });
+
     });
 
     it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async function () {

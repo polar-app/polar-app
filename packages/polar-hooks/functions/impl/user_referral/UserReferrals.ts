@@ -45,11 +45,14 @@ export namespace UserReferrals {
 
         console.log(`Creating stripe subscription with trial: ${email}...`);
 
-        await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
+        const customer = await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
 
         const trial_end = StripeTrials.computeTrialEnds('30d');
 
         await StripeCustomers.changePlan(stripeMode, email, V2PlanPlus, 'month', trial_end);
+
+        // they SHOULD go back to 'free' once their trial expires via stripe.
+        await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: customer.id}, Billing.V2PlanPlus, 'month');
 
     }
 
@@ -69,7 +72,7 @@ export namespace UserReferrals {
 
         console.log(`Rewarding referring user ${email}...`);
 
-        const account = await Accounts.get(email);
+        const account = await Accounts.getByEmail(email);
 
         const plan = Plans.toV2(account?.plan).level;
 
@@ -95,7 +98,7 @@ export namespace UserReferrals {
 
             }
 
-            await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: computeCustomerID()}, plan, 'month');
+            await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: computeCustomerID()}, Billing.V2PlanPlus, 'month');
 
         } else {
 
