@@ -42,11 +42,13 @@ export namespace E2E {
 
             await page.locator('button', {hasText: 'Sign In with Email'}).click();
 
-            await page.locator('button', {hasText: 'VERIFY CODE'}).waitFor();
+            const verifyButton = page.locator('button', {hasText: 'VERIFY CODE'});
+
+            await verifyButton.waitFor();
 
             await page.locator('input[type=numeric]').type(code);
 
-            await page.locator('button', {hasText: 'VERIFY CODE'}).click();
+            await verifyButton.click();
 
             // Wait for doc repository to load
             await page.locator('button', {hasText: 'Add Document'}).waitFor();
