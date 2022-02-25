@@ -12,6 +12,7 @@ import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator"
 import IReferrer = UserReferrals.IReferrer;
 import IReferred = UserReferrals.IReferred;
 import {UniversityEmails} from "polar-shared/src/util/UniversityEmails";
+import {AmplitudeBackendAnalytics} from "polar-amplitude-backend/src/AmplitudeBackendAnalytics";
 
 export namespace CreateAccountForUserReferrals {
 
@@ -24,6 +25,8 @@ export namespace CreateAccountForUserReferrals {
             const university = UniversityEmails.isUniversityEmail(request.email);
 
             if (!university) {
+                await AmplitudeBackendAnalytics.event2('UserReferralFailedBecauseNotUniversityEmail', {});
+
                 return <IAnswerExecutorErrorNotUniversityEmail>{
                     error: true,
                     code: "not-university-email",
