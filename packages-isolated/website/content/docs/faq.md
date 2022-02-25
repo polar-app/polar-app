@@ -16,13 +16,17 @@ Polar will take your reading, note-taking, and learning experience to the next l
 
 Polar is a reading, note-taking, and learning tool that allows you to create annotations, take notes directly out of your documents and connect your thoughts. Polar makes learning significantly more efficient, with features like creating flashcards easy from your highlights and using spaced repetition to automate your review schedules.
 
-### Why Use Polar?
-
-Polar allows you to read more efficiently, make annotations, take notes, and memorize all relevant information all in the same tool.
-
 ### Is Polar Free? 
 
 Yes, Polar is free for anyone to use, with free cloud storage and access to all core features. We also offer premium plans with more cloud storage and various advanced features. For our plans, check out <a href="https://app.getpolarized.io/plans" target="_blank">our plans</a>.
+
+### Does Polar have a desktop app?
+
+No, we currently do not have a desktop app. We have previously supported one but have discontinued it and plan to introduce a desktop app again in the future.
+
+### Can I store my Polar file and library locally?
+
+No, all files are stored in the cloud. We plan to introduce a local solution in the future.
 
 ### How Do I Import My Files?
 
@@ -42,7 +46,7 @@ To download your annotations, click on the download button in the annotation vie
 
 We also support a snapshot feature in the premium tiers that allows you additionally back up all your information manually in one click.
 
-### How do I sync my flashcards with Anki?
+### How do I export my flashcards to Anki?
 
 Please visit <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" target="_blank">Anki sync</a>.
 
