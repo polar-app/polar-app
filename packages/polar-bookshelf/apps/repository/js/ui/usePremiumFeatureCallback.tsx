@@ -21,7 +21,7 @@ export function usePremiumFeatureCallbackDialogWarning() {
             subtitle: <TimeToUpgradeContent/>,
             cancelText: "No Thanks",
             acceptText: "View Plans",
-
+            noDialogTitle: true,
             onAccept: () => history.push('/plans')
         });
 

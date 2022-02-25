@@ -93,6 +93,8 @@ export interface ConfirmDialogProps {
 
     readonly inputCompletionType?: InputCompletionType;
 
+    readonly noDialogTitle?: boolean;
+
 }
 export interface ConfirmDialogPropsWithID extends ConfirmDialogProps{
     readonly id: string;
@@ -172,9 +174,10 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
                                        onComplete={handleAccept}
                                        onCancel={handleCancel}>
                     <>
-                        <DialogTitle id="alert-dialog-title" className={palette}>
-                            {props.title}
-                        </DialogTitle>
+                        {! props.noDialogTitle && (
+                            <DialogTitle id="alert-dialog-title" className={palette}>
+                                {props.title}
+                            </DialogTitle>)}
 
                         <DialogContent className="alert-dialog-content-outer">
 
