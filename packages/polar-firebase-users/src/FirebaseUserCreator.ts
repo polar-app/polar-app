@@ -59,7 +59,9 @@ export namespace FirebaseUserCreator {
     }
 
     export interface ICreateOpts {
-        readonly referral_code?: string
+        readonly hint?: string;
+        readonly domain?: string;
+        readonly referral_code?: string;
         readonly fixed_challenge?: string;
     }
 
@@ -133,10 +135,7 @@ export namespace FirebaseUserCreator {
      * Generate a test user email following a pattern that allows us to easily
      * discard new accounts.
      */
-    export function createTestUserEmail(opts: {
-        hint?: string,
-        domain?: string,
-    }): EmailStr {
+    export function createTestUserEmail(opts: ICreateOpts): EmailStr {
 
         const nonce = NONCE_GENERATOR();
 
@@ -153,16 +152,11 @@ export namespace FirebaseUserCreator {
     /**
      * Generate a test user
      */
-    export async function createTestUser(opts: {
-        hint?: string,
-        domain?: string,
-    }): Promise<IFirebaseUserRecord> {
+    export async function createTestUser(opts: ICreateOpts): Promise<IFirebaseUserRecord> {
 
-        const email = createTestUserEmail({
-            hint: opts.hint,
-            domain: opts.domain,
-        });
-        const user = await create(email);
+        const email = createTestUserEmail(opts);
+
+        const user = await create(email, opts);
 
         return {
             uid: user.uid,
