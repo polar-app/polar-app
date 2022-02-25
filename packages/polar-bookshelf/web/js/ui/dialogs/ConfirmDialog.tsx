@@ -158,6 +158,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
 
     return (
         <MUIDialog
+            data-test-id="ConfirmDialog"
             maxWidth={props.maxWidth || 'sm'}
             open={open}
             onClose={handleClose}
