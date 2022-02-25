@@ -36,7 +36,7 @@ export namespace UserReferrals {
 
         console.log(`Creating new firebase user: ${email}...`);
 
-        const user = await FirebaseUserCreator.create(email);
+        const user = await FirebaseUserCreator.create(email, {trialDuration: '30d'});
         return {uid: user.uid, email};
 
     }
