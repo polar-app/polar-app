@@ -97,6 +97,7 @@ import {ReferralScreen} from "../../../../apps/repository/js/configure/settings/
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
+import {FreePremiumWithReferralBanner} from "./FreePremiumWithReferralBanner";
 
 interface IProps {
     readonly app: App;
@@ -396,7 +397,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                         <MigrationToBlockAnnotations>
                             <AddFileDropzoneRoot>
 
-                                {/*APP NOTIFICATION BAR COULD GO HERE*/}
+                                <FreePremiumWithReferralBanner/>
 
                                 <div className={classes.root}>
 
