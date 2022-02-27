@@ -7,7 +7,7 @@ export namespace E2E {
         export async function reset(page: Page) {
 
             // Clear local storage
-            await page.evaluate("window.localStorage.reset()")
+            await page.evaluate("window.localStorage.clear()")
 
             // Clear cookies by setting expiry date in the past
             // Could use CookieStore API here but it's not supported on
@@ -42,14 +42,27 @@ export namespace E2E {
 
             await page.locator('button', {hasText: 'Sign In with Email'}).click();
 
-            await page.locator('button', {hasText: 'VERIFY CODE'}).waitFor();
+            const verifyButton = page.locator('button', {hasText: 'VERIFY CODE'});
+
+            await verifyButton.waitFor();
 
             await page.locator('input[type=numeric]').type(code);
 
-            await page.locator('button', {hasText: 'VERIFY CODE'}).click();
+            await verifyButton.click();
 
             // Wait for doc repository to load
             await page.locator('button', {hasText: 'Add Document'}).waitFor();
+        }
+
+        export async function doLogout(page: Page) {
+            await page.click("#sidenav > div > div:nth-child(10) > div:nth-child(2) > div > svg > path");
+            
+            await page.click(".text-right .MuiButton-label");         
+
+            await page.click("[role='presentation'] .MuiButton-contained .MuiButton-label");
+
+            // waits for logout to fully finish
+            await page.locator('h2', {hasText: 'Sign In to Polar'}).waitFor();
         }
     }
 
