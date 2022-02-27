@@ -8,7 +8,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const UpgradeBannerContent = (props: IProps) => {
+export const FreePremiumWithReferralBannerContent = (props: IProps) => {
 
     const theme = useTheme();
 
@@ -38,7 +38,7 @@ export const UpgradeBannerContent = (props: IProps) => {
             </div>
 
             <Box style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <IconButton size="small">
+                <IconButton size="small" onClick={props.onClose}>
                     <CloseIcon/>
                 </IconButton>
             </Box>
