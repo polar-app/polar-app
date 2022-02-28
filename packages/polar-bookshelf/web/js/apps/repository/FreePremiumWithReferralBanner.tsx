@@ -1,6 +1,5 @@
 import React from 'react';
 import {useFirestorePrefs} from "../../../../apps/repository/js/persistence_layer/FirestorePrefs";
-import {FeatureEnabled} from '../../features/FeaturesRegistry';
 import {useErrorHandler} from "../../mui/useErrorHandler";
 import {FreePremiumWithReferralBannerContent} from "./FreePremiumWithReferralBannerContent";
 
@@ -26,10 +25,7 @@ export const FreePremiumWithReferralBanner = () => {
     }
 
     return (
-        <FeatureEnabled feature="premium-doc-viewer">
-            <FreePremiumWithReferralBannerContent onClose={handleClose}/>
-
-        </FeatureEnabled>
+        <FreePremiumWithReferralBannerContent onClose={handleClose}/>
     );
 
 }
