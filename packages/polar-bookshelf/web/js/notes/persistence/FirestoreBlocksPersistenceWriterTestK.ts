@@ -15,31 +15,10 @@ import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWrit
 import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import { FirebaseUserCreator } from "polar-firebase-users/src/FirebaseUserCreator";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
 
 const ID = BlockIDs.createRandom();
-
-async function ClientRPC<R, S, E>(functionName: string, request: R): Promise<S | E> {
-    const url = `https://us-central1-polar-32b0f.cloudfunctions.net/${functionName}/`;
-
-    const init: RequestInit = {
-        mode: "cors",
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request)
-    };
-
-    const response = await fetch(url, init);
-
-    if (response.status === 200) {
-        return await response.json() as S;
-    }
-
-    return await response.json() as E;
-}
 
 describe("FirestoreBlocksPersistenceWriter", () => {
 
@@ -50,7 +29,11 @@ describe("FirestoreBlocksPersistenceWriter", () => {
 
         TestingTime.freeze();
 
-        const token = await FirebaseUserCreator.createCustomTokenForAuth(FirebaseTestingUsers.FIREBASE_USER);
+        const adminAuth = FirebaseAdmin.app().auth()
+
+        const { uid: authUid } = await adminAuth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
+
+        const token = await adminAuth.createCustomToken(uid);
 
         const app = FirebaseBrowser.init();
 
@@ -60,7 +43,7 @@ describe("FirestoreBlocksPersistenceWriter", () => {
 
         await FirestoreBlocks.doDelete(ID);
 
-        uid = (await FirebaseBrowser.currentUserID())!;
+        uid = authUid;
 
         docInfoIndex = new RepoDocInfoDataObjectIndex();
     });
