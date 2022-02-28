@@ -7,4 +7,8 @@ export namespace Testing {
         return Karma.isKarma() || Mocha.isMocha();
     }
 
+    export function isProductionRuntime() {
+        return ! isTestingRuntime();
+    }
+
 }

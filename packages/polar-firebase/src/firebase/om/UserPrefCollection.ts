@@ -33,6 +33,11 @@ export namespace UserPrefCollection {
                     key: 'dark-mode-pdf',
                     value: 'natural',
                     written: now,
+                },
+                'settings-auto-resume': {
+                    key: 'settings-auto-resume',
+                    value: 'true',
+                    written: now,
                 }
             }
         };

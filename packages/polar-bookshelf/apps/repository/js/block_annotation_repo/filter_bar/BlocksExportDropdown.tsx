@@ -10,7 +10,7 @@ import {useBlocksStore} from "../../../../../web/js/notes/store/BlocksStore";
 import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {FlashcardsExport} from "polar-backend-api/src/api/FlashcardsExport";
 import {JSONRPC} from "../../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import {useErrorHandler} from "../../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../../web/js/mui/useErrorHandler";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {useAnalytics} from "../../../../../web/js/analytics/Analytics";
 import {usePremiumFeatureCallback} from "../../ui/usePremiumFeatureCallback";
@@ -91,7 +91,7 @@ export const BlocksExportDropdown: React.FC = () => {
 
     }, [dialogManager, doExportFlashcards]);
 
-    const handleExportFlashcards = usePremiumFeatureCallback(handleExportFlashcardsForPremiumAccount);
+    const handleExportFlashcards = usePremiumFeatureCallback('anki-export', handleExportFlashcardsForPremiumAccount);
 
     const handleExport = React.useCallback((format: BlocksExportFormat) => () => {
 

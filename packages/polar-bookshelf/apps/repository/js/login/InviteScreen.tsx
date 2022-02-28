@@ -9,19 +9,17 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
-import {useErrorHandler} from "../../../../web/js/mui/MUIErrorHandler";
+import {useErrorHandler} from "../../../../web/js/mui/useErrorHandler";
 import {
     ICreateAccountForUserReferralError,
-    ICreateAccountForUserReferralFailed,
     ICreateAccountForUserReferralRequest,
     ICreateAccountForUserReferralResponse
 } from "polar-backend-api/src/api/CreateAccountForUserReferral";
 import {isRPCError} from "polar-shared/src/util/IRPCError";
-import {RouteComponentProps} from "react-router-dom";
-import {MUIAppRoot} from "../../../../web/js/mui/MUIAppRoot";
 import Box from "@material-ui/core/Box";
 import {FirebaseAuth} from "../../../../web/js/firebase/FirebaseAuth";
 import {handleAuthResultForNewUser} from "./AuthenticatorHooks";
+import {InviteScreenURLs} from "./InviteScreenURLs";
 
 export const useStyles = makeStyles((theme) =>
     createStyles({
@@ -46,14 +44,11 @@ export const useStyles = makeStyles((theme) =>
     }),
 );
 
-interface IProps {
-    readonly user_referral_code: string;
-}
+export const InviteScreen = React.memo(function InviteScreen() {
 
-export const InviteScreen = React.memo(function InviteScreen(props: RouteComponentProps<IProps>) {
+    const inviteScreenURL = React.useMemo(() => InviteScreenURLs.parse(document.location.href), []);
 
-    const { match: { params } } = props;
-    const {user_referral_code} = params;
+    const user_referral_code = inviteScreenURL?.user_referral_code;
 
     const classes = useStyles();
     const emailRef = React.useRef("");
@@ -85,9 +80,12 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                         break;
 
                     case "failed":
-                        errorHandler("Unable to handle invite. " + (response as ICreateAccountForUserReferralFailed).message);
+                        errorHandler("Unable to handle invite. " + response.message);
                         break;
 
+                    case "not-university-email":
+                        errorHandler('This is not a valid university email');
+                        break;
                 }
 
             } else {
@@ -122,9 +120,8 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
     }, []);
 
     return (
-        <MUIAppRoot useRedesign={false} darkMode={true}>
 
-            <AdaptiveDialog>
+            <AdaptiveDialog data-test-id="InviteScreen">
                 <>
 
                     {/*<AuthContent title="" alternative={<div/>}>*/}
@@ -177,6 +174,6 @@ export const InviteScreen = React.memo(function InviteScreen(props: RouteCompone
                     <Intercom/>
                 </>
             </AdaptiveDialog>
-        </MUIAppRoot>
     );
 });
+

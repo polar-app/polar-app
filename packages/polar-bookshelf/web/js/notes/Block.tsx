@@ -42,7 +42,7 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
         },
         titleBlock: {
             fontWeight: 'bold',
-            fontSize: 32,
+            fontSize: 24,
             letterSpacing: 0.5,
             lineHeight: 1.66,
         },

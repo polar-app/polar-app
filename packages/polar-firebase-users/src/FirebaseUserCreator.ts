@@ -11,6 +11,11 @@ import {Testing} from "polar-shared/src/util/Testing";
 import {FirebaseUserUpgrader} from "./FirebaseUserUpgrader";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {Nonces} from "polar-shared/src/util/Nonces";
+import {StripeMode} from "polar-payments-stripe/src/StripeUtils";
+import {StripeCustomers} from "polar-payments-stripe/src/StripeCustomers";
+import {StripeTrials} from "polar-payments-stripe/src/StripeTrials";
+import {Billing} from "polar-accounts/src/Billing";
+import {Accounts} from "polar-payments-stripe/src/Accounts";
 
 export namespace FirebaseUserCreator {
 
@@ -55,8 +60,11 @@ export namespace FirebaseUserCreator {
     }
 
     export interface ICreateOpts {
-        readonly referral_code?: string
+        readonly hint?: string;
+        readonly domain?: string;
+        readonly referral_code?: string;
         readonly fixed_challenge?: string;
+        readonly trialDuration?: string;
     }
 
     export async function create(email: string, opts: ICreateOpts = {}) {
@@ -80,16 +88,38 @@ export namespace FirebaseUserCreator {
 
         await FirebaseUserUpgrader.upgrade(user.uid);
 
-        if (!Testing.isTestingRuntime()) {
-            await sendWelcomeEmail(email);
-        }
-
         if (opts.fixed_challenge) {
             await defineFixedChallenge(email, opts.fixed_challenge);
         }
 
-        if (opts.referral_code && !Testing.isTestingRuntime()) {
-            await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
+        const stripeMode = Testing.isProductionRuntime() ? 'live' : 'test'
+
+        async function createTrial(stripeMode: StripeMode, email: EmailStr, name: string) {
+
+            console.log(`Creating stripe subscription with trial: ${email}...`);
+
+            const customer = await StripeCustomers.getOrCreateCustomer(stripeMode, email, name);
+
+            const trial_duration = opts.trialDuration ?? '14d';
+
+            const trial_end = StripeTrials.computeTrialEnds(trial_duration);
+
+            await StripeCustomers.changePlan(stripeMode, email, Billing.V2PlanPlus, 'month', trial_end);
+
+            await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: customer.id}, Billing.V2PlanPlus, 'month');
+
+        }
+
+        await createTrial(stripeMode, email, "");
+
+        if (Testing.isProductionRuntime()) {
+
+            await sendWelcomeEmail(email);
+
+            if (opts.referral_code) {
+                await AmplitudeBackendAnalytics.traits(user, {referral_code: opts.referral_code})
+            }
+
         }
 
         return user;
@@ -110,28 +140,29 @@ export namespace FirebaseUserCreator {
     /**
      * Generate a test user email following a pattern that allows us to easily
      * discard new accounts.
-     *
-     * @param hint Include this in the email for debug purposes.
      */
-    export function createTestUserEmail(hint?: string): EmailStr {
+    export function createTestUserEmail(opts: ICreateOpts): EmailStr {
 
         const nonce = NONCE_GENERATOR();
 
-        if (hint) {
-            return `getpolarized.test+${hint}-${Date.now()}-${nonce}@getpolarized.io`
+        const domain = opts.domain ?? 'getpolarized.io';
+
+        if (opts.hint) {
+            return `getpolarized.test+${opts.hint}-${Date.now()}-${nonce}@${domain}`
         }
 
-        return `getpolarized.test+${Date.now()}-${nonce}@getpolarized.io`
+        return `getpolarized.test+${Date.now()}-${nonce}@${domain}`
 
     }
 
     /**
      * Generate a test user
      */
-    export async function createTestUser(hint?: string): Promise<IFirebaseUserRecord> {
+    export async function createTestUser(opts: ICreateOpts): Promise<IFirebaseUserRecord> {
 
-        const email = createTestUserEmail(hint);
-        const user = await create(email);
+        const email = createTestUserEmail(opts);
+
+        const user = await create(email, opts);
 
         return {
             uid: user.uid,

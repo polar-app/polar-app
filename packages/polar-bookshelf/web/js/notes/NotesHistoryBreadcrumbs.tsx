@@ -1,12 +1,11 @@
 import React from 'react';
-import {Breadcrumbs, MenuItem, Popover} from "@material-ui/core";
+import {Breadcrumbs, createStyles, makeStyles, MenuItem, Popover} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import useTheme from "@material-ui/core/styles/useTheme";
 import {useHistory} from "react-router-dom";
 import {URLPathStr} from "polar-shared/src/util/Strings";
 import {NoteURLs} from "./NoteURLs";
+import {MUIBreadcrumbsOverflowIconButton} from '../mui/MUIBreadcrumbsOverflowIconButton';
+import {MUITopBarTitle} from '../mui/MUITopBarTitle';
 
 interface IHistoryEntry {
     readonly title: string;
@@ -111,10 +110,29 @@ export function useNotesHistory() {
 
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        breadcrumbsOuter: {
+            minWidth: 0,
+        },
+        breadcrumbsInner: {
+            flexWrap: 'nowrap',
+        },
+        breadcrumb: {
+            '&:last-child': {
+                minWidth: 0,
+            },
+        },
+        popup: {
+            background: theme.palette.background.default,
+        },
+    }),
+);
+
 export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
 
-    const theme = useTheme()
     const history = useHistory();
+    const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -157,6 +175,7 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
         <>
             <Popover anchorEl={anchorEl}
                      keepMounted
+                     classes={{ paper: classes.popup }}
                      open={anchorEl !== null}
                      anchorOrigin={{
                          vertical: 'bottom',
@@ -169,37 +188,37 @@ export const NotesHistoryBreadcrumbs = (props: NotesHistoryProps) => {
                      onClose={handlePopoverClose}>
 
                 {props.history.slice(0, props.history.length - 1).map((current, idx) => (
-                    <MenuItem key={idx} onClick={() => goBackToHistoryEntry((props.history.length - idx - 1) * -1)}>{current.title}</MenuItem>
+                    <MenuItem key={idx}
+                              onClick={() => goBackToHistoryEntry((props.history.length - idx - 1) * -1)}>
+                        {current.title}
+                    </MenuItem>
                 ))}
 
             </Popover>
 
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
+            <Breadcrumbs classes={{
+                            root: classes.breadcrumbsOuter,
+                            ol: classes.breadcrumbsInner,
+                            li: classes.breadcrumb
+                         }}
+                         separator="›"
+                         aria-label="breadcrumb">
 
                 <div/>
 
                 {props.history.length > 1 && (
-                    <Button style={{
-                                padding: 0,
-                                minWidth: 0,
-                                paddingLeft: '4px',
-                                paddingRight: '4px',
-                                backgroundColor: theme.palette.background.default,
-                                color: theme.palette.text.secondary
-                            }}
-                            variant="contained"
-                            size="small"
-                            onClick={handleClick}>
-                        <MoreHorizIcon/>
-                    </Button>
+                    <MUIBreadcrumbsOverflowIconButton onClick={handleClick} active={!! anchorEl} />
                 )}
+                
 
-                <Typography color="textPrimary">{props.history[props.history.length - 1].title}</Typography>
+                <MUITopBarTitle>
+                    {props.history[props.history.length - 1].title}
+                </MUITopBarTitle>
 
             </Breadcrumbs>
 
         </>
-    )
+    );
 
 }
 
@@ -208,5 +227,5 @@ export const NotesHistoryBreadcrumbsUsingHistory = () => {
 
     return (
         <NotesHistoryBreadcrumbs history={notesHistory}/>
-    )
+    );
 }

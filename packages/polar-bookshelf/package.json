@@ -168,7 +168,7 @@
     "react-window": "=1.8.6",
     "rxjs": "=6.6.7",
     "semver": "=6.3.0",
-    "use-local-storage-state": "=6.0.0",
+    "use-local-storage-state": "=15.0.0",
     "typemoq": "=2.1.0",
     "throttle-debounce": "=3.0.1",
     "react": "=17.0.2",

@@ -7,7 +7,7 @@ export class StripeCustomerAccounts {
 
     public static async get(mode: StripeMode, email: EmailStr): Promise<CustomerAccount> {
 
-        const account = await Accounts.get(email);
+        const account = await Accounts.getByEmail(email);
 
         if (! account) {
             throw new Error('No account for email: ' + email);

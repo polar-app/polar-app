@@ -10,10 +10,9 @@ interface IProps {
 }
 
 export const useMonthDay = () => {
+    const [ms] = useTimeInterval('1d');
 
-    const [day] = useTimeInterval('1d');
-    return new Date(day).getDate();
-
+    return new Date(ms).getDate();
 };
 
 const useStyles = makeStyles((theme) =>

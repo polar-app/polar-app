@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from "clsx";
 import Button, {ButtonProps} from '@material-ui/core/Button';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import isEqual from "react-fast-compare";
@@ -31,7 +32,7 @@ export const ColorButton = React.memo(function ColorButton(props: IProps) {
     delete buttonProps.color;
 
     return (
-        <Button className={`${classes.root}`} {...buttonProps}>
+        <Button {...buttonProps} className={clsx(classes.root, props.className)}>
             {props.children}
         </Button>
     );

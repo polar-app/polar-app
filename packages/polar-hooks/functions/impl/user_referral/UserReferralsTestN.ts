@@ -12,8 +12,12 @@ import {StripeCouponRegistry} from "polar-payments-stripe/src/StripeCouponRegist
 import {Accounts} from "polar-payments-stripe/src/Accounts";
 import {FirebaseUserPurger} from "polar-firebase-users/src/FirebaseUserPurger";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Plans} from "polar-accounts/src/Plans";
+import {Assertions} from "polar-test/src/test/Assertions";
+import {UIDStr} from "polar-shared/src/util/Strings";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
+import assertJSON = Assertions.assertJSON;
 
 describe('UserReferrals', () => {
 
@@ -24,7 +28,7 @@ describe('UserReferrals', () => {
     const firestore = FirestoreAdmin.getInstance();
     const stripe = StripeUtils.getStripe('test');
 
-    it('Can register Alice and Bob', async () => {
+    it('Can create user Alice and Bob', async () => {
         const alice = await createUser(getRandomEmail());
         const bob = await createUser(getRandomEmail());
 
@@ -48,7 +52,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup Bob
         const emailOfBob = getRandomEmail('bob');
@@ -64,15 +68,34 @@ describe('UserReferrals', () => {
             user_referral_code,
         }, {email: emailOfBob});
 
-        const user = await auth.getUserByEmail(emailOfBob);
-        expect(user.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
+        const bob = await auth.getUserByEmail(emailOfBob);
+        expect(bob.email!).eq(emailOfBob, 'Bob was not auto-created in Firebase Auth after accepting invite by Alice');
+
+        async function getPlan(uid: UIDStr) {
+            return Plans.toV2((await Accounts.getByUID(uid))?.plan);
+        }
+
+        assertJSON(await getPlan(alice.uid), {
+            "level": "plus",
+            "ver": "v2"
+        });
+
+        assertJSON(await getPlan(bob.uid), {
+            "level": "plus",
+            "ver": "v2"
+        });
+
     });
 
-    it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async () => {
+    it('Alice (free member) invites Bob and Alice receives a free month of Plus in Stripe', async function () {
+        // Stripe subscriptions seem to provide "eventual consistency" or something, rendering this test Flaky sometimes
+        // so retry it 3 times before considering it as failed
+        this.retries(3);
+
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup Bob
         const emailOfBob = getRandomEmail('bob');
@@ -121,7 +144,7 @@ describe('UserReferrals', () => {
         await createUser(emailOfAlice);
 
         // Create a Stripe customer
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Setup default payment method. Required to switch to a non-free plan
         await setupDefaultPaymentMethod(stripeCustomerAlice.id);
@@ -142,7 +165,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
@@ -183,7 +206,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
@@ -219,7 +242,7 @@ describe('UserReferrals', () => {
         // Setup Alice
         const emailOfAlice = getRandomEmail('alice');
         const alice = await createUser(emailOfAlice);
-        const stripeCustomerAlice = await StripeCustomers.createCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
+        const stripeCustomerAlice = await StripeCustomers.getOrCreateCustomer('test', emailOfAlice, `Alice ${emailOfAlice}`);
 
         // Configure a default payment method for Alice
         const customer = stripeCustomerAlice.id;
@@ -275,7 +298,7 @@ describe('UserReferrals', () => {
      * If you pass a suffix "alice" this will generate an email like: testing+alice1644614307-ebbpi@getpolarized.io
      */
     const getRandomEmail = (hint?: string) => {
-        return FirebaseUserCreator.createTestUserEmail(hint)
+        return FirebaseUserCreator.createTestUserEmail({hint})
     }
 
     /**

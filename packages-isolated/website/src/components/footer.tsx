@@ -154,13 +154,13 @@ function FooterMobile() {
                 Documentation
               </Button>
 
-              <Button
+              {/* <Button
                 className={classes.navChoices}
                 color="inherit"
                 href="/download"
               >
                 Download
-              </Button>
+              </Button> */}
             </Box>
           </Box>
 
@@ -249,13 +249,13 @@ function FooterDesktop() {
               <Button className={classes.navChoices} color="inherit" href="/blog">
                 Blog
               </Button>
-              <Button
+              {/* <Button
                 className={classes.navChoices}
                 color="inherit"
                 href="/download"
               >
                 Download
-              </Button>
+              </Button> */}
             </Box>
 
             <Box style={{ marginRight: 30 }}>

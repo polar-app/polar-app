@@ -5,9 +5,9 @@ import {AdaptivePageLayout} from "../../page_layout/AdaptivePageLayout";
 import {useFeaturesRegistry} from "../../../../../web/js/features/FeaturesRegistry";
 import {FeatureListItem} from "./FeatureListItem";
 import {useFirestorePrefs} from "../../persistence_layer/FirestorePrefs";
-import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import {useErrorHandler} from "../../../../../web/js/mui/useErrorHandler";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -60,7 +60,7 @@ const Main = () => {
 
 const ResetButton = () => {
 
-    const log = useLogger();
+    const errorHandler = useErrorHandler();
 
     const featuresRegistry = useFeaturesRegistry()
 
@@ -72,15 +72,10 @@ const ResetButton = () => {
 
         keys.forEach(key => prefs.remove(key));
 
-        const doCommit = async () => {
-            await prefs.commit();
-            console.log("Prefs written");
-        };
+        prefs.commit()
+            .catch(err => errorHandler("Could not write prefs: ", err));
 
-        doCommit()
-            .catch(err => log.error("Could not write prefs: ", err));
-
-    }, [log, featuresRegistry, prefs]);
+    }, [errorHandler, featuresRegistry, prefs]);
 
     return (
         <Button onClick={onClick}>Reset to default</Button>

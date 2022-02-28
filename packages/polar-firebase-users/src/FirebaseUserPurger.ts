@@ -19,39 +19,50 @@ export namespace FirebaseUserPurger {
             await auth.getUser(uid);
         }
 
+        type CollectionNames = string[];
+        interface ISchema {
+            readonly [schema: string]: CollectionNames
+        }
+
         async function doPurgeCollections() {
 
-            const collections = [
-                'doc_meta',
-                'doc_meta2',
-                'doc_info',
-                'block',
-                'heartbeat',
-                'account',
-                'block_expand',
-                'block_permission_user',
-                'cloud_storage_tombstone',
-                'contact',
-                'doc_file_meta',
-                'doc_permission',
-                'spaced_rep',
-                'spaced_rep_stat',
-                'user_pref',
-                'user_referral',
-                'user_trait',
-            ];
+            const uidSchemas: ISchema = {
+                'uid': [
+                    'doc_meta',
+                    'doc_meta2',
+                    'doc_info',
+                    'block',
+                    'heartbeat',
+                    'account',
+                    'block_expand',
+                    'block_permission_user',
+                    'cloud_storage_tombstone',
+                    'contact',
+                    'doc_file_meta',
+                    'doc_permission',
+                    'spaced_rep',
+                    'spaced_rep_stat',
+                    'user_pref',
+                    'user_trait',
+                ],
+                'referrer_uid': [
+                    'user_referral',
+                    'user_referral_attempt',
+                    'user_referral_completed'
+                ]
+            }
 
             interface IRecord {
                 readonly id: string;
                 readonly uid: string;
             }
 
-            async function doPurgeCollection(collectionName: string) {
+            async function doPurgeCollection(collectionName: string, uidField: string) {
 
                 console.log("Purging collection: " + collectionName);
-
-                const records = await Collections.list<IRecord>(firestore, collectionName, [['uid', '==', uid]]);
-
+                
+                const records = await Collections.list<IRecord>(firestore, collectionName, [[uidField, '==', uid]]);
+                
                 // TODO: would be faster to do this via matches.
                 for(const record of records) {
                     await Collections.doDelete(firestore, collectionName, record.id);
@@ -59,8 +70,10 @@ export namespace FirebaseUserPurger {
 
             }
 
-            for (const collectionName of collections) {
-                await doPurgeCollection(collectionName);
+            for (const schema in uidSchemas) {
+                for (const collectionName of uidSchemas[schema]) {
+                    await doPurgeCollection(collectionName, schema);
+                }
             }
 
         }

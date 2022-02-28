@@ -5,13 +5,37 @@ import * as React from "react";
 import {Plans} from "polar-accounts/src/Plans";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Billing} from "polar-accounts/src/Billing";
+import {TimeToUpgradeContent} from "./TimeToUpgradeContent";
 import V2PlanFree = Billing.V2PlanFree;
 
-export function usePremiumFeatureCallback(delegate: () => void) {
+export function usePremiumFeatureCallbackDialogWarning() {
+
+    const history = useHistory();
+    const dialogManager = useDialogManager();
+
+    return React.useCallback(() => {
+
+        dialogManager.confirm({
+            title: 'Account Upgraded Required',
+            type: 'none',
+            subtitle: <TimeToUpgradeContent/>,
+            cancelText: "No Thanks",
+            acceptText: "View Plans",
+            noDialogTitle: true,
+            onAccept: () => history.push('/plans')
+        });
+
+    }, [dialogManager, history]);
+
+}
+
+export type PremiumFeatureUpgradeReason = 'anki-export' | 'ai-cloze-flashcard' | 'doc-viewer';
+
+function usePremiumAccountRequiredPredicate(reason: PremiumFeatureUpgradeReason) {
 
     const accountUpgrade = useAccountUpgrader();
-    const dialogManager = useDialogManager();
-    const history = useHistory();
+
+    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
 
     return React.useCallback(() => {
 
@@ -20,23 +44,49 @@ export function usePremiumFeatureCallback(delegate: () => void) {
         if (currentPlan === V2PlanFree) {
 
             Analytics.event2('account-upgrade-required', {
-                reason: 'anki_export'
+                reason
             });
 
-            dialogManager.confirm({
-                title: 'Account Upgraded Required',
-                acceptText: "Upgrade Plan",
-                type: 'primary',
-                subtitle: 'This feature is only available in the Plus and Pro plan',
-                onAccept: () => history.push('/plans')
-            });
+            premiumFeatureCallbackDialogWarning();
 
-            return;
+            return true;
 
         }
 
-        delegate();
+        return false;
 
-    }, [accountUpgrade, dialogManager, history, delegate])
+    }, [accountUpgrade, reason, premiumFeatureCallbackDialogWarning])
+
+}
+
+
+export function usePremiumFeatureCallback(reason: PremiumFeatureUpgradeReason, delegate: () => void) {
+
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
+
+    return React.useCallback(() => {
+
+        if (! premiumAccountRequired()) {
+            delegate();
+        }
+
+    }, [delegate, premiumAccountRequired])
+
+}
+
+/**
+ * Wraps a callback with a single argument.
+ */
+export function usePremiumFeatureCallback1<V>(reason: PremiumFeatureUpgradeReason, delegate: (value: V) => void) {
+
+    const premiumAccountRequired = usePremiumAccountRequiredPredicate(reason);
+
+    return React.useCallback((value) => {
+
+        if (! premiumAccountRequired()) {
+            delegate(value);
+        }
+
+    }, [delegate, premiumAccountRequired])
 
 }

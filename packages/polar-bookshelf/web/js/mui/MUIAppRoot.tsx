@@ -5,14 +5,17 @@ import {MUIThemeRoot} from "./MUIThemeRoot";
 
 interface IProps {
     readonly children: React.ReactNode;
-    readonly useRedesign: boolean;
-    readonly darkMode: boolean;
+    readonly useRedesign?: boolean;
+    readonly darkMode?: boolean;
 }
 
 export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
+    const useRedesign = props.useRedesign ?? false;
+    const darkMode = props.darkMode ?? true;
+
     return (
-        <MUIThemeRoot useRedesign={props.useRedesign} darkMode={props.darkMode}>
+        <MUIThemeRoot useRedesign={useRedesign} darkMode={darkMode}>
             <MUIErrorBoundary>
                 <MUIDialogController>
                     {props.children}

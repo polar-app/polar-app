@@ -6,7 +6,6 @@ import {IEventDispatcher, SimpleReactor} from "../../reactor/SimpleReactor";
 import {SyncBarProgress} from "../../ui/sync_bar/SyncBar";
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {ProgressService} from "../../ui/progress_bar/ProgressService";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {Version} from "polar-shared/src/util/Version";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {Platforms} from "polar-shared/src/util/Platforms";
@@ -18,9 +17,6 @@ import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MailingList} from "./auth_handler/MailingList";
-import {UpdatesController} from "../../electron/UpdatesController";
-
-const log = Logger.create();
 
 interface IAppInitializerOpts {
 
@@ -41,9 +37,9 @@ export interface App {
 
 }
 
-export class AppInitializer {
+export class RepositoryAppInitializer {
 
-    public static async init(opts: IAppInitializerOpts): Promise<App> {
+    public static init(opts: IAppInitializerOpts): App {
 
         const {persistenceLayerManager} = opts;
 
@@ -51,7 +47,7 @@ export class AppInitializer {
 
         const syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
-        log.info("Running with Polar version: " + Version.get());
+        console.info("Running with Polar version: " + Version.get());
 
         AnalyticsInitializer.doInit();
 
@@ -73,14 +69,12 @@ export class AppInitializer {
 
         const platform = Platforms.get();
 
-        log.notice("Running on platform: " + Platforms.toSymbol(platform));
+        console.log("Running on platform: " + Platforms.toSymbol(platform));
 
         const app: App = {
             persistenceLayerManager, persistenceLayerProvider,
             persistenceLayerController, syncBarProgress,
         };
-
-        new UpdatesController().start();
 
         new ProgressService().start();
 
@@ -94,16 +88,11 @@ export class AppInitializer {
 
             if (authStatus.type !== 'needs-authentication') {
 
-                // TODO: removed for group refactor.
-                // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
+                // TODO: add this to the FirebaseUserCreator
 
                 // subscribe but do it in the background as this isn't a high priority UI task.
                 MailingList.subscribeWhenNecessary(authStatus)
                            .catch(err => console.error(err));
-
-                // MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
-                //
-                // UniqueMachines.trigger();
 
                 const onNeedsAuthentication = opts.onNeedsAuthentication || ASYNC_NULL_FUNCTION;
 
@@ -114,7 +103,7 @@ export class AppInitializer {
         }
 
         handleAuth()
-            .catch(err => log.error("Could not handle auth: ", err));
+            .catch(err => console.error("Could not handle auth: ", err));
 
         console.timeEnd("AppInitializer.init");
 

@@ -15,13 +15,14 @@ import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
 import {InputCompletionType} from "../complete_listeners/InputCompleteListener";
 
 export interface DialogManager {
-    confirm: (props: ConfirmDialogProps) => void;
-    prompt: (promptDialogProps: PromptDialogProps) => void;
-    autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
-    snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
-    taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
-    dialog: (dialogProps: IDialogProps) => void;
-    select: <V>(selectProps: SelectDialogProps<V>) => void;
+    readonly name: string;
+    readonly confirm: (props: ConfirmDialogProps) => void;
+    readonly prompt: (promptDialogProps: PromptDialogProps) => void;
+    readonly autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
+    readonly snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
+    readonly taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
+    readonly dialog: (dialogProps: IDialogProps) => void;
+    readonly select: <V>(selectProps: SelectDialogProps<V>) => void;
 }
 
 function nullDialog() {
@@ -29,6 +30,7 @@ function nullDialog() {
 }
 
 export const NullDialogManager: DialogManager = {
+    name: 'null',
     confirm: nullDialog,
     prompt: nullDialog,
     autocomplete: nullDialog,
@@ -179,6 +181,7 @@ const DialogHost = (props: DialogHostProps) => {
         };
 
         const dialogManager: DialogManager = {
+            name: 'default',
             confirm,
             prompt,
             autocomplete,
@@ -213,7 +216,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const MUIDialogControllerContext = React.createContext<DialogManager>(NullDialogManager);
+export const MUIDialogControllerContext = React.createContext<DialogManager>(null!);
 
 /**
  * Component to allow us to inject new components like snackbars, dialog boxes,
@@ -221,7 +224,7 @@ export const MUIDialogControllerContext = React.createContext<DialogManager>(Nul
  */
 export const MUIDialogController = React.memo(function MUIDialogController(props: IProps) {
 
-    const [dialogManager, setDialogManager] = useState<DialogManager | undefined>();
+    const [dialogManager, setDialogManager] = useState<DialogManager>(NullDialogManager);
 
     const handleDialogManager = React.useCallback((dialogManger: DialogManager) => {
         setDialogManager(dialogManger)
@@ -232,7 +235,7 @@ export const MUIDialogController = React.memo(function MUIDialogController(props
 
             <DialogHost onDialogManager={dialogManger => handleDialogManager(dialogManger)}/>
 
-            {dialogManager && (
+            {dialogManager.name === 'default' && (
                 <MUIDialogControllerContext.Provider value={dialogManager}>
                     {props.children}
                 </MUIDialogControllerContext.Provider>

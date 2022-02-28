@@ -1,4 +1,4 @@
-import {createStyles, makeStyles} from "@material-ui/core";
+import {Box, createStyles, makeStyles} from "@material-ui/core";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import React from "react";
@@ -75,8 +75,8 @@ interface IFrontBackFlashcardProps extends BlockEditorGenericProps {
 const FrontBackFlashcard: React.FC<IFrontBackFlashcardProps> = (props) => {
     const { flashcard, id, onKeyDown, innerRef: frontRef, created } = props;
     const { fields: { front, back } } = flashcard;
-    const backRef = React.useRef<HTMLDivElement>(null);
     const { getBlock } = useAnnotationBlockManager();
+    const backRef = React.useRef<HTMLDivElement>(null);
     const blocksTreeStore = useBlocksTreeStore();
 
     const handleChange = React.useCallback((field: keyof IBlockFrontBackFlashcard['fields']) => (markdown: MarkdownStr) => {
@@ -127,6 +127,7 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
+
         if (block && BlockPredicates.isClozeFlashcardBlock(block)) {
             const content = BlockTextContentUtils.updateFlashcardContentMarkdown(block.content, 'text', markdown);
             blocksTreeStore.setBlockContent(id, content);
@@ -140,9 +141,9 @@ const ClozeFlashcard: React.FC<IClozeFlashcardProps> = (props) => {
                 content={text}
                 onChange={handleChange}
             />
-            <div style={{ marginTop: 5 }}>
+            <Box display="flex" mt="0.75rem">
                 <DocAnnotationMoment created={created} />
-            </div>
+            </Box>
         </div>
     );
 };

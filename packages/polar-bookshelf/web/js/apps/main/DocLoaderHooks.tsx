@@ -1,18 +1,11 @@
 import React from 'react';
 import {LoadDocRequest} from "./doc_loaders/LoadDocRequest";
-import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {useSideNavDocLoader} from './doc_loaders/sidenav/SideNavDocLoaders';
-import {SIDE_NAV_ENABLED} from "../../sidenav/SideNavStore";
 import {BackendFileRefs} from "../../datastore/BackendFileRefs";
 import {Either} from "../../util/Either";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export type DocLoader = (loadDocRequest: LoadDocRequest) => void;
-
-
-function useDocLoaderDefault() {
-    return useBrowserDocLoader();
-}
 
 function useDocLoaderNull() {
 
@@ -33,17 +26,12 @@ function useDocLoaderNull() {
 export function useDocLoader(): DocLoader {
 
     const sideNavDocLoader = useSideNavDocLoader();
-    const defaultDocLoader = useDocLoaderDefault();
 
     return React.useCallback((loadDocRequest: LoadDocRequest) => {
 
-        if (SIDE_NAV_ENABLED) {
-            sideNavDocLoader(loadDocRequest);
-        } else {
-            defaultDocLoader(loadDocRequest);
-        }
+        sideNavDocLoader(loadDocRequest);
 
-    }, [defaultDocLoader, sideNavDocLoader]);
+    }, [sideNavDocLoader]);
 
 }
 

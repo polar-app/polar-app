@@ -12,6 +12,7 @@ import {CreateAIFlashcard} from "./actions/CreateAIFlashcard";
 import {CreateFlashcard} from "./actions/CreateFlashcard";
 import {Remove} from "./actions/Remove";
 import {useBlockOverflowMenuStore} from "./BlockOverflowMenu";
+import {CreateAIClozeFlashcard} from "./actions/CreateAIClozeFlashcard";
 
 export interface IBlockOverflowMenuActionProps {
     readonly id: BlockIDStr;
@@ -19,6 +20,7 @@ export interface IBlockOverflowMenuActionProps {
 
 export type IBlockOverflowMenuAction = 'createFlashcard'
                                        | 'createAIFlashcard'
+                                       | 'createAIClozeFlashcard'
                                        | 'changeColor'
                                        | 'remove'
                                        | 'open'
@@ -32,7 +34,7 @@ export const BLOCK_ACTIONS_BY_TYPE: Record<IBlockContent['type'], ReadonlyArray<
     'document': [],
     'markdown': [],
     [AnnotationContentType.AREA_HIGHLIGHT] : ['changeColor', 'createFlashcard', 'editTags', 'open', 'remove'],
-    [AnnotationContentType.TEXT_HIGHLIGHT] : ['changeColor', 'createFlashcard', 'createAIFlashcard', 'editTags', 'open', 'remove'],
+    [AnnotationContentType.TEXT_HIGHLIGHT] : ['changeColor', 'createFlashcard', 'createAIFlashcard', 'createAIClozeFlashcard', 'editTags', 'open', 'remove'],
     [AnnotationContentType.FLASHCARD] : ['editTags', 'switchFlashcardType', 'remove'],
 };
 
@@ -44,6 +46,7 @@ const BLOCK_ACTION_COMPONENTS: Record<IBlockOverflowMenuAction, React.FC<IBlockO
     remove: Remove,
     createAIFlashcard: CreateAIFlashcard,
     createFlashcard: CreateFlashcard,
+    createAIClozeFlashcard: CreateAIClozeFlashcard,
 };
 
 export const BlockOverflowMenuPopper: React.FC = observer(() => {

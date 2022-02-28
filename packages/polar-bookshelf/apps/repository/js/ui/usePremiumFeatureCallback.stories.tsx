@@ -1,9 +1,8 @@
 import React from 'react';
 import {ComponentStory} from "@storybook/react";
 import IconButton from "@material-ui/core/IconButton";
-import {usePremiumFeatureCallback} from "./usePremiumFeatureCallback";
+import {usePremiumFeatureCallback, usePremiumFeatureCallbackDialogWarning} from "./usePremiumFeatureCallback";
 import {StorybookAppRoot} from "../../../../web/js/storybook/StorybookAppRoot";
-import {CalendarMonthDayIcon} from "../../../../web/js/icons/CalendarMonthDayIcon";
 
 export default {
     title: 'usePremiumFeatureCallback',
@@ -12,14 +11,26 @@ export default {
 
 const Demo = () => {
 
+    const premiumFeatureCallbackDialogWarning = usePremiumFeatureCallbackDialogWarning();
+
+    React.useEffect(() => {
+
+        premiumFeatureCallbackDialogWarning();
+
+    }, [premiumFeatureCallbackDialogWarning])
+
+    return null;
+
 }
 
 const Template = () => (
+
     <StorybookAppRoot>
         <IconButton>
-            <CalendarMonthDayIcon />
+            <Demo />
         </IconButton>
     </StorybookAppRoot>
+
 );
 
 export const Primary: ComponentStory<any> = Template.bind({});
