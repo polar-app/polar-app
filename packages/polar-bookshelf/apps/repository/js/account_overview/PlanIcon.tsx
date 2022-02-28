@@ -34,7 +34,7 @@ export const IconByPlan = deepMemo(function IconByPlan(props: IUserPlanProps) {
     const border = '2px solid #FFFFFF';
 
     return(
-        <div className={props.className} 
+        <div className={props.className}
                 style={{
                     width: '50px',
                     height: '50px',
@@ -53,21 +53,22 @@ export const IconByPlan = deepMemo(function IconByPlan(props: IUserPlanProps) {
     );
 });
 
+const CheckWhenActive = (props: IProps) => {
+    if (props.active) {
+        return <CheckIcon/>;
+    } else {
+        return null;
+    }
+};
+
 export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
 
     const border = '2px solid black';
 
-    const CheckWhenActive = () => {
-        if (props.active) {
-            return <CheckIcon/>;
-        } else {
-            return null;
-        }
-    };
-
     return (
 
-        <div style={{
+        <div data-test-id="PlanIcon"
+             style={{
                  display: 'flex',
                  flexDirection: 'column'
              }}>
@@ -83,7 +84,7 @@ export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
                  }}>
 
                 <div className="m-auto">
-                    <CheckWhenActive/>
+                    <CheckWhenActive {...props}/>
                 </div>
 
             </div>
