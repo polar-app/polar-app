@@ -16,7 +16,11 @@ import {IBlocksStoreMutation} from "../store/IBlocksStoreMutation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
-import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
+import { JSONRPC } from "../../datastore/sharing/rpc/JSONRPC";
+import {
+    IVerifyTokenAuthRequest,
+    IVerifyTokenAuthResponse
+} from "polar-backend-api/src/api/VerifyTokenAuth";
 
 const ID = BlockIDs.createRandom();
 
@@ -24,16 +28,28 @@ describe("FirestoreBlocksPersistenceWriter", () => {
 
     let uid: UserIDStr;
     let docInfoIndex: RepoDocInfoDataObjectIndex;
+    let token: string;
+
+    before(async () => {
+        const request: IVerifyTokenAuthRequest = {
+            email: FirebaseTestingUsers.FIREBASE_USER,
+            challenge: "123456"
+        };
+
+        const response = await JSONRPC.execWithoutAuth<IVerifyTokenAuthRequest, IVerifyTokenAuthResponse>(
+            "VerifyTokenAuth", request
+        );
+
+        if (response.code === 'ok') {
+            token = response.customToken;
+        } else {
+            console.error("Verifying challenge failed");
+        }
+    });
 
     beforeEach(async () => {
 
         TestingTime.freeze();
-
-        const adminAuth = FirebaseAdmin.app().auth()
-
-        const { uid: authUid } = await adminAuth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
-
-        const token = await adminAuth.createCustomToken(uid);
 
         const app = FirebaseBrowser.init();
 
@@ -43,7 +59,7 @@ describe("FirestoreBlocksPersistenceWriter", () => {
 
         await FirestoreBlocks.doDelete(ID);
 
-        uid = authUid;
+        uid = (await FirebaseBrowser.currentUserID())!;
 
         docInfoIndex = new RepoDocInfoDataObjectIndex();
     });
