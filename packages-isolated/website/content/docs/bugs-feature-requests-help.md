@@ -16,7 +16,7 @@ Here's the best way to get it a fix from the Polar team!
 
 ## Reach out through Intercom
 
-The fastest way to reach us is in-app through Intercom.
+The fastest way to reach us is in-app through Intercom. Please note, some ad blockers block Intercom from working properly. If you hit the Intercom button and nothing happens, turn off your ad blocker and it'll work fine.
 
 ## Reaching out on Discord
 
