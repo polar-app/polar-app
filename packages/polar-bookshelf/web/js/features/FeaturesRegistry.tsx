@@ -61,10 +61,6 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Enable the notes debug tools",
         description: "Enable the notes debug tools.",
     },
-    "premium-doc-viewer": {
-        title: "Make the doc viewer premium",
-        description: "The doc viewer will now be premium and require plus or pro.",
-    }
 };
 
 // TODO: we might want to rework this and make FeatureName be keyof
@@ -82,8 +78,8 @@ export type FeatureName = 'design-m0' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
                           'use-redesign-theme' |
-                          'notes-debug-tools' |
-                          'premium-doc-viewer';
+                          'notes-debug-tools'
+                          ;
 
 export interface IFeature {
 
