@@ -24,6 +24,12 @@ export const TimeToUpgradeContent = () => {
                 </h2>
             </Box>
 
+            <Box m={1}>
+                <p style={{fontSize: '14px'}}>
+                    Use the coupon code <code><b>50off</b></code> in checkout to get 50% off your first month.
+                </p>
+            </Box>
+
             <Box m={2}>
                 <MUIAnchor href="/settings/user-referral">
                     Student? Refer a friend, and when they sign up, you will BOTH get a free month of Polar Premium!
