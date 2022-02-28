@@ -63,7 +63,8 @@ export const UserReferralListItem = React.memo(function UserReferralListItem() {
     }, [history]);
 
     return (
-        <ListItem button onClick={handleClick}>
+        <ListItem button
+                  onClick={handleClick}>
             <ListItemIcon>
                 <PlaylistAddIcon />
             </ListItemIcon>
@@ -83,7 +84,9 @@ export const FeaturesListItem = React.memo(function FeaturesListItem() {
     }, [history]);
 
     return (
-        <ListItem button onClick={handleClick}>
+        <ListItem data-test-id="FeaturesListItem"
+                  button
+                  onClick={handleClick}>
             <ListItemIcon>
                 <PlaylistAddIcon />
             </ListItemIcon>
@@ -99,7 +102,7 @@ const Main = () => {
     const classes = useStyles();
 
     return (
-        <Box pt={1} className={classes.root}>
+        <Box data-test-id="Main" pt={1} className={classes.root}>
 
             <WhenAccountLevel ver="v2">
                 <Alert variant="filled"
@@ -188,7 +191,8 @@ const Main = () => {
 export const SettingsScreen = React.memo(function SettingsScreen() {
 
     return (
-        <AdaptivePageLayout title="Settings">
+        <AdaptivePageLayout data-test-id="SettingsScreen"
+                            title="Settings">
             <Main/>
         </AdaptivePageLayout>
     );
