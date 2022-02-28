@@ -11,6 +11,7 @@ description: Details about our plans and pricing
 Polar offers some free features and others for a low subscription fee. See here details:
 
 |Feature                      | Free      | Plus      | Pro       |
+|-----------------------------| ----------| ----------| ----------|
 |Pricing                      | $0/mo     | $6.99/mo  | $14.99/mo |
 |Storage                      | 1 GB      | 50 GB     | 500 GB    |
 |Maximum captured web pages   | 250       | Unlimited | Unlimited |
