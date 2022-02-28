@@ -101,7 +101,9 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
 
     return (
 
-        <div style={{padding: '10px 20px'}} ref={ref}>
+        <div data-test-id="AccountControl"
+             style={{padding: '10px 20px'}}
+             ref={ref}>
 
             <div>
                 <div className="text-center">

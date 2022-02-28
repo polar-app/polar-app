@@ -96,25 +96,33 @@ export const FeaturesListItem = React.memo(function FeaturesListItem() {
 
 });
 
-const Main = () => {
+const GetFreePolar = () => {
 
     const history = useHistory();
+
+    return (
+        <Alert variant="filled"
+               severity="info"
+               action={
+                   <Button variant="contained" onClick={() => history.push("/settings/user-referral")}>
+                       GET FREE POLAR
+                   </Button>
+               }
+               style={{fontSize: '16px'}}>
+            <b>Get Free Polar Premium</b> When you Refer a Student Friend
+        </Alert>
+    )
+}
+
+const Main = () => {
+
     const classes = useStyles();
 
     return (
         <Box data-test-id="Main" pt={1} className={classes.root}>
 
             <WhenAccountLevel ver="v2">
-                <Alert variant="filled"
-                       severity="info"
-                       action={
-                           <Button variant="contained" onClick={() => history.push("/settings/user-referral")}>
-                               GET FREE POLAR
-                           </Button>
-                       }
-                       style={{fontSize: '16px'}}>
-                    <b>Get Free Polar Premium</b> When you Refer a Student Friend
-                </Alert>
+                <GetFreePolar/>
             </WhenAccountLevel>
 
             <List>
