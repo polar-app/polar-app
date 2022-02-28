@@ -1,13 +1,15 @@
-import { assert, expect } from 'chai';
-import { FirestoreAdmin } from 'polar-firebase-admin/src/FirestoreAdmin';
-import { CloudProgresCollection } from 'polar-firebase/src/firebase/om/CloudProgressCollection';
-import { CloudProgress } from './CloudProgress';
+import {assert, expect} from 'chai';
+import {FirestoreAdmin} from 'polar-firebase-admin/src/FirestoreAdmin';
+import {CloudProgresCollection} from 'polar-firebase/src/firebase/om/CloudProgressCollection';
+import {CloudProgress} from './CloudProgress';
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 
 describe('CloudProgress', () => {
-    const DOC_ID = 'FAKE_DOCUMENT';
 
-    const UID = 'FAKE_USER';
+    const DOC_ID = Hashcodes.createRandomID();
+
+    const UID = Hashcodes.createRandomID();
 
     const TASKS = 10;
 
@@ -27,14 +29,14 @@ describe('CloudProgress', () => {
         ];
 
         await cloudProgress.step();
-        
+
         const doc = await CloudProgresCollection.get(firestore, DOC_ID);
 
         expect(doc).to.include({ percentage: 10, type: 'started' });
 
         expect(doc).to.include.keys(testTypeKeys);
     });
-    
+
     it('can be marked as failed', async () => {
         const failureMessage = "testing failure";
 
@@ -43,8 +45,8 @@ describe('CloudProgress', () => {
         await cloudProgress.step();
 
         await cloudProgress.fail(failureMessage);
-        
-        
+
+
         const doc = await CloudProgresCollection.get(firestore, DOC_ID);
 
         expect(doc).to.include({ percentage: 10, type: 'failed', message: failureMessage});

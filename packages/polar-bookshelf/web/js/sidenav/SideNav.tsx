@@ -256,7 +256,8 @@ const PolarButton = React.memo(function PolarButton() {
     const w = SIDENAV_WIDTH - 8 * 2; // The size of the hr divider below it
 
     return (
-        <div className={classes.logo}
+        <div data-test-id="PolarButton"
+             className={classes.logo}
              onClick={() => history.push(RoutePathNames.HOME)}>
             <PolarSVGIcon width={w} height={w}/>
         </div>
@@ -353,7 +354,9 @@ export const SideNav = React.memo(function SideNav() {
     return (
         <>
             <SideNavInitializer/>
-            <div id="sidenav" className={sidenavClasses.root}>
+            <div id="sidenav"
+                 data-test-id="SideNav"
+                 className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
                 {Devices.isDesktop() && (

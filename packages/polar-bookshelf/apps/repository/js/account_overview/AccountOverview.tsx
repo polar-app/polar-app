@@ -38,7 +38,8 @@ export const AccountOverview = deepMemo(function AccountOverview(props: IProps) 
     const v2Plan = Plans.toV2(props.subscription.plan);
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div data-test-id="AccountOverview"
+             style={{display: 'flex', flexDirection: 'column'}}>
 
             {/*<MUITooltip title={`Subscribed to plan '${v2Plan.level}' billed at interval '${props.subscription.interval}'`}>*/}
 
