@@ -144,11 +144,12 @@ export namespace UserBackupCreator {
             .firestore()
             .collection('doc_meta')
             .where('uid', '==', uid)
-            .get();
+            .stream();
         // data.docs.map(doc => console.log('doc.id', doc.id))
-        for (let doc of data.docs) {
-            readable.push(doc.data());
+        for await (let doc of data) {
+            readable.push(doc.toString());
         }
+
         readable.push(null);
 
         // const stream = await createStreamFromCollection({
