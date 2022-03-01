@@ -89,7 +89,8 @@
     "wait-for-expect": "3.0.1",
     "polar-test": "0.0.0",
     "@testing-library/react": "=12.1.2",
-    "karma-structured-json-reporter": "=1.0.1"
+    "karma-structured-json-reporter": "=1.0.1",
+    "polar-firebase-users": "0.0.0"
   },
   "dependencies": {
     "@antv/g6": "=4.3.5",
