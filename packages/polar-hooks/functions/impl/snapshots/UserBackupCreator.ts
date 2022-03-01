@@ -140,7 +140,7 @@ export namespace UserBackupCreator {
             objectMode: true,
             highWaterMark: 1,
         });
-        const data = await firebaseApp()
+        const data = firebaseApp()
             .firestore()
             .collection('doc_meta')
             .where('uid', '==', uid)
