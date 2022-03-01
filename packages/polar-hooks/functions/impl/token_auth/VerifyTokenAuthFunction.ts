@@ -8,31 +8,12 @@ import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {FirebaseUserCreator} from "polar-firebase-users/src/FirebaseUserCreator";
 import {isPrivateBetaEnabled} from "polar-private-beta/src/isPrivateBetaEnabled";
 import {FirebaseUserUpgrader} from "polar-firebase-users/src/FirebaseUserUpgrader";
+import {
+    IVerifyTokenAuthRequest,
+    IVerifyTokenAuthResponse,
+    IVerifyTokenAuthResponseError
+} from "polar-backend-api/src/api/VerifyTokenAuth";
 
-export interface IVerifyTokenAuthRequest {
-    readonly email: string;
-    readonly challenge: string;
-}
-
-export interface IVerifyTokenAuthResponseError {
-    readonly code: 'no-email-for-challenge' | 'invalid-challenge' | 'registrations-disabled';
-}
-
-export interface IVerifyTokenAuthResponse {
-
-    /**
-     * The code / error.
-     */
-    readonly code: 'ok';
-
-    /**
-     * A generated custom token on the backend.
-     */
-    readonly customToken: string;
-
-    readonly isNewUser: boolean;
-
-}
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 

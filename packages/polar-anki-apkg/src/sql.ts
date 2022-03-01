@@ -109,10 +109,12 @@ COMMIT;
 }
 
 export function insertCols(database: Database, deck: DeckConfig): DeckModels {
-  const basicModel = deck.id + 1;
-  const clozeModel = deck.id + 2;
-  const basicAndReverseModel = deck.id + 3;
-  const basicOptionalReverseModel = deck.id + 4;
+  // Some arbitrary epochs milliseconds to have a constant model ID
+  // this is to avoid creating multiple duplicated models in Anki
+  const basicModel = 1644510792391;
+  const clozeModel = 1644510792392;
+  const basicAndReverseModel = 1644510792393;
+  const basicOptionalReverseModel = 1644510792394;
 
   const conf = {
     nextPos: 1,
