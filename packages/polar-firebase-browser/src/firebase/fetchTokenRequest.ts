@@ -2,12 +2,11 @@ import {
     IVerifyTokenAuthRequest,
     IVerifyTokenAuthResponse
 } from "polar-backend-api/src/api/VerifyTokenAuth";
-
-import { Fetches } from 'polar-shared/src/util/Fetch';
+import { Fetches } from "polar-shared/src/util/Fetch";
 
 export default async function fetchTokenRequest(email: string): Promise<string> {
 
-    const url = `https://us-central1-polar-32b0f.cloudfunctions.net/VerifyTokenAuth/`;
+    const url = "https://us-central1-polar-32b0f.cloudfunctions.net/VerifyTokenAuth/";
 
     const requestBody: IVerifyTokenAuthRequest = {
         email,

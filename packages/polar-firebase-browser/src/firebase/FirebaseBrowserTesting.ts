@@ -4,7 +4,7 @@ import fetchTokenRequest from "./fetchTokenRequest";
 
 export namespace FirebaseBrowserTesting {
 
-    async function authWithUser(user: string){
+    async function authWithUser(user: string) {
 
         const app = FirebaseBrowser.init();
 
