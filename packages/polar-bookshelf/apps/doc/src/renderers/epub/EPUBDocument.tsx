@@ -325,7 +325,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
                     if (docID === DocViewerAppURLs.parse(document.location.href)?.id) {
 
                         if (document.location.hash.indexOf('page=' + newPage) === -1) {
-                            document.location.hash = '#page=' + newPage;
+                            // document.location.hash = '#page=' + newPage;
                         }
 
                     }
