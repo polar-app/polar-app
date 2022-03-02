@@ -1,4 +1,9 @@
-import { IVerifyTokenAuthRequest, IVerifyTokenAuthResponse } from "polar-backend-api/src/api/VerifyTokenAuth";
+import {
+    IVerifyTokenAuthRequest,
+    IVerifyTokenAuthResponse
+} from "polar-backend-api/src/api/VerifyTokenAuth";
+
+import { Fetches } from 'polar-shared/src/util/Fetch';
 
 export default async function fetchTokenRequest(email: string): Promise<string> {
 
@@ -9,9 +14,8 @@ export default async function fetchTokenRequest(email: string): Promise<string> 
         challenge: "123456"
     }
 
-    const response = await fetch(url, {
+    const response = await Fetches.fetch(url, {
         method: 'POST',
-        // credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
