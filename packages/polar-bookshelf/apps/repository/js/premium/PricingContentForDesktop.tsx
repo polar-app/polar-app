@@ -164,10 +164,10 @@ const DesktopTable = () => {
           </tr>
           <TableRowDivider/>
           <tr className={classes.row}>
-            <td className={classes.rowHead}>Devices</td>
-            <td>2</td>
-            <td>3</td>
-            <td>unlimited</td>
+            <td className={classes.rowHead}>Reading</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
           </tr>
           <TableRowDivider/>
           <tr className={classes.row}>
