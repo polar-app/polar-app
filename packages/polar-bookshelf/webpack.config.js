@@ -77,7 +77,13 @@ function createRules() {
         },
         {
             test: /\.(jsx|tsx|ts)$/,
-            exclude: [/node_modules/],
+            exclude: [
+                /node_modules/,
+                /.*Test.ts/,
+                /.*TestN.ts/,
+                /.*TestNK.ts/,
+                /.*TestK.ts/,
+            ],
             use: [
                 {
                     loader: "thread-loader",
