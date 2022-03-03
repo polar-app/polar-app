@@ -73,8 +73,6 @@ export namespace E2E {
 
             // Selector path to notes icon
             await page.click('#sidenav > div > [title="Notes"]');
-
-            await page.waitForSelector(".MuiTableContainer-root:nth-child(3)");
         }
     }
 
