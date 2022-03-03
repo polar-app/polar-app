@@ -34,7 +34,9 @@ export namespace E2E {
 
     export namespace Auth {
 
-        export async function doLogin(page: Page, email: string, code: string) {
+        const FIXED_CODE = '123456';
+
+        export async function doLogin(page: Page, email: string, code: string = FIXED_CODE) {
 
             await page.locator('h2', {hasText: 'Sign In to Polar'}).waitFor()
 
@@ -72,7 +74,24 @@ export namespace E2E {
             // Selector path to notes icon
             await page.click("#sidenav > div > div:nth-child(5) > svg > path");
 
-            await page.waitForTimeout(1000);
+        }
+    }
+
+    export namespace Benchmark {
+        export async function measure(taskName: string, task: () => Promise<void>): Promise<PerformanceMeasure> {
+            const start = `${taskName}-start`;
+
+            const result = `${taskName}-result`;
+
+            performance.mark(start);
+
+            await task();
+
+            const performanceMeasure = performance.measure(result, start);
+
+            performance.clearMarks();
+
+            return performanceMeasure;
         }
     }
 }
