@@ -4,6 +4,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {NotesRepoTableRowInner} from "./NotesRepoTableRowInner";
 import {INotesRepoRow, useNotesRepoContextMenu, useTableGridStore} from "./NotesRepoTable2";
 import {observer} from "mobx-react-lite";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,6 +45,12 @@ const Delegate = observer(function Delegate(props: IProps) {
 
     const contextMenuHandlers = useNotesRepoContextMenu();
 
+    const onContextMenu = React.useCallback((event: IMouseEvent) => {
+        if (tableGridStore.selected.length > 0) {
+            contextMenuHandlers.onContextMenu(event);
+        }
+    }, [contextMenuHandlers, tableGridStore]);
+
     // {...contextMenuHandlers}
     // onDragStart={callbacks.onDragStart}
     // onDragEnd={callbacks.onDragEnd}
@@ -51,7 +58,7 @@ const Delegate = observer(function Delegate(props: IProps) {
 
     return (
         <TableRow
-            {...contextMenuHandlers}
+            onContextMenu={onContextMenu}
             hover
             className={classes.tr}
             role="checkbox"
