@@ -79,15 +79,15 @@ export namespace E2E {
 
     export namespace Benchmark {
         export async function measure(taskName: string, task: () => Promise<void>): Promise<PerformanceMeasure> {
-            const start = `${taskName}-start`;
+            const startLabel = `${taskName}-start`;
 
-            const result = `${taskName}-result`;
+            const resultLabel = `${taskName}-result`;
 
-            performance.mark(start);
+            performance.mark(startLabel);
 
             await task();
 
-            const performanceMeasure = performance.measure(result, start);
+            const performanceMeasure = performance.measure(resultLabel, startLabel);
 
             performance.clearMarks();
 
