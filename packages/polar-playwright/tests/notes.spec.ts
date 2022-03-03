@@ -13,7 +13,7 @@ test("Can open a single note", async ({ page }) => {
 
     const note_url = join(URL, "notes", encodeURIComponent(NOTE_TITLE));
 
-    E2E.Auth.doLogin(page, "testing@getpolarized.io");
+    await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     
     await E2E.Nav.goToNotes(page);
 
