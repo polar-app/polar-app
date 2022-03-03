@@ -3,8 +3,6 @@ import clsx from "clsx";
 import {MUITreeView} from "../../../../web/js/mui/treeview/MUITreeView";
 import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
-import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
-import {AddTagsDropdown} from "./AddTagsDropdown";
 import {createContextMenu, MenuComponentProps} from "../doc_repo/MUIContextMenu";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -19,6 +17,7 @@ import {Paths} from "polar-shared/src/util/Paths";
 import {BlocksFolderSidebarMenu} from "./BlocksFolderSidebarMenu";
 import {TagType} from "polar-shared/src/tags/Tags";
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
+import {BlocksFolderSidebarSection} from './BlocksFolderSidebarSection';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -149,12 +148,15 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
 
     const handleSetFilter = React.useCallback((filter: string) => folderSidebarStore.setFilter(filter), [folderSidebarStore]);
 
+    const { foldersRoot } = folderSidebarStore;
+
     return (
         <MUIElevation className={clsx("FolderSidebar2", classes.root)}
                       elevation={2}>
             <MUIPaperToolbar borderBottom>
                 {props.header && <Box px={1} display="flex" children={props.header} />}
 
+                {/*
                 <div className={classes.controlBar}>
 
                     <MUISearchBox2
@@ -170,30 +172,38 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
                     </div>
 
                 </div>
+                */}
 
             </MUIPaperToolbar>
 
             <Box display="flex" flexGrow="1" flexDirection="column" p={1} className={classes.tagsList}>
-                {folderSidebarStore.foldersRoot && (
-                    <Box ml={1}>
-                        <FoldersContextMenu>
-                            <MUITreeView root={folderSidebarStore.foldersRoot}
-                                         selectRow={handleSelectRow}
-                                         collapseNode={handleExpand(false)}
-                                         expandNode={handleExpand(true)}
-                                         selected={folderSidebarStore.selected}
-                                         expanded={folderSidebarStore.expanded}
-                                         onDrop={dropHandler} />
-                        </FoldersContextMenu>
-                    </Box>
-                )}
+                <BlocksFolderSidebarSection label="Folders" onAdd={handleCreateUserTag('folder')}>
+                    {foldersRoot && (
+                        <Box ml={1}>
+                            <FoldersContextMenu>
+                                {foldersRoot.children.map((item) => (
+                                    <MUITreeView root={item}
+                                                 key={item.id}
+                                                 selectRow={handleSelectRow}
+                                                 collapseNode={handleExpand(false)}
+                                                 expandNode={handleExpand(true)}
+                                                 selected={folderSidebarStore.selected}
+                                                 expanded={folderSidebarStore.expanded}
+                                                 onDrop={dropHandler} />
+                                ))}
+                            </FoldersContextMenu>
+                        </Box>
+                    )}
+                </BlocksFolderSidebarSection>
 
-                <TagsContextMenu>
-                    <MUITagList tags={folderSidebarStore.tagsView}
-                                selected={folderSidebarStore.selected}
-                                selectRow={handleSelectRow}
-                                onDrop={dropHandler} />
-                </TagsContextMenu>
+                <BlocksFolderSidebarSection label="Tags" onAdd={handleCreateUserTag('tag')}>
+                    <TagsContextMenu>
+                        <MUITagList tags={folderSidebarStore.tagsView}
+                                    selected={folderSidebarStore.selected}
+                                    selectRow={handleSelectRow}
+                                    onDrop={dropHandler} />
+                    </TagsContextMenu>
+                </BlocksFolderSidebarSection>
             </Box>
         </MUIElevation>
     );
