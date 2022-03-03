@@ -72,8 +72,9 @@ export namespace E2E {
         export async function goToNotes(page: Page) {
 
             // Selector path to notes icon
-            await page.click("#sidenav > div > div:nth-child(5) > svg > path");
+            await page.click('#sidenav > div > [title="Notes"]');
 
+            await page.waitForSelector(".MuiTableContainer-root");
         }
     }
 
