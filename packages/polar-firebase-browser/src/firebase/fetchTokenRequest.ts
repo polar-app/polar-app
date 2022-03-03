@@ -27,7 +27,7 @@ export default async function fetchTokenRequest(email: string): Promise<string> 
     const responseBody = <IVerifyTokenAuthResponse>await response.json();
 
     if (response.status !== 200 || responseBody.code !== 'ok') {
-        throw new Error("Failed to verify fixed challenge, no custom token recieved.");
+        throw new Error("Failed to verify fixed challenge, no custom token received.");
     }
 
     return responseBody.customToken;
