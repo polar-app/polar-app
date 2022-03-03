@@ -317,8 +317,11 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             const tabs = store.tabs.filter(current => current.id === anchor);
 
-            setStore({...store, tabs, activeTab: anchor});
+            if (anchor !== store.activeTab) {
+                setActiveTab(anchor);
+            }
 
+            setStore({...store, tabs, activeTab: anchor});
         }
 
         function closeCurrentTab() {
