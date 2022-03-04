@@ -93,7 +93,7 @@ export namespace E2E {
             
             const startLabel = `${taskName}-start`;
 
-            const resultLabel = `${taskName}-result`;
+            const measureLabel = `${taskName}-measure`;
             
             // set performance start mark
             await page.evaluate(startLabel => 
@@ -104,11 +104,14 @@ export namespace E2E {
             await task();
 
             // measure
-            const performanceMeasureJson = await page.evaluate(({ startLabel, resultLabel }) => 
-                JSON.stringify(
-                    window.performance.measure(resultLabel, startLabel)
-                )
-            , { startLabel, resultLabel });
+            await page.evaluate(({ startLabel, measureLabel }) => 
+                    window.performance.measure(measureLabel, startLabel)
+            ,{ startLabel, measureLabel });
+
+            // get measure entry by its label
+            const performanceMeasureJson = await page.evaluate(measureLabel => JSON.stringify(
+                window.performance.getEntriesByName(measureLabel)[0]
+            ), measureLabel);
 
             await page.evaluate(() => {
                 window.performance.clearMarks();
