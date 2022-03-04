@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {useSideNavStore} from './SideNavStore';
+import {TabID, useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
@@ -12,7 +12,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import NotesIcon from '@material-ui/icons/Notes';
 import DescriptionIcon from '@material-ui/icons/Description';
-import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
+import {createContextMenu, IMouseEvent} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {SideNavContextMenu} from "./SideNavContextMenu";
 import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
@@ -305,8 +305,28 @@ const SideNavDivider = React.memo(function SideNavDivider() {
 
 });
 
+export interface ISideNavContextMenuOrigin {
+    readonly tabID: TabID;
+}
+
+function computeOrigin(event: IMouseEvent): ISideNavContextMenuOrigin | undefined {
+    const target = event.nativeEvent.currentTarget;
+
+    if (! (target instanceof HTMLElement)) {
+        return;
+    }
+
+    const { tabID } = target.dataset;
+
+    if (! tabID) {
+        return;
+    }
+
+    return { tabID };
+}
+
 export const [SideNavContextMenuProvider, useSideNavContextMenu]
-    = createContextMenu(SideNavContextMenu, {name: 'sidenav'});
+    = createContextMenu(SideNavContextMenu, {name: 'sidenav', computeOrigin});
 
 const useSideNavStyles = makeStyles(() =>
     createStyles({
