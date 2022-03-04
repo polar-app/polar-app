@@ -219,16 +219,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     useBookProgressPreserver(props.docMeta.docInfo.fingerprint, rendition);
     useBookProgressRestorer(props.docMeta.docInfo.fingerprint, rendition);
 
-    // const preserveLocation = React.useCallback((rendition: Rendition) => {
-    //     const interval = setInterval(() => {
-    //         const currentLocation = rendition.currentLocation();
-    //         console.log(currentLocation);
-    //         // @TODO store to localStorage and restore later
-    //     }, 1000);
-    //
-    //     return () => clearInterval(interval);
-    // }, [docMeta.docInfo.fingerprint, docURL]);
-
     const doLoad = React.useCallback(async () => {
 
         function doInitialCallbacks() {
