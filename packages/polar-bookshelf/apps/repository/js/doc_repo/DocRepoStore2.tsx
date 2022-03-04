@@ -28,7 +28,6 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {BatchMutators} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
@@ -48,10 +47,9 @@ import {useBlocksStore} from "../../../../web/js/notes/store/BlocksStore";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {getBlockForDocument} from "../../../../web/js/notes/HighlightBlocksHooks";
 import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import TypeConverter = Sorting.TypeConverter;
-import {BlockPredicates} from "../../../../web/js/notes/store/BlockPredicates";
 
 interface IDocRepoStore {
 
@@ -934,7 +932,7 @@ export const DocRepoStore2: React.FC = React.memo((props) => {
             <DocRepoStoreLoader>
                 <>
                     {props.children}
-                    <AddFileDropzone/>
+                    {/*<AddFileDropzone/>*/}
                 </>
             </DocRepoStoreLoader>
         </DocRepoStoreProvider>

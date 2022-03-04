@@ -37,7 +37,6 @@ import {RepoDocMetas} from "../RepoDocMetas";
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
-import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoaderForDocInfo} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {useAnnotationMutationCallbacksFactory} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
@@ -583,7 +582,7 @@ export const AnnotationRepoStore = React.memo((props: IProps) => {
             <AnnotationRepoStoreInner>
                 <>
                     {props.children}
-                    <AddFileDropzone/>
+                    {/*<AddFileDropzone/>*/}
                 </>
             </AnnotationRepoStoreInner>
         </AnnotationRepoStoreProvider>

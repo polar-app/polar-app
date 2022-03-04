@@ -156,7 +156,7 @@ export const ProfileConfigurator = (props: IProps) => {
     }, [props, state]);
 
     return (
-        <div className={classes.root}>
+        <div data-test-id="ProfileConfigurator" className={classes.root}>
 
             <LinearProgress variant="determinate"
                             value={state.form.progress}/>

@@ -10,7 +10,10 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {Box} from "@material-ui/core";
-import {useBlocksFolderSidebarDropHandler, useBlocksFolderSidebarStore} from "../folder_sidebar/BlocksFolderSidebarStore";
+import {
+    useBlocksFolderSidebarDropHandler,
+    useBlocksFolderSidebarStore
+} from "../folder_sidebar/BlocksFolderSidebarStore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {observer} from "mobx-react-lite";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -56,7 +59,7 @@ export const useCreateBlockUserTagDialog = () => {
     const dialogs = useDialogManager();
     const createBlockUserTag = useCreateBlockUserTag();
     const folderSidebarStore = useBlocksFolderSidebarStore();
-    
+
     return React.useCallback((type: TagType) => () => {
         const getLabel = (text: string): string => {
             switch (type) {
@@ -84,7 +87,7 @@ export const useRenameBlockUserTagDialog = () => {
     const dialogs = useDialogManager();
     const renameBlockUserTag = useRenameBlockUserTag();
     const folderSidebarStore = useBlocksFolderSidebarStore();
-    
+
     return React.useCallback((type: TagType) => () => {
         const tagToBeRenamed = folderSidebarStore.selectedTags[0];
 
@@ -138,8 +141,12 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
     const folderSidebarDropHandler = useBlocksFolderSidebarDropHandler();
     const handleCreateUserTag = useCreateBlockUserTagDialog();
 
-    const dropHandler = React.useCallback((_: React.DragEvent, tagID: BlockIDStr) =>
-        folderSidebarDropHandler(tagID), [folderSidebarDropHandler]);
+    const dropHandler = React.useCallback((event: React.DragEvent, tagID: BlockIDStr) => {
+        if (folderSidebarDropHandler(tagID)) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }, [folderSidebarDropHandler]);
 
     const handleSelectRow = React.useCallback((...args: Parameters<typeof folderSidebarStore.selectRow>) =>
         folderSidebarStore.selectRow(...args), [folderSidebarStore]);

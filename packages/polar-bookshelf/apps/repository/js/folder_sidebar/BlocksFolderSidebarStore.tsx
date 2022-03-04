@@ -190,7 +190,7 @@ const useNewBlocksFolderSidebarStore = (opts: IUseNewBlocksFolderSidebarStoreOpt
 
 type IBlocksFolderSidebarStoreContext = {
     readonly store: BlocksFolderSidebarStore;
-    readonly dropHandler: (tagID: BlockIDStr) => void;
+    readonly dropHandler: (tagID: BlockIDStr) => boolean;
 };
 
 const BlocksFolderSidebarStoreContext = React.createContext<IBlocksFolderSidebarStoreContext | null>(null);
@@ -209,14 +209,32 @@ export const DocRepoBlocksFolderSidebarStoreProvider: React.FC = ({ children }) 
         memberPredicate: IBlockPredicates.isDocumentBlock,
     });
 
-    const dropHandler = React.useCallback((tagID: BlockIDStr) => {
-        const [target] = Tags.lookupByTagLiteral(store.tags, [tagID]);
+    const dropHandler = React.useCallback((tagID: BlockIDStr): boolean => {
 
-        if (! target) {
-            return;
+        // TODO: I think some of this code needs to be migrated to the
+        // annotation repo but not sure which parts yet.
+
+        function getOrCreateTarget(): Tag {
+            const [target] = Tags.lookupByTagLiteral(store.tags, [tagID]);
+
+            if ( ! target) {
+                return {
+                    id: tagID,
+                    label: tagID
+                }
+
+            } else {
+                return target;
+            }
+
         }
 
+        const target = getOrCreateTarget();
+
         onDropped(target);
+
+        return true;
+
     }, [store, onDropped]);
 
     React.useEffect(() => {
@@ -266,16 +284,18 @@ export const AnnotationRepoBlocksFolderSidebarStoreProvider: React.FC = ({ child
     });
 
     const dropHandler = React.useCallback((tagID: BlockIDStr) => {
+
         const [tag] = Tags.lookupByTagLiteral(store.tags, [tagID]);
 
-        if (! tag) {
-            return;
-        }
-
+        // if (! tag) {
+        //     return false;
+        // }
 
         const targets = blocksStore.idsToBlocks(annotationRepoStore.selected);
 
         updateBlockTags(targets, [tag], 'add');
+
+        return true;
 
     }, [store, annotationRepoStore, blocksStore, updateBlockTags]);
 

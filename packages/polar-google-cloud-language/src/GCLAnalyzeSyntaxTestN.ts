@@ -214,6 +214,26 @@ describe("GCLAnalyzeSyntax", function() {
 
         });
 
+
+        it("test of PoS... ", async () => {
+
+            // TODO would be 26MB for one letter in the google ngram corpus, there
+            // are 26 letter entries and 10 numbers. so this would yield about 1GB
+            // of data that we would have to index and this would just be for one
+            // language
+
+            // const text = "Sacramento is the capital city of California"
+            const text = "Compared to other wild cats, the leopard has relatively short legs and a long body with a large skull. Its fur is marked with rosettes. ";
+
+            // TODO: does not join United States as one noun but the entity parser could pull it out if I merge both the outputs.
+            // const text = "Washington DC is the capital of the United States."
+
+            const analysis = await GCLAnalyzeSyntax.analyzeSyntax(text);
+            console.log(JSON.stringify(analysis, null, '  '));
+
+
+        });
+
     });
 
     describe("extractPOS", () => {

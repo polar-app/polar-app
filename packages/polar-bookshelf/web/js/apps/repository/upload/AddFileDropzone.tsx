@@ -104,7 +104,7 @@ function isFileTransfer(event: DragEvent) {
         return false;
     }
 
-    console.log("Handling file transfer: ", event.dataTransfer.types);
+    console.log("AddFileDropzone: Handling file transfer: ", event.dataTransfer.types);
 
     // https://stackoverflow.com/questions/6848043/how-do-i-detect-a-file-is-being-dragged-rather-than-a-draggable-element-on-my-pa
 
