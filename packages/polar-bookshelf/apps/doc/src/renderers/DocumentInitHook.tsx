@@ -28,19 +28,6 @@ export function useDocumentInit() {
             throw new Error("No docMeta");
         }
 
-        if (resumeProgressActive) {
-            console.log("DocumentInit: Resuming reading progress via pagemarks");
-            resumeProgressHandler();
-        } else {
-
-            // TODO: this is probably a bug and we shouldn't reference
-            // document.location here I think.
-            if (jumpToPageLoader(document.location, 'init')) {
-                console.log("DocumentInit: Jumped to page via page param.")
-            }
-
-        }
-
         // TODO we aren't doing this right now because the EPUB viewer must
         // go to page 1 first... we can refactor this later once 2.0 is out.
         // pageNavigator.set(1);

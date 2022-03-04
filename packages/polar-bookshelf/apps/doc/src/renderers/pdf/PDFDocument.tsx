@@ -123,6 +123,36 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
+/**
+ * Extract the progress from the PageNavigator and store it in localStorage
+ */
+const preserveLocation = (fingerprint: string, pageNavigator: PageNavigator) => {
+    if (!pageNavigator) {
+        return;
+    }
+    const currentPage = pageNavigator.get();
+    const localStorageKey = `progress.${fingerprint}`;
+    const payload = JSON.stringify({page: currentPage});
+    localStorage.setItem(localStorageKey, payload);
+    console.log('Preserving location in localStorage');
+};
+
+/**
+ * Extract stored progress from localStorage and restore it to the PageNavigator
+ */
+const restoreLocation = async (fingerprint: string, pageNavigator: PageNavigator) => {
+    if (!pageNavigator) {
+        return;
+    }
+    const localStorageKey = `progress.${fingerprint}`;
+    const restored = localStorage.getItem(localStorageKey);
+    if (!restored) {
+        return;
+    }
+    const {page} = JSON.parse(restored);
+    await pageNavigator.jumpToPage(page);
+}
+
 export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const {docURL} = props;
@@ -138,8 +168,10 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const log = useLogger();
 
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler,
-           setDocScale, setPage, setOutline, setOutlineNavigator, docMetaProvider, setScale: setStoreScale}
+    const {
+        setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler,
+        setDocScale, setPage, setOutline, setOutlineNavigator, docMetaProvider, setScale: setStoreScale
+    }
         = useDocViewerCallbacks();
 
     const {setFinder} = useDocFindCallbacks();
@@ -153,7 +185,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const handleActive = React.useCallback(() => {
 
         if (hasPagesInitRef.current && hasLoadRef.current) {
-            if (! activeRef.current) {
+            if (!activeRef.current) {
                 setActive(true);
             }
         }
@@ -168,11 +200,9 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const onLoaded = React.useCallback(() => {
         hasLoadRef.current = true;
         handleActive();
-
     }, [handleActive]);
 
     const dispatchPDFDocMeta = React.useCallback(() => {
-
         if (docRef.current && docViewerRef.current) {
 
             const docDescriptor: IDocDescriptor = {
@@ -187,6 +217,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
             if (pageNavigatorRef.current) {
                 setPage(pageNavigatorRef.current.get());
+                preserveLocation(props.docMeta.docInfo.fingerprint, pageNavigatorRef.current);
             } else {
                 log.warn("No pageNavigatorRef")
             }
@@ -245,7 +276,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
-        if (! docViewer.containerElement) {
+        if (!docViewer.containerElement) {
             // fixes a bug where this is registered as an eventListener and gets
             // closed after the document is loaded.
             console.warn("No container element");
@@ -256,7 +287,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         loadingTaskRef.current.onProgress = (progress) => {
 
-            if (! progressTrackerRef.current) {
+            if (!progressTrackerRef.current) {
                 progressTrackerRef.current = createProgressTracker(progress.total);
             }
 
@@ -299,7 +330,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         setResizer(resizeDebouncer);
 
         // do first resize async
-        setTimeout(() => resize(), 1 );
+        setTimeout(() => resize(), 1);
 
         async function createOutline(): Promise<IOutline | undefined> {
 
@@ -320,7 +351,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
             const outline = await docRef.current!.getOutline();
 
-            if (! outline) {
+            if (!outline) {
                 return undefined;
             }
 
@@ -352,6 +383,8 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         pageNavigatorRef.current = createPageNavigator(docRef.current);
 
+        await restoreLocation(props.docMeta.docInfo.fingerprint, pageNavigatorRef.current!);
+
         dispatchPDFDocMeta();
 
         setPageNavigator(pageNavigatorRef.current);
@@ -370,7 +403,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
                 const currentScaleValue = docViewerRef.current!.viewer.currentScaleValue;
                 const result = ScaleLevelTuplesMap[currentScaleValue];
 
-                if (! result) {
+                if (!result) {
                     return ScaleLevelTuplesMap["page width"];
                 }
 
@@ -400,7 +433,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
                 const docMeta = docMetaProvider();
 
-                if (! docMeta) {
+                if (!docMeta) {
                     return;
                 }
 
@@ -504,7 +537,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     return active && (
         <>
-            <AreaHighlightCreator />
+            <AreaHighlightCreator/>
             <AnnotationPopup/>
             <DocumentInit/>
             {props.children}

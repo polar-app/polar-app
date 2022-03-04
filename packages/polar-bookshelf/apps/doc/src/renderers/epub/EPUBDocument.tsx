@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
-import ePub, {EpubCFI} from "epubjs";
+import ePub, {EpubCFI, Rendition} from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {PageNavigator} from "../../PageNavigator";
 import {Resizer, useDocViewerCallbacks} from "../../DocViewerStore";
@@ -90,7 +90,7 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate, b
 
             function resolveURL(href: string) {
 
-                if (! href.startsWith('http:') && ! href.startsWith("https:")) {
+                if (!href.startsWith('http:') && !href.startsWith("https:")) {
                     // The URL is not fully resolved so we have to resolve it properly.
                     return new URL(href, baseURL).toString();
                 }
@@ -123,6 +123,57 @@ export function useFixedWidth() {
 
     return false;
 
+}
+
+/**
+ * Preserve the user's progress inside the book to localStorage, ever 1 second
+ * @param fingerprint Fingerprint of the book
+ * @param rendition The Rendition (view) that shows the ePub Book object
+ */
+const useBookProgressPreserver = (fingerprint: string, rendition?: Rendition) => {
+    useEffect(() => {
+        if (!rendition) {
+            return;
+        }
+        const interval = setInterval(() => {
+            const currentLocation = rendition.currentLocation();
+
+            // @ts-ignore TS types seem to be outdated for this one in our @types package
+            const cfi = currentLocation.start.cfi;
+
+            const localStorageKey = `progress.${fingerprint}`;
+            localStorage.setItem(localStorageKey, JSON.stringify({cfi}));
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [fingerprint, rendition]);
+};
+
+/**
+ * Restores the user's progress within the book with the provided Fingerprint
+ */
+const useBookProgressRestorer = (fingerprint: string, rendition?: Rendition) => {
+    useEffect((() => {
+        if (!rendition) {
+            return;
+        }
+
+        // Don't restore if user visited a certain page directly through a URL bookmark
+        if (window.location.hash.includes('page=')) {
+            return;
+        }
+
+        const localStorageKey = `progress.${fingerprint}`;
+        const restoredPayload = localStorage.getItem(localStorageKey);
+        if (!restoredPayload) {
+            console.log(`No stored prior progress. Resuming book to the beginning`);
+            return;
+        }
+        const {cfi} = JSON.parse(restoredPayload);
+
+        console.log(`Restoring progress to CFI: ${cfi}`);
+        rendition.display(cfi).then();
+    }), [fingerprint, rendition]);
 }
 
 export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
@@ -159,10 +210,24 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
 
+    const [rendition, setRendition] = useState<Rendition>();
+
     const docLoadEventReporterHandler = useTaskEventReporterHandler('docLoad', {type: 'epub'});
 
     const docViewerElements = useDocViewerElementsContext();
 
+    useBookProgressPreserver(props.docMeta.docInfo.fingerprint, rendition);
+    useBookProgressRestorer(props.docMeta.docInfo.fingerprint, rendition);
+
+    // const preserveLocation = React.useCallback((rendition: Rendition) => {
+    //     const interval = setInterval(() => {
+    //         const currentLocation = rendition.currentLocation();
+    //         console.log(currentLocation);
+    //         // @TODO store to localStorage and restore later
+    //     }, 1000);
+    //
+    //     return () => clearInterval(interval);
+    // }, [docMeta.docInfo.fingerprint, docURL]);
 
     const doLoad = React.useCallback(async () => {
 
@@ -257,6 +322,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
             // applyCSS();
             incrRenderIter();
+
+            setRendition(rendition);
         });
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
