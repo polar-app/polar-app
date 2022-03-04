@@ -1,5 +1,4 @@
 import { Page } from 'playwright-core';
-import { expect } from '@playwright/test';
 
 export namespace E2E {
 
