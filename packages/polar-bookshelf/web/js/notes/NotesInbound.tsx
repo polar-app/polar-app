@@ -2,6 +2,7 @@ import * as React from 'react';
 import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import {Block, NOTES_GUTTER_SIZE} from "./Block";
+import {Block as BlockClass} from "./store/Block";
 import {observer} from "mobx-react-lite"
 import {NoteBreadcrumbLinks} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -9,6 +10,7 @@ import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {UL} from './UL';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import {AnnotationContentType} from 'polar-blocks/src/blocks/content/IAnnotationContent';
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
@@ -43,6 +45,18 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
+function inboundBlockPredicate(block: BlockClass): boolean {
+    return [
+        'markdown',
+        'name',
+        'image',
+        'date',
+        AnnotationContentType.FLASHCARD,
+        AnnotationContentType.TEXT_HIGHLIGHT,
+        AnnotationContentType.AREA_HIGHLIGHT,
+    ].indexOf(block.content.type) > -1;
+}
+
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
     const blocksTreeStore = useBlocksTreeStore();
     const [expanded, setExpanded] = React.useState(true);
@@ -52,7 +66,7 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
 
     const inbound = React.useMemo(() => {
-        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isEditableBlock);
+        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(inboundBlockPredicate);
         return blocks.sort((a, b) => (new Date(b.created)).getTime() - (new Date(a.created).getTime()));
     }, [inboundNoteIDs, blocksTreeStore]);
 
