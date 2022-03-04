@@ -77,20 +77,42 @@ export namespace E2E {
     }
 
     export namespace Benchmark {
-        export async function measure(taskName: string, task: () => Promise<void>): Promise<PerformanceMeasure> {
+        /**
+         * @param page - test page
+         * @param taskName - name of the task (used to create measure labels)
+         * @param task
+         * 
+         * Runs a performance measure on in test page browser context
+         */
+        export async function measure(page: Page, 
+                                      taskName: string,
+                                      task: () => Promise<void>): Promise<PerformanceMeasure> {
+            
             const startLabel = `${taskName}-start`;
 
             const resultLabel = `${taskName}-result`;
+            
+            // set performance start mark
+            await page.evaluate(startLabel => 
+                window.performance.mark(startLabel)
+            , startLabel);
 
-            performance.mark(startLabel);
-
+            // perform the underlying task
             await task();
 
-            const performanceMeasure = performance.measure(resultLabel, startLabel);
+            // measure
+            const performanceMeasureJson = await page.evaluate(({ startLabel, resultLabel }) => 
+                JSON.stringify(
+                    window.performance.measure(resultLabel, startLabel)
+                )
+            , { startLabel, resultLabel });
 
-            performance.clearMarks();
+            await page.evaluate(() => {
+                window.performance.clearMarks();
+                window.performance.clearMeasures();
+            });
 
-            return performanceMeasure;
+            return <PerformanceMeasure>JSON.parse(performanceMeasureJson);
         }
     }
 }
