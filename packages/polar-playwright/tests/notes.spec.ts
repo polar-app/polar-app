@@ -3,12 +3,13 @@ import { test, expect } from '@playwright/test';
 import { join } from 'path';
 
 
-const URL = process.env.APP_URL || 'http://localhost:8050';
 const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
 const MAX_DURATION = 10000;
 
 
 test("Can open a single note", async ({ page }) => {
+    const URL = E2E.Sessions.appURL();
+
     await page.goto(URL);
 
     const note_url = join(URL, "notes", encodeURIComponent(NOTE_TITLE));
@@ -24,7 +25,7 @@ test("Can open a single note", async ({ page }) => {
         ).dblclick();
     }
 
-    const { duration } = await E2E.Benchmark.measure("notes", async () => {
+    const { duration } = await E2E.Benchmark.measure(page, "notes", async () => {
         await openSingleNote()
     });
 
