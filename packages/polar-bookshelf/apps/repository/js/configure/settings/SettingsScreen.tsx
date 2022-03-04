@@ -139,13 +139,6 @@ const Main = () => {
                                 icon={<ImportContactsIcon />}
                                 options={PREF_PDF_DARK_MODE_OPTIONS}/>
 
-                <SettingListItem
-                    title="Automatically resume reading position"
-                    description="This feature restores the document reading position using pagemarks when reopening a document."
-                    name="settings-auto-resume"
-                    icon={<FilterCenterFocusIcon />}
-                    defaultValue={true}/>
-
                 <SettingListItem title="Fixed-width EPUBs"
                                  description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                  name="fixed-width-epub"
