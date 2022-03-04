@@ -21,7 +21,7 @@ namespace CopyUtils {
 
     export function extractContentsFromBlocksSelection(blocksStore: IBlocksStore): ICopyData {
         const selectedIDs = blocksStore.selectedIDs();
-        const polarBlocks = blocksStore.createBlockContentStructure(selectedIDs, { useNewIDs: true });
+        const polarBlocks = blocksStore.createBlockContentStructure(selectedIDs);
 
         const rawHTML = BlockContentStructureHTMLConverter.toHTML(polarBlocks);
         const div = document.createElement('div');

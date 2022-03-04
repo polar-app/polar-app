@@ -4,6 +4,7 @@ import {BlockIDStr, IBlockContentStructure} from "polar-blocks/src/blocks/IBlock
 import {useUploadHandler} from "../UploadHandler";
 import {HTMLToBlocks} from "../HTMLToBlocks";
 import {useOnlineOnlyTaskHandler} from "../../react/useOnlineOnlyTaskHandler";
+import {BlockIDs} from "polar-blocks/src/util/BlockIDs";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -132,6 +133,16 @@ const executePasteHandlers = async (
     }
 }
 
+const generateNewBlockIDs = (blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<IBlockContentStructure> => {
+    const withNewID = (block: IBlockContentStructure) => ({
+        ...block,
+        id: BlockIDs.createRandom(),
+        children: generateNewBlockIDs(block.children),
+    });
+
+    return blocks.map(withNewID);
+};
+
 /**
  * Clipboard paste handler that takes clipboard data given to us via an onPaste
  * handler, then handles it directly.
@@ -176,8 +187,9 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 ));
                 const html = await getHTMLString();
                 const blocks = await HTMLToBlocks.parse(html);
+                const withNewIDs = generateNewBlockIDs(blocks);
 
-                onPasteBlocks(blocks);
+                onPasteBlocks(withNewIDs);
             }
         }
 
@@ -191,8 +203,9 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
                 try {
                     const blocks = JSON.parse(await getJSONString());
+                    const withNewIDs = generateNewBlockIDs(blocks);
 
-                    onPasteBlocks(blocks);
+                    onPasteBlocks(withNewIDs);
 
                 } catch (e) {
                     console.error('Error: failed to parse application/polarblocks+json', e);
