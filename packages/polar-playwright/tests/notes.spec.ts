@@ -4,7 +4,7 @@ import { join } from 'path';
 
 
 const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
-const MAX_DURATION = 10000;
+const MAX_DURATION = 1000;
 
 
 test("Can open a single note", async ({ page }) => {
