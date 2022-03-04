@@ -21,27 +21,24 @@ export const NotesRepoContextMenu = observer(function NotesRepoContextMenu() {
 
     const handleDelete = React.useCallback(() => {
         blocksStore.deleteBlocks(selected);
-    }, [blocksStore, selected]);
+        tableGridStore.setSelected('none');
+    }, [blocksStore, selected, tableGridStore]);
 
     return (
         <>
-            {selected.length === 1 && (
-                <MenuItem onClick={handleOpen}>
-                    <ListItemIcon>
-                        <LaunchIcon fontSize="small"/>
-                    </ListItemIcon>
-                    <ListItemText primary="Open Note"/>
-                </MenuItem>
-            )}
+            <MenuItem onClick={handleOpen}>
+                <ListItemIcon>
+                    <LaunchIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Open Note"/>
+            </MenuItem>
 
-            {selected.length >= 1 && (
-                <MenuItem onClick={handleDelete}>
-                    <ListItemIcon>
-                        <DeleteIcon fontSize="small"/>
-                    </ListItemIcon>
-                    <ListItemText primary="Delete"/>
-                </MenuItem>
-            )}
+            <MenuItem onClick={handleDelete}>
+                <ListItemIcon>
+                    <DeleteIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Delete"/>
+            </MenuItem>
 
         </>
     );

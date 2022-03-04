@@ -119,7 +119,7 @@ export namespace SelectionEvents2 {
 
         function computeSelectedIndexes(): ReadonlyArray<number> {
             const viewPageIDs = view.map(current => current.id);
-            return currentlySelected.map(current => viewPageIDs.indexOf(current));
+            return currentlySelected.map(current => viewPageIDs.indexOf(current)).filter(x => x > -1);
         }
 
         const doStrategyRange = (): SelectedRows => {
