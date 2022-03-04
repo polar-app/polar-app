@@ -1,4 +1,5 @@
 import { Page } from 'playwright-core';
+import { expect } from '@playwright/test';
 
 export namespace E2E {
 
@@ -7,23 +8,26 @@ export namespace E2E {
         export async function reset(page: Page) {
 
             // Clear local storage
-            await page.evaluate("window.localStorage.clear()")
+            await page.evaluate(() => window.localStorage.clear());
 
             // Clear cookies by setting expiry date in the past
             // Could use CookieStore API here but it's not supported on
             // Firefox or Safari...
-            await page.evaluate(`
+            await page.evaluate(() =>
                 document.cookie.split(';').forEach(function(c) {
-                      document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-                });
-            `)
+                    document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                })
+            );
 
             // Clear indexedDB 
-            await page.evaluate(`
-                window.indexedDB.databases.forEach(function(db) {
-                    window.indexedDB.deleteDatabase(db.name)
-                })
-            `);
+            await page.evaluate(async () => {
+                const dbs = await window.indexedDB.databases();
+                dbs.forEach(db => {
+                    if (db.name) {
+                        window.indexedDB.deleteDatabase(db.name);
+                    }
+                });
+            });
         }
 
         export function appURL(): string {
