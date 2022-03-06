@@ -89,7 +89,8 @@ export const SideNavButtonWithAvatar = deepMemo(function SideNavButtonWithAvatar
     const backgroundColor = useDeterministicColor(tab.id);
 
     return (
-        <ActiveTabButton title={tab.title}
+        <ActiveTabButton id={tab.id}
+                         title={tab.title}
                          path={path}
                          canonicalizer={canonicalizer}
                          onClick={() => setActiveTab(tab.id)}>

@@ -9,6 +9,7 @@ import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {useLocation} from "react-router-dom";
 import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";
 import {useSideNavCurrentTabContext} from "./SideNavContextMenu";
+import {TabID} from "./SideNavStore";
 
 const BORDER = 3;
 
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
 
+    readonly id?: TabID;
     readonly title: string;
 
     /**
@@ -117,6 +119,7 @@ export const ActiveTabButton = deepMemo(function ActiveTabButton(props: IProps) 
 
             <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
                  onContextMenu={handleContextMenu}
+                 data-tabID={props.id}
                  onClick={props.onClick}>
 
                 {props.children}

@@ -6,6 +6,8 @@ import {TabDescriptor, useSideNavCallbacks} from "./SideNavStore";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";
+import {MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
+import {ISideNavContextMenuOrigin} from "./SideNav";
 
 interface ISideNavCurrentTab {
     readonly tab: TabDescriptor;
@@ -17,8 +19,10 @@ export function useSideNavCurrentTabContext() {
     return React.useContext(SideNavCurrentTabContext);
 }
 
-export const SideNavContextMenu = deepMemo(function SideNavContextMenu() {
 
+export const SideNavContextMenu: React.FC<MenuComponentProps<ISideNavContextMenuOrigin>> = deepMemo(function SideNavContextMenu(props) {
+
+    const {origin} = props;
     const {removeTab, closeOtherTabs, getTabDescriptor} = useSideNavCallbacks();
 
     const currentTabID = SideNavActivatedContextMenu.get();
@@ -54,9 +58,12 @@ export const SideNavContextMenu = deepMemo(function SideNavContextMenu() {
 
     const handleCloseOtherTabs = React.useCallback(() => {
 
-        withActivatedTab(tab => closeOtherTabs(tab.id));
-
-    }, [closeOtherTabs, withActivatedTab]);
+        if (origin) {
+            closeOtherTabs(origin.tabID);
+        } else {
+            withActivatedTab(tab => closeOtherTabs(tab.id));
+        }
+    }, [closeOtherTabs, withActivatedTab, origin]);
 
     return (
         <>

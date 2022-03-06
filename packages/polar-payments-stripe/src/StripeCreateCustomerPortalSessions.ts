@@ -18,7 +18,7 @@ export namespace StripeCreateCustomerPortalSessions {
             throw new Error("No email for user");
         }
 
-        const customer = await StripeCustomers.getCustomerByEmail(stripeMode, email);
+        const customer = await StripeCustomers.getOrCreateCustomer(stripeMode, email, "");
 
         if (! customer) {
             throw new Error("No customer for email: " + email);

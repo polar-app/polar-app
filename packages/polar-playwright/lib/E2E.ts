@@ -7,23 +7,26 @@ export namespace E2E {
         export async function reset(page: Page) {
 
             // Clear local storage
-            await page.evaluate("window.localStorage.clear()")
+            await page.evaluate(() => window.localStorage.clear());
 
             // Clear cookies by setting expiry date in the past
             // Could use CookieStore API here but it's not supported on
             // Firefox or Safari...
-            await page.evaluate(`
+            await page.evaluate(() =>
                 document.cookie.split(';').forEach(function(c) {
-                      document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-                });
-            `)
+                    document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                })
+            );
 
             // Clear indexedDB 
-            await page.evaluate(`
-                window.indexedDB.databases.forEach(function(db) {
-                    window.indexedDB.deleteDatabase(db.name)
-                })
-            `);
+            await page.evaluate(async () => {
+                const dbs = await window.indexedDB.databases();
+                dbs.forEach(db => {
+                    if (db.name) {
+                        window.indexedDB.deleteDatabase(db.name);
+                    }
+                });
+            });
         }
 
         export function appURL(): string {
@@ -34,7 +37,9 @@ export namespace E2E {
 
     export namespace Auth {
 
-        export async function doLogin(page: Page, email: string, code: string) {
+        const FIXED_CODE = '123456';
+
+        export async function doLogin(page: Page, email: string, code: string = FIXED_CODE) {
 
             await page.locator('h2', {hasText: 'Sign In to Polar'}).waitFor()
 
@@ -70,9 +75,50 @@ export namespace E2E {
         export async function goToNotes(page: Page) {
 
             // Selector path to notes icon
-            await page.click("#sidenav > div > div:nth-child(5) > svg > path");
+            await page.click('#sidenav > div > [title="Notes"]');
+        }
+    }
 
-            await page.waitForTimeout(1000);
+    export namespace Benchmark {
+        /**
+         * @param page - test page
+         * @param taskName - name of the task (used to create measure labels)
+         * @param task
+         * 
+         * Runs a performance measure on in test page browser context
+         */
+        export async function measure(page: Page, 
+                                      taskName: string,
+                                      task: () => Promise<void>): Promise<PerformanceMeasure> {
+            
+            const startLabel = `${taskName}-start`;
+
+            const measureLabel = `${taskName}-measure`;
+            
+            // set performance start mark
+            await page.evaluate(startLabel => 
+                window.performance.mark(startLabel)
+            , startLabel);
+
+            // perform the underlying task
+            await task();
+
+            // measure
+            await page.evaluate(({ startLabel, measureLabel }) => 
+                    window.performance.measure(measureLabel, startLabel)
+            ,{ startLabel, measureLabel });
+
+            // get measure entry by its label
+            const performanceMeasureJson = await page.evaluate(measureLabel => JSON.stringify(
+                window.performance.getEntriesByName(measureLabel)[0]
+            ), measureLabel);
+
+            await page.evaluate(() => {
+                window.performance.clearMarks();
+                window.performance.clearMeasures();
+            });
+
+            return <PerformanceMeasure>JSON.parse(performanceMeasureJson);
         }
     }
 }
