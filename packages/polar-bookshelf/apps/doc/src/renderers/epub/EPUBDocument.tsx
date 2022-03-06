@@ -172,7 +172,7 @@ const useBookProgressRestorer = (fingerprint: string, rendition?: Rendition) => 
         const {cfi} = JSON.parse(restoredPayload);
 
         console.log(`Restoring progress to CFI: ${cfi}`);
-        rendition.display(cfi).then();
+        rendition.display(cfi).then().catch((e) => console.error(e));
     }), [fingerprint, rendition]);
 }
 

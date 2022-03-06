@@ -1,9 +1,7 @@
 import React from 'react';
-import {useDocViewerJumpToPageLoader, useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
-import {ReadingProgressResume} from "../../../../web/js/view/ReadingProgressResume";
+import {useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
-import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 
 /**
  * Uses all the requirements we need including pagemark resume, jump via anchor
@@ -12,19 +10,17 @@ import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume
 export function useDocumentInit() {
 
     const {pageNavigator, docMeta} = useDocViewerStore(['pageNavigator', 'docMeta']);
-    const jumpToPageLoader = useDocViewerJumpToPageLoader();
-    const [resumeProgressActive, resumeProgressHandler] = useReadingProgressResume();
 
     const doInit = React.useCallback(() => {
         if (document.location.hash.length !== 0) {
             return;
         }
 
-        if (! pageNavigator) {
+        if (!pageNavigator) {
             throw new Error("No pageNavigator");
         }
 
-        if (! docMeta) {
+        if (!docMeta) {
             throw new Error("No docMeta");
         }
 
@@ -34,7 +30,7 @@ export function useDocumentInit() {
 
         return undefined;
 
-    }, [docMeta, jumpToPageLoader, pageNavigator, resumeProgressActive, resumeProgressHandler]);
+    }, [docMeta, pageNavigator]);
 
     useComponentDidMount(() => {
         setTimeout(doInit, 1);

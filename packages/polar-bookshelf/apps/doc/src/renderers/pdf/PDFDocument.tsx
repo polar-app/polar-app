@@ -476,7 +476,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     }, [createProgressTracker, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded, onPagesInit,
         pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler, setDocScale, setFinder,
         setOutline, setOutlineNavigator, setPageNavigator, setResizer, setScaleLeveler,
-        docLoadEventReporterHandler]);
+        docLoadEventReporterHandler, props.docMeta.docInfo.fingerprint]);
 
     React.useEffect(() => {
 

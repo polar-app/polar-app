@@ -10,7 +10,6 @@ import {ExportDataListItem} from "./ExportDataListItem";
 import {createStyles, List, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
 import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
-import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
 import HeightIcon from "@material-ui/icons/Height";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
