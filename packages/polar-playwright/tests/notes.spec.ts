@@ -8,7 +8,7 @@ const NOTE_TITLE = "Alice's Adventures in Wonderland";
 const MAX_DURATION = 1000;
 
 
-test.describe("Notes", () => {
+test.describe.only("Notes", () => {
     process.env.APP_URL = "https://app.getpolarized.io/";
 
     const URL = E2E.Sessions.appURL();
@@ -34,7 +34,7 @@ test.describe("Notes", () => {
         );
     }
 
-    test("Can open a single note", async () => {
+    test.skip("Can open a single note", async () => {
         await E2E.Nav.goToNotes(page);
 
         async function openSingleNote() {
@@ -50,6 +50,18 @@ test.describe("Notes", () => {
         await expect(page).toHaveURL(createNoteURL(NOTE_TITLE));
     });
 
+    const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
 
+    test("Can create a new note", async () => {
+        
+        await E2E.Nav.goToNotes(page);
 
+        await page.locator(".mui-elevation > .MuiPaper-root:nth-child(1) > .MuiBox-root > .MuiButtonBase-root").click();
+
+        await page.locator(".MuiInput-underline > input[type=text]").type(TEST_NOTE_TITLE);
+
+        await page.locator(".MuiButton-label", { hasText: "Done" }).click();
+
+        expect(page).toHaveURL(createNoteURL(TEST_NOTE_TITLE));
+    });
 });
