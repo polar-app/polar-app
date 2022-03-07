@@ -6,11 +6,10 @@ import { Locator, Page } from 'playwright-core';
 
 const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
 const MAX_DURATION = 1000;
-
+// test created and deleted note title
+const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
 
 test.describe.only("Notes", () => {
-    process.env.APP_URL = "https://app.getpolarized.io/";
-
     const URL = E2E.Sessions.appURL();
     
     let page: Page;
@@ -29,7 +28,7 @@ test.describe.only("Notes", () => {
     });
 
     function createNoteURL(noteTitle: string): string {
-        return join(URL, "notes", encodeURIComponent(noteTitle));
+        return join(URL, "notes", noteTitle);
     }
 
     function noteLocator(noteTitle: string): Locator {
@@ -43,6 +42,7 @@ test.describe.only("Notes", () => {
         async function openSingleNote() {
             await noteLocator(NOTE_TITLE).dblclick();
         }
+        const noteEncoded = encodeURIComponent(NOTE_TITLE);
 
         const { duration } = await E2E.Benchmark.measure(page, "notes", async () => {
             await openSingleNote()
@@ -50,10 +50,9 @@ test.describe.only("Notes", () => {
 
         expect(duration).toBeLessThan(MAX_DURATION);
 
-        await expect(page).toHaveURL(createNoteURL(NOTE_TITLE));
+        await expect(page).toHaveURL(createNoteURL(noteEncoded));
     });
 
-    const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
 
     test("Can create a new note", async () => {
         await page.locator(
@@ -65,7 +64,12 @@ test.describe.only("Notes", () => {
 
         await page.locator(".MuiButton-label", { hasText: "Done" }).click();
 
-        expect(page).toHaveURL(createNoteURL(TEST_NOTE_TITLE));
+        // extract ID from redirect url
+        const blockID = page.url().split("/").pop();
+
+        const titleLocator = page.locator(`#block-${blockID}`);
+
+        await expect(titleLocator).toHaveText(TEST_NOTE_TITLE);
     });
 
 
@@ -79,7 +83,5 @@ test.describe.only("Notes", () => {
         await page.mouse.click(600, 600, { button: "right" });
 
         await page.locator('.MuiListItemText-root > span', { hasText: "Delete" }).click();
-
-        expect(noteLocator(TEST_NOTE_TITLE)).toEqual(undefined);
     });
 });
