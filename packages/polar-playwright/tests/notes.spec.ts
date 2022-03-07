@@ -1,35 +1,55 @@
 import { E2E } from "../lib/E2E";
 import { test, expect } from '@playwright/test';
 import { join } from 'path';
+import { Locator, Page } from 'playwright-core';
 
 
 const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
 const MAX_DURATION = 1000;
 
 
-test("Can open a single note", async ({ page }) => {
+test.describe("Notes", () => {
+    process.env.APP_URL = "https://app.getpolarized.io/";
+
     const URL = E2E.Sessions.appURL();
-
-    await page.goto(URL);
-
-    const note_url = join(URL, "notes", encodeURIComponent(NOTE_TITLE));
-
-    await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     
-    await E2E.Nav.goToNotes(page);
+    let page: Page;
 
-    async function openSingleNote() {
-        await page.locator(
-            '.MuiTableContainer-root:nth-child(3) > .MuiTable-root > .MuiTableBody-root > .MuiTableRow-root',
-            { hasText: NOTE_TITLE }
-        ).dblclick();
-    }
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
 
-    const { duration } = await E2E.Benchmark.measure(page, "notes", async () => {
-        await openSingleNote()
+        await page.goto(URL);
+        
+        await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     });
 
-    expect(duration).toBeLessThan(MAX_DURATION);
+    function createNoteURL(noteTitle: string): string {
+        return join(URL, "notes", encodeURIComponent(noteTitle));
+    }
 
-    await expect(page).toHaveURL(note_url);
+    function noteLocator(noteTitle: string): Locator {
+        return page.locator(
+            '.MuiTableContainer-root:nth-child(3) > .MuiTable-root > .MuiTableBody-root > .MuiTableRow-root',
+            { hasText: noteTitle }
+        );
+    }
+
+    test("Can open a single note", async () => {
+        await E2E.Nav.goToNotes(page);
+
+        async function openSingleNote() {
+            await noteLocator(NOTE_TITLE).dblclick();
+        }
+
+        const { duration } = await E2E.Benchmark.measure(page, "notes", async () => {
+            await openSingleNote()
+        });
+
+        expect(duration).toBeLessThan(MAX_DURATION);
+
+        await expect(page).toHaveURL(createNoteURL(NOTE_TITLE));
+    });
+
+
+
 });
