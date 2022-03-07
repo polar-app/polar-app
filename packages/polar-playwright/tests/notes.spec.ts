@@ -4,13 +4,11 @@ import { join } from 'path';
 import { Locator, Page } from 'playwright-core';
 
 
-const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
-const MAX_DURATION = 1000;
-// test created and deleted note title
-const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
-
-test.describe.only("Notes", () => {
+test.describe("Notes", () => {
     const URL = E2E.Sessions.appURL();
+    
+    // test created and deleted note title
+    const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
     
     let page: Page;
 
@@ -27,10 +25,6 @@ test.describe.only("Notes", () => {
         await E2E.Nav.goToNotes(page);
     });
 
-    function createNoteURL(noteTitle: string): string {
-        return join(URL, "notes", noteTitle);
-    }
-
     function noteLocator(noteTitle: string): Locator {
         return page.locator(
             '.MuiTableContainer-root:nth-child(3) > .MuiTable-root > .MuiTableBody-root > .MuiTableRow-root',
@@ -39,18 +33,19 @@ test.describe.only("Notes", () => {
     }
 
     test("Can open a single note", async () => {
-        async function openSingleNote() {
-            await noteLocator(NOTE_TITLE).dblclick();
-        }
-        const noteEncoded = encodeURIComponent(NOTE_TITLE);
+        const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
+
+        const MAX_DURATION = 1000;
+
+        const noteURL = join(URL, "notes", encodeURIComponent(NOTE_TITLE))
 
         const { duration } = await E2E.Benchmark.measure(page, "notes", async () => {
-            await openSingleNote()
+            await noteLocator(NOTE_TITLE).dblclick();
         });
 
         expect(duration).toBeLessThan(MAX_DURATION);
 
-        await expect(page).toHaveURL(createNoteURL(noteEncoded));
+        await expect(page).toHaveURL(noteURL);
     });
 
 
