@@ -23,6 +23,11 @@ test.describe.only("Notes", () => {
         await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     });
 
+
+    test.beforeEach(async () => {
+        await E2E.Nav.goToNotes(page);
+    });
+
     function createNoteURL(noteTitle: string): string {
         return join(URL, "notes", encodeURIComponent(noteTitle));
     }
@@ -35,8 +40,6 @@ test.describe.only("Notes", () => {
     }
 
     test.skip("Can open a single note", async () => {
-        await E2E.Nav.goToNotes(page);
-
         async function openSingleNote() {
             await noteLocator(NOTE_TITLE).dblclick();
         }
@@ -53,10 +56,10 @@ test.describe.only("Notes", () => {
     const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
 
     test("Can create a new note", async () => {
-        
-        await E2E.Nav.goToNotes(page);
-
-        await page.locator(".mui-elevation > .MuiPaper-root:nth-child(1) > .MuiBox-root > .MuiButtonBase-root").click();
+        await page.locator(
+            ".mui-elevation > .MuiPaper-root:nth-child(1) > .MuiBox-root > .MuiButtonBase-root",
+            { hasText: "Create a new note"}
+        ).click();
 
         await page.locator(".MuiInput-underline > input[type=text]").type(TEST_NOTE_TITLE);
 
