@@ -39,7 +39,7 @@ test.describe.only("Notes", () => {
         );
     }
 
-    test.skip("Can open a single note", async () => {
+    test("Can open a single note", async () => {
         async function openSingleNote() {
             await noteLocator(NOTE_TITLE).dblclick();
         }
