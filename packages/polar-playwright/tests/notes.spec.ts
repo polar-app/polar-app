@@ -35,7 +35,7 @@ test.describe("Notes", () => {
     test("Can open a single note", async () => {
         const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
 
-        const MAX_DURATION = 1000;
+        const MAX_DURATION = 3000;
 
         const noteURL = join(URL, "notes", encodeURIComponent(NOTE_TITLE))
 
