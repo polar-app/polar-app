@@ -67,4 +67,19 @@ test.describe.only("Notes", () => {
 
         expect(page).toHaveURL(createNoteURL(TEST_NOTE_TITLE));
     });
+
+
+    test("Can delete a note", async () => {
+        // sort list by created
+        await page.locator("span[role=button]", { hasText: "Created" }).click();
+
+        await noteLocator(TEST_NOTE_TITLE).click();
+
+        // right click to display MUI context menu
+        await page.mouse.click(600, 600, { button: "right" });
+
+        await page.locator('.MuiListItemText-root > span', { hasText: "Delete" }).click();
+
+        expect(noteLocator(TEST_NOTE_TITLE)).toEqual(undefined);
+    });
 });
