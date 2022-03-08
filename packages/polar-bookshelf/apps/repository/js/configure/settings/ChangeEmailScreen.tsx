@@ -9,6 +9,9 @@ import {useFirestore} from "../../FirestoreProvider";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {AccountActions} from "../../../../../web/js/accounts/AccountActions";
 import {useHistory} from "react-router-dom";
+import EmailIcon from "@material-ui/icons/Email";
+import {EmailAddressParser} from "../../../../../web/js/util/EmailAddressParser";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const Main = () => {
 
@@ -36,9 +39,24 @@ const Main = () => {
 
     const handleUpdateEmail = React.useCallback(() => {
 
-        // TODO: validate the email first...
+        // TODO: we should probably keep a log SOMEWHERE of when the user is
+        // changing their email so if it breaks we don't lock them out
 
         const email = textFieldRef.current!.textContent!;
+
+        if (EmailAddressParser.parse(email).length < 1) {
+
+            dialogManager.confirm({
+                type: 'error',
+                title: "Invalid Email",
+                subtitle: "Please use a proper email address",
+                noCancel: true,
+                onAccept: NULL_FUNCTION
+            });
+
+            return;
+
+        }
 
         dialogManager.confirm({
             title: "Confirm Email Update",
@@ -73,6 +91,11 @@ const Main = () => {
                            variant="outlined"
                            style={{flexGrow: 1}}
                            ref={ref => textFieldRef.current = ref}
+                           InputProps={{
+                               startAdornment: (
+                                   <EmailIcon style={{margin: '8px'}}/>
+                               )
+                           }}
                            value=""/>
 
                 <Button color="primary"
