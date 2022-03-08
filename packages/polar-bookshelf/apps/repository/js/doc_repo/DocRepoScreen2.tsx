@@ -18,7 +18,7 @@ namespace main {
 
     export const Folders = React.memo(() => {
         return (
-            <BlocksFolderSidebar />
+            <BlocksFolderSidebar filterResetLabel="All Documents" />
         );
     });
 
@@ -54,7 +54,7 @@ namespace devices {
                     id: "dock-panel-left",
                     type: 'fixed',
                     // side: 'left',
-                    component: <BlocksFolderSidebar header={<AddContentHeader/>} />,
+                    component: <BlocksFolderSidebar header={<AddContentHeader/>} filterResetLabel="All Documents" />,
                     width: 300,
                     style: {
                         display: 'flex',

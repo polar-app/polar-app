@@ -239,7 +239,7 @@ namespace Desktop {
                         minHeight: 0,
                     },
                     component: (
-                        <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                        <BlocksFolderSidebar header={<StartReviewHeader/>} filterResetLabel="All Annotations" />
                     ),
                     width: 300
                 },
@@ -285,7 +285,7 @@ namespace screen {
                         <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
-                            <BlocksFolderSidebar header={<StartReviewHeader/>} />
+                            <BlocksFolderSidebar header={<StartReviewHeader/>} filterResetLabel="All Annotations" />
                         </SideCar>
 
                         <DeviceRouter phone={

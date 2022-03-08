@@ -5,9 +5,7 @@ import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {createContextMenu, MenuComponentProps} from "../doc_repo/MUIContextMenu";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import {Box} from "@material-ui/core";
+import {Box, Button, makeStyles, createStyles} from "@material-ui/core";
 import {useBlocksFolderSidebarDropHandler, useBlocksFolderSidebarStore} from "../folder_sidebar/BlocksFolderSidebarStore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {observer} from "mobx-react-lite";
@@ -19,7 +17,7 @@ import {TagType} from "polar-shared/src/tags/Tags";
 import {BlockIDStr} from 'polar-blocks/src/blocks/IBlock';
 import {BlocksFolderSidebarSection} from './BlocksFolderSidebarSection';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -29,13 +27,22 @@ const useStyles = makeStyles(() =>
             minWidth: '100%',
             minHeight: 0,
         },
-        controlBar: {
-            display: 'flex',
-            alignItems: 'center',
-            padding: '2px 10px'
-        },
         tagsList: {
             overflowY: 'auto',
+        },
+        filterResetButton: {
+            borderRadius: 0,
+            textTransform: 'none',
+            '& .MuiButton-label': {
+                color: theme.palette.text.primary,
+                justifyContent: 'space-between',
+                fontWeight: 'bold',
+                fontSize: '1.1rem',
+            },
+            '& .filter-reset-count': {
+                color: theme.palette.text.hint,
+                fontWeight: 'normal',
+            },
         },
     }),
 );
@@ -49,6 +56,7 @@ const TagsContextMenu = createContextMenu(TagsMenu);
 
 interface IProps {
     readonly header?: JSX.Element;
+    readonly filterResetLabel?: string;
 }
 
 export const useCreateBlockUserTagDialog = () => {
@@ -146,7 +154,7 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
     const handleExpand = React.useCallback((state: boolean) => (id: BlockIDStr) =>
         state ? folderSidebarStore.expandNode(id) : folderSidebarStore.collapseNode(id), [folderSidebarStore]);
 
-    const handleSetFilter = React.useCallback((filter: string) => folderSidebarStore.setFilter(filter), [folderSidebarStore]);
+    const handleFilterReset = React.useCallback(() => folderSidebarStore.setFilter(''), [folderSidebarStore]);
 
     const { foldersRoot } = folderSidebarStore;
 
@@ -155,28 +163,17 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
                       elevation={2}>
             <MUIPaperToolbar borderBottom>
                 {props.header && <Box px={1} display="flex" children={props.header} />}
-
-                {/*
-                <div className={classes.controlBar}>
-
-                    <MUISearchBox2
-                        initialValue={folderSidebarStore.filter}
-                        placeholder="Filter by tag or folder"
-                        autoComplete="off"
-                        style={{ flexGrow: 1 }}
-                        onChange={handleSetFilter}/>
-
-                    <div className="ml-1">
-                        <AddTagsDropdown onCreateFolder={handleCreateUserTag('folder')}
-                                         onCreateTag={handleCreateUserTag('tag')}/>
-                    </div>
-
-                </div>
-                */}
-
             </MUIPaperToolbar>
 
             <Box display="flex" flexGrow="1" flexDirection="column" p={1} className={classes.tagsList}>
+                {props.filterResetLabel && (
+                    <Button color="secondary"
+                            onClick={handleFilterReset}
+                            classes={{ root: classes.filterResetButton }}>
+                        <span>{props.filterResetLabel}</span>
+                        <span className="filter-reset-count">{foldersRoot ? foldersRoot.count : ''}</span>
+                    </Button>
+                )}
                 <BlocksFolderSidebarSection label="Folders" onAdd={handleCreateUserTag('folder')}>
                     {foldersRoot && (
                         <Box ml={1}>
