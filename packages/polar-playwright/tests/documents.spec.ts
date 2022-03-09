@@ -11,9 +11,9 @@ test.describe("Documents", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        page.goto(E2E.Sessions.appURL());
+        await page.goto(E2E.Sessions.appURL());
 
-        E2E.Auth.doLogin(page, "testing@getpolarized.io");
+        await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     });
 
     test("Can upload and open a document", async () => {
@@ -50,7 +50,7 @@ test.describe("Documents", () => {
     });
 
     test("Can delete a document", async () => {
-        E2E.Nav.goToDocuments(page);
+        await E2E.Nav.goToDocuments(page);
 
         const rowLocator = (): Locator => {
             return page.locator(
