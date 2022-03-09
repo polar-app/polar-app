@@ -1,14 +1,14 @@
 import { E2E } from "../lib/E2E";
 import { test, expect } from '@playwright/test';
-import { Page } from 'playwright-core';
+import { Locator, Page } from 'playwright-core';
 
 
 test.describe("Documents", () => {
+    const TEST_FILE_NAME = "alexnet.pdf";
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
-        process.env.APP_URL = "https://app.getpolarized.io/";
-
         page = await browser.newPage();
 
         page.goto(E2E.Sessions.appURL());
@@ -17,7 +17,6 @@ test.describe("Documents", () => {
     });
 
     test("Can upload and open a document", async () => {
-        const FILE_NAME = "alexnet.pdf";
 
         await E2E.Nav.goToDocuments(page);
 
@@ -31,18 +30,16 @@ test.describe("Documents", () => {
             page.locator('span[class="MuiButton-label"]', { hasText: "Upload Files"} ).click()
         ]);
 
-        await fileChooser.setFiles(`./assets/${FILE_NAME}`);
+        await fileChooser.setFiles(`./assets/${TEST_FILE_NAME}`);
 
         await page.locator(
             ".MuiSnackbarContent-message",
-            { hasText: `Would you like to open '${FILE_NAME}' now?`}
+            { hasText: `Would you like to open '${TEST_FILE_NAME}' now?`}
         ).waitFor();
 
         await page.locator(
             '.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-root.MuiIconButton-colorSecondary'
         ).click();
-
-        await page.waitForNavigation();
 
         const titleLocator = page.locator(
             ".textLayer > span",
@@ -52,4 +49,31 @@ test.describe("Documents", () => {
         await expect(titleLocator).toBeVisible();
     });
 
+    test("Can delete a document", async () => {
+        E2E.Nav.goToDocuments(page);
+
+        const rowLocator = (): Locator => {
+            return page.locator(
+                '.MuiTableRow-root[role="checkbox"] > td',
+                { hasText: TEST_FILE_NAME}
+            );
+        }
+
+        await rowLocator().click({ button: "right" });
+
+        await page.locator('span', { hasText: "Delete" }).click();
+
+        await page.locator('.MuiButton-label', { hasText: "Accept" }).click();
+
+        await page.locator(
+            ".MuiSnackbarContent-root > .MuiSnackbarContent-message",
+            { hasText: "1 documents deleted." }
+        ).waitFor();
+
+        await expect(rowLocator()).toHaveCount(0);
+    });
+
+    test.afterAll(async () => {
+        await E2E.Auth.doLogout(page);
+    });
 });
