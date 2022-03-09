@@ -1,10 +1,10 @@
 import {test} from '@playwright/test';
 import { E2E } from "../lib/E2E"
 
-const URL = process.env.APP_URL || 'http://localhost:8050';
-
-test('Login succeeds', async ({page}) => {
-    await page.goto(URL);
+test('Login/Logout succeeds', async ({page}) => {
+    await page.goto(E2E.Sessions.appURL());
 
     await E2E.Auth.doLogin(page, 'testing@getpolarized.io', '123456');
+
+    await E2E.Auth.doLogout(page);
 });
