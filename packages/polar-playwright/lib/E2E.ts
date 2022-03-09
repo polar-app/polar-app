@@ -60,7 +60,7 @@ export namespace E2E {
         }
 
         export async function doLogout(page: Page) {
-            await page.click("#sidenav > div > div:nth-child(10) > div:nth-child(2) > div > svg > path");
+            await Nav.goToAccount(page);
             
             await page.click(".text-right .MuiButton-label");         
 
@@ -72,10 +72,26 @@ export namespace E2E {
     }
 
     export namespace Nav {
+        type sideNavItems = "Notes" | "Annotations" | "Documents" | "Account";
+        
+        export async function goToSideNavItem(page: Page, item: sideNavItems) {
+            // Selector path to a sidenav item
+            await page.click(`div[title="${item}"]`);
+        }
         export async function goToNotes(page: Page) {
+            await goToSideNavItem(page, "Notes");
+        }
 
-            // Selector path to notes icon
-            await page.click('#sidenav > div > [title="Notes"]');
+        export async function goToDocuments(page: Page) {
+            await goToSideNavItem(page, "Documents");
+        }
+
+        export async function goToAnnotations(page: Page) {
+            await goToSideNavItem(page, "Annotations");
+        }
+
+        export async function goToAccount(page: Page) {
+            await goToSideNavItem(page, "Account");
         }
     }
 
