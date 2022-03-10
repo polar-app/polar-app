@@ -20,11 +20,12 @@ export const PLAN_INTERVAL_MONTHS: Record<PlanPricingInterval, number> = {
     [PlanPricingInterval.Yearly]: 12,
 };
 
-type Plan = {
+export type Plan = {
     readonly type: Billing.V2Plan;
     readonly label: string;
     readonly price: Record<PlanPricingInterval, number>;
     readonly features: Record<PlanFeature, string | boolean>;
+    readonly subtitle: string;
 };
 
 export const PLAN_FEATURE_LABELS: Record<PlanFeature, string> = {
@@ -37,10 +38,11 @@ export const PLAN_FEATURE_LABELS: Record<PlanFeature, string> = {
     [PlanFeature.Reading]: 'Reading',
 };
 
-export const PLANS: Plan[] = [
-    {
+export const PLANS: Record<Billing.V2PlanLevel, Plan> = {
+    free: {
         type: Billing.V2PlanFree,
         label: 'Free',
+        subtitle: '1 year commitment <br /> gets one month free',
         price: {
             [PlanPricingInterval.Monthly]: 0,
             [PlanPricingInterval.Yearly]: 0,
@@ -55,9 +57,10 @@ export const PLANS: Plan[] = [
             [PlanFeature.Reading]: 'No',
         },
     },
-    {
+    plus: {
         type: Billing.V2PlanPlus,
         label: 'Plus',
+        subtitle: '1 year commitment <br /> gets one month free',
         price: {
             [PlanPricingInterval.Monthly]: 6.99,
             [PlanPricingInterval.Yearly]: 74.99,
@@ -72,9 +75,10 @@ export const PLANS: Plan[] = [
             [PlanFeature.Reading]: 'Yes',
         },
     },
-    {
+    pro: {
         type: Billing.V2PlanPro,
         label: 'Pro',
+        subtitle: 'Free Forever',
         price: {
             [PlanPricingInterval.Monthly]: 14.99,
             [PlanPricingInterval.Yearly]: 164.99,
@@ -89,4 +93,4 @@ export const PLANS: Plan[] = [
             [PlanFeature.Reading]: 'Yes',
         },
     },
-];
+};

@@ -5,19 +5,18 @@ import {PlansTable} from "../plans_table/PlansTable";
 import {PlansIntervalToggle, usePricingIntervalFromHash} from "../plans_table/PlansIntervalToggle";
 
 const useStyles = makeStyles({
-  tableDesktopOuter: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "10px auto 10px",
-    paddingBottom: 50,
-    width: "80%",
-    paddingRight: "25px",
-  },
+    tableDesktopOuter: {
+        display: "flex",
+        justifyContent: "center",
+        margin: "10px auto 10px",
+        padding: "0 60px 50px",
+        width: "80%",
+    },
 
-  tableDesktop: {
-      width: '100%',
-      maxWidth: 1300,
-  },
+    tableDesktop: {
+        width: '100%',
+        maxWidth: 1300,
+    },
 });
 
 export const PricingContentForDesktop = () => {
