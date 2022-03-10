@@ -119,7 +119,7 @@ export const ActiveTabButton = deepMemo(function ActiveTabButton(props: IProps) 
 
             <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
                  onContextMenu={handleContextMenu}
-                 data-tabID={props.id}
+                 data-tabid={props.id}
                  onClick={props.onClick}>
 
                 {props.children}
