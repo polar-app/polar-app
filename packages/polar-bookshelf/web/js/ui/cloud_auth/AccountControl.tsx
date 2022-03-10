@@ -1,6 +1,7 @@
 import React from 'react';
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";
+import TimelineIcon from '@material-ui/icons/Timeline';
 import Button from "@material-ui/core/Button";
 import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
 import {Billing} from "polar-accounts/src/Billing";
@@ -13,6 +14,8 @@ import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
 import Subscription = Billing.Subscription;
+import {Box} from '@material-ui/core';
+import {RoutePathNames} from '../../apps/repository/RoutePathNames';
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -135,6 +138,14 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
 
 
                 </div>
+                <Box display="flex" justifyContent="center" my="0.5rem">
+                    <MUIRouterLink to={RoutePathNames.STATISTICS}>
+                        <Button variant="outlined"
+                                endIcon={<TimelineIcon />}>
+                            Statistics
+                        </Button>
+                    </MUIRouterLink>
+                </Box>
 
                 <div className="mt-2 pb-2 border-top text-center">
 
