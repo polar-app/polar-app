@@ -11,7 +11,7 @@ test.describe("Documents", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        await page.goto(E2E.Sessions.appURL());
+        await page.goto(await E2E.Sessions.appURL());
 
         await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     });

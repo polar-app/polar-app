@@ -1,4 +1,5 @@
 import { Page } from 'playwright-core';
+import http from "http";
 
 export namespace E2E {
 
@@ -29,10 +30,40 @@ export namespace E2E {
             });
         }
 
-        export function appURL(): string {
-            return process.env.APP_URL || 'http://localhost:8050';
+        export async function appURL(): Promise<string> {
+            
+            const LOCAL_URL = "http://localhost:8050";
+
+            // when there is no local app build running on host machine
+            // or an explicitly specified APP_URL then tests should default to 
+            // production version of polar.
+            if (!process.env.APP_URL) {
+                const isLocalAlive = await isHostAlive(LOCAL_URL);
+                if (!isLocalAlive) {
+                    process.env.APP_URL = "https://app.getpolarized.io/";
+                }
+            }
+
+            return process.env.APP_URL || LOCAL_URL;
         }
 
+        
+        async function isHostAlive(hostURL: string): Promise<boolean> {
+            return new Promise<boolean>(resolve => {
+                const req = http.get(hostURL, (res) => {
+                    if (res.statusCode === 200) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+                req.on('error', () => {
+                    resolve(false);
+                });
+
+                req.end();
+            });
+        }
     }
 
     export namespace Auth {

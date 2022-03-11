@@ -5,7 +5,7 @@ import { Locator, Page } from 'playwright-core';
 
 
 test.describe("Notes", () => {
-    const URL = E2E.Sessions.appURL();
+    let URL: string;
     
     // test created and deleted note title
     const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
@@ -13,6 +13,8 @@ test.describe("Notes", () => {
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
+        URL = await E2E.Sessions.appURL();
+        
         page = await browser.newPage();
 
         await page.goto(URL);
