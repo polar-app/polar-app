@@ -2,7 +2,6 @@ import React from 'react';
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";
 import TimelineIcon from '@material-ui/icons/Timeline';
-import Button from "@material-ui/core/Button";
 import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
 import {Billing} from "polar-accounts/src/Billing";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
@@ -14,7 +13,8 @@ import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
 import Subscription = Billing.Subscription;
-import {Box} from '@material-ui/core';
+import {Box, makeStyles, Button, createStyles, IconButton} from '@material-ui/core';
+import SettingsIcon from '@material-ui/icons/Settings';
 import {RoutePathNames} from '../../apps/repository/RoutePathNames';
 
 interface LogoutButtonProps {
@@ -91,22 +91,44 @@ export function useLogoutAction(): Callback {
 
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            position: 'relative',
+            padding: '10px 20px',
+        },
+        settingsIcon: {
+            position: 'absolute',
+            top: theme.spacing(0.5),
+            right: theme.spacing(0.5),
+            padding: theme.spacing(0.75),
+            color: theme.palette.text.hint,
+        },
+    })
+);
 
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
     const logoutAction = useLogoutAction();
     const popperController = usePopperController();
+    const classes = useStyles();
 
-    function handleLogout() {
+    const handleLogout = React.useCallback(() => {
         popperController.dismiss();
         logoutAction();
-    }
+    }, [popperController, logoutAction]);
 
     return (
 
         <div data-test-id="AccountControl"
-             style={{padding: '10px 20px'}}
+             className={classes.root}
              ref={ref}>
+
+            <MUIRouterLink to={RoutePathNames.SETTINGS}>
+                <IconButton className={classes.settingsIcon}>
+                    <SettingsIcon />
+                </IconButton>
+            </MUIRouterLink>
 
             <div>
                 <div className="text-center">

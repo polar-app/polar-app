@@ -7,7 +7,6 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
 import {ActiveTabButton} from "./ActiveTabButton";
-import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import NotesIcon from '@material-ui/icons/Notes';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -189,18 +188,6 @@ const AccountButton = React.memo(function AccountButton() {
         <SideNavHistoryButton title="Account"
                               path={RoutePathNames.ACCOUNT}>
             <AccountAvatar className={classes.secondaryIcon} size='small'/>
-        </SideNavHistoryButton>
-    )
-});
-
-const SettingsButton = React.memo(function SettingsButton() {
-
-    const classes = useStyles();
-
-    return (
-        <SideNavHistoryButton title="Settings"
-                              path={RoutePathNames.SETTINGS}>
-            <SettingsIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });
@@ -400,7 +387,6 @@ export const SideNav = React.memo(function SideNav() {
                                 <AccountButton/>
 
                                 <SideNavQuestionButton/>
-                                <SettingsButton/>
 
                                 <SideNavDivider/>
                                 <IntercomButton/>
