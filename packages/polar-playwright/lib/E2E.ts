@@ -92,7 +92,8 @@ export namespace E2E {
             await verifyButton.click();
 
             // Wait for doc repository to load
-            await page.locator('button', {hasText: 'Add Document'}).waitFor();
+            // Longer wait timeout for Safari Polar just seems to load slower there.
+            await page.locator('button', {hasText: 'Add Document'}).waitFor({timeout: 20000});
         }
 
         export async function doLogout(page: Page) {
