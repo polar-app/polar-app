@@ -82,8 +82,8 @@ test.describe("Notes", () => {
         await page.locator('.MuiListItemText-root > span', { hasText: "Delete" }).click();
     });
 
-    test.afterAll(async () => {
+    test.afterAll(async ({ browserName }) => {
         await E2E.Auth.doLogout(page);
-        await E2E.Sessions.reset(page);
+        await E2E.Sessions.reset(page, browserName);
     });
 });

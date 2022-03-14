@@ -1,11 +1,12 @@
 import {test} from '@playwright/test';
 import { E2E } from "../lib/E2E"
 
-test('Login/Logout succeeds', async ({page}) => {
+test('Login/Logout succeeds', async ({page, browserName}) => {
     await page.goto(await E2E.Sessions.appURL());
 
     await E2E.Auth.doLogin(page, 'testing@getpolarized.io', '123456');
 
     await E2E.Auth.doLogout(page);
-    await E2E.Sessions.reset(page);
+
+    await E2E.Sessions.reset(page, browserName);
 });

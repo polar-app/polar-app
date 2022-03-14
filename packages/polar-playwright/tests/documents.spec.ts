@@ -17,7 +17,6 @@ test.describe("Documents", () => {
     });
 
     test("Can upload and open a document", async () => {
-
         await E2E.Nav.goToDocuments(page);
 
         await page.locator('span[class="MuiButton-label"]', { hasText: "Add Document"}).click();
@@ -73,8 +72,8 @@ test.describe("Documents", () => {
         await expect(rowLocator()).toHaveCount(0);
     });
 
-    test.afterAll(async () => {
+    test.afterAll(async ({ browserName }) => {
         await E2E.Auth.doLogout(page);
-        await E2E.Sessions.reset(page);
+        await E2E.Sessions.reset(page, browserName);
     });
 });

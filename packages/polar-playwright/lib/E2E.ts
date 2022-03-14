@@ -3,9 +3,10 @@ import http from "http";
 
 export namespace E2E {
 
+    export type BrowserName = "chromium" | "firefox" | "webkit";
     export namespace Sessions {
 
-        export async function reset(page: Page) {
+        export async function reset(page: Page, browserName: BrowserName) {
 
             // Clear local storage
             await page.evaluate(() => window.localStorage.clear());
@@ -20,14 +21,18 @@ export namespace E2E {
             );
 
             // Clear indexedDB 
-            await page.evaluate(async () => {
-                const dbs = await window.indexedDB.databases();
-                dbs.forEach(db => {
-                    if (db.name) {
-                        window.indexedDB.deleteDatabase(db.name);
-                    }
+            // IDBFactory.databases is not supported on firefox currently.
+            // https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory/databases#browser_compatibility
+            if (browserName !== 'firefox') {
+                await page.evaluate(async () => {
+                    const dbs = await window.indexedDB.databases();
+                    dbs.forEach(db => {
+                        if (db.name) {
+                            window.indexedDB.deleteDatabase(db.name);
+                        }
+                    });
                 });
-            });
+            }
         }
 
         export async function appURL(): Promise<string> {
