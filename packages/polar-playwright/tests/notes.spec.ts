@@ -5,20 +5,23 @@ import { Locator, Page } from 'playwright-core';
 
 
 test.describe("Notes", () => {
+    test.slow();
+
     let URL: string;
-    
+
     // test created and deleted note title
     const TEST_NOTE_TITLE = `test_note_${Date.now()}`;
-    
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
         URL = await E2E.Sessions.appURL();
-        
-        page = await browser.newPage();
+
+        const context = await browser.newContext()
+        page = await context.newPage();
 
         await page.goto(URL);
-        
+
         await E2E.Auth.doLogin(page, "testing@getpolarized.io");
     });
 
@@ -35,7 +38,7 @@ test.describe("Notes", () => {
     }
 
     test("Can open a single note", async () => {
-        const NOTE_TITLE = "Alice's Adventures in Wonderland"; 
+        const NOTE_TITLE = "Alice's Adventures in Wonderland";
 
         const MAX_DURATION = 3000;
 

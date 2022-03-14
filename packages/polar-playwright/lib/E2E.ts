@@ -20,7 +20,7 @@ export namespace E2E {
                 })
             );
 
-            // Clear indexedDB 
+            // Clear indexedDB
             // IDBFactory.databases is not supported on firefox currently.
             // https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory/databases#browser_compatibility
             if (browserName !== 'firefox') {
@@ -36,11 +36,11 @@ export namespace E2E {
         }
 
         export async function appURL(): Promise<string> {
-            
+
             const LOCAL_URL = "http://localhost:8050";
 
             // when there is no local app build running on host machine
-            // or an explicitly specified APP_URL then tests should default to 
+            // or an explicitly specified APP_URL then tests should default to
             // production version of polar.
             if (!process.env.APP_URL) {
                 const isLocalAlive = await isHostAlive(LOCAL_URL);
@@ -52,7 +52,7 @@ export namespace E2E {
             return process.env.APP_URL || LOCAL_URL;
         }
 
-        
+
         async function isHostAlive(hostURL: string): Promise<boolean> {
             return new Promise<boolean>(resolve => {
                 const req = http.get(hostURL, (res) => {
@@ -93,13 +93,13 @@ export namespace E2E {
 
             // Wait for doc repository to load
             // Longer wait timeout for Safari Polar just seems to load slower there.
-            await page.locator('button', {hasText: 'Add Document'}).waitFor({timeout: 20000});
+            await page.locator('button', {hasText: 'Add Document'}).waitFor({timeout: 30000});
         }
 
         export async function doLogout(page: Page) {
             await Nav.goToAccount(page);
-            
-            await page.click(".text-right .MuiButton-label");         
+
+            await page.click(".text-right .MuiButton-label");
 
             await page.click("[role='presentation'] .MuiButton-contained .MuiButton-label");
 
@@ -110,7 +110,7 @@ export namespace E2E {
 
     export namespace Nav {
         type sideNavItems = "Notes" | "Annotations" | "Documents" | "Account";
-        
+
         export async function goToSideNavItem(page: Page, item: sideNavItems) {
             // Selector path to a sidenav item
             await page.click(`div[title="${item}"]`);
@@ -137,19 +137,19 @@ export namespace E2E {
          * @param page - test page
          * @param taskName - name of the task (used to create measure labels)
          * @param task
-         * 
+         *
          * Runs a performance measure on in test page browser context
          */
-        export async function measure(page: Page, 
+        export async function measure(page: Page,
                                       taskName: string,
                                       task: () => Promise<void>): Promise<PerformanceMeasure> {
-            
+
             const startLabel = `${taskName}-start`;
 
             const measureLabel = `${taskName}-measure`;
-            
+
             // set performance start mark
-            await page.evaluate(startLabel => 
+            await page.evaluate(startLabel =>
                 window.performance.mark(startLabel)
             , startLabel);
 
@@ -157,7 +157,7 @@ export namespace E2E {
             await task();
 
             // measure
-            await page.evaluate(({ startLabel, measureLabel }) => 
+            await page.evaluate(({ startLabel, measureLabel }) =>
                     window.performance.measure(measureLabel, startLabel)
             ,{ startLabel, measureLabel });
 

@@ -4,12 +4,16 @@ import { Locator, Page } from 'playwright-core';
 
 
 test.describe("Documents", () => {
+
+    test.slow();
+
     const TEST_FILE_NAME = "alexnet.pdf";
 
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        const context = await browser.newContext()
+        page = await context.newPage();
 
         await page.goto(await E2E.Sessions.appURL());
 
