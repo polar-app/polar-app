@@ -2,7 +2,7 @@ import {Strings} from "./Strings";
 
 export namespace Challenges {
 
-    interface IChallengeWithParts {
+    export interface IChallengeWithParts {
         readonly p0: string;
         readonly p1: string;
         readonly challenge: string;
