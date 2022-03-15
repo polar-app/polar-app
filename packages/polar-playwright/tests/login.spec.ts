@@ -4,6 +4,11 @@ import {E2E} from "../lib/E2E"
 test('Login/Logout succeeds', async ({browser, browserName}) => {
     // Default timeout of 30 seconds is not enough for this set of steps
     test.slow();
+    
+    if (browserName === 'webkit') {
+       test.skip();
+       return;
+    }
 
     const context = await browser.newContext();
 
