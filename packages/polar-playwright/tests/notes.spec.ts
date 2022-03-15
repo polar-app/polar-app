@@ -87,6 +87,5 @@ test.describe("Notes", () => {
 
     test.afterAll(async ({ browserName }) => {
         await E2E.Auth.doLogout(page);
-        await E2E.Sessions.reset(page, browserName);
     });
 });
