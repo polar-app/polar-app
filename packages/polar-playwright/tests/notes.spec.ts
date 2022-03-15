@@ -4,7 +4,7 @@ import { join } from 'path';
 import { Locator, Page } from 'playwright-core';
 
 
-test.describe("Notes", () => {
+test.describe.serial("Notes", () => {
     test.slow();
 
     let URL: string;

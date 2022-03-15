@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import { Locator, Page } from 'playwright-core';
 
 
-test.describe("Documents", () => {
+test.describe.serial("Documents", () => {
 
     test.slow();
 
