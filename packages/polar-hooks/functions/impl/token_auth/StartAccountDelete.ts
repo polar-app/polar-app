@@ -1,17 +1,11 @@
 import {ExpressFunctions} from "../util/ExpressFunctions";
-import {isPresent} from "polar-shared/src/Preconditions";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import {Challenges} from "polar-shared/src/util/Challenges";
 import {Sendgrid} from "polar-sendgrid/src/Sendgrid";
-import {IStartTokenAuthResponse} from "./StartTokenAuthFunction";
-import express from "express";
+import {IDUser} from "polar-rpc/src/IDUser";
 import IChallengeWithParts = Challenges.IChallengeWithParts;
-
-interface IStartAccountDeleteRequest {
-    email: EmailStr,
-}
 
 interface IEmailTemplate {
     readonly to: string;
@@ -43,31 +37,8 @@ async function sendEmail(tmpl: IEmailTemplate) {
     await Sendgrid.send(tmpl);
 }
 
-function sendResponseOK(res: express.Response) {
-    const response: IStartTokenAuthResponse = {
-        code: 'ok',
-        status: "ok"
-    };
-    ExpressFunctions.sendResponse(res, response);
-}
-
-export const StartAccountDeleteFunction = ExpressFunctions.createHookAsync('StartAccountDeleteFunction', async (req, res) => {
-
-    if (req.method.toUpperCase() !== 'POST') {
-        ExpressFunctions.sendResponse(res, "POST required", 500, 'text/plain');
-        return;
-    }
-
-    if (!isPresent(req.body)) {
-        ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
-        return;
-    }
-
-    const request: IStartAccountDeleteRequest = req.body;
-
-    console.log("Handling request: ", typeof request, request);
-
-    const {email} = request;
+export const StartAccountDeleteFunction = ExpressFunctions.createRPCHook('StartAccountDeleteFunction', async (idUser: IDUser) => {
+    const email = idUser.user.email;
 
     const challenge = createChallenge();
 
@@ -77,6 +48,4 @@ export const StartAccountDeleteFunction = ExpressFunctions.createHookAsync('Star
     const tmpl = createEmailTemplate(email, challenge);
 
     await sendEmail(tmpl);
-
-    sendResponseOK(res);
 });

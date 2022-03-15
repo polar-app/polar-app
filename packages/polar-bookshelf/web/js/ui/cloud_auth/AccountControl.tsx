@@ -13,6 +13,7 @@ import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
 import Subscription = Billing.Subscription;
+import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -88,6 +89,28 @@ export function useLogoutAction(): Callback {
 
 }
 
+const InitiateAccountDelete: React.FC = (props) => {
+
+    const dialogs = useDialogManager();
+
+    const handler = React.useCallback(async (dialogs) => {
+        dialogs.confirm({
+            type: 'danger',
+            title: "Are you sure you want to delete your account?",
+            subtitle: "You will receive an email with a six digit code which you need to confirm",
+            onAccept: async () => {
+                await JSONRPC.exec<{}, unknown>('StartAccountDelete', {})
+            }
+        });
+    }, [dialogs]);
+
+    return <Button color="secondary"
+                   variant="contained"
+                   size="large"
+                   onClick={handler}>
+        Delete account
+    </Button>
+}
 
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
@@ -146,7 +169,12 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                         <AccountOverview subscription={props.userInfo.subscription}/>
                     </div>
 
-                    <ViewPlansAndPricingButton/>
+                    <div className="mt-2 mb-4">
+                        <ViewPlansAndPricingButton/>
+                    </div>
+                    <div className="mt-2 mb-4">
+                        <InitiateAccountDelete/>
+                    </div>
                 </div>
 
                 <div className="text-right">
