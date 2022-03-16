@@ -12,8 +12,9 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
+import {DeleteAccount} from "./DeleteAccount";
 import Subscription = Billing.Subscription;
-import {JSONRPC} from "../../datastore/sharing/rpc/JSONRPC";
+import {FeatureEnabled} from '../../features/FeaturesRegistry';
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -45,6 +46,7 @@ const ViewPlansAndPricingButton = () => {
             <Button color="secondary"
                     variant="contained"
                     size="large"
+                    fullWidth={true}
                     onClick={handler}>
 
                 <i className="fas fa-certificate"/>
@@ -87,29 +89,6 @@ export function useLogoutAction(): Callback {
 
     }
 
-}
-
-const InitiateAccountDelete: React.FC = (props) => {
-
-    const dialogs = useDialogManager();
-
-    const handler = React.useCallback(async (dialogs) => {
-        dialogs.confirm({
-            type: 'danger',
-            title: "Are you sure you want to delete your account?",
-            subtitle: "You will receive an email with a six digit code which you need to confirm",
-            onAccept: async () => {
-                await JSONRPC.exec<{}, unknown>('StartAccountDelete', {})
-            }
-        });
-    }, [dialogs]);
-
-    return <Button color="secondary"
-                   variant="contained"
-                   size="large"
-                   onClick={handler}>
-        Delete account
-    </Button>
 }
 
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
@@ -172,9 +151,11 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                     <div className="mt-2 mb-4">
                         <ViewPlansAndPricingButton/>
                     </div>
-                    <div className="mt-2 mb-4">
-                        <InitiateAccountDelete/>
-                    </div>
+                    <FeatureEnabled feature='account-delete'>
+                        <div className="mt-2 mb-4">
+                            <DeleteAccount/>
+                        </div>
+                    </FeatureEnabled>
                 </div>
 
                 <div className="text-right">
