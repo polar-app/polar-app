@@ -316,13 +316,13 @@ function computeOrigin(event: IMouseEvent): ISideNavContextMenuOrigin | undefine
         return;
     }
 
-    const { tabID } = target.dataset;
+    const { tabid } = target.dataset;
 
-    if (! tabID) {
+    if (! tabid) {
         return;
     }
 
-    return { tabID };
+    return { tabID: tabid };
 }
 
 export const [SideNavContextMenuProvider, useSideNavContextMenu]

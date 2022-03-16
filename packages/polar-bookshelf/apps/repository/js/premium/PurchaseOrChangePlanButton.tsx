@@ -13,12 +13,17 @@ const useStyles = makeStyles((theme) =>
             fontSize: '18px',
             fontWeight: 'bold'
         },
+        button: {
+            textDecoration: 'underline',
+            fontSize: '1.2rem',
+        }
     }),
 );
 
 
 export interface IProps {
     readonly newSubscription: Billing.V2Subscription;
+    readonly currentPlanLabel?: string;
 }
 
 export const PurchaseOrChangePlanButton = deepMemo(function PurchaseOrChangePlanButton(props: IProps) {
@@ -26,7 +31,7 @@ export const PurchaseOrChangePlanButton = deepMemo(function PurchaseOrChangePlan
     const classes = useStyles();
     const changePlanActionContext = useChangePlanActionContext();
 
-    const {newSubscription} = props;
+    const {newSubscription, currentPlanLabel = "CURRENT PLAN"} = props;
 
     const {subscription} = changePlanActionContext;
 
@@ -48,13 +53,13 @@ export const PurchaseOrChangePlanButton = deepMemo(function PurchaseOrChangePlan
         <div style={{margin: '1rem'}}>
 
             {currentPlan && (
-                <span className={classes.current_plan}>CURRENT PLAN</span>
+                <span className={classes.current_plan}>{currentPlanLabel}</span>
             )}
 
             {! currentPlan && (
                 <Button color="primary"
-                        variant="contained"
-                        onClick={clickHandler}>
+                        onClick={clickHandler}
+                        className={classes.button}>
 
                     {text}
 

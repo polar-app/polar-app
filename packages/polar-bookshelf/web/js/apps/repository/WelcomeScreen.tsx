@@ -8,12 +8,17 @@ import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import {useHistory} from 'react-router-dom';
 import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import {WelcomeScreenContent} from "./WelcomeScreenContent";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
+import {PlansTable} from "../../../../apps/repository/js/plans_table/PlansTable";
+import {PlanPricingInterval} from "../../../../apps/repository/js/plans_table/PlansData";
+import {Button, Typography} from "@material-ui/core";
+import {DefaultChangePlanContextProvider} from "../../../../apps/repository/js/premium/actions/DefaultChangePlanContextProvider";
 
 export const WelcomeScreen = React.memo(function WelcomeScreen() {
 
     const analytics = useAnalytics();
     const history = useHistory();
+    const [isOnboardingComplete, setIsOnboardingComplete] = React.useState(false);
 
     const handleProfile = React.useCallback((profile: OccupationProfile) => {
 
@@ -34,9 +39,9 @@ export const WelcomeScreen = React.memo(function WelcomeScreen() {
             ...profile
         });
 
-        history.replace('/');
+        setIsOnboardingComplete(true);
 
-    }, [analytics, history]);
+    }, [analytics]);
 
     const handleClose = React.useCallback(() => {
         analytics.event2('welcome-profile-skipped');
@@ -50,14 +55,54 @@ export const WelcomeScreen = React.memo(function WelcomeScreen() {
     return (
         <MUIDialog open={true} onClose={handleClose} maxWidth="lg">
 
-            <Box style={{
-                     minHeight: '600px',
-                     display: 'flex'
-                 }}>
-                <WelcomeScreenContent onProfile={handleProfile}/>
-            </Box>
+            {! isOnboardingComplete
+                ? (
+                    <Box minHeight="600px" display="flex">
+                        <WelcomeScreenContent onProfile={handleProfile}/>
+                    </Box>
+                ) : <WelcomeUpgradeDialog />
+            }
 
         </MUIDialog>
     );
 
-})
+});
+
+const WelcomeUpgradeDialog = () => {
+    const history = useHistory();
+    const handleClose = React.useCallback(() => history.replace('/'), [history]);
+
+    return (
+        <MUIDialog open maxWidth="lg" fullWidth onClose={handleClose}>
+            <DefaultChangePlanContextProvider>
+                <Box display="flex"
+                     flexDirection="column"
+                     alignItems="center"
+                     px="2rem"
+                     py="2rem">
+
+                    <h1>🎉 Welcome to your first two weeks free premium plan</h1>
+                    <Box mt="3rem" width="100%" px="2rem">
+                        <PlansTable pricingInterval={PlanPricingInterval.Monthly}
+                                    highlight="plus"
+                                    currentPlanLabel="First Two Weeks Free" />
+                    </Box>
+                    <Box display="flex"
+                         justifyContent="space-between"
+                         alignItems="center"
+                         mt="4rem"
+                         width="100%">
+
+                        <Box width="100px" />
+                        <Typography variant="body2" color="textSecondary">
+                            Nothing will be charged at this time
+                        </Typography>
+                        <Button variant="contained" color="secondary" onClick={handleClose}>Get Started</Button>
+                    </Box>
+                </Box>
+            </DefaultChangePlanContextProvider>
+        </MUIDialog>
+    );
+};
+
+
