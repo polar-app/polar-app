@@ -64,7 +64,7 @@ export const DeleteAccount: React.FC = () => {
         // Trigger the cloud function that sends the six-digit challenge code via email
         await sendChallengeCode();
 
-    }, [dialogs, sendChallengeCode, logoutCallback]);
+    }, [dialogs, sendChallengeCode, logoutCallback, history]);
 
     return <Button color="secondary"
                    variant="contained"
