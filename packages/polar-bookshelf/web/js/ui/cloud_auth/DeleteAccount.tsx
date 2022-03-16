@@ -66,11 +66,5 @@ export const DeleteAccount: React.FC = () => {
 
     }, [dialogs, sendChallengeCode, logoutCallback, history]);
 
-    return <Button color="secondary"
-                   variant="contained"
-                   size="large"
-                   fullWidth={true}
-                   onClick={handler}>
-        Delete account
-    </Button>
+    return <Button onClick={handler}>Delete account</Button>
 }
