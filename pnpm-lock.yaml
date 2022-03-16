@@ -48,7 +48,6 @@ importers:
       node-polyfill-webpack-plugin: '=1.1.4'
       null-loader: '=4.0.1'
       playwright: '=1.18.1'
-      playwright-core: '=1.18.1'
       postcss-loader: '=6.2.0'
       prettier: '=2.4.1'
       process: '=0.11.10'
@@ -113,7 +112,6 @@ importers:
       node-polyfill-webpack-plugin: 1.1.4_webpack@5.61.0
       null-loader: 4.0.1_webpack@5.61.0
       playwright: 1.18.1
-      playwright-core: 1.18.1
       postcss-loader: 6.2.0_webpack@5.61.0
       prettier: 2.4.1
       process: 0.11.10
@@ -1451,8 +1449,10 @@ importers:
   packages/polar-playwright:
     specifiers:
       '@playwright/test': '=1.18.1'
+      playwright-core: '=1.18.1'
     devDependencies:
       '@playwright/test': 1.18.1
+      playwright-core: 1.18.1
 
   packages/polar-private-beta:
     specifiers:
@@ -20250,7 +20250,7 @@ packages:
   /proper-lockfile/4.1.2:
     resolution: {integrity: sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       retry: 0.12.0
       signal-exit: 3.0.5
     dev: true
