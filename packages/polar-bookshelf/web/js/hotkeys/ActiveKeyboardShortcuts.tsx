@@ -38,11 +38,11 @@ const keyMap: KeyMap = {
             //     platforms: ['macos', 'linux', 'windows']
             // },
             {
-                keys: 'ctrl+k',
+                keys: 'ctrl+/',
                 platforms: ['linux', 'windows']
             },
             {
-                keys: 'command+k',
+                keys: 'command+/',
                 platforms: ['macos']
             }
         ],
