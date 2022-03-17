@@ -12,7 +12,9 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import {usePopperController} from "../../mui/menu/MUIPopper";
 import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
+import {DeleteAccount} from "./DeleteAccount";
 import Subscription = Billing.Subscription;
+import {FeatureEnabled} from '../../features/FeaturesRegistry';
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -44,6 +46,7 @@ const ViewPlansAndPricingButton = () => {
             <Button color="secondary"
                     variant="contained"
                     size="large"
+                    fullWidth={true}
                     onClick={handler}>
 
                 <i className="fas fa-certificate"/>
@@ -87,7 +90,6 @@ export function useLogoutAction(): Callback {
     }
 
 }
-
 
 export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
@@ -146,7 +148,14 @@ export const AccountControl = memoForwardRefDiv(function AccountControl(props: I
                         <AccountOverview subscription={props.userInfo.subscription}/>
                     </div>
 
-                    <ViewPlansAndPricingButton/>
+                    <div className="mt-2 mb-4">
+                        <ViewPlansAndPricingButton/>
+                    </div>
+                    <FeatureEnabled feature='account-delete'>
+                        <div className="mt-2 mb-4">
+                            <DeleteAccount/>
+                        </div>
+                    </FeatureEnabled>
                 </div>
 
                 <div className="text-right">
