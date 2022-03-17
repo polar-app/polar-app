@@ -164,6 +164,11 @@ export namespace UserBackupCreator {
 
                 // i'm not sure how to prevent this error
                 async function doAsync() {
+                    if (!firebaseObject.value) {
+                        console.error('Encountered a firebaseObject with no value property');
+                        callback(null, null);
+                        return;
+                    }
 
                     const id = firebaseObject.id;
 
@@ -172,8 +177,8 @@ export namespace UserBackupCreator {
                     const name = firebaseObject.value.docInfo.filename;
                     const hashcode = firebaseObject.value.docInfo.hashcode;
 
-                    if (!name) {
-                        console.error(id, 'Encountered a document with no filename and hashcode field: ' + firebaseObject.id);
+                    if (!name || !hashcode) {
+                        console.error(id, 'Encountered a document with no filename or hashcode field: ' + firebaseObject.id);
                         console.error(id, JSON.stringify(firebaseObject, null, 2))
                         callback(null, null);
                         return;

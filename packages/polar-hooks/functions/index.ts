@@ -43,6 +43,8 @@ import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction
 import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashcardsExportFunction";
 import {AutoClozeDeletionFunction} from "./impl/ai/AutoClozeDeletionFunction"
 import {CreateAccountForUserReferralFunction} from "./impl/user_referral/CreateAccountForUserReferralFunction";
+import {StartAccountDeleteFunction} from "./impl/token_auth/StartAccountDelete";
+import {FinishAccountDeleteFunction} from "./impl/token_auth/FinishAccountDelete";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -82,6 +84,8 @@ exports.StripeStudentDiscountVerifyFunction = StripeStudentDiscountVerifyFunctio
 exports.StripeStudentDiscountFunction = StripeStudentDiscountFunction;
 exports.StartTokenAuth = StartTokenAuthFunction;
 exports.VerifyTokenAuth = VerifyTokenAuthFunction;
+exports.StartAccountDelete = StartAccountDeleteFunction;
+exports.FinishAccountDelete = FinishAccountDeleteFunction;
 exports.CloudFunctionsWarmer = CloudFunctionsWarmer;
 exports.CreateSnapshotFunction = CreateSnapshotFunction;
 exports.AppleIapCallback = AppleIapCallback;

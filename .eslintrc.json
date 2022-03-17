@@ -103,7 +103,6 @@
     "examples",
     "scripts",
     "*.d.ts",
-    "*.js",
-    "cypress"
+    "*.js"
   ]
 }
