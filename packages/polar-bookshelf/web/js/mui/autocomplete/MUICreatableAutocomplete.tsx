@@ -118,6 +118,7 @@ function sortOptions<T>(options: ReadonlyArray<ValueAutocompleteOption<T>>) {
 export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {
 
     const classes = useStyles();
+    const {onOpen = NULL_FUNCTION} = props;
 
     const options = React.useMemo(() => sortOptions(props.options), [props.options]);
 
@@ -240,18 +241,18 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     const relatedOptions = computeRelatedOptions();
 
     const fireOnOpen = React.useCallback(() => {
-        const onOpen = props.onOpen || NULL_FUNCTION;
         onOpen(openRef.current);
         setOpen(openRef.current);
-    }, [props.onOpen]);
+    }, [onOpen]);
 
     const handleClose = React.useCallback(() => {
 
         highlighted.current = null;
         openRef.current = false;
         fireOnOpen();
+        onOpen(false);
 
-    }, [fireOnOpen]);
+    }, [fireOnOpen, onOpen]);
 
     const createNewOptionOnEnter = React.useCallback(() => {
 
@@ -272,9 +273,10 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         setInputValue('');
         setOpen(false);
+        onOpen(false);
         return handleChange([...state.values, newOption]);
 
-    }, [handleChange, inputValue, options, state.values])
+    }, [handleChange, inputValue, options, state.values, onOpen])
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
