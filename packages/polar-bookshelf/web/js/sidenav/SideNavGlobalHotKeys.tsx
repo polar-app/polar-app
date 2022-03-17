@@ -51,9 +51,8 @@ export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
             { path: RoutePathNames.HOME, exact: true }, // Doc Repo
             { path: RoutePathNames.ANNOTATIONS, exact: false }, // Annotation repo
             { path: RoutePathNames.NOTES, exact: false }, // Notes repo
-            { path: RoutePathNames.STATISTICS, exact: false }, // Statistics
+            { path: RoutePathNames.DAILY, exact: true }, // Statistics
             ...tabs.map(tab => ({ path: tab.url, exact: false })), // Open tabs
-            { path: RoutePathNames.SETTINGS, exact: false }, // Settings
         ];
     }, [tabs]);
 

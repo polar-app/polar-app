@@ -6,9 +6,7 @@ import {TabID, useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
-import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
-import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import NotesIcon from '@material-ui/icons/Notes';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -182,18 +180,6 @@ const NotesButton = observer(function NotesButton() {
 
 });
 
-const StatsButton = React.memo(function StatsButton() {
-
-    const classes = useStyles();
-
-    return (
-        <SideNavHistoryButton title="Statistics"
-                              path={RoutePathNames.STATISTICS}>
-            <TimelineIcon className={classes.secondaryIcon}/>
-        </SideNavHistoryButton>
-    )
-});
-
 const AccountButton = React.memo(function AccountButton() {
 
     const classes = useStyles();
@@ -202,18 +188,6 @@ const AccountButton = React.memo(function AccountButton() {
         <SideNavHistoryButton title="Account"
                               path={RoutePathNames.ACCOUNT}>
             <AccountAvatar className={classes.secondaryIcon} size='small'/>
-        </SideNavHistoryButton>
-    )
-});
-
-const SettingsButton = React.memo(function SettingsButton() {
-
-    const classes = useStyles();
-
-    return (
-        <SideNavHistoryButton title="Settings"
-                              path={RoutePathNames.SETTINGS}>
-            <SettingsIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
 });
@@ -392,8 +366,6 @@ export const SideNav = React.memo(function SideNav() {
 
                             <NotesButton/>
 
-                            <DeviceRouter desktop={<StatsButton/>}/>
-
                             <SideNavDivider/>
                             <DailyNotesButton/>
 
@@ -415,7 +387,6 @@ export const SideNav = React.memo(function SideNav() {
                                 <AccountButton/>
 
                                 <SideNavQuestionButton/>
-                                <SettingsButton/>
 
                                 <SideNavDivider/>
                                 <IntercomButton/>
