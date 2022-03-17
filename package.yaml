@@ -76,7 +76,6 @@ devDependencies:
     "@onslip/karma-playwright-launcher": "=0.2.1"
     "karma-summary-reporter": "=3.0.0"
     "playwright": "=1.18.1"
-    "playwright-core": "=1.18.1"
     "puppeteer": "=11.0.0"
 
     ## Mocha Dependencies

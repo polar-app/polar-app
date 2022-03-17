@@ -56,7 +56,7 @@ We also support a snapshot feature in the premium tiers that allows you addition
 
 ### Can I export my data?
 
-Yes, you can export all your highlights and annotations in one click or each file from your library.You can also export your flashcards as a deck to Anki. Finally, we provide a snapshot feature where you can create a manual copy of your entire Polar content (available to all Plus and Pro uses)
+Yes, you can export all your highlights and annotations in one click or each file from your library.You can also export your flashcards as a deck to Anki. Finally, we provide a snapshot feature where you can create a manual copy of your entire Polar content as a JSON file.
 
 
 ### How do I export my flashcards to Anki?

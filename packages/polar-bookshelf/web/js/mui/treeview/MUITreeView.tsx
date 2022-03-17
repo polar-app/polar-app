@@ -28,7 +28,7 @@ export const MUITreeView = memoForwardRef((props: IProps) => {
                   expanded={[...props.expanded]}>
 
             <MUITreeItem nodeId={props.root.id}
-                         label="Folders"
+                         label={props.root.name}
                          info={props.root.value.count}
                          selected={props.root.value.selected}
                          onNodeExpand={(_, nodeID) => props.expandNode(nodeID)}
