@@ -1,10 +1,12 @@
 import { Page } from 'playwright-core';
+import http from "http";
 
 export namespace E2E {
 
+    export type BrowserName = "chromium" | "firefox" | "webkit";
     export namespace Sessions {
 
-        export async function reset(page: Page) {
+        export async function reset(page: Page, browserName: BrowserName) {
 
             // Clear local storage
             await page.evaluate(() => window.localStorage.clear());
@@ -18,21 +20,55 @@ export namespace E2E {
                 })
             );
 
-            // Clear indexedDB 
-            await page.evaluate(async () => {
-                const dbs = await window.indexedDB.databases();
-                dbs.forEach(db => {
-                    if (db.name) {
-                        window.indexedDB.deleteDatabase(db.name);
+            // Clear indexedDB
+            // IDBFactory.databases is not supported on firefox currently.
+            // https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory/databases#browser_compatibility
+            if (browserName !== 'firefox') {
+                await page.evaluate(async () => {
+                    const dbs = await window.indexedDB.databases();
+                    dbs.forEach(db => {
+                        if (db.name) {
+                            window.indexedDB.deleteDatabase(db.name);
+                        }
+                    });
+                });
+            }
+        }
+
+        export async function appURL(): Promise<string> {
+
+            const LOCAL_URL = "http://localhost:8050";
+
+            // when there is no local app build running on host machine
+            // or an explicitly specified APP_URL then tests should default to
+            // production version of polar.
+            if (!process.env.APP_URL) {
+                const isLocalAlive = await isHostAlive(LOCAL_URL);
+                if (!isLocalAlive) {
+                    process.env.APP_URL = "https://app.getpolarized.io/";
+                }
+            }
+
+            return process.env.APP_URL || LOCAL_URL;
+        }
+
+
+        async function isHostAlive(hostURL: string): Promise<boolean> {
+            return new Promise<boolean>(resolve => {
+                const req = http.get(hostURL, (res) => {
+                    if (res.statusCode === 200) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
                     }
                 });
+                req.on('error', () => {
+                    resolve(false);
+                });
+
+                req.end();
             });
         }
-
-        export function appURL(): string {
-            return process.env.APP_URL || 'http://localhost:8050';
-        }
-
     }
 
     export namespace Auth {
@@ -56,13 +92,14 @@ export namespace E2E {
             await verifyButton.click();
 
             // Wait for doc repository to load
-            await page.locator('button', {hasText: 'Add Document'}).waitFor();
+            // Longer wait timeout for Safari Polar just seems to load slower there.
+            await page.locator('button', {hasText: 'Add Document'}).waitFor({timeout: 30000});
         }
 
         export async function doLogout(page: Page) {
-            await page.click("#sidenav > div > div:nth-child(10) > div:nth-child(2) > div > svg > path");
-            
-            await page.click(".text-right .MuiButton-label");         
+            await Nav.goToAccount(page);
+
+            await page.click(".text-right .MuiButton-label");
 
             await page.click("[role='presentation'] .MuiButton-contained .MuiButton-label");
 
@@ -72,10 +109,26 @@ export namespace E2E {
     }
 
     export namespace Nav {
-        export async function goToNotes(page: Page) {
+        type sideNavItems = "Notes" | "Annotations" | "Documents" | "Account";
 
-            // Selector path to notes icon
-            await page.click('#sidenav > div > [title="Notes"]');
+        export async function goToSideNavItem(page: Page, item: sideNavItems) {
+            // Selector path to a sidenav item
+            await page.click(`div[title="${item}"]`);
+        }
+        export async function goToNotes(page: Page) {
+            await goToSideNavItem(page, "Notes");
+        }
+
+        export async function goToDocuments(page: Page) {
+            await goToSideNavItem(page, "Documents");
+        }
+
+        export async function goToAnnotations(page: Page) {
+            await goToSideNavItem(page, "Annotations");
+        }
+
+        export async function goToAccount(page: Page) {
+            await goToSideNavItem(page, "Account");
         }
     }
 
@@ -84,19 +137,19 @@ export namespace E2E {
          * @param page - test page
          * @param taskName - name of the task (used to create measure labels)
          * @param task
-         * 
+         *
          * Runs a performance measure on in test page browser context
          */
-        export async function measure(page: Page, 
+        export async function measure(page: Page,
                                       taskName: string,
                                       task: () => Promise<void>): Promise<PerformanceMeasure> {
-            
+
             const startLabel = `${taskName}-start`;
 
             const measureLabel = `${taskName}-measure`;
-            
+
             // set performance start mark
-            await page.evaluate(startLabel => 
+            await page.evaluate(startLabel =>
                 window.performance.mark(startLabel)
             , startLabel);
 
@@ -104,7 +157,7 @@ export namespace E2E {
             await task();
 
             // measure
-            await page.evaluate(({ startLabel, measureLabel }) => 
+            await page.evaluate(({ startLabel, measureLabel }) =>
                     window.performance.measure(measureLabel, startLabel)
             ,{ startLabel, measureLabel });
 

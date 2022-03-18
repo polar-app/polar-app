@@ -61,6 +61,10 @@ const DEFAULT_REGISTRY: FeatureRegistry<FeatureName> = {
         title: "Enable the notes debug tools",
         description: "Enable the notes debug tools.",
     },
+    "account-delete": {
+        title: "Enable account deletion",
+        description: "Allow the user to delete his own account",
+    }
 };
 
 // TODO: we might want to rework this and make FeatureName be keyof
@@ -78,7 +82,8 @@ export type FeatureName = 'design-m0' |
                           'new-notes-handheld-breadcrumbs' |
                           'local-search' |
                           'use-redesign-theme' |
-                          'notes-debug-tools'
+                          'notes-debug-tools' |
+                          'account-delete'
                           ;
 
 export interface IFeature {

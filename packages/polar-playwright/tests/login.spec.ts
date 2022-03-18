@@ -1,10 +1,22 @@
 import {test} from '@playwright/test';
-import { E2E } from "../lib/E2E"
+import {E2E} from "../lib/E2E"
 
-const URL = process.env.APP_URL || 'http://localhost:8050';
+test('Login/Logout succeeds', async ({browser, browserName}) => {
+    // Default timeout of 30 seconds is not enough for this set of steps
+    test.slow();
+    
+    if (browserName === 'webkit') {
+       test.skip();
+       return;
+    }
 
-test('Login succeeds', async ({page}) => {
-    await page.goto(URL);
+    const context = await browser.newContext();
+
+    const page = await context.newPage();
+
+    await page.goto(await E2E.Sessions.appURL());
 
     await E2E.Auth.doLogin(page, 'testing@getpolarized.io', '123456');
+
+    await E2E.Auth.doLogout(page);
 });

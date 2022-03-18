@@ -4,10 +4,8 @@ import {PricingContentForMobile} from "./PricingContentForMobile";
 import {PricingContentForDesktop} from "./PricingContentForDesktop";
 
 export const PricingContent = () => {
-
-  return (
-      <DeviceRouter handheld={<PricingContentForMobile/>}
-                    desktop={<PricingContentForDesktop/>}/>
-  );
-
+    return (
+        <DeviceRouter handheld={<PricingContentForMobile />}
+                      desktop={<PricingContentForDesktop />}/>
+    );
 }
