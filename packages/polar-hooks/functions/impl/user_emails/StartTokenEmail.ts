@@ -1,9 +1,13 @@
 import { IDUser } from "polar-rpc/src/IDUser";
-import { IStartTokenEmailError, IStartTokenEmailRequest, IStartTokenEmailResponse } from "polar-backend-api/src/api/StartTokenEmail";
 import { createOrFetchChallenge } from "../token_auth/StartTokenAuthFunction";
 import { Sendgrid } from "polar-sendgrid/src/Sendgrid";
 import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
 import { ExpressFunctions } from "../util/ExpressFunctions";
+import {
+    IStartTokenEmailError,
+    IStartTokenEmailRequest,
+    IStartTokenEmailResponse
+} from "polar-backend-api/src/api/StartTokenEmail";
 
 
 export namespace VerifyTokenEmail {
