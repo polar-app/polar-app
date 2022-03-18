@@ -165,9 +165,10 @@ export const BlocksFolderSidebar: React.FC<IProps> = observer((props) => {
                 {props.header && <Box px={1} display="flex" children={props.header} />}
             </MUIPaperToolbar>
 
-            <Box display="flex" flexGrow="1" flexDirection="column" p={1} className={classes.tagsList}>
+            <Box flexGrow="1" p={1} className={classes.tagsList}>
                 {props.filterResetLabel && (
                     <Button color="secondary"
+                            fullWidth
                             onClick={handleFilterReset}
                             classes={{ root: classes.filterResetButton }}>
                         <span>{props.filterResetLabel}</span>
