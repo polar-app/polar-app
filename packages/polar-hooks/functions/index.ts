@@ -43,6 +43,8 @@ import {BlockWriteTriggerFunction} from "./impl/blocks/BlockWriteTriggerFunction
 import {FlashcardsExportFunction} from "./impl/flashcards-export/FlashcardsExportFunction";
 import {AutoClozeDeletionFunction} from "./impl/ai/AutoClozeDeletionFunction"
 import {CreateAccountForUserReferralFunction} from "./impl/user_referral/CreateAccountForUserReferralFunction";
+import {StartTokenEmailFunction} from "./impl/user_emails/StartTokenEmail";
+import {VerifyTokenEmailFunction} from "./impl/user_emails/VerifyTokenEmail";
 import {StartAccountDeleteFunction} from "./impl/token_auth/StartAccountDelete";
 import {FinishAccountDeleteFunction} from "./impl/token_auth/FinishAccountDelete";
 
@@ -101,3 +103,5 @@ exports.FlashcardsExportFunction = FlashcardsExportFunction
 exports.AutoClozeDeletionFunction = AutoClozeDeletionFunction
 exports.FlashcardsExport = FlashcardsExportFunction
 exports.CreateAccountForUserReferral = CreateAccountForUserReferralFunction
+exports.StartTokenEmailFunction = StartTokenEmailFunction
+exports.VerifyTokenEmailFunction = VerifyTokenEmailFunction
